@@ -1,0 +1,29 @@
+\name{rand}
+\alias{rand}
+\title{Function written to match MATLAB's rand function}
+\usage{
+rand(dim1, dim2 = NULL)
+}
+\arguments{
+  \item{dim1}{The dimension of the matrix (if square),
+  otherwise the number of rows.}
+
+  \item{dim2}{The number of colums, if different from the
+  number of rows.}
+}
+\value{
+Matrix of random generated samples.
+}
+\description{
+Generate random samples from a uniform distribution [0,1]
+and return in matrix form
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{size}};
+\code{\link{zeros}}
+}
+

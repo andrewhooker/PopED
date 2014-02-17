@@ -1,0 +1,33 @@
+\name{diag_matlab}
+\alias{diag_matlab}
+\title{Function written to match MATLAB's diag function}
+\usage{
+diag_matlab(mat)
+}
+\arguments{
+  \item{mat}{Either a vector to make into a diagonal matrix
+  or a matrix you want to extract the diagonal from}
+}
+\value{
+Either a diagonal matrix or the diagonal of a matrix.
+}
+\description{
+There are some differences between tha MATLAB and the R
+version of diag. Specifically, if a 1xN or a Nx1 matrix is
+supplied to the R \code{\link{diag}} function then just the
+first element of this vector is returned. This function
+tries to match the MATLAB version in handling vectors
+(matricies with one dimension equal to one), and will
+return a diagonal matrix in these situations.
+}
+\seealso{
+Other MATLAB: \code{\link{cell}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{zeros}}
+
+Other matrix_manipulation: \code{\link{test_for_max}};
+\code{\link{test_for_min}}; \code{\link{test_for_zeros}}
+}
+

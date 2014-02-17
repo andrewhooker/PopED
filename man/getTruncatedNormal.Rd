@@ -1,0 +1,20 @@
+\name{getTruncatedNormal}
+\alias{getTruncatedNormal}
+\title{Generate a random sample from a truncated normal distribution.}
+\usage{
+getTruncatedNormal(mean, variance)
+}
+\arguments{
+  \item{mean}{the mean of the normal distribution}
+
+  \item{variance}{The variance of the normal distribution}
+}
+\value{
+A random sample from the specified truncated normal
+distribution
+}
+\description{
+Generate a random sample from a truncated normal
+distribution.
+}
+

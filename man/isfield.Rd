@@ -1,0 +1,27 @@
+\name{isfield}
+\alias{isfield}
+\title{Function written to match MATLAB's isfield function}
+\usage{
+isfield(obj, sub.obj.str)
+}
+\arguments{
+  \item{obj}{A list or dataframe}
+
+  \item{sub.obj.str}{A string giving the name of the
+  sub-object you want to check for.}
+}
+\value{
+Logical. True if the element exists.
+}
+\description{
+Check if a list or dataframe has an element with a specific
+name.
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{randn}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+}
+

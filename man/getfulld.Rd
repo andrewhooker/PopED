@@ -1,0 +1,22 @@
+\name{getfulld}
+\alias{getfulld}
+\title{Create a full D (between subject variability) matrix given a vector of variances and covariances.}
+\usage{
+getfulld(variance_vector, covariance_vector)
+}
+\arguments{
+  \item{variance_vector}{The vector of the variances}
+
+  \item{covariance_vector}{A vector of the covariances.
+  Writen in row major order for the lower triangular
+  matrix.}
+}
+\value{
+The full matrix of variances for the between subject
+variances
+}
+\description{
+Create a full D (between subject variability) matrix given
+a vector of variances and covariances.
+}
+

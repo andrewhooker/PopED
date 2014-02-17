@@ -1,0 +1,30 @@
+\name{fileparts}
+\alias{fileparts}
+\title{MATLAB fileparts function}
+\usage{
+fileparts(filename.with.path)
+}
+\arguments{
+  \item{filename.with.path}{A string of a filename with a
+  path}
+}
+\value{
+A list with the following components: \item{pathname}{The
+path name} \item{filename}{The file name}
+\item{fileext}{The file extension}
+}
+\description{
+Get the various parts of a file with path string.
+}
+\note{
+This is a modified version of the same function in
+\code{\link[matlab]{fileparts}}
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{isempty}}; \code{\link{isfield}};
+\code{\link{randn}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+}
+

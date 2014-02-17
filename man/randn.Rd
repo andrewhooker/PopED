@@ -1,0 +1,28 @@
+\name{randn}
+\alias{randn}
+\title{Function written to match MATLAB's randn function}
+\usage{
+randn(dim1, dim2 = NULL)
+}
+\arguments{
+  \item{dim1}{The dimension of the matrix (if square),
+  otherwise the number of rows.}
+
+  \item{dim2}{The number of colums, if different from the
+  number of rows.}
+}
+\value{
+Matrix of random generated samples.
+}
+\description{
+Generate random samples from a standardized normal
+distribution and return in matrix form.
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+}
+

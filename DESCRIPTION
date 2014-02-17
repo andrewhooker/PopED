@@ -1,0 +1,14 @@
+Package: PopED
+Type: Package
+Title: PopED (Population and individual optimal Experimental Design)
+Version: 0.0.1
+Date: 2014-01-04
+Author: Andrew Hooker <andrew.hooker@farmbio.uu.se>
+Depends: ggplot2
+Maintainer: Andrew Hooker <andrew.hooker@farmbio.uu.se>
+Description: PopED computes optimal experimental designs for both 
+  population studies and individual studies.  
+  Often this is based on a computation of the Fisher Information Matrix (FIM). 
+License: LGPL (>= 3)
+URL: http://poped.sourceforge.net
+Copyright: 2014 Andrew C. Hooker
