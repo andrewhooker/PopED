@@ -23,23 +23,18 @@
 convert_popedInput <- 
   function(popedInput,
            
+          
            ## --------------------------
-           ## ---- Labeling and file names
+           ## ---- Model definition
            ## --------------------------
            
-           ## -- The current PopED version --
-           strPopEDVersion=poped.choose(popedInput$strPopEDVersion, packageVersion("PopED")),  
-           ## -- The model title --
-           modtit=poped.choose(popedInput$modtit,'PopED model'),
-           ## -- Filname and path of the output file during search --
-           output_file=poped.choose(popedInput$output_file,paste("PopED_output",'_summary',sep='')),
-           ## -- Filname suffix of the result function file --
-           output_function_file=poped.choose(popedInput$output_function_file,paste("PopED",'_output_',sep='')),
-           ## -- Filename and path for storage of current optimal design --
-           strIterationFileName=poped.choose(popedInput$strIterationFileName,paste("PopED",'_current.R',sep='')),
-           
-           
-           
+           # -- Filname and path of the model file --
+           ff_file=poped.choose(popedInput[["ff_file"]],"ff"),
+           # -- Filname and path of the g parameter file --
+           fg_file=poped.choose(popedInput$fg_file,'sfg'),
+           # -- Filname and path of the error model file --
+           fError_file=poped.choose(popedInput$fError_file,'feps'),
+                      
            ## --------------------------
            ## ---- What to optimize
            ## --------------------------
@@ -184,13 +179,14 @@ convert_popedInput <-
            ## 3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal).
            ## The second column defines the mean.
            ## The third column defines the variance of the distribution.
-           ## REQUIRED! No defaults given.
-           bpop_descr=popedInput$design$bpop,
+           # can also just supply the parameter values as a c()
+           bpop=poped.choose(popedInput$design$bpop,stop('bpop must be defined')),
            ## -- Matrix defining the diagnonals of the IIV (same logic as for the fixed efects) --
-           ## REQUIRED! No defaults given.
-           d_descr=popedInput$design$d,
+           # can also just supply the parameter values as a c()
+           d=poped.choose(popedInput$design$d,stop('d must be defined')),
            ## -- Matrix defining the covariances of the IIV variances --
-           covd=poped.choose(popedInput$design$covd,zeros(1,size(d_descr,1))*(size(d_descr,1)-1)/2),
+           # set to zero if not defined
+           covd=popedInput$design$covd,
            ## -- Matrix defining the variances of the residual variability terms --
            ## REQUIRED! No defaults given.
            sigma=popedInput$design$sigma,
@@ -237,6 +233,22 @@ convert_popedInput <-
            EACriteria=poped.choose(popedInput$EACriteria,1),
            ## -- Filename and path for a run file that is used instead of the regular PopED call --
            strRunFile=poped.choose(popedInput$strRunFile,''),
+           
+           ## --------------------------
+           ## ---- Labeling and file names
+           ## --------------------------
+           
+           ## -- The current PopED version --
+           strPopEDVersion=poped.choose(popedInput$strPopEDVersion, packageVersion("PopED")),  
+           ## -- The model title --
+           modtit=poped.choose(popedInput$modtit,'PopED model'),
+           ## -- Filname and path of the output file during search --
+           output_file=poped.choose(popedInput$output_file,paste("PopED_output",'_summary',sep='')),
+           ## -- Filname suffix of the result function file --
+           output_function_file=poped.choose(popedInput$output_function_file,paste("PopED",'_output_',sep='')),
+           ## -- Filename and path for storage of current optimal design --
+           strIterationFileName=poped.choose(popedInput$strIterationFileName,paste("PopED",'_current.R',sep='')),
+           
            
            ## --------------------------
            ## ---- Misc options
@@ -407,7 +419,6 @@ convert_popedInput <-
     #   ## -- The model title --
     #   popedInput$modtit='Sigmoidal Emax model'
     
-    
     Engine = list(Type=1,Version=version$version.string)
     
     globalStructure$strPopEDVersion = strPopEDVersion
@@ -463,7 +474,7 @@ convert_popedInput <-
     globalStructure$BFGSTolerancex=BFGSTolerancex
     
     
-    globalStructure$covd = covd
+    
     
     
     globalStructure$covdocc=covdocc
@@ -544,11 +555,11 @@ convert_popedInput <-
     globalStructure$sgit_output=sgit_output
     
     
-    if(exists(popedInput$fg_file)){
-      globalStructure$fg_pointer = popedInput$fg_file
+    if(exists(fg_file)){
+      globalStructure$fg_pointer = fg_file
     } else {
-      source(popedInput$fg_file)
-      returnArgs <-  fileparts(popedInput$fg_file) 
+      source(fg_file)
+      returnArgs <-  fileparts(fg_file) 
       strfgModelFilePath <- returnArgs[[1]]
       strfgModelFilename  <- returnArgs[[2]]
       ## if (~strcmp(strfgModelFilePath,''))
@@ -605,12 +616,12 @@ convert_popedInput <-
         globalStructure$auto_pointer = strAutoCorrelationFilename
       }
     }
-    
-    if(exists(popedInput$ff_file)){
-      globalStructure$ff_pointer = popedInput$ff_file 
+  
+    if(exists(ff_file)){
+      globalStructure$ff_pointer = ff_file 
     } else {
-      source(popedInput$ff_file)
-      returnArgs <-  fileparts(popedInput$ff_file) 
+      source(ff_file)
+      returnArgs <-  fileparts(ff_file) 
       strffModelFilePath <- returnArgs[[1]]
       strffModelFilename  <- returnArgs[[2]]
       ## if (~strcmp(strffModelFilePath,''))
@@ -635,11 +646,11 @@ convert_popedInput <-
       }
     }
     
-    if(exists(popedInput$fError_file)){
-      globalStructure$ferror_pointer = popedInput$fError_file
+    if(exists(fError_file)){
+      globalStructure$ferror_pointer = fError_file
     } else {
-      source(popedInput$fError_file)
-      returnArgs <-  fileparts(popedInput$fError_file) 
+      source(fError_file)
+      returnArgs <-  fileparts(fError_file) 
       strErrorModelFilePath <- returnArgs[[1]]
       strErrorModelFilename  <- returnArgs[[2]]
       ## if (~strcmp(strErrorModelFilePath,''))
@@ -650,7 +661,7 @@ convert_popedInput <-
     
     if((Engine$Type==1) ){#Matlab
       ##  %Set the model file string path
-      globalStructure$model_file = popedInput$ff_file
+      globalStructure$model_file = ff_file
       ##   model_file = eval('functions(globalStructure.ff_pointer)');
       ##   if (~strcmp(model_file.file,''))
       ##       globalStructure.model_file = eval('char(model_file.file)');
@@ -658,7 +669,7 @@ convert_popedInput <-
       ##       globalStructure.model_file = eval('char(model_file.function)');
       ##   end
     } else {   #FreeMat
-      globalStructure$model_file = popedInput$ff_file
+      globalStructure$model_file = ff_file
     }
     
     #==================================
@@ -688,6 +699,25 @@ convert_popedInput <-
     globalStructure$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=globalStructure$NumRanEff))
     globalStructure$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=globalStructure$nbpop))
     
+    if(size(d,1)==1 && size(d,2)==globalStructure$NumRanEff){ # we have just the parameter values not the uncertainty
+      d_descr <- zeros(globalStructure$NumRanEff,3)
+      d_descr[,2] <- d
+      d_descr[,1] <- 0 # point values
+      d_descr[,3] <- 0 # variance
+      d <- d_descr
+    }
+    
+    if(size(bpop,1)==1 && size(bpop,2)==globalStructure$nbpop){ # we have just the parameter values not the uncertainty
+      bpop_descr <- zeros(globalStructure$nbpop,3)
+      bpop_descr[,2] <- bpop
+      bpop_descr[,1] <- 0 # point values
+      bpop_descr[,3] <- 0 # variance
+      bpop <- bpop_descr
+    }    
+    
+    covd = poped.choose(covd,zeros(1,globalStructure$NumRanEff)*(globalStructure$NumRanEff-1)/2)
+    globalStructure$covd = covd
+    
     tmp <- ones(1,length(covd))
     tmp[covd==0] <- 0
     globalStructure$notfixed_covd=poped.choose(notfixed_covd,tmp)
@@ -707,7 +737,7 @@ convert_popedInput <-
       
       globalStructure$b_global=zeros(globalStructure$NumRanEff,max(globalStructure$iFOCENumInd,iMaxCorrIndNeeded))
       
-      fulld = getfulld(d_descr[,2],globalStructure$covd)
+      fulld = getfulld(d[,2],globalStructure$covd)
       fulldocc = getfulld(docc[,2,drop=F],globalStructure$covdocc)
       
       globalStructure$bocc_global = cell(globalStructure$iFOCENumInd,1)
@@ -720,7 +750,7 @@ convert_popedInput <-
               c(
                 bones,
                 bzeros,
-                d_descr[,2]),nrow=1,byrow=T),
+                d[,2]),nrow=1,byrow=T),
             0,
             max(globalStructure$iFOCENumInd,iMaxCorrIndNeeded),
             globalStructure$bLHS,
@@ -732,15 +762,15 @@ convert_popedInput <-
           globalStructure$bocc_global[[i]]=pargen(matrix(c(boccones,bocczeros,docc[,2,drop=F]),nrow=1,byrow=T),0,globalStructure$NumOcc,globalStructure$bLHS,t(zeros(1,0)),globalStructure)
         }
       } else {
-        d_dist=pargen(d_descr,globalStructure$user_distribution_pointer,max(globalStructure$iFOCENumInd,iMaxCorrIndNeeded),globalStructure$bLHS,zeros(1,0),globalStructure)
+        d_dist=pargen(d,globalStructure$user_distribution_pointer,max(globalStructure$iFOCENumInd,iMaxCorrIndNeeded),globalStructure$bLHS,zeros(1,0),globalStructure)
         docc_dist=pargen(docc,globalStructure$user_distribution_pointer,globalStructure$iFOCENumInd,globalStructure$bLHS,zeros(1,0),globalStructure)
         
         if((!isempty(d_dist))){
           for(i in 1:max(globalStructure$iFOCENumInd,iMaxCorrIndNeeded)){
             tmp_d_dist = 
               matrix(
-                c(matrix(1,length(d_descr[,2]),1),
-                  t(zeros(length(d_descr[,2]),1)),d_dist(i,)),nrow=1,byrow=T)
+                c(matrix(1,length(d[,2]),1),
+                  t(zeros(length(d[,2]),1)),d_dist(i,)),nrow=1,byrow=T)
             globalStructure$b_global[,i] = pargen(tmp_d_dist,globalStructure$user_distribution_pointer,1,globalStructure$bLHS,i,globalStructure)
           }
         }
@@ -786,8 +816,8 @@ convert_popedInput <-
     globalStructure$line_opta=line_opta
     globalStructure$line_optx=line_optx
     globalStructure$design = popedInput$design
-    globalStructure$design$bpop = bpop_descr
-    globalStructure$design$d = d_descr
+    globalStructure$design$bpop = bpop
+    globalStructure$design$d = d
     globalStructure$design$covd = covd
     globalStructure$design$sigma = sigma
     globalStructure$design$docc = docc

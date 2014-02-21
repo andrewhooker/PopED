@@ -44,6 +44,7 @@ convert_variables <- function(globalStructure){
       tmp <- rep(design$model_switch,globalStructure$m)
       design$model_switch <- matrix(tmp,ncol=length(design$model_switch),nrow=globalStructure$m,byrow=T)
     } 
+    if(!is.matrix(design$model_switch)) design$model_switch  <- matrix(design$model_switch,nrow=1)
     if((test_mat_size(matrix(c(globalStructure$m, globalStructure$maxni),nrow=1,byrow=T),design$model_switch,'model_switch')==1)){
         if(is.null(globalStructure$global_model_switch)){
             globalStructure$global_model_switch=design$model_switch

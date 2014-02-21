@@ -20,7 +20,6 @@ create.poped.database <- function(popedInput,
   
   poped.db <- convert_popedInput(popedInput,...)
   poped.db <- convert_variables(poped.db)
-  
   param.val <- get_all_params(poped.db)
   tmp.names <- names(param.val)
   eval(parse(text=paste(tmp.names,".val","<-","param.val$",tmp.names,sep="")))
