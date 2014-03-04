@@ -2,7 +2,15 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,maxa,mina,fmf,dmf){
+mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,maxa,mina,fmf,dmf,
+                 EAStepSize=globalStructure$EAStepSize,ourzero=globalStructure$ourzero,
+                 opt_xt=globalStructure$optsw[2],
+                 opt_a=globalStructure$optsw[4],
+                 opt_x=globalStructure$optsw[3],
+                 #opt_samps=poped.db$optsw[1],
+                 #opt_inds=poped.db$optsw[5],
+                 trflag=T,
+                 ...){
   
   if((globalStructure$EACriteria!=1)){
     stop(sprintf('The criteria that can be used is Modified Fedorov Exchange Algorithm (EACriteria = 1)'))
@@ -25,7 +33,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
   d=getfulld(ddescr[,2,drop=F],globalStructure$covd)
   doccfull = getfulld(globalStructure$docc[,2,drop=F],globalStructure$covdocc)
   
-  stepsize = globalStructure$EAStepSize
+  stepsize = EAStepSize
   numpoints = globalStructure$EANumPoints
   
   delta_max = rho+0.1
@@ -34,6 +42,8 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
   previous_index_i = 0
   previous_index_ct = 0
   previous_type = 0
+  
+  
   
   # if((globalStructure$bShowGraphs)){
   #     cfg = figure(1)
@@ -67,6 +77,23 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
         fprintf('The OFV is negative or zero, new initial values might be needed. OFV : %g\n',optofv)
       }
     }
+    
+    # ------------------ Write output file header
+    #fn=blockheader_2(FALSE,iter,poped.db)
+    if(it==0 && trflag){
+      fmf_init=nfmf
+      dmf_init=optofv
+      fn=blockheader_2('mfea_opt',iter=1,globalStructure,
+                       opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
+                       opt_inds=F,opt_samps=F,
+                       fmf=nfmf,dmf=optofv,
+                       bpop=bpopdescr,d=ddescr,docc=globalStructure$docc,sigma=globalStructure$sigma)
+      param_vars_init=diag_matlab(inv(nfmf))
+      returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=globalStructure$docc,sigma=globalStructure$sigma,globalStructure) 
+      params_init <- returnArgs[[1]]
+      param_cvs_init <- returnArgs[[2]]
+    }
+    
     delta_max = 0
     t_max = 0
     
@@ -75,7 +102,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
     bFirstInGroup_xt = TRUE
     
     for(i in 1:m ){#For all groups
-      if((globalStructure$optsw[2]==TRUE) ){#Optimize over samples
+      if((opt_xt==TRUE) ){#Optimize over samples
         for(p  in 1:iParallelN){
           if((p==2)){
             stop("Parallel execution not yet implemented in PopED for R")
@@ -99,16 +126,24 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
                 tmp = matrix(1,size(xt,1),size(xt,2))*k
                 inters = (globalStructure$G==tmp)
                 if((sum(sum(inters))!=0) ){#If we have a sample defined here (accord. to G)
-                  returnArgs <-  find(inters) 
-                  col <- returnArgs[[1]]
-                  row <- returnArgs[[2]]
-                  min_val = minxt[col(1),row(1)]
-                  max_val = maxxt[col(1),row(1)]
+                  returnArgs <-  which(inters,arr.ind=T) 
+                  col <- returnArgs[,"col"]
+                  row <- returnArgs[,"row"]
+                  min_val = max(max(minxt[inters]))
+                  max_val = min(min(maxxt[inters]))
                   if((min_val!=max_val)){
                     if((stepsize==0)){
+                      #tt=linspace(min_val,max_val,numpoints)
+                      min_val_tmp <- min_val
+                      if(min_val_tmp==ourzero) min_val_tmp=0
                       tt=linspace(min_val,max_val,numpoints)
+                      tt[tt==0]=ourzero
                     } else {
-                      tt=linspace(min_val,max_val,floor((max_val-min_val)/stepsize)+1)
+                      #tt=linspace(min_val,max_val,floor((max_val-min_val)/stepsize)+1)
+                      min_val_tmp <- min_val
+                      if(min_val_tmp==ourzero) min_val_tmp=0
+                      tt=linspace(min_val_tmp,max_val,((max_val-min_val_tmp)/stepsize)+1)
+                      tt[tt==0]=ourzero
                     }
                     
                     if(globalStructure$bEANoReplicates){
@@ -170,9 +205,16 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
               if((previous_type!=1 || previous_index_i!=i || previous_index_ct!=ct)){
                 if((minxt[i,ct]!=maxxt[i,ct])){
                   if((stepsize==0)){
-                    tt=linspace(minxt[i,ct],maxxt[i,ct],numpoints)
+                    minxt_tmp <- minxt
+                    minxt_tmp[minxt_tmp==ourzero]=0
+                    tt=linspace(minxt_tmp[i,ct],maxxt[i,ct],numpoints)
+                    tt[tt==0]=ourzero
                   } else {
-                    tt=linspace(minxt[i,ct],maxxt[i,ct],floor((maxxt[i,ct]-minxt[i,ct])/stepsize))
+                    #tt=linspace(minxt[i,ct],maxxt[i,ct],floor((maxxt[i,ct]-minxt[i,ct])/stepsize))
+                    minxt_tmp <- minxt
+                    minxt_tmp[minxt_tmp==ourzero]=0
+                    tt=linspace(minxt_tmp[i,ct],maxxt[i,ct],((maxxt[i,ct]-minxt_tmp[i,ct])/stepsize)+1)                    
+                    tt[tt==0]=ourzero
                   }
                   ntt = length(tt)
                   xt_tmp = xt_current
@@ -234,7 +276,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
         
       }
       
-      if((globalStructure$optsw[3])){
+      if((opt_x)){
         for(p  in 1:iParallelN){
           if((p==2)){
             stop("Parallel execution not yet implemented in PopED for R")
@@ -371,7 +413,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
         }
       }
       
-      if((globalStructure$optsw[4]) ){#Optimize over covariates
+      if((opt_a) ){#Optimize over covariates
         for(p  in 1:iParallelN){
           if((p==2)){
             stop("Parallel execution not yet implemented in PopED for R")
@@ -402,7 +444,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
                     if((stepsize==0)){
                       tt=linspace(min_val,max_val,numpoints)
                     } else {
-                      tt=linspace(min_val,max_val,floor((max_val-min_val)/stepsize))
+                      tt=linspace(min_val,max_val,floor((max_val-min_val)/stepsize)+1)
                     }
                     ntt = length(tt)
                     for(j in 1:ntt){
@@ -459,7 +501,7 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
                   if((stepsize==0)){
                     tt=linspace(mina[i,ct],maxa[i,ct],numpoints)
                   } else {
-                    tt=linspace(mina[i,ct],maxa[i,ct],floor((maxa[i,ct]-mina[i,ct])/stepsize))
+                    tt=linspace(mina[i,ct],maxa[i,ct],floor((maxa[i,ct]-mina[i,ct])/stepsize)+1)
                   }
                   ntt = length(tt)
                   a_tmp = a_current
@@ -519,8 +561,9 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
       }
     }
     it = it+1
-    fprintf('FE - It. : %d\n',it)
-    
+    fprintf('MFEA - It. : %d\n',it)
+    if(trflag) fprintf(fn,'MFEA - It. : %d\n',it)
+
     if((delta_max>rho)){
       previous_index_i = i_index
       previous_type = type
@@ -528,10 +571,12 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
       if((type==1)){
         if((!globalStructure$bUseGrouped_xt)){
           fprintf('Exchanged sample %d in group/ind %d from %g to %g\n',ct_index,i_index,xt_current[i_index,ct_index],t_max)
+          if(trflag) fprintf(fn,'Exchanged sample %d in group/ind %d from %g to %g\n',ct_index,i_index,xt_current[i_index,ct_index],t_max)         
           previous_index_ct = ct_index
           xt_current[i_index,ct_index] = t_max
         } else {
           fprintf('Exchanged a grouped sample (grouped as %d) to %g\n',i_index,t_max)
+          if(trflag) fprintf(fn,'Exchanged a grouped sample (grouped as %d) to %g\n',i_index,t_max)   
           tmp = matrix(1,size(xt,1),size(xt,2))*i_index
           inters = (globalStructure$G==tmp)
           xt_current=xt_current*(inters==0)+t_max*(inters!=0)
@@ -540,10 +585,12 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
         if((type==2)){
           if((!globalStructure$bUseGrouped_a)){
             fprintf('Exchanged covariate %d in group/ind %d from %g to %g\n',ct_index,i_index,a_current[i_index,ct_index],t_max)
+            if(trflag) fprintf(fn,'Exchanged covariate %d in group/ind %d from %g to %g\n',ct_index,i_index,a_current[i_index,ct_index],t_max)         
             previous_index_ct = ct_index
             a_current[i_index,ct_index] = t_max
           } else {
             fprintf('Exchanged a grouped covariate (grouped as %d) to %g\n',i_index,t_max)
+            if(trflag) fprintf(fn,'Exchanged a grouped covariate (grouped as %d) to %g\n',i_index,t_max)
             tmp = matrix(1,size(a,1),size(a,2))*i_index
             inters = (globalStructure$Ga==tmp)
             a_current=a_current*(inters==0)+t_max*(inters!=0)
@@ -552,10 +599,12 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
           if((type==3)){
             if((!globalStructure$bUseGrouped_x)){
               fprintf('Exchanged discrete variable %d in group/ind %d from %g to %g\n',ct_index,i_index,x_current[i_index,ct_index],t_max)
+              if(trflag) fprintf(fn,'Exchanged discrete variable %d in group/ind %d from %g to %g\n',ct_index,i_index,x_current[i_index,ct_index],t_max)
               previous_index_ct = ct_index
               x_current[i_index,ct_index] = t_max
             } else {
               fprintf('Exchanged a grouped discrete variable (grouped as %d) to %g\n',i_index,t_max)
+              if(trflag) fprintf(fn,'Exchanged a grouped discrete variable (grouped as %d) to %g\n',i_index,t_max)              
               tmp = matrix(1,size(x,1),size(x,2))*i_index
               inters = (globalStructure$Gx==tmp)
               x_current=x_current*(inters==0)+t_max*(inters!=0)
@@ -566,10 +615,23 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
       optofv=dmf
     }
     fprintf('Delta : %g   OFV. : %g\n',delta_max,dmf)
+    if(trflag) fprintf(fn,'Delta : %g   OFV. : %g\n',delta_max,dmf)
+    
   }
   xt = xt_current
   a = a_current
   x = x_current
+  
+  #--------- Write results
+  if((trflag)){
+    fprintf(fn,"\n")
+    blockfinal_2(fn,fmf,dmf,globalStructure$groupsize,ni,xt,x,a,model_switch,bpopdescr,ddescr,
+                 globalStructure$docc,globalStructure$sigma,m,globalStructure,
+                 opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,dmf_init=dmf_init,param_cvs_init=param_cvs_init)
+    close(fn)
+  }
+  #blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db)
+  
   
   return(list( xt= xt,x=x,a=a,fmf=fmf,dmf=dmf,globalStructure=globalStructure)) 
 }
