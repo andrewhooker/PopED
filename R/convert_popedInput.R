@@ -836,7 +836,9 @@ convert_popedInput <-
     globalStructure$design$mingroupsize = mingroupsize
     globalStructure$design$maxtotgroupsize = maxtotgroupsize
     globalStructure$design$mintotgroupsize = mintotgroupsize
+    if(length(maxxt)==1) maxxt=ones(size(xt,1),size(xt,2))*maxxt
     globalStructure$design$maxxt = maxxt
+    if(length(minxt)==1) minxt=ones(size(xt,1),size(xt,2))*minxt
     globalStructure$design$minxt = minxt
     globalStructure$design$discrete_x = discrete_x
     globalStructure$design$maxa = maxa
