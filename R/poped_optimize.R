@@ -142,7 +142,7 @@ poped_optimize <- function(poped.db,
       #Using ea algorithm do this,
       if((poped.db$bUseExchangeAlgorithm==TRUE)){
         #if(opt_xt || opt_a) stop('MFEA algorithm does not work with xt and a right now')
-        returnArgs <- mfea(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+        returnArgs <- mfea(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf,...) 
         xt <- returnArgs[[1]]
         x <- returnArgs[[2]]
         a <- returnArgs[[3]]
