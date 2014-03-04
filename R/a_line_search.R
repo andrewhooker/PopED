@@ -850,7 +850,7 @@ get_step_size <- function(inters,gmaxvar,gminvar,np){
   for(i in 1:size(inters,1)){
     for(j in 1:size(inters,2)){
       if((inters[i,j]==1)){
-        step=(gmaxvar(i,j)-gminvar(i,j))/np
+        step=(gmaxvar[i,j]-gminvar[i,j])/np
         return
       }
     }
