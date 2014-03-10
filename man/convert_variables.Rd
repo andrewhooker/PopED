@@ -17,8 +17,7 @@ Typically not used by the user.  Instead use the function
 \code{\link{create.poped.database}}.
 }
 \seealso{
-Other poped_input: \code{\link{convert_popedInput}};
-\code{\link{create.poped.database}};
+Other poped_input: \code{\link{create.poped.database}};
 \code{\link{downsizing_general_design}}
 }
 

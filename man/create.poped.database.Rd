@@ -1,31 +1,681 @@
 \name{create.poped.database}
 \alias{create.poped.database}
-\title{Create a PopED database from a poped input file}
+\title{Create a PopED database}
 \usage{
-create.poped.database(popedInput, ...)
+create.poped.database(popedInput,
+  ff_file = poped.choose(popedInput[["ff_file"]], "ff"),
+  fg_file = poped.choose(popedInput$fg_file, "sfg"),
+  fError_file = poped.choose(popedInput$fError_file, "feps"),
+  optsw = poped.choose(popedInput$optsw, cbind(0, 0, 0, 0, 0)),
+  xt = poped.choose(popedInput$design[["xt"]],
+  stop("'xt' needs to be defined")), m = poped.choose(popedInput[["m"]],
+  size(xt, 1)), x = poped.choose(popedInput$design[["x"]], zeros(m, 0)),
+  nx = poped.choose(popedInput$nx, size(x, 2)),
+  a = poped.choose(popedInput$design[["a"]], zeros(m, 0)),
+  na = poped.choose(popedInput$na, size(a, 2)),
+  groupsize = poped.choose(popedInput$design$groupsize,
+  stop("'groupsize' needs to be defined")),
+  ni = poped.choose(popedInput$design$ni, matrix(size(xt, 2), m, 1)),
+  model_switch = poped.choose(popedInput$design$model_switch, ones(size(xt,
+  1), size(xt, 2))), maxni = poped.choose(popedInput$maxni, size(xt, 2)),
+  minni = poped.choose(popedInput$minni, 1),
+  maxgroupsize = poped.choose(popedInput$design$maxgroupsize, groupsize),
+  mingroupsize = poped.choose(popedInput$design$mingroupsize, ones(m, 1)),
+  maxtotgroupsize = poped.choose(popedInput$design$maxtotgroupsize,
+  sum(groupsize)),
+  mintotgroupsize = poped.choose(popedInput$design$mintotgroupsize,
+  sum(mingroupsize)), maxxt = poped.choose(popedInput$design$maxxt, xt),
+  minxt = poped.choose(popedInput$design$minxt, xt),
+  discrete_x = poped.choose(popedInput$design$discrete_x, cell(m, nx)),
+  maxa = poped.choose(popedInput$design$maxa, a),
+  mina = poped.choose(popedInput$design$mina, a),
+  bUseGrouped_xt = poped.choose(popedInput$bUseGrouped_xt, FALSE),
+  G_xt = poped.choose(popedInput$design$G, matrix(seq(1, length(xt), len =
+  length(xt)), size(xt, 1), size(xt, 2), byrow = T)),
+  bUseGrouped_a = poped.choose(popedInput$bUseGrouped_a, FALSE),
+  G_a = poped.choose(popedInput$design$Ga, matrix(seq(1, length(a), len =
+  length(a)), size(a, 1), size(a, 2), byrow = T)),
+  bUseGrouped_x = poped.choose(popedInput$bUseGrouped_x, FALSE),
+  G_x = poped.choose(popedInput$design$Gx, matrix(seq(1, length(x), len =
+  length(x)), size(x, 1), size(x, 2), byrow = T)),
+  iFIMCalculationType = poped.choose(popedInput$iFIMCalculationType, 1),
+  iApproximationMethod = poped.choose(popedInput$iApproximationMethod, 0),
+  iFOCENumInd = poped.choose(popedInput$iFOCENumInd, 1000),
+  prior_fim = poped.choose(popedInput$prior_fim, matrix(0, 0, 1)),
+  strAutoCorrelationFile = poped.choose(popedInput$strAutoCorrelationFile,
+  ""), d_switch = poped.choose(popedInput$d_switch, 1),
+  ofv_calc_type = poped.choose(popedInput$ofv_calc_type, 1),
+  ds_index = popedInput$CriterionOptions$ds_index,
+  strEDPenaltyFile = poped.choose(popedInput$strEDPenaltyFile, ""),
+  iEDCalculationType = poped.choose(popedInput$iEDCalculationType, 0),
+  ED_samp_size = poped.choose(popedInput$ED_samp_size, 45),
+  bLHS = poped.choose(popedInput$bLHS, 1),
+  strUserDistributionFile = poped.choose(popedInput$strUserDistributionFile,
+  ""), nbpop = popedInput$nbpop, NumRanEff = popedInput$nb,
+  NumDocc = popedInput$ndocc, NumOcc = popedInput$NumOcc,
+  ng = popedInput$ng, bpop = poped.choose(popedInput$design$bpop,
+  stop("bpop must be defined")), d = poped.choose(popedInput$design$d,
+  stop("d must be defined")), covd = popedInput$design$covd,
+  sigma = popedInput$design$sigma,
+  docc = poped.choose(popedInput$design$docc, matrix(0, 0, 3)),
+  covdocc = poped.choose(popedInput$design$covdocc, zeros(1, length(docc[, 2,
+  drop = F]) * (length(docc[, 2, drop = F]) - 1)/2)),
+  notfixed_bpop = popedInput$notfixed_bpop,
+  notfixed_d = popedInput$notfixed_d,
+  notfixed_covd = popedInput$notfixed_covd,
+  notfixed_docc = popedInput$notfixed_docc,
+  notfixed_covdocc = poped.choose(popedInput$notfixed_covdocc, zeros(1,
+  length(covdocc))), notfixed_sigma = poped.choose(popedInput$notfixed_sigma,
+  t(rep(1, length(diag(sigma))))),
+  notfixed_covsigma = poped.choose(popedInput$notfixed_covsigma, zeros(1,
+  length(notfixed_sigma) * (length(notfixed_sigma) - 1)/2)),
+  bUseRandomSearch = poped.choose(popedInput$bUseRandomSearch, TRUE),
+  bUseStochasticGradient = poped.choose(popedInput$bUseStochasticGradient,
+  TRUE), bUseLineSearch = poped.choose(popedInput$bUseLineSearch, TRUE),
+  bUseExchangeAlgorithm = poped.choose(popedInput$bUseExchangeAlgorithm,
+  FALSE), bUseBFGSMinimizer = poped.choose(popedInput$bUseBFGSMinimizer,
+  FALSE), EACriteria = poped.choose(popedInput$EACriteria, 1),
+  strRunFile = poped.choose(popedInput$strRunFile, ""),
+  strPopEDVersion = poped.choose(popedInput$strPopEDVersion,
+  packageVersion("PopED")), modtit = poped.choose(popedInput$modtit,
+  "PopED model"), output_file = poped.choose(popedInput$output_file,
+  paste("PopED_output", "_summary", sep = "")),
+  output_function_file = poped.choose(popedInput$output_function_file,
+  paste("PopED", "_output_", sep = "")),
+  strIterationFileName = poped.choose(popedInput$strIterationFileName,
+  paste("PopED", "_current.R", sep = "")),
+  user_data = poped.choose(popedInput$user_data, cell(0, 0)),
+  ourzero = poped.choose(popedInput$ourzero, 1e-05),
+  dSeed = poped.choose(popedInput$dSeed, -1),
+  line_opta = poped.choose(popedInput$line_opta, TRUE),
+  line_optx = poped.choose(popedInput$line_optx, TRUE),
+  bShowGraphs = poped.choose(popedInput$bShowGraphs, FALSE),
+  use_logfile = poped.choose(popedInput$use_logfile, FALSE),
+  m1_switch = poped.choose(popedInput$m1_switch, 1),
+  m2_switch = poped.choose(popedInput$m2_switch, 1),
+  hle_switch = poped.choose(popedInput$hle_switch, 1),
+  gradff_switch = poped.choose(popedInput$gradff_switch, 1),
+  gradfg_switch = poped.choose(popedInput$gradfg_switch, 1),
+  rsit_output = poped.choose(popedInput$rsit_output, 5),
+  sgit_output = poped.choose(popedInput$sgit_output, 1),
+  hm1 = poped.choose(popedInput$hm1, 1e-05),
+  hlf = poped.choose(popedInput$hlf, 1e-05),
+  hlg = poped.choose(popedInput$hlg, 1e-05),
+  hm2 = poped.choose(popedInput$hm2, 1e-05),
+  hgd = poped.choose(popedInput$hgd, 1e-05),
+  hle = poped.choose(popedInput$hle, 1e-05),
+  AbsTol = poped.choose(popedInput$AbsTol, 1e-05),
+  RelTol = poped.choose(popedInput$RelTol, 1e-05),
+  iDiffSolverMethod = poped.choose(popedInput$iDiffSolverMethod, 0),
+  bUseMemorySolver = poped.choose(popedInput$bUseMemorySolver, FALSE),
+  rsit = poped.choose(popedInput$rsit, 300),
+  sgit = poped.choose(popedInput$sgit, 150),
+  intrsit = poped.choose(popedInput$intrsit, 250),
+  intsgit = poped.choose(popedInput$intsgit, 50),
+  maxrsnullit = poped.choose(popedInput$maxrsnullit, 50),
+  convergence_eps = poped.choose(popedInput$convergence_eps, 1e-08),
+  rslxt = poped.choose(popedInput$rslxt, 10),
+  rsla = poped.choose(popedInput$rsla, 10),
+  cfaxt = poped.choose(popedInput$cfaxt, 0.001),
+  cfaa = poped.choose(popedInput$cfaa, 0.001),
+  bGreedyGroupOpt = poped.choose(popedInput$bGreedyGroupOpt, FALSE),
+  EAStepSize = poped.choose(popedInput$EAStepSize, 0.01),
+  EANumPoints = poped.choose(popedInput$EANumPoints, FALSE),
+  EAConvergenceCriteria = poped.choose(popedInput$EAConvergenceCriteria,
+  1e-20), bEANoReplicates = poped.choose(popedInput$bEANoReplicates, FALSE),
+  BFGSConvergenceCriteriaMinStep = poped.choose(popedInput$BFGSConvergenceCriteriaMinStep,
+  1e-08),
+  BFGSProjectedGradientTol = poped.choose(popedInput$BFGSProjectedGradientTol,
+  1e-04), BFGSTolerancef = poped.choose(popedInput$BFGSTolerancef, 0.001),
+  BFGSToleranceg = poped.choose(popedInput$BFGSToleranceg, 0.9),
+  BFGSTolerancex = poped.choose(popedInput$BFGSTolerancex, 0.1),
+  ED_diff_it = poped.choose(popedInput$ED_diff_it, 30),
+  ED_diff_percent = poped.choose(popedInput$ED_diff_percent, 10),
+  line_search_it = poped.choose(popedInput$line_search_it, 50),
+  iNumSearchIterationsIfNotLineSearch = poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,
+  1),
+  iCompileOption = poped.choose(popedInput$parallelSettings$iCompileOption,
+  -1),
+  iUseParallelMethod = poped.choose(popedInput$parallelSettings$iUseParallelMethod,
+  1),
+  strAdditionalMCCCompilerDependencies = poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,
+  ""),
+  strExecuteName = poped.choose(popedInput$parallelSettings$strExecuteName,
+  "calc_fim.exe"),
+  iNumProcesses = poped.choose(popedInput$parallelSettings$iNumProcesses, 2),
+  iNumChunkDesignEvals = poped.choose(popedInput$parallelSettings$iNumChunkDesignEvals,
+  -2),
+  strMatFileInputPrefix = poped.choose(popedInput$parallelSettings$strMatFileInputPrefix,
+  "parallel_input"),
+  strMatFileOutputPrefix = poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,
+  "parallel_output"),
+  strExtraRunOptions = poped.choose(popedInput$parallelSettings$strExtraRunOptions,
+  ""),
+  dPollResultTime = poped.choose(popedInput$parallelSettings$dPollResultTime,
+  0.1),
+  strFunctionInputName = poped.choose(popedInput$parallelSettings$strFunctionInputName,
+  "function_input"),
+  bParallelRS = poped.choose(popedInput$parallelSettings$bParallelRS, FALSE),
+  bParallelSG = poped.choose(popedInput$parallelSettings$bParallelSG, FALSE),
+  bParallelMFEA = poped.choose(popedInput$parallelSettings$bParallelMFEA,
+  FALSE), bParallelLS = poped.choose(popedInput$parallelSettings$bParallelLS,
+  FALSE))
 }
 \arguments{
-  \item{popedInput}{An input file to PopED}
+  \item{popedInput}{An input file to PopED.  List elements
+  should match the values seen in the Usage section (the
+  defaults to function arguments). Can also be an empty
+  list \code{list()}.}
+
+  \item{ff_file}{\itemize{ \item \bold{******START OF MODEL
+  DEFINITION OPTIONS**********} } Function name or Filname
+  and path of the model file. The filename and the function
+  name must be the same.}
+
+  \item{fg_file}{Function name or Filname and path of the
+  parameter model file. The filename and the function name
+  must be the same.}
+
+  \item{fError_file}{Function name or Filname and path of
+  the residual error model file. The filename and the
+  function name must be the same.}
+
+  \item{optsw}{\itemize{ \item \bold{******WHAT TO
+  OPTIMIZE**********}} Row vector of optimization tasks
+  (1=TRUE,0=FALSE) in the following order: (Samples per
+  subject, Sampling schedule, Discrete design variable,
+  Continuous design variable, Number of id per group). All
+  elements set to zero => only calculate the FIM with
+  current design}
+
+  \item{xt}{\itemize{ \item \bold{******START OF INITIAL
+  DESIGN OPTIONS**********}} Matrix defining the initial
+  sampling schedule.  Each row is a group/individual.  If
+  only one vector is supplied, e.g. \code{c(1,2,3,4)}, then
+  all groups will have the same inital design.}
+
+  \item{m}{Number of groups/individuals}
+
+  \item{x}{A matrix defining the initial discrete values
+  for the model Each row is a group/individual.}
+
+  \item{nx}{Number of discrete design variables.}
+
+  \item{a}{Matrix defining the initial continuous covariate
+  values. n_rows=number of groups, n_cols=number of
+  covariates. If the number of rows is one and the number
+  of groups > 1 then all groups are assigned the same
+  values.}
+
+  \item{na}{The number of covariates in the model.}
+
+  \item{groupsize}{Vector defining the size of the
+  different groups (num individuals in each group). If only
+  one numer then the number will be the same in every
+  group.}
+
+  \item{ni}{Vector defining the number of samples for each
+  group.}
+
+  \item{model_switch}{Matrix defining which response a
+  certain sampling time belongs to.}
+
+  \item{maxni}{\itemize{ \item \bold{******START OF DESIGN
+  SPACE OPTIONS**********}} Max number of samples per
+  group/individual}
+
+  \item{minni}{Min number of samples per group/individual}
+
+  \item{maxgroupsize}{Vector defining the max size of the
+  different groups (max number of individuals in each
+  group)}
+
+  \item{mingroupsize}{Vector defining the min size of the
+  different groups (min num individuals in each group) --}
+
+  \item{maxtotgroupsize}{The total maximal groupsize over
+  all groups}
+
+  \item{mintotgroupsize}{The total minimal groupsize over
+  all groups}
+
+  \item{maxxt}{Matrix or single value defining the maximum
+  value for each xt sample.  If a single value is supplied
+  then all xt values are given the same maximum value.}
+
+  \item{minxt}{Matrix or single value defining the minimum
+  value for each xt sample.  If a single value is supplied
+  then all xt values are given the same minimum value}
+
+  \item{discrete_x}{Cell array defining the discrete
+  variables for each x value.}
+
+  \item{maxa}{Vector defining the max value for each
+  covariate. IF a single value is supplied then all a
+  values are given the same max value}
+
+  \item{mina}{Vector defining the min value for each
+  covariate. IF a single value is supplied then all a
+  values are given the same max value}
+
+  \item{bUseGrouped_xt}{Use grouped time points (1=TRUE,
+  0=FALSE).}
+
+  \item{G_xt}{Matrix defining the grouping of sample
+  points. Matching integers mean that the points are
+  matched.}
+
+  \item{bUseGrouped_a}{Use grouped covariates (1=TRUE,
+  0=FALSE)}
+
+  \item{G_a}{Matrix defining the grouping of covariates.
+  Matching integers mean that the points are matched.}
+
+  \item{bUseGrouped_x}{Use grouped discrete design
+  variables (1=TRUE, 0=FALSE).}
+
+  \item{G_x}{Matrix defining the grouping of discrete
+  design variables. Matching integers mean that the points
+  are matched.}
+
+  \item{iFIMCalculationType}{\itemize{ \item
+  \bold{******START OF FIM CALCULATION OPTIONS**********}}
+  Fisher Information Matrix type \itemize{ \item 0=Full FIM
+  \item 1=Reduced FIM \item 2=weighted models \item 3=Loc
+  models \item 4=reduced FIM with derivative of SD of sigma
+  as in PFIM \item 5=FULL FIM parameterized with A,B,C
+  matrices & derivative of variance \item 6=Calculate one
+  model switch at a time, good for large matrices \item
+  7=Reduced FIM parameterized with A,B,C matrices &
+  derivative of variance }}
+
+  \item{iApproximationMethod}{Approximation method for
+  model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI}
+
+  \item{iFOCENumInd}{Num indivduals in each step of FOCE}
+
+  \item{prior_fim}{The prior FIM (added to calculated FIM)}
+
+  \item{strAutoCorrelationFile}{Filname and path, or
+  function name, for the Autocorrelation function, empty
+  string means no autocorrelation.}
+
+  \item{d_switch}{\itemize{ \item \bold{******START OF
+  CRITERION SPECIFICATION OPTIONS**********}} D-family
+  design (1) or ED-familty design (0) (with or without
+  parameter uncertainty)}
+
+  \item{ofv_calc_type}{OFV calculation type for FIM
+  (1=Determinant of FIM,4=log determinant of
+  FIM,6=determinant of interesting part of FIM (Ds))}
+
+  \item{ds_index}{Ds_index is a vector set to 1 if a
+  parameter is uninteresting, otherwise 0. size=(1,num
+  unfixed parameters). First unfixed bpop, then unfixed d,
+  then unfixed docc and last unfixed sigma. Default is the
+  fixed effects being important, everything else not
+  important.  Must use in conjunction with
+  \code{ofv_calc_type=6}.}
+
+  \item{strEDPenaltyFile}{Penalty function name or path and
+  filename, empty string means no penalty. User defined
+  criterion can be defined this way.}
+
+  \item{iEDCalculationType}{\itemize{ \item
+  \bold{******START OF E-FAMILY CRITERION SPECIFICATION
+  OPTIONS**********}} ED Integral Calculation,
+  0=Monte-Carlo-Integration, 1=Laplace Approximation,
+  2=BFGS Laplace Approximation -- --}
+
+  \item{ED_samp_size}{Sample size for E-family sampling}
+
+  \item{bLHS}{How to sample from distributions in E-family
+  calculations. 0=Random Sampling, 1=LatinHyperCube --}
+
+  \item{strUserDistributionFile}{Filname and path, or
+  function name, for user defined distributions for
+  E-family designs}
+
+  \item{nbpop}{\itemize{ \item \bold{******START OF Model
+  parameters SPECIFICATION OPTIONS**********}} Number of
+  typical values}
+
+  \item{NumRanEff}{Number of IIV parameters. Typically can
+  be computed from other values and not supplied.}
+
+  \item{NumDocc}{Number of IOV variance parameters.
+  Typically can be computed from other values and not
+  supplied.}
+
+  \item{NumOcc}{Number of occassions. Typically can be
+  computed from other values and not supplied.}
+
+  \item{ng}{The length of the g parameter vector. Typically
+  can be computed from other values and not supplied.}
+
+  \item{bpop}{Matrix defining the fixed effects, per row
+  (row number = parameter_number) we should have: \itemize{
+  \item column 1 the type of the distribution for E-family
+  designs (0 = Fixed, 1 = Normal, 2 = Uniform, 3 = User
+  Defined Distribution, 4 = lognormal and 5 = truncated
+  normal) \item column 2 defines the mean. \item column 3
+  defines the variance of the distribution (length of
+  uniform distribution). } Can also just supply the
+  parameter values as a vector \code{c()}}
+
+  \item{d}{Matrix defining the diagnonals of the IIV (same
+  logic as for the fixed efects). can also just supply the
+  parameter values as a \code{c()}.}
+
+  \item{covd}{Matrix defining the covariances of the IIV
+  variances. Set to zero if not defined.}
+
+  \item{sigma}{Matrix defining the variances can
+  covariances of the residual variability terms of the
+  model.}
+
+  \item{docc}{Matrix defining the IOV, the IOV variances
+  and the IOV distribution}
+
+  \item{covdocc}{Matrix defining the covariance of the
+  IOV.}
+
+  \item{notfixed_bpop}{\itemize{ \item \bold{******START OF
+  Model parameters fixed or not SPECIFICATION
+  OPTIONS**********}} Vector defining if a typical value is
+  fixed or not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_d}{Vector defining if a IIV is fixed or
+  not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_covd}{Vector defining if a covariance IIV
+  is fixed or not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_docc}{Vector defining if an IOV variance
+  is fixed or not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_covdocc}{Vector row major order for lower
+  triangular matrix defining if a covariance IOV is fixed
+  or not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_sigma}{Vector defining if a residual error
+  parameter is fixed or not (1=not fixed, 0=fixed)}
+
+  \item{notfixed_covsigma}{Vector defining if a covariance
+  residual error parameter is fixed or not (1=not fixed,
+  0=fixed). Default is fixed.}
+
+  \item{bUseRandomSearch}{\itemize{ \item \bold{******START
+  OF Optimization algorithm SPECIFICATION
+  OPTIONS**********}} Use random search (1=TRUE, 0=FALSE)}
+
+  \item{bUseStochasticGradient}{Use Stochastic Gradient
+  search (1=TRUE, 0=FALSE)}
+
+  \item{bUseLineSearch}{Use Line search (1=TRUE, 0=FALSE)}
+
+  \item{bUseExchangeAlgorithm}{Use Exchange algorithm
+  (1=TRUE, 0=FALSE)}
+
+  \item{bUseBFGSMinimizer}{Use BFGS Minimizer (1=TRUE,
+  0=FALSE)}
+
+  \item{EACriteria}{Exchange Algorithm Criteria, 1 =
+  Modified, 2 = Fedorov}
+
+  \item{strRunFile}{Filename and path, or function name,
+  for a run file that is used instead of the regular PopED
+  call.}
+
+  \item{strPopEDVersion}{\itemize{ \item \bold{******START
+  OF Labeling and file names SPECIFICATION
+  OPTIONS**********}} The current PopED version}
+
+  \item{modtit}{The model title}
+
+  \item{output_file}{Filname and path of the output file
+  during search}
+
+  \item{output_function_file}{Filname suffix of the result
+  function file}
+
+  \item{strIterationFileName}{Filename and path for storage
+  of current optimal design}
+
+  \item{user_data}{\itemize{ \item \bold{******START OF
+  Miscelaneous SPECIFICATION OPTIONS**********}} User
+  defined data structure that, for example could be used to
+  send in data to the model}
+
+  \item{ourzero}{Value to interpret as zero in design}
+
+  \item{dSeed}{The seed number used for optimization and
+  sampling -- integer or -1 which creates a random seed}
+
+  \item{line_opta}{Vector for line search on continuous
+  design variables (1=TRUE,0=FALSE)}
+
+  \item{line_optx}{Vector for line search on discrete
+  design variables (1=TRUE,0=FALSE)}
+
+  \item{bShowGraphs}{Use graph output during search}
+
+  \item{m1_switch}{Method used to calculate M1 (0=Complex
+  difference, 1=Central difference, 20=Analytic derivative,
+  30=Automatic differentiation)}
+
+  \item{m2_switch}{Method used to calculate M2 (0=Central
+  difference, 1=Central difference, 20=Analytic derivative,
+  30=Automatic differentiation)}
+
+  \item{hle_switch}{Method used to calculate linearization
+  of residual error (0=Complex difference, 1=Central
+  difference, 30=Automatic differentiation)}
+
+  \item{gradff_switch}{Method used to calculate the
+  gradient of the model (0=Complex difference, 1=Central
+  difference, 20=Analytic derivative, 30=Automatic
+  differentiation)}
+
+  \item{gradfg_switch}{Method used to calculate the
+  gradient of the parameter vector g (0=Complex difference,
+  1=Central difference, 20=Analytic derivative,
+  30=Automatic differentiation)}
+
+  \item{rsit_output}{Number of iterations in random search
+  between screen output}
+
+  \item{sgit_output}{Number of iterations in stochastic
+  gradient search between screen output}
+
+  \item{hm1}{Step length of derivative of linearized model
+  w.r.t. typical values}
+
+  \item{hlf}{Step length of derivative of model w.r.t. g}
+
+  \item{hlg}{Step length of derivative of g w.r.t. b}
+
+  \item{hm2}{Step length of derivative of variance w.r.t.
+  typical values}
+
+  \item{hgd}{Step length of derivative of OFV w.r.t. time}
+
+  \item{hle}{Step length of derivative of model w.r.t.
+  sigma}
+
+  \item{AbsTol}{The absolute tolerance for the diff
+  equation solver}
+
+  \item{RelTol}{The relative tolerance for the diff
+  equation solver}
+
+  \item{iDiffSolverMethod}{The diff equation solver method,
+  0, no other option}
+
+  \item{bUseMemorySolver}{If the differential equation
+  results should be stored in memory (1) or not (0)}
+
+  \item{rsit}{Number of Random search iterations}
+
+  \item{Numer}{os stochastic gradient iterations}
+
+  \item{intrsit}{Number of Random search iterations with
+  discrete optimization.}
+
+  \item{intsgit}{Number of Stochastic Gradient search
+  iterations with discrete optimization}
+
+  \item{maxrsnullit}{Iterations until adaptive narrowing in
+  random search}
+
+  \item{convergence_eps}{Stoachstic Gradient convergence
+  value, (difference in OFV for D-optimal, difference in
+  gradient for ED-optimal)}
+
+  \item{rslxt}{Random search locality factor for sample
+  times}
+
+  \item{rsla}{Random search locality factor for covariates}
+
+  \item{cfaxt}{Stochastic Gradient search first step factor
+  for sample times}
+
+  \item{cfaa}{Stochastic Gradient search first step factor
+  for covariates}
+
+  \item{bGreedyGroupOpt}{Use greedy algorithm for group
+  assignment optimization}
+
+  \item{EAStepSize}{Exchange Algorithm StepSize}
+
+  \item{EANumPoints}{Exchange Algorithm NumPoints}
+
+  \item{EAConvergenceCriteria}{Exchange Algorithm
+  Convergence Limit/Criteria}
+
+  \item{bEANoReplicates}{Avoid replicate samples when using
+  Exchange Algorithm}
+
+  \item{BFGSConvergenceCriteriaMinStep}{BFGS Minimizer
+  Convergence Criteria Minimum Step}
+
+  \item{BFGSProjectedGradientTol}{BFGS Minimizer
+  Convergence Criteria Normalized Projected Gradient
+  Tolerance}
+
+  \item{BFGSTolerancef}{BFGS Minimizer Line Search
+  Tolerance f}
+
+  \item{BFGSToleranceg}{BFGS Minimizer Line Search
+  Tolerance g}
+
+  \item{BFGSTolerancex}{BFGS Minimizer Line Search
+  Tolerance x}
+
+  \item{ED_diff_it}{Number of iterations in ED-optimal
+  design to calculate convergence criteria}
+
+  \item{ED_diff_percent}{ED-optimal design convergence
+  criteria in percent}
+
+  \item{line_search_it}{Number of grid points in the line
+  search}
+
+  \item{iNumSearchIterationsIfNotLineSearch}{Number of
+  iterations of full Random search and full Stochastic
+  Gradient if line search is not used}
+
+  \item{iCompileOption}{\bold{******START OF PARALLEL
+  OPTIONS**********} Compile options for PopED \itemize{
+  \item -1 = No compilation, \item 0 or 3 = Full
+  compilation, \item 1 or 4 = Only using MCC (shared lib),
+  \item 2 or 5 = Only MPI, \item Option 0,1,2 runs PopED
+  and option 3,4,5 stops after compilation }}
+
+  \item{iUseParallelMethod}{Parallel method to use (0 =
+  Matlab PCT, 1 = MPI)}
+
+  \item{strAdditionalMCCCompilerDependencies}{Additional
+  dependencies used in MCC compilation (mat-files), if
+  several space separated}
+
+  \item{strExecuteName}{Compilation output executable name}
+
+  \item{iNumProcesses}{Number of processes to use when
+  running in parallel (e.g. 3 = 2 workers, 1 job manager)}
+
+  \item{iNumChunkDesignEvals}{Number of design evaluations
+  that should be evaluated in each process before getting
+  new work from job manager}
+
+  \item{strMatFileInputPrefix}{The prefix of the input mat
+  file to communicate with the excutable}
+
+  \item{strMatFileOutputPrefix}{The prefix of the output
+  mat file to communicate with the excutable}
+
+  \item{strExtraRunOptions}{Extra options send to e$g. the
+  MPI exectuable or a batch script, see execute_parallel$m
+  for more information and options}
+
+  \item{dPollResultTime}{Polling time to check if the
+  parallel execution is finished}
+
+  \item{strFunctionInputName}{The file containing the
+  popedInput structure that should be used to evaluate the
+  designs}
+
+  \item{bParallelRS}{If the random search is going to be
+  executed in parallel}
+
+  \item{bParallelSG}{If the stochastic gradient search is
+  going to be executed in parallel}
+
+  \item{bParallelMFEA}{If the modified exchange algorithm
+  is going to be executed in parallel}
+
+  \item{bParallelLS}{If the line search is going to be
+  executed in parallel}
 }
 \value{
 A PopED database
 }
 \description{
-This function takes the input file supplied by the user and
-creates a database that can then be used to run all other
-PopED functions.  The function supplies default values to
-elements of the database that are not specified in the
-input file.  The function also computes needed quatities.
+This function takes the input file supplied by the user, or
+function arguments, and creates a database that can then be
+used to run all other PopED functions.  The function
+supplies default values to elements of the database that
+are not specified in the input file or as function
+arguments. Default arguments are supplied in the Usage
+section (easiest to use a text search to find values you
+are interested in).
 }
 \examples{
 \dontrun{
 source("warfarin.POPED.R")
 poped.db <- create.poped.database(warfarin.input())
+
+poped.db.1 <- create.poped.database(list(),
+                                    ff_file="ff.1.comp.oral.md",
+                                   fError_file="feps.add.prop",
+                                   groupsize=20,
+                                   sigma=sigma_vals,
+                                   bpop=bpop_vals,
+                                   notfixed_bpop=notfixed_bpop,
+                                   notfixed_sigma=notfixed_sigma,
+                                   d=d_vals,
+                                   xt=c( 1,2,8,16,24),
+                                   maxxt=336,
+                                   minxt=0,
+                                   a=20,
+                                   maxa=200,
+                                   mina=0,
+                                   modtit='One comp, oral dose'
+                                   )
 }
 }
 \seealso{
-Other poped_input: \code{\link{convert_popedInput}};
-\code{\link{convert_variables}};
+Other poped_input: \code{\link{convert_variables}};
 \code{\link{downsizing_general_design}}
 }
 

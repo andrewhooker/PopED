@@ -6,7 +6,9 @@ evaluate.e.ofv.fim(poped.db, calc.type = NULL, bpop = poped.db$gbpop,
   d = poped.db$gd, covd = poped.db$covd, docc = poped.db$docc,
   sigma = poped.db$sigma, model_switch = NULL, ni = NULL, xt = NULL,
   x = NULL, a = NULL, groupsize = poped.db$design$groupsize,
-  deriv.type = NULL, bLHS = poped.db$bLHS, use.laplace = FALSE, ...)
+  deriv.type = NULL, bLHS = poped.db$bLHS,
+  ofv_calc_type = poped.db$ofv_calc_type,
+  ED_samp_size = poped.db$ED_samp_size, use.laplace = FALSE, ...)
 }
 \arguments{
   \item{poped.db}{A PopED database.}

@@ -24,8 +24,7 @@ variables and resuces the design so that a FIM can be
 calculated.
 }
 \seealso{
-Other poped_input: \code{\link{convert_popedInput}};
-\code{\link{convert_variables}};
+Other poped_input: \code{\link{convert_variables}};
 \code{\link{create.poped.database}}
 }
 

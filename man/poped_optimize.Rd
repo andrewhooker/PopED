@@ -13,11 +13,13 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   fim.calc.type = poped.db$iFIMCalculationType,
   ofv_calc_type = poped.db$ofv_calc_type,
   approx_type = poped.db$iApproximationMethod,
-  bUseExchangeAlgorithm = poped.db$bUseExchangeAlgorithm, iter = 1, ...)
+  bUseExchangeAlgorithm = poped.db$bUseExchangeAlgorithm, iter = 1,
+  d_switch = poped.db$d_switch, ED_samp_size = poped.db$ED_samp_size,
+  bLHS = poped.db$bLHS, ...)
 }
 \arguments{
   \item{...}{arguments passed to other functions. See
-  \link{\code{Doptim}}.}
+  \code{\link{Doptim}}.}
 
   \item{poped.db}{A PopED database.}
 
@@ -46,10 +48,6 @@ about the the model, parameters, design and methods to use.
 Some of the arguments coming from the PopED database can be
 overwritten; if they are supplied then they are used
 instead of the arguments from the PopED database.
-}
-\examples{
-\dontrun{
-}
 }
 \references{
 \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and
