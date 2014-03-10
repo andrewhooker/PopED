@@ -1,1 +1,4 @@
+import(ggplot2)
+importFrom(MASS, write.matrix)
+importFrom(mvtnorm, rmvnorm)
 exportPattern("^[[:alpha:]]+")

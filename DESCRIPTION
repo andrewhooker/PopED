@@ -5,6 +5,7 @@ Version: 0.0.1
 Date: 2014-01-04
 Author: Andrew Hooker <andrew.hooker@farmbio.uu.se>
 Depends: ggplot2
+Imports: MASS, mvtnorm
 Maintainer: Andrew Hooker <andrew.hooker@farmbio.uu.se>
 Description: PopED computes optimal experimental designs for both 
   population studies and individual studies.  
