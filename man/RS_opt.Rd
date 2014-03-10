@@ -16,7 +16,7 @@ RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
   \item{cfaxt}{First step factor for sample times}
 
   \item{...}{arguments passed to
-  \link{\code{evaluate.fim}}.}
+  \code{\link{evaluate.fim}}.}
 
   \item{poped.db}{A PopED database.}
 
