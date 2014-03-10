@@ -306,7 +306,7 @@ a_line_search <- function(out_file,bED,diff,temp_mf,temp_detmf,globalStructure){
         fprintf(fn,'\n')
         fprintf(fn,'Best value for OFV(MF) = %g\n\n',best_detmf)
         #fprintf(fn,'Best value for xt: \n\n')
-        print_xt(globalStructure$gxt,globalStructure$gni,poped.db$global_model_switch,fn,
+        print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
                  head_txt="Best value for xt:\n")
         fprintf(fn,'\n')        
         #writet(fn,ni,best_xt)

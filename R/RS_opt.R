@@ -10,7 +10,7 @@
 #' 
 #' @inheritParams evaluate.fim
 #' @param cfaxt First step factor for sample times 
-#' @param ... arguments passed to \link{\code{evaluate.fim}}.
+#' @param ... arguments passed to \code{\link{evaluate.fim}}.
 #' 
 #' 
 #' @references \enumerate{

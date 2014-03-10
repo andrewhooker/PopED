@@ -1,3 +1,16 @@
+#' Trace optimization routines
+#' 
+#' A helper function for writing output to the screen and files when optimizing.
+#' 
+#' @param fn A file to output information to. Can also be the screen if \code{''}.
+#' @param it the interation number.
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' 
+#' 
+#' 
+#' 
+
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
@@ -88,7 +101,7 @@ if((it!=0)){
       fprintf(fn,'\n*******************************\nR.S. Results\n ')
       fprintf(fn,'OFV(mf) = %g\n\n',dmf)
       if((opt_xt==TRUE)){
-        print_xt(xtopt,globalStructure$gni,poped.db$global_model_switch,fn,
+        print_xt(xtopt,globalStructure$gni,globalStructure$global_model_switch,fn,
                  head_txt="Optimized Sampling Schedule\n")
         
       }

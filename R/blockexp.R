@@ -26,7 +26,7 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
     fprintf(fn,'\n')
   }
   
-  docc_full = getfulld(poped.db$docc[,2,drop=F],poped.db$covdocc)
+  docc_full = getfulld(globalStructure$docc[,2,drop=F],globalStructure$covdocc)
   
   fprintf(fn,'Residual Unexplained Variability matrix SIGMA (variance units) : \n')
   sigma = globalStructure$sigma
@@ -79,14 +79,14 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   
   fprintf(fn,'\n')
   
-  print_xt(globalStructure$gxt,globalStructure$gni,poped.db$global_model_switch,fn,
+  print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
            head_txt="Initial Sampling Schedule\n")
   fprintf(fn,'\n')
   if(opt_xt){
-    print_xt(globalStructure$gxt,globalStructure$gni,poped.db$global_model_switch,fn,
+    print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
           head_txt="Minimum allowed sampling values\n",xt_other=globalStructure$gminxt)
     fprintf(fn,'\n')
-    print_xt(globalStructure$gxt,globalStructure$gni,poped.db$global_model_switch,fn,
+    print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
              head_txt="Maximum allowed sampling values\n",xt_other=globalStructure$gmaxxt)
     fprintf(fn,'\n')
   }  
