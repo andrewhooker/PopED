@@ -575,10 +575,10 @@ mfea <- function(globalStructure,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,m
           previous_index_ct = ct_index
           xt_current[i_index,ct_index] = t_max
         } else {
-          fprintf('Exchanged a grouped sample (grouped as %d) to %g\n',i_index,t_max)
-          if(trflag) fprintf(fn,'Exchanged a grouped sample (grouped as %d) to %g\n',i_index,t_max)   
           tmp = matrix(1,size(xt,1),size(xt,2))*i_index
           inters = (globalStructure$G==tmp)
+          fprintf('Exchanged a grouped sample (grouped as %d) from %g to %g\n',i_index,max(max(xt_current[globalStructure$G==tmp])),t_max)
+          if(trflag) fprintf(fn,'Exchanged a grouped sample (grouped as %d) from %g to %g\n',i_index,max(max(xt_current[globalStructure$G==tmp])),t_max)             
           xt_current=xt_current*(inters==0)+t_max*(inters!=0)
         }
       } else {
