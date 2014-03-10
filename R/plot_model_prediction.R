@@ -159,7 +159,8 @@ model_prediction <- function(poped.db,
         bocc_start = bocc_stop + 1
         ipred <- feval(poped.db$ff_pointer,model_switch_i,xt_i,fg_sim,poped.db)
         ipred <- drop(ipred[[1]])
-        tmp.df["ID"] <- (i-1)*num_ids+j
+        ID <- (i-1)*num_ids+j
+        tmp.df["ID"] <- ID
         tmp.df["IPRED"] <- ipred
         
         if(DV){
@@ -285,6 +286,7 @@ plot_model_prediction <- function(poped.db,
   #library(ggplot2)
   Group <- c()
   Time <- c()
+  ID <- c()
    
   if(facet_label_names){
     if(exists("df")) levels(df$Model) <- paste("Model:",levels(df$Model))
