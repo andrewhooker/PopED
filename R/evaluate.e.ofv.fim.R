@@ -34,6 +34,8 @@ evaluate.e.ofv.fim <- function(poped.db,
                          groupsize=poped.db$design$groupsize,
                          deriv.type = NULL,
                          bLHS=poped.db$bLHS,
+                         ofv_calc_type = poped.db$ofv_calc_type,
+                         ED_samp_size = poped.db$ED_samp_size,
                          use.laplace=FALSE, # not working
                          ...){
   ## update poped.db with options supplied in function
