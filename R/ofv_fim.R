@@ -36,8 +36,8 @@ ofv_fim <- function(fmf,globalStructure,
   }
   
   if((ofv_calc_type==4) ){#log determinant of FIM
-    ofv_value = sum(log(svd(fmf)))
-    #ofv_value = log(det(fmf))
+    #ofv_value = sum(log(svd(fmf)))
+    ofv_value = log(det(fmf))
   }
   
   if((ofv_calc_type==5) ){# C-optimal design
