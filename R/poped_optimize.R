@@ -8,7 +8,7 @@
 #' if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
-#' @param ... arguments passed to other functions. See \link{\code{Doptim}}.
+#' @param ... arguments passed to other functions. See \code{\link{Doptim}}.
 #' 
 #' 
 #' @references \enumerate{
@@ -20,9 +20,7 @@
 #' }
 #' @family Optimization
 #' 
-#' @examples 
-#' \dontrun{
-#' }  
+
 
 poped_optimize <- function(poped.db,
                            ni=NULL, 
@@ -53,6 +51,9 @@ poped_optimize <- function(poped.db,
                            approx_type=poped.db$iApproximationMethod,
                            bUseExchangeAlgorithm=poped.db$bUseExchangeAlgorithm,
                            iter=1,
+                           d_switch=poped.db$d_switch,
+                           ED_samp_size = poped.db$ED_samp_size,
+                           bLHS=poped.db$bLHS,
                            ...){
   
   ## update poped.db with options supplied in function
@@ -97,47 +98,51 @@ poped_optimize <- function(poped.db,
     # if optimizing over number of samples then do this
     if((opt_samps==TRUE)){
       if((poped.db$d_switch==TRUE) ){#D-optimal
-        returnArgs <- Dpoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-        xt <- returnArgs[[1]]
-        x <- returnArgs[[2]]
-        a <- returnArgs[[3]]
-        ni <- returnArgs[[4]]
-        fmf <- returnArgs[[5]]
-        dmf <- returnArgs[[6]]
-        poped.db <- returnArgs[[7]]
+        #         returnArgs <- Dpoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+        #         xt <- returnArgs[[1]]
+        #         x <- returnArgs[[2]]
+        #         a <- returnArgs[[3]]
+        #         ni <- returnArgs[[4]]
+        #         fmf <- returnArgs[[5]]
+        #         dmf <- returnArgs[[6]]
+        #         poped.db <- returnArgs[[7]]
+        stop('Sample number optimization not implemented in the R-version of PopED yet')
       } else { #ED-optimal
-        returnArgs <- EDpoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-        xt <- returnArgs[[1]]
-        x <- returnArgs[[2]]
-        a <- returnArgs[[3]]
-        ni <- returnArgs[[4]]
-        fmf <- returnArgs[[5]]
-        dmf <- returnArgs[[6]]
-        poped.db <- returnArgs[[7]]
+        #         returnArgs <- EDpoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+        #         xt <- returnArgs[[1]]
+        #         x <- returnArgs[[2]]
+        #         a <- returnArgs[[3]]
+        #         ni <- returnArgs[[4]]
+        #         fmf <- returnArgs[[5]]
+        #         dmf <- returnArgs[[6]]
+        #         poped.db <- returnArgs[[7]]
+        stop('Sample number optimization not implemented in the R-version of PopED yet')
       }
       
       # if optimizing over number of individuals in group then do this
     } else if (opt_inds==TRUE){
       if((poped.db$d_switch==TRUE) ){#D-optimal
-        returnArgs <- DoptIndGrp(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-        xt <- returnArgs[[1]]
-        x <- returnArgs[[2]]
-        a <- returnArgs[[3]]
-        groupsize <- returnArgs[[4]]
-        fmf <- returnArgs[[5]]
-        dmf <- returnArgs[[6]]
-        poped.db <- returnArgs[[7]]
+        #         returnArgs <- DoptIndGrp(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+        #         xt <- returnArgs[[1]]
+        #         x <- returnArgs[[2]]
+        #         a <- returnArgs[[3]]
+        #         groupsize <- returnArgs[[4]]
+        #         fmf <- returnArgs[[5]]
+        #         dmf <- returnArgs[[6]]
+        #         poped.db <- returnArgs[[7]]
+        stop('Number of individuals in different groups optimization not implemented in the R-version of PopED yet')
       } else {
-        returnArgs <- EDoptIndGrp(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-        xt <- returnArgs[[1]]
-        x <- returnArgs[[2]]
-        a <- returnArgs[[3]]
-        groupsize <- returnArgs[[4]]
-        fmf <- returnArgs[[5]]
-        dmf <- returnArgs[[6]]
-        poped.db <- returnArgs[[7]]
+        #         returnArgs <- EDoptIndGrp(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+        #         xt <- returnArgs[[1]]
+        #         x <- returnArgs[[2]]
+        #         a <- returnArgs[[3]]
+        #         groupsize <- returnArgs[[4]]
+        #         fmf <- returnArgs[[5]]
+        #         dmf <- returnArgs[[6]]
+        #         poped.db <- returnArgs[[7]]
+        stop('Number of individuals in different groups optimization not implemented in the R-version of PopED yet')        
       }
-      poped.db$groupsize = groupsize
+      #poped.db$groupsize = groupsize
     } else {
       #Using ea algorithm do this,
       if((poped.db$bUseExchangeAlgorithm==TRUE)){
@@ -160,21 +165,25 @@ poped_optimize <- function(poped.db,
           poped.db <- returnArgs[[6]]
         } else {
           if((poped.db$iEDCalculationType>=1)){
-            returnArgs <- LEDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-            xt <- returnArgs[[1]]
-            x <- returnArgs[[2]]
-            a <- returnArgs[[3]]
-            fmf <- returnArgs[[4]]
-            dmf <- returnArgs[[5]]
-            poped.db <- returnArgs[[6]]
+            #             returnArgs <- LEDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+            #             xt <- returnArgs[[1]]
+            #             x <- returnArgs[[2]]
+            #             a <- returnArgs[[3]]
+            #             fmf <- returnArgs[[4]]
+            #             dmf <- returnArgs[[5]]
+            #             poped.db <- returnArgs[[6]]
+            stop('Optimization not implemented in the R-version of PopED yet')        
+            
           } else {
-            returnArgs <- EDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
-            xt <- returnArgs[[1]]
-            x <- returnArgs[[2]]
-            a <- returnArgs[[3]]
-            fmf <- returnArgs[[4]]
-            dmf <- returnArgs[[5]]
-            poped.db <- returnArgs[[6]]
+            #             returnArgs <- EDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
+            #             xt <- returnArgs[[1]]
+            #             x <- returnArgs[[2]]
+            #             a <- returnArgs[[3]]
+            #             fmf <- returnArgs[[4]]
+            #             dmf <- returnArgs[[5]]
+            #             poped.db <- returnArgs[[6]]
+            stop('Optimization not implemented in the R-version of PopED yet')        
+            
           }
         }
       }
