@@ -8,13 +8,30 @@ Doptim(poped.db, ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,
   bUseStochasticGradient = poped.db$bUseStochasticGradient,
   bUseBFGSMinimizer = poped.db$bUseBFGSMinimizer,
   bUseLineSearch = poped.db$bUseLineSearch, sgit = poped.db$sgit,
-  ls_step_size = globalStructure$ls_step_size,
-  BFGSConvergenceCriteriaMinStep = popedInput$BFGSConvergenceCriteriaMinStep,
-  BFGSProjectedGradientTol = popedInput$BFGSProjectedGradientTol,
-  BFGSTolerancef = popedInput$BFGSTolerancef,
-  BFGSToleranceg = popedInput$BFGSToleranceg,
-  BFGSTolerancex = popedInput$BFGSTolerancex,
+  ls_step_size = poped.db$ls_step_size,
+  BFGSConvergenceCriteriaMinStep = poped.db$BFGSConvergenceCriteriaMinStep,
+  BFGSProjectedGradientTol = poped.db$BFGSProjectedGradientTol,
+  BFGSTolerancef = poped.db$BFGSTolerancef,
+  BFGSToleranceg = poped.db$BFGSToleranceg,
+  BFGSTolerancex = poped.db$BFGSTolerancex,
   iter_tot = poped.db$iNumSearchIterationsIfNotLineSearch)
+}
+\arguments{
+  \item{poped.db}{A PopED database.}
+
+  \item{ni}{A vector of the number of samples in each
+  group.}
+
+  \item{xt}{A matrix of sample times.  Each row is a vector
+  of sample times for a group.}
+
+  \item{model_switch}{A matrix that is the same size as xt,
+  specifying which model each sample belongs to.}
+
+  \item{x}{A matrix for the discrete design variables.
+  Each row is a group.}
+
+  \item{a}{A matrix of covariates.  Each row is a group.}
 }
 \description{
 Optimize the objective function. The function works for
@@ -25,10 +42,6 @@ the model, parameters, design and methods to use. Some of
 the arguments coming from the PopED database can be
 overwritten; if they are supplied then they are used
 instead of the arguments from the PopED database.
-}
-\examples{
-\dontrun{
-}
 }
 \references{
 \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and
