@@ -8,6 +8,7 @@
 #' if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
 #' 
 #' 
 #' @references \enumerate{
@@ -19,9 +20,7 @@
 #' }
 #' @family Optimization
 #' 
-#' @examples 
-#' \dontrun{
-#' }  
+
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
@@ -33,12 +32,12 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
                    bUseStochasticGradient=poped.db$bUseStochasticGradient,
                    bUseBFGSMinimizer=poped.db$bUseBFGSMinimizer,
                    bUseLineSearch=poped.db$bUseLineSearch,
-                   sgit=poped.db$sgit,ls_step_size=globalStructure$ls_step_size,
-                   BFGSConvergenceCriteriaMinStep=popedInput$BFGSConvergenceCriteriaMinStep,
-                   BFGSProjectedGradientTol=popedInput$BFGSProjectedGradientTol,
-                   BFGSTolerancef=popedInput$BFGSTolerancef,
-                   BFGSToleranceg=popedInput$BFGSToleranceg,
-                   BFGSTolerancex=popedInput$BFGSTolerancex,
+                   sgit=poped.db$sgit,ls_step_size=poped.db$ls_step_size,
+                   BFGSConvergenceCriteriaMinStep=poped.db$BFGSConvergenceCriteriaMinStep,
+                   BFGSProjectedGradientTol=poped.db$BFGSProjectedGradientTol,
+                   BFGSTolerancef=poped.db$BFGSTolerancef,
+                   BFGSToleranceg=poped.db$BFGSToleranceg,
+                   BFGSTolerancex=poped.db$BFGSTolerancex,
                    iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch){
   
   
