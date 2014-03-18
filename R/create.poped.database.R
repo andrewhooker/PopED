@@ -169,7 +169,7 @@
 #' @param line_opta Vector for line search on continuous design variables (1=TRUE,0=FALSE)
 #' @param line_optx Vector for line search on discrete design variables (1=TRUE,0=FALSE) 
 #' @param bShowGraphs Use graph output during search
-#' @parsm use_logfile If a log file should be used (0=FALSE, 1=TRUE)
+#' @param use_logfile If a log file should be used (0=FALSE, 1=TRUE)
 #' @param m1_switch Method used to calculate M1 
 #' (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) 
 #' @param m2_switch Method used to calculate M2
@@ -272,7 +272,7 @@
 
 
 create.poped.database <- 
-  function(popedInput,
+  function(popedInput=list(),
            ## --------------------------
            ## ---- Model definition
            ## --------------------------
