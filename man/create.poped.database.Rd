@@ -2,7 +2,7 @@
 \alias{create.poped.database}
 \title{Create a PopED database}
 \usage{
-create.poped.database(popedInput,
+create.poped.database(popedInput = list(),
   ff_file = poped.choose(popedInput[["ff_file"]], "ff"),
   fg_file = poped.choose(popedInput$fg_file, "sfg"),
   fError_file = poped.choose(popedInput$fError_file, "feps"),
@@ -459,6 +459,9 @@ create.poped.database(popedInput,
   design variables (1=TRUE,0=FALSE)}
 
   \item{bShowGraphs}{Use graph output during search}
+
+  \item{use_logfile}{If a log file should be used (0=FALSE,
+  1=TRUE)}
 
   \item{m1_switch}{Method used to calculate M1 (0=Complex
   difference, 1=Central difference, 20=Analytic derivative,
