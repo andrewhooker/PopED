@@ -138,7 +138,7 @@ model_prediction <- function(poped.db,
     
     pred <- feval(poped.db$ff_pointer,model_switch_i,xt_i,g0,poped.db)
     pred <- drop(pred[[1]])
-    
+        
     group.df <- data.frame(Time=xt_i,PRED=pred,Group=groups_to_use[i],Model=model_switch_i)
     #     group.df <- data.frame(Time=xt_i,PRED=drop(pred[[1]]),Group=groups_to_use[i],
     #                            ##paste("Group",i,sep="_"),
