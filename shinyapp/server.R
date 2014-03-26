@@ -1,6 +1,6 @@
 library(shiny)
 #library(datasets)
-source("MODEL.2.PK.one.comp.oral.R")
+source("models/MODEL.2.PK.one.comp.oral.R")
 
 # We tweak the "am" field to have nicer factor labels. Since this doesn't
 # rely on any user inputs we can do this once at startup and then use the
