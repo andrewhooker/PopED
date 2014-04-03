@@ -1,3 +1,21 @@
+#' Nonlinear minimization using BFGS with box constraints
+#' 
+#' This is the implementation of a Broyden Fletcher Goldfarb Shanno (BFGS) 
+#' method for nonlinear minimization with box constraints.
+#' 
+#' @param f_name A function name (as a text string) that returns an objective function and the gradient of that objective function, in that order. 
+#' See \code{\link{calc_ofv_and_grad}} as used in \code{\link{Doptim}}.
+#' @param f_options Options for the f_name argument.
+#' @param x0 the intial values to optimize
+#' @param l the lower bounds
+#' @param u the upper bounds 
+#' @param options a list of additional settings arguments
+#'  
+#' @return A list containing:
+#' \item{x_k}{The objective function.}
+#' \item{f_k}{The gradient.}
+#' \item{B_k}{The hessian.}
+#' @family Optimize
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

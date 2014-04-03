@@ -1,6 +1,6 @@
 \name{zeros}
 \alias{zeros}
-\title{Function written to match MATLAB's zeros function}
+\title{Creates a matrix of zeros.}
 \usage{
 zeros(dim1, dim2 = NULL)
 }
@@ -14,14 +14,16 @@ zeros(dim1, dim2 = NULL)
 A matrix of zeros.
 }
 \description{
-Creates a matrix of zeros.
+Function creates a matrix of zeros of size (dim1 x dim2).
+Written to match MATLAB's \code{zeros} function.
 }
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};
 \code{\link{fileparts}}; \code{\link{isempty}};
-\code{\link{isfield}}; \code{\link{randn}};
-\code{\link{randperm}}; \code{\link{rand}};
-\code{\link{size}}
+\code{\link{isfield}}; \code{\link{ones}};
+\code{\link{randn}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{tic}};
+\code{\link{toc}}
 }
 

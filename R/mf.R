@@ -17,7 +17,6 @@
 #' @seealso Used by \code{\link{mftot0}}.  
 #'  
 #' @family FIM
-#' 
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

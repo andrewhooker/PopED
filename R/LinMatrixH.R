@@ -1,85 +1,116 @@
+#' Model linearization with respect to epsilon.
+#' 
+#' The function performs a linearization of the model with respect to the residual variability.
+#' Derivative of model w.r.t. eps evaluated at eps=0
+#' 
+#' @inheritParams mftot
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @param xt_ind A vector of the individual/group sample times
+#' @param b_ind vector of individual realization of the BSV terms b
+#' @param bocc_ind Vector of individual realizations of the BOV terms bocc
+#' 
+#' @return A matrix of size (samples per individual x number of epsilons) 
+#'  
+#' @family FIM
+#'     
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,globalStructure){
-#----------Model linearization with respect to epsilon.
-#
-# size of return is (samples per individual x number of epsilons) 
-#
-# derivative of model w$r.t. eps eval at e=0
-#
-  NumEPS = size(globalStructure$sigma,1)
+LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
+  #----------Model linearization with respect to epsilon.
+  #
+  # size of return is (samples per individual x number of epsilons) 
+  #
+  # derivative of model w$r.t. eps eval at e=0
+  #
+  NumEPS = size(poped.db$sigma,1)
   if((NumEPS==0)){
-	y=0
+    y=0
   } else { 
-     returnArgs <- gradf_eps(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,NumEPS,globalStructure) 
-y <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
+    returnArgs <- gradf_eps(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,NumEPS,poped.db) 
+    y <- returnArgs[[1]]
+    poped.db <- returnArgs[[2]]
   }
-return(list( y= y,globalStructure=globalStructure)) 
+  return(list( y= y,poped.db=poped.db)) 
 }
 
-
-gradf_eps <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,num_eps,globalStructure){
-#----------Model linearization with respect to epsilon.
-#
-# size of return is (samples per individual x number of epsilons)
-#
-# derivative of model w$r.t. eps eval at e=0 and b=b_ind
-#
-#
-
-dfeps_de0=zeros(size(xt_ind,1),num_eps)
-
-if((globalStructure$iApproximationMethod==0 || globalStructure$iApproximationMethod==1) ){#No interaction
-    fg0=feval(globalStructure$fg_pointer,x,a,bpop,zeros(size(b_ind)[1],size(b_ind)[2]),zeros(size(bocc_ind)[1],size(bocc_ind)[2]))
-
-} else {
-    fg0=feval(globalStructure$fg_pointer,x,a,bpop,b_ind,bocc_ind) #Interaction
-}
-
-e0=zeros(1,num_eps)
-
-#Central approximation
-if((globalStructure$hle_switch==1)){
+#' Model linearization with respect to epsilon.
+#' 
+#' The function performs a linearization of the model with respect to the residual variability.
+#' Derivative of model w.r.t. eps evaluated at eps=0 and b=b_ind.
+#' 
+#' @inheritParams mftot
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @inheritParams LinMatrixH
+#' @param num_eps The number of \code{eps()} in the model.
+#' 
+#' @return A matrix of size (samples per individual x number of epsilons) 
+#'  
+#' @family FIM
+gradf_eps <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,num_eps,poped.db){
+  #----------Model linearization with respect to epsilon.
+  #
+  # size of return is (samples per individual x number of epsilons)
+  #
+  # derivative of model w$r.t. eps eval at e=0 and b=b_ind
+  #
+  #
+  
+  dfeps_de0=zeros(size(xt_ind,1),num_eps)
+  
+  if((poped.db$iApproximationMethod==0 || poped.db$iApproximationMethod==1) ){#No interaction
+    fg0=feval(poped.db$fg_pointer,x,a,bpop,zeros(size(b_ind)[1],size(b_ind)[2]),zeros(size(bocc_ind)[1],size(bocc_ind)[2]))
+    
+  } else {
+    fg0=feval(poped.db$fg_pointer,x,a,bpop,b_ind,bocc_ind) #Interaction
+  }
+  
+  e0=zeros(1,num_eps)
+  
+  #Central approximation
+  if((poped.db$hle_switch==1)){
     for(i in 1:num_eps){
-        e_plus=e0
-        e_minus=e0
-        e_plus[i] = e_plus[i]+globalStructure$hle
-        e_minus[i]= e_minus[i]-globalStructure$hle
-         returnArgs <-  feval(globalStructure$ferror_pointer,model_switch,xt_ind,fg0,e_plus,globalStructure) 
-ferror_plus <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-         returnArgs <-  feval(globalStructure$ferror_pointer,model_switch,xt_ind,fg0,e_minus,globalStructure) 
-ferror_minus <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-        dfeps_de0[,i]=(ferror_plus-ferror_minus)/(2*globalStructure$hle)
+      e_plus=e0
+      e_minus=e0
+      e_plus[i] = e_plus[i]+poped.db$hle
+      e_minus[i]= e_minus[i]-poped.db$hle
+      returnArgs <-  feval(poped.db$ferror_pointer,model_switch,xt_ind,fg0,e_plus,poped.db) 
+      ferror_plus <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+      returnArgs <-  feval(poped.db$ferror_pointer,model_switch,xt_ind,fg0,e_minus,poped.db) 
+      ferror_minus <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+      dfeps_de0[,i]=(ferror_plus-ferror_minus)/(2*poped.db$hle)
     }
-} else {
+  } else {
     #Complex approximation
-    if((globalStructure$hle_switch==0)){
-        for(i in 1:num_eps){
-            e_plus=e0
-e_plus[i] = complex(real=e_plus[i],imaginary=globalStructure$hle)
-             returnArgs <- feval(globalStructure$ferror_pointer,model_switch,xt_ind,fg0,e_plus,globalStructure) 
-ferror_plus <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-            dfeps_de0[,i]=Im(ferror_plus)/globalStructure$hle
-        }
+    if((poped.db$hle_switch==0)){
+      for(i in 1:num_eps){
+        e_plus=e0
+        e_plus[i] = complex(real=e_plus[i],imaginary=poped.db$hle)
+        returnArgs <- feval(poped.db$ferror_pointer,model_switch,xt_ind,fg0,e_plus,poped.db) 
+        ferror_plus <- returnArgs[[1]]
+        poped.db <- returnArgs[[2]]
+        dfeps_de0[,i]=Im(ferror_plus)/poped.db$hle
+      }
     } else {
-        if((globalStructure$hle_switch==30) ){#Automatic differentiation (INTLab)
-          stop("Automatic differentiation not yet implemented in PopED for R")
-#             e_init = gradientinit(e0)
-#              returnArgs <- feval(globalStructure$ferror_pointer,model_switch,xt_ind,fg0,e_init,globalStructure) 
-# ferror_val <- returnArgs[[1]]
-# globalStructure <- returnArgs[[2]]
-#             dfeps_de0 = ferror_val$dx
-        } else {
-            if((globalStructure$hle_switch!=20)){
-                stop(sprintf('Unknown derivative option for gradf_eps'))
-            }
+      if((poped.db$hle_switch==30) ){#Automatic differentiation (INTLab)
+        stop("Automatic differentiation not yet implemented in PopED for R")
+        #             e_init = gradientinit(e0)
+        #              returnArgs <- feval(poped.db$ferror_pointer,model_switch,xt_ind,fg0,e_init,poped.db) 
+        # ferror_val <- returnArgs[[1]]
+        # poped.db <- returnArgs[[2]]
+        #             dfeps_de0 = ferror_val$dx
+      } else {
+        if((poped.db$hle_switch!=20)){
+          stop(sprintf('Unknown derivative option for gradf_eps'))
         }
+      }
     }
-}
-return(list( dfeps_de0= dfeps_de0,globalStructure=globalStructure)) 
+  }
+  return(list( dfeps_de0= dfeps_de0,poped.db=poped.db)) 
 }

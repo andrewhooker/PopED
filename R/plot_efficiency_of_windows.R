@@ -1,3 +1,22 @@
+#' Plot the efficience of windows 
+#' 
+#' Function plots the efficiency of windows around the optimal design points.
+#' 
+#' @param poped.db A poped database
+#' @param iNumSimulations The number of efficiency calculations to make.
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @param ... Extra arguments passed to \code{evaluate.fim}
+#' @param xt_windows The distance on one direction from the optimal sample times.  Can be a number or a matrix of the same size as 
+#' the xt matrix found in \code{poped.db$gxt}. 
+#' 
+#' @return A \link[ggplot2]{ggplot2} object.
+#' 
+#' @family evaluate_design
+#' @family Simulation
+#' @family Graphics
+#' 
+
 plot_efficiency_of_windows <- function(poped.db,xt_windows,
                                        iNumSimulations=100,
                                        #a_windows=NULL,x_windows=NULL,

@@ -1,3 +1,24 @@
+#' Model predictions 
+#' 
+#' Function generates model predictions for the typical value in the population,
+#' individual predictions and data predictions.
+#' 
+#' @inheritParams RS_opt
+#' @param models_to_use Which model number should we use?
+#' @param model_num_points How many points should be plotted.  If not a number then the design in poped.db is used.
+#' @param model_minxt The minimum of the sample times for the predictions.
+#' @param model_maxxt The maximum of the sample times for the predictions.
+#' @param include_sample_times Should the sample times from poped.db be included in the predictions?
+#' @param IPRED Should we simulate individual predictions?
+#' @param DV should we simulate observations?
+#' @param num_ids The number of individuals to simulate if using IPRED or DV.
+#' @param groups_to_use Which groups should we use for predictions from the poped.db.
+#' @return A dataframe of simulated data, either with some dense grid of samples or based on the design in the poped
+#' database.
+#' 
+#' @family evaluate_design
+#' @family Simulation
+#' 
 ## allow for input not from poped.db
 model_prediction <- function(poped.db,
                              models_to_use="all",
@@ -185,7 +206,42 @@ model_prediction <- function(poped.db,
   return( df ) 
 }
 
-
+#' Plot model predictions 
+#' 
+#' Function plots model predictions for the typical value in the population,
+#' individual predictions and data predictions.
+#' 
+#' @inheritParams RS_opt
+#' @inheritParams model_prediction
+#' @param separate.groups Should there be separate plots for each group.
+#' @param sample.times Should sample times be shown on the plots.
+#' @param sample.times.IPRED Should sample times be shown based on the IPRED y-values.
+#' @param sample.times.DV Should sample times be shown based on the DV y-values.
+#' @param PRED Should a PRED line be drawn.
+#' @param IPRED.lines Should IPRED lines be drawn?
+#' @param alpha.IPRED.lines What should the transparency for the IPRED.lines be?
+#' @param alpha.IPRED What should the tranparency of the IPRED CI?
+#' @param sample.times.size What should the size of the sample.times be?
+#' @param alpha.DV What should the tranparency of the DV CI?
+#' @param DV.lines Should DV lines be drawn?
+#' @param DV.points Should DV points be drawn?
+#' @param alpha.DV.lines What should the transparency for the DV.lines be?
+#' @param alpha.DV.points What should the transparency for the DV.points be?
+#' @param sample.times.DV.points TRUE or FALSE.
+#' @param sample.times.DV.lines TRUE or FALSE.
+#' @param alpha.sample.times.DV.points What should the transparency for the sample.times.DV.points be?
+#' @param alpha.sample.times.DV.lines What should the transparency for the sample.times.DV.lines be?
+#' @param y_lab The label of the y-axis.
+#' @param facet_scales Can be "free", "fixed", "free_x" or "free_y"
+#' @param facet_label_names TRUE or FALSE
+#' 
+#' 
+#' @return A \link[ggplot2]{ggplot2} object.
+#' 
+#' @family evaluate_design
+#' @family Simulation
+#' @family Graphics
+#' 
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,

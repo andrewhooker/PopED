@@ -1,3 +1,15 @@
+#' Model linearization with respect to occasion variablity parameters.
+#' 
+#' The function performs a linearization of the model with respect to the occation  variability parameter..
+#' Derivative of model w.r.t. eta_occ, evaluated bocc_ind.
+#' 
+#' @inheritParams mftot
+#' @inheritParams LinMatrixH
+#' @param iCurrentOcc The current occasion.
+#' 
+#' @return A matrix of size (samples per individual x number of iovs)
+#'  
+#' @family FIM
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

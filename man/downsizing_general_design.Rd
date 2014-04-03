@@ -25,6 +25,7 @@ calculated.
 }
 \seealso{
 Other poped_input: \code{\link{convert_variables}};
-\code{\link{create.poped.database}}
+\code{\link{create.poped.database}};
+\code{\link{poped.choose}}
 }
 

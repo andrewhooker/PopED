@@ -1,18 +1,37 @@
-## Function translated using 'matlab.to.r()'
+#' Evaluate a criterion of the Fisher Information Matrix (FIM)
+#' 
+#' Compute a criterion of the FIM given the model, parameters, design and methods defined in the 
+#' PopED database. 
+#' 
+#' @param fmf The FIM
+#' @param poped.db A poped database
+#' @inheritParams RS_opt
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' 
+#' @return The specified criterion value.
+#' 
+#' @family FIM
+#' 
+#' @examples 
+#' \dontrun{
+#' evaluate.fim(poped.db)
+#' }  
+#' ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-ofv_fim <- function(fmf,globalStructure,
-                    ofv_calc_type = globalStructure$ofv_calc_type,
-                    ds_index=globalStructure$ds_index){
+ofv_fim <- function(fmf,poped.db,
+                    ofv_calc_type = poped.db$ofv_calc_type,
+                    ds_index=poped.db$ds_index){
   
   #Input: the FIM
   #Return the single value that should be maximized
   
   ofv_value = 0
   
-  if((!isempty(globalStructure$prior_fim) && all(size(globalStructure$prior_fim)==size(fmf)))){
-    fmf = fmf + globalStructure$prior_fim
+  if((!isempty(poped.db$prior_fim) && all(size(poped.db$prior_fim)==size(fmf)))){
+    fmf = fmf + poped.db$prior_fim
   }
   
   if((ofv_calc_type==1) ){#determinant of FIM
@@ -52,7 +71,7 @@ ofv_fim <- function(fmf,globalStructure,
   if((ofv_calc_type==7) ){#sum of CV
     if((sum(sum(fmf))!=0 && !isnan(sum(sum(fmf))))){
       imf = inv(fmf)
-      returnArgs <-  get_cv(diag_matlab(imf),globalStructure$gbpop,globalStructure$gd,globalStructure$docc,globalStructure$sigma,globalStructure) 
+      returnArgs <-  get_cv(diag_matlab(imf),poped.db$gbpop,poped.db$gd,poped.db$docc,poped.db$sigma,poped.db) 
       params <- returnArgs[[1]]
       params_cvs <- returnArgs[[2]]
       if((isnan(sum(diag_matlab(imf))))){

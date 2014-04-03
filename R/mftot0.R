@@ -12,7 +12,6 @@
 #' @seealso For an easier function to use, please see \code{\link{evaluate.fim}}.  
 #'  
 #' @family FIM
-#' 
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

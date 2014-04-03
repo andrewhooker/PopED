@@ -22,7 +22,9 @@ distribution and return in matrix form.
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};
 \code{\link{fileparts}}; \code{\link{isempty}};
-\code{\link{isfield}}; \code{\link{randperm}};
-\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+\code{\link{isfield}}; \code{\link{ones}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 

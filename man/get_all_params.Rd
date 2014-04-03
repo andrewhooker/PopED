@@ -2,10 +2,10 @@
 \alias{get_all_params}
 \title{Extract all model parameters from the PopED database.}
 \usage{
-get_all_params(globalStructure)
+get_all_params(poped.db)
 }
 \arguments{
-  \item{globalStructure}{A PopED database.}
+  \item{poped.db}{A PopED database.}
 }
 \value{
 A list containing: \item{bpop}{A vector of fixed effect

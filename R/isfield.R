@@ -7,7 +7,6 @@
 #' @return Logical. True if the element exists.
 #' 
 #' @family MATLAB
-#' 
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

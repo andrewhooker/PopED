@@ -122,7 +122,7 @@
 #' \item column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
 #'  3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal)
 #' \item column 2  defines the mean.
-#' \item column 3 defines the variance of the distribution (length of uniform distribution).
+#' \item column 3 defines the variance of the distribution (or length of uniform distribution).
 #' }
 #' Can also just supply the parameter values as a vector \code{c()}
 #' @param d Matrix defining the diagnonals of the IIV (same logic as for the fixed efects). 
@@ -193,7 +193,7 @@
 #' @param iDiffSolverMethod The diff equation solver method, 0, no other option 
 #' @param bUseMemorySolver If the differential equation results should be stored in memory (1) or not (0)
 #' @param rsit Number of Random search iterations 
-#' @param Numer os stochastic gradient iterations
+#' @param sgit Number of stochastic gradient iterations
 #' @param intrsit Number of Random search iterations with discrete optimization.
 #' @param intsgit Number of Stochastic Gradient search iterations with discrete optimization 
 #' @param maxrsnullit Iterations until adaptive narrowing in random search
@@ -216,7 +216,7 @@
 #' @param ED_diff_it Number of iterations in ED-optimal design to calculate convergence criteria 
 #' @param ED_diff_percent ED-optimal design convergence criteria in percent 
 #' @param line_search_it Number of grid points in the line search 
-#' @param iNumSearchIterationsIfNotLineSearch Number of iterations of full Random search and full Stochastic Gradient if line search is not used 
+#' @param Doptim_iter Number of iterations of full Random search and full Stochastic Gradient if line search is not used 
 
 #' @param iCompileOption \bold{******START OF PARALLEL OPTIONS**********} Compile options for PopED
 #' \itemize{
@@ -228,12 +228,12 @@
 #' }
 #' 
 #' @param iUseParallelMethod Parallel method to use (0 = Matlab PCT, 1 = MPI) 
-#' @param strAdditionalMCCCompilerDependencies Additional dependencies used in MCC compilation (mat-files), if several space separated 
+#' @param MCC_Dep Additional dependencies used in MCC compilation (mat-files), if several space separated 
 #' @param strExecuteName Compilation output executable name 
 #' @param iNumProcesses Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) 
 #' @param iNumChunkDesignEvals Number of design evaluations that should be evaluated in each process before getting new work from job manager
 #' @param strMatFileInputPrefix The prefix of the input mat file to communicate with the excutable 
-#' @param strMatFileOutputPrefix The prefix of the output mat file to communicate with the excutable 
+#' @param Mat_Out_Pre The prefix of the output mat file to communicate with the excutable 
 #' @param strExtraRunOptions Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options 
 #' @param dPollResultTime Polling time to check if the parallel execution is finished 
 #' @param strFunctionInputName The file containing the popedInput structure that should be used to evaluate the designs 
@@ -603,7 +603,7 @@ create.poped.database <-
            ## -- Number of grid points in the line search --
            line_search_it=poped.choose(popedInput$line_search_it,50),
            ## -- Number of iterations of full Random search and full Stochastic Gradient if line search is not used --
-           iNumSearchIterationsIfNotLineSearch=poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,1),
+           Doptim_iter=poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,1),
            
            ## --------------------------
            ## -- Parallel options for PopED -- --
@@ -618,7 +618,7 @@ create.poped.database <-
            ## -- Parallel method to use (0 = Matlab PCT, 1 = MPI) --
            iUseParallelMethod=poped.choose(popedInput$parallelSettings$iUseParallelMethod,1),
            ## -- Additional dependencies used in MCC compilation (mat-files), if several space separated --
-           strAdditionalMCCCompilerDependencies=poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,''),
+           MCC_Dep=poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,''),
            ## -- Compilation output executable name --
            strExecuteName=poped.choose(popedInput$parallelSettings$strExecuteName,'calc_fim.exe'),
            ## -- Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) --
@@ -628,7 +628,7 @@ create.poped.database <-
            ## -- The prefix of the input mat file to communicate with the excutable --
            strMatFileInputPrefix=poped.choose(popedInput$parallelSettings$strMatFileInputPrefix,'parallel_input'),
            ## -- The prefix of the output mat file to communicate with the excutable --
-           strMatFileOutputPrefix=poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,'parallel_output'),
+           Mat_Out_Pre=poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,'parallel_output'),
            ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
            strExtraRunOptions=poped.choose(popedInput$parallelSettings$strExtraRunOptions,''),
            ## -- Polling time to check if the parallel execution is finished --
@@ -741,13 +741,13 @@ create.poped.database <-
     
     
     poped.db$parallelSettings$iCompileOption = iCompileOption
-    poped.db$parallelSettings$strAdditionalMCCCompilerDependencies = strAdditionalMCCCompilerDependencies
+    poped.db$parallelSettings$strAdditionalMCCCompilerDependencies = MCC_Dep
     poped.db$parallelSettings$iUseParallelMethod = iUseParallelMethod
     poped.db$parallelSettings$strExecuteName = strExecuteName
     poped.db$parallelSettings$iNumProcesses = iNumProcesses
     poped.db$parallelSettings$iNumChunkDesignEvals = iNumChunkDesignEvals
     poped.db$parallelSettings$strMatFileInputPrefix = strMatFileInputPrefix
-    poped.db$parallelSettings$strMatFileOutputPrefix = strMatFileOutputPrefix
+    poped.db$parallelSettings$strMatFileOutputPrefix = Mat_Out_Pre
     poped.db$parallelSettings$strExtraRunOptions = strExtraRunOptions
     poped.db$parallelSettings$dPollResultTime = dPollResultTime
     poped.db$parallelSettings$strFunctionInputName = strFunctionInputName
@@ -797,7 +797,7 @@ create.poped.database <-
     
     poped.db$ofv_calc_type = ofv_calc_type
     
-    poped.db$iNumSearchIterationsIfNotLineSearch = iNumSearchIterationsIfNotLineSearch
+    poped.db$iNumSearchIterationsIfNotLineSearch = Doptim_iter
     
     poped.db$ourzero=ourzero
     poped.db$rsit_output=rsit_output
@@ -1181,7 +1181,16 @@ create.poped.database <-
     return(poped.db) 
   }
 
-
+#' Choose between \code{arg1} and \code{arg2} 
+#' 
+#' Function chooses \code{arg1} unless it is \code{NULL} in which case \code{arg2} is chosen.
+#' 
+#' @param arg1 The first argument
+#' @param arg2 The second argument
+#' 
+#' 
+#' @family poped_input
+#' 
 poped.choose <- function(arg1,arg2){
   #ifelse(!is.null(arg1), arg1, arg2)
   if(!is.null(arg1)){

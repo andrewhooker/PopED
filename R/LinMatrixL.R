@@ -13,7 +13,6 @@
 #' @return As a list:
 #' \item{y}{A matrix of size (samples per individual x number of random effects)}
 #' \item{globalStructure}{A PopED database}
-#' 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

@@ -132,13 +132,13 @@ create.poped.database(popedInput = list(),
   ED_diff_it = poped.choose(popedInput$ED_diff_it, 30),
   ED_diff_percent = poped.choose(popedInput$ED_diff_percent, 10),
   line_search_it = poped.choose(popedInput$line_search_it, 50),
-  iNumSearchIterationsIfNotLineSearch = poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,
+  Doptim_iter = poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,
   1),
   iCompileOption = poped.choose(popedInput$parallelSettings$iCompileOption,
   -1),
   iUseParallelMethod = poped.choose(popedInput$parallelSettings$iUseParallelMethod,
   1),
-  strAdditionalMCCCompilerDependencies = poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,
+  MCC_Dep = poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,
   ""),
   strExecuteName = poped.choose(popedInput$parallelSettings$strExecuteName,
   "calc_fim.exe"),
@@ -147,7 +147,7 @@ create.poped.database(popedInput = list(),
   -2),
   strMatFileInputPrefix = poped.choose(popedInput$parallelSettings$strMatFileInputPrefix,
   "parallel_input"),
-  strMatFileOutputPrefix = poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,
+  Mat_Out_Pre = poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,
   "parallel_output"),
   strExtraRunOptions = poped.choose(popedInput$parallelSettings$strExtraRunOptions,
   ""),
@@ -359,7 +359,7 @@ create.poped.database(popedInput = list(),
   designs (0 = Fixed, 1 = Normal, 2 = Uniform, 3 = User
   Defined Distribution, 4 = lognormal and 5 = truncated
   normal) \item column 2 defines the mean. \item column 3
-  defines the variance of the distribution (length of
+  defines the variance of the distribution (or length of
   uniform distribution). } Can also just supply the
   parameter values as a vector \code{c()}}
 
@@ -520,7 +520,7 @@ create.poped.database(popedInput = list(),
 
   \item{rsit}{Number of Random search iterations}
 
-  \item{Numer}{os stochastic gradient iterations}
+  \item{sgit}{Number of stochastic gradient iterations}
 
   \item{intrsit}{Number of Random search iterations with
   discrete optimization.}
@@ -584,9 +584,9 @@ create.poped.database(popedInput = list(),
   \item{line_search_it}{Number of grid points in the line
   search}
 
-  \item{iNumSearchIterationsIfNotLineSearch}{Number of
-  iterations of full Random search and full Stochastic
-  Gradient if line search is not used}
+  \item{Doptim_iter}{Number of iterations of full Random
+  search and full Stochastic Gradient if line search is not
+  used}
 
   \item{iCompileOption}{\bold{******START OF PARALLEL
   OPTIONS**********} Compile options for PopED \itemize{
@@ -598,9 +598,8 @@ create.poped.database(popedInput = list(),
   \item{iUseParallelMethod}{Parallel method to use (0 =
   Matlab PCT, 1 = MPI)}
 
-  \item{strAdditionalMCCCompilerDependencies}{Additional
-  dependencies used in MCC compilation (mat-files), if
-  several space separated}
+  \item{MCC_Dep}{Additional dependencies used in MCC
+  compilation (mat-files), if several space separated}
 
   \item{strExecuteName}{Compilation output executable name}
 
@@ -614,8 +613,8 @@ create.poped.database(popedInput = list(),
   \item{strMatFileInputPrefix}{The prefix of the input mat
   file to communicate with the excutable}
 
-  \item{strMatFileOutputPrefix}{The prefix of the output
-  mat file to communicate with the excutable}
+  \item{Mat_Out_Pre}{The prefix of the output mat file to
+  communicate with the excutable}
 
   \item{strExtraRunOptions}{Extra options send to e$g. the
   MPI exectuable or a batch script, see execute_parallel$m
@@ -679,6 +678,7 @@ poped.db.1 <- create.poped.database(list(),
 }
 \seealso{
 Other poped_input: \code{\link{convert_variables}};
-\code{\link{downsizing_general_design}}
+\code{\link{downsizing_general_design}};
+\code{\link{poped.choose}}
 }
 

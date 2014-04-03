@@ -14,7 +14,6 @@
 #' @seealso For an easier function to use, please see \code{\link{evaluate.fim}}.  
 #'  
 #' @family FIM
-#' 
 #' @references S. Retout and F. Mentre, "Further developments of the Fisher Information Matrix in
 #' nonlinear mixed effects models with evaluation in population pharmacokinetics", J. of Biopharm. Stats., 13(2), 2003.
 #' 

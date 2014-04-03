@@ -34,4 +34,8 @@ the discrete design variables.  Each row is a group.}
 The function performs a grid search sequatially along
 design variables.
 }
+\seealso{
+Other Optimize: \code{\link{bfgsb_min}};
+\code{\link{calc_ofv_and_grad}}
+}
 

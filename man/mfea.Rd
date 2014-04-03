@@ -1,0 +1,108 @@
+\name{mfea}
+\alias{mfea}
+\title{Modified Federov Exchange Algorithm}
+\usage{
+mfea(poped.db, model_switch, ni, xt, x, a, bpopdescr, ddescr, maxxt, minxt,
+  maxa, mina, fmf, dmf, EAStepSize = poped.db$EAStepSize,
+  ourzero = poped.db$ourzero, opt_xt = poped.db$optsw[2],
+  opt_a = poped.db$optsw[4], opt_x = poped.db$optsw[3], trflag = T, ...)
+}
+\arguments{
+  \item{poped.db}{A PopED database.}
+
+  \item{model_switch}{A matrix that is the same size as xt,
+  specifying which model each sample belongs to.}
+
+  \item{ni}{A vector of the number of samples in each
+  group.}
+
+  \item{xt}{A matrix of sample times.  Each row is a vector
+  of sample times for a group.}
+
+  \item{x}{A matrix for the discrete design variables.
+  Each row is a group.}
+
+  \item{a}{A matrix of covariates.  Each row is a group.}
+
+  \item{bpopdescr}{Matrix defining the fixed effects, per
+  row (row number = parameter_number) we should have:
+  \itemize{ \item column 1 the type of the distribution for
+  E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform, 3 =
+  User Defined Distribution, 4 = lognormal and 5 =
+  truncated normal) \item column 2 defines the mean. \item
+  column 3 defines the variance of the distribution (or
+  length of uniform distribution). }}
+
+  \item{ddescr}{Matrix defining the diagnonals of the IIV
+  (same logic as for the \code{bpopdescr}).}
+
+  \item{maxxt}{Matrix or single value defining the maximum
+  value for each xt sample.  If a single value is supplied
+  then all xt values are given the same maximum value.}
+
+  \item{minxt}{Matrix or single value defining the minimum
+  value for each xt sample.  If a single value is supplied
+  then all xt values are given the same minimum value}
+
+  \item{maxa}{Vector defining the max value for each
+  covariate. IF a single value is supplied then all a
+  values are given the same max value}
+
+  \item{mina}{Vector defining the min value for each
+  covariate. IF a single value is supplied then all a
+  values are given the same max value}
+
+  \item{fmf}{The initial value of the FIM. If set to zero
+  then it is computed.}
+
+  \item{dmf}{The inital OFV. If set to zero then it is
+  computed.}
+
+  \item{opt_xt}{Should the sample times be optimized?}
+
+  \item{opt_a}{Should the continuous design variables be
+  optimized?}
+
+  \item{opt_x}{Should the discrete design variables be
+  optimized?}
+
+  \item{trflag}{Should the optimization be output to the
+  screen and to a file?}
+
+  \item{...}{arguments passed to
+  \code{\link{evaluate.fim}}.}
+
+  \item{EAStepSize}{Exchange Algorithm StepSize}
+
+  \item{ourzero}{Value to interpret as zero in design}
+}
+\description{
+Optimize the objective function using a modified Federov
+exchange algorithm. The function works for continuous and
+discrete optimization variables. This function takes
+information from the PopED database supplied as an
+argument. The PopED database supplies information about the
+the model, parameters, design and methods to use. Some of
+the arguments coming from the PopED database can be
+overwritten; if they are supplied then they are used
+instead of the arguments from the PopED database.
+}
+\examples{
+\dontrun{
+output <- mfea(poped.db)
+}
+}
+\references{
+\enumerate{ \item J. Nyberg, S. Ueckert, E.A. Stroemberg,
+S. Hennig, M.O. Karlsson and A.C. Hooker, "PopED: An
+extended, parallelized, nonlinear mixed effects models
+optimal design tool", Computer Methods and Programs in
+Biomedicine, 108, 2012. }
+}
+\seealso{
+Other Optimization: \code{\link{Doptim}};
+\code{\link{RS_opt}}; \code{\link{calc_autofocus}};
+\code{\link{calc_ofv_and_grad}};
+\code{\link{poped_optimize}}
+}
+

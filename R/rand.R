@@ -8,7 +8,6 @@
 #' @return Matrix of random generated samples.
 #' 
 #' @family MATLAB
-#' 
 
 
 ## Function written to match MATLAB function

@@ -14,7 +14,6 @@
 #' \item{globalStructure}{A PopED database}
 #' 
 #' @seealso Used by \code{\link{mftot7}}.  
-#'  
 #' @family FIM
 #' 
 #' @references S. Retout and F. Mentre, "Further developments of the Fisher Information Matrix in

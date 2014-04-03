@@ -1,0 +1,28 @@
+\name{tic}
+\alias{tic}
+\title{Timer function (as in MATLAB)}
+\usage{
+tic(gcFirst = FALSE, name = ".poped_savedTime")
+}
+\arguments{
+  \item{gcFirst}{Perform garbage collection?}
+
+  \item{name}{The saved name of the time object.}
+}
+\description{
+Funtion to start a timer.  Stop with toc().
+}
+\note{
+This is a modified version of the same function in the
+matlab package \code{\link[matlab]{tic}}
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{ones}};
+\code{\link{randn}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{toc}};
+\code{\link{zeros}}
+}
+

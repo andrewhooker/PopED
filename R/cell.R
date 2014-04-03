@@ -7,7 +7,6 @@
 #' @return A list of empty lists.
 #' 
 #' @note This is a modified version of the same function in \code{\link[matlab]{cell}}
-#' 
 #' @family MATLAB
 #' 
 

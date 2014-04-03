@@ -7,7 +7,6 @@
 #' @return See \code{\link{sample}} 
 #' 
 #' @family MATLAB
-#' 
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

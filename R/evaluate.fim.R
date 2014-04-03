@@ -6,7 +6,7 @@
 #' function, if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @param poped.db A PopED database.
-#' @param calc.type The method used for calculating the FIM. Potential values:
+#' @param fim.calc.type The method used for calculating the FIM. Potential values:
 #' \itemize{
 #' \item 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  See \code{\link{mftot0}}.
 #' \item 1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
@@ -38,10 +38,13 @@
 #' \item 30=Automatic differentiation (placeholder)
 #' }
 #' @param ... Other arguments passed to the function.
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
 #' 
 #' @return The FIM.
 #' 
 #' @family FIM
+#' @family evaluate_design
 #' 
 #' @examples 
 #' \dontrun{

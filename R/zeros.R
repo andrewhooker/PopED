@@ -1,12 +1,12 @@
-#' Function written to match MATLAB's zeros function
-#' 
 #' Creates a matrix of zeros.
+#' 
+#' Function creates a matrix of zeros of size (dim1 x dim2). Written to match MATLAB's \code{zeros} function.
+#' 
 #' 
 #' @param dim1 The dimension of the matrix (if square) or the number of rows.   
 #' @param dim2 The number of columns 
 #' @return A matrix of zeros.
 #' @family MATLAB
-#' 
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

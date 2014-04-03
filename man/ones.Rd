@@ -1,0 +1,29 @@
+\name{ones}
+\alias{ones}
+\title{Creates a matrix of ones}
+\usage{
+ones(dim1, dim2 = NULL)
+}
+\arguments{
+  \item{dim1}{The dimension of the matrix (if square) or
+  the number of rows.}
+
+  \item{dim2}{The number of columns}
+}
+\value{
+A matrix of ones
+}
+\description{
+Function creates a matrix of ones of size (dim1 x dim2).
+Written to match MATLAB's \code{ones} function.
+}
+\seealso{
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
+}
+

@@ -10,7 +10,6 @@
 #' \item{globalStructure}{A PopED database}
 #' 
 #' @seealso For an easier function to use, please see \code{\link{evaluate.fim}}.  
-#'  
 #' @family FIM
 #' 
 #' 

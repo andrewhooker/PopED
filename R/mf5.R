@@ -18,7 +18,6 @@
 #' \item{globalStructure}{A PopED database}
 #' 
 #' @seealso Used by \code{\link{mftot4}}.  
-#'  
 #' @family FIM
 #' 
 ## Function translated automatically using 'matlab.to.r()'

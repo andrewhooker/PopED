@@ -1,3 +1,16 @@
+#' Model linearization with respect to epsilon and eta.
+#' 
+#' The function performs a linearization of the model with respect to the residual variability and 
+#' then the between subject variability.
+#' Derivative of model w.r.t. eps then eta, evaluated at eps=0 and b=b_ind.
+#' 
+#' @inheritParams mftot
+#' @inheritParams LinMatrixH
+#' @param NumEPS The number of eps() terms in the model.
+#' 
+#' @return A matrix of size (samples per individual x (number of sigma x number of omega)) 
+#'  
+#' @family FIM
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

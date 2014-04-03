@@ -1,7 +1,19 @@
 #' D CONTINUOUS VARIABLE OPTIMIZATION FUNCTION
 #' 
-#' Optimize the objective function.
-#' The function works for continuous optimization variables.
+#' Optimize the objective function.  The function works for continuous optimization variables.
+#' There are 4 different optimization algorithms used in this 
+#' function 
+#' \enumerate{
+#' \item Adaptive random search. See \code{\link{RS_opt}}.
+#' \item Stochastic gradient.
+#' \item A Broyden Fletcher Goldfarb Shanno (BFGS) 
+#' method for nonlinear minimization with box constraints. 
+#' \item A line search. See \code{\link{a_line_search}}.
+#' }
+#' The optimization algorithms run in series, taking as input the output from the previous method.
+#' The stopping rule used is to test if the line search algorithm fids a better optimum then its inital value.
+#' If so, then the chain of algorithms is run again.  If line search is not used then the argument \code{iter_tot} defines the number of times the 
+#' chain of algorithms is run.
 #' This function takes information from the PopED database supplied as an argument.
 #' The PopED database supplies information about the the model, parameters, design and methods to use.
 #' Some of the arguments coming from the PopED database can be overwritten;  
@@ -9,7 +21,20 @@
 #' 
 #' @inheritParams RS_opt
 #' @inheritParams evaluate.fim
-#' 
+#' @inheritParams create.poped.database
+#' @param bpopdescr Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
+#' \itemize{
+#' \item column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
+#'  3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal)
+#' \item column 2  defines the mean.
+#' \item column 3 defines the variance of the distribution (or length of uniform distribution).
+#' }
+#' @param ddescr Matrix defining the diagnonals of the IIV (same logic as for the \code{bpopdescr}). 
+#' @param fmf The initial value of the FIM. If set to zero then it is computed.
+#' @param dmf The inital OFV. If set to zero then it is computed.
+#' @param trflag Should the optimization be output to the screen and to a file?
+#' @param ls_step_size Number of grid points in the line search
+#' @param iter_tot Number of iterations of full Random search and full Stochastic Gradient if line search is not used.
 #' 
 #' @references \enumerate{
 #' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software fir optimal 
@@ -26,13 +51,14 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,maxa,mina,fmf,dmf,
+Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,maxa,mina,fmf=0,dmf=0,
                    trflag=TRUE,
                    bUseRandomSearch=poped.db$bUseRandomSearch,
                    bUseStochasticGradient=poped.db$bUseStochasticGradient,
                    bUseBFGSMinimizer=poped.db$bUseBFGSMinimizer,
                    bUseLineSearch=poped.db$bUseLineSearch,
-                   sgit=poped.db$sgit,ls_step_size=poped.db$ls_step_size,
+                   sgit=poped.db$sgit,
+                   ls_step_size=poped.db$ls_step_size,
                    BFGSConvergenceCriteriaMinStep=poped.db$BFGSConvergenceCriteriaMinStep,
                    BFGSProjectedGradientTol=poped.db$BFGSProjectedGradientTol,
                    BFGSTolerancef=poped.db$BFGSTolerancef,
@@ -65,7 +91,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
   m=size(ni,1)
   maxni=size(xt,2)
   
-  iMaxSearchIterations = poped.db$iNumSearchIterationsIfNotLineSearch
+  iMaxSearchIterations = iter_tot
   
   # ----------------- initialization of model parameters
   bpop=bpopdescr[,2,drop=F]
@@ -534,7 +560,32 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
   return(list( xt= xt,x=x,a=a,fmf=fmf,dmf=dmf,poped.db =poped.db )) 
 }
 
-
+#' Compute the autofocus portion of the stochastic gradient routine
+#' 
+#' Compute the autofocus portion of the stochastic gradient routine
+#'    
+#' @return A list containing:
+#' \item{navar}{The autofocus parameter.}
+#' \item{poped.db}{PopED database.}
+#' 
+#' 
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @param ni_var The ni_var.
+#' @param varopt The varopt.
+#' @param varopto The varopto.
+#' @param maxvar The maxvar.
+#' @param minvar The minvar.
+#' @param gradvar The gradvar.
+#' @param normgvar The normgvar.
+#' @param avar The avar.
+#' @param xtopt The optimal sampling times matrix.
+#' @param xopt The optimal discrete design variables matrix.
+#' @param aopt The optimal continuous design variables matrix.
+#' @family Optimization
+#' 
 calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,normgvar,avar,model_switch,groupsize,xtopt,xopt,aopt,ni,bpop,d,sigma,docc,poped.db){
   navar = avar
   for(i in 1:m){
@@ -602,6 +653,33 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
 # }
 
 
+#' Compute an objective function and gradient 
+#' 
+#' Compute an objective function and gradient with respect to the optimization parameters.
+#' This function can be passed to the Broyden Fletcher Goldfarb Shanno (BFGS) 
+#' method for nonlinear minimization with box constraints implemented in \code{\link{bfgsb_min}}.
+#'   
+#' @return A list containing:
+#' \item{f}{The objective function.}
+#' \item{g}{The gradient.}
+#' 
+#' @family Optimize
+#' 
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @inheritParams calc_autofocus
+#' @param aa The aa value
+#' @param axt the axt value
+#' @param xtopto the xtopto value
+#' @param xopto the xopto value
+#' @param optxt If sampling times are optimized
+#' @param opta If continuous design variables are optimized
+#' @param aopto the aopto value
+#' @param only_fim Should the gradient be calculated?
+#' @family Optimization
+#' 
 calc_ofv_and_grad <- function(x,optxt, opta, model_switch,aa,axt,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc_full,poped.db,only_fim=FALSE){
   if(optxt){
     notfixed=poped.db$design$minxt!=poped.db$design$maxxt

@@ -9,7 +9,14 @@
 #' function, if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
 #' @param cfaxt First step factor for sample times 
+#' @param opt_xt Should the sample times be optimized?
+#' @param opt_a Should the continuous design variables be optimized?
+#' @param opt_x Should the discrete design variables be optimized?
+#' @param approx_type Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.
+#' @param iter The number of iterations entered into the \code{blockheader_2} function.
 #' @param ... arguments passed to \code{\link{evaluate.fim}}.
 #' 
 #' 

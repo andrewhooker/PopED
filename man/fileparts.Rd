@@ -24,7 +24,9 @@ This is a modified version of the same function in
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};
 \code{\link{isempty}}; \code{\link{isfield}};
-\code{\link{randn}}; \code{\link{randperm}};
-\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+\code{\link{ones}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 

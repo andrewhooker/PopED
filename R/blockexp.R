@@ -1,41 +1,56 @@
+#' Summarize your experiment for optimization routines
+#' 
+#' Create some output to the screen and a text file that summarizes the initial design and the design space
+#' you will use to optimize.
+#' 
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @inheritParams Dtrace
+#' @param fn The file handle to write to.
+#' @param e_flag Shuould output be with uncertainty around parameters?
+#' 
+#' 
+#' @family Helper
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-blockexp <- function(fn,globalStructure,e_flag=FALSE,
-                     opt_xt=globalStructure$optsw[2],opt_a=globalStructure$optsw[4],opt_x=globalStructure$optsw[4],
-                     opt_samps=globalStructure$optsw[1],opt_inds=globalStructure$optsw[5]){
+blockexp <- function(fn,poped.db,e_flag=FALSE,
+                     opt_xt=poped.db$optsw[2],opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
+                     opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5]){
   
   fprintf(fn,'==============================================================================\n')
-  fprintf(fn,'Model description : %s \n',globalStructure$modtit)
+  fprintf(fn,'Model description : %s \n',poped.db$modtit)
   fprintf(fn,'\n')
   fprintf(fn,'Model Sizes : \n')
-  fprintf(fn,'Number of individual model parameters                  g[j]    : Ng    = %g\n',globalStructure$ng)
-  fprintf(fn,'Number of population model fixed parameters            bpop[j] : Nbpop = %g\n',globalStructure$nbpop)
-  fprintf(fn,'Number of population model random effects parameters   b[j]    : Nb    = %g\n',globalStructure$NumRanEff)
+  fprintf(fn,'Number of individual model parameters                  g[j]    : Ng    = %g\n',poped.db$ng)
+  fprintf(fn,'Number of population model fixed parameters            bpop[j] : Nbpop = %g\n',poped.db$nbpop)
+  fprintf(fn,'Number of population model random effects parameters   b[j]    : Nb    = %g\n',poped.db$NumRanEff)
   fprintf(fn,'\n')
-  print_params(globalStructure$gbpop,"bpop",fn=fn,globalStructure=globalStructure, 
+  print_params(poped.db$gbpop,"bpop",fn=fn,poped.db=poped.db, 
                head_txt="Typical Population Parameters",e_flag=e_flag)
   fprintf(fn,'\n')
-  if((globalStructure$NumRanEff!=0)){
+  if((poped.db$NumRanEff!=0)){
     fprintf(fn,"Between Subject Variability matrix D (variance units) \n")
-    d=getfulld(globalStructure$gd[,2,drop=F],globalStructure$covd)
+    d=getfulld(poped.db$gd[,2,drop=F],poped.db$covd)
     MASS::write.matrix(d,file=fn)
     fprintf(fn,'\n')
-    print_params(globalStructure$gd,"D",fn=fn,globalStructure=globalStructure,param_sqrt=TRUE, matrix_elements=T,
+    print_params(poped.db$gd,"D",fn=fn,poped.db=poped.db,param_sqrt=TRUE, matrix_elements=T,
                  head_txt="Diagonal Elements of D",e_flag=e_flag)
     fprintf(fn,'\n')
   }
   
-  docc_full = getfulld(globalStructure$docc[,2,drop=F],globalStructure$covdocc)
+  docc_full = getfulld(poped.db$docc[,2,drop=F],poped.db$covdocc)
   
   fprintf(fn,'Residual Unexplained Variability matrix SIGMA (variance units) : \n')
-  sigma = globalStructure$sigma
+  sigma = poped.db$sigma
   MASS::write.matrix(sigma,file=fn)
   fprintf(fn,'\n')
   
-  #sigma_d = diag_matlab(globalStructure$sigma)
-  sigma_d <- cbind(c(0,0),diag_matlab(globalStructure$sigma),c(1,1))
-  print_params(sigma_d,"SIGMA",fn=fn,globalStructure=globalStructure,param_sqrt=TRUE, matrix_elements=T,
+  #sigma_d = diag_matlab(poped.db$sigma)
+  sigma_d <- cbind(c(0,0),diag_matlab(poped.db$sigma),c(1,1))
+  print_params(sigma_d,"SIGMA",fn=fn,poped.db=poped.db,param_sqrt=TRUE, matrix_elements=T,
                head_txt="Diagonal Elements of SIGMA",e_flag=e_flag)
   fprintf(fn,'\n')
   
@@ -48,9 +63,9 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   tmp_txt <- paste(tmp_txt,': %g',sep="")
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,sum(globalStructure$groupsize),globalStructure$design$mintotgroupsize,globalStructure$design$maxtotgroupsize)
+  fprintf(fn,tmp_txt,sum(poped.db$groupsize),poped.db$design$mintotgroupsize,poped.db$design$maxtotgroupsize)
   
-  fprintf(fn,'Number of groups (individuals with same design): %g\n',globalStructure$m)
+  fprintf(fn,'Number of groups (individuals with same design): %g\n',poped.db$m)
   
   tmp_txt <- "Numer of individuals per group"
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
@@ -61,7 +76,7 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   tmp_txt <- '    Group %g: %g'
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,1:globalStructure$m,globalStructure$groupsize,globalStructure$mingroupsize, globalStructure$maxgroupsize)
+  fprintf(fn,tmp_txt,1:poped.db$m,poped.db$groupsize,poped.db$mingroupsize, poped.db$maxgroupsize)
   
   tmp_txt <- "Numer of samples per group"
   if(opt_samps) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
@@ -72,39 +87,39 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   tmp_txt <- '    Group %g: %g'
   if(opt_samps) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,1:globalStructure$m,globalStructure$gni,globalStructure$minni, globalStructure$maxni)
+  fprintf(fn,tmp_txt,1:poped.db$m,poped.db$gni,poped.db$minni, poped.db$maxni)
   
-  fprintf(fn,'Number of discrete experimental variables: %g\n',globalStructure$nx)
-  fprintf(fn,'Number of model covariates: %g\n',globalStructure$na)
+  fprintf(fn,'Number of discrete experimental variables: %g\n',poped.db$nx)
+  fprintf(fn,'Number of model covariates: %g\n',poped.db$na)
   
   fprintf(fn,'\n')
   
-  print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
+  print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
            head_txt="Initial Sampling Schedule\n")
   fprintf(fn,'\n')
   if(opt_xt){
-    print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
-          head_txt="Minimum allowed sampling values\n",xt_other=globalStructure$gminxt)
+    print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
+          head_txt="Minimum allowed sampling values\n",xt_other=poped.db$gminxt)
     fprintf(fn,'\n')
-    print_xt(globalStructure$gxt,globalStructure$gni,globalStructure$global_model_switch,fn,
-             head_txt="Maximum allowed sampling values\n",xt_other=globalStructure$gmaxxt)
+    print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
+             head_txt="Maximum allowed sampling values\n",xt_other=poped.db$gmaxxt)
     fprintf(fn,'\n')
   }  
   
   
-  if((globalStructure$nx!=0)){
+  if((poped.db$nx!=0)){
     tmp_txt <- "Discrete Variables"
     if(opt_x) tmp_txt <- paste(tmp_txt,' (possible vales)',sep=" ")
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
-    for(ct1 in 1:globalStructure$m){
+    for(ct1 in 1:poped.db$m){
       fprintf(fn,'Group %g: ', ct1)
-      for(ct2 in 1:globalStructure$nx){
+      for(ct2 in 1:poped.db$nx){
         tmp_txt <- '%g'
         if(opt_x) tmp_txt <- paste(tmp_txt,'(%s)',sep=" ")
-        if(ct2<globalStructure$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
-        discrete_val = globalStructure$discrete_x[[ct1,ct2]]  
-        fprintf(fn,tmp_txt,globalStructure$gx[ct1,ct2],get_vector_str(discrete_val))
+        if(ct2<poped.db$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
+        discrete_val = poped.db$discrete_x[[ct1,ct2]]  
+        fprintf(fn,tmp_txt,poped.db$gx[ct1,ct2],get_vector_str(discrete_val))
       }
       fprintf(fn,'\n')
     }
@@ -112,18 +127,18 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   }
   
   
-  if((globalStructure$na!=0)){   
+  if((poped.db$na!=0)){   
     tmp_txt <- "Covariates"
     if(opt_a) tmp_txt <- paste(tmp_txt,' (min, max)',sep=" ")
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
-    for(ct1 in 1:globalStructure$m){
+    for(ct1 in 1:poped.db$m){
       fprintf(fn,'Group %g: ', ct1)
-      for(ct2 in 1:globalStructure$na){
+      for(ct2 in 1:poped.db$na){
         tmp_txt <- '%g'
         if(opt_a) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
-        if(ct2<globalStructure$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
-        fprintf(fn,tmp_txt,globalStructure$ga[ct1,ct2],globalStructure$gmina[ct1,ct2],globalStructure$gmaxa[ct1,ct2])
+        if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
+        fprintf(fn,tmp_txt,poped.db$ga[ct1,ct2],poped.db$gmina[ct1,ct2],poped.db$gmaxa[ct1,ct2])
       }
       fprintf(fn,'\n')
     }
@@ -133,7 +148,7 @@ blockexp <- function(fn,globalStructure,e_flag=FALSE,
   return( ) 
 }
 
-print_params <- function (params,name_str, fn, globalStructure, param_sqrt=FALSE,head_txt=NULL,matrix_elements=F,e_flag=FALSE) {
+print_params <- function (params,name_str, fn, poped.db, param_sqrt=FALSE,head_txt=NULL,matrix_elements=F,e_flag=FALSE) {
   if(is.null(head_txt)) head_txt <- "Parameter Values"
   uncer_txt <- ""
   if(e_flag) uncer_txt <- " (Uncertainty Distribution)"

@@ -10,8 +10,8 @@ evaluate.fim(poped.db, fim.calc.type = NULL, bpop.val = NULL,
 \arguments{
   \item{poped.db}{A PopED database.}
 
-  \item{calc.type}{The method used for calculating the FIM.
-  Potential values: \itemize{ \item 0 = Full FIM.  No
+  \item{fim.calc.type}{The method used for calculating the
+  FIM. Potential values: \itemize{ \item 0 = Full FIM.  No
   assumption that fixed and random effects are
   uncorrelated.  See \code{\link{mftot0}}. \item 1 =
   Reduced FIM. Assume that there is no correlation in the
@@ -86,12 +86,22 @@ evaluate.fim(poped.db)
 }
 }
 \seealso{
-Other FIM: \code{\link{evaluate.e.ofv.fim}};
+Other FIM: \code{\link{LinMatrixH}};
+\code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
+\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
+\code{\link{evaluate.e.ofv.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};
 \code{\link{mftot1}}; \code{\link{mftot2}};
 \code{\link{mftot3}}; \code{\link{mftot4}};
 \code{\link{mftot5}}; \code{\link{mftot6}};
-\code{\link{mftot7}}; \code{\link{mftot}}; \code{\link{mf}}
+\code{\link{mftot7}}; \code{\link{mftot}};
+\code{\link{mf}}; \code{\link{ofv_criterion}};
+\code{\link{ofv_fim}}
+
+Other evaluate_design: \code{\link{get_rse}};
+\code{\link{model_prediction}};
+\code{\link{plot_efficiency_of_windows}};
+\code{\link{plot_model_prediction}}
 }
 

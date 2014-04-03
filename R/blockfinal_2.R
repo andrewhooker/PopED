@@ -1,9 +1,25 @@
+#' Result function for optimization routines
+#' 
+#' Create some output to the screen and a text file that summarizes the problem you solved.
+#' 
+#' @inheritParams RS_opt
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @inheritParams blockexp
+#' @inheritParams blockheader_2
+#' @param fmf_init Initial FIM.
+#' @param dmf_init Initial OFV.
+#' @param param_cvs_init The inital design parameter RSE values.
+#' 
+#' @family Helper
+#' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,m,globalStructure,
-                         opt_xt=globalStructure$optsw[2],opt_a=globalStructure$optsw[4],opt_x=globalStructure$optsw[4],
+blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,m,poped.db,
+                         opt_xt=poped.db$optsw[2],opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
                          fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL){
   
   fprintf(fn,'===============================================================================\nFINAL RESULTS\n\n')
@@ -21,12 +37,12 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
     fprintf(tmp_txt)
-    for(ct1 in 1:globalStructure$m){
+    for(ct1 in 1:poped.db$m){
       fprintf(fn,'Group %g: ', ct1)
       fprintf('Group %g: ', ct1)
-      for(ct2 in 1:globalStructure$nx){
+      for(ct2 in 1:poped.db$nx){
         tmp_txt <- '%g'
-        if(ct2<globalStructure$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
+        if(ct2<poped.db$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
         fprintf(fn,tmp_txt,x[ct1,ct2])
         fprintf(tmp_txt,x[ct1,ct2])
       }
@@ -41,12 +57,12 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
     fprintf(tmp_txt)
-    for(ct1 in 1:globalStructure$m){
+    for(ct1 in 1:poped.db$m){
       fprintf(fn,'Group %g: ', ct1)
       fprintf('Group %g: ', ct1)
-      for(ct2 in 1:globalStructure$na){
+      for(ct2 in 1:poped.db$na){
         tmp_txt <- '%g'
-        if(ct2<globalStructure$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
+        if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
         fprintf(fn,tmp_txt,a[ct1,ct2])
         fprintf(tmp_txt,a[ct1,ct2])
       }
@@ -61,7 +77,7 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
     #     cat("Optimized a values:\n")
     #     print(a)
   }
-  if((globalStructure$d_switch==TRUE)){
+  if((poped.db$d_switch==TRUE)){
     fprintf(fn,'\n FIM: \n')
     #write_matrix(fn,fmf)
     MASS::write.matrix(fmf,file=fn)
@@ -73,7 +89,7 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
   
   
   param_vars=diag_matlab(inv(fmf))
-  returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,globalStructure) 
+  returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
   params <- returnArgs[[1]]
   param_cvs <- returnArgs[[2]]
 
@@ -82,7 +98,7 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
   fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
   
   
-  parnam <- get_parnam(globalStructure)
+  parnam <- get_parnam(poped.db)
   fprintf(fn,'\nExpected parameter variance and relative standard error (%sRSE)\n','%')
   fprintf('\nExpected parameter variance and relative standard error (%sRSE)\n','%')
   df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, "RSE"=t(param_cvs*100),"RSE_initial_design"=t(param_cvs_init*100))
@@ -117,22 +133,22 @@ print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized xt value
   invisible()
 }
 
-get_parnam <- function (globalStructure) {
-  nbpop = length(globalStructure$notfixed_bpop)
-  nd = length(globalStructure$notfixed_d)
-  ncovd = length(globalStructure$notfixed_covd)
-  ndocc = length(globalStructure$notfixed_docc)
-  ncovdocc = length(globalStructure$notfixed_covdocc)
-  nsigma = length(globalStructure$notfixed_sigma)
-  ncovsigma = length(globalStructure$notfixed_covsigma)
+get_parnam <- function (poped.db) {
+  nbpop = length(poped.db$notfixed_bpop)
+  nd = length(poped.db$notfixed_d)
+  ncovd = length(poped.db$notfixed_covd)
+  ndocc = length(poped.db$notfixed_docc)
+  ncovdocc = length(poped.db$notfixed_covdocc)
+  nsigma = length(poped.db$notfixed_sigma)
+  ncovsigma = length(poped.db$notfixed_covsigma)
   
-  not_fixed <- list("bpop"=globalStructure$notfixed_bpop,
-                    "D"=globalStructure$notfixed_d,
-                    "D_cov"=globalStructure$notfixed_covd,
-                    "D.occ"=globalStructure$notfixed_docc,
-                    "D.occ_cov"=globalStructure$notfixed_covdocc,
-                    "SIGMA"=globalStructure$notfixed_sigma,
-                    "SIGMA_cov"=globalStructure$notfixed_covsigma)
+  not_fixed <- list("bpop"=poped.db$notfixed_bpop,
+                    "D"=poped.db$notfixed_d,
+                    "D_cov"=poped.db$notfixed_covd,
+                    "D.occ"=poped.db$notfixed_docc,
+                    "D.occ_cov"=poped.db$notfixed_covdocc,
+                    "SIGMA"=poped.db$notfixed_sigma,
+                    "SIGMA_cov"=poped.db$notfixed_covsigma)
   parnam <- c()
   for(i in 1:size(not_fixed,2)){
     if(length(not_fixed[[i]])==0) next

@@ -21,7 +21,6 @@
 #'   
 #' @return A matrix of random samples of size (sample_size x
 #'   number_of_parameters)
-#'   
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
@@ -98,7 +97,7 @@ return( ret)
 #'  @param variance The variance of the normal distribution
 #'    
 #'  @return A random sample from the specified truncated normal distribution
-#'    
+#'  
 getTruncatedNormal <- function(mean,variance){
 while(TRUE){
     n = mean+randn(1,1)*sqrt(variance)

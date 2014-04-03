@@ -1,8 +1,8 @@
 Package: PopED
 Type: Package
 Title: PopED (Population and individual optimal Experimental Design)
-Version: 0.0.1
-Date: 2014-01-04
+Version: 1.0.0
+Date: 2014-04-03
 Author: Andrew Hooker <andrew.hooker@farmbio.uu.se>
 Depends: ggplot2
 Imports: MASS, mvtnorm

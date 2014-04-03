@@ -18,6 +18,7 @@ Typically not used by the user.  Instead use the function
 }
 \seealso{
 Other poped_input: \code{\link{create.poped.database}};
-\code{\link{downsizing_general_design}}
+\code{\link{downsizing_general_design}};
+\code{\link{poped.choose}}
 }
 

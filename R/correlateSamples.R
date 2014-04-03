@@ -2,7 +2,6 @@
 #' 
 #' @param R The R matrix
 #' @param Omega The Omega matrix
-#' 
 correlateSamples <- function(R,Omega){
 
 if(((size(Omega,1)==1 && size(Omega,2)==1) || !any(any(Omega-diag_matlab(diag_matlab(Omega)))))){

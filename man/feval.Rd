@@ -22,7 +22,9 @@ function to behave like the feval function in MATLAB.
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{fileparts}};
 \code{\link{isempty}}; \code{\link{isfield}};
-\code{\link{randn}}; \code{\link{randperm}};
-\code{\link{rand}}; \code{\link{size}}; \code{\link{zeros}}
+\code{\link{ones}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 

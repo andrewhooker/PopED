@@ -1,9 +1,31 @@
+#' Evaluate the expectation of determinant the Fisher Information Matrix (FIM) using the Laplace approximation.
+#' 
+#' Compute the expectation of the \code{det(FIM)} using the Laplace approximation to the expectation.  
+#' Computations are made based on the model, parameters, distributions of parameter uncertainty, 
+#' design and methods defined in the 
+#' PopED database or as arguments to the funciton. 
+#' 
+#' @inheritParams evaluate.fim
+#' @inheritParams create.poped.database
+#' @inheritParams Doptim
+#' @param xtopto the xtopto value
+#' @param xopto the xopto value
+#' @param optxt If sampling times are optimized
+#' @param opta If continuous design variables are optimized
+#' @param aopto the aopto value
+#' 
+#' @param return_gradient Should the gradient be returned.
+#' 
+#' @return The FIM and the hessian of the FIM.
+#' 
+#' @family FIM
+#' @family E-family
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 ## right now function only works for normal and log-normal priors
 
-ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc, globalStructure,return_gradient=FALSE){
+ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc, poped.db,return_gradient=FALSE){
   if(any(ddescr[,1,drop=F]!=0&ddescr[,1,drop=F]!=4)){
     stop(sprintf('Only lognormal prior is supported for random effects!')) 
   }
@@ -15,19 +37,19 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
   x2=x
   if(!isempty(x)){
     if(optxt){
-      notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-      if(globalStructure$bUseGrouped_xt){
-        xtopto[notfixed]=x[globalStructure$design$G[notfixed]]
-        x[1:numel(unique(globalStructure$design$G[notfixed]))]=matrix(0,0,0)
+      notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+      if(poped.db$bUseGrouped_xt){
+        xtopto[notfixed]=x[poped.db$design$G[notfixed]]
+        x[1:numel(unique(poped.db$design$G[notfixed]))]=matrix(0,0,0)
       } else {
         xtopto[notfixed]=x[1:numel(xtopto[notfixed])]
         x=x[-c(1:numel(xtopto[notfixed]))]
       }
     }
     if(opta){
-      notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-      if(globalStructure$bUseGrouped_a){
-        aopto[notfixed]=x[globalStructure$design$Ga[notfixed]]
+      notfixed=poped.db$design$mina!=poped.db$design$maxa
+      if(poped.db$bUseGrouped_a){
+        aopto[notfixed]=x[poped.db$design$Ga[notfixed]]
       } else {
         aopto[notfixed]=x
       }
@@ -54,7 +76,7 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
   #trans  <- function(x) matrix(c(x[bpop_index],exp(x[d_index])),ncol=1,byrow=T)
   
   #calc initial function value and gradient
-  returnArgs <- calc_k(alpha_k,model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,globalStructure,Engine,
+  returnArgs <- calc_k(alpha_k,model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                        return_gradient=T) 
   f_k <- returnArgs[[1]]
   gf_k <- returnArgs[[2]]
@@ -81,8 +103,8 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
     #determine search direction for line search
     p_k=-H_k%*%gf_k
     f_name  <- "calc_k"
-    #f_options <- list(trans(alpha),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,globalStructure,Engine)
-    f_options <- list("replace",model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,globalStructure,Engine)
+    #f_options <- list(trans(alpha),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine)
+    f_options <- list("replace",model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine)
     returnArgs <- line_search_uc(alpha_k_log,f_k,gf_k,p_k,f_name,f_options,exp_index)
     alpha_k1_log <- returnArgs[[1]]
     f_k1 <- returnArgs[[2]]
@@ -91,7 +113,7 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
       # check this that it is the same as in matlab
       break
     }
-    returnArgs <- calc_k(trans(alpha_k1_log),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,globalStructure,Engine,
+    returnArgs <- calc_k(trans(alpha_k1_log),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                          return_gradient=T) 
     f_k1 <- returnArgs[[1]]
     gf_k1 <- returnArgs[[2]]
@@ -116,8 +138,8 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
   alpha_k=trans(alpha_k_log)
   #if the number of iterations is smaller than the dimension of the problem
   #we have to calculate the hessian explicitly
-  if((niter<length(B_k)||globalStructure$iEDCalculationType==1)){
-    hess=hesskalpha2(alpha_k, model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,globalStructure,1e-6,Engine)
+  if((niter<length(B_k)||poped.db$iEDCalculationType==1)){
+    hess=hesskalpha2(alpha_k, model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-6,Engine)
     detHessPi=det(hess)*(2*pi)^(-length(hess))
   } else {
     temp=matrix(1,size(gf_k))
@@ -140,20 +162,20 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
     gradxt=matrix(0,0,0)
     grada=matrix(0,0,0)
     if((optxt==TRUE)){
-      notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-      gradxt=-gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)
+      notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+      gradxt=-gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
       gradxt=gradxt(notfixed)
-      if(globalStructure$bUseGrouped_xt){
-        index=unique(globalStructure$design$G)
+      if(poped.db$bUseGrouped_xt){
+        index=unique(poped.db$design$G)
         gradxt=gradxt(index)
       }
     }
     if((opta==TRUE)){
-      notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-      grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)                
+      notfixed=poped.db$design$mina!=poped.db$design$maxa
+      grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)                
       grada=grada(notfixed)
-      if(globalStructure$bUseGrouped_a){
-        index=unique(globalStructure$design$Ga)
+      if(poped.db$bUseGrouped_a){
+        index=unique(poped.db$design$Ga)
         grada=grada(index)
       }
     }
@@ -172,20 +194,20 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
         d[ddescr[,1]!=0]=alpha_plus_plus[sum(bpopdescr[,1,drop=F]!=0)+1:end]
         d=getfulld(d,covd)
         if((optxt==TRUE)){
-          notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure))
+          notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db))
           gradxt=gradxt(notfixed)
-          if(globalStructure$bUseGrouped_xt){
-            index=unique(globalStructure$design$G)
+          if(poped.db$bUseGrouped_xt){
+            index=unique(poped.db$design$G)
             gradxt=gradxt(index)
           }
         }
         if((opta==TRUE)){
-          notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)
+          notfixed=poped.db$design$mina!=poped.db$design$maxa
+          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
           grada=grada(notfixed)
-          if(globalStructure$bUseGrouped_a){
-            index=unique(globalStructure$design$Ga)
+          if(poped.db$bUseGrouped_a){
+            index=unique(poped.db$design$Ga)
             grada=grada(index)
           }
         }
@@ -200,20 +222,20 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
         d[ddescr[,1]!=0]=alpha_minus_plus[sum(bpopdescr[,1,drop=F]!=0)+1:end]
         d=getfulld(d,covd)
         if((optxt==TRUE)){
-          notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure))
+          notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db))
           gradxt=gradxt(notfixed)
-          if(globalStructure$bUseGrouped_xt){
-            index=unique(globalStructure$design$G)
+          if(poped.db$bUseGrouped_xt){
+            index=unique(poped.db$design$G)
             gradxt=gradxt(index)
           }
         }
         if((opta==TRUE)){
-          notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)
+          notfixed=poped.db$design$mina!=poped.db$design$maxa
+          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
           grada=grada(notfixed)
-          if(globalStructure$bUseGrouped_a){
-            index=unique(globalStructure$design$Ga)
+          if(poped.db$bUseGrouped_a){
+            index=unique(poped.db$design$Ga)
             grada=grada(index)
           }
         }
@@ -228,20 +250,20 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
         d[ddescr[,1]!=0]=alpha_plus_minus[sum(bpopdescr[,1,drop=F]!=0)+1:end]
         d=getfulld(d,covd)
         if((optxt==TRUE)){
-          notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure))
+          notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db))
           gradxt=gradxt(notfixed)
-          if(globalStructure$bUseGrouped_xt){
-            index=unique(globalStructure$design$G)
+          if(poped.db$bUseGrouped_xt){
+            index=unique(poped.db$design$G)
             gradxt=gradxt(index)
           }
         }
         if((opta==TRUE)){
-          notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)
+          notfixed=poped.db$design$mina!=poped.db$design$maxa
+          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
           grada=grada(notfixed)
-          if(globalStructure$bUseGrouped_a){
-            index=unique(globalStructure$design$Ga)
+          if(poped.db$bUseGrouped_a){
+            index=unique(poped.db$design$Ga)
             grada=grada(index)
           }
         }
@@ -256,20 +278,20 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
         d[ddescr[,1]!=0]=alpha_minus_minus[sum(bpopdescr[,1,drop=F]!=0)+1:end]
         d=getfulld(d,covd)
         if((optxt==TRUE)){
-          notfixed=globalStructure$design$minxt!=globalStructure$design$maxxt
-          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure))
+          notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+          gradxt=t(gradlndetmfxt(model_switch,xtopto,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db))
           gradxt=gradxt(notfixed)
-          if(globalStructure$bUseGrouped_xt){
-            index=unique(globalStructure$design$G)
+          if(poped.db$bUseGrouped_xt){
+            index=unique(poped.db$design$G)
             gradxt=gradxt(index)
           }
         }
         if((opta==TRUE)){
-          notfixed=globalStructure$design$mina!=globalStructure$design$maxa
-          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,globalStructure)
+          notfixed=poped.db$design$mina!=poped.db$design$maxa
+          grada=-gradlndetmfa(model_switch,matrix(1,size(aopto)),groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
           grada=grada(notfixed)
-          if(globalStructure$bUseGrouped_a){
-            index=unique(globalStructure$design$Ga)
+          if(poped.db$bUseGrouped_a){
+            index=unique(poped.db$design$Ga)
             grada=grada(index)
           }
         }
@@ -289,14 +311,13 @@ ed_laplace_ofv <- function(x,optxt, opta, model_switch,groupsize,ni,xtopto,xopto
   return(list( f= f,gf=gf)) 
 }
 
-
-calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,Engine,return_gradient=F){
+calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,return_gradient=F){
   bpop=bpopdescr[,2,drop=F]
   bpop[bpopdescr[,1,drop=F]!=0]=alpha[1:sum(bpopdescr[,1,drop=F]!=0),drop=F]
   d=ddescr[,2,drop=F]
   d[ddescr[,1]==4]=alpha[(sum(bpopdescr[,1,drop=F]!=0)+1):length(alpha),drop=F]
   d=getfulld(d,covd)
-  retargs=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,globalStructure)
+  retargs=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)
   fim <- retargs$ret
   if((!return_gradient)){
     k=-log_prior_pdf(alpha, bpopdescr, ddescr)-log(det(fim))
@@ -305,7 +326,7 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
     returnArgs <- log_prior_pdf(alpha, bpopdescr, ddescr,return_gradient=T) 
     logp <- returnArgs[[1]]
     grad_p <- returnArgs[[2]]
-    returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,1e-6) 
+    returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-6) 
     d_fim <- returnArgs[[1]]
     fim <- returnArgs[[2]]
     ifim <- inv(fim)

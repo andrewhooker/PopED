@@ -63,6 +63,20 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,globalStructure){
   return(list( params= params, params_cv = params_cv )) 
 }
 
+#' Compute the expected parameter relative standard errors 
+#' 
+#' This function  computes the expected relative standard errors of a model given a design and a previously computed
+#' FIM.
+#' 
+#' @inheritParams evaluate.fim
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @param use_percent Should RSE be reported as percent or not?
+#' 
+#' @return A named list of RSE values.
+#' 
+#' @family evaluate_design
+#' 
 get_rse <- function (fmf, poped.db,
                      bpop=poped.db$gbpop[,2,drop=F],d=poped.db$gd[,2,drop=F],docc=poped.db$docc,sigma=poped.db$sigma,
                      use_percent=T) {

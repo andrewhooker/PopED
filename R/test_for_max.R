@@ -8,7 +8,6 @@
 #' @param max_mat A matrix the same size as mat with the  maximum allowed value of that element.
 #' @return A matrix  
 #' @family matrix_manipulation
-#' 
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

@@ -8,7 +8,6 @@
 #' @return Output from the defined function.
 #' 
 #' @family MATLAB
-#' 
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

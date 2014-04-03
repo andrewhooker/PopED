@@ -8,7 +8,6 @@
 #'  
 #' @family FIM
 #' 
-#' 
 
 
 ## Function translated automatically using 'matlab.to.r()'

@@ -8,6 +8,9 @@
 #' if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
+#' @inheritParams Doptim
+#' @inheritParams create.poped.database
+#' @inheritParams Dtrace
 #' @param ... arguments passed to other functions. See \code{\link{Doptim}}.
 #' 
 #' 
