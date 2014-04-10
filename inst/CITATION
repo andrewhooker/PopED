@@ -1,0 +1,38 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("PopED (for R) package version %s", meta$Version)
+
+citHeader("To cite the PopED package in publications use:")
+
+bibentry(bibtype="Article",
+         title ="PopED: An extended, parallelized, nonlinear mixed effects models optimal design tool",
+         author = c(person("Joakim","Nyberg"),
+                    person("Sebastian","Ueckert"),
+                    person(c("Eric","A"),"Stroemberg"),
+                    person("Stefanie","Hennig"),
+                    person(c("Mats","O"),"Karlsson"),
+                    person(c("Andrew","C"), "Hooker")
+                    ),
+         journal = "Computer Methods and Programs in Biomedicine",
+         year   = "2012",
+         volume   = "108")
+
+bibentry(bibtype="Article",
+         title ="PopED: An extended, parallelized, nonlinear mixed effects models optimal design tool",
+         author = c(
+                    person("Marco","Foracchia"),
+                    person(c("Andrew","C"), "Hooker"),
+                    person("Paolo","Vicini"),
+                    person("A","Ruggeri")
+                    ),
+         journal = "Computer Methods and Programs in Biomedicine",
+         year   = "2004",
+         volume   = "74")
+
+bibentry(bibtype="Manual",
+         title =meta$Title,
+         author = person("Andrew", "Hooker","C"),
+         organization = "Uppsala University",
+         address      = "Uppsala, Sweden",
+         year   = year,
+         note   = note,
+         url    = meta$URL)
