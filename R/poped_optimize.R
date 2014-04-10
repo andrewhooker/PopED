@@ -21,7 +21,7 @@
 #' parallelized, nonlinear mixed effects models optimal design tool",  
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
-#' @family Optimization
+#' @family Optimize
 #' 
 
 

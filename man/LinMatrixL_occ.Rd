@@ -40,8 +40,10 @@ of model w.r.t. eta_occ, evaluated bocc_ind.
 }
 \seealso{
 Other FIM: \code{\link{LinMatrixH}};
-\code{\link{LinMatrixLH}}; \code{\link{ed_laplace_ofv}};
-\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
+\code{\link{LinMatrixLH}}; \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
+\code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};

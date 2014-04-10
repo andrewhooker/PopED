@@ -141,7 +141,9 @@ effects models optimal design tool", Computer Methods and
 Programs in Biomedicine, 108, 2012. }
 }
 \seealso{
-Other Optimization: \code{\link{RS_opt}};
+Other Optimize: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{a_line_search}}; \code{\link{bfgsb_min}};
 \code{\link{calc_autofocus}};
 \code{\link{calc_ofv_and_grad}}; \code{\link{mfea}};
 \code{\link{poped_optimize}}

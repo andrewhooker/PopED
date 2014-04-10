@@ -69,9 +69,10 @@ Create some output to the screen and a text file that
 summarizes the problem you are tying to solve.
 }
 \seealso{
-Other Helper: \code{\link{blockexp}};
-\code{\link{blockfinal_2}}; \code{\link{blockfinal}};
-\code{\link{blockheader}}; \code{\link{blockopt_2}};
-\code{\link{blockopt}}
+Other Helper: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{blockexp}}; \code{\link{blockfinal_2}};
+\code{\link{blockfinal}}; \code{\link{blockheader}};
+\code{\link{blockopt_2}}; \code{\link{blockopt}}
 }
 

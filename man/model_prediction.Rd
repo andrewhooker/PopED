@@ -44,11 +44,14 @@ in the population, individual predictions and data
 predictions.
 }
 \seealso{
-Other Simulation: \code{\link{plot_efficiency_of_windows}};
+Other Simulation: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{plot_efficiency_of_windows}};
 \code{\link{plot_model_prediction}}
 
-Other evaluate_design: \code{\link{evaluate.fim}};
-\code{\link{get_rse}};
+Other evaluate_design: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{evaluate.fim}}; \code{\link{get_rse}};
 \code{\link{plot_efficiency_of_windows}};
 \code{\link{plot_model_prediction}}
 }

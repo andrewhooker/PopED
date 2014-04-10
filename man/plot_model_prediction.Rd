@@ -90,13 +90,19 @@ the population, individual predictions and data
 predictions.
 }
 \seealso{
-Other Graphics: \code{\link{plot_efficiency_of_windows}}
-
-Other Simulation: \code{\link{model_prediction}};
+Other Graphics: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
 \code{\link{plot_efficiency_of_windows}}
 
-Other evaluate_design: \code{\link{evaluate.fim}};
-\code{\link{get_rse}}; \code{\link{model_prediction}};
+Other Simulation: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{model_prediction}};
+\code{\link{plot_efficiency_of_windows}}
+
+Other evaluate_design: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{evaluate.fim}}; \code{\link{get_rse}};
+\code{\link{model_prediction}};
 \code{\link{plot_efficiency_of_windows}}
 }
 

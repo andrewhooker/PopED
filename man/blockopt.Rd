@@ -15,9 +15,10 @@ summarizes the optimization settings you will use to
 optimize.
 }
 \seealso{
-Other Helper: \code{\link{blockexp}};
-\code{\link{blockfinal_2}}; \code{\link{blockfinal}};
-\code{\link{blockheader_2}}; \code{\link{blockheader}};
-\code{\link{blockopt_2}}
+Other Helper: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{blockexp}}; \code{\link{blockfinal_2}};
+\code{\link{blockfinal}}; \code{\link{blockheader_2}};
+\code{\link{blockheader}}; \code{\link{blockopt_2}}
 }
 

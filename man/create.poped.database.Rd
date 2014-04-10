@@ -677,7 +677,9 @@ poped.db.1 <- create.poped.database(list(),
 }
 }
 \seealso{
-Other poped_input: \code{\link{convert_variables}};
+Other poped_input: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{convert_variables}};
 \code{\link{downsizing_general_design}};
 \code{\link{poped.choose}}
 }

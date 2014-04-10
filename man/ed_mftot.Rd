@@ -55,12 +55,15 @@ parameters, distributions of parameter uncertainty, design
 and methods defined in the PopED database.
 }
 \seealso{
-Other E-family: \code{\link{ed_laplace_ofv}};
+Other E-family: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{ed_laplace_ofv}};
 \code{\link{evaluate.e.ofv.fim}}
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}};
+\code{\link{PopED}}, \code{\link{PopED-package}},
+\code{\link{poped}}; \code{\link{ed_laplace_ofv}};
 \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};

@@ -77,8 +77,10 @@ Compute the autofocus portion of the stochastic gradient
 routine
 }
 \seealso{
-Other Optimization: \code{\link{Doptim}};
-\code{\link{RS_opt}}; \code{\link{calc_ofv_and_grad}};
-\code{\link{mfea}}; \code{\link{poped_optimize}}
+Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{a_line_search}}; \code{\link{bfgsb_min}};
+\code{\link{calc_ofv_and_grad}}; \code{\link{mfea}};
+\code{\link{poped_optimize}}
 }
 

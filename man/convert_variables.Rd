@@ -17,7 +17,9 @@ Typically not used by the user.  Instead use the function
 \code{\link{create.poped.database}}.
 }
 \seealso{
-Other poped_input: \code{\link{create.poped.database}};
+Other poped_input: \code{\link{PopED}},
+\code{\link{PopED-package}}, \code{\link{poped}};
+\code{\link{create.poped.database}};
 \code{\link{downsizing_general_design}};
 \code{\link{poped.choose}}
 }

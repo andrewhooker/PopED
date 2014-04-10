@@ -43,7 +43,7 @@
 #' parallelized, nonlinear mixed effects models optimal design tool",  
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
-#' @family Optimization
+#' @family Optimize
 #' 
 
 
@@ -584,7 +584,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
 #' @param xtopt The optimal sampling times matrix.
 #' @param xopt The optimal discrete design variables matrix.
 #' @param aopt The optimal continuous design variables matrix.
-#' @family Optimization
+#' @family Optimize
 #' 
 calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,normgvar,avar,model_switch,groupsize,xtopt,xopt,aopt,ni,bpop,d,sigma,docc,poped.db){
   navar = avar
@@ -678,7 +678,7 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
 #' @param opta If continuous design variables are optimized
 #' @param aopto the aopto value
 #' @param only_fim Should the gradient be calculated?
-#' @family Optimization
+#' @family Optimize
 #' 
 calc_ofv_and_grad <- function(x,optxt, opta, model_switch,aa,axt,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc_full,poped.db,only_fim=FALSE){
   if(optxt){
