@@ -14,7 +14,9 @@ Install PopED in R using one of the following methods:
 
 * latest stable release -- From CRAN:
 
-    install.packages("PopED")
+```
+install.packages("PopED")
+```
 
 * Latest development version -- from Github. Note that the command below installs the "master" 
 (development) branch; if you want the release branch from Github add `ref="release"` to the
@@ -22,7 +24,9 @@ Install PopED in R using one of the following methods:
 i.e. `make` and compilers must be installed on your system -- see the R FAQ for your operating system; 
 you may also need to install dependencies manually.
 
-    devtools::install_github("PopED",username="andrewhooker")
+```
+devtools::install_github("PopED",username="andrewhooker")
+```
 
 ## Getting started
 
@@ -36,6 +40,7 @@ There are a number of functions to help you with these tasks.  See `?poped` for 
 There are several other examples, as r-scripts, in the "examples" folder in the 
 PopED installation directory located at (or the "inst/examples" directory of this repository):
 
-    system.file("examples", package="PopED")
-
+```
+system.file("examples", package="PopED")
+```
 
