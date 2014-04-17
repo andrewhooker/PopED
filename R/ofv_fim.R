@@ -12,6 +12,7 @@
 #' @return The specified criterion value.
 #' 
 #' @family FIM
+#' @family evaluate_FIM
 #' 
 #' @examples 
 #' \dontrun{

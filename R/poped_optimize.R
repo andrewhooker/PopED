@@ -22,7 +22,7 @@
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
 #' @family Optimize
-#' 
+
 
 
 poped_optimize <- function(poped.db,

@@ -3,8 +3,57 @@
 #' PopED computes optimal experimental designs for both 
 #' population  and individual studies based on nonlinear mixed-effect models.  
 #' Often this is based on a computation of the Fisher Information Matrix (FIM). 
-#'
 #' 
+#'
+#' To get started you need to define 
+#' \enumerate{
+#' \item A model.
+#' \item An initial design (and design space if you want to optimize). 
+#' \item The tasks to perform.  
+#' }
+#' There are a number of functions to help you with these tasks.  The user-level functions  defined below are 
+#' meant to be run with a minimum of arguments (for begininers to advanced users).  Many of the other functions in the package
+#' (and not listed here) are called by these user-level functions 
+#' and are often not as user 
+#' freindly (developer level or advanced user functions).
+#' 
+#' Define a structural model: 
+#' \code{\link{ff.PK.1.comp.oral.md.CL}}, 
+#'  \code{\link{ff.PK.1.comp.oral.md.KE}}, 
+#'  \code{\link{ff.PK.1.comp.oral.sd.CL}}, 
+#'  \code{\link{ff.PK.1.comp.oral.sd.KE}}, 
+#'  \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}}, 
+#'  \code{\link{ff.PKPD.1.comp.sd.CL.emax}}.
+#' 
+#' Defne a residual unexplaind variability model (residual error model): 
+#' \code{\link{feps.add.prop}},
+#' \code{\link{feps.add}}, 
+#' \code{\link{feps.prop}}.
+#' 
+#' Create an initial study design (and design space): 
+#' \code{\link{create.poped.database}}.
+#' 
+#' Evaluate the model and/or design through simulation and graphics:
+#' \code{\link{plot_model_prediction}}, 
+#' \code{\link{model_prediction}}, 
+#' \code{\link{plot_efficiency_of_windows}}.
+#' 
+#' Evaluate the design using the FIM:
+#' \code{\link{evaluate.fim}}, 
+#' \code{\link{evaluate.e.ofv.fim}}, 
+#' \code{\link{ofv_fim}},
+#' \code{\link{get_rse}}.
+#' 
+#' Optimize the design (evaluate afterwards using the above functions): 
+#' \code{\link{poped_optimize}}, 
+#'  \code{\link{RS_opt}}, 
+#'  \code{\link{a_line_search}}.
+#' 
+#' See the "Examples" section below for a short introduction to using the above functions. 
+#' There are several other examples, as r-scripts, in the "examples" folder in the 
+#' PopED installation directory located at (run at the R command line):
+#' 
+#' \code{system.file("examples", package="PopED")}.
 #'
 #' @references \enumerate{
 #' \item J. Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C. Hooker, "PopED: An extended, 
@@ -16,21 +65,108 @@
 #' \item \url{https://github.com/andrewhooker/PopED.git}
 #' }
 #' 
-#' @family FIM 
-#' @family Optimize 
-#' @family Helper 
-#' @family MATLAB
-#' @family poped_input 
-#' @family matrix_manipulation 
-#' @family E-family 
-#' @family evaluate_design 
-#' @family Simulation 
-#' @family Graphics 
-#' 
 #' @import ggplot2
 #' @importFrom MASS write.matrix
 #' @importFrom mvtnorm rmvnorm
 #' @docType package
 #' @name PopED-package
 #' @aliases PopED poped
+#' 
+#' @examples
+#' ##-- Model: One comp first order absorption
+#' ## -- Analytic solution for both mutiple and single dosing
+#' ff <- function(model_switch,xt,parameters,poped.db){
+#'   with(as.list(parameters),{
+#'     y=xt 
+#'     N = floor(xt/TAU)+1
+#'     y=(DOSE*Favail/V)*(KA/(KA - CL/V)) * 
+#'     (exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
+#'     exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
+#'     return(list( y=y,poped.db=poped.db))
+#'  })
+#' }
+#' 
+#' ## -- parameter definition function 
+#' ## -- names match parameters in function ff
+#' sfg <- function(x,a,bpop,b,bocc){
+#'   parameters=c( V=bpop[1]*exp(b[1]),
+#'                 KA=bpop[2]*exp(b[2]),
+#'                 CL=bpop[3]*exp(b[3]),
+#'                 Favail=bpop[4],
+#'                 DOSE=a[1],
+#'                 TAU=a[2])
+#'   return( parameters ) 
+#' }
+#' 
+#' ## -- Residual unexplained variablity (RUV) function
+#' ## -- Additive + Proportional  
+#' feps <- function(model_switch,xt,parameters,epsi,poped.db){
+#'   returnArgs <- do.call(poped.db$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+#'   y <- returnArgs[[1]]
+#'   poped.db <- returnArgs[[2]]
+#'   
+#'   y = y*(1+epsi[,1])+epsi[,2]
+#'   
+#'   return(list( y= y,poped.db =poped.db )) 
+#' }
+#' 
+#' ## -- Define design and design space
+#' poped.db <- create.poped.database(ff_file="ff",
+#'                                   fg_file="sfg",
+#'                                   fError_file="feps",
+#'                                   groupsize=20,
+#'                                   m=2,
+#'                                   sigma=diag(c(0.04,5e-6)),
+#'                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
+#'                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
+#'                                   notfixed_bpop=c(1,1,1,0),
+#'                                   notfixed_sigma=c(0,0),
+#'                                   xt=c( 1,2,8,240,245),
+#'                                   minxt=c(0,0,0,240,240),
+#'                                   maxxt=c(10,10,10,248,248),
+#'                                   a=cbind(c(20,40),c(24,24)),
+#'                                   bUseGrouped_xt=1,
+#'                                   maxa=c(200,24),
+#'                                   mina=c(0,24))
+#' 
+#' ##  create plot of model without variability 
+#' plot_model_prediction(poped.db)
+#' 
+#' 
+#' ##  create plot of model with variability 
+#' \dontrun{
+#' plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T)
+#' }
+#' 
+#' ## evaluate initial design
+#' FIM <- evaluate.fim(poped.db) 
+#' FIM
+#' det(FIM)
+#' get_rse(FIM,poped.db)
+#' 
+#' \dontrun{
+#' 
+#' # RS+SG+LS optimization of sample times
+#' output <- poped_optimize(poped.db,opt_xt=T)
+#' get_rse(output$fmf,output$poped.db)
+#' plot_model_prediction(output$poped.db,IPRED=F,DV=F)
+#' 
+#' # RS+SG+LS optimization of sample times and doses
+#' output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
+#' get_rse(output$fmf,output$poped.db)
+#' plot_model_prediction(output$poped.db,IPRED=F,DV=F)
+#' 
+#' # MFEA optimization with only integer times allowed
+#' mfea.output <- poped_optimize(poped.db,opt_xt=1,
+#'                               bUseExchangeAlgorithm=1,
+#'                               EAStepSize=1)
+#' get_rse(mfea.output$fmf,mfea.output$poped.db)
+#' plot_model_prediction(mfea.output$poped.db)
+#' 
+#' # Efficiency of sampling windows
+#' plot_efficiency_of_windows(mfea.output$poped.db,xt_windows=0.5)
+#' plot_efficiency_of_windows(mfea.output$poped.db,xt_windows=1)
+#' 
+#' }
+#' 
 NULL
