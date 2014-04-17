@@ -45,6 +45,7 @@
 #' 
 #' @family FIM
 #' @family evaluate_design
+#' @family evaluate_FIM
 #' 
 #' @examples 
 #' \dontrun{
@@ -90,7 +91,7 @@ evaluate.fim <- function(poped.db,
     poped.db$gradff_switch=deriv.type
     poped.db$gradfg_switch=deriv.type
   }
-  
+
   output = mftot(model_switch,groupsize,ni,xt,x,a,bpop.val,d_full,sigma_full,docc_full,poped.db)
   FIM <- output$ret
   

@@ -663,7 +663,6 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
 #' \item{f}{The objective function.}
 #' \item{g}{The gradient.}
 #' 
-#' @family Optimize
 #' 
 #' @inheritParams RS_opt
 #' @inheritParams evaluate.fim

@@ -14,6 +14,7 @@
 #' 
 #' @family FIM
 #' @family E-family
+#' @family evaluate_FIM
 #'  
 #' @examples 
 #' \dontrun{
