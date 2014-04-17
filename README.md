@@ -1,10 +1,8 @@
-PopED
+PopED: Population (and individual) Experimental Design in R
 ======
 
-Population (and individual) Experimental Design (PopED) in R
-
-PopED computes optimal experimental designs for both 
-population  and individual studies based on nonlinear mixed-effect models.  
+PopED computes optimal experimental designs for both population 
+and individual studies based on nonlinear mixed-effect models. 
 Often this is based on a computation of the Fisher Information Matrix (FIM). 
 
 ## Installation
@@ -31,6 +29,7 @@ devtools::install_github("PopED",username="andrewhooker")
 ## Getting started
 
 To get started you need to define 
+
 1. A model.
 2. An initial design (and design space if you want to optimize). 
 3. The tasks to perform.  
@@ -38,9 +37,11 @@ To get started you need to define
 There are a number of functions to help you with these tasks.  See `?poped` for more information.  
  
 There are several other examples, as r-scripts, in the "examples" folder in the 
-PopED installation directory located at (or the "inst/examples" directory of this repository):
+PopED installation directory located at:
 
 ```
 system.file("examples", package="PopED")
 ```
+
+The same examples are located in the "inst/examples" directory of this repository.
 
