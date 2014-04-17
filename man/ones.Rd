@@ -18,13 +18,12 @@ Function creates a matrix of ones of size (dim1 x dim2).
 Written to match MATLAB's \code{ones} function.
 }
 \seealso{
-Other MATLAB: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{cell}}; \code{\link{diag_matlab}};
-\code{\link{feval}}; \code{\link{fileparts}};
-\code{\link{isempty}}; \code{\link{isfield}};
-\code{\link{randn}}; \code{\link{randperm}};
-\code{\link{rand}}; \code{\link{size}}; \code{\link{tic}};
-\code{\link{toc}}; \code{\link{zeros}}
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 

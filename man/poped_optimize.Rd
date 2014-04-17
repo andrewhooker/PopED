@@ -103,10 +103,6 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   with A,B,C matrices & derivative of variance See
   \code{\link{mftot7}}. }}
 
-  \item{ofv_calc_type}{OFV calculation type for FIM
-  (1=Determinant of FIM,4=log determinant of
-  FIM,6=determinant of interesting part of FIM (Ds))}
-
   \item{approx_type}{Approximation method for model, 0=FO,
   1=FOCE, 2=FOCEI, 3=FOI.}
 
@@ -126,6 +122,10 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   \item{d}{Matrix defining the diagnonals of the IIV (same
   logic as for the fixed efects). can also just supply the
   parameter values as a \code{c()}.}
+
+  \item{ofv_calc_type}{OFV calculation type for FIM
+  (1=Determinant of FIM,4=log determinant of
+  FIM,6=determinant of interesting part of FIM (Ds))}
 
   \item{bUseExchangeAlgorithm}{Use Exchange algorithm
   (1=TRUE, 0=FALSE)}
@@ -167,8 +167,7 @@ effects models optimal design tool", Computer Methods and
 Programs in Biomedicine, 108, 2012. }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};
 \code{\link{a_line_search}}; \code{\link{bfgsb_min}};
 \code{\link{calc_autofocus}};
 \code{\link{calc_ofv_and_grad}}; \code{\link{mfea}}

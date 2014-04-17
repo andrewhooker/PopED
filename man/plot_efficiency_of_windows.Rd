@@ -24,19 +24,13 @@ Function plots the efficiency of windows around the optimal
 design points.
 }
 \seealso{
-Other Graphics: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Graphics: \code{\link{plot_model_prediction}}
+
+Other Simulation: \code{\link{model_prediction}};
 \code{\link{plot_model_prediction}}
 
-Other Simulation: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{model_prediction}};
-\code{\link{plot_model_prediction}}
-
-Other evaluate_design: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{evaluate.fim}}; \code{\link{get_rse}};
-\code{\link{model_prediction}};
+Other evaluate_design: \code{\link{evaluate.fim}};
+\code{\link{get_rse}}; \code{\link{model_prediction}};
 \code{\link{plot_model_prediction}}
 }
 

@@ -35,8 +35,7 @@ The function performs a grid search sequatially along
 design variables.
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};
 \code{\link{bfgsb_min}}; \code{\link{calc_autofocus}};
 \code{\link{calc_ofv_and_grad}}; \code{\link{mfea}};
 \code{\link{poped_optimize}}

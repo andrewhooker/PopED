@@ -2,10 +2,10 @@
 \alias{convert_variables}
 \title{Create global variables in the PopED database}
 \usage{
-convert_variables(globalStructure)
+convert_variables(poped.db)
 }
 \arguments{
-  \item{globalStructure}{A PopED database}
+  \item{poped.db}{A PopED database}
 }
 \value{
 A PopED database
@@ -17,9 +17,7 @@ Typically not used by the user.  Instead use the function
 \code{\link{create.poped.database}}.
 }
 \seealso{
-Other poped_input: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{create.poped.database}};
+Other poped_input: \code{\link{create.poped.database}};
 \code{\link{downsizing_general_design}};
 \code{\link{poped.choose}}
 }

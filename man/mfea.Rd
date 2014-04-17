@@ -69,8 +69,8 @@ mfea(poped.db, model_switch, ni, xt, x, a, bpopdescr, ddescr, maxxt, minxt,
   \item{trflag}{Should the optimization be output to the
   screen and to a file?}
 
-  \item{...}{arguments passed to
-  \code{\link{evaluate.fim}}.}
+  \item{...}{arguments passed to \code{\link{evaluate.fim}}
+  and \code{\link{ofv_fim}}.}
 
   \item{EAStepSize}{Exchange Algorithm StepSize}
 
@@ -100,8 +100,7 @@ optimal design tool", Computer Methods and Programs in
 Biomedicine, 108, 2012. }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};
 \code{\link{a_line_search}}; \code{\link{bfgsb_min}};
 \code{\link{calc_autofocus}};
 \code{\link{calc_ofv_and_grad}};

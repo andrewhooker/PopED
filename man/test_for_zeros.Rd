@@ -20,9 +20,7 @@ value allowed (not zero). This is used to avoid numerical
 problems in the FIM calculation.
 }
 \seealso{
-Other matrix_manipulation: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{diag_matlab}}; \code{\link{test_for_max}};
-\code{\link{test_for_min}}
+Other matrix_manipulation: \code{\link{diag_matlab}};
+\code{\link{test_for_max}}; \code{\link{test_for_min}}
 }
 

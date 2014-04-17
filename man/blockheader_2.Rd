@@ -31,8 +31,8 @@ blockheader_2(name, iter, poped.db, e_flag = FALSE,
   \item{dmf}{The inital OFV. If set to zero then it is
   computed.}
 
-  \item{...}{arguments passed to
-  \code{\link{evaluate.fim}}.}
+  \item{...}{arguments passed to \code{\link{evaluate.fim}}
+  and \code{\link{ofv_fim}}.}
 
   \item{e_flag}{Shuould output be with uncertainty around
   parameters?}
@@ -62,17 +62,17 @@ blockheader_2(name, iter, poped.db, e_flag = FALSE,
 
   \item{sigma}{Matrix defining the variances can
   covariances of the residual variability terms of the
-  model.}
+  model. can also just supply the diagnonal parameter
+  values (variances) as a \code{c()}.}
 }
 \description{
 Create some output to the screen and a text file that
 summarizes the problem you are tying to solve.
 }
 \seealso{
-Other Helper: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{blockexp}}; \code{\link{blockfinal_2}};
-\code{\link{blockfinal}}; \code{\link{blockheader}};
-\code{\link{blockopt_2}}; \code{\link{blockopt}}
+Other Helper: \code{\link{blockexp}};
+\code{\link{blockfinal_2}}; \code{\link{blockfinal}};
+\code{\link{blockheader}}; \code{\link{blockopt_2}};
+\code{\link{blockopt}}
 }
 

@@ -38,7 +38,8 @@ ed_laplace_ofv(x, optxt, opta, model_switch, groupsize, ni, xtopto, xopto,
 
   \item{sigma}{Matrix defining the variances can
   covariances of the residual variability terms of the
-  model.}
+  model. can also just supply the diagnonal parameter
+  values (variances) as a \code{c()}.}
 
   \item{docc}{Matrix defining the IOV, the IOV variances
   and the IOV distribution}
@@ -66,15 +67,12 @@ parameter uncertainty, design and methods defined in the
 PopED database or as arguments to the funciton.
 }
 \seealso{
-Other E-family: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}}
+Other E-family: \code{\link{ed_mftot}};
+\code{\link{evaluate.e.ofv.fim}}
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{PopED}}, \code{\link{PopED-package}},
-\code{\link{poped}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};

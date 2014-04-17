@@ -31,8 +31,7 @@ Shanno (BFGS) method for nonlinear minimization with box
 constraints.
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};
 \code{\link{a_line_search}}; \code{\link{calc_autofocus}};
 \code{\link{calc_ofv_and_grad}}; \code{\link{mfea}};
 \code{\link{poped_optimize}}

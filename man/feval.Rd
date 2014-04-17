@@ -19,13 +19,12 @@ This is just a wrapper for the \code{\link{do.call}}
 function to behave like the feval function in MATLAB.
 }
 \seealso{
-Other MATLAB: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{cell}}; \code{\link{diag_matlab}};
-\code{\link{fileparts}}; \code{\link{isempty}};
-\code{\link{isfield}}; \code{\link{ones}};
-\code{\link{randn}}; \code{\link{randperm}};
-\code{\link{rand}}; \code{\link{size}}; \code{\link{tic}};
-\code{\link{toc}}; \code{\link{zeros}}
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{fileparts}};
+\code{\link{isempty}}; \code{\link{isfield}};
+\code{\link{ones}}; \code{\link{randn}};
+\code{\link{randperm}}; \code{\link{rand}};
+\code{\link{size}}; \code{\link{tic}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 

@@ -70,8 +70,8 @@ plot_model_prediction(poped.db, model_num_points = 100, separate.groups = F,
 
   \item{poped.db}{A PopED database.}
 
-  \item{...}{arguments passed to
-  \code{\link{evaluate.fim}}.}
+  \item{...}{arguments passed to \code{\link{evaluate.fim}}
+  and \code{\link{ofv_fim}}.}
 
   \item{model_num_points}{How many points should be
   plotted.  If not a number then the design in poped.db is
@@ -90,19 +90,13 @@ the population, individual predictions and data
 predictions.
 }
 \seealso{
-Other Graphics: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Graphics: \code{\link{plot_efficiency_of_windows}}
+
+Other Simulation: \code{\link{model_prediction}};
 \code{\link{plot_efficiency_of_windows}}
 
-Other Simulation: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{model_prediction}};
-\code{\link{plot_efficiency_of_windows}}
-
-Other evaluate_design: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{evaluate.fim}}; \code{\link{get_rse}};
-\code{\link{model_prediction}};
+Other evaluate_design: \code{\link{evaluate.fim}};
+\code{\link{get_rse}}; \code{\link{model_prediction}};
 \code{\link{plot_efficiency_of_windows}}
 }
 

@@ -19,9 +19,7 @@ value.  For those elements the function sets those values
 to the maximum value.
 }
 \seealso{
-Other matrix_manipulation: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{diag_matlab}}; \code{\link{test_for_min}};
-\code{\link{test_for_zeros}}
+Other matrix_manipulation: \code{\link{diag_matlab}};
+\code{\link{test_for_min}}; \code{\link{test_for_zeros}}
 }
 

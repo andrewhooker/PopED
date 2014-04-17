@@ -54,7 +54,8 @@ calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni, xtopto,
 
   \item{sigma}{Matrix defining the variances can
   covariances of the residual variability terms of the
-  model.}
+  model. can also just supply the diagnonal parameter
+  values (variances) as a \code{c()}.}
 }
 \value{
 A list containing: \item{f}{The objective function.}
@@ -68,14 +69,7 @@ nonlinear minimization with box constraints implemented in
 \code{\link{bfgsb_min}}.
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{a_line_search}}; \code{\link{bfgsb_min}};
-\code{\link{calc_autofocus}}; \code{\link{mfea}};
-\code{\link{poped_optimize}}
-
-Other Optimize: \code{\link{Doptim}}; \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
+Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};
 \code{\link{a_line_search}}; \code{\link{bfgsb_min}};
 \code{\link{calc_autofocus}}; \code{\link{mfea}};
 \code{\link{poped_optimize}}

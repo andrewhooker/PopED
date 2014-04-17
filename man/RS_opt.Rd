@@ -9,7 +9,6 @@ RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
   opt_x = poped.db$optsw[3], cfaxt = poped.db$cfaxt, cfaa = poped.db$cfaa,
   rsit = poped.db$rsit, rsit_output = poped.db$rsit_output,
   fim.calc.type = poped.db$iFIMCalculationType,
-  ofv_calc_type = poped.db$ofv_calc_type,
   approx_type = poped.db$iApproximationMethod, iter = 1, ...)
 }
 \arguments{
@@ -29,8 +28,8 @@ RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
   \item{iter}{The number of iterations entered into the
   \code{blockheader_2} function.}
 
-  \item{...}{arguments passed to
-  \code{\link{evaluate.fim}}.}
+  \item{...}{arguments passed to \code{\link{evaluate.fim}}
+  and \code{\link{ofv_fim}}.}
 
   \item{poped.db}{A PopED database.}
 
@@ -115,10 +114,6 @@ RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
 
   \item{rsit_output}{Number of iterations in random search
   between screen output}
-
-  \item{ofv_calc_type}{OFV calculation type for FIM
-  (1=Determinant of FIM,4=log determinant of
-  FIM,6=determinant of interesting part of FIM (Ds))}
 }
 \description{
 Optimize the objective function using an adaptive random
@@ -147,5 +142,12 @@ Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C.
 Hooker, "PopED: An extended, parallelized, nonlinear mixed
 effects models optimal design tool", Computer Methods and
 Programs in Biomedicine, 108, 2012. }
+}
+\seealso{
+Other Optimize: \code{\link{Doptim}};
+\code{\link{a_line_search}}; \code{\link{bfgsb_min}};
+\code{\link{calc_autofocus}};
+\code{\link{calc_ofv_and_grad}}; \code{\link{mfea}};
+\code{\link{poped_optimize}}
 }
 

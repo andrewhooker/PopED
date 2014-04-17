@@ -66,7 +66,7 @@ create.poped.database(popedInput = list(),
   notfixed_docc = popedInput$notfixed_docc,
   notfixed_covdocc = poped.choose(popedInput$notfixed_covdocc, zeros(1,
   length(covdocc))), notfixed_sigma = poped.choose(popedInput$notfixed_sigma,
-  t(rep(1, length(diag(sigma))))),
+  t(rep(1, size(sigma, 2)))),
   notfixed_covsigma = poped.choose(popedInput$notfixed_covsigma, zeros(1,
   length(notfixed_sigma) * (length(notfixed_sigma) - 1)/2)),
   bUseRandomSearch = poped.choose(popedInput$bUseRandomSearch, TRUE),
@@ -372,7 +372,8 @@ create.poped.database(popedInput = list(),
 
   \item{sigma}{Matrix defining the variances can
   covariances of the residual variability terms of the
-  model.}
+  model. can also just supply the diagnonal parameter
+  values (variances) as a \code{c()}.}
 
   \item{docc}{Matrix defining the IOV, the IOV variances
   and the IOV distribution}
@@ -677,9 +678,7 @@ poped.db.1 <- create.poped.database(list(),
 }
 }
 \seealso{
-Other poped_input: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{convert_variables}};
+Other poped_input: \code{\link{convert_variables}};
 \code{\link{downsizing_general_design}};
 \code{\link{poped.choose}}
 }

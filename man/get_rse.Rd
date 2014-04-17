@@ -34,7 +34,8 @@ get_rse(fmf, poped.db, bpop = poped.db$gbpop[, 2, drop = F],
 
   \item{sigma}{Matrix defining the variances can
   covariances of the residual variability terms of the
-  model.}
+  model. can also just supply the diagnonal parameter
+  values (variances) as a \code{c()}.}
 }
 \value{
 A named list of RSE values.
@@ -45,9 +46,8 @@ errors of a model given a design and a previously computed
 FIM.
 }
 \seealso{
-Other evaluate_design: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{evaluate.fim}}; \code{\link{model_prediction}};
+Other evaluate_design: \code{\link{evaluate.fim}};
+\code{\link{model_prediction}};
 \code{\link{plot_efficiency_of_windows}};
 \code{\link{plot_model_prediction}}
 }

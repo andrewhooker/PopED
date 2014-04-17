@@ -14,9 +14,7 @@ Function chooses \code{arg1} unless it is \code{NULL} in
 which case \code{arg2} is chosen.
 }
 \seealso{
-Other poped_input: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{convert_variables}};
+Other poped_input: \code{\link{convert_variables}};
 \code{\link{create.poped.database}};
 \code{\link{downsizing_general_design}}
 }
