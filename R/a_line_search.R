@@ -21,6 +21,9 @@
 #' \item{globalStructure}{A PopED database.}
 #' 
 #' @family Optimize
+
+#' 
+#' @export
 #'     
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

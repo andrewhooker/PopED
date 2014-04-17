@@ -15,7 +15,10 @@
 #' \item{x_k}{The objective function.}
 #' \item{f_k}{The gradient.}
 #' \item{B_k}{The hessian.}
+#' @export
+# @keywords internal
 #' @family Optimize
+
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

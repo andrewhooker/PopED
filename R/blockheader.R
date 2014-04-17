@@ -8,6 +8,8 @@
 #' @inheritParams create.poped.database 
 #' @param bDiscreteOpt is discrete optimization being performed?
 #' @family Helper
+#' @export
+# @keywords internal
 #' 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

@@ -13,6 +13,8 @@
 #' @param param_cvs_init The inital design parameter RSE values.
 #' 
 #' @family Helper
+#' @export
+# @keywords internal
 #' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

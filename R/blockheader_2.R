@@ -11,6 +11,8 @@
 #' @param iter The last number in the name printed to the output file, combined with \code{name}.
 #' 
 #' @family Helper
+#' @export
+# @keywords internal
 #' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
