@@ -1,12 +1,36 @@
-library(shiny)
-#library(datasets)
-source("models/MODEL.2.PK.one.comp.oral.R")
+library(PopED)
+#source("models/MODEL.2.PK.one.comp.oral.R")
 
-# We tweak the "am" field to have nicer factor labels. Since this doesn't
-# rely on any user inputs we can do this once at startup and then use the
-# value throughout the lifetime of the application
-#mpgData <- mtcars
-#mpgData$am <- factor(mpgData$am, labels = c("Automatic", "Manual"))
+ff <- function(model_switch,xt,parameters,poped.db){
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+
+sfg <- function(x,a,bpop,b,bocc){
+  ## -- parameter definition function 
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+feps <- function(model_switch,xt,parameters,epsi,poped.db){
+  ## -- Residual Error function
+  ## -- Proportional 
+  returnArgs <- ff(model_switch,xt,parameters,poped.db) 
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+  y = y*(1+epsi[,1])
+  
+  return(list(y=y,poped.db=poped.db)) 
+}
+
 
 # Define server logic required to plot various variables against mpg
 shinyServer(function(input, output) {
@@ -20,17 +44,25 @@ shinyServer(function(input, output) {
   })
   
   updateModel_2 <- reactive({
-    if(input$model=="one.comp.oral"){ 
-      ff <- "PK.one.cpt.oral.ff.model"
-      sfg  <- "PK.one.cpt.oral.params.trans2"
-      bpop_vals <- c(V=72.8,KA=0.25,CL=3.75,Favail=0.9)
-      d_vals <- c(V=0.09,KA=0.09,CL=0.25^2)
-      sigma_vals <- diag(c(0.04,5e-6))
-      notfixed_bpop <- c(1,1,1,0)
-      notfixed_sigma <- c(0,0)
+    ff <- input$struct_model
+    feps <- input$ruv_model
+    sfg <- "sfg"
+    if(input$struct_model=="ff.PK.1.comp.oral.sd.CL"){ 
+      feps <- "feps.prop"
+      notfixed_sigma <- c(1)
       notfixed_d <- c(1,1,1)
+      
+      bpop_vals=c(CL=0.15, V=8, KA=1.0, Favail=1) 
+      notfixed_bpop=c(1,1,1,0)
+      d_vals=c(CL=0.07, V=0.02, KA=0.6) 
+      sigma_vals=0.01
+      groupsize=32
+      #xt=c( 0.5,1,2,6,24,36,72,120),
+      minxt=0
+      maxxt=120
+      a=70
     }
-    return(list(ff=ff,sfg=sfg,feps=input$ruv_model,bpop=bpop_vals,d=d_vals,sigma=sigma_vals,
+    return(list(ff=ff,sfg=sfg,feps=feps,bpop=bpop_vals,d=d_vals,sigma=sigma_vals,
                 notfixed_bpop=notfixed_bpop,notfixed_d=notfixed_d,notfixed_sigma=notfixed_sigma))
   })
   updateModel <- reactive({
@@ -71,34 +103,47 @@ shinyServer(function(input, output) {
     #       facet_scales="fixed"
     #       #print(plot_model_prediction(poped.db.2,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales="free"))
     #     }
-    if(input$model=="db.1") {
-      source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.model.POPED.R")
-      source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.design.POPED.R") 
-      poped.db <- poped.db.2
-      facet_scales="free"
-      #print(plot_model_prediction(poped.db.2,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales="free"))
-    }
-    if(input$model=="db.2"){
-      source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/warfarin.model.design.all_in_one.POPED.R") # 4-group, add+prop, as pfim
-      poped.db <- create.poped.database(warfarin.design.1.red.input())
-      poped.db$ga <- rbind(50,60,70,80)
-      facet_scales="fixed"
-      #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
-    }
+    #     if(input$model=="db.1") {
+    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.model.POPED.R")
+    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.design.POPED.R") 
+    #       poped.db <- poped.db.2
+    #       facet_scales="free"
+    #       #print(plot_model_prediction(poped.db.2,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales="free"))
+    #     }
+    #     if(input$model=="db.2"){
+    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/warfarin.model.design.all_in_one.POPED.R") # 4-group, add+prop, as pfim
+    #       poped.db <- create.poped.database(warfarin.design.1.red.input())
+    #       poped.db$ga <- rbind(50,60,70,80)
+    #       facet_scales="fixed"
+    #       #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
+    #     }
     model <- updateModel_2()
     design <- updateDesign()
-    poped.db <- create.poped.database(list(),
-                                      ff_file=model$ff,
+    poped.db <- create.poped.database(ff_file=model$ff,
                                       fError_file=model$feps,
                                       fg_file=model$sfg,
-                                      groupsize=20,
+                                      groupsize=32,
                                       sigma=model$sigma,
                                       bpop=model$bpop,  
                                       d=model$d, 
                                       xt=design$xt,
-                                      maxxt=336, 
+                                      maxxt=120, 
                                       minxt=0, 
-                                      a=c(20,24))  
+                                      a=70) 
+    
+    poped.db.1 <- create.poped.database(ff_file="ff",
+                                      fg_file="sfg",
+                                      fError_file="feps.prop",
+                                      bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                      notfixed_bpop=c(1,1,1,0),
+                                      d=c(CL=0.07, V=0.02, KA=0.6), 
+                                      sigma=0.01,
+                                      groupsize=32,
+                                      xt=c( 0.5,1,2,6,24,36,72,120),
+                                      minxt=0,
+                                      maxxt=120,
+                                      a=70)
+    
     
     #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales=facet_scales))
     print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))#print(plot_model_prediction(poped.db.2,IPRED=TRUE,DV=TRUE))
