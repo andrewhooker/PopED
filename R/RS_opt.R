@@ -17,7 +17,7 @@
 #' @param opt_x Should the discrete design variables be optimized?
 #' @param approx_type Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.
 #' @param iter The number of iterations entered into the \code{blockheader_2} function.
-#' @param ... arguments passed to \code{\link{evaluate.fim}}.
+#' @param ... arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.
 #' 
 #' 
 #' @references \enumerate{
@@ -27,7 +27,7 @@
 #' parallelized, nonlinear mixed effects models optimal design tool",  
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
-#' @family Optimization
+#' @family Optimize
 #' 
 #' @examples 
 #' \dontrun{
@@ -62,7 +62,8 @@ RS_opt <- function(poped.db,
                    rsit=poped.db$rsit,
                    rsit_output=poped.db$rsit_output,
                    fim.calc.type=poped.db$iFIMCalculationType,
-                   ofv_calc_type=poped.db$ofv_calc_type,
+                   #ofv_calc_type=poped.db$ofv_calc_type,
+                   #ds_index = poped.db$ds_index
                    approx_type=poped.db$iApproximationMethod,
                    iter=1,
                    ...){
@@ -319,6 +320,7 @@ RS_opt <- function(poped.db,
           aoptn=aoptn-((aoptn>maxa)*(aoptn-maxa))
           aoptn=aoptn+((aoptn<mina)*(mina-aoptn))
         }
+
         nfmf <- evaluate.fim(poped.db,
                              bpop.val=bpop,
                              d_full=d,
