@@ -17,13 +17,12 @@ This is a modified version of the same function in the
 matlab package \code{\link[matlab]{tic}}
 }
 \seealso{
-Other MATLAB: \code{\link{PopED}},
-\code{\link{PopED-package}}, \code{\link{poped}};
-\code{\link{cell}}; \code{\link{diag_matlab}};
-\code{\link{feval}}; \code{\link{fileparts}};
-\code{\link{isempty}}; \code{\link{isfield}};
-\code{\link{ones}}; \code{\link{randn}};
-\code{\link{randperm}}; \code{\link{rand}};
-\code{\link{size}}; \code{\link{toc}}; \code{\link{zeros}}
+Other MATLAB: \code{\link{cell}};
+\code{\link{diag_matlab}}; \code{\link{feval}};
+\code{\link{fileparts}}; \code{\link{isempty}};
+\code{\link{isfield}}; \code{\link{ones}};
+\code{\link{randn}}; \code{\link{randperm}};
+\code{\link{rand}}; \code{\link{size}}; \code{\link{toc}};
+\code{\link{zeros}}
 }
 
