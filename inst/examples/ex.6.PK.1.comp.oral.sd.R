@@ -130,7 +130,7 @@ poped.db.3 <- create.poped.database(ff_file="PK.1.comp.oral.sd.ff.ode",
                                     mina=c(0))
 
 
-for(i in 1:1){
+for(i in 1:3){
   poped.db <- eval(parse(text=paste("poped.db.",i,sep="")))
   ##  create plot of model 
   if(i==3) print(plot_model_prediction(poped.db))

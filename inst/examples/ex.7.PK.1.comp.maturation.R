@@ -27,6 +27,17 @@ PK.1.comp.maturation.ff <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
+feps.add.prop <- function(model_switch,xt,parameters,epsi,poped.db){
+  ## -- Residual Error function
+  ## -- Additive + Proportional 
+  returnArgs <- feval(poped.db$ff_pointer,model_switch,xt,parameters,poped.db) 
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+  y = y*(1+epsi[,1])+epsi[,2]
+  
+  return(list( y= y,poped.db =poped.db )) 
+}
+
 # -- Matrix defining the variances of the residual variability terms --
 sigma_vals <- diag(c(0.015,0.0015))
 
@@ -62,9 +73,11 @@ det(FIM)
 get_rse(FIM,poped.db)
 
 # RS+SG+LS optimization of sample times
-# output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
+output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
 
 # MFEA optimization with only integer times allowed
-# mfea.output <- poped_optimize(poped.db,opt_a=1,opt_xt=0,
-#                               bUseExchangeAlgorithm=1,
-#                               EAStepSize=1)
+ mfea.output <- poped_optimize(poped.db,opt_a=1,opt_xt=0,
+                               bUseExchangeAlgorithm=1,
+                               EAStepSize=1)
+plot_model_prediction(mfea.output$poped.db,IPRED=T,DV=T,separate.groups=F)
+

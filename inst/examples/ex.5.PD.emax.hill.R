@@ -22,21 +22,29 @@ poped.db <- create.poped.database(ff_file="ff.emax.hill",
                                   fg_file="sfg.emax.hill",
                                   groupsize=100,
                                   m=1,
-                                  sigma=diag(c(0.01,.1)),
                                   bpop=c(EMAX=100,ED50=20,GAMMA=4.5,BASE=1),  
                                   d=c(EMAX=0.0625,ED50=0.0625,BASE=0.0625), 
+                                  sigma=diag(c(0.01,.1)),
                                   xt=seq(0,50,length.out=8),
                                   minxt=0,
                                   maxxt=50,
                                   ourzero=0)
 
-print(plot_model_prediction(poped.db,IPRED=T,DV=T))
+plot_model_prediction(poped.db,IPRED=T,DV=T)
 
 ## evaluate initial design
 FIM <- evaluate.fim(poped.db) 
-print(FIM)
-print(det(FIM))
-print(get_rse(FIM,poped.db))
+FIM
+det(FIM)
+get_rse(FIM,poped.db)
+
+# RS+SG+LS optimization of doses 
+output <- poped_optimize(poped.db,opt_xt=T)
+
+# plot output of optimization
+plot_model_prediction(output$poped.db,IPRED=T,DV=T)
+
+
 
 
 
