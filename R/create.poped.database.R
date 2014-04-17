@@ -129,6 +129,7 @@
 #' can also just supply the parameter values as a \code{c()}. 
 #' @param covd Matrix defining the covariances of the IIV variances. Set to zero if not defined.
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
+#' can also just supply the diagnonal parameter values (variances) as a \code{c()}. 
 #' @param docc Matrix defining the IOV, the IOV variances and the IOV distribution 
 #' @param covdocc Matrix defining the covariance of the IOV. 
 
@@ -438,6 +439,7 @@ create.poped.database <-
            covd=popedInput$design$covd,
            ## -- Matrix defining the variances of the residual variability terms --
            ## REQUIRED! No defaults given.
+           # can also just supply the diagonal values as a c()
            sigma=popedInput$design$sigma,
            ## -- Matrix defining the IOV, the IOV variances and the IOV distribution --
            docc=poped.choose(popedInput$design$docc,matrix(0,0,3)),
@@ -458,7 +460,7 @@ create.poped.database <-
            ## -- Vector row major order for lower triangular matrix defining if a covariance IOV is fixed or not (1=not fixed, 0=fixed) --
            notfixed_covdocc=poped.choose(popedInput$notfixed_covdocc,zeros(1,length(covdocc))),
            ## -- Vector defining if a residual error parameter is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_sigma=poped.choose(popedInput$notfixed_sigma,t(rep(1,length(diag(sigma))))),   
+           notfixed_sigma=poped.choose(popedInput$notfixed_sigma,t(rep(1,size(sigma,2)))),   
            ## -- Vector defining if a covariance residual error parameter is fixed or not (1=not fixed, 0=fixed) --
            ## default is fixed
            notfixed_covsigma=poped.choose(popedInput$notfixed_covsigma,zeros(1,length(notfixed_sigma)*(length(notfixed_sigma)-1)/2)),  
@@ -680,7 +682,7 @@ create.poped.database <-
     
     poped.db$bLHS = bLHS
     
-    poped.db$discrete_x = popedInput$design$discrete_x
+    poped.db$discrete_x = discrete_x
     
     poped.db$m = m
     poped.db$maxni=maxni
@@ -964,6 +966,10 @@ create.poped.database <-
       bpop <- bpop_descr
     }    
     
+    if(size(sigma,1)==1 && !is.matrix(sigma)){ # we have just the diagnonal parameter values 
+      sigma <- diag(sigma,size(sigma,2),size(sigma,2))
+    }    
+    
     covd = poped.choose(covd,zeros(1,poped.db$NumRanEff)*(poped.db$NumRanEff-1)/2)
     poped.db$covd = covd
     
@@ -1106,7 +1112,6 @@ create.poped.database <-
     poped.db$notfixed_sigma =  notfixed_sigma
     poped.db$sigma = sigma
     poped.db$docc = docc
-    
     
     poped.db$ds_index = ds_index
     
