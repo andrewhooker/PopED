@@ -76,14 +76,3 @@ get_rse(FIM,poped.db)
 plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 plot_efficiency_of_windows(poped.db,xt_windows=1)
 
-## check all FIM calculations
-df <- c()
-for(i in c(0,1,4,5,6,7)){
-  for(j in c(0,1)){
-    FIM <- evaluate.fim(poped.db,fim.calc.type=i,deriv.type=j) 
-    tmp <- data.frame("fim.calc.type"= i, "deriv.type"=j, "det.FIM"=det(FIM))
-    df <- rbind(df,tmp)
-  }
-}
-print(df,digits=3,row.names=F,print.gap=3)
-

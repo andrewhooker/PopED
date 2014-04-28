@@ -22,6 +22,10 @@
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
 #' @family Optimize
+#' 
+#' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_poped_optimize.R
 
 
 
@@ -175,7 +179,7 @@ poped_optimize <- function(poped.db,
             #             fmf <- returnArgs[[4]]
             #             dmf <- returnArgs[[5]]
             #             poped.db <- returnArgs[[6]]
-            stop('Optimization not implemented in the R-version of PopED yet')        
+            stop('E-family optimization using the requested methods not implemented in the R-version of PopED yet')        
             
           } else {
             #             returnArgs <- EDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
@@ -185,7 +189,7 @@ poped_optimize <- function(poped.db,
             #             fmf <- returnArgs[[4]]
             #             dmf <- returnArgs[[5]]
             #             poped.db <- returnArgs[[6]]
-            stop('Optimization not implemented in the R-version of PopED yet')        
+            stop('E-family optimization using the requested methods not implemented in the R-version of PopED yet')        
             
           }
         }

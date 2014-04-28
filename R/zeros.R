@@ -7,6 +7,7 @@
 #' @param dim2 The number of columns 
 #' @return A matrix of zeros.
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_zeros.R
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

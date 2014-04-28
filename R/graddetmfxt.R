@@ -105,7 +105,7 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
               
               if((s!=0)){
                 gdmf[i,ct1]=s
-              } else {  #The model doesn't depend on t e$g. PD with Placebo dose, fix the xt-gradient to a small value
+              } else {  #The model doesn't depend on t e.g. PD with Placebo dose, fix the xt-gradient to a small value
                 gdmf[i,ct1]=1e-12
               }
             }

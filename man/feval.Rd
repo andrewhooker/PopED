@@ -18,6 +18,11 @@ Output from the defined function.
 This is just a wrapper for the \code{\link{do.call}}
 function to behave like the feval function in MATLAB.
 }
+\examples{
+
+feval("sin",pi/2)
+
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{fileparts}};

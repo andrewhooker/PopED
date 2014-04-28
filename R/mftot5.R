@@ -9,7 +9,7 @@
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM}
-#' \item{globalStructure}{A PopED database}
+#' \item{poped.db}{A PopED database}
 #' 
 #' @seealso For an easier function to use, please see \code{\link{evaluate.fim}}.  
 #'  
@@ -17,10 +17,12 @@
 #' @references S. Retout and F. Mentre, "Further developments of the Fisher Information Matrix in
 #' nonlinear mixed effects models with evaluation in population pharmacokinetics", J. of Biopharm. Stats., 13(2), 2003.
 #' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_mftot5.R
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-mftot5 <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+mftot5 <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
 m=size(ni,1)
 s=0
 for(i in 1:m){
@@ -37,12 +39,12 @@ for(i in 1:m){
             a_i =  zeros(0,1)
          }
 
-         returnArgs <- mf6(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,globalStructure) 
+         returnArgs <- mf6(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
 mf_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
+poped.db <- returnArgs[[2]]
         s=s+groupsize[i]*mf_tmp
     }
 }
 ret = s
-return(list( ret= ret,globalStructure =globalStructure )) 
+return(list( ret= ret,poped.db =poped.db )) 
 }

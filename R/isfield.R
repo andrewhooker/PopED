@@ -7,6 +7,7 @@
 #' @return Logical. True if the element exists.
 #' 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_isfield.R
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

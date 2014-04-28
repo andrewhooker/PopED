@@ -7,6 +7,7 @@
 #' @return See \code{\link{sample}} 
 #' 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_randperm.R
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

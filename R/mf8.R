@@ -11,45 +11,47 @@
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM for one individual}
-#' \item{globalStructure}{A PopED database}
+#' \item{poped.db}{A PopED database}
 #' 
 #' @seealso Used by \code{\link{mftot7}}.  
 #' @family FIM
 #' 
 #' @references S. Retout and F. Mentre, "Further developments of the Fisher Information Matrix in
 #' nonlinear mixed effects models with evaluation in population pharmacokinetics", J. of Biopharm. Stats., 13(2), 2003.
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+#' @example tests/testthat/examples_fcn_doc/examples_mf8.R
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-mf8 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,globalStructure){
+mf8 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
 
 #Calculate FIM with another parameterization, i$e. the parametrization used
 #in Retout et al but with derivative of variance instead of SD for sigma and the reduced FIM
 
-numnotfixed_bpop = sum(globalStructure$notfixed_bpop)
-numnotfixed_d    = sum(globalStructure$notfixed_d)
-numnotfixed_covd = sum(globalStructure$notfixed_covd)
-numnotfixed_docc  = sum(globalStructure$notfixed_docc)
-numnotfixed_covdocc  = sum(globalStructure$notfixed_covdocc)
-numnotfixed_sigma  = sum(globalStructure$notfixed_sigma)
-numnotfixed_covsigma  = sum(globalStructure$notfixed_covsigma)
+numnotfixed_bpop = sum(poped.db$notfixed_bpop)
+numnotfixed_d    = sum(poped.db$notfixed_d)
+numnotfixed_covd = sum(poped.db$notfixed_covd)
+numnotfixed_docc  = sum(poped.db$notfixed_docc)
+numnotfixed_covdocc  = sum(poped.db$notfixed_covdocc)
+numnotfixed_sigma  = sum(poped.db$notfixed_sigma)
+numnotfixed_covsigma  = sum(poped.db$notfixed_covsigma)
 
 n=size(xt_ind,1)
 ret = 0
 
-for(i in 1:globalStructure$iFOCENumInd){
-    b_ind = globalStructure$b_global[,i,drop=F]
-    bocc_ind = globalStructure$bocc_global[[i]]
+for(i in 1:poped.db$iFOCENumInd){
+    b_ind = poped.db$b_global[,i,drop=F]
+    bocc_ind = poped.db$bocc_global[[i]]
     tmp_fim=zeros(numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
-     returnArgs <-  m1(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,globalStructure) 
+     returnArgs <-  m1(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
 m1_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-     returnArgs <-  m3(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,globalStructure) 
+poped.db <- returnArgs[[2]]
+     returnArgs <-  m3(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
 m3_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-     returnArgs <-  v(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStructure) 
+poped.db <- returnArgs[[2]]
+     returnArgs <-  v(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
 v_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
+poped.db <- returnArgs[[2]]
     invv = inv(v_tmp)
     
     tmp_fim[1:numnotfixed_bpop,1:numnotfixed_bpop]=2*t(m1_tmp)%*%invv%*%m1_tmp
@@ -67,7 +69,7 @@ globalStructure <- returnArgs[[2]]
 
     ret = ret+1/2*tmp_fim
 }
-ret = ret/globalStructure$iFOCENumInd
-return(list( ret= ret,globalStructure=globalStructure)) 
+ret = ret/poped.db$iFOCENumInd
+return(list( ret= ret,poped.db=poped.db)) 
 }
 

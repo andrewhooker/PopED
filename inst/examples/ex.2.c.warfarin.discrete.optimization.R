@@ -109,3 +109,5 @@ mfea.output <- poped_optimize(poped.db,opt_xt=0,opt_a=0,opt_x=1,
                               bUseExchangeAlgorithm=1)
 
 get_rse(mfea.output$fmf,mfea.output$poped.db)
+
+

@@ -29,11 +29,8 @@
 #' }
 #' @family Optimize
 #' 
-#' @examples 
-#' \dontrun{
-#' rs.output <- RS_opt(poped.db)
-#' rs.output <- RS_opt(poped.db,opt_xt=1,opt_a=1,rsit=20,fim.calc.type=0)
-#' }  
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_RS_opt.R
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
@@ -231,8 +228,8 @@ RS_opt <- function(poped.db,
   
   
   # ----------------- RANDOM SEARCH BEGINS HERE
-  itvector = zeros(0,ceil(rsit/rsit_output)+1)
-  dmfvector = zeros(0,ceil(rsit/rsit_output)+1)
+  itvector = zeros(0,ceiling(rsit/rsit_output)+1)
+  dmfvector = zeros(0,ceiling(rsit/rsit_output)+1)
   dmfvector[1] = dmf
   
   if((trflag)){
@@ -290,8 +287,8 @@ RS_opt <- function(poped.db,
       }
       
       if((trflag && (rem(it,rsit_output)==0 || it==rsit))){
-        itvector[ceil(it/rsit_output)+1]=it
-        dmfvector[ceil(it/rsit_output)+1]=dmf
+        itvector[ceiling(it/rsit_output)+1]=it
+        dmfvector[ceiling(it/rsit_output)+1]=dmf
         Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
       }
     }
@@ -365,8 +362,8 @@ RS_opt <- function(poped.db,
         }
         
         if((trflag && (rem(it,rsit_output)==0 || trflag && it==rsit))){
-          itvector[ceil(it/rsit_output)+1]=it
-          dmfvector[ceil(it/rsit_output)+1]=dmf
+          itvector[ceiling(it/rsit_output)+1]=it
+          dmfvector[ceiling(it/rsit_output)+1]=dmf
           # fix so that the iterations are output to summary file.
           Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db,
                  rsit=rsit,opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x)

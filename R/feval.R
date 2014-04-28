@@ -8,6 +8,7 @@
 #' @return Output from the defined function.
 #' 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_feval.R
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

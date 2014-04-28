@@ -11,15 +11,24 @@ ofv_fim(fmf, poped.db, ofv_calc_type = poped.db$ofv_calc_type,
   \item{poped.db}{A poped database}
 
   \item{ofv_calc_type}{OFV calculation type for FIM
-  (1=Determinant of FIM,4=log determinant of
-  FIM,6=determinant of interesting part of FIM (Ds))}
+  \itemize{ \item 1 = "D-optimality". Determinant of the
+  FIM: det(FIM) \item 2 = "A-optimality".  Inverse of the
+  sum of the expected parameter variances:
+  1/trace_matrix(inv(FIM)) \item 4 = "lnD-optimality".
+  Natural logarithm of the determinant of the FIM:
+  log(det(FIM)) \item 6 = "Ds-optimality". Ratio of the
+  Determinant of the FIM and the Determinant of the
+  uninteresting rows and columns of the FIM:
+  det(FIM)/det(FIM_u) \item 7 = Inverse of the sum of the
+  expected parameter RSE:
+  1/sum(get_rse(FIM,poped.db,use_percent=FALSE)) }}
 
   \item{ds_index}{Ds_index is a vector set to 1 if a
   parameter is uninteresting, otherwise 0. size=(1,num
   unfixed parameters). First unfixed bpop, then unfixed d,
   then unfixed docc and last unfixed sigma. Default is the
   fixed effects being important, everything else not
-  important.  Must use in conjunction with
+  important.  Used in conjunction with
   \code{ofv_calc_type=6}.}
 }
 \value{
@@ -30,16 +39,64 @@ Compute a criterion of the FIM given the model, parameters,
 design and methods defined in the PopED database.
 }
 \examples{
-\dontrun{
-evaluate.fim(poped.db)
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
 }
-## Function translated using 'matlab.to.r()'
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+
+## evaluate initial design 
+FIM <- evaluate.fim(poped.db) # new name for function needed
+FIM
+get_rse(FIM,poped.db)
+
+det(FIM)
+ofv_fim(FIM,poped.db,ofv_calc_type=1) # det(FIM)
+ofv_fim(FIM,poped.db,ofv_calc_type=2) # 1/trace_matrix(inv(FIM))
+ofv_fim(FIM,poped.db,ofv_calc_type=4) # log(det(FIM)) 
+ofv_fim(FIM,poped.db,ofv_calc_type=6) # Ds with fixed effects as "important"
+ofv_fim(FIM,poped.db,ofv_calc_type=6,
+        ds_index=c(1,1,1,0,0,0,1,1)) # Ds with random effects as "important"
+ofv_fim(FIM,poped.db,ofv_calc_type=7) # 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
+
 }
 \seealso{
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};

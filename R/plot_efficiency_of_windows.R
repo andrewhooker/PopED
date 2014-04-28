@@ -16,6 +16,9 @@
 #' @family Simulation
 #' @family Graphics
 #' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+#' @example tests/testthat/examples_fcn_doc/examples_plot_efficiency_of_windows.R
+
 
 plot_efficiency_of_windows <- function(poped.db,xt_windows,
                                        iNumSimulations=100,

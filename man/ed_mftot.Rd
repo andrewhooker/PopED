@@ -55,13 +55,77 @@ Compute the expectation of the FIM given the model,
 parameters, distributions of parameter uncertainty, design
 and methods defined in the PopED database.
 }
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+# Adding 10\% Uncertainty to fixed effects (not Favail)
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                      bpop_vals,
+                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value
+bpop_vals_ed["Favail",]  <- c(0,1,0)
+bpop_vals_ed
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=bpop_vals_ed, 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin ed model
+
+# very few samples
+poped.db$ED_samp_size=10
+ed_mftot(model_switch=poped.db$global_model_switch,
+         groupsize=poped.db$groupsize,
+         ni=poped.db$gni,
+         xtoptn=poped.db$gxt,
+         xoptn=poped.db$gx,
+         aoptn=poped.db$ga,
+         bpopdescr=poped.db$gbpop,
+         ddescr=poped.db$gd,
+         covd=poped.db$covd,
+         sigma=poped.db$sigma,
+         docc=poped.db$docc, 
+         poped.db)["ED_ofv"]
+
+  
+}
 \seealso{
-Other E-family: \code{\link{ed_laplace_ofv}};
-\code{\link{evaluate.e.ofv.fim}}
+Other E-family: \code{\link{evaluate.e.ofv.fim}}
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}};
 \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};

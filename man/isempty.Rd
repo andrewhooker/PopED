@@ -15,6 +15,15 @@ is zero.
 \description{
 Function written to match MATLAB's isempty function
 }
+\examples{
+
+isempty(zeros(2,3))
+
+isempty(zeros(2,0))
+
+isempty(c(1,2,3))
+
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

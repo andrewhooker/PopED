@@ -1,42 +1,45 @@
 #' Normalize an objective function by the size of the FIM matrix
 #' 
-#' Compute a criterion of the FIM given the non-normalized FIM, model, parameters, design and methods defined in the 
-#' PopED database. 
+#' Compute a normalized OFV based on the size of the FIM matrix.  This value can then be used in 
+#' efficiency calculations. This is NOT the OFV used in optimization, see \code{\link{ofv_fim}}. 
 #' 
 #' @param ofv_f An objective function
 #' @param num_parameters The number of parameters to use for normalization
 #' @param poped.db a poped database
+#' @inheritParams ofv_fim
 #' 
 #' @return The specified criterion value.
 #' 
 #' @family FIM
 #' 
-#' @examples 
-#' \dontrun{
-#' evaluate.fim(poped.db)
-#' }  
 #' 
-ofv_criterion <- function(ofv_f,num_parameters,poped.db){
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_ofv_criterion.R
+#' 
+ofv_criterion <- function(ofv_f,
+                          num_parameters,
+                          poped.db,
+                          ofv_calc_type=poped.db$ofv_calc_type){
   
   #Input: the ofv
   #Return the single value that should be maximized
   
   criterion_value = 0
   
-  if((poped.db$ofv_calc_type==1 || poped.db$ofv_calc_type==4) ){#D-Optimal Design
+  if((ofv_calc_type==1 || ofv_calc_type==4) ){#D-Optimal Design
     criterion_value = ofv_f^(1/num_parameters)
     return
   }
   
-  if((poped.db$ofv_calc_type==2) ){#A-Optimal Design
+  if((ofv_calc_type==2) ){#A-Optimal Design
     criterion_value=ofv_f/num_parameters
   }
   
-  if((poped.db$ofv_calc_type==3) ){#S-Optimal Design
+  if((ofv_calc_type==3) ){#S-Optimal Design
     stop(sprintf('Criterion for S-optimal design not implemented yet'))
   }
   
-  if((poped.db$ofv_calc_type==6) ){#Ds-Optimal design
+  if((ofv_calc_type==6) ){#Ds-Optimal design
     criterion_value = ofv_f^(1/sum(poped.db$ds_index))
   }   
   

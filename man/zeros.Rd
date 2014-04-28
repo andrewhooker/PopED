@@ -17,6 +17,13 @@ A matrix of zeros.
 Function creates a matrix of zeros of size (dim1 x dim2).
 Written to match MATLAB's \code{zeros} function.
 }
+\examples{
+
+zeros(3)
+zeros(0,3)
+zeros(4,7)
+zeros(1,4)
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

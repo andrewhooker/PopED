@@ -16,11 +16,9 @@
 #' @family E-family
 #' @family evaluate_FIM
 #'  
-#' @examples 
-#' \dontrun{
-#' evaluate.ed.fim(poped.db)
-#' }  
 #' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_ed.R
+#' @example tests/testthat/examples_fcn_doc/examples_evaluate.e.ofv.fim.R
 
 
 evaluate.e.ofv.fim <- function(poped.db,
@@ -78,8 +76,9 @@ evaluate.e.ofv.fim <- function(poped.db,
     E_fim <- output$ED_fim
     E_ofv <- output$ED_ofv
     poped.db=output$globalStructure
-  } else {  
-    E_ofv  <- ed_laplace_ofv(c(),0, 0, model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)      
+  } else { 
+    stop("Laplce method not yet implemented in R version of PopED")
+    #E_ofv  <- ed_laplace_ofv(c(),0, 0, model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)      
   }    
   return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=output$globalStructure))
 }

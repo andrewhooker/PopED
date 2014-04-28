@@ -2,7 +2,7 @@
 #' 
 #' Compute the FIM given specific model(s), parameters, design and methods. 
 #' 
-#' @param globalStructure A PopED database.
+#' @param poped.db A PopED database.
 #' @param bpop The fixed effects parameter values.  Supplied as a vector.
 #' @param d A between subject variability matrix (OMEGA in NONMEM).
 #' @param docc A between occasion variability matrix.
@@ -16,31 +16,32 @@
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM}
-#' \item{globalStructure}{A PopED database}
+#' \item{poped.db}{A PopED database}
 #' 
 #' @seealso For an easier function to use, please see \code{\link{evaluate.fim}}.  
 #' @family FIM
 #' 
-
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_mftot.R
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-mftot <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+mftot <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
     
-    returnArgs <- switch(globalStructure$iFIMCalculationType+1,
-                         mftot0(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure), 
-                         mftot1(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure), 
-                         mftot2(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure),
-                         mftot3(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure), 
-                         mftot4(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure),
-                         mftot5(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure),
-                         mftot6(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure),
-                         mftot7(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure)) 
+    returnArgs <- switch(poped.db$iFIMCalculationType+1,
+                         mftot0(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
+                         mftot1(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
+                         mftot2(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
+                         mftot3(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
+                         mftot4(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
+                         mftot5(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
+                         mftot6(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
+                         mftot7(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db)) 
     
     if(is.null(returnArgs)) stop(sprintf('Unknown FIM-calculation type'))
     ret <- returnArgs[[1]]
-    globalStructure <- returnArgs[[2]]
-    return(list( ret= ret,globalStructure =globalStructure )) 
+    poped.db <- returnArgs[[2]]
+    return(list( ret= ret,poped.db =poped.db )) 
 }

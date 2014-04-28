@@ -94,8 +94,17 @@ evaluate.e.ofv.fim(poped.db, fim.calc.type = NULL, bpop = poped.db$gbpop,
   calculations. 0=Random Sampling, 1=LatinHyperCube --}
 
   \item{ofv_calc_type}{OFV calculation type for FIM
-  (1=Determinant of FIM,4=log determinant of
-  FIM,6=determinant of interesting part of FIM (Ds))}
+  \itemize{ \item 1 = "D-optimality". Determinant of the
+  FIM: det(FIM) \item 2 = "A-optimality".  Inverse of the
+  sum of the expected parameter variances:
+  1/trace_matrix(inv(FIM)) \item 4 = "lnD-optimality".
+  Natural logarithm of the determinant of the FIM:
+  log(det(FIM)) \item 6 = "Ds-optimality". Ratio of the
+  Determinant of the FIM and the Determinant of the
+  uninteresting rows and columns of the FIM:
+  det(FIM)/det(FIM_u) \item 7 = Inverse of the sum of the
+  expected parameter RSE:
+  1/sum(get_rse(FIM,poped.db,use_percent=FALSE)) }}
 
   \item{ED_samp_size}{Sample size for E-family sampling}
 }
@@ -113,20 +122,72 @@ the function, if they are supplied then they are used
 instead of the arguments from the PopED database.
 }
 \examples{
-\dontrun{
-evaluate.ed.fim(poped.db)
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
 }
+
+# Adding 10\% Uncertainty to fixed effects (not Favail)
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                      bpop_vals,
+                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value
+bpop_vals_ed["Favail",]  <- c(0,1,0)
+bpop_vals_ed
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=bpop_vals_ed, 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin ed model
+
+## ED evaluate (with very few samples)
+output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=10)
+output$E_ofv
+
+## API evaluate (with very few samples)
+output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=10,ofv_calc_type=4)
+output$E_ofv
+
 }
 \seealso{
-Other E-family: \code{\link{ed_laplace_ofv}};
-\code{\link{ed_mftot}}
+Other E-family: \code{\link{ed_mftot}}
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
-\code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
-\code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.fim}};
+\code{\link{gradf_eps}}; \code{\link{mf3}};
+\code{\link{mf5}}; \code{\link{mf6}}; \code{\link{mf7}};
+\code{\link{mf8}}; \code{\link{mftot0}};
 \code{\link{mftot1}}; \code{\link{mftot2}};
 \code{\link{mftot3}}; \code{\link{mftot4}};
 \code{\link{mftot5}}; \code{\link{mftot6}};

@@ -16,6 +16,9 @@
 #'  
 #' @family FIM
 #'     
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_LinMatrixH.R
+#' 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
@@ -51,6 +54,9 @@ LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
 #' @return A matrix of size (samples per individual x number of epsilons) 
 #'  
 #' @family FIM
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_gradf_eps.R
+#' 
 gradf_eps <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,num_eps,poped.db){
   #----------Model linearization with respect to epsilon.
   #

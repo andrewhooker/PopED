@@ -11,7 +11,7 @@ if((!bGrouped)){
         for(j in 1:size(discrete_x,2)){
             discrete_val = discrete_x[[i,j]]
             max_index = length(discrete_val)
-            x[i,j] = discrete_val[ceil(max_index*rand(1,1))]
+            x[i,j] = discrete_val[ceiling(max_index*rand(1,1))]
         }
     }
 } else {
@@ -30,7 +30,7 @@ for(k in 1:max(max(Gx))){
               }
               discrete_val = discrete_x[[i,j]]
               max_index = length(discrete_val)
-              x[i,j] = discrete_val[ceil(max_index*random_num)]
+              x[i,j] = discrete_val[ceiling(max_index*random_num)]
           }
        }
     }

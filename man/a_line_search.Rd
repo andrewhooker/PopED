@@ -2,37 +2,121 @@
 \alias{a_line_search}
 \title{Optimize using line search}
 \usage{
-a_line_search(out_file, bED, diff, temp_mf, temp_detmf, globalStructure)
+a_line_search(poped.db, out_file = "", bED = FALSE, diff = 0,
+  fmf_initial = 0, dmf_initial = 0, opt_xt = poped.db$optsw[2],
+  opt_a = poped.db$optsw[4], opt_x = poped.db$optsw[3],
+  opt_samps = poped.db$optsw[1], opt_inds = poped.db$optsw[5],
+  ls_step_size = poped.db$ls_step_size)
 }
 \arguments{
   \item{out_file}{The output file to write to.}
 
-  \item{diff}{The stopping criteria for the algorithm.  If,
-  after one iteration the difference in OFV is less than
-  \code{diff} then the algorithm stops.}
+  \item{diff}{The OFV difference that is deemed significant
+  for changing a design.  If, by changing a design variable
+  the difference between the new and old OFV is less than
+  \code{diff} the change is not made.}
 
-  \item{temp_mf}{The initial value of the FIM.}
+  \item{fmf_initial}{The initial value of the FIM. If
+  \code{0} then the FIM is calculated from poped.db.}
 
-  \item{temp_detmf}{The initial value of the det(FIM).}
+  \item{dmf_initial}{The initial value of the objective
+  function value (OFV). If \code{0} then the OFV is
+  calculated from poped.db.}
 
-  \item{globalStructure}{A PopED database.}
+  \item{poped.db}{A PopED database.}
 
   \item{bED}{If the algorithm should use E-family methods.
   Logical.}
+
+  \item{opt_xt}{Should the sample times be optimized?}
+
+  \item{opt_a}{Should the continuous design variables be
+  optimized?}
+
+  \item{opt_x}{Should the discrete design variables be
+  optimized?}
+
+  \item{ls_step_size}{Number of grid points in the line
+  search}
+
+  \item{opt_samps}{Are the nuber of sample times per group
+  being optimized?}
+
+  \item{opt_inds}{Are the nuber of individuals per group
+  being optimized?}
 }
 \value{
 A list containing: \item{fmf}{The FIM.} \item{dmf}{The
-determinant of the FIM.} \item{best_changed}{If the
-algorithm has found a better design than the starting
-design.} \item{xt}{A matrix of sample times.  Each row is a
-vector of sample times for a group.} \item{x}{A matrix for
-the discrete design variables.  Each row is a group.}
-\item{a}{A matrix of covariates.  Each row is a group.}
-\item{globalStructure}{A PopED database.}
+final value of the objective function value.}
+\item{best_changed}{If the algorithm has found a better
+design than the starting design.} \item{xt}{A matrix of
+sample times.  Each row is a vector of sample times for a
+group.} \item{x}{A matrix for the discrete design
+variables.  Each row is a group.} \item{a}{A matrix of
+covariates.  Each row is a group.} \item{poped.db}{A PopED
+database.}
 }
 \description{
 The function performs a grid search sequatially along
-design variables.
+design variables.  The grid is defined by ls_step_size.
+}
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimization model 
+
+# should give a warning
+output <- a_line_search(poped.db)
+
+# very sparse grid to evaluate (4 points for each design valiable)
+output <- a_line_search(poped.db,opt_xt=TRUE,ls_step_size=4)
+
+\dontrun{  
+  
+  # longer run time
+  output <- a_line_search(poped.db,opt_xt=TRUE)
+  
+  # output to a text file
+  output <- a_line_search(poped.db,opt_xt=TRUE,out_file="tmp.txt")
+  
+}
+
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}}; \code{\link{RS_opt}};

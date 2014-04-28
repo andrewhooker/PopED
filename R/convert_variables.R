@@ -8,6 +8,7 @@
 #' @param poped.db A PopED database 
 #' @return A PopED database
 #' @family poped_input
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 
 
 ## Function translated using 'matlab.to.r()'

@@ -16,6 +16,19 @@ Funtion to stop a timer.  Start with tic().
 This is a modified version of the same function in the
 matlab package \code{\link[matlab]{toc}}
 }
+\examples{
+
+tic()
+toc()
+
+tic(name="foo")
+toc()
+tic()
+toc()
+toc()
+tic()
+toc(name="foo")
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

@@ -14,6 +14,12 @@ See \code{\link{sample}}
 \description{
 A wrapper for the \code{\link{sample}} function.
 }
+\examples{
+
+randperm(c(2,3,4,5,6))
+
+randperm(10)
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

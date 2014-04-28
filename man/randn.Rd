@@ -18,6 +18,12 @@ Matrix of random generated samples.
 Generate random samples from a standardized normal
 distribution and return in matrix form.
 }
+\examples{
+
+randn(2,3)
+
+randn(5)
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

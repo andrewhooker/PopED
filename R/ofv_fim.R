@@ -5,6 +5,16 @@
 #' 
 #' @param fmf The FIM
 #' @param poped.db A poped database
+#' @param ofv_calc_type  OFV calculation type for FIM
+#' \itemize{ 
+#' \item 1 = "D-optimality". Determinant of the FIM: det(FIM)
+#' \item 2 = "A-optimality".  Inverse of the sum of the expected parameter variances: 
+#' 1/trace_matrix(inv(FIM)) 
+#' \item 4 = "lnD-optimality".  Natural logarithm of the determinant of the FIM: log(det(FIM)) 
+#' \item 6 = "Ds-optimality". Ratio of the Determinant of the FIM and the Determinant of the uninteresting
+#' rows and columns of the FIM: det(FIM)/det(FIM_u)
+#' \item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
+#' }
 #' @inheritParams RS_opt
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
@@ -14,11 +24,10 @@
 #' @family FIM
 #' @family evaluate_FIM
 #' 
-#' @examples 
-#' \dontrun{
-#' evaluate.fim(poped.db)
-#' }  
-#' ## Function translated using 'matlab.to.r()'
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_ofv_fim.R
+
+## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
@@ -28,6 +37,9 @@ ofv_fim <- function(fmf,poped.db,
   
   #Input: the FIM
   #Return the single value that should be maximized
+  
+  ## create ds_index vector if not already done
+  if(!is.matrix(ds_index)) ds_index <- matrix(ds_index,1,length(ds_index))
   
   ofv_value = 0
   

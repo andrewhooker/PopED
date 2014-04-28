@@ -8,6 +8,8 @@
 #' @note This is a modified version of the same function in the matlab package \code{\link[matlab]{tic}}
 #' 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_tic.R
+
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

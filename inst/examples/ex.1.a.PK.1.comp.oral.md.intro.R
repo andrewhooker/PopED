@@ -69,16 +69,34 @@ det(FIM)
 get_rse(FIM,poped.db)
 
 # RS+SG+LS optimization of sample times
+# optimization with just a few iterations
+# only to check that things are working
+output <- poped_optimize(poped.db,opt_xt=T,
+                         rsit=5,sgit=5,ls_step_size=5)
+
+# RS+SG+LS optimization of sample times 
+# (longer optimization time than above)
 output <- poped_optimize(poped.db,opt_xt=T)
 get_rse(output$fmf,output$poped.db)
 plot_model_prediction(output$poped.db,IPRED=F,DV=F)
 
 # RS+SG+LS optimization of sample times and doses
+# just a few samples to test things
+output <- poped_optimize(poped.db,opt_xt=T,opt_a=T,
+                         rsit=5,sgit=5,ls_step_size=5)
+get_rse(output$fmf,output$poped.db)
+plot_model_prediction(output$poped.db,IPRED=F,DV=F)
+
+
+# RS+SG+LS optimization of sample times and doses
+# (longer optimization)
 output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
 get_rse(output$fmf,output$poped.db)
 plot_model_prediction(output$poped.db,IPRED=F,DV=F)
 
+
 # MFEA optimization with only integer times allowed
+# faster optimization in this case
 mfea.output <- poped_optimize(poped.db,opt_xt=1,
                               bUseExchangeAlgorithm=1,
                               EAStepSize=1)

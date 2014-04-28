@@ -18,7 +18,10 @@
 #' @export
 # @keywords internal
 #' @family Optimize
-
+#' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_bfgsb_min.R
+#' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

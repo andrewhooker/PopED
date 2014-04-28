@@ -19,6 +19,10 @@
 #' @family evaluate_design
 #' @family Simulation
 #' 
+#' @example tests/testthat/examples_fcn_doc/examples_model_prediction.R
+#' 
+
+#' 
 ## allow for input not from poped.db
 model_prediction <- function(poped.db,
                              models_to_use="all",
@@ -242,6 +246,9 @@ model_prediction <- function(poped.db,
 #' @family Simulation
 #' @family Graphics
 #' 
+#' @example tests/testthat/examples_fcn_doc/examples_plot_model_prediction.R
+#' 
+
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,

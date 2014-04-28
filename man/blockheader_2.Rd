@@ -6,14 +6,25 @@ blockheader_2(name, iter, poped.db, e_flag = FALSE,
   opt_xt = poped.db$optsw[2], opt_a = poped.db$optsw[4],
   opt_x = poped.db$optsw[4], opt_samps = poped.db$optsw[1],
   opt_inds = poped.db$optsw[5], fmf = 0, dmf = 0, bpop = NULL,
-  d = NULL, docc = NULL, sigma = NULL, ...)
+  d = NULL, docc = NULL, sigma = NULL,
+  name_header = poped.db$strOutputFileName,
+  file_path = poped.db$strOutputFilePath, ...)
 }
 \arguments{
   \item{name}{The name used for the output file. Combined
-  with \code{iter} and some other text.}
+  with \code{name_header} and \code{iter}. If \code{""}
+  then output is to the screen.}
 
   \item{iter}{The last number in the name printed to the
   output file, combined with \code{name}.}
+
+  \item{name_header}{The initial portion of the file name.}
+
+  \item{file_path}{The path to where the file should be
+  created.}
+
+  \item{...}{Additional arguments passed to further
+  functions.}
 
   \item{poped.db}{A PopED database.}
 
@@ -30,9 +41,6 @@ blockheader_2(name, iter, poped.db, e_flag = FALSE,
 
   \item{dmf}{The inital OFV. If set to zero then it is
   computed.}
-
-  \item{...}{arguments passed to \code{\link{evaluate.fim}}
-  and \code{\link{ofv_fim}}.}
 
   \item{e_flag}{Shuould output be with uncertainty around
   parameters?}
@@ -65,14 +73,83 @@ blockheader_2(name, iter, poped.db, e_flag = FALSE,
   model. can also just supply the diagnonal parameter
   values (variances) as a \code{c()}.}
 }
+\value{
+fn A file handle (or \code{''} if \code{name=''})
+}
 \description{
 Create some output to the screen and a text file that
 summarizes the problem you are tying to solve.
 }
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimization model 
+
+
+FIM <- evaluate.fim(poped.db) 
+dmf <- det(FIM)
+
+blockheader_2(name="",iter=1,poped.db)
+
+
+blockheader_2(name='',
+              iter=1,
+              poped.db,
+              e_flag=FALSE,
+              opt_xt=TRUE,
+              opt_a=TRUE,opt_x=poped.db$optsw[4],
+              opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+              fmf=FIM,dmf=dmf,
+              bpop=poped.db$param.pt.val$bpop,
+              d=poped.db$param.pt.val$d,
+              docc=poped.db$docc,sigma=poped.db$param.pt.val$sigma)
+
+
+
+
+  
+  
+
+
+}
 \seealso{
 Other Helper: \code{\link{blockexp}};
-\code{\link{blockfinal_2}}; \code{\link{blockfinal}};
-\code{\link{blockheader}}; \code{\link{blockopt_2}};
-\code{\link{blockopt}}
+\code{\link{blockfinal_2}}; \code{\link{blockopt_2}}
 }
 

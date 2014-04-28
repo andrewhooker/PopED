@@ -34,11 +34,12 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
   return(list(y=y,poped.db=poped.db)) 
 }
 
-# Adding 10% Uncertainty to all fixed effects
+# Adding 10% Uncertainty to all fixed effects (not Favail)
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
 bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
                       bpop_vals,
                       ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+bpop_vals_ed["Favail",] <- c(0,1,0)
 bpop_vals_ed
 
 
@@ -59,12 +60,9 @@ poped.db <- create.poped.database(ff_file="ff",
                                   maxa=100,
                                   ED_samp_size=20)
 
-## ED evaluate. with MC and random sampling
-output <- evaluate.e.ofv.fim(poped.db)
-output$E_ofv
-output$E_fim
-
-output <- evaluate.e.ofv.fim(poped.db,bLHS=1)
+## ED evaluate.
+## increase ED_samp_size for a more accurate calculation
+output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=20)
 output$E_ofv
 output$E_fim
 
@@ -75,5 +73,4 @@ mfea.output <- poped_optimize(poped.db,
                               EAStepSize=1,
                               ofv_calc_type=4,
                               d_switch=0)
-
 

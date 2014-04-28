@@ -4,11 +4,12 @@
 #' @param covariance_vector A vector of the covariances. Writen in row major 
 #'   order for the lower triangular matrix.
 #' @return The full matrix of variances for the between subject variances
+#' @example tests/testthat/examples_fcn_doc/examples_getfulld.R
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-getfulld <- function(variance_vector,covariance_vector){
+getfulld <- function(variance_vector,covariance_vector=NULL){
 
 if((isempty(covariance_vector) || sum(covariance_vector!=0)==0)){
     d=diag_matlab(variance_vector)

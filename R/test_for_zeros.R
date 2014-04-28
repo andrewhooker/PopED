@@ -9,6 +9,7 @@
 #' @param ourzero A matrix the same size as mat with the  value that zero should be reassigned to.
 #' @return A matrix 
 #' @family matrix_manipulation 
+#' @example tests/testthat/examples_fcn_doc/examples_test_for_zeros.R
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

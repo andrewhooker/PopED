@@ -12,6 +12,7 @@
 #' @return Either a diagonal matrix or the diagonal of a matrix.
 #' @family MATLAB
 #' @family matrix_manipulation
+#' @example tests/testthat/examples_fcn_doc/examples_diag_matlab.R
 
 diag_matlab <- function(mat){
     dim.mat <- dim(mat)

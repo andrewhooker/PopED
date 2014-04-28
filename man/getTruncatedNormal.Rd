@@ -17,4 +17,10 @@ distribution
 Generate a random sample from a truncated normal
 distribution.
 }
+\examples{
+
+getTruncatedNormal(mean=3,variance=100)
+
+
+}
 

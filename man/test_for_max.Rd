@@ -18,6 +18,15 @@ Function tests is any matrix element is above a maximum
 value.  For those elements the function sets those values
 to the maximum value.
 }
+\examples{
+
+test_for_max(cbind(2,3,4,5,6),cbind(4,4,4,4,4))
+
+test_for_max(ones(6)*45,ones(6)*40)
+
+
+
+}
 \seealso{
 Other matrix_manipulation: \code{\link{diag_matlab}};
 \code{\link{test_for_min}}; \code{\link{test_for_zeros}}

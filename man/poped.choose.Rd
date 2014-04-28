@@ -13,6 +13,14 @@ poped.choose(arg1, arg2)
 Function chooses \code{arg1} unless it is \code{NULL} in
 which case \code{arg2} is chosen.
 }
+\examples{
+
+poped.choose(2,5)
+
+poped.choose("foo",66)
+
+poped.choose(NULL,"hello")
+}
 \seealso{
 Other poped_input: \code{\link{convert_variables}};
 \code{\link{create.poped.database}};

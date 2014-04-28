@@ -14,6 +14,8 @@
 #' 
 #' @family Helper
 #' @export
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_blockfinal_2.R
 # @keywords internal
 #' 
 ## Function translated using 'matlab.to.r()'
@@ -28,7 +30,7 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
   time_value = toc(echo=FALSE,name=".poped_total_time")
   if((opt_xt==TRUE)){
     print_xt(xt,ni,model_switch,fn,head_txt="Optimized Sampling Schedule\n")
-    print_xt(xt,ni,model_switch,head_txt="\nOptimized Sampling Schedule\n")
+    if(fn!="") print_xt(xt,ni,model_switch,head_txt="\nOptimized Sampling Schedule\n")
   }
   if((opt_x==TRUE)){
     #     fprintf(fn,'x :\n')
@@ -89,7 +91,6 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
   }
   fprintf(fn,'\ndet(FIM) = %g\n',dmf)
   
-  
   param_vars=diag_matlab(inv(fmf))
   returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
   params <- returnArgs[[1]]
@@ -97,18 +98,18 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
 
   fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
   fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
-  fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
+  if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
   
   
   parnam <- get_parnam(poped.db)
-  fprintf(fn,'\nExpected parameter variance and relative standard error (%sRSE)\n','%')
-  fprintf('\nExpected parameter variance and relative standard error (%sRSE)\n','%')
+  fprintf(fn,'\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
+  if(fn!="") fprintf('\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
   df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, "RSE"=t(param_cvs*100),"RSE_initial_design"=t(param_cvs_init*100))
   print(df,digits=3, print.gap=3,row.names=F)
-  capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
+  if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
   
   fprintf(fn,'\nTotal running time: %g seconds\n',time_value)
-  fprintf('\nTotal running time: %g seconds\n',time_value)
+  if(fn!="") fprintf('\nTotal running time: %g seconds\n',time_value)
   
   return( ) 
 }

@@ -69,8 +69,12 @@ get_rse(FIM,poped.db)
 
 # below are a number of ways to optimize the problem
 
-
 # RS+SG+LS optimization of sample times
+# optimization with just a few iterations
+output <- poped_optimize(poped.db,opt_xt=T,
+                         rsit=5,sgit=5,ls_step_size=5)
+
+# RS+SG+LS optimization of sample times (longer optimization times)
 output <- poped_optimize(poped.db,opt_xt=T)
 get_rse(output$fmf,output$poped.db)
 plot_model_prediction(output$poped.db)

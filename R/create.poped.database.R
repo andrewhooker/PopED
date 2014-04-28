@@ -95,10 +95,18 @@
 #' \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
 #' D-family design (1) or ED-familty design (0) (with or without parameter uncertainty) 
 #' @param ofv_calc_type  OFV calculation type for FIM 
-#' (1=Determinant of FIM,4=log determinant of FIM,6=determinant of interesting part of FIM (Ds))
+#' \itemize{ 
+#' \item 1 = "D-optimality". Determinant of the FIM: det(FIM)
+#' \item 2 = "A-optimality".  Inverse of the sum of the expected parameter variances: 
+#' 1/trace_matrix(inv(FIM)) 
+#' \item 4 = "lnD-optimality".  Natural logarithm of the determinant of the FIM: log(det(FIM)) 
+#' \item 6 = "Ds-optimality". Ratio of the Determinant of the FIM and the Determinant of the uninteresting
+#' rows and columns of the FIM: det(FIM)/det(FIM_u)
+#' \item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
+#' }
 #' @param ds_index Ds_index is a vector set to 1 if a parameter is uninteresting, otherwise 0.
 #' size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma. 
-#' Default is the fixed effects being important, everything else not important.  Must use in conjunction with
+#' Default is the fixed effects being important, everything else not important.  Used in conjunction with
 #' \code{ofv_calc_type=6}.
 #' @param strEDPenaltyFile Penalty function name or path and filename, empty string means no penalty.  
 #' User defined criterion can be defined this way.
@@ -246,31 +254,8 @@
 #' @return A PopED database
 #' @family poped_input
 #' 
-#' @examples 
-#' \dontrun{
-#' source("warfarin.POPED.R")
-#' poped.db <- create.poped.database(warfarin.input())
+#' @example tests/testthat/examples_fcn_doc/examples_create.poped.database.R
 #' 
-#' poped.db.1 <- create.poped.database(list(),
-#'                                     ff_file="ff.1.comp.oral.md",
-#'                                    fError_file="feps.add.prop",
-#'                                    groupsize=20,
-#'                                    sigma=sigma_vals,
-#'                                    bpop=bpop_vals,  
-#'                                    notfixed_bpop=notfixed_bpop,
-#'                                    notfixed_sigma=notfixed_sigma,
-#'                                    d=d_vals, 
-#'                                    xt=c( 1,2,8,16,24),
-#'                                    maxxt=336, 
-#'                                    minxt=0, 
-#'                                    a=20,
-#'                                    maxa=200,
-#'                                    mina=0,
-#'                                    modtit='One comp, oral dose' 
-#'                                    )  
-#' }  
-#' 
-
 
 create.poped.database <- 
   function(popedInput=list(),
@@ -511,9 +496,9 @@ create.poped.database <-
            ## -- The seed number used for optimization and sampling -- integer or -1 which creates a random seed
            dSeed=poped.choose(popedInput$dSeed,-1),
            ## -- Vector for line search on continuous design variables (1=TRUE,0=FALSE) --
-           line_opta=poped.choose(popedInput$line_opta,TRUE),
+           line_opta=poped.choose(popedInput$line_opta,ones(1,na)),
            ## -- Vector for line search on discrete design variables (1=TRUE,0=FALSE) --
-           line_optx=poped.choose(popedInput$line_optx,TRUE), #matrix(0,0,1)           
+           line_optx=poped.choose(popedInput$line_optx,ones(1,nx)), #matrix(0,0,1)           
            ## -- Use graph output during search --
            bShowGraphs=poped.choose(popedInput$bShowGraphs,FALSE),
            ## -- If a log file should be used (0=FALSE, 1=TRUE) --
@@ -645,7 +630,7 @@ create.poped.database <-
            bParallelMFEA=poped.choose(popedInput$parallelSettings$bParallelMFEA,FALSE),
            ## -- If the line search is going to be executed in parallel --
            bParallelLS=poped.choose(popedInput$parallelSettings$bParallelLS,FALSE)
-           ){
+  ){
     
     poped.db <- list()
     
@@ -999,22 +984,10 @@ create.poped.database <-
       
       
       if((poped.db$d_switch)){
-        poped.db$b_global = 
-          pargen(
-            matrix(
-              c(
-                bones,
-                bzeros,
-                d[,2]),nrow=1,byrow=T),
-            0,
-            max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),
-            poped.db$bLHS,
-            t(zeros(1,0)),
-            poped.db)
-        
+        poped.db$b_global = t(rmvnorm(max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
         for(i in 1:poped.db$iFOCENumInd){
           poped.db$bocc_global[[i]]=zeros(size(docc,1),poped.db$NumOcc)
-          poped.db$bocc_global[[i]]=pargen(matrix(c(boccones,bocczeros,docc[,2,drop=F]),nrow=1,byrow=T),0,poped.db$NumOcc,poped.db$bLHS,t(zeros(1,0)),poped.db)
+          poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=fulldocc))
         }
       } else {
         d_dist=pargen(d,poped.db$user_distribution_pointer,max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),poped.db$bLHS,zeros(1,0),poped.db)
@@ -1022,32 +995,15 @@ create.poped.database <-
         
         if((!isempty(d_dist))){
           for(i in 1:max(poped.db$iFOCENumInd,iMaxCorrIndNeeded)){
-            tmp_d_dist = 
-              matrix(
-                c(matrix(1,length(d[,2]),1),
-                  t(zeros(length(d[,2]),1)),d_dist(i,)),nrow=1,byrow=T)
-            poped.db$b_global[,i] = pargen(tmp_d_dist,poped.db$user_distribution_pointer,1,poped.db$bLHS,i,poped.db)
+            poped.db$b_global[,i] = t(rmvnorm(1,sigma=getfulld(d_dist[i,],poped.db$covd)))
           }
         }
         
         if((!isempty(docc_dist))){
           for(i in 1:poped.db$iFOCENumInd){
-            tmp_docc_dist = 
-              matrix(
-                c(
-                  matrix(1,length(docc[,2,drop=F]),1),
-                  t(zeros(length(docc[,2,drop=F]),1)),docc_dist(i,)),nrow=1,byrow=T)
-            poped.db$bocc_global[[i]]=t(pargen(tmp_docc_dist,poped.db$user_distribution_pointer,poped.db$NumOcc,poped.db$bLHS,i,poped.db))
+            poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=getfulld(docc_dist[i,],poped.db$covdocc)))
           }
         }
-      }
-      
-      #We can use the same correlateSamples for ED because the correlation
-      #matrix for the different Omegas is the same
-      poped.db$b_global = t(correlateSamples(poped.db$b_global,fulld))
-      #Add correlation for bocc
-      for(i in 1:length(poped.db$bocc_global)){
-        poped.db$bocc_global[[i]]= t(correlateSamples(poped.db$bocc_global[[i]],fulldocc))
       }
       
     } else {
@@ -1196,6 +1152,9 @@ create.poped.database <-
 #' 
 #' @family poped_input
 #' 
+#' 
+#' @example tests/testthat/examples_fcn_doc/examples_poped.choose.R
+
 poped.choose <- function(arg1,arg2){
   #ifelse(!is.null(arg1), arg1, arg2)
   if(!is.null(arg1)){

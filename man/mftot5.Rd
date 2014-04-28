@@ -2,8 +2,7 @@
 \alias{mftot5}
 \title{The full Fisher Information Matrix (FIM) parameterized with A,B,C matrices & using the derivative of variance.}
 \usage{
-mftot5(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
-  globalStructure)
+mftot5(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc, poped.db)
 }
 \arguments{
   \item{model_switch}{A matrix that is the same size as xt,
@@ -34,11 +33,11 @@ mftot5(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
 
   \item{docc}{A between occasion variability matrix.}
 
-  \item{globalStructure}{A PopED database.}
+  \item{poped.db}{A PopED database.}
 }
 \value{
-As a list: \item{ret}{The FIM} \item{globalStructure}{A
-PopED database}
+As a list: \item{ret}{The FIM} \item{poped.db}{A PopED
+database}
 }
 \description{
 Compute the full FIM given specific model(s), parameters,
@@ -47,6 +46,62 @@ calculation using A,B,C matrices (as in Retout \emph{et
 al.}) but uses the derivative of variances. Should give the
 same answer as \code{\link{mftot0}} but computation times
 may be different.
+}
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimization model
+
+
+
+mftot5(model_switch=poped.db$global_model_switch,
+      groupsize=poped.db$groupsize,
+      ni=poped.db$gni,
+      xt=poped.db$gxt,
+      x=poped.db$gx,
+      a=poped.db$ga,
+      bpop=poped.db$param.pt.val$bpop,
+      d=poped.db$param.pt.val$d,
+      sigma=poped.db$sigma,
+      docc=poped.db$param.pt.val$docc,
+      poped.db)["ret"]
+
 }
 \references{
 S. Retout and F. Mentre, "Further developments of the
@@ -60,8 +115,7 @@ For an easier function to use, please see
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};

@@ -17,6 +17,11 @@ A matrix of ones
 Function creates a matrix of ones of size (dim1 x dim2).
 Written to match MATLAB's \code{ones} function.
 }
+\examples{
+
+ones(4)
+ones(3,4)
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

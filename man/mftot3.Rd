@@ -2,8 +2,7 @@
 \alias{mftot3}
 \title{The Fisher Information Matrix (FIM) some other method}
 \usage{
-mftot3(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
-  globalStructure)
+mftot3(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc, poped.db)
 }
 \arguments{
   \item{model_switch}{A matrix that is the same size as xt,
@@ -34,7 +33,7 @@ mftot3(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
 
   \item{docc}{A between occasion variability matrix.}
 
-  \item{globalStructure}{A PopED database.}
+  \item{poped.db}{A PopED database.}
 }
 \description{
 Compute the FIM using some other method given specific
@@ -47,8 +46,7 @@ For an easier function to use, please see
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};

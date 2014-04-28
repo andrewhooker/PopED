@@ -10,6 +10,8 @@
 #' \item{sigma}{A vector of the resudual unexplained variances (RUV)}
 #' \item{covsigma}{A vector of the covariances between the RUV terms}
 #' \item{all}{A vector with all of the above, in the order of this list.}
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+#' @example tests/testthat/examples_fcn_doc/examples_get_all_params.R
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

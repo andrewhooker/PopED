@@ -9,7 +9,8 @@
 #' @note This is a modified version of the same function in \code{\link[matlab]{cell}}
 #' @family MATLAB
 #' 
-
+#' @example tests/testthat/examples_fcn_doc/examples_cell.R
+#' 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

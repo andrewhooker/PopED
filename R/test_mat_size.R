@@ -3,6 +3,7 @@
 #' @param correct_size the correct size of a matrix
 #' @param mat The matrix to test.
 #' @param name The name of the matrix as a string.
+#' @example tests/testthat/examples_fcn_doc/examples_test_mat_size.R
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

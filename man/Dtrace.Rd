@@ -6,7 +6,7 @@ Dtrace(fn, it, ni, xtopt, xopt, aopt, gxt, ga, dmf, diff, ixt, ia, itvector,
   dmfvector, poped.db, opt_xt = poped.db$optsw[2],
   opt_a = poped.db$optsw[4], opt_x = poped.db$optsw[3],
   opt_samps = poped.db$optsw[1], opt_inds = poped.db$optsw[5],
-  rsit = poped.db$rsit)
+  rsit = poped.db$rsit, convergence_eps = poped.db$convergence_eps)
 }
 \arguments{
   \item{fn}{A file to output information to. Can also be
@@ -14,20 +14,20 @@ Dtrace(fn, it, ni, xtopt, xopt, aopt, gxt, ga, dmf, diff, ixt, ia, itvector,
 
   \item{it}{the interation number.}
 
-  \item{xtopt}{The matrix defining optimal sampling
+  \item{xtopt}{The matrix defining current best sampling
   schedule.}
 
-  \item{xopt}{The cell structure defining the optimal
+  \item{xopt}{The cell structure defining the current best
   discrete design variables.}
 
-  \item{aopt}{The matrix defining the optimal continuous
-  design variables.}
+  \item{aopt}{The matrix defining the current best
+  continuous design variables.}
 
-  \item{gxt}{The matrix defining the current sampling
-  schedule.}
+  \item{gxt}{The matrix defining the current gradient of
+  the xt vector.}
 
-  \item{ga}{The matrix defining the current continuous
-  design variables.}
+  \item{ga}{The matrix defining the current gradient for
+  the continuous design variables.}
 
   \item{dmf}{The current OFV.}
 
@@ -37,9 +37,10 @@ Dtrace(fn, it, ni, xtopt, xopt, aopt, gxt, ga, dmf, diff, ixt, ia, itvector,
 
   \item{ia}{If a Gradient Inversion Occured or not.}
 
-  \item{itvector}{The iteration vector}
+  \item{itvector}{The iteration vector.  Not currently
+  used.}
 
-  \item{dmfvector}{The dmf vector.}
+  \item{dmfvector}{The dmf vector. Not currently used.}
 
   \item{opt_samps}{Are the nuber of sample times per group
   being optimized?}
@@ -61,9 +62,151 @@ Dtrace(fn, it, ni, xtopt, xopt, aopt, gxt, ga, dmf, diff, ixt, ia, itvector,
   \item{poped.db}{A PopED database.}
 
   \item{rsit}{Number of Random search iterations}
+
+  \item{convergence_eps}{Stoachstic Gradient convergence
+  value, (difference in OFV for D-optimal, difference in
+  gradient for ED-optimal)}
 }
 \description{
 A helper function for writing output to the screen and
 files when optimizing.
+}
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimization model 
+
+
+FIM <- evaluate.fim(poped.db) 
+dmf <- det(FIM)
+
+Dtrace(fn="",
+       it=1,
+       ni=poped.db$gni,
+       xtopt=poped.db$gxt,
+       xopt=poped.db$gx,
+       aopt=poped.db$ga,
+       gxt=0,ga=0,
+       dmf=dmf,diff=3,
+       ixt=FALSE,
+       ia=FALSE, 
+       itvector=NULL,
+       dmfvector=NULL,
+       poped.db,
+       opt_xt=poped.db$optsw[2],
+       opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
+       opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+       rsit=200)
+
+Dtrace(fn="",
+       it=1,
+       ni=poped.db$gni,
+       xtopt=poped.db$gxt,
+       xopt=poped.db$gx,
+       aopt=poped.db$ga,
+       gxt=0,ga=0,
+       dmf=dmf,diff=3,
+       ixt=FALSE,
+       ia=FALSE, 
+       itvector=NULL,
+       dmfvector=NULL,
+       poped.db,
+       opt_xt=poped.db$optsw[2],
+       opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
+       opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+       rsit=0)
+
+Dtrace(fn="",
+       it=1,
+       ni=poped.db$gni,
+       xtopt=poped.db$gxt,
+       xopt=poped.db$gx,
+       aopt=poped.db$ga,
+       gxt=0,ga=0,
+       dmf=dmf,diff=3,
+       ixt=FALSE,
+       ia=FALSE, 
+       itvector=NULL,
+       dmfvector=NULL,
+       poped.db,
+       opt_xt=poped.db$optsw[2],
+       opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
+       opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+       rsit=1)
+
+Dtrace(fn="",
+       it=1,
+       ni=poped.db$gni,
+       xtopt=poped.db$gxt,
+       xopt=poped.db$gx,
+       aopt=poped.db$ga,
+       gxt=0,ga=0,
+       dmf=dmf,
+       diff=0,
+       ixt=FALSE,
+       ia=FALSE, 
+       itvector=NULL,
+       dmfvector=NULL,
+       poped.db,
+       opt_xt=poped.db$optsw[2],
+       opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
+       opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+       rsit=1)
+
+Dtrace(fn="",
+       it=5,
+       ni=poped.db$gni,
+       xtopt=poped.db$gxt,
+       xopt=poped.db$gx,
+       aopt=poped.db$ga,
+       gxt=0,ga=0,
+       dmf=dmf,
+       diff=0,
+       ixt=FALSE,
+       ia=FALSE, 
+       itvector=NULL,
+       dmfvector=NULL,
+       poped.db,
+       opt_xt=poped.db$optsw[2],
+       opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
+       opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+       rsit=1)
+
 }
 

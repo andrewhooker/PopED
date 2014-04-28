@@ -124,8 +124,17 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   parameter values as a \code{c()}.}
 
   \item{ofv_calc_type}{OFV calculation type for FIM
-  (1=Determinant of FIM,4=log determinant of
-  FIM,6=determinant of interesting part of FIM (Ds))}
+  \itemize{ \item 1 = "D-optimality". Determinant of the
+  FIM: det(FIM) \item 2 = "A-optimality".  Inverse of the
+  sum of the expected parameter variances:
+  1/trace_matrix(inv(FIM)) \item 4 = "lnD-optimality".
+  Natural logarithm of the determinant of the FIM:
+  log(det(FIM)) \item 6 = "Ds-optimality". Ratio of the
+  Determinant of the FIM and the Determinant of the
+  uninteresting rows and columns of the FIM:
+  det(FIM)/det(FIM_u) \item 7 = Inverse of the sum of the
+  expected parameter RSE:
+  1/sum(get_rse(FIM,poped.db,use_percent=FALSE)) }}
 
   \item{bUseExchangeAlgorithm}{Use Exchange algorithm
   (1=TRUE, 0=FALSE)}
@@ -155,6 +164,112 @@ about the the model, parameters, design and methods to use.
 Some of the arguments coming from the PopED database can be
 overwritten; if they are supplied then they are used
 instead of the arguments from the PopED database.
+}
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimize model
+
+\dontrun{
+  
+  ##############
+  # Optimization
+  ##############
+  
+  # below are a number of ways to optimize the problem
+  
+  
+  # RS+SG+LS optimization of sample times
+  # optimization with just a few iterations
+  # only to check that things are working
+  output <- poped_optimize(poped.db,opt_xt=T,
+                           rsit=5,sgit=5,ls_step_size=5)
+  
+  # RS+SG+LS optimization of sample times 
+  # (longer run time than above but more likely to reach a maximum)
+  output <- poped_optimize(poped.db,opt_xt=T)
+  get_rse(output$fmf,output$poped.db)
+  plot_model_prediction(output$poped.db)
+  
+  # MFEA optimization with only integer times allowed
+  mfea.output <- poped_optimize(poped.db,opt_xt=1,
+                                bUseExchangeAlgorithm=1,
+                                EAStepSize=1)
+  get_rse(mfea.output$fmf,mfea.output$poped.db)
+  plot_model_prediction(mfea.output$poped.db)
+  
+  # Examine efficiency of sampling windows
+  plot_efficiency_of_windows(mfea.output$poped.db,xt_windows=0.5)
+  plot_efficiency_of_windows(mfea.output$poped.db,xt_windows=1)
+  
+  # Random search (just a few samples here)
+  rs.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=20,
+                              bUseRandomSearch= 1,
+                              bUseStochasticGradient = 0,
+                              bUseBFGSMinimizer = 0,
+                              bUseLineSearch = 0)
+  get_rse(rs.output$fmf,rs.output$poped.db)
+  
+  # line search, DOSE and sample time optimization
+  ls.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
+                              bUseRandomSearch= 0,
+                              bUseStochasticGradient = 0,
+                              bUseBFGSMinimizer = 0,
+                              bUseLineSearch = 1,
+                              ls_step_size=10)
+  
+  # Stochastic gradient search, DOSE and sample time optimization
+  sg.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1, 
+                              bUseRandomSearch= 0,
+                              bUseStochasticGradient = 1,
+                              bUseBFGSMinimizer = 0,
+                              bUseLineSearch = 0,
+                              sgit=20)
+  
+  # BFGS search, DOSE and sample time optimization
+  bfgs.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
+                                bUseRandomSearch= 0,
+                                bUseStochasticGradient = 0,
+                                bUseBFGSMinimizer = 1,
+                                bUseLineSearch = 0)
+  
+}
 }
 \references{
 \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and

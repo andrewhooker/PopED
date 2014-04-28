@@ -7,6 +7,8 @@
 #' @param dim2 The number of columns 
 #' @return A matrix of ones
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_ones.R
+
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

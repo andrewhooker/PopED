@@ -76,6 +76,11 @@ FIM
 det(FIM)
 get_rse(FIM,poped.db)
 
+# RS+SG+LS optimization of sample times
+# optimization with just a few iterations
+# only to check that things are working
+output <- poped_optimize(poped.db,opt_xt=T,
+                         rsit=5,sgit=5,ls_step_size=5)
 
 # RS+SG+LS optimization of sample times and doses (takes a long time)
 output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)

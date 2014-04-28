@@ -8,6 +8,7 @@
 #' @return Matrix of random generated samples.
 #' 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_rand.R
 
 
 ## Function written to match MATLAB function

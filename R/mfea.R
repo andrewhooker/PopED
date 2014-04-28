@@ -18,11 +18,9 @@
 #' parallelized, nonlinear mixed effects models optimal design tool",  
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
-#' @family Optimize
-#' @examples 
-#' \dontrun{
-#' output <- mfea(poped.db)
-#' }  
+#' @family Optimize 
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_mfea.R
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

@@ -10,22 +10,24 @@
 #' @return A matrix of size (samples per individual x number of iovs)
 #'  
 #' @family FIM
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_LinMatrixL_occ.R
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-LinMatrixL_occ <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,iCurrentOcc,globalStructure){
+LinMatrixL_occ <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,iCurrentOcc,poped.db){
 #
 # size: (samples per individual x number of iovs)
 #
-if((globalStructure$NumOcc==0)){
+if((poped.db$NumOcc==0)){
 	y=0
 } else {
-     returnArgs <- gradff(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,globalStructure) 
+     returnArgs <- gradff(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
 grad_ff_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-    y=grad_ff_tmp%*%gradfg_occ(x,a,bpop,b_ind,bocc_ind,iCurrentOcc,globalStructure)
+poped.db <- returnArgs[[2]]
+    y=grad_ff_tmp%*%gradfg_occ(x,a,bpop,b_ind,bocc_ind,iCurrentOcc,poped.db)
 }
-return(list( y= y,globalStructure=globalStructure)) 
+return(list( y= y,poped.db=poped.db)) 
 }
 
 

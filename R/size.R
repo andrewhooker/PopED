@@ -4,6 +4,7 @@
 #' @param dimension.index Which dimension you are interested in.
 #' @return The dimensions of the object or specific dimension you are interested in. 
 #' @family MATLAB
+#' @example tests/testthat/examples_fcn_doc/examples_size.R
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

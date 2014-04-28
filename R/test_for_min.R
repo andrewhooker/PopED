@@ -8,6 +8,7 @@
 #' @param min_mat A matrix the same size as mat with the  minimum allowed value of that element.
 #' @return A matrix 
 #' @family matrix_manipulation 
+#' @example tests/testthat/examples_fcn_doc/examples_test_for_min.R
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

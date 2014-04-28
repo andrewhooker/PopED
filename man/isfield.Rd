@@ -17,6 +17,13 @@ Logical. True if the element exists.
 Check if a list or dataframe has an element with a specific
 name.
 }
+\examples{
+
+foo <- list("fff"=8,"ggg"=9)
+
+isfield(foo,"fff")
+isfield(foo,"lll")
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

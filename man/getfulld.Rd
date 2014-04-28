@@ -2,7 +2,7 @@
 \alias{getfulld}
 \title{Create a full D (between subject variability) matrix given a vector of variances and covariances.}
 \usage{
-getfulld(variance_vector, covariance_vector)
+getfulld(variance_vector, covariance_vector = NULL)
 }
 \arguments{
   \item{variance_vector}{The vector of the variances}
@@ -18,5 +18,12 @@ variances
 \description{
 Create a full D (between subject variability) matrix given
 a vector of variances and covariances.
+}
+\examples{
+
+getfulld(c(1,2,3))
+
+getfulld(c(1,2,3),c(7,6,5))
+
 }
 

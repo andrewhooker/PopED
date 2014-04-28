@@ -20,6 +20,11 @@ Get the various parts of a file with path string.
 This is a modified version of the same function in
 \code{\link[matlab]{fileparts}}
 }
+\examples{
+
+fileparts("ggg/ttt/lll.R")
+
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

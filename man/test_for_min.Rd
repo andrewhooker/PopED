@@ -18,6 +18,16 @@ Function tests is any matrix element is above a minimum
 value.  For those elements the function sets those values
 to the minimum value.
 }
+\examples{
+
+test_for_min(cbind(2,3,4,5,6),cbind(4,4,4,4,4))
+
+test_for_min(ones(6)*45,ones(6)*40)
+
+
+
+
+}
 \seealso{
 Other matrix_manipulation: \code{\link{diag_matlab}};
 \code{\link{test_for_max}}; \code{\link{test_for_zeros}}

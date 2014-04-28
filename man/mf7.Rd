@@ -2,7 +2,7 @@
 \alias{mf7}
 \title{The full Fisher Information Matrix (FIM) for one individual Calculating one model switch at a time, good for large matrices.}
 \usage{
-mf7(model_switch, xt_ind, x, a, bpop, d, sigma, docc, globalStructure)
+mf7(model_switch, xt_ind, x, a, bpop, d, sigma, docc, poped.db)
 }
 \arguments{
   \item{model_switch}{A vector that is the same size as xt,
@@ -25,11 +25,11 @@ mf7(model_switch, xt_ind, x, a, bpop, d, sigma, docc, globalStructure)
 
   \item{docc}{A between occasion variability matrix.}
 
-  \item{globalStructure}{A PopED database.}
+  \item{poped.db}{A PopED database.}
 }
 \value{
 As a list: \item{ret}{The FIM for one individual}
-\item{globalStructure}{A PopED database}
+\item{poped.db}{A PopED database}
 }
 \description{
 Compute the full FIM for one individual given specific
@@ -38,13 +38,67 @@ calculates the FIM for each model switch separately.
 Correlations between the models parameters are assumed to
 be zero.
 }
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=0.01,
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70)
+# warfarin optimization model
+
+#for the FO approximation
+ind=1
+
+# no occasion defined in this example, so result is zero
+output <- mf7(model_switch=t(poped.db$global_model_switch[ind,,drop=FALSE]),
+   xt=t(poped.db$gxt[ind,,drop=FALSE]),
+   x=zeros(0,1),
+   a=t(poped.db$ga[ind,,drop=FALSE]),
+   bpop=poped.db$gbpop[,2,drop=FALSE],
+   d=poped.db$param.pt.val$d,
+   sigma=poped.db$sigma,
+   docc=poped.db$param.pt.val$docc,
+   poped.db)
+
+# in this simple case the full FIM is just the sum of the individual FIMs
+# and all the individual FIMs are the same
+det(output$ret*32) == det(evaluate.fim(poped.db,fim.calc.type=6))  
+}
 \seealso{
 Used by \code{\link{mftot6}}.
 
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf8}}; \code{\link{mftot0}};

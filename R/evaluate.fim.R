@@ -47,11 +47,9 @@
 #' @family evaluate_design
 #' @family evaluate_FIM
 #' 
-#' @examples 
-#' \dontrun{
-#' evaluate.fim(poped.db)
-#' }  
+# @example inst/examples_fcn_doc/examples_evaluate.fim.R
 #' 
+#' @example tests/testthat/examples_fcn_doc/examples_evaluate.fim.R
 
 
 evaluate.fim <- function(poped.db,

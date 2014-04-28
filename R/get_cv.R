@@ -77,9 +77,13 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,globalStructure){
 #' 
 #' @family evaluate_design
 #' 
+# @example inst/examples_fcn_doc/examples_evaluate.fim.R
+#' @example tests/testthat/examples_fcn_doc/examples_evaluate.fim.R
+#' 
 get_rse <- function (fmf, poped.db,
                      bpop=poped.db$gbpop[,2,drop=F],d=poped.db$gd[,2,drop=F],docc=poped.db$docc,sigma=poped.db$sigma,
-                     use_percent=T) {
+                     use_percent=T,
+                     fim.calc.type=poped.db$iFIMCalculationType) {
   
   ## update poped.db with options supplied in function
   called_args <- match.call()

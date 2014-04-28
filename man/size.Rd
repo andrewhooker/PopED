@@ -18,6 +18,15 @@ interested in.
 \description{
 Function written to match MATLAB's size function
 }
+\examples{
+
+size(c(2,3,4,5,6))
+
+size(10)
+
+size(zeros(4,7))
+
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

@@ -7,32 +7,34 @@
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM for one individual}
-#' \item{globalStructure}{A PopED database}
+#' \item{poped.db}{A PopED database}
 #' 
 #' @seealso Used by \code{\link{mftot6}}.  
 #' @family FIM
 #' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+#' @example tests/testthat/examples_fcn_doc/examples_mf7.R
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-mf7 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,globalStructure){
+mf7 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
 
 #This calculation of FIM devide the calculation up into one calculation
 #per model switch
 
-numnotfixed_bpop = sum(globalStructure$notfixed_bpop)
-numnotfixed_d    = sum(globalStructure$notfixed_d)
-numnotfixed_covd = sum(globalStructure$notfixed_covd)
-numnotfixed_docc  = sum(globalStructure$notfixed_docc)
-numnotfixed_covdocc  = sum(globalStructure$notfixed_covdocc)
-numnotfixed_sigma  = sum(globalStructure$notfixed_sigma)
-numnotfixed_covsigma  = sum(globalStructure$notfixed_covsigma)
+numnotfixed_bpop = sum(poped.db$notfixed_bpop)
+numnotfixed_d    = sum(poped.db$notfixed_d)
+numnotfixed_covd = sum(poped.db$notfixed_covd)
+numnotfixed_docc  = sum(poped.db$notfixed_docc)
+numnotfixed_covdocc  = sum(poped.db$notfixed_covdocc)
+numnotfixed_sigma  = sum(poped.db$notfixed_sigma)
+numnotfixed_covsigma  = sum(poped.db$notfixed_covsigma)
 
 ret = 0
 
-for(i in 1:globalStructure$iFOCENumInd){
-    b_ind = globalStructure$b_global[,i,drop=F]
-    bocc_ind = globalStructure$bocc_global[[i]]
+for(i in 1:poped.db$iFOCENumInd){
+    b_ind = poped.db$b_global[,i,drop=F]
+    bocc_ind = poped.db$bocc_global[[i]]
     
     for(j in 1:max(model_switch)){
         xt_new = zeros(sum(model_switch==j),1)
@@ -48,19 +50,19 @@ for(i in 1:globalStructure$iFOCENumInd){
         
         if((!isempty(xt_new))){
             f1=zeros(n+n*n,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
-             returnArgs <- m1(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,globalStructure) 
+             returnArgs <- m1(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
 f1[1:n,1:numnotfixed_bpop] <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-             returnArgs <- m2(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStructure) 
+poped.db <- returnArgs[[2]]
+             returnArgs <- m2(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
 f1[(n+1):(n+n*n),1:numnotfixed_bpop] <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
-             returnArgs <- m3(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,globalStructure) 
+poped.db <- returnArgs[[2]]
+             returnArgs <- m3(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
 f1[(n+1):(n+n*n),(numnotfixed_bpop+1):(numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)] <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
+poped.db <- returnArgs[[2]]
             f2=zeros(n+n*n,n+n*n)
-             returnArgs <-  v(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStructure) 
+             returnArgs <-  v(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
 v_tmp <- returnArgs[[1]]
-globalStructure <- returnArgs[[2]]
+poped.db <- returnArgs[[2]]
             if((matrix_any(v_tmp)!=0)){
                # f2[1:n,1:n]=v_tmp\diag_matlab(1,size(v_tmp))
                 f2[1:n,1:n]=inv(v_tmp)
@@ -72,7 +74,7 @@ globalStructure <- returnArgs[[2]]
         }
     }
 }
-ret = ret/globalStructure$iFOCENumInd
-return(list( ret= ret,globalStructure=globalStructure)) 
+ret = ret/poped.db$iFOCENumInd
+return(list( ret= ret,poped.db=poped.db)) 
 }
 

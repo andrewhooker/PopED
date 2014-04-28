@@ -24,7 +24,8 @@ pargen(par, user_dist_pointer, sample_size, bLHS, sample_number,
   \item{bLHS}{Logical, indicating if Latin Hypercube
   Sampling should be used.}
 
-  \item{sample_number}{The sample number to extract.}
+  \item{sample_number}{The sample number to extract from a
+  user distribution.}
 
   \item{globalStructure}{A PopED database.}
 }
@@ -34,5 +35,124 @@ number_of_parameters)
 }
 \description{
 Function generates random samples for a list of parameters
+}
+\examples{
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+# warfarin optimize model
+
+# Adding 10\% Uncertainty to fixed effects log-normal (not Favail)
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                      bpop_vals,
+                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value
+bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+bpop_vals_ed_ln
+
+
+# with log-normal distributions
+pars.ln <- pargen(par=bpop_vals_ed_ln,
+               user_dist_pointer=NULL,
+               sample_size=100,
+               bLHS=1,
+               sample_number=NULL,
+               poped.db)
+#looks ok
+colMeans(pars.ln)
+var(pars.ln)
+
+mean.diff.ln <- (colMeans(pars.ln) - bpop_vals_ed_ln[,2])/bpop_vals_ed_ln[,2]*100
+mean.diff.ln
+var.diff.ln <- (diag(var(pars.ln)) - bpop_vals_ed_ln[,3])/bpop_vals_ed_ln[,3]*100
+var.diff.ln
+
+
+
+# Adding 10\% Uncertainty to fixed effects normal-distribution (not Favail)
+bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # log-normal distribution
+                      bpop_vals,
+                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value
+bpop_vals_ed_n["Favail",]  <- c(0,1,0)
+bpop_vals_ed_n
+
+# with normal distributions
+pars.n <- pargen(par=bpop_vals_ed_n,
+               user_dist_pointer=NULL,
+               sample_size=100,
+               bLHS=1,
+               sample_number=NULL,
+               poped.db)
+
+# Looks ok
+colMeans(pars.n)
+var(pars.n)
+
+mean.diff.n <- (colMeans(pars.n) - bpop_vals_ed_n[,2])/bpop_vals_ed_n[,2]*100
+mean.diff.n
+var.diff.n <- (diag(var(pars.n)) - bpop_vals_ed_n[,3])/bpop_vals_ed_n[,3]*100
+var.diff.n
+
+
+# Adding 10\% Uncertainty to fixed effects uniform-distribution (not Favail)
+bpop_vals_ed_u <- cbind(ones(length(bpop_vals),1)*2, # uniform distribution
+                        bpop_vals,
+                        ones(length(bpop_vals),1)*(bpop_vals*0.1)) # 10\% of bpop value
+bpop_vals_ed_u["Favail",]  <- c(0,1,0)
+bpop_vals_ed_u
+
+# with normal distributions
+pars.u <- pargen(par=bpop_vals_ed_u,
+                 user_dist_pointer=NULL,
+                 sample_size=100,
+                 bLHS=1,
+                 sample_number=NULL,
+                 poped.db)
+
+# Looks ok
+mean.diff.u <- (colMeans(pars.u) - bpop_vals_ed_u[,2])/bpop_vals_ed_u[,2]*100
+mean.diff.u
+range.diff.u <- mean.diff.u
+for(i in 1:4){
+  range.diff.u[i] <- (diff(range(pars.u[,i])) - bpop_vals_ed_u[i,3])/bpop_vals_ed_u[i,3]*100
+}
+range.diff.u
+
+
 }
 

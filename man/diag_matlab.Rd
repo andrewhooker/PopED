@@ -20,6 +20,20 @@ tries to match the MATLAB version in handling vectors
 (matricies with one dimension equal to one), and will
 return a diagonal matrix in these situations.
 }
+\examples{
+
+diag_matlab(3)
+diag_matlab(c(1,2,3))
+diag_matlab(cbind(1,2,3))
+diag_matlab(rbind(1,2,3))
+
+diag_matlab(matrix(c(1, 2, 3),6,6))
+
+# here is where the R default does something different
+diag(cbind(1,2,3))
+diag(rbind(1,2,3))
+
+}
 \seealso{
 Other MATLAB: \code{\link{cell}}; \code{\link{feval}};
 \code{\link{fileparts}}; \code{\link{isempty}};

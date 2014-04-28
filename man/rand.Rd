@@ -18,6 +18,12 @@ Matrix of random generated samples.
 Generate random samples from a uniform distribution [0,1]
 and return in matrix form
 }
+\examples{
+
+rand(2,3)
+
+rand(5)
+}
 \seealso{
 Other MATLAB: \code{\link{cell}};
 \code{\link{diag_matlab}}; \code{\link{feval}};

@@ -13,7 +13,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-mftot2 <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+mftot2 <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
 
 stop(sprintf('This iFIMCalculationType option in not currently used in PopED'))
 

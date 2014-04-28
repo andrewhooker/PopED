@@ -2,7 +2,8 @@
 \alias{ofv_criterion}
 \title{Normalize an objective function by the size of the FIM matrix}
 \usage{
-ofv_criterion(ofv_f, num_parameters, poped.db)
+ofv_criterion(ofv_f, num_parameters, poped.db,
+  ofv_calc_type = poped.db$ofv_calc_type)
 }
 \arguments{
   \item{ofv_f}{An objective function}
@@ -11,25 +12,104 @@ ofv_criterion(ofv_f, num_parameters, poped.db)
   normalization}
 
   \item{poped.db}{a poped database}
+
+  \item{ofv_calc_type}{OFV calculation type for FIM
+  \itemize{ \item 1 = "D-optimality". Determinant of the
+  FIM: det(FIM) \item 2 = "A-optimality".  Inverse of the
+  sum of the expected parameter variances:
+  1/trace_matrix(inv(FIM)) \item 4 = "lnD-optimality".
+  Natural logarithm of the determinant of the FIM:
+  log(det(FIM)) \item 6 = "Ds-optimality". Ratio of the
+  Determinant of the FIM and the Determinant of the
+  uninteresting rows and columns of the FIM:
+  det(FIM)/det(FIM_u) \item 7 = Inverse of the sum of the
+  expected parameter RSE:
+  1/sum(get_rse(FIM,poped.db,use_percent=FALSE)) }}
 }
 \value{
 The specified criterion value.
 }
 \description{
-Compute a criterion of the FIM given the non-normalized
-FIM, model, parameters, design and methods defined in the
-PopED database.
+Compute a normalized OFV based on the size of the FIM
+matrix.  This value can then be used in efficiency
+calculations. This is NOT the OFV used in optimization, see
+\code{\link{ofv_fim}}.
 }
 \examples{
-\dontrun{
-evaluate.fim(poped.db)
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
 }
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                  fg_file="sfg",
+                                  fError_file="feps.add.prop",
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100)
+
+## evaluate initial design 
+FIM <- evaluate.fim(poped.db) # new name for function needed
+FIM
+get_rse(FIM,poped.db)
+
+ofv_criterion(ofv_fim(FIM,poped.db,ofv_calc_type=1),
+              length(get_unfixed_params(poped.db)[["all"]]),
+              poped.db,
+              ofv_calc_type=1) # det(FIM)
+
+ofv_criterion(ofv_fim(FIM,poped.db,ofv_calc_type=2),
+              length(get_unfixed_params(poped.db)[["all"]]),
+              poped.db,
+              ofv_calc_type=2) 
+
+ofv_criterion(ofv_fim(FIM,poped.db,ofv_calc_type=4),
+              length(get_unfixed_params(poped.db)[["all"]]),
+              poped.db,
+              ofv_calc_type=4)
+
+ofv_criterion(ofv_fim(FIM,poped.db,ofv_calc_type=6),
+              length(get_unfixed_params(poped.db)[["all"]]),
+              poped.db,
+              ofv_calc_type=6)
+
+ofv_criterion(ofv_fim(FIM,poped.db,ofv_calc_type=7),
+              length(get_unfixed_params(poped.db)[["all"]]),
+              poped.db,
+              ofv_calc_type=7) 
+
 }
 \seealso{
 Other FIM: \code{\link{LinMatrixH}};
 \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
-\code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
-\code{\link{evaluate.e.ofv.fim}};
+\code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}};
 \code{\link{evaluate.fim}}; \code{\link{gradf_eps}};
 \code{\link{mf3}}; \code{\link{mf5}}; \code{\link{mf6}};
 \code{\link{mf7}}; \code{\link{mf8}}; \code{\link{mftot0}};
