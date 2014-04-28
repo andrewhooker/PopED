@@ -41,18 +41,18 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 poped.db <- create.poped.database(ff_file="ff",
                                   fg_file="sfg",
                                   fError_file="feps",
-                                  groupsize=20,
-                                  m=2,
-                                  sigma=c(0.04,5e-6),
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
                                   notfixed_bpop=c(1,1,1,0),
+                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
+                                  sigma=c(0.04,5e-6),
                                   notfixed_sigma=c(0,0),
+                                  m=2,
+                                  groupsize=20,
                                   xt=c( 1,2,8,240,245),
                                   minxt=c(0,0,0,240,240),
                                   maxxt=c(10,10,10,248,248),
-                                  a=cbind(c(20,40),c(24,24)),
                                   bUseGrouped_xt=1,
+                                  a=cbind(c(20,40),c(24,24)),
                                   maxa=c(200,24),
                                   mina=c(0,24))
 
@@ -73,6 +73,8 @@ get_rse(FIM,poped.db)
 # only to check that things are working
 output <- poped_optimize(poped.db,opt_xt=T,
                          rsit=5,sgit=5,ls_step_size=5)
+plot_model_prediction(output$poped.db,IPRED=T,DV=T,separate.groups=T)
+
 
 # RS+SG+LS optimization of sample times 
 # (longer optimization time than above)
