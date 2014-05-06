@@ -29,82 +29,104 @@
 ## Author: Andrew Hooker
 
 pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,globalStructure){
-
-nvar=size(par,1)
-ret=zeros(sample_size,nvar)
-
-# for log-normal distributions
-# mu=log(par[,2]^2/sqrt(par[,3]+par[,2]^2))
-# sd=sqrt(log(par[,3]/par[,2]^2+1))
-# exp(rnorm(100000,mu,si))
-# mean(exp(rnorm(100000,mu,si)))
-# exp(mu+qnorm(P)*sd)) 
-# exp((log(par[,2]^2/sqrt(par[,3]+par[,2]^2)))+qnorm(P)*(sqrt(log(par[,3]/par[,2]^2+1)))) 
-
-
-if((bLHS==0) ){#Random Sampling
+  
+  nvar=size(par,1)
+  ret=zeros(sample_size,nvar)
+  
+  # for log-normal distributions
+  # mu=log(par[,2]^2/sqrt(par[,3]+par[,2]^2))
+  # sd=sqrt(log(par[,3]/par[,2]^2+1))
+  # exp(rnorm(100000,mu,si))
+  # mean(exp(rnorm(100000,mu,si)))
+  # exp(mu+qnorm(P)*sd)) 
+  # exp((log(par[,2]^2/sqrt(par[,3]+par[,2]^2)))+qnorm(P)*(sqrt(log(par[,3]/par[,2]^2+1)))) 
+  
+  ## using rlnorm (may be faster)
+  # Adding 40% Uncertainty to fixed effects log-normal (not Favail)
+  # bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+  # bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+  #                          bpop_vals,
+  #                          ones(length(bpop_vals),1)*(bpop_vals*0.4)^2) # 40% of bpop value
+  # bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+  # 
+  # # with log-normal distributions
+  # pars.ln <- pargen(par=bpop_vals_ed_ln,
+  #                   user_dist_pointer=NULL,
+  #                   sample_size=1000,
+  #                   bLHS=1,
+  #                   sample_number=NULL,
+  #                   poped.db)
+  # sample_size=1000
+  # data <- apply(bpop_vals_ed_ln,1,
+  #               function(par) rlnorm(sample_size,log(par[2]^2/sqrt(par[3]+par[2]^2)),
+  #                                    sqrt(log(par[3]/par[2]^2+1))))
+  # colMeans(data)
+  # var(data)
+  
+  
+  if((bLHS==0) ){#Random Sampling
     for(k in 1:sample_size){
-        np=size(par,1)
-        if(np!=0){
-            n=randn(np,1) # normal mean=0 and sd=1
-            u=rand(np,1)*2-1 # uniform from -1 to 1
-            t=par[,1] # type of distribution
-            c2=par[,3] # variance or range of distribution
-
-            bUserSpecifiedDistribution = (sum(t==3)>=1) #If at least one user specified distribution
-            ret[k,] = (t==0)*par[,2,drop=F] + 
-              (t==2)*(par[,2,drop=F]+u*c2/2) + 
-              (t==1)*(par[,2,drop=F]+n*c2^(1/2))+
-              (t==4)*exp((log(par[,2]^2/sqrt(par[,3]+par[,2]^2)))+n*(sqrt(log(par[,3]/par[,2]^2+1))))
-              #(t==4)*par[,2,drop=F]*exp(n*c2^(1/2))
-            if((sum(t==5)>0) ){#Truncated normal
-                for(i in 1:size(par,1)){
-                    if((t(i)==5)){
-                        ret[k,i]=getTruncatedNormal(par[i,2],c2[i])
-                    }
-                }
+      np=size(par,1)
+      if(np!=0){
+        n=randn(np,1) # normal mean=0 and sd=1
+        u=rand(np,1)*2-1 # uniform from -1 to 1
+        t=par[,1] # type of distribution
+        c2=par[,3] # variance or range of distribution
+        
+        bUserSpecifiedDistribution = (sum(t==3)>=1) #If at least one user specified distribution
+        ret[k,] = (t==0)*par[,2,drop=F] + 
+          (t==2)*(par[,2,drop=F]+u*c2/2) + 
+          (t==1)*(par[,2,drop=F]+n*c2^(1/2))+
+          (t==4)*exp((log(par[,2]^2/sqrt(par[,3]+par[,2]^2)))+n*(sqrt(log(par[,3]/par[,2]^2+1))))
+        #(t==4)*par[,2,drop=F]*exp(n*c2^(1/2))
+        if((sum(t==5)>0) ){#Truncated normal
+          for(i in 1:size(par,1)){
+            if((t(i)==5)){
+              ret[k,i]=getTruncatedNormal(par[i,2],c2[i])
             }
-
-            if((bUserSpecifiedDistribution)){
-                if((isempty(sample_number))){
-                    ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,k,globalStructure)
-                } else {
-                    ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,globalStructure)
-                }
-            }
+          }
         }
+        
+        if((bUserSpecifiedDistribution)){
+          if((isempty(sample_number))){
+            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,k,globalStructure)
+          } else {
+            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,globalStructure)
+          }
+        }
+      }
     }
-} else if(nvar!=0){ #LHS
+  } else if(nvar!=0){ #LHS
     ran=rand(sample_size,nvar)
     # method of Stein
     for(j in 1:nvar){
-        idx=randperm(sample_size)
-        P=(idx-ran[,j])/sample_size       # probability of the cdf
-        returnArgs <- switch(par[j,1]+1,
-                             par[j,2],  #point
-                             par[j,2]+qnorm(P)*sqrt(par[j,3]), # normal
-                             par[j,2]-par[j,3]/2 + P*par[j,3], #uniform
-                             ret[,j], #Do nothing
-                             exp((log(par[j,2]^2/sqrt(par[j,3]+par[j,2]^2)))+qnorm(P)*(sqrt(log(par[j,3]/par[j,2]^2+1)))) #log-normal 
-                             #par[j,2]*exp(qnorm(P)*sqrt(par[j,3])) #log-normal
-                             )
-        if(is.null(returnArgs)) stop(sprintf('Unknown distribution for the inverse probability function used in Latin Hypercube Sampling'))
-        ret[,j]=returnArgs
+      idx=randperm(sample_size)
+      P=(idx-ran[,j])/sample_size       # probability of the cdf
+      returnArgs <- switch(par[j,1]+1,
+                           par[j,2],  #point
+                           par[j,2]+qnorm(P)*sqrt(par[j,3]), # normal
+                           par[j,2]-par[j,3]/2 + P*par[j,3], #uniform
+                           ret[,j], #Do nothing
+                           exp((log(par[j,2]^2/sqrt(par[j,3]+par[j,2]^2)))+qnorm(P)*(sqrt(log(par[j,3]/par[j,2]^2+1)))) #log-normal 
+                           #par[j,2]*exp(qnorm(P)*sqrt(par[j,3])) #log-normal
+      )
+      if(is.null(returnArgs)) stop(sprintf('Unknown distribution for the inverse probability function used in Latin Hypercube Sampling'))
+      ret[,j]=returnArgs
     }
     
     bUserSpecifiedDistribution = (sum(par[,1,drop=F]==3)>=1) #If at least one user specified distribution
     
     if((bUserSpecifiedDistribution)){
-        for(k in 1:sample_size){
-            if((isempty(sample_number))){
-                ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,globalStructure)
-            } else {
-                ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,globalStructure)
-            }
+      for(k in 1:sample_size){
+        if((isempty(sample_number))){
+          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,globalStructure)
+        } else {
+          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,globalStructure)
         }
+      }
     }
-}
-return( ret) 
+  }
+  return( ret) 
 }
 
 #'  Generate a random sample from a truncated normal distribution.
@@ -117,13 +139,13 @@ return( ret)
 #' @example tests/testthat/examples_fcn_doc/examples_getTruncatedNormal.R
 
 getTruncatedNormal <- function(mean,variance){
-while(TRUE){
+  while(TRUE){
     n = mean+randn(1,1)*sqrt(variance)
     if((sign(n)==sign(mean))){
-        break
+      break
     }
-}
-return( n) 
+  }
+  return( n) 
 }
 
 #sign.2 <- function(x){
