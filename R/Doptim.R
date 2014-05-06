@@ -79,7 +79,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
   iter=0 #Search iterations
   test_change=TRUE
   
-  trflag = TRUE
+  trflag = trflag
   
   # ----------------- type of optimization determination
   axt=poped.db$optsw[2]*poped.db$cfaxt*matrix(1,poped.db$m,poped.db$maxni)
