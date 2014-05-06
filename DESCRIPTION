@@ -1,13 +1,31 @@
 Package: PopED
 Type: Package
 Title: PopED: Population (and individual) optimal Experimental Design
-Version: 0.1.0
-Date: 2014-04-28
-Author: Andrew C. Hooker <andrew.hooker@farmbio.uu.se>
+Version: 0.1.1
+Date: 2014-05-05
 Depends: ggplot2
 Imports: MASS, mvtnorm
 Suggests: testthat, Hmisc
+Author: Andrew C. Hooker, Sebastian Ueckert (MATLAB version), 
+  Marco Foracchia (O-Matrix version) and Joakim Nyberg (MATLAB version) 
+  with contributions from Eric Strömberg (MATLAB version).
 Maintainer: Andrew C. Hooker <andrew.hooker@farmbio.uu.se>
+Authors@R: c(person("Andrew C.","Hooker",
+                    email="andrew.hooker@farmbio.uu.se",
+                    role=c("aut","cre","trl","cph")),
+            person("Sebastian","Ueckert",
+                   role="aut",
+                   comment="MATLAB version"),
+            person("Marco","Foracchia",
+                   role="aut",
+                   comment="O-Matrix version"),
+            person("Joakim", "Nyberg",
+                    role="aut",
+                    comment="MATLAB version"),
+            person("Eric","Strömberg",
+                   role="ctb",
+                   comment="MATLAB version")
+            )
 Description: PopED computes optimal experimental designs for both 
   population studies and individual studies based on nonlinear mixed-effect models.  
   Often this is based on a computation of the Fisher Information Matrix (FIM). 
