@@ -38,7 +38,7 @@ evaluate.e.ofv.fim <- function(poped.db,
                                bLHS=poped.db$bLHS,
                                ofv_calc_type = poped.db$ofv_calc_type,
                                ED_samp_size = poped.db$ED_samp_size,
-                               use.laplace=FALSE, # not working
+                               use.laplace=FALSE, 
                                ...){
   ## update poped.db with options supplied in function
   called_args <- match.call()
@@ -77,8 +77,8 @@ evaluate.e.ofv.fim <- function(poped.db,
     E_ofv <- output$ED_ofv
     poped.db=output$globalStructure
   } else { 
-    stop("Laplce method not yet implemented in R version of PopED")
-    #E_ofv  <- ed_laplace_ofv(c(),0, 0, model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)      
+    #stop("Laplce method not yet implemented in R version of PopED")
+    E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["f"]]      
   }    
   return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=output$globalStructure))
 }
