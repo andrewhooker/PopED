@@ -163,7 +163,8 @@ poped_optimize <- function(poped.db,
         poped.db <- returnArgs[[6]]
       } else {
         if((poped.db$d_switch==TRUE) ){#D-optimal over continuous variables
-          returnArgs <- Doptim(poped.db,ni, xt, model_switch, x, a, bpop, d, maxxt, minxt,maxa,mina,fmf,dmf,...) 
+          returnArgs <- Doptim(poped.db,ni, xt, model_switch, x, a, bpop, d, maxxt, minxt,maxa,mina,fmf,dmf,
+                               trflag=trflag,...) 
           xt <- returnArgs[[1]]
           x <- returnArgs[[2]]
           a <- returnArgs[[3]]
