@@ -103,7 +103,7 @@ blockheader_2 <- function(name,iter,poped.db,
   }
   
   blockopt_2(fn,poped.db,opt_method=name)
-  blockother_2(fn,poped.db)
+  blockother_2(fn,poped.db,d_switch=0)
   
   blockoptwrt(fn,poped.db$optsw, opt_xt=opt_xt,
               opt_a=opt_a,opt_x=opt_x,

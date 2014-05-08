@@ -1,7 +1,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-blockother_2 <- function(fn,poped.db){
+blockother_2 <- function(fn,poped.db,d_switch=poped.db$d_switch){
   fprintf(fn,'==============================================================================\n')
   fprintf(fn,'Criterion Specification\n\n')
   
@@ -32,7 +32,7 @@ blockother_2 <- function(fn,poped.db){
   D-family design (1) or 
   ED-familty design (0) 
   (with or without parameter uncertainty)\n\n',
-          poped.db$d_switch)
+          d_switch)
   #   ## -- ED Integral Calculation, 0=Monte-Carlo-Integration, 1=Laplace Approximation, 2=BFGS Laplace Approximation  -- --
   #   poped.db$iEDCalculationType=0    
   #   ## -- The prior FIM (added to calculated FIM) --
