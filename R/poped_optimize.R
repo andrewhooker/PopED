@@ -181,7 +181,6 @@ poped_optimize <- function(poped.db,
             #             dmf <- returnArgs[[5]]
             #             poped.db <- returnArgs[[6]]
             stop('E-family optimization using the requested methods not implemented in the R-version of PopED yet')        
-            
           } else {
             #             returnArgs <- EDoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
             #             xt <- returnArgs[[1]]
@@ -190,8 +189,7 @@ poped_optimize <- function(poped.db,
             #             fmf <- returnArgs[[4]]
             #             dmf <- returnArgs[[5]]
             #             poped.db <- returnArgs[[6]]
-            stop('E-family optimization using the requested methods not implemented in the R-version of PopED yet')        
-            
+            stop('E-family optimization using the requested methods not implemented in the R-version of PopED yet')            
           }
         }
       }

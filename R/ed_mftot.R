@@ -32,7 +32,8 @@ ed_mftot <- function(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddes
   docc_gen_list=cell(1,poped.db$ED_samp_size)
   
   
-  bpop_gen = pargen(bpopdescr,poped.db$user_distribution_pointer,poped.db$ED_samp_size,poped.db$bLHS,zeros(1,0),poped.db)
+  bpop_gen  <-  pargen(bpopdescr,poped.db$user_distribution_pointer,
+                    poped.db$ED_samp_size,poped.db$bLHS,zeros(1,0),poped.db)
   
   for(ct in 1:poped.db$ED_samp_size){
     d_gen = getfulld(pargen(ddescr,poped.db$user_distribution_pointer,1,poped.db$bLHS,ct,poped.db),covd)
