@@ -80,5 +80,5 @@ evaluate.e.ofv.fim <- function(poped.db,
     #stop("Laplce method not yet implemented in R version of PopED")
     E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["f"]]      
   }    
-  return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=output$globalStructure))
+  return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=poped.db))
 }
