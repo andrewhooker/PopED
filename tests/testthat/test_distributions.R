@@ -24,8 +24,8 @@ test_that("pargen works", {
   mean.diff.ln <- (colMeans(pars.ln) - bpop_vals_ed_ln[,2])/bpop_vals_ed_ln[,2]*100
   var.diff.ln <- (diag(var(pars.ln)) - bpop_vals_ed_ln[,3])/bpop_vals_ed_ln[,3]*100
   
-  expect_that(all(mean.diff.ln<1),is_true())
-  expect_that(all(var.diff.ln[1:3]<5),is_true())
+  expect_that(all(mean.diff.ln<5),is_true())
+  expect_that(all(var.diff.ln[1:3]<10),is_true())
   
   p.vals <- apply(pars.ln[,1:3],2,function(x) shapiro.test(log(x))[["p.value"]])
   expect_that(all(p.vals > 0.8), is_true())
