@@ -23,11 +23,11 @@ sfg <- function(x,a,bpop,b,bocc){
 
 # Adding 10% log-normal Uncertainty to fixed effects (not Favail)
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
-bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
                       bpop_vals,
                       ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
-bpop_vals_ed["Favail",]  <- c(0,1,0)
-bpop_vals_ed
+bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+bpop_vals_ed_ln
 
 ## -- Define initial design  and design space
 poped.db.ln <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
