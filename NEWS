@@ -1,5 +1,13 @@
 PopED News/Changelog
 
+PopED 0.1.1
+===========
+
+* Updated package author list
+
+* New functionality to compute the ED OFV using the Laplace approximation.
+  This is orders of magnitude faster than the standard MC integration approach.
+
 PopED 0.1.0
 ===========
  
