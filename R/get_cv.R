@@ -90,7 +90,8 @@ get_rse <- function (fmf, poped.db,
   default_args <- formals()
   for(i in names(called_args)[-1]){
     if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
-      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
     }
   }
   
