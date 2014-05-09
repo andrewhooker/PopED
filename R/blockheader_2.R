@@ -46,22 +46,14 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
   #   }
   
   #tmpfile=sprintf('%s_%s_%g%s',poped.db$strOutputFileName,name,iter,poped.db$strOutputFileExtension)
-  
-  if(!exists("fn")){
+
+  if(!is.null(out_file)){
     fn <- out_file
-    if(is.null(fn)) fn <- ''
-    if(!any(class(fn)=="file") && !(fn=='')){
-      fn=file(fn,'w')
+    if(!any(class(out_file)=="file")){
+      fn=file(out_file,'w')
       if(fn==-1){
         stop(sprintf('output file could not be opened'))
       }
-    } 
-  }
-  
-  if(!is.null(out_file)){
-    fn=file(out_file,'w')
-    if((fn==-1)){
-      stop(sprintf('output file could not be opened'))
     }
   } else if(name!=""){
     tmpfile=sprintf('%s_%s.txt',name_header,name)
