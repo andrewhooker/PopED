@@ -25,13 +25,14 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-blockheader_2 <- function(name,iter,poped.db,
-                          e_flag=FALSE,opt_xt=poped.db$optsw[2],
+blockheader_2 <- function(name,iter=NULL,poped.db,
+                          e_flag=!(poped.db$d_switch),opt_xt=poped.db$optsw[2],
                           opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
                           opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
                           fmf=0,dmf=0,bpop=NULL,d=NULL,docc=NULL,sigma=NULL,
                           name_header=poped.db$strOutputFileName,
                           file_path=poped.db$strOutputFilePath,
+                          out_file=NULL,
                           ...)
 {
   # BLOCKHEADER_2
@@ -45,8 +46,26 @@ blockheader_2 <- function(name,iter,poped.db,
   #   }
   
   #tmpfile=sprintf('%s_%s_%g%s',poped.db$strOutputFileName,name,iter,poped.db$strOutputFileExtension)
-  if(name!=""){
-    tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
+  
+  if(!exists("fn")){
+    fn <- out_file
+    if(is.null(fn)) fn <- ''
+    if(!any(class(fn)=="file") && !(fn=='')){
+      fn=file(fn,'w')
+      if(fn==-1){
+        stop(sprintf('output file could not be opened'))
+      }
+    } 
+  }
+  
+  if(!is.null(out_file)){
+    fn=file(out_file,'w')
+    if((fn==-1)){
+      stop(sprintf('output file could not be opened'))
+    }
+  } else if(name!=""){
+    tmpfile=sprintf('%s_%s.txt',name_header,name)
+    if(!is.null(iter)) tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
     tmpfile = fullfile(poped.db$strOutputFilePath,tmpfile)
     fn=file(tmpfile,'w')
     if((fn==-1)){
@@ -81,7 +100,8 @@ blockheader_2 <- function(name,iter,poped.db,
            opt_samps=opt_samps,opt_inds=opt_inds)
   
   if(dmf!=0 || fmf != 0) fprintf(fn,'===============================================================================\nInitial design evaluation\n')
-  if(dmf!=0) fprintf(fn,'\ndet(FIM) = %g\n',dmf)
+  if(dmf!=0) fprintf(fn,'\nOFV = %g\n',dmf)
+  if(dmf!=0 && fn!="") fprintf('\nInitial OFV = %g\n',dmf)
   
   if(any(fmf!=0)){
     param_vars=diag_matlab(inv(fmf))
@@ -89,7 +109,11 @@ blockheader_2 <- function(name,iter,poped.db,
     params <- returnArgs[[1]]
     param_cvs <- returnArgs[[2]]
     
-    fprintf(fn,'\nEfficiency criterion det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
+    
+      
+    #fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',dmf^(1/length(params)))
+    fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+            ofv_criterion(dmf,length(params),poped.db))
     
     parnam <- get_parnam(poped.db)
     fprintf(fn,'\nInitial design expected parameter variance \nand relative standard error (%sRSE)\n','%')
@@ -103,7 +127,7 @@ blockheader_2 <- function(name,iter,poped.db,
   }
   
   blockopt_2(fn,poped.db,opt_method=name)
-  blockother_2(fn,poped.db,d_switch=0)
+  blockother_2(fn,poped.db,d_switch=!e_flag)
   
   blockoptwrt(fn,poped.db$optsw, opt_xt=opt_xt,
               opt_a=opt_a,opt_x=opt_x,

@@ -53,8 +53,8 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
       fprintf(fn,'\n')
       fprintf('\n')
     }
-#     fprintf(fn,'\n')
-#     fprintf('\n')
+    #     fprintf(fn,'\n')
+    #     fprintf('\n')
   }
   if((opt_a==TRUE)){
     tmp_txt <- "\nOptimized Covariates"
@@ -73,8 +73,8 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
       fprintf(fn,'\n')
       fprintf('\n')
     }
-#     fprintf(fn,'\n')
-#     fprintf('\n')
+    #     fprintf(fn,'\n')
+    #     fprintf('\n')
     #     
     #     fprintf(fn,'a :\n')
     #     fprintf(fn,'%g \n',a)
@@ -95,7 +95,7 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
   returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
   params <- returnArgs[[1]]
   param_cvs <- returnArgs[[2]]
-
+  
   fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
   fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
   if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
