@@ -38,14 +38,17 @@ evaluate.e.ofv.fim <- function(poped.db,
                                bLHS=poped.db$bLHS,
                                ofv_calc_type = poped.db$ofv_calc_type,
                                ED_samp_size = poped.db$ED_samp_size,
-                               use.laplace=FALSE, 
+                               use.laplace=poped.db$iEDCalculationType, 
                                ...){
+
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()
   for(i in names(called_args)[-1]){
     if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
-      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
+      
     }
   }
   

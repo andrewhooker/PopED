@@ -73,8 +73,8 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
   default_args <- formals()
   for(i in names(called_args)[-1]){
     if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
-      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
-    }
+      #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))    }
   }
   iter=0 #Search iterations
   test_change=TRUE
