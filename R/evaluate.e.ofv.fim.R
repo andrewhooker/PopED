@@ -8,7 +8,10 @@
 #' @inheritParams evaluate.fim
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
-#' @param use.laplace Should the Laplace method be used in calculating the expectation?  Currently experimental for the R-version of PopED.
+#' @param use.laplace Should the Laplace method be used in calculating the expectation of the OFV?  
+#' @param laplace.fim Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
+#' the FIM does not need to be computed and, if desired,  this calculation
+#' is done usng the standard MC integration technique, so can be slow. 
 #' 
 #' @return A list containing the E(FIM) and E(OFV(FIM)) and the a poped.db updated according  to the function arguments.
 #' 
@@ -39,6 +42,7 @@ evaluate.e.ofv.fim <- function(poped.db,
                                ofv_calc_type = poped.db$ofv_calc_type,
                                ED_samp_size = poped.db$ED_samp_size,
                                use.laplace=poped.db$iEDCalculationType, 
+                               laplace.fim=FALSE, 
                                ...){
 
   ## update poped.db with options supplied in function
@@ -81,7 +85,10 @@ evaluate.e.ofv.fim <- function(poped.db,
     poped.db=output$globalStructure
   } else { 
     #stop("Laplce method not yet implemented in R version of PopED")
-    E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["f"]]      
+    E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["f"]]   
+    if(laplace.fim) {
+      E_fim <- ed_mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["ED_fim"]]
+    }
   }    
   return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=poped.db))
 }
