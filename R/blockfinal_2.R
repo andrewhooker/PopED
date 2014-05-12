@@ -24,7 +24,11 @@
 
 blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,m,poped.db,
                          opt_xt=poped.db$optsw[2],opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
-                         fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL){
+                         fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
+                         compute_inv=TRUE){
+  
+  if(is.null(fmf)) compute_inv <- FALSE
+  if(!is.matrix(fmf)) compute_inv <- FALSE
   
   fprintf(fn,'===============================================================================\nFINAL RESULTS\n\n')
   time_value = toc(echo=FALSE,name=".poped_total_time")
@@ -87,26 +91,42 @@ blockfinal_2 <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc
     MASS::write.matrix(fmf,file=fn)
     fprintf(fn,'\n\nInverse(FIM):\n')
     #write_matrix(fn,inv(fmf))
-    MASS::write.matrix(inv(fmf),file=fn)
+    if(compute_inv) MASS::write.matrix(inv(fmf),file=fn)
   }
   fprintf(fn,'\ndet(FIM) = %g\n',dmf)
   
-  param_vars=diag_matlab(inv(fmf))
-  returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
-  params <- returnArgs[[1]]
-  param_cvs <- returnArgs[[2]]
+  if(compute_inv){
+    param_vars=diag_matlab(inv(fmf))
+    returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
+    params <- returnArgs[[1]]
+    param_cvs <- returnArgs[[2]]
+  }
   
-  fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
-  fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
-  if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
+  output <- get_unfixed_params(poped.db)
+  npar <- length(output$all)
+  
+  fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+          ofv_criterion(dmf,npar,poped.db))
+  
+  fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',
+          ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
+  if(fn!=""){
+    fprintf('\nEfficiency (final_design/initial_design): %g\n',
+            ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
+  }
+  #fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
+  #fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
+  #if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
   
   
-  parnam <- get_parnam(poped.db)
-  fprintf(fn,'\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
-  if(fn!="") fprintf('\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
-  df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, "RSE"=t(param_cvs*100),"RSE_initial_design"=t(param_cvs_init*100))
-  print(df,digits=3, print.gap=3,row.names=F)
-  if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
+  if(compute_inv){
+    parnam <- get_parnam(poped.db)
+    fprintf(fn,'\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
+    if(fn!="") fprintf('\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
+    df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, "RSE"=t(param_cvs*100),"RSE_initial_design"=t(param_cvs_init*100))
+    print(df,digits=3, print.gap=3,row.names=F)
+    if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
+  }
   
   fprintf(fn,'\nTotal running time: %g seconds\n',time_value)
   if(fn!="") fprintf('\nTotal running time: %g seconds\n',time_value)

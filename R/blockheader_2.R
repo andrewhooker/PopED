@@ -32,7 +32,7 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
                           fmf=0,dmf=0,bpop=NULL,d=NULL,docc=NULL,sigma=NULL,
                           name_header=poped.db$strOutputFileName,
                           file_path=poped.db$strOutputFilePath,
-                          out_file=NULL,
+                          out_file=NULL,compute_inv=TRUE,
                           ...)
 {
   # BLOCKHEADER_2
@@ -95,7 +95,19 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
   if(dmf!=0) fprintf(fn,'\nOFV = %g\n',dmf)
   if(dmf!=0 && fn!="") fprintf('\nInitial OFV = %g\n',dmf)
   
-  if(any(fmf!=0)){
+  if(dmf!=0){
+    output <- get_unfixed_params(poped.db)
+    npar <- length(output$all)
+    
+    fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+            ofv_criterion(dmf,npar,poped.db))
+    if(fn!=""){
+      fprintf('\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+              ofv_criterion(dmf,npar,poped.db))
+    }
+  }
+  
+  if(is.matrix(fmf) && compute_inv){
     param_vars=diag_matlab(inv(fmf))
     returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
     params <- returnArgs[[1]]
@@ -104,8 +116,8 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
     
       
     #fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',dmf^(1/length(params)))
-    fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
-            ofv_criterion(dmf,length(params),poped.db))
+    #fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+    #        ofv_criterion(dmf,length(params),poped.db))
     
     parnam <- get_parnam(poped.db)
     fprintf(fn,'\nInitial design expected parameter variance \nand relative standard error (%sRSE)\n','%')
@@ -124,6 +136,9 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
   blockoptwrt(fn,poped.db$optsw, opt_xt=opt_xt,
               opt_a=opt_a,opt_x=opt_x,
               opt_samps=opt_samps,opt_inds=opt_inds)
+  
+  fprintf('\n')
+  fprintf(fn,'\n')
   
   return( fn) 
 }
