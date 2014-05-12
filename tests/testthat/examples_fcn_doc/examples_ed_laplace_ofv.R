@@ -21,88 +21,40 @@ sfg <- function(x,a,bpop,b,bocc){
   return(parameters) 
 }
 
-# Adding 10% log-normal Uncertainty to fixed effects (not Favail)
-bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
-bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
-                      bpop_vals,
-                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
-bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
-bpop_vals_ed_ln
+######################
+# Normal distribution
+######################
+bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # normal distribution
+                        bpop_vals,
+                        ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+bpop_vals_ed_n["Favail",]  <- c(0,1,0)
+bpop_vals_ed_n
 
 ## -- Define initial design  and design space
-poped.db.ln <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                     fg_file="sfg",
-                                     fError_file="feps.add.prop",
-                                     bpop=bpop_vals_ed_ln, 
-                                     notfixed_bpop=c(1,1,1,0),
-                                     d=c(CL=0.07, V=0.02, KA=0.6), 
-                                     sigma=c(0.01,0.25),
-                                     groupsize=32,
-                                     xt=c( 0.5,1,2,6,24,36,72,120),
-                                     minxt=0,
-                                     maxxt=120,
-                                     a=70,
-                                     mina=0,
-                                     maxa=100)
+poped.db.n <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                    fg_file="sfg",
+                                    fError_file="feps.add.prop",
+                                    bpop=bpop_vals_ed_n, 
+                                    notfixed_bpop=c(1,1,1,0),
+                                    d=c(CL=0.07, V=0.02, KA=0.6), 
+                                    sigma=c(0.01,0.25),
+                                    groupsize=32,
+                                    xt=c( 0.5,1,2,6,24,36,72,120),
+                                    minxt=0,
+                                    maxxt=120,
+                                    a=70,
+                                    mina=0,
+                                    maxa=100)
 
 
 ## ED evaluate using LaPlace approximation 
 tic()
-output <- evaluate.e.ofv.fim(poped.db.ln,use.laplace=TRUE)
+output <- evaluate.e.ofv.fim(poped.db.n,use.laplace=TRUE)
 toc()
 output$E_ofv
 
-
-
 \dontrun{
   
-  ## expected value (roughly)
-  tic()
-  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500)[["E_ofv"]]
-  toc()
-  e_ofv_mc_ln
-  
-  ## Using ed_laplce_ofv directly
-  tic()
-  ed_laplace_ofv(model_switch=poped.db.ln$global_model_switch,
-                 groupsize=poped.db.ln$groupsize,
-                 ni=poped.db.ln$gni,
-                 xtopto=poped.db.ln$gxt,
-                 xopto=poped.db.ln$gx,
-                 aopto=poped.db.ln$ga,
-                 bpopdescr=poped.db.ln$gbpop,
-                 ddescr=poped.db.ln$gd,
-                 covd=poped.db.ln$covd,
-                 sigma=poped.db.ln$sigma,
-                 docc=poped.db.ln$docc, 
-                 poped.db.ln)
-  toc()
- 
-  
-  ######################
-  # Normal distribution
-  ######################
-  bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # normal distribution
-                          bpop_vals,
-                          ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
-  bpop_vals_ed_n["Favail",]  <- c(0,1,0)
-  bpop_vals_ed_n
-  
-  ## -- Define initial design  and design space
-  poped.db.n <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                      fg_file="sfg",
-                                      fError_file="feps.add.prop",
-                                      bpop=bpop_vals_ed_n, 
-                                      notfixed_bpop=c(1,1,1,0),
-                                      d=c(CL=0.07, V=0.02, KA=0.6), 
-                                      sigma=c(0.01,0.25),
-                                      groupsize=32,
-                                      xt=c( 0.5,1,2,6,24,36,72,120),
-                                      minxt=0,
-                                      maxxt=120,
-                                      a=70,
-                                      mina=0,
-                                      maxa=100)
   
   ## expected value (roughly)
   tic()
@@ -110,12 +62,6 @@ output$E_ofv
   toc()
   e_ofv_mc_n$E_ofv
   
-  
-  ## ED evaluate using LaPlace approximation 
-  tic()
-  output <- evaluate.e.ofv.fim(poped.db.n,use.laplace=TRUE)
-  toc()
-  output$E_ofv
   
   ## Using ed_laplce_ofv directly
   ed_laplace_ofv(model_switch=poped.db.n$global_model_switch,
@@ -130,6 +76,66 @@ output$E_ofv
                  sigma=poped.db.n$sigma,
                  docc=poped.db.n$docc, 
                  poped.db.n)
+  
+  
+  ######################
+  # Log-normal distribution
+  ######################
+  
+  # Adding 10% log-normal Uncertainty to fixed effects (not Favail)
+  bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+  bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                           bpop_vals,
+                           ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+  bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+  bpop_vals_ed_ln
+  
+  ## -- Define initial design  and design space
+  poped.db.ln <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                       fg_file="sfg",
+                                       fError_file="feps.add.prop",
+                                       bpop=bpop_vals_ed_ln, 
+                                       notfixed_bpop=c(1,1,1,0),
+                                       d=c(CL=0.07, V=0.02, KA=0.6), 
+                                       sigma=c(0.01,0.25),
+                                       groupsize=32,
+                                       xt=c( 0.5,1,2,6,24,36,72,120),
+                                       minxt=0,
+                                       maxxt=120,
+                                       a=70,
+                                       mina=0,
+                                       maxa=100)
+  
+  
+  
+  ## ED evaluate using LaPlace approximation 
+  tic()
+  output <- evaluate.e.ofv.fim(poped.db.ln,use.laplace=TRUE)
+  toc()
+  output$E_ofv
+  
+  ## expected value (roughly)
+  tic()
+  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500)[["E_ofv"]]
+  toc()
+  e_ofv_mc_ln
+  
+  ## Using ed_laplce_ofv directly
+  ed_laplace_ofv(model_switch=poped.db.ln$global_model_switch,
+                 groupsize=poped.db.ln$groupsize,
+                 ni=poped.db.ln$gni,
+                 xtopto=poped.db.ln$gxt,
+                 xopto=poped.db.ln$gx,
+                 aopto=poped.db.ln$ga,
+                 bpopdescr=poped.db.ln$gbpop,
+                 ddescr=poped.db.ln$gd,
+                 covd=poped.db.ln$covd,
+                 sigma=poped.db.ln$sigma,
+                 docc=poped.db.ln$docc, 
+                 poped.db.ln)
+  
+  
+  
   
 }
 
