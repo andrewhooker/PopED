@@ -14,7 +14,7 @@ getfulld <- function(variance_vector,covariance_vector=NULL){
 if((isempty(covariance_vector) || sum(covariance_vector!=0)==0)){
     d=diag_matlab(variance_vector)
 } else {
-    covd = zeros(size(variance_vector,2),size(variance_vector,2))
+    covd = zeros(length(variance_vector),length(variance_vector))
     k=1
     for(i in 1:length(variance_vector)){
         for(j in 1:length(variance_vector)){
