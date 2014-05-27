@@ -3,7 +3,6 @@
 \alias{calc_k}
 \alias{blockoptwrt}
 \alias{blockother}
-\alias{blockother_2}
 \alias{cauchy_point}
 \alias{d2fimdalpha2}
 \alias{datestr_poped}
