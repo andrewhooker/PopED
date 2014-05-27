@@ -1,4 +1,4 @@
-#' Optimize the objective function using an adaptive random search algorithm. 
+#' Optimize the objective function using an adaptive random search algorithm for D-family designs. 
 #' 
 #' Optimize the objective function using an adaptive random search algorithm.
 #' The function works for both discrete and continuous optimization variables.
@@ -16,7 +16,7 @@
 #' @param opt_a Should the continuous design variables be optimized?
 #' @param opt_x Should the discrete design variables be optimized?
 #' @param approx_type Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.
-#' @param iter The number of iterations entered into the \code{blockheader_2} function.
+#' @param iter The number of iterations entered into the \code{\link{blockheader}} function.
 #' @param ... arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.
 #' 
 #' 
@@ -191,7 +191,7 @@ RS_opt <- function(poped.db,
   
   # ------------------ Write summary output file header
   if((trflag)){
-    fn=blockheader_2('RS',iter,poped.db,
+    fn=blockheader(poped.db,name='RS',iter=iter,
                      opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
                      opt_inds=F,opt_samps=F,
                      fmf=fmf_init,dmf=dmf_init,
@@ -384,9 +384,9 @@ RS_opt <- function(poped.db,
   
   #--------- Write results
   if((trflag)){
-    blockfinal_2(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db,
+    blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,
                  opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,dmf_init=dmf_init,param_cvs_init=param_cvs_init)
-    close(fn)
+    #close(fn)
   }
   
   #==========================================
