@@ -10,7 +10,7 @@ Often this is based on a computation of the Fisher Information Matrix (FIM).
 You need to have R installed.  Download the latest version of R from www.r-project.org.
 Install PopED in R using one of the following methods:
 
-* latest stable release -- From CRAN:
+* latest stable release -- From CRAN.  Write at the R command line:
 
 ```
 install.packages("PopED")
