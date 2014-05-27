@@ -10,7 +10,7 @@ output$E_ofv
 
 ## ED evaluate using Laplace approximation 
 tic()
-output <- evaluate.e.ofv.fim(poped.db,use.laplace=TRUE)
+output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE)
 toc()
 output$E_ofv
 
@@ -26,7 +26,7 @@ output$E_ofv
   
   # If you want to get an E(FIM) from the laplace approximation you have to ask for it
   # and it will take more time.
-  output <- evaluate.e.ofv.fim(poped.db,use.laplace=TRUE,laplace.fim=TRUE)
+  output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE,laplace.fim=TRUE)
   output$E_fim
   
  

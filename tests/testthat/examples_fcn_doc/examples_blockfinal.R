@@ -2,10 +2,10 @@
 
 
 FIM <- evaluate.fim(poped.db) 
-dmf <- det(FIM)
+ <- det(FIM)
 
 
-blockfinal_2(fn="",fmf=FIM,
+blockfinal(fn="",fmf=FIM,
              dmf=dmf,
              groupsize=poped.db$groupsize,
              ni=poped.db$gni,
@@ -16,7 +16,6 @@ blockfinal_2(fn="",fmf=FIM,
              poped.db$param.pt.val$d,
              poped.db$docc,
              poped.db$param.pt.val$sigma,
-             poped.db$m,
              poped.db,
              opt_xt=TRUE,
              fmf_init=FIM,

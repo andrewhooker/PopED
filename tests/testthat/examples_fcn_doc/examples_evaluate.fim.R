@@ -68,3 +68,4 @@ FIM.7 <- evaluate.fim(poped.db,fim.calc.type=7)
 FIM.7
 det(FIM.7)
 get_rse(FIM.7,poped.db,fim.calc.type=7)
+

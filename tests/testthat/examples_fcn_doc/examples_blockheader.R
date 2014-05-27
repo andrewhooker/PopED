@@ -4,10 +4,12 @@
 FIM <- evaluate.fim(poped.db) 
 dmf <- det(FIM)
 
-blockheader_2(name="",iter=1,poped.db)
+blockheader(poped.db,name="")
+
+blockheader(name="",iter=1,poped.db)
 
 
-blockheader_2(name='',
+blockheader(name='',
               iter=1,
               poped.db,
               e_flag=FALSE,
@@ -21,7 +23,7 @@ blockheader_2(name='',
 
 
 
-blockheader_2(name='',
+blockheader(name='',
               iter=1,
               poped.db,
               e_flag=TRUE,
