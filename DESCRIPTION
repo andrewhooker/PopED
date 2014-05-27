@@ -1,14 +1,14 @@
 Package: PopED
 Type: Package
-Title: PopED: Population (and individual) optimal Experimental Design
+Title: Population (and individual) optimal Experimental Design
 Version: 0.1.1
-Date: 2014-05-05
+Date: 2014-05-27
 Depends: ggplot2
 Imports: MASS, mvtnorm
 Suggests: testthat, Hmisc
 Author: Andrew C. Hooker, Sebastian Ueckert (MATLAB version), 
   Marco Foracchia (O-Matrix version) and Joakim Nyberg (MATLAB version) 
-  with contributions from Eric Strömberg (MATLAB version).
+  with contributions from Eric Stroemberg (MATLAB version).
 Maintainer: Andrew C. Hooker <andrew.hooker@farmbio.uu.se>
 Authors@R: c(person("Andrew C.","Hooker",
                     email="andrew.hooker@farmbio.uu.se",
@@ -22,7 +22,7 @@ Authors@R: c(person("Andrew C.","Hooker",
             person("Joakim", "Nyberg",
                     role="aut",
                     comment="MATLAB version"),
-            person("Eric","Strömberg",
+            person("Eric","Stroemberg",
                    role="ctb",
                    comment="MATLAB version")
             )
@@ -32,3 +32,4 @@ Description: PopED computes optimal experimental designs for both
 License: LGPL (>= 3)
 URL: http://poped.sourceforge.net, https://github.com/andrewhooker/PopED.git 
 Copyright: 2014 Andrew C. Hooker
+

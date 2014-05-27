@@ -17,7 +17,7 @@ bibentry(bibtype="Article",
          volume   = "108")
 
 bibentry(bibtype="Article",
-         title ="PopED: An extended, parallelized, nonlinear mixed effects models optimal design tool",
+         title ="POPED, a software for optimal experiment design in population kinetics",
          author = c(
                     person("Marco","Foracchia"),
                     person(c("Andrew","C"), "Hooker"),
@@ -27,12 +27,3 @@ bibentry(bibtype="Article",
          journal = "Computer Methods and Programs in Biomedicine",
          year   = "2004",
          volume   = "74")
-
-bibentry(bibtype="Manual",
-         title =meta$Title,
-         author = person("Andrew", "Hooker","C"),
-         organization = "Uppsala University",
-         address      = "Uppsala, Sweden",
-         year   = year,
-         note   = note,
-         url    = meta$URL)
