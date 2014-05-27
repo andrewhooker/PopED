@@ -6,7 +6,22 @@ PopED 0.1.1
 * Updated package author list
 
 * New functionality to compute the ED OFV using the Laplace approximation.
-  This is orders of magnitude faster than the standard MC integration approach.
+  This can be orders of magnitude faster than the standard MC integration approach.
+
+* Added a general function to compute the FIM and OFV(FIM) for all avaialbale methods in PopED.
+  See '?calc_ofv_and_fim'.
+
+* Added a general optimization algorithm 'RS_opt_gen()' that works for both D-family and E-family
+  optimization.
+
+* Added optimization of E-family designs to 'poped_optimize()'.
+
+* Changed distribution tests for package building 
+
+* Fixed bug where correlations between BSV (between subject variability) terms in the model gave an 
+  error when creating a PopED database
+
+* Fixed a bug where get_rse failed when a parameter had a value of 3.
 
 PopED 0.1.0
 ===========
