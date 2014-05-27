@@ -2,7 +2,7 @@
 
 
 FIM <- evaluate.fim(poped.db) 
- <- det(FIM)
+dmf <- det(FIM)
 
 
 blockfinal(fn="",fmf=FIM,

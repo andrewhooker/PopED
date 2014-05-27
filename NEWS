@@ -7,6 +7,7 @@ PopED 0.1.1
 
 * New functionality to compute the ED OFV using the Laplace approximation.
   This can be orders of magnitude faster than the standard MC integration approach.
+  See '?ed_laplace_ofv' and '?evaluate.e.ofv.fim' 
 
 * Added a general function to compute the FIM and OFV(FIM) for all avaialbale methods in PopED.
   See '?calc_ofv_and_fim'.

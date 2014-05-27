@@ -46,7 +46,6 @@
 \alias{numel}
 \alias{new_ferror_file}
 \alias{min_function}
-\alias{log_prior_pdf}
 \alias{linspace}
 \alias{line_search_uc}
 \alias{line_search}

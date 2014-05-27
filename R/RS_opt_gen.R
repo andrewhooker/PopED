@@ -12,12 +12,19 @@
 #' @inheritParams evaluate.fim
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
+#' @inheritParams calc_ofv_and_fim
 #' @param cfaxt First step factor for sample times 
 #' @param opt_xt Should the sample times be optimized?
 #' @param opt_a Should the continuous design variables be optimized?
 #' @param opt_x Should the discrete design variables be optimized?
 #' @param approx_type Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.
 #' @param iter The number of iterations entered into the \code{blockheader_2} function.
+#' @param header_flag Should the header text be printed out?
+#' @param footer_flag Should the footer text be printed out?
+#' @param out_file Which file should the output be directed to?  A string, a file handle using 
+#'        \code{\link{file}} or \code{""} will output to the screen.
+#' @param compute_inv should the inverse of the FIM be used to compute expected RSE values?  Often not needed
+#'        except for diagnostic purposes.
 #' @param ... arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.
 #' 
 #' 

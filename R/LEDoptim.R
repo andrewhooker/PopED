@@ -15,9 +15,11 @@
 #' @inheritParams RS_opt_gen
 #' @inheritParams create.poped.database
 #' @inheritParams Doptim
+#' @inheritParams calc_ofv_and_fim
 #' @param fim_init The initial value of the FIM. If set to zero then it is computed.
 #' @param ofv_init The inital OFV. If set to zero then it is computed.
 #' @param trflag Should the optimization be output to the screen and to a file?
+#' @param use_RS should the fucntion use a random search algorithm?
 #' 
 #' @family Optimize
 #' 
@@ -203,7 +205,7 @@ LEDoptim <- function(poped.db,
       fprintf('Starting BGFS minimization with OFV of %g \n', best_dmf)
       returnArgs <- bfgsb_min('ed_laplace_ofv',
                               list(model_switch,aa,axt,poped.db$groupsize,ni,
-                                   xtopt,xopt,aopt,bpop,d,poped.db$sigma,docc_full,poped.db,
+                                   xtopt,xopt,aopt,bpopdescr,ddescr,poped.db$sigma,poped.db$param.pt.val$docc,poped.db,
                                    return_gradient=T,
                                    optxt=optxt, opta=optx, x=x),
                               x_k,lb,ub,options) 

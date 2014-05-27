@@ -20,7 +20,10 @@
 #' @param optxt If sampling times are optimized
 #' @param opta If continuous design variables are optimized
 #' @param aopto the continuous design variables
-#'   
+#' @param method If 0 then use an optimization routine translated from poped code written in MATLAB to
+#'        optimize the parameters in the Laplace approximation.  If 1 then use \code{\link{optim}} to compute both
+#'        k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
+#'        to compute the hessian.
 #' @param return_gradient Should the gradient be returned.
 #'   
 #' @return The FIM and the hessian of the FIM.
@@ -224,7 +227,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     
     ## Different hessian and gradient calculation
     if(method==2){ 
-      k_vals <- nlme::fdHess(output$par,
+      k_vals <- fdHess(output$par,
                              function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                                                 return_gradient=F)[["k"]]) 

@@ -21,6 +21,11 @@ ed_laplace_ofv(model_switch, groupsize, ni, xtopto, xopto, aopto, bpopdescr,
 
 \item{aopto}{the continuous design variables}
 
+\item{method}{If 0 then use an optimization routine translated from poped code written in MATLAB to
+optimize the parameters in the Laplace approximation.  If 1 then use \code{\link{optim}} to compute both
+k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
+to compute the hessian.}
+
 \item{return_gradient}{Should the gradient be returned.}
 
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
@@ -90,6 +95,7 @@ sfg <- function(x,a,bpop,b,bocc){
 ######################
 # Normal distribution
 ######################
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
 bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # normal distribution
                         bpop_vals,
                         ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value

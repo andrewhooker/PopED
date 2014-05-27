@@ -4,7 +4,10 @@
 #' @inheritParams evaluate.fim
 #' @inheritParams create.poped.database
 #' @inheritParams Doptim
+#' @param alpha  A parameter vector.
+#' @param return_hessian Should the hessian be returned?
 #' 
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_log_prior_pdf.R
 
 log_prior_pdf <- function(alpha, bpopdescr, ddescr,return_gradient=F,return_hessian=F){

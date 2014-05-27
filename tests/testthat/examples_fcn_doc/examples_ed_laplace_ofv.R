@@ -24,6 +24,7 @@ sfg <- function(x,a,bpop,b,bocc){
 ######################
 # Normal distribution
 ######################
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
 bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # normal distribution
                         bpop_vals,
                         ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value

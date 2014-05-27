@@ -13,6 +13,10 @@ calc_ofv_and_fim(poped.db, ofv = 0, fim = 0, d_switch = poped.db$d_switch,
   use_laplace = poped.db$iEDCalculationType, laplace.fim = FALSE, ...)
 }
 \arguments{
+\item{ofv}{The current ofv.  If other than zero then this values is simply returned unchanged.}
+
+\item{fim}{The current FIM. If other than zero then this values is simply returned unchanged.}
+
 \item{use_laplace}{Should the Laplace method be used in calculating the expectation of the OFV?}
 
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically

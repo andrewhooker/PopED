@@ -62,6 +62,14 @@ can also just supply the parameter values as a \code{c()}.}
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
 \item{fn}{The file handle to write to.}
+
+\item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
+except for diagnostic purposes.}
+
+\item{out_file}{Which file should the output be directed to?  A string, a file handle using
+\code{\link{file}} or \code{""} will output to the screen.}
+
+\item{footer_flag}{Should the footer text be printed out?}
 }
 \description{
 Create some output to the screen and a text file that summarizes the problem you solved.
@@ -109,7 +117,7 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 
 
 FIM <- evaluate.fim(poped.db) 
- <- det(FIM)
+dmf <- det(FIM)
 
 
 blockfinal(fn="",fmf=FIM,

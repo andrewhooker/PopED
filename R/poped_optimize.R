@@ -11,6 +11,7 @@
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
 #' @inheritParams Dtrace
+#' @inheritParams calc_ofv_and_fim
 #' @param ... arguments passed to other functions. See \code{\link{Doptim}}.
 #' 
 #' 

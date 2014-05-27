@@ -7,11 +7,13 @@
 #' @inheritParams blockexp
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
+#' @inheritParams RS_opt_gen
 #' @param name The name used for the output file. Combined with \code{name_header} and \code{iter}. 
 #' If \code{""} then output is to the screen.
 #' @param iter The last number in the name printed to the output file, combined with \code{name}.
 #' @param name_header The initial portion of the file name.
 #' @param file_path The path to where the file should be created.
+#' @param header_flag Should the header text be printed out?
 #' @param ... Additional arguments passed to further functions.
 #' 
 #' @family Helper

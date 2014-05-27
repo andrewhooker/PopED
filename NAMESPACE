@@ -1,4 +1,5 @@
 import(ggplot2)
 importFrom(MASS, write.matrix)
 importFrom(mvtnorm, rmvnorm)
+importFrom(nlme, fdHess)
 exportPattern("^[[:alpha:]]+")

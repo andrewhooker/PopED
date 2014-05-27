@@ -4,12 +4,8 @@ Title: Population (and individual) optimal Experimental Design
 Version: 0.1.1
 Date: 2014-05-27
 Depends: ggplot2
-Imports: MASS, mvtnorm
+Imports: MASS, mvtnorm, nlme
 Suggests: testthat, Hmisc
-Author: Andrew C. Hooker, Sebastian Ueckert (MATLAB version), 
-  Marco Foracchia (O-Matrix version) and Joakim Nyberg (MATLAB version) 
-  with contributions from Eric Stroemberg (MATLAB version).
-Maintainer: Andrew C. Hooker <andrew.hooker@farmbio.uu.se>
 Authors@R: c(person("Andrew C.","Hooker",
                     email="andrew.hooker@farmbio.uu.se",
                     role=c("aut","cre","trl","cph")),

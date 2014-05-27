@@ -96,8 +96,10 @@
   output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=10,d_switch=0)
   get_rse(output$fmf,output$poped.db)
   
-  # ED with laplace approximation, optimization using Random search (just a few samples here)
-  output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=10,d_switch=0,use_laplace=TRUE,laplace.fim=TRUE)
+  # ED with laplace approximation, 
+  # optimization using Random search (just a few samples here)
+  output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=10,
+                           d_switch=0,use_laplace=TRUE,laplace.fim=TRUE)
   get_rse(output$fmf,output$poped.db)
   
   

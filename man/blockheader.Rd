@@ -22,6 +22,8 @@ If \code{""} then output is to the screen.}
 
 \item{file_path}{The path to where the file should be created.}
 
+\item{header_flag}{Should the header text be printed out?}
+
 \item{...}{Additional arguments passed to further functions.}
 
 \item{poped.db}{A PopED database.}
@@ -60,6 +62,12 @@ can also just supply the parameter values as a \code{c()}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+
+\item{out_file}{Which file should the output be directed to?  A string, a file handle using
+\code{\link{file}} or \code{""} will output to the screen.}
+
+\item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
+except for diagnostic purposes.}
 }
 \value{
 fn A file handle (or \code{''} if \code{name=''})

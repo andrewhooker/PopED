@@ -28,6 +28,16 @@ RS_opt_gen(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
 
 \item{iter}{The number of iterations entered into the \code{blockheader_2} function.}
 
+\item{header_flag}{Should the header text be printed out?}
+
+\item{footer_flag}{Should the footer text be printed out?}
+
+\item{out_file}{Which file should the output be directed to?  A string, a file handle using
+\code{\link{file}} or \code{""} will output to the screen.}
+
+\item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
+except for diagnostic purposes.}
+
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 
 \item{poped.db}{A PopED database.}
@@ -94,6 +104,12 @@ all a values are given the same max value}
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
 D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+
+\item{use_laplace}{Should the Laplace method be used in calculating the expectation of the OFV?}
+
+\item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
+the FIM does not need to be computed and, if desired,  this calculation
+is done usng the standard MC integration technique, so can be slow.}
 }
 \description{
 Optimize the objective function using an adaptive random search algorithm.
