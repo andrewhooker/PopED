@@ -18,14 +18,14 @@
 #' @return fn A file handle (or \code{''} if \code{name=''})
 #' @export
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_blockheader_2.R
+#' @example tests/testthat/examples_fcn_doc/examples_blockheader.R
 # @keywords internal
 #' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-blockheader_2 <- function(name,iter=NULL,poped.db,
+blockheader <- function(poped.db,name="Default",iter=NULL,
                           e_flag=!(poped.db$d_switch),opt_xt=poped.db$optsw[2],
                           opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
                           opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
@@ -33,6 +33,8 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
                           name_header=poped.db$strOutputFileName,
                           file_path=poped.db$strOutputFilePath,
                           out_file=NULL,compute_inv=TRUE,
+                          trflag=TRUE,
+                          header_flag=TRUE,
                           ...)
 {
   # BLOCKHEADER_2
@@ -47,17 +49,23 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
   
   #tmpfile=sprintf('%s_%s_%g%s',poped.db$strOutputFileName,name,iter,poped.db$strOutputFileExtension)
 
+  if(!trflag) return('')
+  
   if(!is.null(out_file)){
     fn <- out_file
-    if(!any(class(out_file)=="file")){
-      fn=file(out_file,'w')
+    if(!any(class(fn)=="file") && (fn!='')){
+      fn=file(fn,'w')
       if(fn==-1){
         stop(sprintf('output file could not be opened'))
       }
     }
   } else if(name!=""){
-    tmpfile=sprintf('%s_%s.txt',name_header,name)
-    if(!is.null(iter)) tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
+    tmpfile <- name_header
+    if(name!="Default") tmpfile=paste(tmpfile,"_",name,sep="")
+    if(!is.null(iter))  tmpfile=paste(tmpfile,"_",iter,sep="")
+    tmpfile=paste(tmpfile,".txt",sep="")
+    #tmpfile=sprintf('%s_%s.txt',name_header,name)
+    #if(!is.null(iter)) tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
     tmpfile = fullfile(poped.db$strOutputFilePath,tmpfile)
     fn=file(tmpfile,'w')
     if((fn==-1)){
@@ -71,6 +79,9 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
     #       stop(sprintf('output file could not be opened'))
     #     }
   }
+  
+  if(!header_flag) return(fn)
+  
   
   tic()
   tic(name=".poped_total_time")
@@ -130,8 +141,8 @@ blockheader_2 <- function(name,iter=NULL,poped.db,
     
   }
   
-  blockopt_2(fn,poped.db,opt_method=name)
-  blockother_2(fn,poped.db,d_switch=!e_flag)
+  blockopt(fn,poped.db,opt_method=name)
+  blockother(fn,poped.db,d_switch=!e_flag)
   
   blockoptwrt(fn,poped.db$optsw, opt_xt=opt_xt,
               opt_a=opt_a,opt_x=opt_x,

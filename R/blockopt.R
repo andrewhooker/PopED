@@ -13,12 +13,12 @@
 #' @family Helper
 #' @export
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_blockopt_2.R
+#' @example tests/testthat/examples_fcn_doc/examples_blockopt.R
 # @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-blockopt_2 <- function(fn,poped.db,opt_method=""){
+blockopt <- function(fn,poped.db,opt_method=""){
   
   if(any(opt_method==c("RS","SG","DO"))){
     fprintf(fn,'==============================================================================\n')
