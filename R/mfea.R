@@ -102,19 +102,19 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
     }
     
     # ------------------ Write output file header
-    #fn=blockheader_2(FALSE,iter,poped.db)
-    if(it==0 && trflag){
+    #fn=blockheader(FALSE,iter,poped.db)
+    if(it==0){
       fmf_init=nfmf
       dmf_init=optofv
-      fn=blockheader_2('mfea_opt',iter=1,poped.db,
+      fn=blockheader(name='mfea_opt',iter=1,poped.db,
                        opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
                        opt_inds=F,opt_samps=F,
                        fmf=nfmf,dmf=optofv,
-                       bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma)
-      param_vars_init=diag_matlab(inv(nfmf))
-      returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
-      params_init <- returnArgs[[1]]
-      param_cvs_init <- returnArgs[[2]]
+                       bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,trflag=trflag,...)
+      #       param_vars_init=diag_matlab(inv(nfmf))
+      #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
+      #       params_init <- returnArgs[[1]]
+      #       param_cvs_init <- returnArgs[[2]]
     }
     
     delta_max = 0
@@ -586,7 +586,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
     it = it+1
     fprintf('MFEA - It. : %d\n',it)
     if(trflag) fprintf(fn,'MFEA - It. : %d\n',it)
-
+    
     if((delta_max>rho)){
       previous_index_i = i_index
       previous_type = type
@@ -646,13 +646,15 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
   x = x_current
   
   #--------- Write results
-  if((trflag)){
-    fprintf(fn,"\n")
-    blockfinal_2(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,model_switch,bpopdescr,ddescr,
-                 poped.db$docc,poped.db$sigma,m,poped.db,
-                 opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,dmf_init=dmf_init,param_cvs_init=param_cvs_init)
-    close(fn)
-  }
+  #if((trflag)){
+  #fprintf(fn,"\n")
+  blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,model_switch,bpopdescr,ddescr,
+               poped.db$docc,poped.db$sigma,poped.db,
+               opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,dmf_init=dmf_init,
+               trflag=trflag,
+               ...)
+  #close(fn)
+  #}
   #blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db)
   
   
