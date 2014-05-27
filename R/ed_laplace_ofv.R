@@ -204,17 +204,21 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     #     lb <- priordescr[,2]-priordescr[,3]/2
     #     ub <- priordescr[,2]+priordescr[,3]/2
     
+    
     ## minimize K(alpha_k)
     output <- optim(alpha_k, 
                     function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                        aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                                        return_gradient=F)[["k"]],
+                    #gr=function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
+                    #                      aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+                    #                      return_gradient=T)[["grad_k"]],
                     #method="L-BFGS-B",
+                    #method="BFGS",
                     #lower=0,
                     #lower=lb,
                     #upper=ub,
                     hessian=T)
-    
     hess <- output$hessian
     f_k <- output$value
     
