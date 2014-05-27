@@ -290,7 +290,7 @@ a_line_search <- function(poped.db,
                     }
                   } else {
                     if((poped.db$parallelSettings$bParallelLS == FALSE)){
-                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$sigma,fulldocc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       poped.db <- returnArgs[[2]]
                       temp_detmf=ofv_fim(temp_mf,poped.db)
@@ -720,7 +720,7 @@ a_line_search <- function(poped.db,
                       }
                     } else {
                       if((poped.db$parallelSettings$bParallelLS == 0)){
-                        returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                        returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$sigma,fulldocc,poped.db) 
                         temp_mf <- returnArgs[[1]]
                         poped.db <- returnArgs[[2]]
                         temp_detmf=ofv_fim(temp_mf,poped.db)
