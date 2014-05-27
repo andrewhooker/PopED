@@ -33,7 +33,7 @@
 
 ofv_fim <- function(fmf,poped.db,
                     ofv_calc_type = poped.db$ofv_calc_type,
-                    ds_index=poped.db$ds_index){
+                    ds_index=poped.db$ds_index,...){
   
   #Input: the FIM
   #Return the single value that should be maximized
