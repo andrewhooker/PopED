@@ -1,6 +1,6 @@
-#' D CONTINUOUS VARIABLE OPTIMIZATION FUNCTION
+#' D-family optimization function
 #' 
-#' Optimize the objective function.  The function works for continuous optimization variables.
+#' Optimize the objective function. 
 #' There are 4 different optimization algorithms used in this 
 #' function 
 #' \enumerate{
@@ -37,7 +37,7 @@
 #' @param iter_tot Number of iterations of full Random search and full Stochastic Gradient if line search is not used.
 #' 
 #' @references \enumerate{
-#' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software fir optimal 
+#' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software for optimal 
 #' experimental design in population kinetics", Computer Methods and Programs in Biomedicine, 74, 2004.
 #' \item J. Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C. Hooker, "PopED: An extended, 
 #' parallelized, nonlinear mixed effects models optimal design tool",  
@@ -65,7 +65,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
                    BFGSTolerancef=poped.db$BFGSTolerancef,
                    BFGSToleranceg=poped.db$BFGSToleranceg,
                    BFGSTolerancex=poped.db$BFGSTolerancex,
-                   iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch){
+                   iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch,...){
   
   
   ## update poped.db with options supplied in function
@@ -112,18 +112,20 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
   
   if((optxt || optx || opta)){
     # ------------------ Write output file header
-    #fn=blockheader_2(FALSE,iter,poped.db)
-    if((trflag)){
-      fn=blockheader_2('D_cont_opt',iter=1,poped.db,
-                       opt_xt=optxt,opt_a=opta,opt_x=optx,
-                       opt_inds=F,opt_samps=F,
-                       fmf=fmf_init,dmf=dmf_init,
-                       bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma)
-      param_vars_init=diag_matlab(inv(fmf))
-      returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
-      params_init <- returnArgs[[1]]
-      param_cvs_init <- returnArgs[[2]]
-    }
+    #fn=blockheader(FALSE,iter,poped.db)
+    #if((trflag)){
+    fn=blockheader(poped.db,name='D_cont_opt',iter=1,
+                     opt_xt=optxt,opt_a=opta,opt_x=optx,
+                     opt_inds=F,opt_samps=F,
+                     fmf=fmf_init,dmf=dmf_init,
+                     bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,
+                     trflag=trflag,
+                     ...)
+    #       param_vars_init=diag_matlab(inv(fmf))
+    #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
+    #       params_init <- returnArgs[[1]]
+    #       param_cvs_init <- returnArgs[[2]]
+    #}
     while(test_change==TRUE && iMaxSearchIterations>0){
       iter=iter+1
       
@@ -559,13 +561,15 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
     }
     
     #--------- Write results
-    if((trflag)){
-      blockfinal_2(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db,
-                   opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,dmf_init=dmf_init,param_cvs_init=param_cvs_init)
-    }
+    #     if((trflag)){
+    blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,
+                 bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,
+                 opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,
+                 dmf_init=dmf_init,trflag=trflag,...)
+    #}
     #blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db)
     
-    close(fn)
+    #close(fn)
     
   } else {
     fprintf('No Continuous Optimization Performed \n')
