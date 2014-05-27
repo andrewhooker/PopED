@@ -4,7 +4,7 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("PopED (Population Experimental Design)"),
+  titlePanel("PopED - Population Experimental Design"),
   
   sidebarLayout(
     sidebarPanel(
@@ -15,10 +15,10 @@ shinyUI(fluidPage(
                     "PK: 1-cpt, 1st order abs., single dose, KE param." = "ff.PK.1.comp.oral.sd.KE",
                     "PK: 1-cpt, 1st order abs., multi. dose, CL param." = "ff.PK.1.comp.oral.md.CL",
                     "PK: 1-cpt, 1st order abs., multi. dose, KE param" = "ff.PK.1.comp.oral.md.KE"
-                    #,"PKPD: 1-cpt, 1st order abs., multi. dose, CL param., direct effect IMAX" = "ff.PKPD.1.comp.oral.md.CL.imax"
-                    #,"PKPD: 1-cpt, single dose, CL param., direct effect EMAX" = "ff.PKPD.1.comp.sd.CL.emax"
+                    ,"PKPD: 1-cpt, 1st order abs., multi. dose, CL param., direct effect IMAX" = "ff.PKPD.1.comp.oral.md.CL.imax"
+                    ,"PKPD: 1-cpt, single dose, CL param., direct effect EMAX" = "ff.PKPD.1.comp.sd.CL.emax"
                     )),
-      br(),
+      #br(),
       
       selectInput("bsv_model", "Between Subject Variability Model:",
                   list(
@@ -27,7 +27,7 @@ shinyUI(fluidPage(
                     "Additive" = "sfg.add"
                   )),
       checkboxInput("per_param", label = "Choose per parameter", value = FALSE),
-      br(),
+      #br(),
       
       selectInput("ruv_model", "Residual Unexplained Variability Model:",
                   list(
@@ -60,7 +60,6 @@ shinyUI(fluidPage(
       "Uppsala University, Sweden"
     ),
     
-    # Show the caption and plot of the requested variable against mpg
     mainPanel(
       #h3(textOutput("caption")),
       #     checkboxInput("smooth", "Smooth"),
