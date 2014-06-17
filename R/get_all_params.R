@@ -18,27 +18,27 @@
 ## Author: Andrew Hooker
 
 get_all_params <- function(poped.db){
-#Return all params (in a vector all) with the specified order above
-
-bpop = poped.db$gbpop[,2,drop=F]
-d = poped.db$gd[,2,drop=F]
-docc = poped.db$docc[,2,drop=F]
-covd = poped.db$covd
-sigma = diag_matlab(poped.db$sigma)
-covsigma = zeros(1,length(sigma)*(length(sigma)-1)/2)
-
-k=1
-for(i in 1:size(poped.db$sigma,1)){
+  #Return all params (in a vector all) with the specified order above
+  
+  bpop = poped.db$gbpop[,2,drop=F]
+  d = poped.db$gd[,2,drop=F]
+  docc = poped.db$docc[,2,drop=F]
+  covd = poped.db$covd
+  sigma = diag_matlab(poped.db$sigma)
+  covsigma = zeros(1,length(sigma)*(length(sigma)-1)/2)
+  
+  k=1
+  for(i in 1:size(poped.db$sigma,1)){
     for(j in 1:size(poped.db$sigma,2)){
-        if((i<j)){
-            covsigma[k] = poped.db$sigma[i,j]
-            k=k+1
-        }
+      if((i<j)){
+        covsigma[k] = poped.db$sigma[i,j]
+        k=k+1
+      }
     }
-}
-
-covdocc = poped.db$covdocc
-
-all = matrix(c(bpop, d, t(covd), docc, t(covdocc), sigma, t(covsigma)),ncol=1,byrow=T)
-return(list( bpop= bpop,d=d,covd=covd,docc=docc,covdocc=covdocc,sigma=sigma,covsigma=covsigma,all =all )) 
+  }
+  
+  covdocc = poped.db$covdocc
+  
+  all = matrix(c(bpop, d, t(covd), docc, t(covdocc), sigma, t(covsigma)),ncol=1,byrow=T)
+  return(list( bpop= bpop,d=d,covd=covd,docc=docc,covdocc=covdocc,sigma=sigma,covsigma=covsigma,all =all )) 
 }

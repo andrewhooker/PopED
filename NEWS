@@ -1,5 +1,10 @@
 PopED News/Changelog
 
+PopED 0.1.2
+===========
+
+* Fixed bug when computing FIM with only one BSV term present in model (calculation gave an error).
+
 PopED 0.1.1
 ===========
 
