@@ -10,6 +10,9 @@ PopED 0.1.2
   values in the xt matrix were to be used for the design calculation 
   (ni is different from size(xt,2), see ?create_poped_database).
 
+* Added examples for evaluation and optimization of a one-target quasi-steady-state 
+  target mediated drug disposition model (TMDD).
+
 PopED 0.1.1
 ===========
 
