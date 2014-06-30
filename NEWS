@@ -3,7 +3,12 @@ PopED News/Changelog
 PopED 0.1.2
 ===========
 
-* Fixed bug when computing FIM with only one BSV term present in model (calculation gave an error).
+* Fixed bug when computing FIM with only one BSV term present in model (calculation gave 
+  an error).
+
+* Fixed a bug in plot_model_predictions where an error was returned if not all time 
+  values in the xt matrix were to be used for the design calculation 
+  (ni is different from size(xt,2), see ?create_poped_database).
 
 PopED 0.1.1
 ===========
