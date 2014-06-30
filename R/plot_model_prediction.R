@@ -92,11 +92,15 @@ model_prediction <- function(poped.db,
     
   }
   
+  used_times <- 0*design$xt
+  for(i in 1:size(design$xt,1)) used_times[i,1:design$ni[i]] <- 1
+  
   if(all(groups_to_use=="all")){
     groups_to_use = 1:size(design$xt,1)
   }
   if(all(models_to_use=="all")){
-    models_to_use = unique(as.vector(design$model_switch))
+    #models_to_use = unique(as.vector(design$model_switch))
+    models_to_use = unique(as.vector(design$model_switch[used_times==1]))
   }
   
   df <- data.frame()
@@ -116,7 +120,7 @@ model_prediction <- function(poped.db,
     if(all(is.null(model_num_points))){
       xt_i = design$xt[groups_to_use[i],1:design$ni[groups_to_use[i]]]
       model_switch_i = design$model_switch[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-      if(!all(models_to_use == unique(as.vector(design$model_switch)))){ ## needs testing
+      if(!all(models_to_use == unique(as.vector(design$model_switch[used_times==1])))){ ## needs testing
         xt_i = xt_i[model_switch_i %in% models_to_use]
         model_switch_i = model_switch_i[model_switch_i %in% models_to_use]
       }
@@ -147,7 +151,7 @@ model_prediction <- function(poped.db,
       if(include_sample_times){
         xt_i_extra = design$xt[groups_to_use[i],1:design$ni[groups_to_use[i]]]
         model_switch_i_extra = design$model_switch[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-        if(!all(models_to_use == unique(as.vector(design$model_switch)))){ ## needs testing
+        if(!all(models_to_use == unique(as.vector(design$model_switch[used_times==1])))){ ## needs testing
           xt_i_extra = xt_i_extra[model_switch_i_extra %in% models_to_use]
           model_switch_i_extra = model_switch_i_extra[model_switch_i_extra %in% models_to_use]
         }
