@@ -13,6 +13,9 @@ PopED 0.1.2
 * Added examples for evaluation and optimization of a one-target quasi-steady-state 
   target mediated drug disposition model (TMDD).
 
+* Added a 2-compartment, oral absorption, multiple dose example to the system.file("examples", 
+  package="PopED") directory of the PopED installation.
+
 PopED 0.1.1
 ===========
 
