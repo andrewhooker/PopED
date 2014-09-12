@@ -22,11 +22,11 @@ shinyUI(fluidPage(
       
       selectInput("bsv_model", "Between Subject Variability Model:",
                   list(
-                    "Exponential" = "sfg.eps",
+                    "Exponential" = "sfg.exp",
                     "Proportional" = "sfg.prop",
                     "Additive" = "sfg.add"
                   )),
-      checkboxInput("per_param", label = "Choose per parameter", value = FALSE),
+      checkboxInput("per_param", label = "Choose per parameter", value = FALSE),    
       #br(),
       
       selectInput("ruv_model", "Residual Unexplained Variability Model:",
