@@ -85,19 +85,20 @@ m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,globalStructure){
             l_plus = zeros(size(xt_ind,1), 1)
             l_minus = zeros(size(xt_ind,1),1)
           } else {
-            l_plus = l_plus*b_ind_plus
-            l_minus = l_minus*b_ind_minus
+            l_plus = l_plus%*%b_ind_plus
+            l_minus = l_minus%*%b_ind_minus
           }
-          
-          for(m in 1:globalStructure$NumOcc){
-            returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop_plus,b_ind,bocc_ind,m,globalStructure) 
-            l_plus_occ <- returnArgs[[1]]
-            globalStructure <- returnArgs[[2]]
-            returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop_minus,b_ind,bocc_ind,m,globalStructure) 
-            l_minus_occ <- returnArgs[[1]]
-            globalStructure <- returnArgs[[2]]
-            occ_add_plus=occ_add_plus+l_plus_occ*(bocc_ind(,m))
-            occ_add_minus=occ_add_minus+l_minus_occ*(bocc_ind(,m))
+          if(globalStructure$NumOcc!=0){
+            for(m in 1:globalStructure$NumOcc){
+              returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop_plus,b_ind,bocc_ind,m,globalStructure) 
+              l_plus_occ <- returnArgs[[1]]
+              globalStructure <- returnArgs[[2]]
+              returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop_minus,b_ind,bocc_ind,m,globalStructure) 
+              l_minus_occ <- returnArgs[[1]]
+              globalStructure <- returnArgs[[2]]
+              occ_add_plus=occ_add_plus+l_plus_occ*(bocc_ind[,m])
+              occ_add_minus=occ_add_minus+l_minus_occ*(bocc_ind[,m])
+            }
           }
           df_dbeta[,k]=((ferror_plus-(l_plus+occ_add_plus))-(ferror_minus-(l_minus+occ_add_minus)))/(2*h)
         }
@@ -150,8 +151,8 @@ m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,globalStructure){
               returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop_minus_c,b_ind,bocc_ind,m,globalStructure) 
               l_minus_occ <- returnArgs[[1]]
               globalStructure <- returnArgs[[2]]
-              occ_add_plus=occ_add_plus+l_plus_occ*(bocc_ind(,m))
-              occ_add_minus=occ_add_minus+l_minus_occ*(bocc_ind(,m))
+              occ_add_plus=occ_add_plus+l_plus_occ*(bocc_ind[,m])
+              occ_add_minus=occ_add_minus+l_minus_occ*(bocc_ind[,m])
             }
             df_dbeta[,k] = Im(ferror_tmp)/h-(dL_dbpop+(occ_add_plus-occ_add_minus)/(2*h))
           }
