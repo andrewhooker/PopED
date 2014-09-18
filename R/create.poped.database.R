@@ -265,10 +265,13 @@ create.poped.database <-
            
            # -- Filname and path of the model file --
            ff_file=poped.choose(popedInput[["ff_file"]],"ff"),
+           ff_fun = NULL,
            # -- Filname and path of the g parameter file --
            fg_file=poped.choose(popedInput$fg_file,'sfg'),
+           fg_fun=NULL,
            # -- Filname and path of the error model file --
            fError_file=poped.choose(popedInput$fError_file,'feps'),
+           fError_fun=NULL,
            
            ## --------------------------
            ## ---- What to optimize
@@ -790,8 +793,9 @@ create.poped.database <-
     poped.db$rsit_output=rsit_output
     poped.db$sgit_output=sgit_output
     
-    
-    if(exists(fg_file)){
+    if(is.function(fg_fun)){
+      poped.db$fg_pointer = fg_fun 
+    } else if(exists(fg_file)){
       poped.db$fg_pointer = fg_file
     } else {
       source(fg_file)
@@ -853,7 +857,9 @@ create.poped.database <-
       }
     }
     
-    if(exists(ff_file)){
+    if(is.function(ff_fun)){
+      poped.db$ff_pointer = ff_fun 
+    } else if(exists(ff_file)){
       poped.db$ff_pointer = ff_file 
     } else {
       source(ff_file)
@@ -882,7 +888,9 @@ create.poped.database <-
       }
     }
     
-    if(exists(fError_file)){
+    if(is.function(fError_fun)){
+      poped.db$ferror_pointer = fError_fun 
+    } else if(exists(fError_file)){
       poped.db$ferror_pointer = fError_file
     } else {
       source(fError_file)
@@ -987,7 +995,7 @@ create.poped.database <-
         poped.db$b_global = t(rmvnorm(max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
         for(i in 1:poped.db$iFOCENumInd){
           poped.db$bocc_global[[i]]=zeros(size(docc,1),poped.db$NumOcc)
-          poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=fulldocc))
+          if(poped.db$NumOcc!=0) poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=fulldocc))
         }
       } else {
         d_dist=pargen(d,poped.db$user_distribution_pointer,max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),poped.db$bLHS,zeros(1,0),poped.db)
@@ -1167,7 +1175,11 @@ poped.choose <- function(arg1,arg2){
 
 
 find.largest.index <- function (func.str="sfg",lab="bpop",mat=F,mat.row=T) {
-  txt <- capture.output(eval(parse(text=func.str)))
+  if(is.function(func.str)){
+    txt <- capture.output(func.str)
+  } else {
+    txt <- capture.output(eval(parse(text=func.str)))
+  }
   txt <- grep(paste("^[^\\#]*",lab,"\\[",sep=""),txt,value=T)
   ind <- 0
   if(length(txt)!=0 && !mat)  ind <- gsub(paste("^[^\\#]*",lab,"\\[\\s*(\\d+)\\s*\\].*",sep=""),"\\1",txt)
