@@ -19,11 +19,20 @@ shinyServer(function(input, output) {
     ruv_model <- input$ruv_model
     bsv_model <- input$bsv_model
     
-    sfg <- build_sfg(model=input$struct_model,env=globalenv())
+    sfg <- build_sfg(model=input$struct_model)
     #environment(eval(parse(text=input$struct_model)))
     #parent.env(environment())
-    #browser()
 
+    #browser()
+    
+    nbpop <- find.largest.index(func.str=sfg,lab="bpop") 
+    #bpop_vals=c(CL=0.15, V=8, KA=1.0, Favail=1)
+    #bpop_vals=c(CL=1, V=1, KA=1, Favail=1)
+    #bpop_vals <- rep(1,nbpop)
+    nb <- find.largest.index(func.str=sfg,lab="b")
+    
+    
+    
     if(input$struct_model=="ff.PK.1.comp.oral.sd.CL"){ 
       notfixed_sigma <- c(1)
       notfixed_d <- c(1,1,1)
@@ -39,7 +48,8 @@ shinyServer(function(input, output) {
       a=70
     }
     return(list(bpop=bpop_vals,d=d_vals,sigma=sigma_vals,
-                notfixed_bpop=notfixed_bpop,notfixed_d=notfixed_d,notfixed_sigma=notfixed_sigma))
+                notfixed_bpop=notfixed_bpop,notfixed_d=notfixed_d,notfixed_sigma=notfixed_sigma,
+                sfg=sfg))
   })
   
   # Return the formula text for printing as a caption
@@ -120,11 +130,10 @@ shinyServer(function(input, output) {
       return(list(y=y,poped.db=poped.db)) 
     }
     
-browser()
     ## -- Define initial design  and design space
-    poped.db <- create.poped.database(#ff_file=input$struct_model,
-                                      ff_file="ff",
-                                      fg_file="sfg",
+    poped.db <- create.poped.database(ff_file=input$struct_model,
+                                      #ff_file="ff",
+                                      fg_fun=model$sfg,
                                       #fError_file="feps",
                                       fError_file=input$ruv_model,
                                       #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 

@@ -17,7 +17,8 @@ shinyUI(fluidPage(
                     "PK: 1-cpt, 1st order abs., multi. dose, KE param" = "ff.PK.1.comp.oral.md.KE"
                     ,"PKPD: 1-cpt, 1st order abs., multi. dose, CL param., direct effect IMAX" = "ff.PKPD.1.comp.oral.md.CL.imax"
                     ,"PKPD: 1-cpt, single dose, CL param., direct effect EMAX" = "ff.PKPD.1.comp.sd.CL.emax"
-                    )),
+                    ),width='100%'),
+                  
       #br(),
       
       selectInput("bsv_model", "Between Subject Variability Model:",
@@ -26,7 +27,8 @@ shinyUI(fluidPage(
                     "Proportional" = "sfg.prop",
                     "Additive" = "sfg.add"
                   )),
-      checkboxInput("per_param", label = "Choose per parameter", value = FALSE),    
+      checkboxInput("per_param", label = "Choose per parameter", value = FALSE),  
+      textInput("param")
       #br(),
       
       selectInput("ruv_model", "Residual Unexplained Variability Model:",
