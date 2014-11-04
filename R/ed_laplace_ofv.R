@@ -214,8 +214,8 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
                                        aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                                        return_gradient=F)[["k"]],
                     #gr=function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
-                    #                      aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
-                    #                      return_gradient=T)[["grad_k"]],
+                    #                     aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+                    #                     return_gradient=T)[["grad_k"]],
                     #method="L-BFGS-B",
                     #method="BFGS",
                     #lower=0,
@@ -235,7 +235,13 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     }  
   }
   #f=Re(-exp(-f_k)/sqrt(detHessPi))
-  f <- sqrt(det(hess*(2*pi)^(-1)))^(-1)*exp(-f_k)
+  det_hess_pi <- det(hess*(2*pi)^(-1))
+  if(det_hess_pi < 0) {
+    warning("The laplace OFV is ", NaN, " because det(hessian)<0.")
+    f <- NaN
+  } else {
+    f <- sqrt(det_hess_pi)^(-1)*exp(-f_k)
+  }
   
   if(return_gradient){
     bpop=bpopdescr[,2,drop=F]

@@ -299,7 +299,7 @@ RS_opt_gen <- function(poped.db,
                matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
       }
     }
-  } else { # } paralell settings
+  } else { # end paralell settings
     if(loops){
       tic()
       for(it in 1:rsit){
@@ -343,7 +343,7 @@ RS_opt_gen <- function(poped.db,
                                    ...)
         nfmf <- output$fim
         ndmf <- output$ofv            
-        
+        if(is.nan(ndmf)) ndmf  <- 0
         if((ndmf>dmf)){
           if((optxt==TRUE)){
             xtopt=xtoptn
