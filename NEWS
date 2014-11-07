@@ -16,6 +16,8 @@ PopED 0.1.2
 * Added a 2-compartment, oral absorption, multiple dose example to the system.file("examples", 
   package="PopED") directory of the PopED installation.
 
+* Updated error handing for the Laplace approximation of the ED OFV.
+
 PopED 0.1.1
 ===========
 
