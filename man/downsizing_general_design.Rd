@@ -73,6 +73,7 @@ det(FIM)
 \seealso{
 Other poped_input: \code{\link{convert_variables}};
   \code{\link{create.poped.database}};
-  \code{\link{poped.choose}}
+  \code{\link{create_design_space}};
+  \code{\link{create_design}}; \code{\link{poped.choose}}
 }
 

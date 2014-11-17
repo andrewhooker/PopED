@@ -6,7 +6,7 @@
 feval(file.name, ...)
 }
 \arguments{
-\item{file.name}{A string that is either a function or a file name (with an .R extension).}
+\item{file.name}{A function or a string that is the name of a function.}
 
 \item{...}{Arguments for the function.  Multiple arguments separated by a comma.}
 }

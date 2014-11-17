@@ -4,41 +4,39 @@
 \title{Create a PopED database}
 \usage{
 create.poped.database(popedInput = list(),
-  ff_file = poped.choose(popedInput[["ff_file"]], "ff"),
-  fg_file = poped.choose(popedInput$fg_file, "sfg"),
+  ff_file = poped.choose(popedInput[["ff_file"]], "ff"), ff_fun = NULL,
+  fg_file = poped.choose(popedInput$fg_file, "sfg"), fg_fun = NULL,
   fError_file = poped.choose(popedInput$fError_file, "feps"),
-  optsw = poped.choose(popedInput$optsw, cbind(0, 0, 0, 0, 0)),
-  xt = poped.choose(popedInput$design[["xt"]],
+  fError_fun = NULL, optsw = poped.choose(popedInput$optsw, cbind(0, 0, 0,
+  0, 0)), xt = poped.choose(popedInput$design[["xt"]],
   stop("'xt' needs to be defined")), m = poped.choose(popedInput[["m"]],
-  size(xt, 1)), x = poped.choose(popedInput$design[["x"]], zeros(m, 0)),
-  nx = poped.choose(popedInput$nx, size(x, 2)),
-  a = poped.choose(popedInput$design[["a"]], zeros(m, 0)),
-  na = poped.choose(popedInput$na, size(a, 2)),
+  NULL), x = poped.choose(popedInput$design[["x"]], NULL),
+  nx = poped.choose(popedInput$nx, NULL),
+  a = poped.choose(popedInput$design[["a"]], NULL),
+  na = poped.choose(popedInput$na, NULL),
   groupsize = poped.choose(popedInput$design$groupsize,
   stop("'groupsize' needs to be defined")),
-  ni = poped.choose(popedInput$design$ni, matrix(size(xt, 2), m, 1)),
-  model_switch = poped.choose(popedInput$design$model_switch, ones(size(xt,
-  1), size(xt, 2))), maxni = poped.choose(popedInput$maxni, size(xt, 2)),
-  minni = poped.choose(popedInput$minni, 1),
-  maxgroupsize = poped.choose(popedInput$design$maxgroupsize, groupsize),
-  mingroupsize = poped.choose(popedInput$design$mingroupsize, ones(m, 1)),
-  maxtotgroupsize = poped.choose(popedInput$design$maxtotgroupsize,
-  sum(groupsize)),
-  mintotgroupsize = poped.choose(popedInput$design$mintotgroupsize,
-  sum(mingroupsize)), maxxt = poped.choose(popedInput$design$maxxt, xt),
-  minxt = poped.choose(popedInput$design$minxt, xt),
-  discrete_x = poped.choose(popedInput$design$discrete_x, cell(m, nx)),
-  maxa = poped.choose(popedInput$design$maxa, a),
-  mina = poped.choose(popedInput$design$mina, a),
+  ni = poped.choose(popedInput$design$ni, NULL),
+  model_switch = poped.choose(popedInput$design$model_switch, NULL),
+  maxni = poped.choose(popedInput$maxni, NULL),
+  minni = poped.choose(popedInput$minni, NULL),
+  maxtotni = poped.choose(popedInput$maxtotni, NULL),
+  mintotni = poped.choose(popedInput$mintotni, NULL),
+  maxgroupsize = poped.choose(popedInput$design$maxgroupsize, NULL),
+  mingroupsize = poped.choose(popedInput$design$mingroupsize, NULL),
+  maxtotgroupsize = poped.choose(popedInput$design$maxtotgroupsize, NULL),
+  mintotgroupsize = poped.choose(popedInput$design$mintotgroupsize, NULL),
+  maxxt = poped.choose(popedInput$design$maxxt, NULL),
+  minxt = poped.choose(popedInput$design$minxt, NULL),
+  discrete_x = poped.choose(popedInput$design$discrete_x, NULL),
+  maxa = poped.choose(popedInput$design$maxa, NULL),
+  mina = poped.choose(popedInput$design$mina, NULL),
   bUseGrouped_xt = poped.choose(popedInput$bUseGrouped_xt, FALSE),
-  G_xt = poped.choose(popedInput$design$G, matrix(seq(1, length(xt), len =
-  length(xt)), size(xt, 1), size(xt, 2), byrow = T)),
+  G_xt = poped.choose(popedInput$design$G, NULL),
   bUseGrouped_a = poped.choose(popedInput$bUseGrouped_a, FALSE),
-  G_a = poped.choose(popedInput$design$Ga, matrix(seq(1, length(a), len =
-  length(a)), size(a, 1), size(a, 2), byrow = T)),
+  G_a = poped.choose(popedInput$design$Ga, NULL),
   bUseGrouped_x = poped.choose(popedInput$bUseGrouped_x, FALSE),
-  G_x = poped.choose(popedInput$design$Gx, matrix(seq(1, length(x), len =
-  length(x)), size(x, 1), size(x, 2), byrow = T)),
+  G_x = poped.choose(popedInput$design$Gx, NULL),
   iFIMCalculationType = poped.choose(popedInput$iFIMCalculationType, 1),
   iApproximationMethod = poped.choose(popedInput$iApproximationMethod, 0),
   iFOCENumInd = poped.choose(popedInput$iFOCENumInd, 1000),
@@ -583,6 +581,8 @@ get_rse(FIM,poped.db)
 }
 \seealso{
 Other poped_input: \code{\link{convert_variables}};
+  \code{\link{create_design_space}};
+  \code{\link{create_design}};
   \code{\link{downsizing_general_design}};
   \code{\link{poped.choose}}
 }
