@@ -1,5 +1,16 @@
 library(PopED)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+EAStepSize <- ifelse(fast,40,1)
+
+
 ff <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption + inhibitory imax
   ## -- works for both mutiple and single dosing  
@@ -88,14 +99,14 @@ FIM
 det(FIM)
 get_rse(FIM,poped.db)
 
-# MFEA optimization with only integer times allowed
+# MFEA optimization 
 mfea.output <- poped_optimize(poped.db,opt_xt=1,
                               bUseExchangeAlgorithm=1,
-                              EAStepSize=1)
+                              EAStepSize=EAStepSize)
 
 get_rse(mfea.output$fmf,mfea.output$poped.db)
 result.db <- mfea.output$poped.db
-plot_model_prediction(result.db,IPRED=T,DV=T,separate.groups=T,facet_scales="free")
+plot_model_prediction(result.db,separate.groups=T,facet_scales="free")
 
 
 

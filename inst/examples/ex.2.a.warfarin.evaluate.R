@@ -5,6 +5,16 @@
 
 library(PopED)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+iNumSimulations <- ifelse(fast,5,100)
+
 ff <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   with(as.list(parameters),{
@@ -73,6 +83,5 @@ det(FIM)
 get_rse(FIM,poped.db)
 
 # Examine efficiency of sampling windows
-plot_efficiency_of_windows(poped.db,xt_windows=0.5)
-plot_efficiency_of_windows(poped.db,xt_windows=1)
+plot_efficiency_of_windows(poped.db,xt_windows=0.5,iNumSimulations = iNumSimulations)
 

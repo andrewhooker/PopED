@@ -1,3 +1,18 @@
+library(PopED)
+
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+rsit <- ifelse(fast,3,300)
+sgit <- ifelse(fast,3,150)
+ls_step_size <- ifelse(fast,3,50)
+iter_max <- ifelse(fast,1,10)
+
 sfg.emax.hill <- function(x,a,bpop,b,bocc){
   ## -- parameter definition function
   parameters=c( EMAX=bpop[1]*exp(b[1]),
@@ -38,11 +53,13 @@ FIM
 det(FIM)
 get_rse(FIM,poped.db)
 
-# RS+SG+LS optimization of doses 
-output <- poped_optimize(poped.db,opt_xt=T)
 
-# plot output of optimization
-plot_model_prediction(output$poped.db,IPRED=T,DV=T)
+# RS+SG+LS optimization of doses
+output <- poped_optimize(poped.db,opt_xt=T,
+                         rsit=rsit,sgit=sgit,ls_step_size=ls_step_size,
+                         iter_max=iter_max)
+get_rse(output$fmf,output$poped.db)
+plot_model_prediction(output$poped.db)
 
 
 

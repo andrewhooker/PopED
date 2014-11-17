@@ -1,5 +1,17 @@
 library(PopED)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+rsit <- ifelse(fast,3,300)
+ED_samp_size <- ifelse(fast,20,100)
+
+
 ff <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption + inhibitory imax
   ## -- works for both mutiple and single dosing  
@@ -88,23 +100,19 @@ poped.db <- create.poped.database(ff_file="ff",
 
 
 ## ED evaluate using API. 
-output <- evaluate.e.ofv.fim(poped.db,ofv_calc_type=4)
+output <- evaluate.e.ofv.fim(poped.db,ofv_calc_type=4,ED_samp_size = ED_samp_size)
 output$E_ofv
 
-## Increase sample size
-output <- evaluate.e.ofv.fim(poped.db,ofv_calc_type=4,ED_samp_size=100)
-output$E_ofv
 
-# MFEA for API
-mfea.output <- poped_optimize(poped.db,
-                              opt_xt=1,
-                              bUseExchangeAlgorithm=1,
-                              EAStepSize=1,
-                              ofv_calc_type=4,
-                              d_switch=0)
+## optimization with random search
+output <- poped_optimize(poped.db,opt_xt=T, opt_a=T,
+                         d_switch=F,ED_samp_size=ED_samp_size,
+                         rsit=rsit,
+                         ofv_calc_type=4)
 
-get_rse(mfea.output$fmf,mfea.output$poped.db)
-result.db <- mfea.output$poped.db
+
+get_rse(output$fmf,output$poped.db)
+result.db <- output$poped.db
 plot_model_prediction(result.db,IPRED=T,DV=T,separate.groups=T,facet_scales="free")
 
 

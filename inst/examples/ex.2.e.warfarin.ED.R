@@ -7,6 +7,17 @@
 
 library(PopED)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+EAStepSize <- ifelse(fast,60,1)
+rsit <- ifelse(fast,3,300)
+
 sfg <- function(x,a,bpop,b,bocc){
   ## -- parameter definition function 
   parameters=c(CL=bpop[1]*exp(b[1]),
@@ -61,16 +72,45 @@ poped.db <- create.poped.database(ff_file="ff",
                                   ED_samp_size=20)
 
 ## ED evaluate.
+## result is inaccurate (run several times to see)
 ## increase ED_samp_size for a more accurate calculation
 output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=20)
 output$E_ofv
 output$E_fim
 
+## optimization with random search 
+output <- poped_optimize(poped.db,opt_xt=T, opt_a=T,
+                         d_switch=F,ED_samp_size=20,
+                         rsit=rsit)
+
 # API optimization: E(ln(det(FIM)))
+output <- poped_optimize(poped.db,opt_xt=T, opt_a=T,
+                         d_switch=F,ED_samp_size=20,
+                         rsit=rsit,
+                         ofv_calc_type=4)
+
+## MFEA optimization
 mfea.output <- poped_optimize(poped.db,
                               opt_xt=1,
                               bUseExchangeAlgorithm=1,
-                              EAStepSize=1,
-                              ofv_calc_type=4,
+                              EAStepSize=EAStepSize,
+                              ED_samp_size=20,
                               d_switch=0)
+
+## ED evaluation of ofv using Laplace approximation 
+## deterministic calculation, relatively fast
+## can be more stable for optimization
+tic()
+output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE)
+toc()
+output$E_ofv
+
+## optimization with random search and Laplace
+output <- poped_optimize(poped.db,opt_xt=T, opt_a=T,
+                         d_switch=F,use_laplace=T,
+                         rsit=rsit)
+
+
+
+
 

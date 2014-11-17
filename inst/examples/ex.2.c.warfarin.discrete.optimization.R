@@ -8,6 +8,18 @@
 
 ## discrete optimization
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+EAStepSize <- ifelse(fast,40,1)
+rsit <- ifelse(fast,3,300)
+ls_step_size <- ifelse(fast,3,50)
+
 ########################
 ## method 1: use the MFEA method with a unit stepsize
 ########################
@@ -57,10 +69,12 @@ poped.db <- create.poped.database(ff_file="ff",
                                   mina=0,
                                   maxa=100)
 
-# MFEA optimization with only integer times and doses allowed
-mfea.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
+# MFEA optimization with only integers (or multiples of 40 if fast=TRUE) 
+# in xt and dose allowed (or original design)
+# faster optimization than RS+SG+LS in this case
+mfea.output <- poped_optimize(poped.db,opt_xt=T,opt_a=1,
                               bUseExchangeAlgorithm=1,
-                              EAStepSize=1)
+                              EAStepSize=EAStepSize)
 get_rse(mfea.output$fmf,mfea.output$poped.db)
 plot_model_prediction(mfea.output$poped.db)
 
@@ -97,13 +111,20 @@ poped.db <- create.poped.database(ff_file="ff",
                                     discrete_x=x.space)
 
 # use one of the following methods
-rs.output <- RS_opt(poped.db,opt_xt=0,opt_x=1,opt_a=0,rsit=20)
+rs.output <- RS_opt(poped.db,opt_xt=0,opt_x=1,opt_a=0,rsit=rsit)
 
-rs.output <- poped_optimize(poped.db,opt_xt=0,opt_a=0,opt_x=1,rsit=20,
-                            bUseRandomSearch= 1,bUseStochasticGradient = 0,bUseBFGSMinimizer = 0,bUseLineSearch = 0)
+rs.output <- poped_optimize(poped.db,opt_xt=0,opt_a=0,opt_x=1,rsit=rsit,
+                            bUseRandomSearch= 1,
+                            bUseStochasticGradient = 0,
+                            bUseBFGSMinimizer = 0,
+                            bUseLineSearch = 0)
 
 ls.output <- poped_optimize(poped.db,opt_xt=0,opt_a=0, opt_x=1,
-                            bUseRandomSearch= 0,bUseStochasticGradient = 0,bUseBFGSMinimizer = 0,bUseLineSearch = 1)
+                            bUseRandomSearch= 0,
+                            bUseStochasticGradient = 0,
+                            bUseBFGSMinimizer = 0,
+                            bUseLineSearch = 1,
+                            ls_step_size=ls_step_size)
 
 mfea.output <- poped_optimize(poped.db,opt_xt=0,opt_a=0,opt_x=1,
                               bUseExchangeAlgorithm=1)

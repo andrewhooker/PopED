@@ -2,6 +2,15 @@ library(PopED)
 
 library(deSolve)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+
 PK.1.comp.oral.md.ff.ode <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     A_ini <- c(A1=0, A2=0)
@@ -77,10 +86,14 @@ FIM
 det(FIM)
 get_rse(FIM,poped.db)
 
-# optimize using line search
-ls.output <- poped_optimize(poped.db,opt_xt=1,
-                            bUseRandomSearch= 0,bUseStochasticGradient = 0,bUseBFGSMinimizer = 0,bUseLineSearch = 1,
-                            ls_step_size=1)
-
-plot_model_prediction(ls.output$poped.db)
-
+if(!fast){
+  # optimize using line search
+  ls.output <- poped_optimize(poped.db,opt_xt=1,
+                              bUseRandomSearch= 0,
+                              bUseStochasticGradient = 0,
+                              bUseBFGSMinimizer = 0,
+                              bUseLineSearch = 1)
+  
+  plot_model_prediction(ls.output$poped.db)
+  
+}

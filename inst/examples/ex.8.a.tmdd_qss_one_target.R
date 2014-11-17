@@ -1,6 +1,16 @@
 library(PopED)
 library(deSolve)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+
+
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1])  ,
                 V1=bpop[2]*exp(b[2])	,
@@ -117,12 +127,17 @@ poped.db.1 <- create.poped.database(ff_file="tmdd_qss_one_target_model",
 
 plot_model_prediction(poped.db.1,facet_scales="free")
 
-tic()
-FIM <- evaluate.fim(poped.db.1) 
-toc() # time is 36 sec.
-FIM
-det(FIM)
-get_rse(FIM,poped.db.1)  
+# evaluation time is roughly 40 seconds 
+# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# see compiled version ex.8.b for a faster implementation
+if(!fast){ 
+  tic()
+  FIM <- evaluate.fim(poped.db.1) 
+  toc() 
+  FIM
+  det(FIM)
+  get_rse(FIM,poped.db.1)  
+}
 
 #################################################
 # for study 1 + 2 in gibiansky,JPKPD,2012 table 2 
@@ -174,11 +189,15 @@ poped.db.2 <- create.poped.database(ff_file="tmdd_qss_one_target_model",
 
 plot_model_prediction(poped.db.2,facet_scales="free")
 
-tic()
-FIM <- evaluate.fim(poped.db.2) 
-toc() # time is 70 sec.
-FIM
-det(FIM)
-get_rse(FIM,poped.db.2)  # same as in paper: table 1, model 1 
-# (except for sigma which appears in the paper to be in SD units, as PFIM reports).
-
+# evaluation time is roughly 70 seconds 
+# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# see compiled version ex.8.b for a faster implementation
+if(!fast){ 
+  tic()
+  FIM <- evaluate.fim(poped.db.2) 
+  toc() # time is 70 sec.
+  FIM
+  det(FIM)
+  get_rse(FIM,poped.db.2)  # same as in paper: table 1, model 1 
+  # (except for sigma which appears in the paper to be in SD units, as PFIM reports).
+ }

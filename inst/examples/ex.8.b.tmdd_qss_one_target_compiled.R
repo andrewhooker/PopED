@@ -1,6 +1,14 @@
 library(PopED)
 library(deSolve)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
 # compile and load the qss_one_target.c code.
 # to set this up see the 
 # "R Package deSolve, Writing Code in Compiled Languages" 
@@ -44,7 +52,7 @@ tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.
     # solve the ODE    
     out <- ode(A_ini, times, func = "derivs", parms = parameters,
                jacfunc = "jac", # not really needed, speed up is minimal if this is defined or not.
-               dllname = "qss_one_target",
+               dllname = "tmdd_qss_one_target",
                initfunc = "initmod", nout = 1, outnames = "Sum")
     
     # extract the time points of the observations
@@ -110,6 +118,9 @@ poped.db.1 <- create.poped.database(ff_file="tmdd_qss_one_target_model_compiled"
 
 plot_model_prediction(poped.db.1,facet_scales="free")
 
+# evaluation time is roughly 3 seconds 
+# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# makes optimization reasonable
 tic()
 FIM <- evaluate.fim(poped.db.1) 
 toc() # time is 2.72 sec.
@@ -169,57 +180,61 @@ poped.db.2 <- create.poped.database(ff_file="tmdd_qss_one_target_model_compiled"
 
 plot_model_prediction(poped.db.2,facet_scales="free")
 
+# evaluation time is roughly 5 seconds 
+# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# makes optimization reasonable
 tic()
 FIM <- evaluate.fim(poped.db.2) 
-toc() # time is 4.93 sec.
+toc() 
 FIM
 det(FIM)
 get_rse(FIM,poped.db.2)  # same as in paper: table 1, model 1 
 # (except for sigma which appears in the paper to be in SD units, as PFIM reports).
 
-# optimize using line search (takes about 2.5 hours)
-ls.output <- poped_optimize(poped.db,opt_xt=0,opt_a=1,
-                            bUseRandomSearch= 0,bUseStochasticGradient = 0,
-                            bUseBFGSMinimizer = 0,bUseLineSearch = 1,
-                            ls_step_size=100)
-
-# Optimized Covariates:
-#   Group 1: 310.069
-# Group 2: 310.069
-# Group 3: 310.069
-# Group 4: 510.049
-# Group 5: 150.085
-# Group 6: 20.098
-# 
-# Efficiency (final_design/initial_design): 1.38869
-# 
-# Expected parameter variance 
-# and relative standard error (%RSE):
-#   Parameter    Values   Variance     RSE   RSE_initial_design
-# bpop[1]    0.3000   7.17e-05    2.82                 2.42
-# bpop[2]    3.0000   3.89e-03    2.08                 2.49
-# bpop[3]    0.2000   2.44e-05    2.47                 2.39
-# bpop[4]    3.0000   2.57e-03    1.69                 2.76
-# bpop[5]    0.7000   2.19e-04    2.11                 3.02
-# bpop[6]    0.5000   4.17e-04    4.09                 4.84
-# bpop[9]    0.1000   4.53e-06    2.13                 2.80
-# bpop[10]    0.0150   1.19e-07    2.30                 3.12
-# bpop[11]   10.0000   1.94e-02    1.39                 2.71
-# bpop[12]    0.0500   7.40e-07    1.72                 2.43
-# D[1,1]    0.0900   1.56e-04   13.89                10.83
-# D[2,2]    0.0900   8.23e-05   10.08                12.27
-# D[3,3]    0.0400   9.49e-05   24.36                22.27
-# D[4,4]    0.0400   2.85e-05   13.36                20.03
-# D[5,5]    0.0400   4.11e-05   16.03                24.24
-# D[6,6]    0.1600   5.76e-04   15.00                19.41
-# D[9,9]    0.0900   8.79e-05   10.42                11.89
-# D[10,10]    0.0900   1.18e-04   12.09                13.45
-# D[11,11]    0.0400   1.63e-05   10.09                20.40
-# D[12,12]    0.0400   2.76e-05   13.14                18.13
-# SIGMA[1,1]    0.0400   1.17e-06    2.70                 2.73
-# SIGMA[2,2]    0.0225   4.89e-07    3.11                 2.91
-
-# Total running time: 10767.9 seconds
-
-plot_model_prediction(ls.output$poped.db,facet_scales="free")
-
+if(!fast){
+  # optimize using line search (takes about 2.5 hours)
+  ls.output <- poped_optimize(poped.db,opt_xt=0,opt_a=1,
+                              bUseRandomSearch= 0,bUseStochasticGradient = 0,
+                              bUseBFGSMinimizer = 0,bUseLineSearch = 1,
+                              ls_step_size=100)
+  
+  # Optimized Covariates:
+  #   Group 1: 310.069
+  # Group 2: 310.069
+  # Group 3: 310.069
+  # Group 4: 510.049
+  # Group 5: 150.085
+  # Group 6: 20.098
+  # 
+  # Efficiency (final_design/initial_design): 1.38869
+  # 
+  # Expected parameter variance 
+  # and relative standard error (%RSE):
+  #   Parameter    Values   Variance     RSE   RSE_initial_design
+  # bpop[1]    0.3000   7.17e-05    2.82                 2.42
+  # bpop[2]    3.0000   3.89e-03    2.08                 2.49
+  # bpop[3]    0.2000   2.44e-05    2.47                 2.39
+  # bpop[4]    3.0000   2.57e-03    1.69                 2.76
+  # bpop[5]    0.7000   2.19e-04    2.11                 3.02
+  # bpop[6]    0.5000   4.17e-04    4.09                 4.84
+  # bpop[9]    0.1000   4.53e-06    2.13                 2.80
+  # bpop[10]    0.0150   1.19e-07    2.30                 3.12
+  # bpop[11]   10.0000   1.94e-02    1.39                 2.71
+  # bpop[12]    0.0500   7.40e-07    1.72                 2.43
+  # D[1,1]    0.0900   1.56e-04   13.89                10.83
+  # D[2,2]    0.0900   8.23e-05   10.08                12.27
+  # D[3,3]    0.0400   9.49e-05   24.36                22.27
+  # D[4,4]    0.0400   2.85e-05   13.36                20.03
+  # D[5,5]    0.0400   4.11e-05   16.03                24.24
+  # D[6,6]    0.1600   5.76e-04   15.00                19.41
+  # D[9,9]    0.0900   8.79e-05   10.42                11.89
+  # D[10,10]    0.0900   1.18e-04   12.09                13.45
+  # D[11,11]    0.0400   1.63e-05   10.09                20.40
+  # D[12,12]    0.0400   2.76e-05   13.14                18.13
+  # SIGMA[1,1]    0.0400   1.17e-06    2.70                 2.73
+  # SIGMA[2,2]    0.0225   4.89e-07    3.11                 2.91
+  
+  # Total running time: 10767.9 seconds
+  
+  plot_model_prediction(ls.output$poped.db,facet_scales="free")
+}

@@ -1,5 +1,18 @@
 library(PopED)
 
+# This option is used to make this script run fast but without convergence 
+# (fast means a few seconds for each argument at the most).
+# This allows you to "source" this file and easily see how things work
+# without waiting for more than 10-30 seconds.
+# Change to FALSE if you want to run each function so that
+# the solutions have converged (can take many minutes).
+fast <- TRUE 
+
+rsit <- ifelse(fast,3,300)
+sgit <- ifelse(fast,3,150)
+ls_step_size <- ifelse(fast,3,50)
+iter_max <- ifelse(fast,1,10)
+
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -76,12 +89,11 @@ FIM
 det(FIM)
 get_rse(FIM,poped.db)
 
-# RS+SG+LS optimization of sample times
-# optimization with just a few iterations
-# only to check that things are working
-output <- poped_optimize(poped.db,opt_xt=T,
-                         rsit=5,sgit=5,ls_step_size=5)
+# RS+SG+LS optimization of sample times and doses
+output <- poped_optimize(poped.db,opt_xt=T,opt_a=T,
+                         rsit=rsit,sgit=sgit,ls_step_size=ls_step_size,
+                         iter_max=iter_max)
+get_rse(output$fmf,output$poped.db)
+plot_model_prediction(output$poped.db,facet_scales="free")
 
-# RS+SG+LS optimization of sample times and doses (takes a long time)
-output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
 
