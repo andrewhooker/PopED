@@ -73,12 +73,19 @@ evaluate.fim <- function(poped.db,
   if(is.null(docc_full)) docc_full <- poped.db$param.pt.val$docc
   if(is.null(sigma_full)) sigma_full <- poped.db$param.pt.val$sigma
   
-  if(is.null(model_switch)) model_switch <- poped.db$downsized.design$model_switch
-  if(is.null(ni)) ni <- poped.db$downsized.design$ni
-  if(is.null(xt)) xt <- poped.db$downsized.design$xt
-  if(is.null(x)) x <- poped.db$downsized.design$x
-  if(is.null(a)) a <- poped.db$downsized.design$a
-  if(is.null(groupsize)) groupsize <- poped.db$downsized.design$groupsize
+  #   if(is.null(model_switch)) model_switch <- poped.db$downsized.design$model_switch
+  #   if(is.null(ni)) ni <- poped.db$downsized.design$ni
+  #   if(is.null(xt)) xt <- poped.db$downsized.design$xt
+  #   if(is.null(x)) x <- poped.db$downsized.design$x
+  #   if(is.null(a)) a <- poped.db$downsized.design$a
+  #   if(is.null(groupsize)) groupsize <- poped.db$downsized.design$groupsize
+  #   
+  if(is.null(model_switch)) model_switch <- poped.db$design$model_switch
+  if(is.null(ni)) ni <- poped.db$design$ni
+  if(is.null(xt)) xt <- poped.db$gxt
+  if(is.null(x)) x <- poped.db$gx
+  if(is.null(a)) a <- poped.db$ga
+  if(is.null(groupsize)) groupsize <- poped.db$design$groupsize
   
   if(!is.null(fim.calc.type)) poped.db$iFIMCalculationType=fim.calc.type
   

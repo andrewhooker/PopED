@@ -92,7 +92,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     d_index <- NULL
   }  
   bpop_index=1:sum(bpopdescr[,1]!=0)
-  unfixed_bpop <- bpopdescr[bpopdescr[,1]!=0,]
+  unfixed_bpop <- bpopdescr[bpopdescr[,1]!=0,,drop=F]
   exp_index=c(unfixed_bpop[,1]==4,d_index==d_index)
   alpha_k_log=alpha_k
   if(any(exp_index)) alpha_k_log[exp_index]=log(alpha_k[exp_index])
@@ -209,6 +209,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     
     
     ## minimize K(alpha_k)
+    
     output <- optim(alpha_k, 
                     function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                        aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
@@ -218,6 +219,9 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
                     #                     return_gradient=T)[["grad_k"]],
                     #method="L-BFGS-B",
                     #method="BFGS",
+                    #method="Brent",
+                    #lower=-100000000000,
+                    #upper=0,
                     #lower=0,
                     #lower=lb,
                     #upper=ub,

@@ -15,7 +15,7 @@ log_prior_pdf <- function(alpha, bpopdescr, ddescr,return_gradient=F,return_hess
   #and if required the gradient
   #priordescr=matrix(c(bpopdescr[bpopdescr[,1]!=0,], ddescr[ddescr[,1]!=0,]),nrow=1,byrow=T)
   priordescr <- rbind(bpopdescr,ddescr)
-  priordescr <- priordescr[priordescr[,1]!=0,]
+  priordescr <- priordescr[priordescr[,1]!=0,,drop=FALSE]
   if(any(priordescr[,1]>4 | priordescr[,1]==3)){
     stop(sprintf('Specified prior distribution not supported'))
   }

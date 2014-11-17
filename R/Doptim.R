@@ -34,7 +34,11 @@
 #' @param dmf The inital OFV. If set to zero then it is computed.
 #' @param trflag Should the optimization be output to the screen and to a file?
 #' @param ls_step_size Number of grid points in the line search
-#' @param iter_tot Number of iterations of full Random search and full Stochastic Gradient if line search is not used.
+#' @param iter_tot Number of iterations to use if line search is not used. Must be less than \code{iter_max} to be used.  
+#' @param iter_max If line search is used then 
+#' the algorithm tests if line search (always run at the end of the optimization iteration) changes the 
+#' design in any way.  If not, the algorithm stops.  If yes, then a new iteration is run unless
+#' \code{iter_max} iterations have already been run.
 #' 
 #' @references \enumerate{
 #' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software for optimal 
@@ -52,7 +56,8 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,maxa,mina,fmf=0,dmf=0,
+Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, 
+                   ddescr, maxxt, minxt,maxa,mina,fmf=0,dmf=0,
                    trflag=TRUE,
                    bUseRandomSearch=poped.db$bUseRandomSearch,
                    bUseStochasticGradient=poped.db$bUseStochasticGradient,
@@ -65,7 +70,9 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
                    BFGSTolerancef=poped.db$BFGSTolerancef,
                    BFGSToleranceg=poped.db$BFGSToleranceg,
                    BFGSTolerancex=poped.db$BFGSTolerancex,
-                   iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch,...){
+                   iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch,
+                   iter_max=10,
+                   ...){
   
   
   ## update poped.db with options supplied in function
@@ -126,7 +133,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
     #       params_init <- returnArgs[[1]]
     #       param_cvs_init <- returnArgs[[2]]
     #}
-    while(test_change==TRUE && iMaxSearchIterations>0){
+    while(test_change==TRUE && iMaxSearchIterations>0 && iter < iter_max){
       iter=iter+1
       
       
@@ -559,10 +566,9 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt
       
       
     }
-    
     #--------- Write results
     #     if((trflag)){
-    blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,
+    blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,model_switch,
                  bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,
                  opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,
                  dmf_init=dmf_init,trflag=trflag,...)
