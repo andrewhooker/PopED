@@ -38,9 +38,17 @@ test_that("model_prediction works", {
   
   expect_true("test.csv" %in% list.files())
   
+  unlink("test.csv")
+  
   dosing_2 <- list(list(AMT=1000,RATE=NA,Time=0.5),list(AMT=3000,RATE=NA,Time=0.5),list(AMT=6000,RATE=NA,Time=0.5))
   
   expect_error(model_prediction(design=design_3,DV=T,dosing=dosing_2))
   
+  
+})
+
+test_that("plot_model_prediction works", {
+
+  source("examples_fcn_doc/examples_plot_model_prediction.R")
   
 })

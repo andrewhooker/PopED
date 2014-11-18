@@ -1,219 +1,3 @@
-#' Model predictions 
-#' 
-#' Function generates model predictions for the typical value in the population,
-#' individual predictions and data predictions.
-#' 
-#' @inheritParams RS_opt
-#' @param models_to_use Which model number should we use?
-#' @param model_num_points How many points should be plotted.  If not a number then the design in poped.db is used.
-#' @param model_minxt The minimum of the sample times for the predictions.
-#' @param model_maxxt The maximum of the sample times for the predictions.
-#' @param include_sample_times Should the sample times from poped.db be included in the predictions?
-#' @param IPRED Should we simulate individual predictions?
-#' @param DV should we simulate observations?
-#' @param num_ids The number of individuals to simulate if using IPRED or DV.
-#' @param groups_to_use Which groups should we use for predictions from the poped.db.
-#' @return A dataframe of simulated data, either with some dense grid of samples or based on the design in the poped
-#' database.
-#' 
-#' @family evaluate_design
-#' @family Simulation
-#' 
-#' @example tests/testthat/examples_fcn_doc/examples_model_prediction.R
-#' 
-
-#' 
-## allow for input not from poped.db
-model_prediction <- function(poped.db,
-                             models_to_use="all",
-                             model_num_points=NULL,
-                             model_minxt=NULL,model_maxxt=NULL,
-                             include_sample_times=T,
-                             groups_to_use="all",
-                             IPRED=FALSE,
-                             DV=FALSE,
-                             num_ids=100){
-  
-  if(DV) IPRED=T
-  
-  design = poped.db$design
-  design$xt <- poped.db$gxt
-  design$x <- poped.db$gx
-  design$a <- poped.db$ga
-  
-  docc_size = 0
-  if((!isempty(design$docc[,2]))){
-    docc_size = size(design$docc[,2,drop=F],1)
-  }
-  d_size = 0
-  if((!isempty(design$d[,2]))){
-    d_size = size(design$d[,2,drop=F],1)
-  }
-  
-  if(IPRED){
-    #d_dist = cbind(rep(1,d_size),rep(0,d_size), design$d[,2])
-    #docc_dist = cbind(rep(1,docc_size),rep(0,docc_size), design$docc[,2])
-    fulld = getfulld(design$d[,2],design$covd)
-    fulldocc = getfulld(design$docc[,2,drop=F],design$covdocc)
-    
-    #Sample all the b's and bocc's (same samples for all sub models)
-    b_sim_matrix = zeros(num_ids,length(design$d[,2]))
-    bocc_sim_matrix = zeros(num_ids*poped.db$NumOcc,length(design$docc[,2,drop=F]))
-    
-    #     if((!globalStructure$d_switch) ){#ED-optimal
-    #       d_dist=pargen(design$d,globalStructure$user_distribution_pointer,max(max(model_num_simulations),iMaxCorrIndNeeded),globalStructure$bLHS,zeros(0,1),globalStructure)
-    #       for(j in 1:max(max(model_num_simulations),iMaxCorrIndNeeded)){
-    #         tmp_d_dist = matrix(c(matrix(1,length(design$d(,2)),1),t(zeros(length(design$d(,2)),1),d_dist(j,))),nrow=1,byrow=T)
-    #         b_sim_matrix(j,) = pargen(tmp_d_dist,globalStructure$user_distribution_pointer,1,globalStructure$bLHS,j,globalStructure)
-    #       }
-    #     } else { #D-optimal design
-    b_sim_matrix = rmvnorm(num_ids,sigma=fulld)
-    #b_sim_matrix = pargen(d_dist,poped.db$user_distribution_pointer,num_ids,poped.db$bLHS,zeros(0,1),poped.db)
-    #var(b_sim_matrix)
-    #d_dist
-    #}
-    #b_sim_matrix = correlateSamples(t(b_sim_matrix),fulld)
-    #}
-    
-    if(nrow(fulldocc)!=0){
-      #       if((!globalStructure$d_switch) ){#ED-optimal
-      #         docc_dist=pargen(design$docc,globalStructure$user_distribution_pointer,max(max(model_num_simulations)*popedInput$NumOcc,iMaxCorrIndNeeded),globalStructure$bLHS,zeros(0,1),globalStructure)
-      #         for(j in 1:max(max(model_num_simulations)*popedInput$NumOcc,iMaxCorrIndNeeded)){
-      #           tmp_docc_dist = matrix(c(matrix(1,length(design$docc[,2,drop=F]),1),t(zeros(length(design$docc[,2,drop=F]),1),docc_dist(j,))),nrow=1,byrow=T)
-      #           bocc_sim_matrix(j,) = pargen(tmp_docc_dist,globalStructure$user_distribution_pointer,1,globalStructure$bLHS,j,globalStructure)
-      #         }
-      #       } else { #D-optimal design
-      bocc_sim_matrix = rmvnorm(num_ids*poped.db$NumOcc,sigma=fulldocc)
-      #bocc_sim_matrix = pargen(docc_dist,globalStructure$user_distribution_pointer,max(max(model_num_simulations)*popedInput$NumOcc,iMaxCorrIndNeeded),globalStructure$bLHS,zeros(0,1),globalStructure)
-      #}
-      #Add correlation of bocc, might not work
-      #bocc_sim_matrix = correlateSamples(t(bocc_sim_matrix),fulldocc)
-    }
-    
-  }
-  
-  used_times <- 0*design$xt
-  for(i in 1:size(design$xt,1)) used_times[i,1:design$ni[i]] <- 1
-  
-  if(all(groups_to_use=="all")){
-    groups_to_use = 1:size(design$xt,1)
-  }
-  if(all(models_to_use=="all")){
-    #models_to_use = unique(as.vector(design$model_switch))
-    models_to_use = unique(as.vector(design$model_switch[used_times==1]))
-  }
-  
-  df <- data.frame()
-  
-  for(i in 1:length(groups_to_use)){
-    if((isempty(design$a))){
-      a_i = zeros(0,1)
-    } else {
-      a_i = design$a[groups_to_use[i],,drop=F]
-    }
-    if((isempty(design$x))){
-      x_i = zeros(0,1)
-    } else {
-      x_i = design$x[groups_to_use[i],,drop=F]
-    }
-    
-    if(all(is.null(model_num_points))){
-      xt_i = design$xt[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-      model_switch_i = design$model_switch[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-      if(!all(models_to_use == unique(as.vector(design$model_switch[used_times==1])))){ ## needs testing
-        xt_i = xt_i[model_switch_i %in% models_to_use]
-        model_switch_i = model_switch_i[model_switch_i %in% models_to_use]
-      }
-    } else {
-      xt_i <- c()
-      model_switch_i <- c()
-      if(length(models_to_use)>1 && length(model_num_points)==1) model_num_points <- rep(model_num_points,length(models_to_use))
-      for(j in models_to_use){
-        if(is.null(model_minxt)){
-          minv <- min(as.vector(design$minxt[design$model_switch==j])) 
-        } else {                    
-          minv = model_minxt[j]
-        }
-        if(is.null(model_maxxt)){
-          maxv <- max(as.vector(design$maxxt[design$model_switch==j])) 
-        } else {
-          maxv = model_maxxt[j]
-        }                #xt = t(seq(minv,maxv,length.out=model_num_points[i]))
-        
-        xt_i= c(xt_i,seq(minv,maxv,length.out=model_num_points[j]))
-        
-        #model.pred <- rbind(xt)
-        #model.pred <- data.frame(Time=xt)
-        #model.pred <- c(model.pred,foo=xt)
-        #browser()
-        model_switch_i = c(model_switch_i,j*matrix(1,1,model_num_points[j]))
-      }
-      if(include_sample_times){
-        xt_i_extra = design$xt[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-        model_switch_i_extra = design$model_switch[groups_to_use[i],1:design$ni[groups_to_use[i]]]
-        if(!all(models_to_use == unique(as.vector(design$model_switch[used_times==1])))){ ## needs testing
-          xt_i_extra = xt_i_extra[model_switch_i_extra %in% models_to_use]
-          model_switch_i_extra = model_switch_i_extra[model_switch_i_extra %in% models_to_use]
-        }
-        tmp.include <- !(xt_i_extra %in% xt_i)
-        xt_i <- c(xt_i,xt_i_extra[tmp.include])
-        model_switch_i <- c(model_switch_i,model_switch_i_extra[tmp.include])
-        tmp.order <- order(xt_i)
-        xt_i <- xt_i[tmp.order]
-        model_switch_i <- model_switch_i[tmp.order]
-      }
-    }
-    g0 = feval(poped.db$fg_pointer,x_i,a_i,design$bpop[,2,drop=F],zeros(1,d_size),zeros(docc_size,poped.db$NumOcc))
-    
-    pred <- feval(poped.db$ff_pointer,model_switch_i,xt_i,g0,poped.db)
-    pred <- drop(pred[[1]])
-        
-    group.df <- data.frame(Time=xt_i,PRED=pred,Group=groups_to_use[i],Model=model_switch_i)
-    #     group.df <- data.frame(Time=xt_i,PRED=drop(pred[[1]]),Group=groups_to_use[i],
-    #                            ##paste("Group",i,sep="_"),
-    #                            Model=model_switch_i)
-    #     
-    
-    if(IPRED){
-      group.df.ipred <- data.frame()
-      bocc_start= 1
-      for(j in 1:num_ids){
-        tmp.df <- group.df
-        bocc_stop=bocc_start + poped.db$NumOcc - 1
-        if(nrow(fulldocc)==0){ 
-          bocc_start=0
-          bocc_stop=0
-        }
-        fg_sim = feval(poped.db$fg_pointer,x_i,a_i,design$bpop[,2,drop=F],b_sim_matrix[j,],t(bocc_sim_matrix[bocc_start:bocc_stop,]))
-        bocc_start = bocc_stop + 1
-        ipred <- feval(poped.db$ff_pointer,model_switch_i,xt_i,fg_sim,poped.db)
-        ipred <- drop(ipred[[1]])
-        ID <- (i-1)*num_ids+j
-        tmp.df["ID"] <- ID
-        tmp.df["IPRED"] <- ipred
-        
-        if(DV){
-          eps_sim = rmvnorm(length(xt_i),sigma=design$sigma)
-          dv <- feval(poped.db$ferror_pointer,model_switch_i,xt_i,fg_sim,eps_sim,poped.db) 
-          dv <- drop(dv[[1]])
-          tmp.df["DV"] <- dv
-        }
-        
-        group.df.ipred <- rbind(group.df.ipred,tmp.df)
-      }
-      group.df <- group.df.ipred
-    }
-    
-    df <- rbind(df,group.df)
-    #model.pred  <- rbind(model.pred,i=returnArgs[[1]])
-    #model.pred[paste("Group",i,sep="_")]  <- returnArgs[[1]]
-  }
-  df$Group <- as.factor(df$Group)
-  df$Model <- as.factor(df$Model)
-  if(IPRED) df$ID <- as.factor(df$ID)
-  return( df ) 
-}
-
 #' Plot model predictions 
 #' 
 #' Function plots model predictions for the typical value in the population,
@@ -267,6 +51,7 @@ plot_model_prediction <- function(poped.db,
                                   PRED=T,
                                   IPRED=F,
                                   IPRED.lines=F,
+                                  IPRED.lines.pctls=F,
                                   alpha.IPRED.lines=0.1,
                                   alpha.IPRED=0.3,
                                   sample.times.size=4,
@@ -284,7 +69,6 @@ plot_model_prediction <- function(poped.db,
                                   facet_scales="fixed", # could be "free", "fixed", "free_x" or "free_y"
                                   facet_label_names = T, 
                                   ...){
-  
   df <-  model_prediction(poped.db,
                           #models_to_use,
                           model_num_points=model_num_points,
@@ -302,7 +86,7 @@ plot_model_prediction <- function(poped.db,
                               ...)
   }
   
-  if(IPRED || IPRED.lines || DV){
+  if(IPRED || IPRED.lines || DV || IPRED.lines.pctls){
     df.ipred <-  model_prediction(poped.db,
                                   #models_to_use,
                                   model_num_points=model_num_points,
@@ -356,14 +140,14 @@ plot_model_prediction <- function(poped.db,
   ID <- c()
    
   if(facet_label_names){
-    if(exists("df")) levels(df$Model) <- paste("Model:",levels(df$Model))
-    if(exists("df")) levels(df$Group) <- paste("Group:",levels(df$Group))
-    if(exists("df.2")) levels(df.2$Model) <- paste("Model:",levels(df.2$Model))
-    if(exists("df.2")) levels(df.2$Group) <- paste("Group:",levels(df.2$Group))
-    if(exists("df.ipred")) levels(df.ipred$Model) <- paste("Model:",levels(df.ipred$Model))
-    if(exists("df.ipred")) levels(df.ipred$Group) <- paste("Group:",levels(df.ipred$Group))
-    if(exists("df.ipred.samples")) levels(df.ipred.samples$Model) <- paste("Model:",levels(df.ipred.samples$Model))
-    if(exists("df.ipred.samples")) levels(df.ipred.samples$Group) <- paste("Group:",levels(df.ipred.samples$Group))
+    if(exists("df",inherits=F)) levels(df$Model) <- paste("Model:",levels(df$Model))
+    if(exists("df",inherits=F)) levels(df$Group) <- paste("Group:",levels(df$Group))
+    if(exists("df.2",inherits=F)) levels(df.2$Model) <- paste("Model:",levels(df.2$Model))
+    if(exists("df.2",inherits=F)) levels(df.2$Group) <- paste("Group:",levels(df.2$Group))
+    if(exists("df.ipred",inherits=F)) levels(df.ipred$Model) <- paste("Model:",levels(df.ipred$Model))
+    if(exists("df.ipred",inherits=F)) levels(df.ipred$Group) <- paste("Group:",levels(df.ipred$Group))
+    if(exists("df.ipred.samples",inherits=F)) levels(df.ipred.samples$Model) <- paste("Model:",levels(df.ipred.samples$Model))
+    if(exists("df.ipred.samples",inherits=F)) levels(df.ipred.samples$Group) <- paste("Group:",levels(df.ipred.samples$Group))
   }
     
   p <- ggplot(data=df,aes(x=Time,y=PRED)) #+ labs(colour = NULL)
@@ -376,6 +160,20 @@ plot_model_prediction <- function(poped.db,
   if(DV.lines) p <- p + geom_line(aes(y=DV,group=ID),data=df.ipred,alpha=alpha.DV.lines)
   if(DV.points) p <- p + geom_point(aes(y=DV,group=ID),data=df.ipred,alpha=alpha.DV.points)
   if(IPRED) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=IPRED,color=NULL),geom="ribbon",fun.data="median_hilow",alpha=alpha.IPRED)
+  if(IPRED.lines.pctls){ 
+    p <- p + 
+      stat_summary(data=df.ipred,
+                   aes(x=Time,y=IPRED),
+                   geom="line",
+                   fun.y=function(y){quantile(y,probs=0.025)},
+                   linetype="dotted")+
+      stat_summary(data=df.ipred,
+                   aes(x=Time,y=IPRED),
+                   geom="line",
+                   fun.y=function(y){quantile(y,probs=0.975)},
+                   linetype="dotted")
+      
+  }
   if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow",alpha=alpha.DV)
   if(PRED) p <- p + geom_line()
   if(sample.times) p <- p+geom_point(data=df.2,size=sample.times.size)#,aes(x=Time,y=DV,group=Group))#,color=Group))
