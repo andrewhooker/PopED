@@ -18,6 +18,8 @@ PopED 0.1.2
 * Added a 2-compartment, oral absorption, multiple dose example to the `system.file("examples", 
   package="PopED")` directory of the PopED installation.
 
+* Updated plot_efficiency_of_windows() to allow for the plotting of the RSE of each parameter on the y-axis.
+
 * Updated error handing for the Laplace approximation of the ED OFV.
 
 * Fixed bug when computing FIM with only one BSV term present in model (calculation gave 
