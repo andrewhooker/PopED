@@ -1,14 +1,22 @@
-#' Plot the efficience of windows 
+#' Plot the efficiency of windows 
 #' 
-#' Function plots the efficiency of windows around the optimal design points.
+#' Function plots the efficiency of windows around the optimal design points.  The maximal and minimal allowed values for all
+#' design variables as defined in 
+#' poped.db are respected (e.g. poped.db$design$minxt and poped.db$design$maxxt).
 #' 
 #' @param poped.db A poped database
-#' @param iNumSimulations The number of efficiency calculations to make.
+#' @param iNumSimulations The number of design simulations to make within the specified windows.
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
 #' @param ... Extra arguments passed to \code{evaluate.fim}
 #' @param xt_windows The distance on one direction from the optimal sample times.  Can be a number or a matrix of the same size as 
 #' the xt matrix found in \code{poped.db$gxt}. 
+#' @param xt_plus The upper distance from the optimal sample times (xt + xt_plus). Can be a number or a matrix of the same size as 
+#' the xt matrix found in \code{poped.db$gxt}.
+#' @param xt_minus The lower distance from the optimal sample times (xt - xt_minus). Can be a number or a matrix of the same size as 
+#' the xt matrix found in \code{poped.db$gxt}.
+#' @param y_eff Should one of the plots created have efficiency on the y-axis?
+#' @param y_rse Should created plots include the relative standard error of each parameter as a value on the y-axis?   
 #' 
 #' @return A \link[ggplot2]{ggplot2} object.
 #' 
@@ -20,8 +28,13 @@
 #' @example tests/testthat/examples_fcn_doc/examples_plot_efficiency_of_windows.R
 
 
-plot_efficiency_of_windows <- function(poped.db,xt_windows,
+plot_efficiency_of_windows <- function(poped.db,
+                                       xt_windows=NULL,
+                                       xt_plus=xt_windows,
+                                       xt_minus=xt_windows,
                                        iNumSimulations=100,
+                                       y_eff = T,
+                                       y_rse = T,
                                        #a_windows=NULL,x_windows=NULL,
                                        #d_switch=poped.db$d_switch,
                                        ...){
@@ -43,20 +56,23 @@ plot_efficiency_of_windows <- function(poped.db,xt_windows,
   #NumRows = size(xt_windows,1)*size(xt_windows,2)/2+size(a_windows,1)*size(a_windows,2)/2+size(x_windows,1)*size(x_windows,2)/2+p+1
   
   
-  eff = zeros(1,iNumSimulations)
+  if(y_eff) eff = zeros(1,iNumSimulations)
+  if(y_rse) rse <- zeros(iNumSimulations,p)
   
   fulld = getfulld(design$d[,2],design$covd)
   fulldocc = getfulld(design$docc[,2,drop=F],design$covdocc)
   
-  if(!is.null(xt_windows)){
-    xt_val_min <- xt_val - xt_windows
-    xt_val_max <- xt_val + xt_windows
+  if(!is.null(xt_windows) || !is.null(xt_minus) || !is.null(xt_plus)){
+    xt_val_min <- xt_val
+    xt_val_max <- xt_val
+    if(!is.null(xt_minus)) xt_val_min <- xt_val - xt_minus
+    if(!is.null(xt_plus)) xt_val_max <- xt_val + xt_plus
     xt_val_min[xt_val_min<design$minxt] = design$minxt[xt_val_min<design$minxt]
     xt_val_max[xt_val_max>design$maxxt] = design$maxxt[xt_val_max>design$maxxt]
   }  
   
   for(i in 1:iNumSimulations){
-    if(!is.null(xt_windows)){
+    if(!is.null(xt_windows) || !is.null(xt_minus) || !is.null(xt_plus)){
       xt_new <- rand(size(xt_val,1),size(xt_val,2))*abs(xt_val_max - xt_val_min)+xt_val_min
       if((poped.db$bUseGrouped_xt)){
         for(j in 1:size(xt_val,1) ){
@@ -103,7 +119,12 @@ plot_efficiency_of_windows <- function(poped.db,xt_windows,
     #       returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt_val,x_val,a_val,bpop[,2],fulld,design$sigma,fulldocc,poped.db) 
     #       fmf <- returnArgs[[1]]
     #       poped.db <- returnArgs[[2]]
-    eff[1,i] = ofv_criterion(ofv_fim(fmf,poped.db),p,poped.db)/ofv_criterion(ofv_fim(ref_fmf,poped.db),p,poped.db)
+    if(y_eff) eff[1,i] = ofv_criterion(ofv_fim(fmf,poped.db),p,poped.db)/ofv_criterion(ofv_fim(ref_fmf,poped.db),p,poped.db)
+    if(y_rse){
+      rse_tmp <- get_rse(fmf,poped.db)
+      rse[i,] = rse_tmp
+      if(i==1) colnames(rse) <- names(rse_tmp)
+    }
     #       } else {
     #         eff(i) = (ofv_fim(fmf,poped.db)/optdetfim)
     #       }
@@ -205,11 +226,28 @@ plot_efficiency_of_windows <- function(poped.db,xt_windows,
     # 
     # return( eff min_eff mean_eff max_eff ) 
   }
-  efficiency <- eff[1,]*100
-  df <- data.frame(efficiency,sample=c(1:iNumSimulations))
-  p <- ggplot(data=df,aes(x=sample,y=efficiency)) #+ labs(colour = NULL)
+  if(y_eff) efficiency <- eff[1,]*100
+  df <- data.frame(sample=c(1:iNumSimulations))
+  if(y_eff) df$Efficiency <- efficiency
+  if(y_rse){
+    rse_df <- data.frame(rse)
+    names(rse_df) <- colnames(rse)
+    df <- cbind(df,rse_df)
+  }
+  #parameter_names_ff <- codetools::findGlobals(eval(parse(text=poped.db$ff_pointer)),merge=F)$variables 
+  df_stack <- cbind(df$sample,stack(df,select=-sample))
+  names(df_stack) <- c("sample","values","ind")
+  levs <- levels(df_stack$ind)
+  levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
+  p <- ggplot(data=df_stack,aes(x=sample,y=values, group=ind))
+  p <- p+geom_line()+geom_point() + facet_wrap(~ind,scales="free")
+  #p
+  
+  #p <- ggplot(data=df,aes(x=sample,y=efficiency)) #+ labs(colour = NULL)
+  
   #p <- ggplot(data=df,aes(x=Efficiency)) #+ labs(colour = NULL)
   #p+geom_histogram()
-  p <- p+geom_line()+geom_point()+ylab("Normalized Efficiency (%)")
+  #p <- p+geom_line()+geom_point()+ylab("Normalized Efficiency (%)")
+  p <- p+ylab("Value in %")+xlab("Simulation number of design sampled from defined windows")
   return(p)
 }
