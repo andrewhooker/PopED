@@ -12,11 +12,11 @@ PopED 0.1.2
 * Updated the create.poped.database() function to use create_design() and create_design_space()
 
 * Added examples for evaluation and optimization of a one-target quasi-steady-state 
-  target mediated drug disposition model (TMDD) to the `system.file("examples", 
-  package="PopED")` directory of the PopED installation.
+  target mediated drug disposition model (TMDD) to the system.file("examples", 
+  package="PopED") directory of the PopED installation.
 
-* Added a 2-compartment, oral absorption, multiple dose example to the `system.file("examples", 
-  package="PopED")` directory of the PopED installation.
+* Added a 2-compartment, oral absorption, multiple dose example to the system.file("examples", 
+  package="PopED") directory of the PopED installation.
 
 * Updated plot_efficiency_of_windows() to allow for the plotting of the RSE of each parameter on the y-axis.
 
