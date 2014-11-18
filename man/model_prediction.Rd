@@ -3,38 +3,77 @@
 \alias{model_prediction}
 \title{Model predictions}
 \usage{
-model_prediction(poped.db, models_to_use = "all", model_num_points = NULL,
-  model_minxt = NULL, model_maxxt = NULL, include_sample_times = T,
-  groups_to_use = "all", IPRED = FALSE, DV = FALSE, num_ids = 100)
+model_prediction(poped.db = NULL, design = list(xt =
+  poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m =
+  poped.db[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni =
+  poped.db$design$ni, model_switch = poped.db$design$model_switch),
+  model = list(fg_pointer = poped.db$fg_pointer, ff_pointer =
+  poped.db$ff_pointer, ferror_pointer = poped.db$ferror_pointer),
+  parameters = list(docc = poped.db$design$docc, d = poped.db$design$d, bpop =
+  poped.db$design$bpop, covd = poped.db$design$covd, covdocc =
+  poped.db$design$covdocc, sigma = poped.db$design$sigma), IPRED = FALSE,
+  DV = FALSE, dosing = NULL, predictions = NULL, filename = NULL,
+  models_to_use = "all", model_num_points = NULL, model_minxt = NULL,
+  model_maxxt = NULL, include_sample_times = T, groups_to_use = "all",
+  include_a = TRUE, include_x = TRUE, manipulation = NULL)
 }
 \arguments{
-\item{poped.db}{A PopED database.}
+\item{poped.db}{A PopED database created by \code{\link{create.poped.database}}.}
 
-\item{models_to_use}{Which model number should we use?}
+\item{design}{A list that is passed as arguments to the function \code{\link{create_design}} to create a design object.}
 
-\item{model_num_points}{How many points should be plotted.  If not a number then the design in poped.db is used.}
+\item{model}{A list containing the model elements to use for the predictions}
 
-\item{model_minxt}{The minimum of the sample times for the predictions.}
-
-\item{model_maxxt}{The maximum of the sample times for the predictions.}
-
-\item{include_sample_times}{Should the sample times from poped.db be included in the predictions?}
-
-\item{groups_to_use}{Which groups should we use for predictions from the poped.db.}
+\item{parameters}{A list of parameters to use in the model predictions.}
 
 \item{IPRED}{Should we simulate individual predictions?}
 
 \item{DV}{should we simulate observations?}
 
-\item{num_ids}{The number of individuals to simulate if using IPRED or DV.}
+\item{dosing}{A list of lists that adds dosing records to the data frame (Each inner list corresponding to a group in the design).}
+
+\item{predictions}{Should the resulting data frame have predictions?  Either \code{TRUE} or \code{FALSE}
+or \code{NULL} in which case the function decides based on other arguments.}
+
+\item{filename}{A filename that the data frame should be written to in comma separate value (csv) format.}
+
+\item{models_to_use}{Which model numbers should we use?
+Model numbers are defined in \code{design} below using \code{model_switch}. For an explanation see \code{\link{create_design}}.}
+
+\item{model_num_points}{How many extra observation rows should be created in the data frame for each group or individual
+per model.  If used then the points are placed evenly between \code{model_minxt} and \code{model_maxxt}. This option
+is used by \code{\link{plot_model_prediction}} to simulate the response of the model on a finer grid then the defined design.
+If \code{NULL} then only the input design is used.  Can be a single value or a vector the same length as the number of models.}
+
+\item{model_minxt}{The minimum time value for extra observation rows indicated by \code{model_num_points}.
+A vector the same length as the number of models}
+
+\item{model_maxxt}{The minimum time value for extra observation rows indicated by \code{model_num_points}.
+A vector the same length as the number of models}
+
+\item{include_sample_times}{Should observations rows in the output data frame include the times indicated in the input design?}
+
+\item{groups_to_use}{Which groups should we include in the output data frame?Allowed values are \code{"all"} or
+a vector of numbers indicating the groups to include, e.g. \code{c(1,3,6)}.}
+
+\item{include_a}{Should we include the continuous design variables in the output?}
+
+\item{include_x}{Should we include the discrete design variables in the output?}
+
+\item{manipulation}{A list of one or more \code{\link[base]{expression}} arguments.  Each expression is
+evaluated using the code \code{for(i in 1:length(manipulation)){df <- within(df,{eval(manipulation[[i]])})}}.
+Can be used to transform
+or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
+so transformations in colums having to do with input to model predictions  will not affect the predictions.}
 }
 \value{
-A dataframe of simulated data, either with some dense grid of samples or based on the design in the poped
-database.
+A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or
+based on the input design.
 }
 \description{
-Function generates model predictions for the typical value in the population,
-individual predictions and data predictions.
+Function generates a data frame of model predictions for the typical value in the population,
+individual predictions and data predictions.  The function can also be used to generate datasets
+without predictions using the design specified in the arguments.
 }
 \examples{
 ## Warfarin example from software comparison in:
@@ -73,12 +112,99 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   a=70)
 
 ## data frame with model predictions
-model_prediction(poped.db)
+df_1 <- model_prediction(poped.db)
 
-##  data frame with with variability 
-model_prediction(poped.db,IPRED=TRUE,DV=TRUE,num_ids=poped.db$groupsize)
+##  data frame with variability 
+df_2 <- model_prediction(poped.db,DV=TRUE)
+
+## data frame with variability (only IPRED, no DV)
+df_3 <- model_prediction(poped.db,IPRED=TRUE)
+
+## data frame with model predictions, no continuous design variables in data frame
+df_4 <- model_prediction(poped.db,include_a = F)
+
+## -- 2 groups
+poped.db.2 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                    fg_file="sfg",
+                                    fError_file="feps.prop",
+                                    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                    notfixed_bpop=c(1,1,1,0),
+                                    d=c(CL=0.07, V=0.02, KA=0.6), 
+                                    sigma=0.01,
+                                    groupsize=rbind(3,3),
+                                    m=2,
+                                    xt=c( 0.5,1,2,6,24,36,72,120),
+                                    minxt=0,
+                                    maxxt=120,
+                                    a=rbind(70,50))
+
+df_5 <- model_prediction(poped.db.2,DV=T)
+
+## without a poped database, just describing the design
+## Useful for creating datasets for use in other software (like NONMEM)
+design_1 <- list(
+  xt=c( 0.5,1,2,6,24,36,72,120),
+  m=2,
+  groupsize=3)
+
+design_2 <- list(
+  xt=c( 0.5,1,2,6,24,36,72,120),
+  m=2,
+  groupsize=3,
+  a=c(WT=70,AGE=50))
+
+design_3 <- list(
+  xt=c( 0.5,1,2,6,24,36,72,120),
+  m=2,
+  groupsize=3,
+  a=list(c(WT=70,AGE=50),c(AGE=45,WT=60)))
+
+df_6 <- model_prediction(design=design_1)
+df_7 <- model_prediction(design=design_2)
+df_8 <- model_prediction(design=design_3)
+df_9 <- model_prediction(design=design_3,DV=T)
+
+# generate random deviations in WT for each individual
+df_10 <- model_prediction(design=design_3,DV=T,
+                          manipulation=expression({for(id in unique(ID)) WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1);id <- NULL}))
+
+# generate random deviations in WT and AGE for each individual
+df_11 <- model_prediction(design=design_3,DV=T,
+                          manipulation=list(
+                            expression(for(id in unique(ID)) WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1)),
+                            expression(for(id in unique(ID)) AGE[ID==id] = rnorm(1,AGE[ID==id],AGE[ID==id]*0.2)),
+                            expression(id <- NULL)
+                          ))
+
+## create dosing rows 
+dosing_1 <- list(list(AMT=1000,RATE=NA,Time=0.5),list(AMT=3000,RATE=NA,Time=0.5))
+dosing_2 <- list(list(AMT=1000,RATE=NA,Time=0.5))
+dosing_3 <- list(list(AMT=1000,Time=0.5))
+dosing_4 <- list(list(AMT=c(1000,20),Time=c(0.5,10))) # multiple dosing
 
 
+df_12 <- model_prediction(design=design_3,DV=T,dosing=dosing_1)
+df_13 <- model_prediction(design=design_3,DV=T,dosing=dosing_2)
+df_14 <- model_prediction(design=design_3,DV=T,dosing=dosing_3)
+df_15 <- model_prediction(design=design_3,DV=T,dosing=dosing_4)
+
+df_16 <- model_prediction(design=design_3,DV=T,dosing=dosing_4,filename="test.csv")
+
+model_prediction(design=design_3,DV=T,dosing=dosing_4,model_num_points = 10)
+model_prediction(design=design_3,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=20)
+
+design_4 <- list(
+  xt=c( 0.5,1,2,6,24,36,72,120),
+  model_switch=c(1,1,1,1,2,2,2,2),
+  m=2,
+  groupsize=3,
+  a=list(c(WT=70,AGE=50),c(AGE=45,WT=60)))
+
+model_prediction(design=design_4,DV=T,dosing=dosing_4)
+model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10)
+model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=10,model_maxxt=100)
+model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=c(20,20),model_maxxt=c(100,100))
+model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = c(10,10),model_minxt=c(20,20),model_maxxt=c(100,100))
 }
 \seealso{
 Other Simulation: \code{\link{plot_efficiency_of_windows}};

@@ -15,7 +15,8 @@ Doptim(poped.db, ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,
   BFGSTolerancef = poped.db$BFGSTolerancef,
   BFGSToleranceg = poped.db$BFGSToleranceg,
   BFGSTolerancex = poped.db$BFGSTolerancex,
-  iter_tot = poped.db$iNumSearchIterationsIfNotLineSearch, ...)
+  iter_tot = poped.db$iNumSearchIterationsIfNotLineSearch, iter_max = 10,
+  ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -82,7 +83,12 @@ Use random search (1=TRUE, 0=FALSE)}
 
 \item{BFGSTolerancex}{BFGS Minimizer Line Search Tolerance x}
 
-\item{iter_tot}{Number of iterations of full Random search and full Stochastic Gradient if line search is not used.}
+\item{iter_tot}{Number of iterations to use if line search is not used. Must be less than \code{iter_max} to be used.}
+
+\item{iter_max}{If line search is used then
+the algorithm tests if line search (always run at the end of the optimization iteration) changes the
+design in any way.  If not, the algorithm stops.  If yes, then a new iteration is run unless
+\code{iter_max} iterations have already been run.}
 
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }

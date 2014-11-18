@@ -16,7 +16,10 @@ plot_model_prediction(poped.db, model_num_points = 100, separate.groups = F,
 \arguments{
 \item{poped.db}{A PopED database.}
 
-\item{model_num_points}{How many points should be plotted.  If not a number then the design in poped.db is used.}
+\item{model_num_points}{How many extra observation rows should be created in the data frame for each group or individual
+per model.  If used then the points are placed evenly between \code{model_minxt} and \code{model_maxxt}. This option
+is used by \code{\link{plot_model_prediction}} to simulate the response of the model on a finer grid then the defined design.
+If \code{NULL} then only the input design is used.  Can be a single value or a vector the same length as the number of models.}
 
 \item{separate.groups}{Should there be separate plots for each group.}
 
