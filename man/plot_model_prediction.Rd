@@ -5,10 +5,10 @@
 \usage{
 plot_model_prediction(poped.db, model_num_points = 100, separate.groups = F,
   sample.times = T, sample.times.IPRED = F, sample.times.DV = F,
-  PRED = T, IPRED = F, IPRED.lines = F, alpha.IPRED.lines = 0.1,
-  alpha.IPRED = 0.3, sample.times.size = 4, DV = F, alpha.DV = 0.3,
-  DV.lines = F, DV.points = F, alpha.DV.lines = 0.3,
-  alpha.DV.points = 0.3, sample.times.DV.points = F,
+  PRED = T, IPRED = F, IPRED.lines = F, IPRED.lines.pctls = F,
+  alpha.IPRED.lines = 0.1, alpha.IPRED = 0.3, sample.times.size = 4,
+  DV = F, alpha.DV = 0.3, DV.lines = F, DV.points = F,
+  alpha.DV.lines = 0.3, alpha.DV.points = 0.3, sample.times.DV.points = F,
   sample.times.DV.lines = F, alpha.sample.times.DV.points = 0.3,
   alpha.sample.times.DV.lines = 0.3, y_lab = "Model Predictions",
   facet_scales = "fixed", facet_label_names = T, ...)
@@ -34,6 +34,8 @@ If \code{NULL} then only the input design is used.  Can be a single value or a v
 \item{IPRED}{Should we simulate individual predictions?}
 
 \item{IPRED.lines}{Should IPRED lines be drawn?}
+
+\item{IPRED.lines.pctls}{Should lines be drawn at the chosen percentiles of the IPRED values?}
 
 \item{alpha.IPRED.lines}{What should the transparency for the IPRED.lines be?}
 

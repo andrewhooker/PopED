@@ -167,13 +167,25 @@ the Usage section (the defaults to function arguments). Can also be an empty lis
 \item{ff_file}{\itemize{
 \item \bold{******START OF MODEL DEFINITION OPTIONS**********}
 }
-Function name or Filname and path of the model file. The filename and the function name must be the same.}
+A string giving the function name or filname and path of the structural model.
+The filename and the function name must be the same if giving a filename.
+e.g. \code{"ff.PK.1.comp.oral.md.KE"}}
 
-\item{fg_file}{Function name or Filname and path of the parameter model file.
-The filename and the function name must be the same.}
+\item{ff_fun}{Function describing the structural model. e.g. \code{ff.PK.1.comp.oral.md.KE}.}
 
-\item{fError_file}{Function name or Filname and path of the residual error model file.
-The filename and the function name must be the same.}
+\item{fg_file}{A string giving the function name or filname and path of the
+parameter model.
+The filename and the function name must be the same if giving a filename.
+e.g. \code{"parameter.model"}}
+
+\item{fg_fun}{Function describing the parameter model. e.g. \code{parameter.model}.}
+
+\item{fError_file}{A string giving the function name or filname and path of the
+residual error model.
+The filename and the function name must be the same if giving a filename.
+e.g. \code{"feps.prop"}.}
+
+\item{fError_fun}{Function describing the residual error model. e.g. \code{feps.prop}.}
 
 \item{optsw}{\itemize{
 \item \bold{******WHAT TO OPTIMIZE**********}}
@@ -214,6 +226,10 @@ If only one numer then the number will be the same in every group.}
 Max number of samples per group/individual}
 
 \item{minni}{Min number of samples per group/individual}
+
+\item{maxtotni}{Number defining the maximum number of samples allowed in the experiment.}
+
+\item{mintotni}{Number defining the minimum number of samples allowed in the experiment.}
 
 \item{maxgroupsize}{Vector defining the max size of the different groups (max number of individuals in each group)}
 

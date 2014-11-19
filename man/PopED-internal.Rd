@@ -78,6 +78,7 @@
 \alias{m4}
 \alias{mf_all}
 \alias{sg_search}
+\alias{build_sfg}
 
 \title{Internal PopED Functions}
 \description{
