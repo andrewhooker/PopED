@@ -1,6 +1,6 @@
 Package: PopED
 Type: Package
-Title: Population (and individual) optimal Experimental Design
+Title: Population (and Individual) Optimal Experimental Design
 Version: 0.1.2
 Date: 2014-11-19
 Depends:
