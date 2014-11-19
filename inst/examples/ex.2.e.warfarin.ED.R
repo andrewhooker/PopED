@@ -110,7 +110,3 @@ output <- poped_optimize(poped.db,opt_xt=T, opt_a=T,
                          d_switch=F,use_laplace=T,
                          rsit=rsit)
 
-
-
-
-

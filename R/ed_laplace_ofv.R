@@ -418,7 +418,10 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
   retargs=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)
   fim <- retargs$ret
   if((!return_gradient)){
-    k=-log_prior_pdf(alpha, bpopdescr, ddescr)-log(det(fim))
+    #tryCatch(log(det(fim)), warning = function(w) browser())
+    det_fim <- det(fim)
+    if(det_fim<0) det_fim <- 0
+    k=-log_prior_pdf(alpha, bpopdescr, ddescr)-log(det_fim)
     grad_k=matrix(0,0,0)
   } else {
     returnArgs <- log_prior_pdf(alpha, bpopdescr, ddescr,return_gradient=T) 
@@ -433,7 +436,10 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
     grad_k=-(gradlogdfim+grad_p)
     ## if not positive definite set grad_k=zeros(length(alpha),1)
     
-    k=-logp-log(det(fim))
+    #tryCatch(log(det(fim)), warning = function(w) browser())
+    det_fim <- det(fim)
+    if(det_fim<0) det_fim <- 0
+    k=-logp-log(det_fim)
   }
   return(list( k= k, grad_k= grad_k)) 
 }

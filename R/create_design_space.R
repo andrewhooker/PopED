@@ -16,7 +16,7 @@
 #' @param maxni Vector defining the maximum number of samples per group. 
 #' @param minni Vector defining the minimum number of samples per group. 
 #' @param maxtotni Number defining the maximum number of samples allowed in the experiment. 
-#' @param montotni Number defining the minimum number of samples allowed in the experiment.  
+#' @param mintotni Number defining the minimum number of samples allowed in the experiment.  
 #' @param maxgroupsize Vector defining the maximum size of the different groups (maximum number of individuals in each group)
 #' @param mingroupsize Vector defining the minimum size of the different groups (minimum num individuals in each group) 
 #' @param maxtotgroupsize The total maximal groupsize over all groups
@@ -39,6 +39,7 @@
 #' @param use_grouped_x Group discrete design variables between groups so that each group has the same values (\code{TRUE} or \code{FALSE}).
 #' @param grouped_x Matrix defining the grouping of discrete design variables. Matching integers mean that the values are matched.  
 #' Allows for finer control than \code{use_grouped_x}.
+#' @param our_zero Value to interpret as zero in design.
 #' 
 #' 
 #' @family poped_input

@@ -43,7 +43,7 @@ df_2 <- model_prediction(poped.db,DV=TRUE)
 df_3 <- model_prediction(poped.db,IPRED=TRUE)
 
 ## data frame with model predictions, no continuous design variables in data frame
-df_4 <- model_prediction(poped.db,include_a = F)
+df_4 <- model_prediction(poped.db,include_a = FALSE)
 
 ## -- 2 groups
 poped.db.2 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
@@ -60,7 +60,7 @@ poped.db.2 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                     maxxt=120,
                                     a=rbind(70,50))
 
-df_5 <- model_prediction(poped.db.2,DV=T)
+df_5 <- model_prediction(poped.db.2,DV=TRUE)
 
 ## without a poped database, just describing the design
 ## Useful for creating datasets for use in other software (like NONMEM)
@@ -84,17 +84,20 @@ design_3 <- list(
 df_6 <- model_prediction(design=design_1)
 df_7 <- model_prediction(design=design_2)
 df_8 <- model_prediction(design=design_3)
-df_9 <- model_prediction(design=design_3,DV=T)
+df_9 <- model_prediction(design=design_3,DV=TRUE)
 
 # generate random deviations in WT for each individual
-df_10 <- model_prediction(design=design_3,DV=T,
-                          manipulation=expression({for(id in unique(ID)) WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1);id <- NULL}))
+df_10 <- model_prediction(design=design_3,DV=TRUE,
+                          manipulation=expression({for(id in unique(ID)) 
+                              WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1);id <- NULL}))
 
 # generate random deviations in WT and AGE for each individual
-df_11 <- model_prediction(design=design_3,DV=T,
+df_11 <- model_prediction(design=design_3,DV=TRUE,
                           manipulation=list(
-                            expression(for(id in unique(ID)) WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1)),
-                            expression(for(id in unique(ID)) AGE[ID==id] = rnorm(1,AGE[ID==id],AGE[ID==id]*0.2)),
+                            expression(for(id in unique(ID)) 
+                              WT[ID==id] = rnorm(1,WT[ID==id],WT[ID==id]*0.1)),
+                            expression(for(id in unique(ID)) 
+                              AGE[ID==id] = rnorm(1,AGE[ID==id],AGE[ID==id]*0.2)),
                             expression(id <- NULL)
                           ))
 
@@ -105,15 +108,15 @@ dosing_3 <- list(list(AMT=1000,Time=0.5))
 dosing_4 <- list(list(AMT=c(1000,20),Time=c(0.5,10))) # multiple dosing
 
 
-df_12 <- model_prediction(design=design_3,DV=T,dosing=dosing_1)
-df_13 <- model_prediction(design=design_3,DV=T,dosing=dosing_2)
-df_14 <- model_prediction(design=design_3,DV=T,dosing=dosing_3)
-df_15 <- model_prediction(design=design_3,DV=T,dosing=dosing_4)
+df_12 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_1)
+df_13 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_2)
+df_14 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_3)
+df_15 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_4)
 
-df_16 <- model_prediction(design=design_3,DV=T,dosing=dosing_4,filename="test.csv")
+df_16 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,filename="test.csv")
 
-model_prediction(design=design_3,DV=T,dosing=dosing_4,model_num_points = 10)
-model_prediction(design=design_3,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=20)
+model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,model_num_points = 10)
+model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,model_num_points = 10,model_minxt=20)
 
 design_4 <- list(
   xt=c( 0.5,1,2,6,24,36,72,120),
@@ -122,8 +125,11 @@ design_4 <- list(
   groupsize=3,
   a=list(c(WT=70,AGE=50),c(AGE=45,WT=60)))
 
-model_prediction(design=design_4,DV=T,dosing=dosing_4)
-model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10)
-model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=10,model_maxxt=100)
-model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = 10,model_minxt=c(20,20),model_maxxt=c(100,100))
-model_prediction(design=design_4,DV=T,dosing=dosing_4,model_num_points = c(10,10),model_minxt=c(20,20),model_maxxt=c(100,100))
+model_prediction(design=design_4,DV=TRUE,dosing=dosing_4)
+model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = 10)
+model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = 10,
+                 model_minxt=10,model_maxxt=100)
+model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = 10,
+                 model_minxt=c(20,20),model_maxxt=c(100,100))
+model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = c(10,10),
+                 model_minxt=c(20,20),model_maxxt=c(100,100))

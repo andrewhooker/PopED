@@ -217,8 +217,10 @@ model_prediction <- function(poped.db=NULL,
         rownames(a_i) <- NULL
         group.df <- data.frame(group.df,a_i)  
       } 
-      if(include_x && !isempty(x_i)) group.df <- data.frame(group.df,x_i)
-      
+      if(include_x && !isempty(x_i)){
+        rownames(x_i) <- NULL
+        group.df <- data.frame(group.df,x_i)
+      }
       
       
       #     if(include_id){

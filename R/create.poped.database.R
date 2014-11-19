@@ -7,17 +7,26 @@
 #' input file or as function arguments. Default arguments are supplied in the Usage section 
 #' (easiest to use a text search to find values you are interested in).  
 #' 
+#' @inheritParams create_design_space
 #' @param popedInput An input file to PopED.  List elements should match the values seen in 
 #' the Usage section (the defaults to function arguments). Can also be an empty list \code{list()}. 
 #' @param ff_file  \itemize{
 #' \item \bold{******START OF MODEL DEFINITION OPTIONS**********}
 #' }
-#' Function name or Filname and path of the model file. The filename and the function name must be the same. 
-#' 
-#' @param fg_file Function name or Filname and path of the parameter model file. 
-#' The filename and the function name must be the same.
-#' @param fError_file Function name or Filname and path of the residual error model file. 
-#' The filename and the function name must be the same.
+#' A string giving the function name or filname and path of the structural model. 
+#' The filename and the function name must be the same if giving a filename. 
+#' e.g. \code{"ff.PK.1.comp.oral.md.KE"}
+#' @param ff_fun Function describing the structural model. e.g. \code{ff.PK.1.comp.oral.md.KE}. 
+#' @param fg_file A string giving the function name or filname and path of the 
+#' parameter model. 
+#' The filename and the function name must be the same if giving a filename. 
+#' e.g. \code{"parameter.model"}
+#' @param fg_fun Function describing the parameter model. e.g. \code{parameter.model}.
+#' @param fError_file A string giving the function name or filname and path of the 
+#' residual error model. 
+#' The filename and the function name must be the same if giving a filename. 
+#' e.g. \code{"feps.prop"}.
+#' @param fError_fun Function describing the residual error model. e.g. \code{feps.prop}.
 #'
 #' @param optsw  \itemize{
 #' \item \bold{******WHAT TO OPTIMIZE**********}}
@@ -505,8 +514,8 @@ create.poped.database <-
            ## -- User defined data structure that, for example could be used to send in data to the model --
            user_data=poped.choose(popedInput$user_data,cell(0,0)),
            ## -- Value to interpret as zero in design --
-           #ourzero=poped.choose(popedInput$ourzero,1e-5),                    
-           ourzero=poped.choose(popedInput$ourzero,0),                    
+           ourzero=poped.choose(popedInput$ourzero,1e-5),                    
+           #ourzero=poped.choose(popedInput$ourzero,0),                    
            ## -- The seed number used for optimization and sampling -- integer or -1 which creates a random seed
            dSeed=poped.choose(popedInput$dSeed,-1),
            ## -- Vector for line search on continuous design variables (1=TRUE,0=FALSE) --

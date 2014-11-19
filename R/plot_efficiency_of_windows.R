@@ -226,6 +226,8 @@ plot_efficiency_of_windows <- function(poped.db,
     # 
     # return( eff min_eff mean_eff max_eff ) 
   }
+  values <- NULL
+  ind <- NULL
   if(y_eff) efficiency <- eff[1,]*100
   df <- data.frame(sample=c(1:iNumSimulations))
   if(y_eff) df$Efficiency <- efficiency
@@ -237,8 +239,10 @@ plot_efficiency_of_windows <- function(poped.db,
   #parameter_names_ff <- codetools::findGlobals(eval(parse(text=poped.db$ff_pointer)),merge=F)$variables 
   df_stack <- cbind(df$sample,stack(df,select=-sample))
   names(df_stack) <- c("sample","values","ind")
-  levs <- levels(df_stack$ind)
-  levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
+  if(y_eff){
+    levs <- levels(df_stack$ind)
+    levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
+  }
   p <- ggplot(data=df_stack,aes(x=sample,y=values, group=ind))
   p <- p+geom_line()+geom_point() + facet_wrap(~ind,scales="free")
   #p

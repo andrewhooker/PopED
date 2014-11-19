@@ -26,6 +26,7 @@
 #' @param y_lab The label of the y-axis.
 #' @param facet_scales Can be "free", "fixed", "free_x" or "free_y"
 #' @param facet_label_names TRUE or FALSE
+#' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
 #' 
 #' 
 #' @return A \link[ggplot2]{ggplot2} object.

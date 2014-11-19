@@ -26,11 +26,19 @@ design_2 <- create_design(xt=list(c(1,2,3,4,5),
 
 ds_6 <- create_design_space(design_2) 
 
-ds_7 <- create_design_space(design_2,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)))
+ds_7 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)))
 
-ds_8 <- create_design_space(design_2,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),grouped_xt=c(1,2,3,4,5))
+ds_8 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)),
+                            grouped_xt=c(1,2,3,4,5))
 
-ds_9 <- create_design_space(design_2,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),use_grouped_xt=TRUE)
+ds_9 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)),
+                            use_grouped_xt=TRUE)
 
 design_3 <- create_design(xt=list(c(1,2,3,4,5),
                                   c(1,2,3,4)),
@@ -38,10 +46,18 @@ design_3 <- create_design(xt=list(c(1,2,3,4,5),
                           a=list(c(WT=35,DOSE=1000)),
                           x=list(c(SEX=1,DOSE_discrete=100)))
 
-ds_10 <- create_design_space(design_3,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),use_grouped_a=T)
+ds_10 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             use_grouped_a=TRUE)
 
-ds_11 <- create_design_space(design_2,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),grouped_a=list(c(1,2),c(3,2)))
+ds_11 <- create_design_space(design_2,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             grouped_a=list(c(1,2),c(3,2)))
 
-ds_12 <- create_design_space(design_3,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),use_grouped_x=T)
+ds_12 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             use_grouped_x=TRUE)
 
-ds_13 <- create_design_space(design_3,x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),grouped_x=list(c(1,2),c(3,2)))
+ds_13 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             grouped_x=list(c(1,2),c(3,2)))
