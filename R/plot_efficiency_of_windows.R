@@ -241,7 +241,8 @@ plot_efficiency_of_windows <- function(poped.db,
   names(df_stack) <- c("sample","values","ind")
   if(y_eff){
     levs <- levels(df_stack$ind)
-    levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
+    df_stack$ind <- factor(df_stack$ind,levels=c("Efficiency",levs[-c(grep("Efficiency",levs))]))
+    #levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
   }
   p <- ggplot(data=df_stack,aes(x=sample,y=values, group=ind))
   p <- p+geom_line()+geom_point() + facet_wrap(~ind,scales="free")
