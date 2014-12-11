@@ -3,7 +3,7 @@ PopED News/Changelog
 PopED 0.1.2.9000
 ===========
 
-
+* Fixed plot_efficiency_of_windows() bug that had wrong headers on each subplot.
 
 PopED 0.1.2
 ===========
