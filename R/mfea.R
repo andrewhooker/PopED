@@ -657,6 +657,13 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
   #}
   #blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db)
   
+  poped.db$gxt = xt
+  poped.db$gx = x
+  poped.db$ga = a
+  
+  poped.db$design$xt <- xt
+  poped.db$design$x <-x
+  poped.db$design$a <-a
   
   return(list( xt= xt,x=x,a=a,fmf=fmf,dmf=dmf,poped.db=poped.db)) 
 }

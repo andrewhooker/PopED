@@ -382,6 +382,10 @@ RS_opt <- function(poped.db,
   poped.db$gx = xopt
   poped.db$ga = aopt
   
+  poped.db$design$xt <- xtopt
+  poped.db$design$x <-xopt
+  poped.db$design$a <-aopt
+  
   #--------- Write results
   if((trflag)){
     blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,

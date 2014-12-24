@@ -391,6 +391,11 @@ RS_opt_gen <- function(poped.db,
   poped.db$gx = xopt
   poped.db$ga = aopt
   
+  poped.db$design$xt <- xtopt
+  poped.db$design$x <-xopt
+  poped.db$design$a <-aopt
+  
+  
   # make sure that both the OFV and FIM exists, calculate if not there
   output <- calc_ofv_and_fim(poped.db,
                              ofv=dmf,

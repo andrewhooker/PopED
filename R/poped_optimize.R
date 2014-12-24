@@ -216,14 +216,18 @@ poped_optimize <- function(poped.db,
     }
     
     poped.db$gni[1:poped.db$m]=ni
+    poped.db$design$ni <- ni
     if((!isempty(xt))){
       poped.db$gxt[1:poped.db$m,1:poped.db$maxni]=xt
+      poped.db$design$xt <- xt
     }
     if((!isempty(x))){
       poped.db$gx[1:poped.db$m,1:poped.db$nx]=x
+      poped.db$design$x <- x
     }
     if((!isempty(a))){
       poped.db$ga[1:poped.db$m,1:poped.db$na]=a
+      poped.db$design$a <- a
     }
   }
   return(list( fmf= fmf, dmf= dmf, poped.db = poped.db )) 

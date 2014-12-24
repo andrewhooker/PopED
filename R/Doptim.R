@@ -546,6 +546,11 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       poped.db$gxt = xtopt
       poped.db$gx = xopt
       poped.db$ga = aopt
+      
+      poped.db$design$xt <- xtopt
+      poped.db$design$x <-xopt
+      poped.db$design$a <-aopt
+      
       if((poped.db$bUseLineSearch)){
         #------------------------------- LINE SEARCH optimization START HERE
         strLineSearchFile=sprintf('%s_LS_%g%s',poped.db$strOutputFileName,iter,poped.db$strOutputFileExtension)

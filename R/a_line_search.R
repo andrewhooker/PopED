@@ -814,6 +814,10 @@ a_line_search <- function(poped.db,
     a=poped.db$ga
     x=poped.db$gx
     
+    poped.db$design$xt <- xt
+    poped.db$design$x <-x
+    poped.db$design$a <-a
+    
     fprintf(fn,'Line search run time: %g seconds\n***************************\n\n',time_value)
     if(fn!="") fprintf('Line search run time: %g seconds\n\n',time_value)
     

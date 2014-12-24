@@ -3,7 +3,9 @@ PopED News/Changelog
 PopED 0.1.2.9000
 ===========
 
-* Fixed plot_efficiency_of_windows() bug that had wrong headers on each subplot.
+* Fixed `plot_efficiency_of_windows()` bug that had wrong headers on each subplot.
+
+* Fixed bug in `plot_model_prediction()` that did not plot the optimized design, but instead the initial design
 
 PopED 0.1.2
 ===========
