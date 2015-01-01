@@ -28,12 +28,12 @@
 ## Author: Andrew Hooker
 
 blockheader <- function(poped.db,name="Default",iter=NULL,
-                          e_flag=!(poped.db$d_switch),opt_xt=poped.db$optsw[2],
-                          opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
-                          opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+                          e_flag=!(poped.db$settings$d_switch),opt_xt=poped.db$settings$optsw[2],
+                          opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
+                          opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5],
                           fmf=0,dmf=0,bpop=NULL,d=NULL,docc=NULL,sigma=NULL,
-                          name_header=poped.db$strOutputFileName,
-                          file_path=poped.db$strOutputFilePath,
+                          name_header=poped.db$settings$strOutputFileName,
+                          file_path=poped.db$settings$strOutputFilePath,
                           out_file=NULL,compute_inv=TRUE,
                           trflag=TRUE,
                           header_flag=TRUE,
@@ -41,15 +41,15 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
 {
   # BLOCKHEADER_2
   #   filename to write to is 
-  #   poped.db$strOutputFilePath,poped.db$strOutputFileName,NAME,iter,poped.db$strOutputFileExtension
+  #   poped.db$settings$strOutputFilePath,poped.db$settings$strOutputFileName,NAME,iter,poped.db$settings$strOutputFileExtension
   
   #   if((bDiscreteOpt)){
-  #     tmpfile=sprintf('%s_Discrete_%g%s',poped.db$strOutputFileName,iter,poped.db$strOutputFileExtension)
+  #     tmpfile=sprintf('%s_Discrete_%g%s',poped.db$settings$strOutputFileName,iter,poped.db$settings$strOutputFileExtension)
   #   } else {
-  #     tmpfile=sprintf('%s_RS_SG_%g%s',poped.db$strOutputFileName,iter,poped.db$strOutputFileExtension)
+  #     tmpfile=sprintf('%s_RS_SG_%g%s',poped.db$settings$strOutputFileName,iter,poped.db$settings$strOutputFileExtension)
   #   }
   
-  #tmpfile=sprintf('%s_%s_%g%s',poped.db$strOutputFileName,name,iter,poped.db$strOutputFileExtension)
+  #tmpfile=sprintf('%s_%s_%g%s',poped.db$settings$strOutputFileName,name,iter,poped.db$settings$strOutputFileExtension)
 
   if(!trflag) return('')
   
@@ -68,7 +68,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     tmpfile=paste(tmpfile,".txt",sep="")
     #tmpfile=sprintf('%s_%s.txt',name_header,name)
     #if(!is.null(iter)) tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
-    tmpfile = fullfile(poped.db$strOutputFilePath,tmpfile)
+    tmpfile = fullfile(poped.db$settings$strOutputFilePath,tmpfile)
     fn=file(tmpfile,'w')
     if((fn==-1)){
       stop(sprintf('output file could not be opened'))
@@ -96,7 +96,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     fprintf(fn,'PopED Results \n\n')
   }
   fprintf(fn,'        ')
-  fprintf(fn,datestr_poped(poped.db$Engine$Type))
+  fprintf(fn,datestr_poped(poped.db$settings$Engine$Type))
   fprintf(fn,'\n\n')
   
   blockexp(fn,poped.db,
@@ -146,7 +146,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
   blockopt(fn,poped.db,opt_method=name)
   blockother(fn,poped.db,d_switch=!e_flag)
   
-  blockoptwrt(fn,poped.db$optsw, opt_xt=opt_xt,
+  blockoptwrt(fn,poped.db$settings$optsw, opt_xt=opt_xt,
               opt_a=opt_a,opt_x=opt_x,
               opt_samps=opt_samps,opt_inds=opt_inds)
   

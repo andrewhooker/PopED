@@ -26,11 +26,11 @@
 
 evaluate.e.ofv.fim <- function(poped.db,
                                fim.calc.type=NULL,
-                               bpop=poped.db$gbpop,
-                               d=poped.db$gd,
-                               covd=poped.db$covd,
-                               docc=poped.db$docc,
-                               sigma=poped.db$sigma,
+                               bpop=poped.db$parameters$bpop,
+                               d=poped.db$parameters$d,
+                               covd=poped.db$parameters$covd,
+                               docc=poped.db$parameters$docc,
+                               sigma=poped.db$parameters$sigma,
                                model_switch=NULL,
                                ni=NULL,
                                xt=NULL,
@@ -38,10 +38,10 @@ evaluate.e.ofv.fim <- function(poped.db,
                                a=NULL,
                                groupsize=poped.db$design$groupsize,
                                deriv.type = NULL,
-                               bLHS=poped.db$bLHS,
-                               ofv_calc_type = poped.db$ofv_calc_type,
-                               ED_samp_size = poped.db$ED_samp_size,
-                               use_laplace=poped.db$iEDCalculationType, 
+                               bLHS=poped.db$settings$bLHS,
+                               ofv_calc_type = poped.db$settings$ofv_calc_type,
+                               ED_samp_size = poped.db$settings$ED_samp_size,
+                               use_laplace=poped.db$settings$iEDCalculationType, 
                                laplace.fim=FALSE, 
                                ...){
 
@@ -63,16 +63,16 @@ evaluate.e.ofv.fim <- function(poped.db,
   if(is.null(x)) x <- downsize.list$x
   if(is.null(a)) a <- downsize.list$a    
   
-  if(is.null(groupsize)) groupsize <- poped.db$downsized.design$groupsize
+  if(is.null(groupsize)) groupsize <- poped.db$design$groupsize
   
-  if(!is.null(fim.calc.type)) poped.db$iFIMCalculationType=fim.calc.type
+  if(!is.null(fim.calc.type)) poped.db$settings$iFIMCalculationType=fim.calc.type
   
   if(!is.null(deriv.type)){ 
-    poped.db$m1_switch=deriv.type
-    poped.db$m2_switch=deriv.type
-    poped.db$hle_switch=deriv.type
-    poped.db$gradff_switch=deriv.type
-    poped.db$gradfg_switch=deriv.type
+    poped.db$settings$m1_switch=deriv.type
+    poped.db$settings$m2_switch=deriv.type
+    poped.db$settings$hle_switch=deriv.type
+    poped.db$settings$gradff_switch=deriv.type
+    poped.db$settings$gradfg_switch=deriv.type
   }
   
   E_fim <- NULL
@@ -82,7 +82,7 @@ evaluate.e.ofv.fim <- function(poped.db,
     output <- ed_mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)
     E_fim <- output$ED_fim
     E_ofv <- output$ED_ofv
-    poped.db=output$globalStructure
+    poped.db=output$poped.db
   } else { 
     #stop("Laplce method not yet implemented in R version of PopED")
     E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db,...)[["f"]]   

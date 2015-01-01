@@ -68,10 +68,10 @@ evaluate.fim <- function(poped.db,
                          ...){
   
   
-  if(is.null(bpop.val)) bpop.val <- poped.db$param.pt.val$bpop
-  if(is.null(d_full)) d_full <- poped.db$param.pt.val$d
-  if(is.null(docc_full)) docc_full <- poped.db$param.pt.val$docc
-  if(is.null(sigma_full)) sigma_full <- poped.db$param.pt.val$sigma
+  if(is.null(bpop.val)) bpop.val <- poped.db$parameters$param.pt.val$bpop
+  if(is.null(d_full)) d_full <- poped.db$parameters$param.pt.val$d
+  if(is.null(docc_full)) docc_full <- poped.db$parameters$param.pt.val$docc
+  if(is.null(sigma_full)) sigma_full <- poped.db$parameters$param.pt.val$sigma
   
   #   if(is.null(model_switch)) model_switch <- poped.db$downsized.design$model_switch
   #   if(is.null(ni)) ni <- poped.db$downsized.design$ni
@@ -82,19 +82,19 @@ evaluate.fim <- function(poped.db,
   #   
   if(is.null(model_switch)) model_switch <- poped.db$design$model_switch
   if(is.null(ni)) ni <- poped.db$design$ni
-  if(is.null(xt)) xt <- poped.db$gxt
-  if(is.null(x)) x <- poped.db$gx
-  if(is.null(a)) a <- poped.db$ga
+  if(is.null(xt)) xt <- poped.db$design$xt
+  if(is.null(x)) x <- poped.db$design$x
+  if(is.null(a)) a <- poped.db$design$a
   if(is.null(groupsize)) groupsize <- poped.db$design$groupsize
   
-  if(!is.null(fim.calc.type)) poped.db$iFIMCalculationType=fim.calc.type
+  if(!is.null(fim.calc.type)) poped.db$settings$iFIMCalculationType=fim.calc.type
   
   if(!is.null(deriv.type)){ 
-    poped.db$m1_switch=deriv.type
-    poped.db$m2_switch=deriv.type
-    poped.db$hle_switch=deriv.type
-    poped.db$gradff_switch=deriv.type
-    poped.db$gradfg_switch=deriv.type
+    poped.db$settings$m1_switch=deriv.type
+    poped.db$settings$m2_switch=deriv.type
+    poped.db$settings$hle_switch=deriv.type
+    poped.db$settings$gradff_switch=deriv.type
+    poped.db$settings$gradfg_switch=deriv.type
   }
 
   output = mftot(model_switch,groupsize,ni,xt,x,a,bpop.val,d_full,sigma_full,docc_full,poped.db)

@@ -30,21 +30,21 @@ mf5 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
   # variance
   
   
-  numnotfixed_bpop = sum(poped.db$notfixed_bpop)
-  numnotfixed_d    = sum(poped.db$notfixed_d)
-  numnotfixed_covd = sum(poped.db$notfixed_covd)
-  numnotfixed_docc  = sum(poped.db$notfixed_docc)
-  numnotfixed_covdocc  = sum(poped.db$notfixed_covdocc)
-  numnotfixed_sigma  = sum(poped.db$notfixed_sigma)
-  numnotfixed_covsigma  = sum(poped.db$notfixed_covsigma)
+  numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
+  numnotfixed_d    = sum(poped.db$parameters$notfixed_d)
+  numnotfixed_covd = sum(poped.db$parameters$notfixed_covd)
+  numnotfixed_docc  = sum(poped.db$parameters$notfixed_docc)
+  numnotfixed_covdocc  = sum(poped.db$parameters$notfixed_covdocc)
+  numnotfixed_sigma  = sum(poped.db$parameters$notfixed_sigma)
+  numnotfixed_covsigma  = sum(poped.db$parameters$notfixed_covsigma)
   
   
   n=size(xt,1)
   ret = 0
   
-  for(i in 1:poped.db$iFOCENumInd){
-    b_ind = poped.db$b_global[,i,drop=F]
-    bocc_ind = poped.db$bocc_global[[i]]
+  for(i in 1:poped.db$settings$iFOCENumInd){
+    b_ind = poped.db$parameters$b_global[,i,drop=F]
+    bocc_ind = poped.db$parameters$bocc_global[[i]]
     f1=zeros(n+n*n,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
     returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
     f1[1:n,1:numnotfixed_bpop] <- returnArgs[[1]]
@@ -67,7 +67,7 @@ mf5 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     }
     ret = ret+t(f1)%*%f2%*%f1
   }
-  ret = ret/poped.db$iFOCENumInd
+  ret = ret/poped.db$settings$iFOCENumInd
   return(list( ret= ret,poped.db=poped.db)) 
 }
 

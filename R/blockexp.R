@@ -21,39 +21,39 @@
 ## Author: Andrew Hooker
 
 blockexp <- function(fn,poped.db,e_flag=FALSE,
-                     opt_xt=poped.db$optsw[2],opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
-                     opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5]){
+                     opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
+                     opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5]){
   
   fprintf(fn,'==============================================================================\n')
-  fprintf(fn,'Model description : %s \n',poped.db$modtit)
+  fprintf(fn,'Model description : %s \n',poped.db$settings$modtit)
   fprintf(fn,'\n')
   fprintf(fn,'Model Sizes : \n')
-  fprintf(fn,'Number of individual model parameters                  g[j]    : Ng    = %g\n',poped.db$ng)
-  fprintf(fn,'Number of population model fixed parameters            bpop[j] : Nbpop = %g\n',poped.db$nbpop)
-  fprintf(fn,'Number of population model random effects parameters   b[j]    : Nb    = %g\n',poped.db$NumRanEff)
+  fprintf(fn,'Number of individual model parameters                  g[j]    : Ng    = %g\n',poped.db$parameters$ng)
+  fprintf(fn,'Number of population model fixed parameters            bpop[j] : Nbpop = %g\n',poped.db$parameters$nbpop)
+  fprintf(fn,'Number of population model random effects parameters   b[j]    : Nb    = %g\n',poped.db$parameters$NumRanEff)
   fprintf(fn,'\n')
-  print_params(poped.db$gbpop,"bpop",fn=fn,poped.db=poped.db, 
+  print_params(poped.db$parameters$bpop,"bpop",fn=fn,poped.db=poped.db, 
                head_txt="Typical Population Parameters",e_flag=e_flag)
   fprintf(fn,'\n')
-  if((poped.db$NumRanEff!=0)){
+  if((poped.db$parameters$NumRanEff!=0)){
     fprintf(fn,"Between Subject Variability matrix D (variance units) \n")
-    d=getfulld(poped.db$gd[,2,drop=F],poped.db$covd)
+    d=getfulld(poped.db$parameters$d[,2,drop=F],poped.db$parameters$covd)
     MASS::write.matrix(d,file=fn)
     fprintf(fn,'\n')
-    print_params(poped.db$gd,"D",fn=fn,poped.db=poped.db,param_sqrt=TRUE, matrix_elements=T,
+    print_params(poped.db$parameters$d,"D",fn=fn,poped.db=poped.db,param_sqrt=TRUE, matrix_elements=T,
                  head_txt="Diagonal Elements of D",e_flag=e_flag)
     fprintf(fn,'\n')
   }
   
-  docc_full = getfulld(poped.db$docc[,2,drop=F],poped.db$covdocc)
+  docc_full = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
   
   fprintf(fn,'Residual Unexplained Variability matrix SIGMA (variance units) : \n')
-  sigma = poped.db$sigma
+  sigma = poped.db$parameters$sigma
   MASS::write.matrix(sigma,file=fn)
   fprintf(fn,'\n')
   
-  #sigma_d = diag_matlab(poped.db$sigma)
-  sigma_d <- cbind(c(0,0),diag_matlab(poped.db$sigma),c(1,1))
+  #sigma_d = diag_matlab(poped.db$parameters$sigma)
+  sigma_d <- cbind(c(0,0),diag_matlab(poped.db$parameters$sigma),c(1,1))
   print_params(sigma_d,"SIGMA",fn=fn,poped.db=poped.db,param_sqrt=TRUE, matrix_elements=T,
                head_txt="Diagonal Elements of SIGMA",e_flag=e_flag)
   fprintf(fn,'\n')
@@ -67,9 +67,9 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   tmp_txt <- paste(tmp_txt,': %g',sep="")
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,sum(poped.db$groupsize),poped.db$design$mintotgroupsize,poped.db$design$maxtotgroupsize)
+  fprintf(fn,tmp_txt,sum(poped.db$design$groupsize),poped.db$design_space$mintotgroupsize,poped.db$design_space$maxtotgroupsize)
   
-  fprintf(fn,'Number of groups (individuals with same design): %g\n',poped.db$m)
+  fprintf(fn,'Number of groups (individuals with same design): %g\n',poped.db$design$m)
   
   tmp_txt <- "Numer of individuals per group"
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
@@ -80,7 +80,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   tmp_txt <- '    Group %g: %g'
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,1:poped.db$m,poped.db$groupsize,poped.db$mingroupsize, poped.db$maxgroupsize)
+  fprintf(fn,tmp_txt,1:poped.db$design$m,poped.db$design$groupsize,poped.db$design_space$maxgroupsize, poped.db$design_space$maxgroupsize)
   
   tmp_txt <- "Numer of samples per group"
   if(opt_samps) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
@@ -91,39 +91,39 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   tmp_txt <- '    Group %g: %g'
   if(opt_samps) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
   tmp_txt <- paste(tmp_txt,'\n',sep="")
-  fprintf(fn,tmp_txt,1:poped.db$m,poped.db$gni,poped.db$minni, poped.db$maxni)
+  fprintf(fn,tmp_txt,1:poped.db$design$m,poped.db$design$ni,poped.db$design$minni, poped.db$design$maxni)
   
-  fprintf(fn,'Number of discrete experimental variables: %g\n',poped.db$nx)
-  fprintf(fn,'Number of model covariates: %g\n',poped.db$na)
+  fprintf(fn,'Number of discrete experimental variables: %g\n',size(poped.db$design$x,2))
+  fprintf(fn,'Number of model covariates: %g\n',size(poped.db$design$a,2))
   
   fprintf(fn,'\n')
   
-  print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
+  print_xt(poped.db$design$xt,poped.db$design$ni,poped.db$design$model_switch,fn,
            head_txt="Initial Sampling Schedule\n")
   fprintf(fn,'\n')
   if(opt_xt){
-    print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
-          head_txt="Minimum allowed sampling values\n",xt_other=poped.db$gminxt)
+    print_xt(poped.db$design$xt,poped.db$design$ni,poped.db$design$model_switch,fn,
+          head_txt="Minimum allowed sampling values\n",xt_other=poped.db$design_space$minxt)
     fprintf(fn,'\n')
-    print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
-             head_txt="Maximum allowed sampling values\n",xt_other=poped.db$gmaxxt)
+    print_xt(poped.db$design$xt,poped.db$design$ni,poped.db$design$model_switch,fn,
+             head_txt="Maximum allowed sampling values\n",xt_other=poped.db$design_space$maxxt)
     fprintf(fn,'\n')
   }  
   
   
-  if((poped.db$nx!=0)){
+  if((size(poped.db$design$x,2)!=0)){
     tmp_txt <- "Discrete Variables"
     if(opt_x) tmp_txt <- paste(tmp_txt,' (possible vales)',sep=" ")
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
-    for(ct1 in 1:poped.db$m){
+    for(ct1 in 1:poped.db$design$m){
       fprintf(fn,'Group %g: ', ct1)
-      for(ct2 in 1:poped.db$nx){
+      for(ct2 in 1:size(poped.db$design$x,2)){
         tmp_txt <- '%g'
         if(opt_x) tmp_txt <- paste(tmp_txt,'(%s)',sep=" ")
-        if(ct2<poped.db$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
-        discrete_val = poped.db$discrete_x[[ct1,ct2]]  
-        fprintf(fn,tmp_txt,poped.db$gx[ct1,ct2],get_vector_str(discrete_val))
+        if(ct2<size(poped.db$design$x,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")        
+        discrete_val = poped.db$design_space$discrete_x[[ct1,ct2]]  
+        fprintf(fn,tmp_txt,poped.db$design$x[ct1,ct2],get_vector_str(discrete_val))
       }
       fprintf(fn,'\n')
     }
@@ -131,18 +131,18 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   }
   
   
-  if((poped.db$na!=0)){   
+  if((size(poped.db$design$a,2)!=0)){   
     tmp_txt <- "Covariates"
     if(opt_a) tmp_txt <- paste(tmp_txt,' (min, max)',sep=" ")
     tmp_txt <- paste(tmp_txt,':\n',sep="")
     fprintf(fn,tmp_txt)
-    for(ct1 in 1:poped.db$m){
+    for(ct1 in 1:poped.db$design$m){
       fprintf(fn,'Group %g: ', ct1)
-      for(ct2 in 1:poped.db$na){
+      for(ct2 in 1:size(poped.db$design$a,2)){
         tmp_txt <- '%g'
         if(opt_a) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
-        if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
-        fprintf(fn,tmp_txt,poped.db$ga[ct1,ct2],poped.db$gmina[ct1,ct2],poped.db$gmaxa[ct1,ct2])
+        if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
+        fprintf(fn,tmp_txt,poped.db$design$a[ct1,ct2],poped.db$design_space$mina[ct1,ct2],poped.db$design_space$maxa[ct1,ct2])
       }
       fprintf(fn,'\n')
     }

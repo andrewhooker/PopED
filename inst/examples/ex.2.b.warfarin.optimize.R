@@ -140,7 +140,7 @@ sg.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
                             sgit=sgit)
 
 # BFGS search, DOSE and sample time optimization
-if(fast) poped.db$BFGSConvergenceCriteriaMinStep <- 0.01
+if(fast) poped.db$settings$BFGSConvergenceCriteriaMinStep <- 0.01
 bfgs.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
                               bUseRandomSearch= 0,bUseStochasticGradient = 0,bUseBFGSMinimizer = 1,bUseLineSearch = 0)
 

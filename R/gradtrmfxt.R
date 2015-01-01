@@ -1,4 +1,4 @@
-gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
   #------------------- Gradients for optimization module
   #  Looks at the gradient of tr(FIM^-1) with respect to time (xt).
   #  problems can arise when xt goes negative. So only do forward
@@ -7,7 +7,7 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
   m=size(ni,1)
   gdmf=matrix(1,m,size(xt,2))
   
-  iParallelN = (globalStructure$parallelSettings$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
+  iParallelN = (poped.db$settings$parallel$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
   
   if((iParallelN == 2)){
     designsin = cell(1,0)
@@ -16,14 +16,14 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
   for(p in 1:iParallelN){
     if((p==2)){
       #Execute parallel designs
-      #designout = execute_parallel(designsin,globalStructure)
+      #designout = execute_parallel(designsin,poped.db)
       stop("Parallel execution not yet implemented in PopED for R")
       designout = designsin
     }
     if((iParallelN==1)){
-      returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+      returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       mft <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
     } else {
       if((p==1)){
         designsin = update_designinlist(designsin,groupsize,ni,xt,x,a,-1,0)
@@ -35,8 +35,8 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
     
     
     if((iParallelN==1 || p==2)){
-      if(all(size(globalStructure$prior_fim) == size(mft))){
-        mft = mft + globalStructure$prior_fim
+      if(all(size(poped.db$settings$prior_fim) == size(mft))){
+        mft = mft + poped.db$settings$prior_fim
       }
       imft=inv(mft)
       if((isinf(imft[1,1]))){
@@ -53,7 +53,7 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
           if((axt[i,ct1]!=0)){
             xt_plus=xt
             
-            xt_plus[i,ct1]=xt_plus[i,ct1]+globalStructure$hgd
+            xt_plus[i,ct1]=xt_plus[i,ct1]+poped.db$settings$hgd
             if((!isempty(x))){
               x_i = t(x[i,,drop=F])
             } else {
@@ -66,9 +66,9 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
             }
             
             if((iParallelN ==1)){
-              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt_plus[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,globalStructure) 
+              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt_plus[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
               mf_tmp <- returnArgs[[1]]
-              globalStructure <- returnArgs[[2]]
+              poped.db <- returnArgs[[2]]
             } else {
               if((p==1)){
                 designsin = update_designinlist(designsin,1,ni,xt_plus,x,a,-1,i)
@@ -79,12 +79,12 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
             }
             if((iParallelN ==1 || p==2)){
               mf_plus = groupsize[i]*mf_tmp
-              if((size(globalStructure$prior_fim)==size(mf_plus))){
-                mf_plus = mf_plus + globalStructure$prior_fim
+              if((size(poped.db$settings$prior_fim)==size(mf_plus))){
+                mf_plus = mf_plus + poped.db$settings$prior_fim
               }
               imf_plus=inv(mf_plus)
               
-              ir=(imf_plus-imft)/globalStructure$hgd
+              ir=(imf_plus-imft)/poped.db$settings$hgd
               
               if((trace_matrix(ir)!=0)){
                 gdmf[i,ct1]=-trace_matrix(ir)
@@ -97,6 +97,6 @@ gradtrmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
       }
     }
   }
-  return(list( gdmf= gdmf,globalStructure=globalStructure)) 
+  return(list( gdmf= gdmf,poped.db=poped.db)) 
 }
   

@@ -22,7 +22,7 @@ sfg <- function(x,a,bpop,b,bocc){
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
   ## -- Residual Error function
   ## -- Proportional PK + additive PD
-  returnArgs <- do.call(poped.db$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
   y <- returnArgs[[1]]
   poped.db <- returnArgs[[2]]
   

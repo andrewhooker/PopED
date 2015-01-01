@@ -24,7 +24,7 @@
 ## Author: Andrew Hooker
 
 blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,poped.db,
-                         opt_xt=poped.db$optsw[2],opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[4],
+                         opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
                          fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
                          compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,...){
   
@@ -51,12 +51,12 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       tmp_txt <- paste(tmp_txt,':\n',sep="")
       fprintf(fn,tmp_txt)
       fprintf(tmp_txt)
-      for(ct1 in 1:poped.db$m){
+      for(ct1 in 1:poped.db$design$m){
         fprintf(fn,'Group %g: ', ct1)
         fprintf('Group %g: ', ct1)
-        for(ct2 in 1:poped.db$nx){
+        for(ct2 in 1:size(poped.db$design$x,2)){
           tmp_txt <- '%g'
-          if(ct2<poped.db$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
+          if(ct2<size(poped.db$design$x,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")        
           fprintf(fn,tmp_txt,x[ct1,ct2])
           fprintf(tmp_txt,x[ct1,ct2])
         }
@@ -71,12 +71,12 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       tmp_txt <- paste(tmp_txt,':\n',sep="")
       fprintf(fn,tmp_txt)
       fprintf(tmp_txt)
-      for(ct1 in 1:poped.db$m){
+      for(ct1 in 1:poped.db$design$m){
         fprintf(fn,'Group %g: ', ct1)
         fprintf('Group %g: ', ct1)
-        for(ct2 in 1:poped.db$na){
+        for(ct2 in 1:size(poped.db$design$a,2)){
           tmp_txt <- '%g'
-          if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
+          if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
           fprintf(fn,tmp_txt,a[ct1,ct2])
           fprintf(tmp_txt,a[ct1,ct2])
         }
@@ -91,7 +91,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       #     cat("Optimized a values:\n")
       #     print(a)
     }
-    if((poped.db$d_switch==TRUE)){
+    if((poped.db$settings$d_switch==TRUE)){
       fprintf(fn,'\n FIM: \n')
       #write_matrix(fn,fmf)
       MASS::write.matrix(fmf,file=fn)
@@ -174,21 +174,21 @@ print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized xt value
 }
 
 get_parnam <- function (poped.db) {
-  nbpop = length(poped.db$notfixed_bpop)
-  nd = length(poped.db$notfixed_d)
-  ncovd = length(poped.db$notfixed_covd)
-  ndocc = length(poped.db$notfixed_docc)
-  ncovdocc = length(poped.db$notfixed_covdocc)
-  nsigma = length(poped.db$notfixed_sigma)
-  ncovsigma = length(poped.db$notfixed_covsigma)
+  nbpop = length(poped.db$parameters$notfixed_bpop)
+  nd = length(poped.db$parameters$notfixed_d)
+  ncovd = length(poped.db$parameters$notfixed_covd)
+  ndocc = length(poped.db$parameters$notfixed_docc)
+  ncovdocc = length(poped.db$parameters$notfixed_covdocc)
+  nsigma = length(poped.db$parameters$notfixed_sigma)
+  ncovsigma = length(poped.db$parameters$notfixed_covsigma)
   
-  not_fixed <- list("bpop"=poped.db$notfixed_bpop,
-                    "D"=poped.db$notfixed_d,
-                    "D_cov"=poped.db$notfixed_covd,
-                    "D.occ"=poped.db$notfixed_docc,
-                    "D.occ_cov"=poped.db$notfixed_covdocc,
-                    "SIGMA"=poped.db$notfixed_sigma,
-                    "SIGMA_cov"=poped.db$notfixed_covsigma)
+  not_fixed <- list("bpop"=poped.db$parameters$notfixed_bpop,
+                    "D"=poped.db$parameters$notfixed_d,
+                    "D_cov"=poped.db$parameters$notfixed_covd,
+                    "D.occ"=poped.db$parameters$notfixed_docc,
+                    "D.occ_cov"=poped.db$parameters$notfixed_covdocc,
+                    "SIGMA"=poped.db$parameters$notfixed_sigma,
+                    "SIGMA_cov"=poped.db$parameters$notfixed_covsigma)
   parnam <- c()
   for(i in 1:size(not_fixed,2)){
     if(length(not_fixed[[i]])==0) next

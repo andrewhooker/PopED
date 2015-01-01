@@ -10,7 +10,7 @@ bpop_vals_ed_ln
 
 # then compute the log density 
 alpha <- bpop_vals_ed_ln[bpop_vals_ed_ln[,1]!=0,2]
-log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_ln, ddescr=poped.db$gd)
+log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_ln, ddescr=poped.db$parameters$d)
 
 
 # Adding 10% Uncertainty to fixed effects normal-distribution (not Favail)
@@ -22,7 +22,7 @@ bpop_vals_ed_n
 
 # then compute the log density from log_prior_pdf
 alpha <- bpop_vals_ed_n[bpop_vals_ed_n[,1]!=0,2]
-log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_n, ddescr=poped.db$gd)
+log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_n, ddescr=poped.db$parameters$d)
 
 
 # Adding 10% Uncertainty to fixed effects uniform-distribution (not Favail)
@@ -34,5 +34,5 @@ bpop_vals_ed_u
 
 # then compute the log density 
 alpha <- bpop_vals_ed_ln[bpop_vals_ed_u[,1]!=0,2]
-log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_u, ddescr=poped.db$gd)
+log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_u, ddescr=poped.db$parameters$d)
 

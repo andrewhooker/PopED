@@ -30,7 +30,7 @@
 
 mftot <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
     
-    returnArgs <- switch(poped.db$iFIMCalculationType+1,
+    returnArgs <- switch(poped.db$settings$iFIMCalculationType+1,
                          mftot0(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
                          mftot1(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
                          mftot2(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),

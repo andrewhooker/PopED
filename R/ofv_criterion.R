@@ -19,7 +19,7 @@
 ofv_criterion <- function(ofv_f,
                           num_parameters,
                           poped.db,
-                          ofv_calc_type=poped.db$ofv_calc_type){
+                          ofv_calc_type=poped.db$settings$ofv_calc_type){
   
   #Input: the ofv
   #Return the single value that should be maximized
@@ -39,7 +39,7 @@ ofv_criterion <- function(ofv_f,
   }
   
   if((ofv_calc_type==6) ){#Ds-Optimal design
-    criterion_value = ofv_f^(1/sum(poped.db$ds_index))
+    criterion_value = ofv_f^(1/sum(poped.db$parameters$ds_index))
   }   
   
   return( criterion_value ) 

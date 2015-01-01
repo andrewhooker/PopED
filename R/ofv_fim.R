@@ -32,8 +32,8 @@
 ## Author: Andrew Hooker
 
 ofv_fim <- function(fmf,poped.db,
-                    ofv_calc_type = poped.db$ofv_calc_type,
-                    ds_index=poped.db$ds_index,...){
+                    ofv_calc_type = poped.db$settings$ofv_calc_type,
+                    ds_index=poped.db$parameters$ds_index,...){
   
   #Input: the FIM
   #Return the single value that should be maximized
@@ -43,8 +43,8 @@ ofv_fim <- function(fmf,poped.db,
   
   ofv_value = 0
   
-  if((!isempty(poped.db$prior_fim) && all(size(poped.db$prior_fim)==size(fmf)))){
-    fmf = fmf + poped.db$prior_fim
+  if((!isempty(poped.db$settings$prior_fim) && all(size(poped.db$settings$prior_fim)==size(fmf)))){
+    fmf = fmf + poped.db$settings$prior_fim
   }
   
   if((ofv_calc_type==1) ){#determinant of FIM
@@ -84,7 +84,7 @@ ofv_fim <- function(fmf,poped.db,
   if((ofv_calc_type==7) ){#sum of CV
     if((sum(sum(fmf))!=0 && !isnan(sum(sum(fmf))))){
       imf = inv(fmf)
-      returnArgs <-  get_cv(diag_matlab(imf),poped.db$gbpop,poped.db$gd,poped.db$docc,poped.db$sigma,poped.db) 
+      returnArgs <-  get_cv(diag_matlab(imf),poped.db$parameters$bpop,poped.db$parameters$d,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db) 
       params <- returnArgs[[1]]
       params_cvs <- returnArgs[[2]]
       if((isnan(sum(diag_matlab(imf))))){

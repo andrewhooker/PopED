@@ -55,18 +55,18 @@ RS_opt_gen <- function(poped.db,
                        fmf=0,
                        dmf=0,
                        trflag = TRUE,
-                       opt_xt=poped.db$optsw[2],
-                       opt_a=poped.db$optsw[4],
-                       opt_x=poped.db$optsw[3],
-                       cfaxt=poped.db$cfaxt, 
-                       cfaa=poped.db$cfaa,
-                       rsit=poped.db$rsit,
-                       rsit_output=poped.db$rsit_output,
-                       fim.calc.type=poped.db$iFIMCalculationType,
-                       approx_type=poped.db$iApproximationMethod,
+                       opt_xt=poped.db$settings$optsw[2],
+                       opt_a=poped.db$settings$optsw[4],
+                       opt_x=poped.db$settings$optsw[3],
+                       cfaxt=poped.db$settings$cfaxt, 
+                       cfaa=poped.db$settings$cfaa,
+                       rsit=poped.db$settings$rsit,
+                       rsit_output=poped.db$settings$rsit_output,
+                       fim.calc.type=poped.db$settings$iFIMCalculationType,
+                       approx_type=poped.db$settings$iApproximationMethod,
                        iter=NULL,
-                       d_switch=poped.db$d_switch,
-                       use_laplace=poped.db$iEDCalculationType,
+                       d_switch=poped.db$settings$d_switch,
+                       use_laplace=poped.db$settings$iEDCalculationType,
                        laplace.fim=FALSE,
                        header_flag=TRUE,
                        footer_flag=TRUE,
@@ -77,20 +77,20 @@ RS_opt_gen <- function(poped.db,
   
   # Only get inputs that are needed, not double inputs
   # needed inputs to function: get first then run function
-  # poped.db$cfaxt     0.001
-  # poped.db$m
-  # poped.db$maxni
-  # poped.db$optsw
-  # poped.db$cfaa
-  # poped.db$na
-  # poped.db$covd
-  # poped.db$covdocc
-  # poped.db$docc
-  # poped.db$groupsize
-  # poped.db$sigma
-  # poped.db$bShowGraphs
-  # poped.db$maxrsnullit # when to make the search area smaller
-  # poped.db$strIterationFileName iteration file if not empty string
+  # poped.db$settings$cfaxt     0.001
+  # poped.db$design$m
+  # max(poped.db$design_space$maxni)
+  # poped.db$settings$optsw
+  # poped.db$settings$cfaa
+  # size(poped.db$design$a,2)
+  # poped.db$parameters$covd
+  # poped.db$parameters$covdocc
+  # poped.db$parameters$docc
+  # poped.db$design$groupsize
+  # poped.db$parameters$sigma
+  # poped.db$settings$bShowGraphs
+  # poped.db$settings$maxrsnullit # when to make the search area smaller
+  # poped.db$settings$strIterationFileName iteration file if not empty string
   
   ## update poped.db with options supplied in function
   called_args <- match.call()
@@ -141,8 +141,8 @@ RS_opt_gen <- function(poped.db,
   
   # ----------------- initialization of model parameters
   bpop=bpopdescr[,2,drop=F]
-  d=getfulld(ddescr[,2,drop=F],poped.db$covd)
-  docc_full = getfulld(poped.db$docc[,2,drop=F],poped.db$covdocc)
+  d=getfulld(ddescr[,2,drop=F],poped.db$parameters$covd)
+  docc_full = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
   
   output <- calc_ofv_and_fim(poped.db,
                              ofv=dmf,
@@ -174,11 +174,11 @@ RS_opt_gen <- function(poped.db,
   #                      opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
   #                      opt_inds=F,opt_samps=F,
   #                      fmf=fmf,dmf=dmf,
-  #                      bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,
+  #                      bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,
   #                      out_file=out_file,compute_inv=compute_inv)
   #     if(is.matrix(fmf) && compute_inv){ 
   #       param_vars_init=diag_matlab(inv(fmf))
-  #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
+  #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
   #       params_init <- returnArgs[[1]]
   #       param_cvs_init <- returnArgs[[2]]
   #     }
@@ -189,7 +189,7 @@ RS_opt_gen <- function(poped.db,
                    opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
                    opt_inds=F,opt_samps=F,
                    fmf=fmf,dmf=dmf,
-                   bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,
+                   bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,
                    out_file=out_file,
                    trflag=trflag,
                    header_flag=header_flag,
@@ -209,9 +209,9 @@ RS_opt_gen <- function(poped.db,
   #     } 
   #   }
   
-  # if((poped.db$bShowGraphs && trflag)){
+  # if((poped.db$settings$bShowGraphs && trflag)){
   #     figure(1)
-  #     if((poped.db$Engine$Type==1)){
+  #     if((poped.db$settings$Engine$Type==1)){
   #         set(1,'Name','Random Search')
   #     }
   # }
@@ -222,8 +222,8 @@ RS_opt_gen <- function(poped.db,
   
   
   # ----------------- RS variables initialization
-  dxt=(maxxt-minxt)/poped.db$rslxt
-  da=(maxa-mina)/poped.db$rsla
+  dxt=(maxxt-minxt)/poped.db$settings$rslxt
+  da=(maxa-mina)/poped.db$settings$rsla
   xtoptn=xtopt
   xoptn=xopt
   aoptn=aopt
@@ -243,15 +243,15 @@ RS_opt_gen <- function(poped.db,
            matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
   }
   
-  if((poped.db$parallelSettings$bParallelRS)){
+  if((poped.db$settings$parallel$bParallelRS)){
     
     # Generate the input designs
     
     designsin = cell(1,0)
     for(it in 1:rsit){
       if((optxt==TRUE)){
-        if((poped.db$bUseGrouped_xt)){
-          xtoptn=grouped_rand(poped.db$G,xtopt,dxt,ff,axt)
+        if((poped.db$design_space$bUseGrouped_xt)){
+          xtoptn=grouped_rand(poped.db$design_space$G_xt,xtopt,dxt,ff,axt)
         } else {
           xtoptn=xtopt+dxt/ff*randn(m,maxni)*(axt>0)
         }
@@ -259,18 +259,18 @@ RS_opt_gen <- function(poped.db,
         xtoptn=xtoptn+((xtoptn<minxt)*(minxt-xtoptn))
       }
       if((optx==TRUE)){
-        xoptn=get_discrete_x(poped.db$Gx,poped.db$discrete_x,poped.db$bUseGrouped_x)
+        xoptn=get_discrete_x(poped.db$design_space$G_x,poped.db$design_space$discrete_x,poped.db$design_space$bUseGrouped_x)
       }
       if((opta==TRUE)){
-        if((poped.db$bUseGrouped_a)){
-          aoptn=grouped_rand_a(poped.db$Ga,aopt,da,ff,aa)
+        if((poped.db$design_space$bUseGrouped_a)){
+          aoptn=grouped_rand_a(poped.db$design_space$G_a,aopt,da,ff,aa)
         } else {
-          aoptn=aopt+da/ff*randn(m,poped.db$na)*(aa>0)
+          aoptn=aopt+da/ff*randn(m,size(poped.db$design$a,2))*(aa>0)
         }
         aoptn=aoptn-((aoptn>maxa)*(aoptn-maxa))
         aoptn=aoptn+((aoptn<mina)*(mina-aoptn))
       }
-      designsin = update_designinlist(designsin,poped.db$groupsize,ni,xtoptn,xoptn,aoptn,-1,0)
+      designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xtoptn,xoptn,aoptn,-1,0)
     }
     
     stop("Parallel execution not yet implemented in PopED for R")
@@ -304,8 +304,8 @@ RS_opt_gen <- function(poped.db,
       tic()
       for(it in 1:rsit){
         if((optxt==TRUE)){
-          if((poped.db$bUseGrouped_xt)){
-            xtoptn=grouped_rand(poped.db$G,xtopt,dxt,ff,axt)
+          if((poped.db$design_space$bUseGrouped_xt)){
+            xtoptn=grouped_rand(poped.db$design_space$G_xt,xtopt,dxt,ff,axt)
           } else {
             xtoptn=xtopt+dxt/ff*randn(m,maxni)*(axt>0)
           }
@@ -313,13 +313,13 @@ RS_opt_gen <- function(poped.db,
           xtoptn=xtoptn+((xtoptn<minxt)*(minxt-xtoptn))
         }
         if((optx==TRUE)){
-          xoptn=get_discrete_x(poped.db$Gx,poped.db$discrete_x,poped.db$bUseGrouped_x)
+          xoptn=get_discrete_x(poped.db$design_space$G_x,poped.db$design_space$discrete_x,poped.db$design_space$bUseGrouped_x)
         }
         if((opta==TRUE)){
-          if((poped.db$bUseGrouped_a)){
-            aoptn=grouped_rand_a(poped.db$Ga,aopt,da,ff,aa)
+          if((poped.db$design_space$bUseGrouped_a)){
+            aoptn=grouped_rand_a(poped.db$design_space$G_a,aopt,da,ff,aa)
           } else {
-            aoptn=aopt+da/ff*randn(m,poped.db$na)*(aa>0)
+            aoptn=aopt+da/ff*randn(m,size(poped.db$design$a,2))*(aa>0)
           }
           aoptn=aoptn-((aoptn>maxa)*(aoptn-maxa))
           aoptn=aoptn+((aoptn<mina)*(mina-aoptn))
@@ -361,13 +361,13 @@ RS_opt_gen <- function(poped.db,
         } else {
           nullit=nullit+1
         }
-        if((nullit==poped.db$maxrsnullit) ){# when to make the search area smaller
+        if((nullit==poped.db$settings$maxrsnullit) ){# when to make the search area smaller
           ff=ff+1
           nullit=1
         }
         
-        if((!isempty(poped.db$strIterationFileName))){
-          write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$groupsize,fmf,dmf,poped.db)
+        if((!isempty(poped.db$settings$strIterationFileName))){
+          write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$design$groupsize,fmf,dmf,poped.db)
         }
         
         if((trflag && (rem(it,rsit_output)==0 || trflag && it==rsit))){
@@ -387,9 +387,9 @@ RS_opt_gen <- function(poped.db,
   # ----------------- RANDOM SEARCH ENDS HERE
   
   # all output should be passed here to poped.db not just these 3
-  poped.db$gxt = xtopt
-  poped.db$gx = xopt
-  poped.db$ga = aopt
+  #poped.db$gxt = xtopt
+  #poped.db$gx = xopt
+  #poped.db$ga = aopt
   
   poped.db$design$xt <- xtopt
   poped.db$design$x <-xopt
@@ -422,8 +422,8 @@ RS_opt_gen <- function(poped.db,
   #--------- Write results
   #if((trflag)){
   #  if(footer_flag){
-  blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xtopt,xopt,aopt,model_switch,
-               bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,
+  blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xtopt,xopt,aopt,model_switch,
+               bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
                opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,
                dmf_init=dmf_init,compute_inv=compute_inv,
                out_file=out_file,trflag=trflag,

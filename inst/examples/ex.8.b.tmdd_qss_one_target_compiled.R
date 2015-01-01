@@ -74,7 +74,7 @@ tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.
 }
 
 tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
-  returnArgs <- do.call(poped.db$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
   y <- returnArgs[[1]]
   poped.db <- returnArgs[[2]]
   

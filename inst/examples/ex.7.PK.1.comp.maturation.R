@@ -47,7 +47,7 @@ PK.1.comp.maturation.ff <- function(model_switch,xt,parameters,poped.db){
 feps.add.prop <- function(model_switch,xt,parameters,epsi,poped.db){
   ## -- Residual Error function
   ## -- Additive + Proportional 
-  returnArgs <- feval(poped.db$ff_pointer,model_switch,xt,parameters,poped.db) 
+  returnArgs <- feval(poped.db$model$ff_pointer,model_switch,xt,parameters,poped.db) 
   y <- returnArgs[[1]]
   poped.db <- returnArgs[[2]]
   y = y*(1+epsi[,1])+epsi[,2]

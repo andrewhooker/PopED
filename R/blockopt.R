@@ -25,26 +25,26 @@ blockopt <- function(fn,poped.db,opt_method=""){
     fprintf(fn,'Optimization Settings\n\n')
     if(opt_method=="RS"){
       fprintf(fn,'Random Search :\n')
-      fprintf(fn,'Number of cycles : %g\n',poped.db$rsit)
-      fprintf(fn,'Locality factor for xt : %g\n',poped.db$rslxt)
-      fprintf(fn,'Locality factor for a  : %g\n',poped.db$rsla)
+      fprintf(fn,'Number of cycles : %g\n',poped.db$settings$rsit)
+      fprintf(fn,'Locality factor for xt : %g\n',poped.db$settings$rslxt)
+      fprintf(fn,'Locality factor for a  : %g\n',poped.db$settings$rsla)
     }
     if(opt_method=="SG"){
       fprintf(fn,'Stochastic Gradient :\n')
-      if((poped.db$convergence_eps!=0)){
-        fprintf(fn,'Maximum number of cycles : %g\n',poped.db$sgit)
-        fprintf(fn,'Epsilon for termination : %g\n',poped.db$convergence_eps)
+      if((poped.db$settings$convergence_eps!=0)){
+        fprintf(fn,'Maximum number of cycles : %g\n',poped.db$settings$sgit)
+        fprintf(fn,'Epsilon for termination : %g\n',poped.db$settings$convergence_eps)
       } else {
-        fprintf(fn,'Number of cycles : %g\n',poped.db$sgit)
+        fprintf(fn,'Number of cycles : %g\n',poped.db$settings$sgit)
       }
-      fprintf(fn,'First step factor for xt: %g\n', poped.db$cfaxt)
-      fprintf(fn,'First step factor for a: %g\n', poped.db$cfaa)
-      fprintf(fn,'RS m0it: %g\n',poped.db$maxrsnullit)
+      fprintf(fn,'First step factor for xt: %g\n', poped.db$settings$cfaxt)
+      fprintf(fn,'First step factor for a: %g\n', poped.db$settings$cfaa)
+      fprintf(fn,'RS m0it: %g\n',poped.db$settings$maxrsnullit)
     }
     if(opt_method=="DO"){    
       fprintf(fn,'Discrete Optimization  :\n')
-      fprintf(fn,'RS int it: %g\n',poped.db$intrsit)
-      fprintf(fn,'SG int it: %g\n',poped.db$intsgit)
+      fprintf(fn,'RS int it: %g\n',poped.db$settings$intrsit)
+      fprintf(fn,'SG int it: %g\n',poped.db$settings$intsgit)
     }
     fprintf(fn,"\n")
   }

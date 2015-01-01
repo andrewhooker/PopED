@@ -29,11 +29,11 @@
 Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
                    ia, 
                    itvector,dmfvector,poped.db,
-                   opt_xt=poped.db$optsw[2],
-                   opt_a=poped.db$optsw[4],opt_x=poped.db$optsw[3],
-                   opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
-                   rsit=poped.db$rsit,
-                   convergence_eps=poped.db$convergence_eps){
+                   opt_xt=poped.db$settings$optsw[2],
+                   opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
+                   opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5],
+                   rsit=poped.db$settings$rsit,
+                   convergence_eps=poped.db$settings$convergence_eps){
   
   
   if((it==0)){
@@ -42,48 +42,48 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
     fprintf(fn,'*******************************\n\n')
   }
   if((it!=0)){
-    #     if((poped.db$bShowGraphs==TRUE)){
-    #         if((poped.db$Engine$Type==1)){
+    #     if((poped.db$settings$bShowGraphs==TRUE)){
+    #         if((poped.db$settings$Engine$Type==1)){
     #             #set(0,'CurrentFigure',1)
     #         } else {
     #             #figure(1)
     #         }
     #         clf
-    #         optSum = poped.db$optsw[2]+poped.db$optsw[3]+poped.db$optsw[4]
+    #         optSum = poped.db$settings$optsw[2]+poped.db$settings$optsw[3]+poped.db$settings$optsw[4]
     #         numRows = 1
     #         if((optSum>1)){
     #             numRows = 2
     #         }
     # 
-    #         if((poped.db$optsw[2])){
+    #         if((poped.db$settings$optsw[2])){
     #             subplot(numRows,2,1)
     #             title('The current sampling times for each group')
     #             xlabel('Sampling time')
     #             ylabel('Group nr')
     #             ##hold on
-    #             for(i in 1:poped.db$m){
-    #                 plot(xtopt[i,1:poped.db$gni[i]],matrix(1,1,poped.db$gni[i])*i,'b*','linestyle','none')
+    #             for(i in 1:poped.db$design$m){
+    #                 plot(xtopt[i,1:poped.db$design$ni[i]],matrix(1,1,poped.db$design$ni[i])*i,'b*','linestyle','none')
     #             }
     #             ##hold off
     #         }
-    #         if((poped.db$optsw[3]==TRUE)){
-    #             subplot(numRows,2,1+poped.db$optsw[2])
+    #         if((poped.db$settings$optsw[3]==TRUE)){
+    #             subplot(numRows,2,1+poped.db$settings$optsw[2])
     #             title('The current discrete var. for each group')
     #             xlabel('Discrete var.-value')
     #             ylabel('Group nr')
     #             ##hold on
-    #             for(i in 1:poped.db$m){
+    #             for(i in 1:poped.db$design$m){
     #                 plot(xopt(i,),matrix(1,1,size(xopt,2))*i,'b*')
     #             }
     #             ##hold off
     #         }
-    #         if((poped.db$optsw[4]==TRUE)){
-    #             subplot(numRows,2,1+poped.db$optsw[2]+poped.db$optsw[3])
+    #         if((poped.db$settings$optsw[4]==TRUE)){
+    #             subplot(numRows,2,1+poped.db$settings$optsw[2]+poped.db$settings$optsw[3])
     #             title('The current covariates for each group')
     #             xlabel('Covariate-value')
     #             ylabel('Group nr')
     #             ##hold on
-    #             for(i in 1:poped.db$m){
+    #             for(i in 1:poped.db$design$m){
     #                 plot(aopt[i,],matrix(1,1,size(aopt,2))*i,'b*')
     #             }
     #             ##hold off
@@ -119,7 +119,7 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
       fprintf(fn,'\n*******************************\nRS Results\n ')
       fprintf(fn,'OFV(mf) = %g\n\n',dmf)
       if((opt_xt==TRUE)){
-        print_xt(xtopt,poped.db$gni,poped.db$global_model_switch,fn,
+        print_xt(xtopt,poped.db$design$ni,poped.db$design$model_switch,fn,
                  head_txt="Optimized Sampling Schedule\n")
         
       }
@@ -127,11 +127,11 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
         tmp_txt <- "\nOptimized Discrete Variables"
         tmp_txt <- paste(tmp_txt,':\n',sep="")
         fprintf(fn,tmp_txt)
-        for(ct1 in 1:poped.db$m){
+        for(ct1 in 1:poped.db$design$m){
           fprintf(fn,'Group %g: ', ct1)
-          for(ct2 in 1:poped.db$nx){
+          for(ct2 in 1:size(poped.db$design$x,2)){
             tmp_txt <- '%g'
-            if(ct2<poped.db$nx) tmp_txt <- paste(tmp_txt,' : ',sep="")        
+            if(ct2<size(poped.db$design$x,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")        
             fprintf(fn,tmp_txt,xopt[ct1,ct2])
             #fprintf(tmp_txt,xopt[ct1,ct2])
           }
@@ -143,11 +143,11 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
         tmp_txt <- "\nOptimized Covariates"
         tmp_txt <- paste(tmp_txt,':\n',sep="")
         fprintf(fn,tmp_txt)
-        for(ct1 in 1:poped.db$m){
+        for(ct1 in 1:poped.db$design$m){
           fprintf(fn,'Group %g: ', ct1)
-          for(ct2 in 1:poped.db$na){
+          for(ct2 in 1:size(poped.db$design$a,2)){
             tmp_txt <- '%g'
-            if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
+            if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
             fprintf(fn,tmp_txt,aopt[ct1,ct2])
             #fprintf(tmp_txt,aopt[ct1,ct2])
           }
@@ -159,12 +159,12 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
       
     }
     if((it>rsit)){
-      if((poped.db$use_logfile==TRUE || abs(diff)<convergence_eps || it==rsit+poped.db$sgit)){
+      if((poped.db$settings$use_logfile==TRUE || abs(diff)<convergence_eps || it==rsit+poped.db$settings$sgit)){
         fprintf(fn,'\nSG - Iteration %g --------- FINAL -------------------------\n',it-rsit)
-        #if((it==rsit+poped.db$sgit || abs(diff)<=convergence_eps)){
+        #if((it==rsit+poped.db$settings$sgit || abs(diff)<=convergence_eps)){
         #  fprintf(fn,'FINAL:********************************************\n')
         #}
-        if((poped.db$optsw[2]==TRUE)){
+        if((poped.db$settings$optsw[2]==TRUE)){
           if((ixt==TRUE)){
             fprintf(fn,'xt Gradient Inversion Occured\n')
           }
@@ -174,7 +174,7 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
           writet(fn,ni,xtopt)
           #print_xt(xtopt,ni,model_switch,fn,head_txt="xt opt:\n")
         }
-        if((poped.db$optsw[4]==TRUE)){
+        if((poped.db$settings$optsw[4]==TRUE)){
           if((ia==TRUE)){
             fprintf(fn,'a Gradient Inversion Occured\n')
           }
@@ -185,7 +185,7 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
         }
         fprintf(fn,'OFV(mf)    : %g\n',dmf)
         fprintf(fn,'diff       : %g\n',diff)
-        if(((it==rsit+poped.db$sgit) || abs(diff)<=convergence_eps)){
+        if(((it==rsit+poped.db$settings$sgit) || abs(diff)<=convergence_eps)){
           fprintf(fn,'*************************************************************\n')
         }
       }

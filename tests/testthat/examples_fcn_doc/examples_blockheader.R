@@ -14,12 +14,12 @@ blockheader(name='',
               poped.db,
               e_flag=FALSE,
               opt_xt=TRUE,
-              opt_a=TRUE,opt_x=poped.db$optsw[4],
-              opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+              opt_a=TRUE,opt_x=poped.db$settings$optsw[4],
+              opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5],
               fmf=FIM,dmf=dmf,
-              bpop=poped.db$param.pt.val$bpop,
-              d=poped.db$param.pt.val$d,
-              docc=poped.db$docc,sigma=poped.db$param.pt.val$sigma)
+              bpop=poped.db$parameters$param.pt.val$bpop,
+              d=poped.db$parameters$param.pt.val$d,
+              docc=poped.db$parameters$docc,sigma=poped.db$parameters$param.pt.val$sigma)
 
 
 
@@ -28,12 +28,12 @@ blockheader(name='',
               poped.db,
               e_flag=TRUE,
               opt_xt=TRUE,
-              opt_a=TRUE,opt_x=poped.db$optsw[4],
-              opt_samps=poped.db$optsw[1],opt_inds=poped.db$optsw[5],
+              opt_a=TRUE,opt_x=poped.db$settings$optsw[4],
+              opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5],
               fmf=FIM,dmf=dmf,
-              bpop=poped.db$param.pt.val$bpop,
-              d=poped.db$param.pt.val$d,
-              docc=poped.db$docc,sigma=poped.db$param.pt.val$sigma)
+              bpop=poped.db$parameters$param.pt.val$bpop,
+              d=poped.db$parameters$param.pt.val$d,
+              docc=poped.db$parameters$docc,sigma=poped.db$parameters$param.pt.val$sigma)
   
   
 

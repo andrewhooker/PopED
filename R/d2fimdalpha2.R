@@ -1,4 +1,4 @@
-d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,ha){  
+d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,ha){  
   bpop=bpopdescr[,2,drop=F]
   bpop[bpopdescr[,1,drop=F]!=0]=alpha[1:sum(bpopdescr[,1,drop=F]!=0)]
   d=ddescr[,2,drop=F]
@@ -10,7 +10,7 @@ d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpo
   }
   d=getfulld(d,covd)
   
-  fim=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,globalStructure)[["ret"]]
+  fim=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)[["ret"]]
   
   i=1
   hess=array(0,dim=c(size(fim,1),size(fim,2),length(alpha),length(alpha)))
@@ -25,7 +25,7 @@ d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpo
       d[ddescr[,1]!=0]=alpha_plus[(sum(bpopdescr[,1,drop=F]!=0)+1):num_alpha]
       d=getfulld(d,covd)
     }
-    fim_plus=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,globalStructure)[["ret"]]
+    fim_plus=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)[["ret"]]
     
     for(j in 1:i){
       alpha_plus2=alpha
@@ -37,7 +37,7 @@ d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpo
         d[ddescr[,1]!=0]=alpha_plus2[(sum(bpopdescr[,1,drop=F]!=0)+1):num_alpha]
         d=getfulld(d,covd)
       }
-      fim_plus2=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,globalStructure)[["ret"]]
+      fim_plus2=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)[["ret"]]
       
       alpha_plus_plus=alpha
       alpha_plus_plus[i]=alpha_plus_plus[i]+ha
@@ -50,7 +50,7 @@ d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpo
         d[ddescr[,1]!=0]=alpha_plus_plus[(sum(bpopdescr[,1,drop=F]!=0)+1):num_alpha]
         d=getfulld(d,covd)
       }
-      fim_plus_plus=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,globalStructure)[["ret"]]
+      fim_plus_plus=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)[["ret"]]
       hess[,,i,j]=(fim_plus_plus-fim_plus-fim_plus2+fim)/ha^2
       hess[,,j,i]=hess[,,i,j]
     } 

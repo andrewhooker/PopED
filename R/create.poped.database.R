@@ -171,7 +171,7 @@
 #' @param EACriteria Exchange Algorithm Criteria, 1 = Modified, 2 = Fedorov 
 #' @param strRunFile Filename and path, or function name, for a run file that is used instead of the regular PopED call. 
 
-#' @param strPopEDVersion  \itemize{
+#' @param poped_version  \itemize{
 #' \item \bold{******START OF Labeling and file names  SPECIFICATION OPTIONS**********}}
 #' The current PopED version 
 #' @param modtit The model title 
@@ -497,7 +497,7 @@ create.poped.database <-
            ## --------------------------
            
            ## -- The current PopED version --
-           strPopEDVersion=poped.choose(popedInput$strPopEDVersion, packageVersion("PopED")),  
+           poped_version=poped.choose(popedInput$strPopEDVersion, packageVersion("PopED")),  
            ## -- The model title --
            modtit=poped.choose(popedInput$modtit,'PopED model'),
            ## -- Filname and path of the output file during search --
@@ -657,6 +657,13 @@ create.poped.database <-
     
     poped.db <- list()
     
+    # five main headings for database
+    #     poped.db <- list(design=NULL,
+    #                      design_space=NULL,
+    #                      models=NULL,
+    #                      parameters=NULL,
+    #                      settings=NULL)
+    
     #     # update popedInput with options supplied in function
     #     called_args <- match.call()
     #     default_args <- formals()
@@ -678,11 +685,31 @@ create.poped.database <-
     #   ## -- The model title --
     #   popedInput$modtit='Sigmoidal Emax model'
     
-    Engine = list(Type=1,Version=version$version.string)
+    poped.db$settings <- list()
+    poped.db$settings$poped_version = poped_version
     
-    poped.db$strPopEDVersion = strPopEDVersion
-    poped.db$user_distribution_pointer=''
-        
+    
+    poped.db$model <- list()
+    poped.db$model$user_distribution_pointer=''
+    #poped.db$user_distribution_pointer=''
+    
+    if((!as.character(strUserDistributionFile)=='')){
+      if(exists(strUserDistributionFile)){
+        poped.db$model$user_distribution_pointer = strUserDistributionFile
+      } else {
+        source(strUserDistributionFile) 
+        returnArgs <-  fileparts(strUserDistributionFile) 
+        strUserDistFilePath <- returnArgs[[1]]
+        strUserDistFilename  <- returnArgs[[2]]
+        ##     if (~strcmp(strUserDistFilePath,''))
+        ##        cd(strUserDistFilePath);
+        ##     end
+        poped.db$model$user_distribution_pointer = strUserDistFilename
+      }
+    }
+    
+    
+    
      if(any(size(x)==0)){ ## should be removed
       x <- NULL
       G_x  <- NULL
@@ -777,137 +804,108 @@ create.poped.database <-
     poped.db$design <- design  
     poped.db$design_space <- design_space
     
-    poped.db$m = poped.db$design$m  # should be removed only in design
-    poped.db$nx = poped.choose(nx,size(design$x,2)) # should be removed, not needed or in design
-    poped.db$na = poped.choose(na,size(design$a,2)) # should be removed, not needed or in design
+    #poped.db$m = poped.db$design$m  # should be removed only in design
+    #poped.db$nx = poped.choose(nx,size(design$x,2)) # should be removed, not needed or in design
+    #poped.db$na = poped.choose(na,size(design$a,2)) # should be removed, not needed or in design
                 
-    poped.db$bLHS = bLHS
+    poped.db$settings$bLHS = bLHS
     
-    poped.db$discrete_x = design_space$discrete_x # should be removed only in design_space
+    #poped.db$discrete_x = design_space$discrete_x # should be removed only in design_space
     
+    #poped.db$maxni=max(design_space$maxni) # should be only in design_space and called maxmaxni if needed
+    #poped.db$minni=min(design_space$minni) # should be only in design_space and called minminni if needed
     
-    poped.db$maxni=max(design_space$maxni) # should be only in design_space and called maxmaxni if needed
-    poped.db$minni=min(design_space$minni) # should be only in design_space and called minminni if needed
+    #poped.db$bUseGrouped_xt = design_space$bUseGrouped_xt # should be only in design_space
+    #poped.db$bUseGrouped_a  = design_space$bUseGrouped_a # should be only in design_space
+    #poped.db$bUseGrouped_x  = design_space$bUseGrouped_x # should be only in design_space
     
-    poped.db$bUseGrouped_xt = design_space$bUseGrouped_xt # should be only in design_space
-    poped.db$bUseGrouped_a  = design_space$bUseGrouped_a # should be only in design_space
-    poped.db$bUseGrouped_x  = design_space$bUseGrouped_x # should be only in design_space
+    poped.db$settings$d_switch = d_switch
+    poped.db$settings$iApproximationMethod = iApproximationMethod
     
-    poped.db$d_switch = d_switch
-    poped.db$iApproximationMethod = iApproximationMethod
-    poped.db$iFOCENumInd = iFOCENumInd
-    poped.db$bUseRandomSearch = bUseRandomSearch
-    poped.db$bUseStochasticGradient = bUseStochasticGradient
-    poped.db$bUseLineSearch = bUseLineSearch
-    poped.db$bUseExchangeAlgorithm = bUseExchangeAlgorithm
+    poped.db$settings$iFOCENumInd = iFOCENumInd
+    poped.db$settings$bUseRandomSearch = bUseRandomSearch
+    poped.db$settings$bUseStochasticGradient = bUseStochasticGradient
+    poped.db$settings$bUseLineSearch = bUseLineSearch
+    poped.db$settings$bUseExchangeAlgorithm = bUseExchangeAlgorithm
+    poped.db$settings$bUseBFGSMinimizer=bUseBFGSMinimizer
     
-    poped.db$bUseBFGSMinimizer=bUseBFGSMinimizer
+    poped.db$settings$iEDCalculationType=iEDCalculationType
     
+    poped.db$settings$BFGSConvergenceCriteriaMinStep=BFGSConvergenceCriteriaMinStep
+    poped.db$settings$BFGSProjectedGradientTol=BFGSProjectedGradientTol
+    poped.db$settings$BFGSTolerancef=BFGSTolerancef
+    poped.db$settings$BFGSToleranceg=BFGSToleranceg
+    poped.db$settings$BFGSTolerancex=BFGSTolerancex
     
-    poped.db$iEDCalculationType=iEDCalculationType
+    poped.db$parameters$covdocc=covdocc
+    poped.db$parameters$notfixed_covdocc=notfixed_covdocc
+    poped.db$parameters$notfixed_covsigma=notfixed_covsigma
+        
+    poped.db$settings$parallel$iCompileOption = iCompileOption
+    poped.db$settings$parallel$strAdditionalMCCCompilerDependencies = MCC_Dep
+    poped.db$settings$parallel$iUseParallelMethod = iUseParallelMethod
+    poped.db$settings$parallel$strExecuteName = strExecuteName
+    poped.db$settings$parallel$iNumProcesses = iNumProcesses
+    poped.db$settings$parallel$iNumChunkDesignEvals = iNumChunkDesignEvals
+    poped.db$settings$parallel$strMatFileInputPrefix = strMatFileInputPrefix
+    poped.db$settings$parallel$strMatFileOutputPrefix = Mat_Out_Pre
+    poped.db$settings$parallel$strExtraRunOptions = strExtraRunOptions
+    poped.db$settings$parallel$dPollResultTime = dPollResultTime
+    poped.db$settings$parallel$strFunctionInputName = strFunctionInputName
+    poped.db$settings$parallel$bParallelRS = bParallelRS  
+    poped.db$settings$parallel$bParallelSG = bParallelSG
+    poped.db$settings$parallel$bParallelLS = bParallelLS
+    poped.db$settings$parallel$bParallelMFEA = bParallelMFEA
+        
+    poped.db$settings$hm1=hm1
+    poped.db$settings$hlf=hlf
+    poped.db$settings$hlg=hlg
+    poped.db$settings$hm2=hm2
+    poped.db$settings$hgd=hgd
+    poped.db$settings$hle=hle
     
-    
-    
-    poped.db$BFGSConvergenceCriteriaMinStep=BFGSConvergenceCriteriaMinStep
-    
-    
-    poped.db$BFGSProjectedGradientTol=BFGSProjectedGradientTol
-    
-    
-    
-    poped.db$BFGSTolerancef=BFGSTolerancef
-    
-    
-    poped.db$BFGSToleranceg=BFGSToleranceg
-    
-    
-    poped.db$BFGSTolerancex=BFGSTolerancex
-    
-    
-    
-    
-    
-    poped.db$covdocc=covdocc
-    
-    
-    poped.db$notfixed_covdocc=notfixed_covdocc
-    
-    
-    
-    
-    poped.db$notfixed_covsigma=notfixed_covsigma
-    
-    
-    
-    
-    
-    poped.db$parallelSettings$iCompileOption = iCompileOption
-    poped.db$parallelSettings$strAdditionalMCCCompilerDependencies = MCC_Dep
-    poped.db$parallelSettings$iUseParallelMethod = iUseParallelMethod
-    poped.db$parallelSettings$strExecuteName = strExecuteName
-    poped.db$parallelSettings$iNumProcesses = iNumProcesses
-    poped.db$parallelSettings$iNumChunkDesignEvals = iNumChunkDesignEvals
-    poped.db$parallelSettings$strMatFileInputPrefix = strMatFileInputPrefix
-    poped.db$parallelSettings$strMatFileOutputPrefix = Mat_Out_Pre
-    poped.db$parallelSettings$strExtraRunOptions = strExtraRunOptions
-    poped.db$parallelSettings$dPollResultTime = dPollResultTime
-    poped.db$parallelSettings$strFunctionInputName = strFunctionInputName
-    poped.db$parallelSettings$bParallelRS = bParallelRS  
-    poped.db$parallelSettings$bParallelSG = bParallelSG
-    poped.db$parallelSettings$bParallelLS = bParallelLS
-    poped.db$parallelSettings$bParallelMFEA = bParallelMFEA
-    
-    
-    poped.db$hm1=hm1
-    poped.db$hlf=hlf
-    poped.db$hlg=hlg
-    poped.db$hm2=hm2
-    poped.db$hgd=hgd
-    poped.db$hle=hle
-    poped.db$numericalSettings$AbsTol = AbsTol
-    poped.db$numericalSettings$RelTol = RelTol
-    poped.db$numericalSettings$iDiffSolverMethod = iDiffSolverMethod
-    
+    poped.db$settings$AbsTol = AbsTol
+    poped.db$settings$RelTol = RelTol
+    poped.db$settings$iDiffSolverMethod = iDiffSolverMethod
     #Temp thing for memory solvers
-    poped.db$numericalSettings$bUseMemorySolver = bUseMemorySolver
-    poped.db$numericalSettings$solved_solutions = cell(0,0)
-    poped.db$numericalSettings$maxtime = max(max(design_space$maxxt))+hgd
+    poped.db$settings$bUseMemorySolver = bUseMemorySolver
+    poped.db$settings$solved_solutions = cell(0,0)
+    poped.db$settings$maxtime = max(max(poped.db$design_space$maxxt))+poped.db$settings$hgd
     
-    poped.db$iFIMCalculationType = iFIMCalculationType
-    poped.db$rsit=rsit
-    poped.db$sgit=sgit
-    poped.db$intrsit=intrsit
-    poped.db$intsgit=intsgit
-    poped.db$maxrsnullit=maxrsnullit
-    poped.db$convergence_eps=convergence_eps
-    poped.db$rslxt=rslxt
-    poped.db$rsla=rsla
-    poped.db$cfaxt=cfaxt
-    poped.db$cfaa=cfaa
+    poped.db$settings$iFIMCalculationType = iFIMCalculationType
+    poped.db$settings$rsit=rsit
+    poped.db$settings$sgit=sgit
+    poped.db$settings$intrsit=intrsit
+    poped.db$settings$intsgit=intsgit
+    poped.db$settings$maxrsnullit=maxrsnullit
+    poped.db$settings$convergence_eps=convergence_eps
+    poped.db$settings$rslxt=rslxt
+    poped.db$settings$rsla=rsla
+    poped.db$settings$cfaxt=cfaxt
+    poped.db$settings$cfaa=cfaa
     
-    poped.db$EACriteria = EACriteria
-    poped.db$EAStepSize = EAStepSize
-    poped.db$EANumPoints = EANumPoints
-    poped.db$EAConvergenceCriteria = EAConvergenceCriteria
+    poped.db$settings$EACriteria = EACriteria
+    poped.db$settings$EAStepSize = EAStepSize
+    poped.db$settings$EANumPoints = EANumPoints
+    poped.db$settings$EAConvergenceCriteria = EAConvergenceCriteria
     
+    poped.db$settings$ED_samp_size=ED_samp_size
+    poped.db$settings$ED_diff_it = ED_diff_it
+    poped.db$settings$ED_diff_percent = ED_diff_percent
+    poped.db$settings$ls_step_size=line_search_it
     
-    poped.db$ED_samp_size=ED_samp_size
-    poped.db$ED_diff_it = ED_diff_it
-    poped.db$ED_diff_percent = ED_diff_percent
-    poped.db$ls_step_size=line_search_it
+    poped.db$settings$ofv_calc_type = ofv_calc_type
     
-    poped.db$ofv_calc_type = ofv_calc_type
+    poped.db$settings$iNumSearchIterationsIfNotLineSearch = Doptim_iter
     
-    poped.db$iNumSearchIterationsIfNotLineSearch = Doptim_iter
-    
-    poped.db$ourzero=ourzero
-    poped.db$rsit_output=rsit_output
-    poped.db$sgit_output=sgit_output
+    poped.db$settings$ourzero=ourzero
+    poped.db$settings$rsit_output=rsit_output
+    poped.db$settings$sgit_output=sgit_output
     
     if(is.function(fg_fun)){
-      poped.db$fg_pointer = fg_fun 
+      poped.db$model$fg_pointer = fg_fun 
     } else if(exists(fg_file)){
-      poped.db$fg_pointer = fg_file
+      poped.db$model$fg_pointer = fg_file
     } else {
       source(fg_file)
       returnArgs <-  fileparts(fg_file) 
@@ -916,30 +914,13 @@ create.poped.database <-
       ## if (~strcmp(strfgModelFilePath,''))
       ##    cd(strfgModelFilePath);
       ## end
-      poped.db$fg_pointer = strfgModelFilename
+      poped.db$model$fg_pointer = strfgModelFilename
     }
-    
-    
-    if((!as.character(strUserDistributionFile)=='')){
-      if(exists(strUserDistributionFile)){
-        poped.db$user_distribution_pointer = strUserDistributionFile
-      } else {
-        source(strUserDistributionFile) 
-        returnArgs <-  fileparts(strUserDistributionFile) 
-        strUserDistFilePath <- returnArgs[[1]]
-        strUserDistFilename  <- returnArgs[[2]]
-        ##     if (~strcmp(strUserDistFilePath,''))
-        ##        cd(strUserDistFilePath);
-        ##     end
-        poped.db$user_distribution_pointer = strUserDistFilename
-      }
-    }
-    
-    poped.db$ed_penalty_pointer=zeros(1,0)
-    
+     
+    poped.db$settings$ed_penalty_pointer=zeros(1,0)
     if((!as.character(strEDPenaltyFile)=='')){
       if(exists(strEDPenaltyFile)){
-        poped.db$ed_penalty_pointer = strEDPenaltyFile
+        poped.db$settings$ed_penalty_pointer = strEDPenaltyFile
       } else {
         source(popedInput$strEDPenaltyFile) 
         returnArgs <-  fileparts(popedInput$strEDPenaltyFile) 
@@ -948,14 +929,14 @@ create.poped.database <-
         ##     if (~strcmp(strEDPenaltyFilePath,''))
         ##        cd(strEDPenaltyFilePath);
         ##     end
-        poped.db$ed_penalty_pointer = strEDPenaltyFilename
+        poped.db$settings$ed_penalty_pointer = strEDPenaltyFilename
       }
-    }    
-    poped.db$auto_pointer=zeros(1,0)
+    } 
     
+    poped.db$model$auto_pointer=zeros(1,0)
     if((!as.character(strAutoCorrelationFile)=='')){
       if(exists(strAutoCorrelationFile)){
-        poped.db$auto_pointer = strAutoCorrelationFile
+        poped.db$model$auto_pointer = strAutoCorrelationFile
       } else {
         source(popedInput$strAutoCorrelationFile) 
         returnArgs <-  fileparts(popedInput$strAutoCorrelationFile) 
@@ -964,14 +945,14 @@ create.poped.database <-
         ##     if (~strcmp(strAutoCorrelationFilePath,''))
         ##        cd(strAutoCorrelationFilePath);
         ##     end
-        poped.db$auto_pointer = strAutoCorrelationFilename
+        poped.db$model$auto_pointer = strAutoCorrelationFilename
       }
     }
     
     if(is.function(ff_fun)){
-      poped.db$ff_pointer = ff_fun 
+      poped.db$model$ff_pointer = ff_fun 
     } else if(exists(ff_file)){
-      poped.db$ff_pointer = ff_file 
+      poped.db$model$ff_pointer = ff_file 
     } else {
       source(ff_file)
       returnArgs <-  fileparts(ff_file) 
@@ -980,7 +961,7 @@ create.poped.database <-
       ## if (~strcmp(strffModelFilePath,''))
       ##    cd(strffModelFilePath);
       ## end
-      poped.db$ff_pointer = strffModelFilename
+      poped.db$model$ff_pointer = strffModelFilename
     }
     
     #Check if there is any sub models defined
@@ -994,15 +975,15 @@ create.poped.database <-
         ##         if (~strcmp(strffModelFilePath,''))
         ##             cd(strffModelFilePath);
         ##         end
-        poped.db$subffPointers[paste('ff_pointer',i,sep='')] = strffModelFilename
+        poped.db$model$subffPointers[paste('ff_pointer',i,sep='')] = strffModelFilename
         i=i+1
       }
     }
     
     if(is.function(fError_fun)){
-      poped.db$ferror_pointer = fError_fun 
+      poped.db$model$ferror_pointer = fError_fun 
     } else if(exists(fError_file)){
-      poped.db$ferror_pointer = fError_file
+      poped.db$model$ferror_pointer = fError_file
     } else {
       source(fError_file)
       returnArgs <-  fileparts(fError_file) 
@@ -1011,59 +992,48 @@ create.poped.database <-
       ## if (~strcmp(strErrorModelFilePath,''))
       ##    cd(strErrorModelFilePath);
       ## end
-      poped.db$ferror_pointer = strErrorModelFilename
+      poped.db$model$ferror_pointer = strErrorModelFilename
     }
     
-    if((Engine$Type==1) ){#Matlab
-      ##  %Set the model file string path
-      poped.db$model_file = ff_file
-      ##   model_file = eval('functions(poped.db.ff_pointer)');
-      ##   if (~strcmp(model_file.file,''))
-      ##       poped.db.model_file = eval('char(model_file.file)');
-      ##   else
-      ##       poped.db.model_file = eval('char(model_file.function)');
-      ##   end
-    } else {   #FreeMat
-      poped.db$model_file = ff_file
-    }
+    ##  %Set the model file string path
+    ##  poped.db$model_file = ff_file
+    ##   model_file = eval('functions(poped.db.ff_pointer)');
+    ##   if (~strcmp(model_file.file,''))
+    ##       poped.db.model_file = eval('char(model_file.file)');
+    ##   else
+    ##       poped.db.model_file = eval('char(model_file.function)');
+    ##   end
     
     #==================================
     # Initialize the randomization    
     #==================================
     if((dSeed == -1)){
-      poped.db$dSeed = as.integer(Sys.time())
+      poped.db$settings$dSeed = as.integer(Sys.time())
     } else {
-      poped.db$dSeed = dSeed
+      poped.db$settings$dSeed = dSeed
     }
-    if((Engine$Type==1) ){#Matlab
-      set.seed(poped.db$dSeed)
-      ##    randn('state', poped.db.dSeed);
-    } else {                #FreeMat
-      ##seed(round(poped.db$dSeed),round(poped.db$dSeed))
-      ##tmp = round(rand(1)*2^30)
-      ##seed(poped.db$dSeed,round(tmp))
-    }
+    set.seed(poped.db$settings$dSeed)
     
-    poped.db$nbpop = poped.choose(nbpop,find.largest.index(poped.db$fg_pointer,"bpop"))
-    poped.db$NumRanEff = poped.choose(NumRanEff,find.largest.index(poped.db$fg_pointer,"b"))
-    poped.db$NumDocc = poped.choose(NumDocc,find.largest.index(poped.db$fg_pointer,"bocc",mat=T,mat.row=T))
-    poped.db$NumOcc = poped.choose(NumOcc,find.largest.index(poped.db$fg_pointer,"bocc",mat=T,mat.row=F))
-    poped.db$ng = poped.choose(ng,length(do.call(poped.db$fg_pointer,list(0,0,0,0,0))))    
+    poped.db$parameters$nbpop = poped.choose(nbpop,find.largest.index(poped.db$model$fg_pointer,"bpop"))
+    poped.db$parameters$NumRanEff = poped.choose(NumRanEff,find.largest.index(poped.db$model$fg_pointer,"b"))
+    poped.db$parameters$NumDocc = poped.choose(NumDocc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=T))
+    poped.db$parameters$NumOcc = poped.choose(NumOcc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=F))
+    poped.db$parameters$ng = poped.choose(ng,length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0))))    
     
-    poped.db$notfixed_docc = poped.choose(notfixed_docc,matrix(1,nrow=1,ncol=poped.db$NumDocc))
-    poped.db$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$NumRanEff))
-    poped.db$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=poped.db$nbpop))
+    poped.db$parameters$notfixed_docc = poped.choose(notfixed_docc,matrix(1,nrow=1,ncol=poped.db$parameters$NumDocc))
+    poped.db$parameters$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$parameters$NumRanEff))
+    poped.db$parameters$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=poped.db$parameters$nbpop))
     
-    if(size(d,1)==1 && size(d,2)==poped.db$NumRanEff){ # we have just the parameter values not the uncertainty
-      d_descr <- zeros(poped.db$NumRanEff,3)
+    if(size(d,1)==1 && size(d,2)==poped.db$parameters$NumRanEff){ # we have just the parameter values not the uncertainty
+      d_descr <- zeros(poped.db$parameters$NumRanEff,3)
       d_descr[,2] <- d
       d_descr[,1] <- 0 # point values
       d_descr[,3] <- 0 # variance
       d <- d_descr
     }
     
-    if(size(bpop,1)==1 && size(bpop,2)==poped.db$nbpop){ # we have just the parameter values not the uncertainty
-      bpop_descr <- zeros(poped.db$nbpop,3)
+    if(size(bpop,1)==1 && size(bpop,2)==poped.db$parameters$nbpop){ # we have just the parameter values not the uncertainty
+      bpop_descr <- zeros(poped.db$parameters$nbpop,3)
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
       bpop_descr[,3] <- 0 # variance
@@ -1074,141 +1044,139 @@ create.poped.database <-
       sigma <- diag(sigma,size(sigma,2),size(sigma,2))
     }    
     
-    covd = poped.choose(covd,zeros(1,poped.db$NumRanEff)*(poped.db$NumRanEff-1)/2)
-    poped.db$covd = covd
+    covd = poped.choose(covd,zeros(1,poped.db$parameters$NumRanEff)*(poped.db$parameters$NumRanEff-1)/2)
+    poped.db$parameters$covd = covd
     
     tmp <- ones(1,length(covd))
     tmp[covd==0] <- 0
-    poped.db$notfixed_covd=poped.choose(notfixed_covd,tmp)
-    
+    poped.db$parameters$notfixed_covd=poped.choose(notfixed_covd,tmp)
     
     #==================================
     # Sample the individual eta's for FOCE and FOCEI
     #==================================
-    if((poped.db$iApproximationMethod!=0 && poped.db$iApproximationMethod!=3)){
+    if((poped.db$settings$iApproximationMethod!=0 && poped.db$settings$iApproximationMethod!=3)){
       
       iMaxCorrIndNeeded = 100
       
-      bzeros=zeros(poped.db$NumRanEff,1)
-      bones = matrix(1,poped.db$NumRanEff,1)
-      bocczeros=zeros(poped.db$NumDocc,1)
-      boccones=matrix(1,poped.db$NumDocc,1)
+      bzeros=zeros(poped.db$parameters$NumRanEff,1)
+      bones = matrix(1,poped.db$parameters$NumRanEff,1)
+      bocczeros=zeros(poped.db$parameters$NumDocc,1)
+      boccones=matrix(1,poped.db$parameters$NumDocc,1)
       
-      poped.db$b_global=zeros(poped.db$NumRanEff,max(poped.db$iFOCENumInd,iMaxCorrIndNeeded))
+      poped.db$parameters$b_global=zeros(poped.db$parameters$NumRanEff,max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded))
       
-      fulld = getfulld(d[,2],poped.db$covd)
-      fulldocc = getfulld(docc[,2,drop=F],poped.db$covdocc)
+      fulld = getfulld(d[,2],poped.db$parameters$covd)
+      fulldocc = getfulld(docc[,2,drop=F],poped.db$parameters$covdocc)
       
-      poped.db$bocc_global = cell(poped.db$iFOCENumInd,1)
+      poped.db$parameters$bocc_global = cell(poped.db$settings$iFOCENumInd,1)
       
-      
-      if((poped.db$d_switch)){
-        poped.db$b_global = t(rmvnorm(max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
-        for(i in 1:poped.db$iFOCENumInd){
-          poped.db$bocc_global[[i]]=zeros(size(docc,1),poped.db$NumOcc)
-          if(poped.db$NumOcc!=0) poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=fulldocc))
+      if((poped.db$settings$d_switch)){
+        poped.db$parameters$b_global = t(rmvnorm(max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
+        for(i in 1:poped.db$settings$iFOCENumInd){
+          poped.db$parameters$bocc_global[[i]]=zeros(size(docc,1),poped.db$parameters$NumOcc)
+          if(poped.db$parameters$NumOcc!=0) poped.db$parameters$bocc_global[[i]]=t(rmvnorm(poped.db$parameters$NumOcc,sigma=fulldocc))
         }
       } else {
-        d_dist=pargen(d,poped.db$user_distribution_pointer,max(poped.db$iFOCENumInd,iMaxCorrIndNeeded),poped.db$bLHS,zeros(1,0),poped.db)
-        docc_dist=pargen(docc,poped.db$user_distribution_pointer,poped.db$iFOCENumInd,poped.db$bLHS,zeros(1,0),poped.db)
+        d_dist=pargen(d,poped.db$model$user_distribution_pointer,max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded),poped.db$settings$bLHS,zeros(1,0),poped.db)
+        docc_dist=pargen(docc,poped.db$model$user_distribution_pointer,poped.db$settings$iFOCENumInd,poped.db$settings$bLHS,zeros(1,0),poped.db)
         
         if((!isempty(d_dist))){
-          for(i in 1:max(poped.db$iFOCENumInd,iMaxCorrIndNeeded)){
-            poped.db$b_global[,i] = t(rmvnorm(1,sigma=getfulld(d_dist[i,],poped.db$covd)))
+          for(i in 1:max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded)){
+            poped.db$parameters$b_global[,i] = t(rmvnorm(1,sigma=getfulld(d_dist[i,],poped.db$parameters$covd)))
           }
         }
         
         if((!isempty(docc_dist))){
-          for(i in 1:poped.db$iFOCENumInd){
-            poped.db$bocc_global[[i]]=t(rmvnorm(poped.db$NumOcc,sigma=getfulld(docc_dist[i,],poped.db$covdocc)))
+          for(i in 1:poped.db$settings$iFOCENumInd){
+            poped.db$parameters$bocc_global[[i]]=t(rmvnorm(poped.db$parameters$NumOcc,sigma=getfulld(docc_dist[i,],poped.db$parameters$covdocc)))
           }
         }
       }
       
     } else {
-      poped.db$b_global=zeros(poped.db$NumRanEff,1)
-      poped.db$bocc_global = cell(1,1)
-      poped.db$bocc_global[[1]]=zeros(size(docc,1),poped.db$NumOcc)
-      poped.db$iFOCENumInd = 1
+      poped.db$parameters$b_global=zeros(poped.db$parameters$NumRanEff,1)
+      poped.db$parameters$bocc_global = cell(1,1)
+      poped.db$parameters$bocc_global[[1]]=zeros(size(docc,1),poped.db$parameters$NumOcc)
+      poped.db$settings$iFOCENumInd = 1
     }
     
-    poped.db$modtit=modtit
-    poped.db$exptit= sprintf('%s_exp$mat',modtit) #experiment settings title
-    poped.db$opttit= sprintf('%s_opt$mat',modtit) #optimization settings title
+    poped.db$settings$modtit=modtit
+    poped.db$settings$exptit= sprintf('%s_exp$mat',modtit) #experiment settings title
+    poped.db$settings$opttit= sprintf('%s_opt$mat',modtit) #optimization settings title
+    poped.db$settings$bShowGraphs=bShowGraphs
     
-    poped.db$bShowGraphs=bShowGraphs
-    poped.db$use_logfile=use_logfile
-    poped.db$output_file=output_file
-    poped.db$output_function_file=output_function_file
+    poped.db$settings$use_logfile=use_logfile
+    poped.db$settings$output_file=output_file
+    poped.db$settings$output_function_file=output_function_file
     
-    poped.db$optsw=optsw
+    poped.db$settings$optsw=optsw
         
-    line_opta=poped.choose(line_opta,ones(1,poped.db$na))
-    if(test_mat_size(c(1, poped.db$na),line_opta,'line_opta')){ 
-      poped.db$line_opta <- line_opta
+    line_opta=poped.choose(line_opta,ones(1,size(poped.db$design$a,2)))
+    if(test_mat_size(c(1, size(poped.db$design$a,2)),line_opta,'line_opta')){ 
+      poped.db$settings$line_opta <- line_opta
     }
     
-    line_optx=poped.choose(line_optx,ones(1,poped.db$nx))
-    if(test_mat_size(c(1, poped.db$nx),line_optx,'line_optx')){ 
-      poped.db$line_optx <- line_optx
+    line_optx=poped.choose(line_optx,ones(1,size(poped.db$design$x,2)))
+    if(test_mat_size(c(1, size(poped.db$design$x,2)),line_optx,'line_optx')){ 
+      poped.db$settings$line_optx <- line_optx
     }
 
     #poped.db$design = popedInput$design
-    poped.db$design$bpop = bpop
-    poped.db$design$d = d
-    poped.db$design$covd = covd
-    poped.db$design$sigma = sigma
-    poped.db$design$docc = docc
-    poped.db$design$covdocc = covdocc
+    poped.db$parameters$bpop = bpop
+    poped.db$parameters$d = d
+    poped.db$parameters$covd = covd
+    poped.db$parameters$sigma = sigma
+    poped.db$parameters$docc = docc
+    poped.db$parameters$covdocc = covdocc
         
-    poped.db$design$G = design_space$G_xt ## should only be in design_space
-    poped.db$design$Ga = design_space$G_a ## should only be in design_space
-    poped.db$design$Gx = design_space$G_x ## should only be in design_space
+    #poped.db$design$G = design_space$G_xt ## should only be in design_space
+    #poped.db$design$Ga = design_space$G_a ## should only be in design_space
+    #poped.db$design$Gx = design_space$G_x ## should only be in design_space
     
-    poped.db$design$maxgroupsize = design_space$maxgroupsize ## should only be in design_space
-    poped.db$design$mingroupsize = design_space$mingroupsize ## should only be in design_space
-    poped.db$design$maxtotgroupsize = design_space$maxtotgroupsize ## should only be in design_space
-    poped.db$design$mintotgroupsize = design_space$mintotgroupsize ## should only be in design_space
-    poped.db$design$maxxt = design_space$maxxt ## should only be in design_space
-    poped.db$design$minxt = design_space$minxt ## should only be in design_space
-    poped.db$design$discrete_x = design_space$discrete_x ## should only be in design_space
-    poped.db$design$maxa = design_space$maxa ## should only be in design_space
-    poped.db$design$mina = design_space$mina ## should only be in design_space
-        
+    #poped.db$design$maxgroupsize = design_space$maxgroupsize ## should only be in design_space
+    #poped.db$design$mingroupsize = design_space$mingroupsize ## should only be in design_space
+    #poped.db$design$maxtotgroupsize = design_space$maxtotgroupsize ## should only be in design_space
+    #poped.db$design$mintotgroupsize = design_space$mintotgroupsize ## should only be in design_space
+    #poped.db$design$maxxt = design_space$maxxt ## should only be in design_space
+    #poped.db$design$minxt = design_space$minxt ## should only be in design_space
+    #poped.db$design$discrete_x = design_space$discrete_x ## should only be in design_space
+    #poped.db$design$maxa = design_space$maxa ## should only be in design_space
+    #poped.db$design$mina = design_space$mina ## should only be in design_space   
     
-    poped.db$m1_switch = m1_switch
-    poped.db$m2_switch = m2_switch
-    poped.db$hle_switch = hle_switch
-    poped.db$gradff_switch=gradff_switch
-    poped.db$gradfg_switch = gradfg_switch
+    poped.db$settings$m1_switch = m1_switch
+    poped.db$settings$m2_switch = m2_switch
+    poped.db$settings$hle_switch = hle_switch
+    poped.db$settings$gradff_switch=gradff_switch
+    poped.db$settings$gradfg_switch = gradfg_switch
     
-    poped.db$prior_fim = prior_fim
+    poped.db$settings$prior_fim = prior_fim
     
-    poped.db$notfixed_sigma =  notfixed_sigma
-    poped.db$sigma = sigma
-    poped.db$docc = docc
-    
-    poped.db$ds_index = ds_index
-    
-    poped.db$strIterationFileName = strIterationFileName
-    
-    poped.db$user_data = user_data
-    
-    poped.db$bUseSecondOrder = FALSE
-    poped.db$bCalculateEBE = FALSE
-    
-    poped.db$bGreedyGroupOpt = bGreedyGroupOpt
-    
-    
-    poped.db$bEANoReplicates = bEANoReplicates
-    
-    
-    if(strRunFile==''){
-      poped.db$run_file_pointer=zeros(1,0)
+    poped.db$parameters$notfixed_sigma =  notfixed_sigma
+    #poped.db$parameters$sigma = sigma
+    #poped.db$parameters$docc = docc
+  
+    poped.db$parameters$ds_index = ds_index
+    ## create ds_index if not already done
+    if(is.null(poped.db$parameters$ds_index)){ 
+      unfixed_params <- get_unfixed_params(poped.db)
+      poped.db$parameters$ds_index <- t(rep(0,length(unfixed_params$all)))
+      poped.db$parameters$ds_index[(length(unfixed_params$bpop)+1):length(poped.db$parameters$ds_index)] <- 1
     } else {
-      
+      if(!is.matrix(poped.db$parameters$ds_index)) poped.db$parameters$ds_index <- matrix(poped.db$parameters$ds_index,1,length(poped.db$parameters$ds_index))
+    }
+    
+    poped.db$settings$strIterationFileName = strIterationFileName
+    poped.db$settings$user_data = user_data
+    poped.db$settings$bUseSecondOrder = FALSE
+    poped.db$settings$bCalculateEBE = FALSE
+    poped.db$settings$bGreedyGroupOpt = bGreedyGroupOpt
+    poped.db$settings$bEANoReplicates = bEANoReplicates
+        
+    if(strRunFile==''){
+      poped.db$settings$run_file_pointer=zeros(1,0)
+    } else {
       if(exists(strRunFile)){
-        poped.db$strRunFile = strRunFile
+        poped.db$settings$run_file_pointer = strRunFile
       } else {
         source(popedInput$strRunFile)
         returnArgs <-  fileparts(popedInput$strRunFile) 
@@ -1217,11 +1185,15 @@ create.poped.database <-
         ## if (~strcmp(strErrorModelFilePath,''))
         ##    cd(strErrorModelFilePath);
         ## end
-        poped.db$run_file_pointer = strRunFilename
+        poped.db$settings$run_file_pointer = strRunFilename
       }
     }
     #poped.db <- convert_popedInput(popedInput,...)
-    poped.db <- convert_variables(poped.db)
+    
+    poped.db$settings$Engine = list(Type=1,Version=version$version.string)
+    
+    poped.db <- convert_variables(poped.db) ## need to transform here
+    
     param.val <- get_all_params(poped.db)
     tmp.names <- names(param.val)
     eval(parse(text=paste(tmp.names,".val","<-","param.val$",tmp.names,sep="")))
@@ -1232,31 +1204,31 @@ create.poped.database <-
     bpop.val <- bpop.val
     d_full=getfulld(d.val,covd.val)
     docc_full = getfulld(docc.val,covdocc.val)
-    sigma_full = poped.db$sigma
-    poped.db$param.pt.val$bpop <- bpop.val
-    poped.db$param.pt.val$d <- d_full
-    poped.db$param.pt.val$docc <- docc_full
-    poped.db$param.pt.val$sigma <- sigma_full
+    sigma_full = poped.db$parameters$sigma
+    poped.db$parameters$param.pt.val$bpop <- bpop.val
+    poped.db$parameters$param.pt.val$d <- d_full
+    poped.db$parameters$param.pt.val$docc <- docc_full
+    poped.db$parameters$param.pt.val$sigma <- sigma_full
     
-    downsize.list <- downsizing_general_design(poped.db)
-    tmp.names <- names(downsize.list)
-    model_switch <- c()
-    ni <- c()
-    xt <- c()
-    x <- c()
-    a <- c()
-    eval(parse(text=paste(tmp.names,"<-","downsize.list$",tmp.names,sep="")))
-    poped.db$downsized.design$model_switch <- model_switch
-    poped.db$downsized.design$ni <- ni
-    poped.db$downsized.design$xt <- xt
-    poped.db$downsized.design$x <- x
-    poped.db$downsized.design$a <- a
-    poped.db$downsized.design$groupsize <- poped.db$design$groupsize
+    #     downsize.list <- downsizing_general_design(poped.db)
+    #     tmp.names <- names(downsize.list)
+    #     model_switch <- c()
+    #     ni <- c()
+    #     xt <- c()
+    #     x <- c()
+    #     a <- c()
+    #     eval(parse(text=paste(tmp.names,"<-","downsize.list$",tmp.names,sep="")))
+    #     poped.db$downsized.design$model_switch <- model_switch
+    #     poped.db$downsized.design$ni <- ni
+    #     poped.db$downsized.design$xt <- xt
+    #     poped.db$downsized.design$x <- x
+    #     poped.db$downsized.design$a <- a
+    #     poped.db$downsized.design$groupsize <- poped.db$design$groupsize
     
-    retargs <- fileparts(poped.db$output_file)
-    poped.db$strOutputFilePath <- retargs[[1]]
-    poped.db$strOutputFileName <- retargs[[2]]
-    poped.db$strOutputFileExtension <- retargs[[3]]
+    retargs <- fileparts(poped.db$settings$output_file)
+    poped.db$settings$strOutputFilePath <- retargs[[1]]
+    poped.db$settings$strOutputFileName <- retargs[[2]]
+    poped.db$settings$strOutputFileExtension <- retargs[[3]]
     
     return(poped.db) 
   }

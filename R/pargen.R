@@ -17,7 +17,7 @@
 #' @param sample_size The number of random samples per parameter to generate
 #' @param bLHS Logical, indicating if Latin Hypercube Sampling should be used.
 #' @param sample_number The sample number to extract from a user distribution.
-#' @param globalStructure A PopED database.
+#' @param poped.db A PopED database.
 #'   
 #' @return A matrix of random samples of size (sample_size x
 #'   number_of_parameters)
@@ -28,7 +28,7 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,globalStructure){
+pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,poped.db){
   
   nvar=size(par,1)
   ret=zeros(sample_size,nvar)
@@ -89,9 +89,9 @@ pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,globalSt
         
         if((bUserSpecifiedDistribution)){
           if((isempty(sample_number))){
-            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,k,globalStructure)
+            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,k,poped.db)
           } else {
-            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,globalStructure)
+            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,poped.db)
           }
         }
       }
@@ -119,9 +119,9 @@ pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,globalSt
     if((bUserSpecifiedDistribution)){
       for(k in 1:sample_size){
         if((isempty(sample_number))){
-          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,globalStructure)
+          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,poped.db)
         } else {
-          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,globalStructure)
+          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,poped.db)
         }
       }
     }

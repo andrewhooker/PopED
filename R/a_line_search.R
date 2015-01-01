@@ -41,12 +41,12 @@ a_line_search <- function(poped.db,
                           diff=0,
                           fmf_initial=0,
                           dmf_initial=0,
-                          opt_xt=poped.db$optsw[2],
-                          opt_a=poped.db$optsw[4],
-                          opt_x=poped.db$optsw[3],
-                          opt_samps=poped.db$optsw[1],
-                          opt_inds=poped.db$optsw[5],
-                          ls_step_size=poped.db$ls_step_size){
+                          opt_xt=poped.db$settings$optsw[2],
+                          opt_a=poped.db$settings$optsw[4],
+                          opt_x=poped.db$settings$optsw[3],
+                          opt_samps=poped.db$settings$optsw[1],
+                          opt_inds=poped.db$settings$optsw[5],
+                          ls_step_size=poped.db$settings$ls_step_size){
   
   optsw <- cbind(opt_samps,opt_xt,opt_x,opt_a,opt_inds)
   # 
@@ -60,7 +60,7 @@ a_line_search <- function(poped.db,
   
   bPlotNow = FALSE
   
-  if((poped.db$parallelSettings$bParallelLS)){
+  if((poped.db$settings$parallel$bParallelLS)){
     designsin = cell(1,0) # temporary solution
     designout = cell(1,0)
     iParallelN = 2
@@ -128,10 +128,10 @@ a_line_search <- function(poped.db,
     
     numRows = 1
     #Make the plot window
-    #if((poped.db$bShowGraphs)){
+    #if((poped.db$settings$bShowGraphs)){
     #figure(2)
     #clf
-    #if((poped.db$Engine$Type==1)){
+    #if((poped.db$settings$Engine$Type==1)){
     #   set(2,'Name','Line Search')
     #}
     #if((optSum>1)){
@@ -165,18 +165,18 @@ a_line_search <- function(poped.db,
         maxa <- returnArgs[[11]]
         mina <- returnArgs[[12]]
         
-        d_fulld = getfulld(d[,2,drop=F],poped.db$covd)
-        fulldocc = getfulld(poped.db$docc[,2,drop=F],zeros(1,0))
+        d_fulld = getfulld(d[,2,drop=F],poped.db$parameters$covd)
+        fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],zeros(1,0))
         
         #========= define best answers so far on xt
         best_xt=xt
         des_num = 1
         
-        if((poped.db$bUseGrouped_xt) ){#If we are running with xt groups
-          k_perm = randperm(max(max(poped.db$G)))
-          for(k in 1:max(max(poped.db$G))){
+        if((poped.db$design_space$bUseGrouped_xt) ){#If we are running with xt groups
+          k_perm = randperm(max(max(poped.db$design_space$G_xt)))
+          for(k in 1:max(max(poped.db$design_space$G_xt))){
             tmp = matrix(1,size(xt,1),size(xt,2))*k_perm[k]
-            inters = (poped.db$G==tmp)
+            inters = (poped.db$design_space$G_xt==tmp)
             xt = best_xt
             if((sum(sum(inters))!=0) ){#If we have a time-point defined here (accord. to G)
               step = get_step_size(inters,maxxt,minxt,np)
@@ -193,14 +193,14 @@ a_line_search <- function(poped.db,
                     }
                   }
                   if((bED)){
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       temp_detmf <- returnArgs[[2]]
                       poped.db <- returnArgs[[3]]
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -209,15 +209,15 @@ a_line_search <- function(poped.db,
                       }
                     }
                   } else {
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       poped.db <- returnArgs[[2]]
                       temp_detmf=ofv_fim(temp_mf,poped.db)
                       #STORING DESIGNS FOR PARALLEL EXECUTION
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -226,7 +226,7 @@ a_line_search <- function(poped.db,
                       }
                     }
                   }
-                  if((p == 2 || poped.db$parallelSettings$bParallelLS == FALSE)){
+                  if((p == 2 || poped.db$settings$parallel$bParallelLS == FALSE)){
                     if((temp_detmf >best_detmf)){
                       dmf = temp_detmf
                       fmf  = temp_mf
@@ -240,13 +240,13 @@ a_line_search <- function(poped.db,
                     itvector[it] = it ##ok<AGROW>
                     dmfvector[it] = best_detmf
                     
-                    if((!isempty(poped.db$strIterationFileName))){
-                      write_iterationfile('Line Search',it,best_xt,poped.db$ga,poped.db$gx,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                    if((!isempty(poped.db$settings$strIterationFileName))){
+                      write_iterationfile('Line Search',it,best_xt,poped.db$design$a,poped.db$design$x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                     }
                     
                     it = it +1
-                    if((poped.db$bShowGraphs && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,best_xt,poped.db$gx,poped.db$ga,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                    if((poped.db$settings$bShowGraphs && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,best_xt,poped.db$design$x,poped.db$design$a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                       bPlotNow = FALSE
                     }
                   }
@@ -260,8 +260,8 @@ a_line_search <- function(poped.db,
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else { #If we are running without xt groups
           #-------------line search for xt
-          m_perm = randperm(poped.db$m) #Randomize which group to change first
-          for(ind in 1:poped.db$m){
+          m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+          for(ind in 1:poped.db$design$m){
             # for output to screen during run
             sn_perm = randperm(ni[m_perm[ind]]) #Randomize which sample to change first
             for(sn in 1:ni[m_perm[ind]]){
@@ -273,14 +273,14 @@ a_line_search <- function(poped.db,
                 for(ct in 1:(np+1)){
                   xt[m_perm[ind],sn_perm[sn]]=minxt[m_perm[ind],sn_perm[sn]]+step*(ct-1)
                   if((bED)){
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       temp_detmf <- returnArgs[[2]]
                       poped.db <- returnArgs[[3]]
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -289,15 +289,15 @@ a_line_search <- function(poped.db,
                       }
                     }
                   } else {
-                    if((poped.db$parallelSettings$bParallelLS == FALSE)){
-                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == FALSE)){
+                      returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       poped.db <- returnArgs[[2]]
                       temp_detmf=ofv_fim(temp_mf,poped.db)
                       #STORING DESIGNS FOR PARALLEL EXECUTION
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -307,7 +307,7 @@ a_line_search <- function(poped.db,
                     }
                     
                   }
-                  if((p==2 || poped.db$parallelSettings$bParallelLS == FALSE)){
+                  if((p==2 || poped.db$settings$parallel$bParallelLS == FALSE)){
                     if((temp_detmf >best_detmf)){
                       dmf = temp_detmf
                       fmf  = temp_mf
@@ -321,13 +321,13 @@ a_line_search <- function(poped.db,
                     itvector[it] = it
                     dmfvector[it] = best_detmf
                     
-                    if((!isempty(poped.db$strIterationFileName))){
-                      write_iterationfile('Line Search',it,best_xt,poped.db$ga,poped.db$gx,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                    if((!isempty(poped.db$settings$strIterationFileName))){
+                      write_iterationfile('Line Search',it,best_xt,poped.db$design$a,poped.db$design$x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                     }
                     
                     it = it +1
-                    if((poped.db$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,best_xt,poped.db$gx,poped.db$ga,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                    if((poped.db$settings$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,best_xt,poped.db$design$x,poped.db$design$a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                       bPlotNow = FALSE
                     }
                   }
@@ -342,19 +342,19 @@ a_line_search <- function(poped.db,
           
         }
         
-        poped.db$gxt=best_xt
+        poped.db$design$xt=best_xt
         
         
         #--------write out final results
         fprintf(fn,'\n')
         fprintf(fn,'Best value for OFV(MF) = %g\n\n',best_detmf)
         #fprintf(fn,'Best value for xt: \n\n')
-        print_xt(poped.db$gxt,poped.db$gni,poped.db$global_model_switch,fn,
+        print_xt(poped.db$design$xt,poped.db$design$ni,poped.db$design$model_switch,fn,
                  head_txt="Best value for xt:\n")
         fprintf(fn,'\n')        
         #writet(fn,ni,best_xt)
       }
-      if((poped.db$parallelSettings$bParallelLS)){
+      if((poped.db$settings$parallel$bParallelLS)){
         designsin = cell(1,0) # temporary solution
       }
     }
@@ -380,19 +380,19 @@ a_line_search <- function(poped.db,
         maxa <- returnArgs[[11]]
         mina <- returnArgs[[12]]
         
-        d_fulld = getfulld(d[,2,drop=F],poped.db$covd)
-        fulldocc = getfulld(poped.db$docc[,2,drop=F],zeros(1,0))
+        d_fulld = getfulld(d[,2,drop=F],poped.db$parameters$covd)
+        fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],zeros(1,0))
         #========= define best answers so far on x
         best_x=x
         
-        if((poped.db$bUseGrouped_x) ){#If we are running with x groups
-          k_perm = randperm(max(max(poped.db$Gx))) #Randomize which group to change first
-          for(k in 1:max(max(poped.db$Gx))){
+        if((poped.db$design_space$bUseGrouped_x) ){#If we are running with x groups
+          k_perm = randperm(max(max(poped.db$design_space$G_x))) #Randomize which group to change first
+          for(k in 1:max(max(poped.db$design_space$G_x))){
             tmp = matrix(1,size(x,1),size(x,2))*k_perm[k]
-            inters = (poped.db$Gx==tmp)
+            inters = (poped.db$design_space$G_x==tmp)
             x = best_x
             if((sum(sum(inters))!=0) ){#If we have a design var defined here (accord. to Gx)
-              discrete_val = get_discrete_val(inters,poped.db$discrete_x)
+              discrete_val = get_discrete_val(inters,poped.db$design_space$discrete_x)
               if((length(discrete_val)>1)){
                 fprintf('Searching x grouped as %g\n',k_perm[k])
                 for(ct in 1:length(discrete_val)){
@@ -406,14 +406,14 @@ a_line_search <- function(poped.db,
                     }
                   }
                   if((bED)){
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       temp_detmf <- returnArgs[[2]]
                       poped.db <- returnArgs[[3]]
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -422,14 +422,14 @@ a_line_search <- function(poped.db,
                       }
                     }
                   } else {
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       poped.db <- returnArgs[[2]]
                       temp_detmf=ofv_fim(temp_mf,poped.db)
                     } else { #STORING DESIGNS FOR PARALLEL EXECUTION
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num +1
                       } else {
                         temp_detmf = designout[[itx]]$ofv
@@ -438,7 +438,7 @@ a_line_search <- function(poped.db,
                       }
                     }
                   }
-                  if((poped.db$parallelSettings$bParallelLS == 0)){
+                  if((poped.db$settings$parallel$bParallelLS == 0)){
                     if((temp_detmf >best_detmf)){
                       dmf = temp_detmf
                       fmf  = temp_mf
@@ -452,13 +452,13 @@ a_line_search <- function(poped.db,
                     itvector[it] = it
                     dmfvector[it] = best_detmf
                     
-                    if((!isempty(poped.db$strIterationFileName))){
-                      write_iterationfile('Line Search',it,poped.db$gxt,poped.db$ga,best_x,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                    if((!isempty(poped.db$settings$strIterationFileName))){
+                      write_iterationfile('Line Search',it,poped.db$design$xt,poped.db$design$a,best_x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                     }
                     
                     it = it +1
-                    if((poped.db$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$gxt,best_x,poped.db$ga,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                    if((poped.db$settings$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$design$xt,best_x,poped.db$design$a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                       bPlotNow = FALSE
                     }
                   }
@@ -472,17 +472,17 @@ a_line_search <- function(poped.db,
           # for output to screen during run
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else {
-          k_perm = randperm(size(poped.db$gx,2)) #Randomize which variable to change first
-          for(k in 1:size(poped.db$gx,2) ){#Do the line search for all other design var.
-            if((poped.db$line_optx[k_perm[k]]) ){#If this design var should use line search
+          k_perm = randperm(size(poped.db$design$x,2)) #Randomize which variable to change first
+          for(k in 1:size(poped.db$design$x,2) ){#Do the line search for all other design var.
+            if((poped.db$settings$line_optx[k_perm[k]]) ){#If this design var should use line search
               #-------------line search for x
-              m_perm = randperm(poped.db$m) #Randomize which group to change first
-              for(ind in 1:poped.db$m){
+              m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+              for(ind in 1:poped.db$design$m){
                 # for output to screen during run
                 x=best_x
                 #-----------------------step-size for moving
                 #through line search (length of discrete variable)
-                discrete_val = poped.db$discrete_x[[m_perm[ind],k_perm[k]]]
+                discrete_val = poped.db$design_space$discrete_x[[m_perm[ind],k_perm[k]]]
                 if((length(discrete_val)>=1)){
                   fprintf('Searching x%g on individual/group %g\n',k_perm[k],m_perm[ind])
                   # val_perm = randperm(length(discrete_val))
@@ -491,14 +491,14 @@ a_line_search <- function(poped.db,
                   for(ct in 1:length(discrete_val)){
                     x[m_perm[ind],k_perm[k]]=discrete_val[ct]
                     if((bED)){
-                      if((poped.db$parallelSettings$bParallelLS == 0)){
-                        returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                      if((poped.db$settings$parallel$bParallelLS == 0)){
+                        returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                         temp_mf <- returnArgs[[1]]
                         temp_detmf <- returnArgs[[2]]
                         poped.db <- returnArgs[[3]]
                       } else {
                         if((p==1)){
-                          designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                          designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                           des_num = des_num + 1
                         } else {
                           temp_detmf = designout[[it]]$ofv
@@ -507,14 +507,14 @@ a_line_search <- function(poped.db,
                         }
                       }
                     } else {
-                      if((poped.db$parallelSettings$bParallelLS == 0)){
-                        returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                      if((poped.db$settings$parallel$bParallelLS == 0)){
+                        returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                         temp_mf <- returnArgs[[1]]
                         poped.db <- returnArgs[[2]]
                         temp_detmf=ofv_fim(temp_mf,poped.db)
                       } else { #STORING DESIGNS FOR PARALLEL EXECUTION
                         if((p==1)){
-                          designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                          designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                           des_num = des_num +1
                         } else {
                           temp_detmf = designout[[itx]]$ofv
@@ -524,7 +524,7 @@ a_line_search <- function(poped.db,
                         }
                       }
                     }
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
                       if((temp_detmf>best_detmf)){
                         dmf = temp_detmf
                         fmf  = temp_mf
@@ -538,13 +538,13 @@ a_line_search <- function(poped.db,
                       }
                       itvector[it] = it
                       dmfvector[it] = best_detmf
-                      if((!isempty(poped.db$strIterationFileName))){
-                        write_iterationfile('Line Search',it,poped.db$gxt,poped.db$ga,best_x,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                      if((!isempty(poped.db$settings$strIterationFileName))){
+                        write_iterationfile('Line Search',it,poped.db$design$xt,poped.db$design$a,best_x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                       }
                       
                       it = it +1
-                      if((poped.db$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                        # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$gxt,best_x,poped.db$ga,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                      if((poped.db$settings$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                        # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$design$xt,best_x,poped.db$design$a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                         bPlotNow = FALSE
                       }
                     }
@@ -557,9 +557,9 @@ a_line_search <- function(poped.db,
               }
             }
           }
-          poped.db$gx=best_x
+          poped.db$design$x=best_x
         }
-        if((sum(poped.db$line_optx)>0 && p == 2) ){#If using line search for any discrete var.
+        if((sum(poped.db$settings$line_optx)>0 && p == 2) ){#If using line search for any discrete var.
           #--------write out final results
           fprintf(fn,'=======================================================================================\n\n')
           fprintf(fn,'Best value for OFV(MF) = %g\n\n',best_detmf)
@@ -567,7 +567,7 @@ a_line_search <- function(poped.db,
           fprintf(fn,'%g \n\n',best_x)
         }
       }
-      if((poped.db$parallelSettings$bParallelLS)){
+      if((poped.db$settings$parallel$bParallelLS)){
         designsin = cell(1,0) # temporary solution
       }
     }
@@ -594,17 +594,17 @@ a_line_search <- function(poped.db,
         mina <- returnArgs[[12]]
         
         
-        d_fulld  = getfulld(d[,2,drop=F],poped.db$covd)
-        fulldocc = getfulld(poped.db$docc[,2,drop=F],zeros(1,0))
+        d_fulld  = getfulld(d[,2,drop=F],poped.db$parameters$covd)
+        fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],zeros(1,0))
         #========= define best answers so far on a
         best_a=a
         
-        if((poped.db$bUseGrouped_a) ){#If we are running with a groups
+        if((poped.db$design_space$bUseGrouped_a) ){#If we are running with a groups
           
-          k_perm = randperm(max(max(poped.db$Ga)))
-          for(k in 1:max(max(poped.db$Ga))){
+          k_perm = randperm(max(max(poped.db$design_space$G_a)))
+          for(k in 1:max(max(poped.db$design_space$G_a))){
             tmp = matrix(1,size(a,1),size(a,2))*k_perm[k]
-            inters = (poped.db$Ga==tmp)
+            inters = (poped.db$design_space$G_a==tmp)
             a = best_a
             if((sum(sum(inters))!=0) ){#If we have a covariate defined here (accord. to Ga)
               step = get_step_size(inters,maxa,mina,np)
@@ -621,14 +621,14 @@ a_line_search <- function(poped.db,
                     }
                   }
                   if((bED)){
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       temp_detmf <- returnArgs[[2]]
                       poped.db <- returnArgs[[3]]
                     } else {
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num + 1
                       } else {
                         temp_detmf = designout[[it]]$ofv
@@ -637,14 +637,14 @@ a_line_search <- function(poped.db,
                       }
                     }
                   } else {
-                    if((poped.db$parallelSettings$bParallelLS == 0)){
-                      returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                    if((poped.db$settings$parallel$bParallelLS == 0)){
+                      returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                       temp_mf <- returnArgs[[1]]
                       poped.db <- returnArgs[[2]]
                       temp_detmf=ofv_fim(temp_mf,poped.db)
                     } else { #STORING DESIGNS FOR PARALLEL EXECUTION
                       if((p==1)){
-                        designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                        designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                         des_num = des_num +1
                       } else {
                         temp_detmf = designout[[ita]]$ofv
@@ -654,7 +654,7 @@ a_line_search <- function(poped.db,
                       }
                     }
                   }
-                  if((poped.db$parallelSettings$bParallelLS == 0 || p == 2)){
+                  if((poped.db$settings$parallel$bParallelLS == 0 || p == 2)){
                     if((temp_detmf >best_detmf)){
                       dmf = temp_detmf
                       fmf  = temp_mf
@@ -668,13 +668,13 @@ a_line_search <- function(poped.db,
                     itvector[it] = it
                     dmfvector[it] = best_detmf
                     
-                    if((!isempty(poped.db$strIterationFileName))){
-                      write_iterationfile('Line Search',it,poped.db$gxt,best_a,poped.db$gx,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                    if((!isempty(poped.db$settings$strIterationFileName))){
+                      write_iterationfile('Line Search',it,poped.db$design$xt,best_a,poped.db$design$x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                     }
                     
                     it = it +1
-                    if((poped.db$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                      # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$gxt,poped.db$gx,best_a,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                    if((poped.db$settings$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                      # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$design$xt,poped.db$design$x,best_a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                       bPlotNow = FALSE
                     }
                   }
@@ -687,13 +687,13 @@ a_line_search <- function(poped.db,
           # for output to screen during run
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else {
-          k_perm = randperm(size(poped.db$ga,2)) #Randomize which a variable to change first
-          #print(poped.db$ga)
-          for(k in 1:size(poped.db$ga,2) ){#Do the line search for all covariates
-            if((poped.db$line_opta[k_perm[k]]) ){#If this covariate should use line search
+          k_perm = randperm(size(poped.db$design$a,2)) #Randomize which a variable to change first
+          #print(poped.db$design$a)
+          for(k in 1:size(poped.db$design$a,2) ){#Do the line search for all covariates
+            if((poped.db$settings$line_opta[k_perm[k]]) ){#If this covariate should use line search
               #-------------line search for a[k]
-              m_perm = randperm(poped.db$m) #Randomize which group to change first
-              for(ind in 1:poped.db$m){
+              m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+              for(ind in 1:poped.db$design$m){
                 # for output to screen during run
                 a = best_a
                 #-----------------------step-size for moving through line search
@@ -703,14 +703,14 @@ a_line_search <- function(poped.db,
                   for(ct in 1:(np+1)){
                     a[m_perm[ind],k_perm[k]]=mina[m_perm[ind],k_perm[k]]+step*(ct-1)
                     if((bED)){
-                      if((poped.db$parallelSettings$bParallelLS == 0)){
-                        returnArgs <- ed_mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$covd,poped.db$sigma,poped.db$docc,poped.db) 
+                      if((poped.db$settings$parallel$bParallelLS == 0)){
+                        returnArgs <- ed_mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$covd,poped.db$parameters$sigma,poped.db$parameters$docc,poped.db) 
                         temp_mf <- returnArgs[[1]]
                         temp_detmf <- returnArgs[[2]]
                         poped.db <- returnArgs[[3]]
                       } else {
                         if((p==1)){
-                          designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)
+                          designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)
                           des_num = des_num + 1
                         } else {
                           temp_detmf = designout[[it]]$ofv
@@ -719,15 +719,15 @@ a_line_search <- function(poped.db,
                         }
                       }
                     } else {
-                      if((poped.db$parallelSettings$bParallelLS == 0)){
-                        returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$sigma,fulldocc,poped.db) 
+                      if((poped.db$settings$parallel$bParallelLS == 0)){
+                        returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop[,2,drop=F],d_fulld,poped.db$parameters$sigma,fulldocc,poped.db) 
                         temp_mf <- returnArgs[[1]]
                         poped.db <- returnArgs[[2]]
                         temp_detmf=ofv_fim(temp_mf,poped.db)
                         counter= counter+1
                       } else { #STORING DESIGNS FOR PARALLEL EXECUTION
                         if((p==1)){
-                          designsin = update_designinlist(designsin,poped.db$groupsize,ni,xt,x,a,des_num,0)   
+                          designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xt,x,a,des_num,0)   
                           des_num = des_num + 1
                         } else {
                           temp_detmf = designout[[ita]]$ofv
@@ -737,7 +737,7 @@ a_line_search <- function(poped.db,
                         }
                       }
                     }
-                    if((poped.db$parallelSettings$bParallelLS == 0 || p == 2)){
+                    if((poped.db$settings$parallel$bParallelLS == 0 || p == 2)){
                       if((temp_detmf >best_detmf)){
                         dmf = temp_detmf
                         fmf  = temp_mf
@@ -754,13 +754,13 @@ a_line_search <- function(poped.db,
                       itvector[it] = it
                       dmfvector[it] = best_detmf
                       
-                      if((!isempty(poped.db$strIterationFileName))){
-                        write_iterationfile('Line Search',it,poped.db$gxt,best_a,poped.db$gx,poped.db$gni,poped.db$groupsize,fmf,best_detmf,poped.db)
+                      if((!isempty(poped.db$settings$strIterationFileName))){
+                        write_iterationfile('Line Search',it,poped.db$design$xt,best_a,poped.db$design$x,poped.db$design$ni,poped.db$design$groupsize,fmf,best_detmf,poped.db)
                       }
                       
                       it = it +1
-                      if((poped.db$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
-                        # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$gxt,poped.db$gx,best_a,poped.db$m,poped.db$gni,it,poped.db$Engine)
+                      if((poped.db$settings$bShowGraphs==TRUE && ((it%%plotstepsize)==0 || bPlotNow==TRUE))){
+                        # plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$design$xt,poped.db$design$x,best_a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
                         bPlotNow = FALSE
                       }
                     }
@@ -775,28 +775,28 @@ a_line_search <- function(poped.db,
           }
           
         }
-        poped.db$ga=best_a
+        poped.db$design$a=best_a
         if((optsw[4]==TRUE)){
           fprintf(fn,'Best value for OFV(MF) = %g\n\n',best_detmf)
           fprintf(fn,'Best value for a: \n')
-          for(ct1 in 1:poped.db$m){
+          for(ct1 in 1:poped.db$design$m){
             fprintf(fn,'Group %g: ', ct1)
-            for(ct2 in 1:poped.db$na){
+            for(ct2 in 1:size(poped.db$design$a,2)){
               tmp_txt <- '%g'
-              if(ct2<poped.db$na) tmp_txt <- paste(tmp_txt,' : ',sep="")
-              fprintf(fn,tmp_txt,poped.db$ga[ct1,ct2],poped.db$gmina[ct1,ct2],poped.db$gmaxa[ct1,ct2])
+              if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
+              fprintf(fn,tmp_txt,poped.db$design$a[ct1,ct2],poped.db$design_space$mina[ct1,ct2],poped.db$design_space$maxa[ct1,ct2])
             }
             fprintf(fn,'\n')
           }
           fprintf(fn,'\n') 
         }
-        #         if((sum(poped.db$line_opta)>0 && p ==2) ){#If using line search for any covariate
+        #         if((sum(poped.db$settings$line_opta)>0 && p ==2) ){#If using line search for any covariate
         #           #--------write out final results
         #           fprintf(fn,'=======================================================================================\n\n')
         #           fprintf(fn,'%g \n\n',best_a)
         #         }
       }
-      if((poped.db$parallelSettings$bParallelLS)){
+      if((poped.db$settings$parallel$bParallelLS)){
         designsin = cell(1,0) # temporary solution
       }
     }
@@ -805,14 +805,14 @@ a_line_search <- function(poped.db,
     time_value=toc(echo=FALSE)
   
     
-    if((poped.db$bShowGraphs==TRUE)){
-      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$gxt,poped.db$gx,poped.db$ga,poped.db$m,poped.db$gni,it,poped.db$Engine)
+    if((poped.db$settings$bShowGraphs==TRUE)){
+      #plotLineSearch(numRows,optSum,optsw,dmfvector,itvector,poped.db$design$xt,poped.db$design$x,poped.db$design$a,poped.db$design$m,poped.db$design$ni,it,poped.db$settings$Engine)
     }
     
     #--- Return the optimal continuous variables
-    xt=poped.db$gxt
-    a=poped.db$ga
-    x=poped.db$gx
+    xt=poped.db$design$xt
+    a=poped.db$design$a
+    x=poped.db$design$x
     
     poped.db$design$xt <- xt
     poped.db$design$x <-x
@@ -834,7 +834,7 @@ a_line_search <- function(poped.db,
   #fprintf(fn,'========================================================================================\n')
   if(!any(class(out_file)=="file") && out_file!="") close(fn)
   
-  return(list( fmf= fmf,dmf=dmf,best_changed=best_changed,xt=poped.db$gxt,x=poped.db$gx,a=poped.db$ga,poped.db=poped.db)) 
+  return(list( fmf= fmf,dmf=dmf,best_changed=best_changed,xt=poped.db$design$xt,x=poped.db$design$x,a=poped.db$design$a,poped.db=poped.db)) 
 }
 
 

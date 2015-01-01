@@ -45,24 +45,24 @@ poped_optimize <- function(poped.db,
                            fmf=0,
                            dmf=0,
                            trflag = TRUE,
-                           opt_xt=poped.db$optsw[2],
-                           opt_a=poped.db$optsw[4],
-                           opt_x=poped.db$optsw[3],
-                           opt_samps=poped.db$optsw[1],
-                           opt_inds=poped.db$optsw[5],
-                           cfaxt=poped.db$cfaxt, 
-                           cfaa=poped.db$cfaa,
-                           rsit=poped.db$rsit,
-                           rsit_output=poped.db$rsit_output,
-                           fim.calc.type=poped.db$iFIMCalculationType,
-                           ofv_calc_type=poped.db$ofv_calc_type,
-                           approx_type=poped.db$iApproximationMethod,
-                           bUseExchangeAlgorithm=poped.db$bUseExchangeAlgorithm,
+                           opt_xt=poped.db$settings$optsw[2],
+                           opt_a=poped.db$settings$optsw[4],
+                           opt_x=poped.db$settings$optsw[3],
+                           opt_samps=poped.db$settings$optsw[1],
+                           opt_inds=poped.db$settings$optsw[5],
+                           cfaxt=poped.db$settings$cfaxt, 
+                           cfaa=poped.db$settings$cfaa,
+                           rsit=poped.db$settings$rsit,
+                           rsit_output=poped.db$settings$rsit_output,
+                           fim.calc.type=poped.db$settings$iFIMCalculationType,
+                           ofv_calc_type=poped.db$settings$ofv_calc_type,
+                           approx_type=poped.db$settings$iApproximationMethod,
+                           bUseExchangeAlgorithm=poped.db$settings$bUseExchangeAlgorithm,
                            iter=1,
-                           d_switch=poped.db$d_switch,
-                           ED_samp_size = poped.db$ED_samp_size,
-                           bLHS=poped.db$bLHS,
-                           use_laplace=poped.db$iEDCalculationType,
+                           d_switch=poped.db$settings$d_switch,
+                           ED_samp_size = poped.db$settings$ED_samp_size,
+                           bLHS=poped.db$settings$bLHS,
+                           use_laplace=poped.db$settings$iEDCalculationType,
                            ...){
   
   ## update poped.db with options supplied in function
@@ -79,7 +79,7 @@ poped_optimize <- function(poped.db,
   #=========================================
   fmf = 0 #The best FIM so far
   dmf = 0 #The best ofv of FIM  so far
-  if((sum(poped.db$optsw)>0)){
+  if((sum(poped.db$settings$optsw)>0)){
     
     # ------------- downsizing of general design
     downsize.list <- downsizing_general_design(poped.db)
@@ -101,13 +101,13 @@ poped_optimize <- function(poped.db,
            'of individuals in each group')
     }
     
-    if((sum(poped.db$optsw)==0)){
+    if((sum(poped.db$settings$optsw)==0)){
       stop(sprintf('No optimization parameter is set.'))
     }
     
     # if optimizing over number of samples then do this
     if((opt_samps==TRUE)){
-      if((poped.db$d_switch==TRUE) ){#D-optimal
+      if((poped.db$settings$d_switch==TRUE) ){#D-optimal
         #         returnArgs <- Dpoptim(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
         #         xt <- returnArgs[[1]]
         #         x <- returnArgs[[2]]
@@ -131,7 +131,7 @@ poped_optimize <- function(poped.db,
       
       # if optimizing over number of individuals in group then do this
     } else if (opt_inds==TRUE){
-      if((poped.db$d_switch==TRUE) ){#D-optimal
+      if((poped.db$settings$d_switch==TRUE) ){#D-optimal
         #         returnArgs <- DoptIndGrp(poped.db,model_switch,ni,xt,x,a,bpop,d,maxxt,minxt,maxa,mina,fmf,dmf) 
         #         xt <- returnArgs[[1]]
         #         x <- returnArgs[[2]]
@@ -152,7 +152,7 @@ poped_optimize <- function(poped.db,
         #         poped.db <- returnArgs[[7]]
         stop('Number of individuals in different groups optimization not implemented in the R-version of PopED yet')        
       }
-      #poped.db$groupsize = groupsize
+      #poped.db$design$groupsize = groupsize
     } else {
       #Using ea algorithm do this,
       if((bUseExchangeAlgorithm==TRUE)){
@@ -175,7 +175,7 @@ poped_optimize <- function(poped.db,
           dmf <- returnArgs[[5]]
           poped.db <- returnArgs[[6]]
         } else {
-          #if((poped.db$iEDCalculationType>=1)){
+          #if((poped.db$settings$iEDCalculationType>=1)){
           returnArgs <- LEDoptim(poped.db,
                                  model_switch=model_switch,
                                  ni=ni,
@@ -215,19 +215,19 @@ poped_optimize <- function(poped.db,
       }
     }
     
-    poped.db$gni[1:poped.db$m]=ni
-    poped.db$design$ni <- ni
+    poped.db$design$ni[1:size(ni,1)]=ni
+    #poped.db$design$ni <- ni
     if((!isempty(xt))){
-      poped.db$gxt[1:poped.db$m,1:poped.db$maxni]=xt
-      poped.db$design$xt <- xt
+      poped.db$design$xt[1:size(xt,1),1:size(xt,2)]=xt
+      #poped.db$design$xt <- xt
     }
     if((!isempty(x))){
-      poped.db$gx[1:poped.db$m,1:poped.db$nx]=x
-      poped.db$design$x <- x
+      poped.db$design$x[1:size(x,1),1:size(x,2)]=x
+      #poped.db$design$x <- x
     }
     if((!isempty(a))){
-      poped.db$ga[1:poped.db$m,1:poped.db$na]=a
-      poped.db$design$a <- a
+      poped.db$design$a[1:size(a,1),1:size(a,2)]=a
+      #poped.db$design$a <- a
     }
   }
   return(list( fmf= fmf, dmf= dmf, poped.db = poped.db )) 

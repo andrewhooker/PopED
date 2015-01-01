@@ -1,20 +1,20 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStructure){
+v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db){
   # number of samples X number of samples (per individual)
   
-  bUseAutoCorrelation = !isempty(globalStructure$auto_pointer)
+  bUseAutoCorrelation = !isempty(poped.db$model$auto_pointer)
   
   bUseFullSigmaCorrelation = FALSE
   
-  if((globalStructure$m2_switch[1]==0 || globalStructure$m2_switch[1]==1 || globalStructure$m2_switch[1]==30)){
-    returnArgs <- LinMatrixL(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,globalStructure) 
+  if((poped.db$settings$m2_switch[1]==0 || poped.db$settings$m2_switch[1]==1 || poped.db$settings$m2_switch[1]==30)){
+    returnArgs <- LinMatrixL(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
     l <- returnArgs[[1]]
-    globalStructure <- returnArgs[[2]]
-    returnArgs <- LinMatrixH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,globalStructure) 
+    poped.db <- returnArgs[[2]]
+    returnArgs <- LinMatrixH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
     h <- returnArgs[[1]]
-    globalStructure <- returnArgs[[2]]
+    poped.db <- returnArgs[[2]]
     
     ret = zeros(0,1)
     
@@ -35,23 +35,23 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStr
       ret = zeros(length(xt_ind), length(xt_ind))
     }
     
-    if((globalStructure$bUseSecondOrder)){
+    if((poped.db$settings$bUseSecondOrder)){
       var_eta = zeros(1,length(xt_ind))
       for(o in 1:length(xt_ind)){
-        hessian_eta = hessian_eta_complex(model_switch,xt_ind[o],x,a,bpop,b_ind,bocc_ind,globalStructure)
+        hessian_eta = hessian_eta_complex(model_switch,xt_ind[o],x,a,bpop,b_ind,bocc_ind,poped.db)
         var_eta[o] = 1/4*trace_matrix(hessian_eta*d*(2*hessian_eta)*d)
       }
       ret = ret+diag_matlab(var_eta)
     }
     
-    locc = cell(1,globalStructure$NumOcc)
+    locc = cell(1,poped.db$parameters$NumOcc)
     
     #Add all occasion variability
-    for(i in 1:globalStructure$NumOcc){
-      if(globalStructure$NumOcc==0) next
-      returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,i,globalStructure) 
+    for(i in 1:poped.db$parameters$NumOcc){
+      if(poped.db$parameters$NumOcc==0) next
+      returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,i,poped.db) 
       locc_tmp <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
       if((isempty(ret))){
         ret = locc_tmp%*%docc%*%t(locc_tmp)
       } else {
@@ -63,16 +63,16 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStr
     if((!isempty(sigma)) ){#If we have any residual variance
       interact = zeros(0,1) 
       if((!isempty(d)) ){#Calculate the interaction terms
-        returnArgs <- LinMatrixLH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,size(sigma,1),globalStructure) 
+        returnArgs <- LinMatrixLH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,size(sigma,1),poped.db) 
         lh <- returnArgs[[1]]
-        globalStructure <- returnArgs[[2]]
+        poped.db <- returnArgs[[2]]
         interact=lh%*%kron_tmp(d,sigma)%*%t(lh)
         ret = ret + diag_matlab(diag_matlab(interact))
       }
       
       if((bUseAutoCorrelation) ){#Add autocorrelation
-        autocorr = feval(globalStructure$auto_pointer,h,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,l,locc,interact,globalStructure)
-        if((globalStructure$m2_switch[1]==30)){
+        autocorr = feval(poped.db$model$auto_pointer,h,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,l,locc,interact,poped.db)
+        if((poped.db$settings$m2_switch[1]==30)){
           stop(sprintf('User definied variance structure could not be used with automatic differentiation'))
         }
         if((isempty(ret))){
@@ -89,14 +89,14 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,globalStr
       }
     }
   } else {
-    if((globalStructure$m2_switch[1]==20)){
+    if((poped.db$settings$m2_switch[1]==20)){
       stop("Analytic variance not defined")
       #ret = analytic_variance(xt_ind,x,a,bpop,d)
     } else {
       stop(sprintf('Unknown derivative option for variance'))
     }
   }
-  return(list( ret= ret,globalStructure =globalStructure )) 
+  return(list( ret= ret,poped.db =poped.db )) 
 }
 
 ## %This function fixes a bug in FreeMat 4.0

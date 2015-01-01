@@ -2,25 +2,25 @@
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
 
-write_iterationfile <- function(strSearch,iteration,xt,a,x,ni,groupsize,fim,ofv,globalStructure){
+write_iterationfile <- function(strSearch,iteration,xt,a,x,ni,groupsize,fim,ofv,poped.db){
 
 ## #Make sure that this doesn't crash the search
 ## try 
-##     fn = file(globalStructure$strIterationFileName, 'w')
+##     fn = file(poped.db$settings$strIterationFileName, 'w')
 ##     if((fn == -1)){
 ##         stop(sprintf('iteration file could not be open'))
 ##     }
 
 ##     strReturn = 'optimalDesign'
 
-## source(globalStructure$strIterationFileName) 
-##      returnArgs <-  fileparts(globalStructure$strIterationFileName) 
+## source(poped.db$settings$strIterationFileName) 
+##      returnArgs <-  fileparts(poped.db$settings$strIterationFileName) 
 ## strPath <- returnArgs[[1]]
 ##  strFunctionName <- returnArgs[[2]]
 
 ##     fprintf(fn,'%s <- function()\n\n',strReturn,strFunctionName){
-##     fprintf(fn,'%s%s --\n','% -- Auto generated iteration file for the run ',globalStructure$modtit)
-##     fprintf(fn,'%s #s, #s\n','% -- Created with',getPopedVersionString(),datestr_poped(globalStructure$Engine$Type))
+##     fprintf(fn,'%s%s --\n','% -- Auto generated iteration file for the run ',poped.db$settings$modtit)
+##     fprintf(fn,'%s #s, #s\n','% -- Created with',getPopedVersionString(),datestr_poped(poped.db$settings$Engine$Type))
 ##     fprintf(fn,'%s%s at iteration #d\n\n','% -- Created from the search ',strSearch,iteration)
 
 

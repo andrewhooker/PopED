@@ -1,62 +1,62 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
   
   #Input: the prior FIM or (empty) and all the other things to calculate the
   #grad with
   #Return a vector that is the gradient and the global structure
   
-  if((globalStructure$ofv_calc_type==1) ){#Determinant Design
-    if((!globalStructure$bUseGrouped_xt)){
-      returnArgs <- graddetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+  if((poped.db$settings$ofv_calc_type==1) ){#Determinant Design
+    if((!poped.db$design_space$bUseGrouped_xt)){
+      returnArgs <- graddetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- graddetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+      returnArgs <- graddetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
     }
     return
   }
   
-  if((globalStructure$ofv_calc_type==2) ){#Trace of inverse 
-    if((!globalStructure$bUseGrouped_xt)){
-      returnArgs <-  gradtrmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+  if((poped.db$settings$ofv_calc_type==2) ){#Trace of inverse 
+    if((!poped.db$design_space$bUseGrouped_xt)){
+      returnArgs <-  gradtrmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
       return
     } else {
       fprintf('Warning: grad mf for grouped xt on A-optimal design is not implemented analytically\nNumerical difference is used instead\n')
     }
   }
   
-  if((globalStructure$ofv_calc_type==3) ){#S-Optimal Design
+  if((poped.db$settings$ofv_calc_type==3) ){#S-Optimal Design
     stop(sprintf('grad mf for xt on S-optimal design not implemented yet'))
   }
   
-  if((globalStructure$ofv_calc_type==4) ){#Log determinant
-    if((!globalStructure$bUseGrouped_xt)){
-      returnArgs <- gradlndetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+  if((poped.db$settings$ofv_calc_type==4) ){#Log determinant
+    if((!poped.db$design_space$bUseGrouped_xt)){
+      returnArgs <- gradlndetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- gradlndetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+      returnArgs <- gradlndetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
     }
     return
   }
   
   #All other types of criterions, i$e. Ds-optimal design, CV-optimal etc.
-  iParallelN = (globalStructure$parallelSettings$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
+  iParallelN = (poped.db$settings$parallel$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
   
   if((iParallelN == 2)){
     designsin = cell(1,0)
     it=1
   }
   
-  if((!globalStructure$bUseGrouped_xt) ){#All other OFV with ungrouped xt
+  if((!poped.db$design_space$bUseGrouped_xt) ){#All other OFV with ungrouped xt
     m=size(ni,1)
     gdmf=matrix(1,m,size(xt,2))
     
@@ -65,12 +65,12 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
         #Execute parallel designs
         stop("Parallel execution not yet implemented in PopED for R")
         designout = designsin
-        #designout = execute_parallel(designsin,globalStructure)
+        #designout = execute_parallel(designsin,poped.db)
       }
       if((iParallelN==1)){
-        returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+        returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
         mf_tmp <- returnArgs[[1]]
-        globalStructure <- returnArgs[[2]]
+        poped.db <- returnArgs[[2]]
       } else {
         if((p==1)){
           designsin = update_designinlist(designsin,groupsize,ni,xt,x,a,-1,0)
@@ -81,7 +81,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
       }
       
       if((iParallelN==1 || p==2)){
-        mft = ofv_fim(mf_tmp,globalStructure)
+        mft = ofv_fim(mf_tmp,poped.db)
       }
       
       for(i in 1:m){
@@ -91,12 +91,12 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
           for(ct1 in 1:ni[i]){
             if((axt[i,ct1]!=0)){
               xt_plus=xt
-              xt_plus[i,ct1]=xt_plus[i,ct1]+globalStructure$hgd
+              xt_plus[i,ct1]=xt_plus[i,ct1]+poped.db$settings$hgd
               
               if((iParallelN ==1)){
-                returnArgs <-  mftot(model_switch,groupsize,ni,xt_plus,x,a,bpop,d,sigma,docc,globalStructure) 
+                returnArgs <-  mftot(model_switch,groupsize,ni,xt_plus,x,a,bpop,d,sigma,docc,poped.db) 
                 fmf_tmp <- returnArgs[[1]]
-                globalStructure <- returnArgs[[2]]
+                poped.db <- returnArgs[[2]]
               } else {
                 if((p==1)){
                   designsin = update_designinlist(designsin,groupsize,ni,xt_plus,x,a,-1,0)
@@ -107,8 +107,8 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
               }
               
               if((iParallelN ==1 || p==2)){
-                mft_plus = ofv_fim(fmf_tmp,globalStructure)
-                tmp=(mft_plus-mft)/globalStructure$hgd
+                mft_plus = ofv_fim(fmf_tmp,poped.db)
+                tmp=(mft_plus-mft)/poped.db$settings$hgd
                 if((tmp==0)){
                   tmp=1e-12
                 }
@@ -122,7 +122,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
     ofv_grad = gdmf
     return
   }
-  if((globalStructure$bUseGrouped_xt) ){#All other OFV with grouped xt
+  if((poped.db$design_space$bUseGrouped_xt) ){#All other OFV with grouped xt
     m=size(ni,1)
     gdmf=matrix(1,m,size(xt,2))
     
@@ -130,12 +130,12 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
       if((p==2)){
         #Execute parallel designs
         stop("Parallel execution not yet implemented in PopED for R")
-        #designout = execute_parallel(designsin,globalStructure)
+        #designout = execute_parallel(designsin,poped.db)
       }
       if((iParallelN==1)){
-        returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+        returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
         mf_tmp <- returnArgs[[1]]
-        globalStructure <- returnArgs[[2]]
+        poped.db <- returnArgs[[2]]
       } else {
         if((p==1)){
           designsin = update_designinlist(designsin,groupsize,ni,xt,x,a,-1,0)
@@ -146,18 +146,18 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
       }
       
       if((iParallelN==1 || p==2)){
-        mft = ofv_fim(mf_tmp,globalStructure)
+        mft = ofv_fim(mf_tmp,poped.db)
       }
       
-      for(k in 1:max(max(max(globalStructure$G)),0)){
+      for(k in 1:max(max(max(poped.db$design_space$G_xt)),0)){
         tmp = matrix(1,size(xt,1),size(xt,2))*k
-        inters = (globalStructure$G==tmp)
+        inters = (poped.db$design_space$G_xt==tmp)
         if((sum(sum(inters))!=0) ){#If we have a time-point defined here (accord. to G)
-          xt_plus = xt+globalStructure$hgd*inters
+          xt_plus = xt+poped.db$settings$hgd*inters
           if((iParallelN ==1)){
-            returnArgs <-  mftot(model_switch,groupsize,ni,xt_plus,x,a,bpop,d,sigma,docc,globalStructure) 
+            returnArgs <-  mftot(model_switch,groupsize,ni,xt_plus,x,a,bpop,d,sigma,docc,poped.db) 
             mf_plus <- returnArgs[[1]]
-            globalStructure <- returnArgs[[2]]
+            poped.db <- returnArgs[[2]]
           } else {
             if((p==1)){
               designsin = update_designinlist(designsin,groupsize,ni,xt_plus,x,a,-1,0)
@@ -168,8 +168,8 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
           }
           
           if((iParallelN ==1 || p==2)){
-            mft_plus = ofv_fim(mf_plus,globalStructure)
-            s=(mft_plus-mft)/globalStructure$hgd
+            mft_plus = ofv_fim(mf_plus,poped.db)
+            s=(mft_plus-mft)/poped.db$settings$hgd
             
             if((s==0) ){#The model doesn't depend on t e$g. PD with Placebo dose, fix the xt-gradient to a small value
               s = 1e-12
@@ -188,5 +188,5 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,gl
       ofv_grad = gdmf
     }
   }
-  return(list( ofv_grad= ofv_grad,globalStructure =globalStructure )) 
+  return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
 }

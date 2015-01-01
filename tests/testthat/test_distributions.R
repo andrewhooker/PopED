@@ -100,7 +100,7 @@ test_that("log_prior_pdf works", {
   
   # then compute the log density from log_prior_pdf
   alpha <- bpop_vals_ed_n[bpop_vals_ed_n[,1]!=0,2]
-  lp.1 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_n, ddescr=poped.db$gd)
+  lp.1 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_n, ddescr=poped.db$parameters$d)
   
   # compute the log density from dnorm
   par <- bpop_vals_ed_n[bpop_vals_ed_n[,1]==1,]
@@ -110,7 +110,7 @@ test_that("log_prior_pdf works", {
   
   # then compute the log density 
   alpha <- bpop_vals_ed_ln[bpop_vals_ed_ln[,1]!=0,2]
-  lp.3 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_ln, ddescr=poped.db$gd)
+  lp.3 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_ln, ddescr=poped.db$parameters$d)
   
   # compute the log density from dlnorm
   par <- bpop_vals_ed_ln[bpop_vals_ed_ln[,1]==4,]
@@ -120,7 +120,7 @@ test_that("log_prior_pdf works", {
   
   # then compute the log density 
   alpha <- bpop_vals_ed_ln[bpop_vals_ed_u[,1]!=0,2]
-  lp.5 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_u, ddescr=poped.db$gd)
+  lp.5 <- log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_u, ddescr=poped.db$parameters$d)
   
   # compute the log density from dlnorm
   par <- bpop_vals_ed_u[bpop_vals_ed_u[,1]==2,]

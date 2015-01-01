@@ -19,7 +19,7 @@ LinMatrixL_occ <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,iCurrentO
 #
 # size: (samples per individual x number of iovs)
 #
-if((poped.db$NumOcc==0)){
+if((poped.db$parameters$NumOcc==0)){
 	y=0
 } else {
      returnArgs <- gradff(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 

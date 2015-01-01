@@ -79,7 +79,7 @@ shinyServer(function(input, output) {
     #     if(input$model=="db.2"){
     #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/warfarin.model.design.all_in_one.POPED.R") # 4-group, add+prop, as pfim
     #       poped.db <- create.poped.database(warfarin.design.1.red.input())
-    #       poped.db$ga <- rbind(50,60,70,80)
+    #       poped.db$design$a <- rbind(50,60,70,80)
     #       facet_scales="fixed"
     #       #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
     #     }

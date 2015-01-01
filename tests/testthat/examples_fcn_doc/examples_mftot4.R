@@ -2,15 +2,15 @@
 
 
 
-mftot4(model_switch=poped.db$global_model_switch,
-      groupsize=poped.db$groupsize,
-      ni=poped.db$gni,
-      xt=poped.db$gxt,
-      x=poped.db$gx,
-      a=poped.db$ga,
-      bpop=poped.db$param.pt.val$bpop,
-      d=poped.db$param.pt.val$d,
-      sigma=poped.db$sigma,
-      docc=poped.db$param.pt.val$docc,
+mftot4(model_switch=poped.db$design$model_switch,
+      groupsize=poped.db$design$groupsize,
+      ni=poped.db$design$ni,
+      xt=poped.db$design$xt,
+      x=poped.db$design$x,
+      a=poped.db$design$a,
+      bpop=poped.db$parameters$param.pt.val$bpop,
+      d=poped.db$parameters$param.pt.val$d,
+      sigma=poped.db$parameters$sigma,
+      docc=poped.db$parameters$param.pt.val$docc,
       poped.db)["ret"]
 

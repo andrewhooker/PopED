@@ -59,18 +59,18 @@
 Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr, 
                    ddescr, maxxt, minxt,maxa,mina,fmf=0,dmf=0,
                    trflag=TRUE,
-                   bUseRandomSearch=poped.db$bUseRandomSearch,
-                   bUseStochasticGradient=poped.db$bUseStochasticGradient,
-                   bUseBFGSMinimizer=poped.db$bUseBFGSMinimizer,
-                   bUseLineSearch=poped.db$bUseLineSearch,
-                   sgit=poped.db$sgit,
-                   ls_step_size=poped.db$ls_step_size,
-                   BFGSConvergenceCriteriaMinStep=poped.db$BFGSConvergenceCriteriaMinStep,
-                   BFGSProjectedGradientTol=poped.db$BFGSProjectedGradientTol,
-                   BFGSTolerancef=poped.db$BFGSTolerancef,
-                   BFGSToleranceg=poped.db$BFGSToleranceg,
-                   BFGSTolerancex=poped.db$BFGSTolerancex,
-                   iter_tot=poped.db$iNumSearchIterationsIfNotLineSearch,
+                   bUseRandomSearch=poped.db$settings$bUseRandomSearch,
+                   bUseStochasticGradient=poped.db$settings$bUseStochasticGradient,
+                   bUseBFGSMinimizer=poped.db$settings$bUseBFGSMinimizer,
+                   bUseLineSearch=poped.db$settings$bUseLineSearch,
+                   sgit=poped.db$settings$sgit,
+                   ls_step_size=poped.db$settings$ls_step_size,
+                   BFGSConvergenceCriteriaMinStep=poped.db$settings$BFGSConvergenceCriteriaMinStep,
+                   BFGSProjectedGradientTol=poped.db$settings$BFGSProjectedGradientTol,
+                   BFGSTolerancef=poped.db$settings$BFGSTolerancef,
+                   BFGSToleranceg=poped.db$settings$BFGSToleranceg,
+                   BFGSTolerancex=poped.db$settings$BFGSTolerancex,
+                   iter_tot=poped.db$settings$iNumSearchIterationsIfNotLineSearch,
                    iter_max=10,
                    ...){
   
@@ -89,11 +89,11 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
   trflag = trflag
   
   # ----------------- type of optimization determination
-  axt=poped.db$optsw[2]*poped.db$cfaxt*matrix(1,poped.db$m,poped.db$maxni)
-  aa=poped.db$optsw[4]*poped.db$cfaa*matrix(1,poped.db$m,poped.db$na)
-  optxt=poped.db$optsw[2]
-  optx=poped.db$optsw[3]
-  opta=poped.db$optsw[4]
+  axt=poped.db$settings$optsw[2]*poped.db$settings$cfaxt*matrix(1,poped.db$design$m,max(poped.db$design_space$maxni))
+  aa=poped.db$settings$optsw[4]*poped.db$settings$cfaa*matrix(1,poped.db$design$m,size(poped.db$design$a,2))
+  optxt=poped.db$settings$optsw[2]
+  optx=poped.db$settings$optsw[3]
+  opta=poped.db$settings$optsw[4]
   bfgs_init=matrix(0,0,0)
   # ----------------- initialization of size variables
   m=size(ni,1)
@@ -103,13 +103,13 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
   
   # ----------------- initialization of model parameters
   bpop=bpopdescr[,2,drop=F]
-  d=getfulld(ddescr[,2,drop=F],poped.db$covd)
-  docc_full = getfulld(poped.db$docc[,2,drop=F],poped.db$covdocc)
+  d=getfulld(ddescr[,2,drop=F],poped.db$parameters$covd)
+  docc_full = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
   
   Engine = list(Type=1,Version=version$version.string)
   
   if((dmf==0) ){#Only first time
-    returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xt,x,a,bpop,d,poped.db$sigma,docc_full,poped.db) 
+    returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
     fmf <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     dmf=ofv_fim(fmf,poped.db)
@@ -125,11 +125,11 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
                      opt_xt=optxt,opt_a=opta,opt_x=optx,
                      opt_inds=F,opt_samps=F,
                      fmf=fmf_init,dmf=dmf_init,
-                     bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,
+                     bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,
                      trflag=trflag,
                      ...)
     #       param_vars_init=diag_matlab(inv(fmf))
-    #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
+    #       returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
     #       params_init <- returnArgs[[1]]
     #       param_cvs_init <- returnArgs[[2]]
     #}
@@ -139,9 +139,9 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       
       
       
-      if(((poped.db$bUseRandomSearch || poped.db$bUseStochasticGradient) && poped.db$bShowGraphs)){
+      if(((bUseRandomSearch || bUseStochasticGradient) && poped.db$settings$bShowGraphs)){
         #figure(1)
-        #if((poped.db$Engine$Type==1)){
+        #if((poped.db$settings$Engine$Type==1)){
         #    set(1,'Name','Random Search and Stochastic Gradient')
         #}
       }
@@ -157,11 +157,11 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       xopto=x
       aopto=a
       lgxto=zeros(m*maxni)
-      lgao=zeros(m*poped.db$na)
+      lgao=zeros(m*size(poped.db$design$a,2))
       
       # ----------------- RS variables initialization
-      dxt=(maxxt-minxt)/poped.db$rslxt
-      da=(maxa-mina)/poped.db$rsla
+      dxt=(maxxt-minxt)/poped.db$settings$rslxt
+      da=(maxa-mina)/poped.db$settings$rsla
       xtoptn=xtopt
       xoptn=xopt
       aoptn=aopt
@@ -172,19 +172,19 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       kitxt=1
       kita=1
       mnormxt=zeros(m,maxni)
-      mnorma=zeros(m,poped.db$na)
+      mnorma=zeros(m,size(poped.db$design$a,2))
       normgxt=zeros(m,maxni)
-      normga=zeros(m,poped.db$na)
+      normga=zeros(m,size(poped.db$design$a,2))
       
       # ----------------- initialization of trace support variables
       odmf=0
       inversionxt=FALSE
       inversiona=FALSE
       
-      if((poped.db$bUseRandomSearch) ){#If we want to perform random search
+      if((bUseRandomSearch) ){#If we want to perform random search
         # ----------------- RANDOM SEARCH BEGINS HERE
         #save for graphical output
-        if((poped.db$parallelSettings$bParallelLS == 0)){
+        if((poped.db$settings$parallel$bParallelLS == 0)){
           tic()              
         }
         itvector[1] = 0
@@ -194,15 +194,15 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           Dtrace(fn,0,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
         }
         
-        if((poped.db$parallelSettings$bParallelRS)){
+        if((poped.db$settings$parallel$bParallelRS)){
           
           # Generate the input designs
           
           designsin = cell(1,0)
-          for(it in 1:poped.db$rsit){
+          for(it in 1:poped.db$settings$rsit){
             if((optxt==TRUE)){
-              if((poped.db$bUseGrouped_xt)){
-                xtoptn=grouped_rand(poped.db$G,xtopt,dxt,ff,axt)
+              if((poped.db$design_space$bUseGrouped_xt)){
+                xtoptn=grouped_rand(poped.db$design_space$G_xt,xtopt,dxt,ff,axt)
               } else {
                 xtoptn=xtopt+dxt/ff*randn(m,maxni)*(axt>0)
               }
@@ -210,25 +210,25 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
               xtoptn=xtoptn+((xtoptn<minxt)*(minxt-xtoptn))
             }
             if((optx==TRUE)){
-              xoptn=get_discrete_x(poped.db$Gx,poped.db$discrete_x,poped.db$bUseGrouped_x)
+              xoptn=get_discrete_x(poped.db$design_space$G_x,poped.db$design_space$discrete_x,poped.db$design_space$bUseGrouped_x)
             }
             if((opta==TRUE)){
-              if((poped.db$bUseGrouped_a)){
-                aoptn=grouped_rand_a(poped.db$Ga,aopt,da,ff,aa)
+              if((poped.db$design_space$bUseGrouped_a)){
+                aoptn=grouped_rand_a(poped.db$design_space$G_a,aopt,da,ff,aa)
               } else {
-                aoptn=aopt+da/ff*randn(m,poped.db$na)*(aa>0)
+                aoptn=aopt+da/ff*randn(m,size(poped.db$design$a,2))*(aa>0)
               }
               aoptn=aoptn-((aoptn>maxa)*(aoptn-maxa))
               aoptn=aoptn+((aoptn<mina)*(mina-aoptn))
             }
-            designsin = update_designinlist(designsin,poped.db$groupsize,ni,xtoptn,xoptn,aoptn,-1,0)
+            designsin = update_designinlist(designsin,poped.db$design$groupsize,ni,xtoptn,xoptn,aoptn,-1,0)
           }
           
           stop("Parallel execution not yet implemented in R")
           designsout = designsin
           #designsout = execute_parallel(designsin,poped.db)
           #Store the optimal design
-          for(it in 1:poped.db$rsit){
+          for(it in 1:poped.db$settings$rsit){
             if((designsout[[it]]$ofv>dmf) ){##ok<USENS>
               if((optxt==TRUE)){
                 xtopt=designsin[[it]]$xt
@@ -243,18 +243,18 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
               fmf=designsout[[it]]$FIM
             }
             
-            if((trflag && (rem(it,poped.db$rsit_output)==0 || it==poped.db$rsit))){
-              itvector[ceiling(it/poped.db$rsit_output)+1]=it
-              dmfvector[ceiling(it/poped.db$rsit_output)+1]=dmf
+            if((trflag && (rem(it,poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
+              itvector[ceiling(it/poped.db$settings$rsit_output)+1]=it
+              dmfvector[ceiling(it/poped.db$settings$rsit_output)+1]=dmf
               Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
             }
           }
         } else {
-          for(it in 1:poped.db$rsit){
+          for(it in 1:poped.db$settings$rsit){
             
             if((optxt==TRUE)){
-              if((poped.db$bUseGrouped_xt)){
-                xtoptn=grouped_rand(poped.db$G,xtopt,dxt,ff,axt)
+              if((poped.db$design_space$bUseGrouped_xt)){
+                xtoptn=grouped_rand(poped.db$design_space$G_xt,xtopt,dxt,ff,axt)
               } else {
                 xtoptn=xtopt+dxt/ff*randn(m,maxni)*(axt>0)
               }
@@ -262,18 +262,18 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
               xtoptn=xtoptn+((xtoptn<minxt)*(minxt-xtoptn))
             }
             if((optx==TRUE)){
-              xoptn=get_discrete_x(poped.db$Gx,poped.db$discrete_x,poped.db$bUseGrouped_x)
+              xoptn=get_discrete_x(poped.db$design_space$G_x,poped.db$design_space$discrete_x,poped.db$design_space$bUseGrouped_x)
             }
             if((opta==TRUE)){
-              if((poped.db$bUseGrouped_a)){
-                aoptn=grouped_rand_a(poped.db$Ga,aopt,da,ff,aa)
+              if((poped.db$design_space$bUseGrouped_a)){
+                aoptn=grouped_rand_a(poped.db$design_space$G_a,aopt,da,ff,aa)
               } else {
-                aoptn=aopt+da/ff*randn(m,poped.db$na)*(aa>0)
+                aoptn=aopt+da/ff*randn(m,size(poped.db$design$a,2))*(aa>0)
               }
               aoptn=aoptn-((aoptn>maxa)*(aoptn-maxa))
               aoptn=aoptn+((aoptn<mina)*(mina-aoptn))
             }
-            returnArgs <- mftot(model_switch,poped.db$groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,poped.db$sigma,docc_full,poped.db) 
+            returnArgs <- mftot(model_switch,poped.db$design$groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
             nfmf <- returnArgs[[1]]
             poped.db <- returnArgs[[2]]
             ndmf=ofv_fim(nfmf,poped.db)
@@ -294,24 +294,24 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
             } else {
               nullit=nullit+1
             }
-            if((nullit==poped.db$maxrsnullit)){
+            if((nullit==poped.db$settings$maxrsnullit)){
               ff=ff+1
               nullit=1
             }
             
-            if((!isempty(poped.db$strIterationFileName))){
-              write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$groupsize,fmf,dmf,poped.db)
+            if((!isempty(poped.db$settings$strIterationFileName))){
+              write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$design$groupsize,fmf,dmf,poped.db)
             }
             
-            if((trflag && (rem(it,poped.db$rsit_output)==0 || it==poped.db$rsit))){
-              itvector[ceiling(it/poped.db$rsit_output)+1]=it
-              dmfvector[ceiling(it/poped.db$rsit_output)+1]=dmf
+            if((trflag && (rem(it,poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
+              itvector[ceiling(it/poped.db$settings$rsit_output)+1]=it
+              dmfvector[ceiling(it/poped.db$settings$rsit_output)+1]=dmf
               Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
             }
           }  
         }
         
-        if((poped.db$parallelSettings$bParallelLS == 0)){
+        if((poped.db$settings$parallel$bParallelLS == 0)){
           timeLS = toc(echo=FALSE)
           fprintf('Run time for random search: %g seconds\n\n',timeLS)
           #if(trflag) fprintf(fn,'Elapsed time for Serial Random search with %g iterations: %g seconds\n',it,timeLS)
@@ -324,23 +324,23 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       bestx=xopt
       besta=aopt
       
-      diff=poped.db$convergence_eps+1
+      diff=poped.db$settings$convergence_eps+1
       
-      if((poped.db$bUseBFGSMinimizer )){
+      if((bUseBFGSMinimizer )){
         if((Engine$Type==2)){
           stop(sprintf('BFGS optimization can not be used with Freemat in this version!'))
         }
         
         f_name <- 'calc_ofv_and_grad' 
-        f_options <- list(x,optxt, opta, model_switch,aa,axt,poped.db$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$sigma,docc_full,poped.db)
+        f_options <- list(x,optxt, opta, model_switch,aa,axt,poped.db$design$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$parameters$sigma,docc_full,poped.db)
         x_k=matrix(0,0,0)
         lb=matrix(0,0,0)
         ub=matrix(0,0,0)
-        options=list('factr'=poped.db$BFGSConvergenceCriteriaMinStep,'pgtol'=poped.db$BFGSProjectedGradientTol,'ftol'=poped.db$BFGSTolerancef,'gtol'=poped.db$BFGSToleranceg,'xtol'=poped.db$BFGSTolerancex)
+        options=list('factr'=BFGSConvergenceCriteriaMinStep,'pgtol'=BFGSProjectedGradientTol,'ftol'=BFGSTolerancef,'gtol'=BFGSToleranceg,'xtol'=BFGSTolerancex)
         if((optxt==TRUE)){
           index=t(1:numel(xtopt))
-          if(poped.db$bUseGrouped_xt){
-            returnArgs <- unique(poped.db$design$G) 
+          if(poped.db$design_space$bUseGrouped_xt){
+            returnArgs <- unique(poped.db$design_space$G_xt) 
             temp <- returnArgs[[1]]
             index <- returnArgs[[2]]
             temp2 <- returnArgs[[3]]
@@ -352,8 +352,8 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         }
         if((opta==TRUE)){
           index=t(1:numel(aopt))
-          if(poped.db$bUseGrouped_a){
-            returnArgs <- unique(poped.db$design$Ga) 
+          if(poped.db$design_space$bUseGrouped_a){
+            returnArgs <- unique(poped.db$design_space$G_a) 
             temp1 <- returnArgs[[1]]
             index <- returnArgs[[2]]
             temp2 <- returnArgs[[3]]
@@ -380,9 +380,9 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           
           if(optxt){
             notfixed=minxt!=maxxt
-            if(poped.db$bUseGrouped_xt){
-              xtopt[notfixed]=x_opt[poped.db$design$G[notfixed]]
-              x_opt <- x_opt[-(1:numel(unique(poped.db$design$G[notfixed])))]
+            if(poped.db$design_space$bUseGrouped_xt){
+              xtopt[notfixed]=x_opt[poped.db$design_space$G_xt[notfixed]]
+              x_opt <- x_opt[-(1:numel(unique(poped.db$design_space$G_xt[notfixed])))]
             } else {
               xtopt[notfixed]=x_opt[1:numel(xtopt[notfixed])]
               x_opt <- x_opt[-(1:numel(xtopt[notfixed]))]
@@ -392,13 +392,13 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           if(opta){
             notfixed=mina!=maxa
             
-            if(poped.db$bUseGrouped_a){
-              aopt[notfixed]=x_opt(poped.db$design$Ga[notfixed])
+            if(poped.db$design_space$bUseGrouped_a){
+              aopt[notfixed]=x_opt(poped.db$design_space$G_a[notfixed])
             } else {
               aopt[notfixed]=x_opt
             }
           }
-          returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           nfmf <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
           ndmf=ofv_fim(nfmf,poped.db)
@@ -414,16 +414,16 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         }
       }
       
-      if((poped.db$bUseStochasticGradient)){
+      if((bUseStochasticGradient)){
         tic()
         # ----------------- SG AUTO-FOCUS BEGINS HERE
         if((optxt==TRUE)){
-          returnArgs <-  gradofv_xt(model_switch,axt,poped.db$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          returnArgs <-  gradofv_xt(model_switch,axt,poped.db$design$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           gradxt <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
           normgxt=sign(gradxt)*(maxxt-minxt)
           xtopto=xtopt
-          returnArgs <-  calc_autofocus(m,ni,dmf,xtopt,xtopto,maxxt,minxt,gradxt,normgxt,axt,model_switch,poped.db$groupsize,xtopt,xopt,aopt,ni,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          returnArgs <-  calc_autofocus(m,ni,dmf,xtopt,xtopto,maxxt,minxt,gradxt,normgxt,axt,model_switch,poped.db$design$groupsize,xtopt,xopt,aopt,ni,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           axt <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
         }
@@ -434,13 +434,13 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         }
         
         if((opta==TRUE)){
-          returnArgs <- gradofv_a(model_switch,aa,poped.db$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          returnArgs <- gradofv_a(model_switch,aa,poped.db$design$groupsize,ni,xtopt,xopt,aopt,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           grada <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
           normga=grada/abs(grada)*(maxa-mina)
           aopto=aopt
-          na_vector = matrix(1,1,m)*poped.db$na
-          returnArgs <- calc_autofocus(m,na_vector,dmf,aopt,aopto,maxa,mina,grada,normga,aa,model_switch,poped.db$groupsize,xtopt,xopt,aopt,ni,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          na_vector = matrix(1,1,m)*size(poped.db$design$a,2)
+          returnArgs <- calc_autofocus(m,na_vector,dmf,aopt,aopto,maxa,mina,grada,normga,aa,model_switch,poped.db$design$groupsize,xtopt,xopt,aopt,ni,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           aa <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
         }
@@ -459,9 +459,9 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         it=1
         dmfvector <- c()
         itvector <- c()
-        while((it<=poped.db$sgit) && (abs(diff)>poped.db$convergence_eps)){
+        while((it<=sgit) && (abs(diff)>poped.db$settings$convergence_eps)){
           if((optxt==TRUE)){
-            returnArgs <- gradofv_xt(model_switch,axt,poped.db$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$sigma,docc_full,poped.db) 
+            returnArgs <- gradofv_xt(model_switch,axt,poped.db$design$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
             gradxt <- returnArgs[[1]]
             poped.db <- returnArgs[[2]]
             returnArgs <- sg_search(gradxt,mnormxt,axt,maxxt,minxt,xtopto,lgxto,kitxt,it,m,maxni) 
@@ -471,10 +471,10 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
             xtopt <- returnArgs[[4]]
           }
           if((opta==TRUE)){
-            returnArgs <- gradofv_a(model_switch,aa,poped.db$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$sigma,docc_full,poped.db) 
+            returnArgs <- gradofv_a(model_switch,aa,poped.db$design$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
             grada <- returnArgs[[1]]
             poped.db <- returnArgs[[2]]
-            returnArgs <- sg_search(grada,mnorma,aa,maxa,mina,aopto,lgao,kita,it,m,poped.db$na) 
+            returnArgs <- sg_search(grada,mnorma,aa,maxa,mina,aopto,lgao,kita,it,m,size(poped.db$design$a,2)) 
             lgao <- returnArgs[[1]]
             kita <- returnArgs[[2]]
             inversiona <- returnArgs[[3]]
@@ -490,7 +490,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           }
           
           
-          returnArgs <-  mftot(model_switch,poped.db$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$sigma,docc_full,poped.db) 
+          returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xtopto,xopto,aopto,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
           nfmf <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
           ndmf=ofv_fim(nfmf,poped.db)
@@ -503,11 +503,11 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
             besta=aopt
           }
           
-          if((!isempty(poped.db$strIterationFileName))){
-            write_iterationfile('Stochastic Gradient',it,bestxt,besta,bestx,ni,poped.db$groupsize,fmf,dmf,poped.db)
+          if((!isempty(poped.db$settings$strIterationFileName))){
+            write_iterationfile('Stochastic Gradient',it,bestxt,besta,bestx,ni,poped.db$design$groupsize,fmf,dmf,poped.db)
           }
           
-          if((poped.db$convergence_eps!=0 || trflag==TRUE)){
+          if((poped.db$settings$convergence_eps!=0 || trflag==TRUE)){
             if((it>1)){
               if((odmf!=0)){
                 diff=abs((ndmf-odmf))/abs(odmf)
@@ -515,15 +515,15 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
             }
             odmf=ndmf
           }
-          if((trflag==TRUE && (rem(it,poped.db$sgit_output)==0 || abs(diff)<poped.db$convergence_eps || it==poped.db$sgit))){
-            itvector[ceiling(it/poped.db$sgit_output)]=it
-            dmfvector[ceiling(it/poped.db$sgit_output)]=dmf
+          if((trflag==TRUE && (rem(it,poped.db$settings$sgit_output)==0 || abs(diff)<poped.db$settings$convergence_eps || it==sgit))){
+            itvector[ceiling(it/poped.db$settings$sgit_output)]=it
+            dmfvector[ceiling(it/poped.db$settings$sgit_output)]=dmf
             ga_tmp=0
             if(opta) ga_tmp = grada/dmf
             gxt_tmp=0
             if(optxt) gxt_tmp = gradxt/dmf
-            Dtrace(fn,poped.db$rsit+it,ni,bestxt,bestx,besta,gxt_tmp,ga_tmp,dmf,diff,inversionxt,inversiona,itvector,dmfvector,poped.db)
-            #Dtrace(fn,poped.db$rsit+it,ni,bestxt,bestx,besta,normgxt,normga,dmf,diff,inversionxt,inversiona,itvector,dmfvector,poped.db)
+            Dtrace(fn,poped.db$settings$rsit+it,ni,bestxt,bestx,besta,gxt_tmp,ga_tmp,dmf,diff,inversionxt,inversiona,itvector,dmfvector,poped.db)
+            #Dtrace(fn,poped.db$settings$rsit+it,ni,bestxt,bestx,besta,normgxt,normga,dmf,diff,inversionxt,inversiona,itvector,dmfvector,poped.db)
             inversionxt=FALSE
             inversiona=FALSE
           }
@@ -532,7 +532,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         # ----------------- STOCHASTIC GRADIENT ENDS HERE
         sg_time=toc(echo=FALSE)
         fprintf('Stochastic gradient run time: %g seconds\n\n',sg_time)
-        #if(trflag) fprintf(fn,'Elapsed time for stochastic gradient search with %g iterations: %g seconds\n',poped.db$sgit,sg_time)
+        #if(trflag) fprintf(fn,'Elapsed time for stochastic gradient search with %g iterations: %g seconds\n',sgit,sg_time)
         
         
       }
@@ -543,18 +543,18 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       x=xopt
       a=aopt
       
-      poped.db$gxt = xtopt
-      poped.db$gx = xopt
-      poped.db$ga = aopt
+      #poped.db$gxt = xtopt
+      #poped.db$gx = xopt
+      #poped.db$design$a = aopt
       
       poped.db$design$xt <- xtopt
       poped.db$design$x <-xopt
       poped.db$design$a <-aopt
       
-      if((poped.db$bUseLineSearch)){
+      if((bUseLineSearch)){
         #------------------------------- LINE SEARCH optimization START HERE
-        strLineSearchFile=sprintf('%s_LS_%g%s',poped.db$strOutputFileName,iter,poped.db$strOutputFileExtension)
-        strLineSearchFile = fullfile(poped.db$strOutputFilePath,strLineSearchFile)
+        strLineSearchFile=sprintf('%s_LS_%g%s',poped.db$settings$strOutputFileName,iter,poped.db$settings$strOutputFileExtension)
+        strLineSearchFile = fullfile(poped.db$settings$strOutputFilePath,strLineSearchFile)
         #returnArgs <- a_line_search(strLineSearchFile,FALSE,0,fmf,dmf,poped.db) 
         returnArgs <- a_line_search(poped.db,fn,FALSE,0,fmf,dmf) 
         fmf <- returnArgs[[1]]
@@ -573,12 +573,12 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
     }
     #--------- Write results
     #     if((trflag)){
-    blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,model_switch,
-                 bpopdescr,ddescr,poped.db$docc,poped.db$sigma,poped.db,
+    blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,model_switch,
+                 bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
                  opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,
                  dmf_init=dmf_init,trflag=trflag,...)
     #}
-    #blockfinal(fn,fmf,dmf,poped.db$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$docc,poped.db$sigma,m,poped.db)
+    #blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,m,poped.db)
     
     #close(fn)
     
@@ -715,11 +715,11 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
 calc_ofv_and_grad <- function(x,optxt,opta, model_switch,aa,axt,groupsize,ni,xtopto,
                               xopto,aopto,bpop,d,sigma,docc_full,poped.db,only_fim=FALSE){
   if(optxt){
-    notfixed <- poped.db$design$minxt!=poped.db$design$maxxt
-    if(poped.db$bUseGrouped_xt){
-      xtopto[notfixed]=x[poped.db$design$G[notfixed]]
-      ##x[1:numel(unique(poped.db$design$G[notfixed]))]=matrix(0,0,0)
-      x=x[-c(1:numel(unique(poped.db$design$G[notfixed])))]
+    notfixed <- poped.db$design_space$minxt!=poped.db$design_space$maxxt
+    if(poped.db$design_space$bUseGrouped_xt){
+      xtopto[notfixed]=x[poped.db$design_space$G_xt[notfixed]]
+      ##x[1:numel(unique(poped.db$design_space$G_xt[notfixed]))]=matrix(0,0,0)
+      x=x[-c(1:numel(unique(poped.db$design_space$G_xt[notfixed])))]
     } else {
       xtopto[notfixed]=x[1:numel(xtopto[notfixed])]
       x=x[-c(1:numel(xtopto[notfixed]))]
@@ -727,9 +727,9 @@ calc_ofv_and_grad <- function(x,optxt,opta, model_switch,aa,axt,groupsize,ni,xto
     }
   }
   if(opta){
-    notfixed <- poped.db$design$mina!=poped.db$design$maxa
-    if(poped.db$bUseGrouped_a){
-      aopto[notfixed]=x[poped.db$design$Ga[notfixed]]
+    notfixed <- poped.db$design_space$mina!=poped.db$design_space$maxa
+    if(poped.db$design_space$bUseGrouped_a){
+      aopto[notfixed]=x[poped.db$design_space$G_a[notfixed]]
     } else {
       aopto[notfixed]=x
     }
@@ -745,13 +745,13 @@ calc_ofv_and_grad <- function(x,optxt,opta, model_switch,aa,axt,groupsize,ni,xto
     return(list( f= f,g=g))
   }
   if((optxt==TRUE)){
-    notfixed=poped.db$design$minxt!=poped.db$design$maxxt
+    notfixed=poped.db$design_space$minxt!=poped.db$design_space$maxxt
     returnArgs <- gradofv_xt(model_switch,axt,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc_full,poped.db) 
     gradxt <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     gradxt=gradxt[notfixed]
-    if(poped.db$bUseGrouped_xt){
-      returnArgs <- unique(poped.db$design$G) 
+    if(poped.db$design_space$bUseGrouped_xt){
+      returnArgs <- unique(poped.db$design_space$G_xt) 
       temp1 <- returnArgs[[1]]
       index <- returnArgs[[2]]
       temp2 <- returnArgs[[3]]
@@ -759,13 +759,13 @@ calc_ofv_and_grad <- function(x,optxt,opta, model_switch,aa,axt,groupsize,ni,xto
     }
   }
   if((opta==TRUE)){
-    notfixed=poped.db$design$mina!=poped.db$design$maxa
+    notfixed=poped.db$design_space$mina!=poped.db$design_space$maxa
     returnArgs <- gradofv_a(model_switch,aa,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc_full,poped.db) 
     grada <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     grada=grada[notfixed]
-    if(poped.db$bUseGrouped_a){
-      returnArgs <- unique(poped.db$design$Ga) 
+    if(poped.db$design_space$bUseGrouped_a){
+      returnArgs <- unique(poped.db$design_space$G_a) 
       temp1 <- returnArgs[[1]]
       index <- returnArgs[[2]]
       temp2 <- returnArgs[[3]]

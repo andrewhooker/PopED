@@ -1,20 +1,20 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure){
+graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
   #------------------- Gradients for optimization module
   #  Looks at the gradient of det(FIM) with respect to time (xt).
   #  problems can arise when xt goes negative. So only do forward
   #  differencing. 
   
   
-  iParallelN = (globalStructure$parallelSettings$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
+  iParallelN = (poped.db$settings$parallel$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
   
   if((iParallelN == 2)){
     designsin = cell(1,0)
   }
   
-  n = get_fim_size(globalStructure)
+  n = get_fim_size(poped.db)
   m=size(ni,1)
   gdmf=matrix(1,m,size(xt,2))
   it = 1  
@@ -23,12 +23,12 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
     if((p==2)){
       stop("Parallel execution not yet implemented in PopED for R")#
       designout = designsin
-      #designout = (execute_parallel(designsin,globalStructure))
+      #designout = (execute_parallel(designsin,poped.db))
     }
     if((iParallelN ==1)){
-      returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,globalStructure) 
+      returnArgs <- mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       mft <- returnArgs[[1]]
-      globalStructure <- returnArgs[[2]]
+      poped.db <- returnArgs[[2]]
       #If we have a prior
     } else {
       if((p==1)){
@@ -39,8 +39,8 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
       }
     }
     if((iParallelN ==1 || p==2)    ){
-      if(all(size(globalStructure$prior_fim)==size(mft))){
-        mft = mft + globalStructure$prior_fim
+      if(all(size(poped.db$settings$prior_fim)==size(mft))){
+        mft = mft + poped.db$settings$prior_fim
       }
       imft=inv(mft)
       if((isinf(imft[1,1]))){
@@ -63,9 +63,9 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
           a_i =  zeros(0,1)
         }
         if((iParallelN ==1)){
-          returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,globalStructure) 
+          returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
           mf_tmp <- returnArgs[[1]]
-          globalStructure <- returnArgs[[2]]
+          poped.db <- returnArgs[[2]]
           mfb=groupsize[i]*mf_tmp
         } else {
           if((p==1)){
@@ -81,12 +81,12 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
           if(axt[i,ct1]!=0){
             xt_plus=xt
             
-            xt_plus[i,ct1]=xt_plus[i,ct1]+globalStructure$hgd
+            xt_plus[i,ct1]=xt_plus[i,ct1]+poped.db$settings$hgd
             
             if((iParallelN ==1)){
-              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt_plus[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,globalStructure) 
+              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt_plus[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
               mf_tmp <- returnArgs[[1]]
-              globalStructure <- returnArgs[[2]]
+              poped.db <- returnArgs[[2]]
             } else {
               if((p==1)){
                 designsin = update_designinlist(designsin,1,ni,xt_plus,x,a,-1,i)
@@ -97,7 +97,7 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
             }
             if((iParallelN ==1 || p==2)              ){
               mf_plus = groupsize[i]*mf_tmp
-              ir=(mf_plus-mfb)/globalStructure$hgd
+              ir=(mf_plus-mfb)/poped.db$settings$hgd
               s=0
               for(ct2 in 1:n){
                 s=s+imft[ct2,,drop=F]%*%ir[,ct2,drop=F]
@@ -115,5 +115,5 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,g
     }
   }
   gdmf=gdmf*det(mft)
-  return(list( gdmf= gdmf,globalStructure=globalStructure)) 
+  return(list( gdmf= gdmf,poped.db=poped.db)) 
 }

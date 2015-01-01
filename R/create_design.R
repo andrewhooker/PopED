@@ -98,7 +98,7 @@ create_design <- function(
     rownames(x) <- paste("grp_",1:m,sep="")
     design$x <- x
   }
-
+  
   
   ## for groupsize ----------
   if(size(groupsize,1)==1 && m!=1) groupsize <- matrix(rep(groupsize,m),ncol=1,nrow=m,byrow=T,

@@ -4,7 +4,7 @@
 get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
   #Return the RSE,CV of parameters
   
-  #t= matrix(c(bpop[,1,drop=F], d[,1,drop=F], matrix(1,length(poped.db$covd),1), docc[,1,drop=F], matrix(1,length(poped.db$covdocc),1), matrix(1,length(sigma),1)),ncol=1,byrow=T) # type of distribution
+  #t= matrix(c(bpop[,1,drop=F], d[,1,drop=F], matrix(1,length(poped.db$parameters$covd),1), docc[,1,drop=F], matrix(1,length(poped.db$parameters$covdocc),1), matrix(1,length(sigma),1)),ncol=1,byrow=T) # type of distribution
   returnArgs <-  get_all_params(poped.db) 
   bpop <- returnArgs[[1]]
   d <- returnArgs[[2]]
@@ -22,11 +22,11 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
   #   user_par = t(zeros(1,length(params_all)))
   #   if((bUserSpecifiedDistribution)){
   #     ret = params_all
-  #     for(sample_number in 1:poped.db$ED_samp_size){
-  #       ret = feval(poped.db$user_distribution_pointer,ret,t,sample_number,poped.db)
+  #     for(sample_number in 1:poped.db$settings$ED_samp_size){
+  #       ret = feval(poped.db$model$user_distribution_pointer,ret,t,sample_number,poped.db)
   #       user_par = user_par + ret*(t==3)
   #     }
-  #     user_par = user_par/poped.db$ED_samp_size
+  #     user_par = user_par/poped.db$settings$ED_samp_size
   #     params_all = params_all*(t!=3) + user_par*(t==3)
   #   }
   
@@ -81,12 +81,12 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate.fim.R
 #' 
 get_rse <- function (fmf, poped.db,
-                     bpop=poped.db$gbpop[,2,drop=F],
-                     d=poped.db$gd[,2,drop=F],
-                     docc=poped.db$docc,
-                     sigma=poped.db$sigma,
+                     bpop=poped.db$parameters$bpop[,2,drop=F],
+                     d=poped.db$parameters$d[,2,drop=F],
+                     docc=poped.db$parameters$docc,
+                     sigma=poped.db$parameters$sigma,
                      use_percent=T,
-                     fim.calc.type=poped.db$iFIMCalculationType) {
+                     fim.calc.type=poped.db$settings$iFIMCalculationType) {
   
   ## update poped.db with options supplied in function
   called_args <- match.call()
@@ -99,7 +99,7 @@ get_rse <- function (fmf, poped.db,
   }
   
   param_vars=diag_matlab(inv(fmf))
-  returnArgs <-  get_cv(param_vars,bpop=bpop,d=d,docc=poped.db$docc,sigma=poped.db$sigma,poped.db) 
+  returnArgs <-  get_cv(param_vars,bpop=bpop,d=d,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
   params <- returnArgs[[1]]
   params_rse <- returnArgs[[2]]
   parnam <- get_parnam(poped.db)

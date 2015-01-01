@@ -22,34 +22,33 @@
 
 
 downsizing_general_design <- function(poped.db){
-# ------------- downsizing of general design
-
-ni=poped.db$gni[1:poped.db$m,,drop=F]
-xt=poped.db$gxt[1:poped.db$m,1:poped.db$maxni,drop=F]
-model_switch = poped.db$global_model_switch[1:poped.db$m,1:poped.db$maxni,drop=F]
-
-if((poped.db$nx!=0)){
-    x=poped.db$gx[1:poped.db$m,1:poped.db$nx,drop=F]
-} else {
-    x = zeros(poped.db$m,0)
-}
-if((poped.db$na!=0)){
-    a=poped.db$ga[1:poped.db$m,1:poped.db$na,drop=F]
-    maxa=poped.db$gmaxa[1:poped.db$m,1:poped.db$na,drop=F]
-    mina=poped.db$gmina[1:poped.db$m,1:poped.db$na,drop=F]
-} else {
-    a = zeros(poped.db$m,0)
+  # ------------- downsizing of general design
+  
+  ni=poped.db$design$ni[1:poped.db$design$m,,drop=F]
+  xt=poped.db$design$xt[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
+  model_switch = poped.db$design$model_switch[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
+  
+  if((size(poped.db$design$x,2)!=0)){
+    x=poped.db$design$x[1:poped.db$design$m,1:size(poped.db$design$x,2),drop=F]
+  } else {
+    x = zeros(poped.db$design$m,0)
+  }
+  if((size(poped.db$design$a,2)!=0)){
+    a=poped.db$design$a[1:poped.db$design$m,1:size(poped.db$design$a,2),drop=F]
+    maxa=poped.db$design_space$maxa[1:poped.db$design$m,1:size(poped.db$design$a,2),drop=F]
+    mina=poped.db$design_space$mina[1:poped.db$design$m,1:size(poped.db$design$a,2),drop=F]
+  } else {
+    a = zeros(poped.db$design$m,0)
     maxa = matrix(0,0,0)
     mina = matrix(0,0,0)
-}
-bpop=poped.db$gbpop[1:poped.db$nbpop,1:3,drop=F]
-n=t(ni)%*%matrix(1,poped.db$m,1)
-
-d=poped.db$gd[1:poped.db$NumRanEff,1:3,drop=F]
-maxxt=poped.db$gmaxxt[1:poped.db$m,1:poped.db$maxni,drop=F]
-minxt=poped.db$gminxt[1:poped.db$m,1:poped.db$maxni,drop=F]
-
-return(list( ni= ni, xt= xt, model_switch= model_switch, x= x, a= a, bpop= bpop, 
-          n= 
-          n, d= d, maxxt= maxxt, minxt= minxt,maxa=maxa,mina =mina )) 
+  }
+  bpop=poped.db$parameters$bpop[1:poped.db$parameters$nbpop,1:3,drop=F]
+  n=t(ni)%*%matrix(1,poped.db$design$m,1)
+  
+  d=poped.db$parameters$d[1:poped.db$parameters$NumRanEff,1:3,drop=F]
+  maxxt=poped.db$design_space$maxxt[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
+  minxt=poped.db$design_space$minxt[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
+  
+  return(list( ni= ni, xt= xt, model_switch= model_switch, x= x, a= a, bpop= bpop, 
+               n= n, d= d, maxxt= maxxt, minxt= minxt,maxa=maxa,mina =mina )) 
 }

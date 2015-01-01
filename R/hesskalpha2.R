@@ -1,5 +1,5 @@
 
-hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,ha,Engine){
+hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,ha,Engine){
   #D2KALPHA2 calculates the hessian of k with respect to alpha
   #   Detailed explanation goes here
   returnArgs <- log_prior_pdf(alpha,bpopdescr,ddescr,return_gradient=T,return_hessian=T) 
@@ -7,7 +7,7 @@ hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop
   gradp <- returnArgs[[2]]
   hessp <- returnArgs[[3]]
   #get dF/dAlpha and fim
-  returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,ha) 
+  returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,ha) 
   d_fim <- returnArgs[[1]]
   fim <- returnArgs[[2]]
   ifim <- inv(fim)
@@ -18,7 +18,7 @@ hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop
       tigi[j,i]=tigi[i,j]
     }
   }
-  d2=d2fimdalpha2(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,1e-4)[["hess"]]
+  d2=d2fimdalpha2(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-4)[["hess"]]
   d2Fim=reshape_matlab(d2,length(fim),length(hessp))
   d2logdfim=t(d2Fim)%*%cbind(as.vector(ifim))
   hess=-(hessp+reshape_matlab(d2logdfim,size(hessp,1),size(hessp,2))-tigi)
@@ -34,7 +34,7 @@ hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop
   #         tigi[j,i]=tigi[i,j]
   #       }
   #     }
-  #     d2=d2fimdalpha2(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,globalStructure,1e-4)
+  #     d2=d2fimdalpha2(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-4)
   #     d2Fim=reshape_matlab(d2,length(fim)^2,length(hessp)^2)
   #     d2logdfim=t(d2Fim)%*%ifim
   #     hess=-(hessp+reshape_matlab(d2logdfim,length(hessp),length(hessp))-tigi)

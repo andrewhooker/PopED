@@ -1,17 +1,17 @@
 #Calculates the individual ln likelihood
 #Written for PopED by JN
-ind_likelihood <- function(data,bpop,d,sigma,bInter,bUDDLike,model_switch,xt_ind,x,a,bocc_ind,globalStructure,lC,det_res_var,b_ind){
+ind_likelihood <- function(data,bpop,d,sigma,bInter,bUDDLike,model_switch,xt_ind,x,a,bocc_ind,poped.db,lC,det_res_var,b_ind){
   
   if((!bUDDLike)){
-    fg0=feval(globalStructure$fg_pointer,x,a,bpop,b_ind,bocc_ind)
-    ipred = feval(globalStructure$ff_pointer,model_switch,xt_ind,fg0,globalStructure)
+    fg0=feval(poped.db$model$fg_pointer,x,a,bpop,b_ind,bocc_ind)
+    ipred = feval(poped.db$model$ff_pointer,model_switch,xt_ind,fg0,poped.db)
     res = data-ipred #Individual residuals
     
     if((bInter)){
       #For Cases WITH interaction, linearize around eta = eta^
       #eps = zeros(size(tdata),1),size(sigma,2))
       eps = zeros(size(t(data),1),size(sigma,2))
-      h = LinMatrixH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,globalStructure) #The covariance for this individual
+      h = LinMatrixH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) #The covariance for this individual
       res_var = diag_matlab(diag_matlab(h%*%sigma%*%t(h)))
       lC=solve(chol(res_var),diag_matlab(length(res_var)))
       det_res_var = det(res_var)

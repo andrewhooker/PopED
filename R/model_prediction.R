@@ -54,16 +54,16 @@ model_prediction <- function(poped.db=NULL,
                                ni=poped.db$design$ni,    ## -- Vector defining the number of samples for each group, computed as all elements of xt by default --
                                model_switch=poped.db$design$model_switch),
                              model = list(
-                               fg_pointer=poped.db$fg_pointer,
-                               ff_pointer=poped.db$ff_pointer,
-                               ferror_pointer= poped.db$ferror_pointer),
+                               fg_pointer=poped.db$model$fg_pointer,
+                               ff_pointer=poped.db$model$ff_pointer,
+                               ferror_pointer= poped.db$model$ferror_pointer),
                              parameters=list(
-                               docc=poped.db$design$docc,
-                               d = poped.db$design$d,
-                               bpop = poped.db$design$bpop,
-                               covd = poped.db$design$covd,
-                               covdocc = poped.db$design$covdocc,
-                               sigma = poped.db$design$sigma),
+                               docc=poped.db$parameters$docc,
+                               d = poped.db$parameters$d,
+                               bpop = poped.db$parameters$bpop,
+                               covd = poped.db$parameters$covd,
+                               covdocc = poped.db$parameters$covdocc,
+                               sigma = poped.db$parameters$sigma),
                              IPRED=FALSE,
                              DV=FALSE,
                              dosing=NULL, # otherwise a list of lists with "Time" and dosing columns needed for each group
@@ -89,14 +89,14 @@ model_prediction <- function(poped.db=NULL,
   
   design <- do.call(create_design,design)
   
-  NumOcc=poped.db$NumOcc ## this should be removed and put into design
+  NumOcc=poped.db$parameters$NumOcc ## this should be removed and put into design
   
   if(DV) IPRED=T
   
   with(design,{
     
-    maxxt=poped.choose(poped.db$design$maxxt,xt) ## -- Matrix defining the max value for each sample --   
-    minxt=poped.choose(poped.db$design$minxt,xt) ## -- Matrix defining the min value for each sample --
+    maxxt=poped.choose(poped.db$design_space$maxxt,xt) ## -- Matrix defining the max value for each sample --   
+    minxt=poped.choose(poped.db$design_space$minxt,xt) ## -- Matrix defining the min value for each sample --
        
     #--- size checking --------
     if(!is.null(dosing)){

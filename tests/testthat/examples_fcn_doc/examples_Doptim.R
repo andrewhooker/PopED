@@ -55,7 +55,7 @@
   # If you really want to you can use Doptim dirtectly
   ##############
   dsl <- downsizing_general_design(poped.db)
-  poped.db$optsw[2] <- 1  # sample time optimization
+  poped.db$settings$optsw[2] <- 1  # sample time optimization
   output <- Doptim(poped.db,dsl$ni, dsl$xt, dsl$model_switch, dsl$x, dsl$a, 
          dsl$bpop, dsl$d, dsl$maxxt, dsl$minxt,dsl$maxa,dsl$mina) 
   

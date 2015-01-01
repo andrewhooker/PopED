@@ -44,7 +44,7 @@ sfg <- function(x,a,bpop,b,bocc){
 ## -- Residual unexplained variablity (RUV) function
 ## -- Additive + Proportional  
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
-  returnArgs <- do.call(poped.db$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
   y <- returnArgs[[1]]
   poped.db <- returnArgs[[2]]
   
