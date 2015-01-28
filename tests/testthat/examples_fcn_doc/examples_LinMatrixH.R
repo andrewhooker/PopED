@@ -9,6 +9,6 @@ LinMatrixH(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
           bpop=poped.db$parameters$bpop[,2,drop=FALSE],
           b_ind=zeros(poped.db$parameters$NumRanEff,1),
           bocc_ind=zeros(poped.db$parameters$NumDocc,1),
-          poped.db)["y"]
+          poped.db)[["y"]]
 
 

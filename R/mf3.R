@@ -54,6 +54,7 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     
     f1=zeros(n+n*n,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
     returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
+    # if(numnotfixed_bpop==0) then redefine what to do
     f1[1:n,1:numnotfixed_bpop] <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
