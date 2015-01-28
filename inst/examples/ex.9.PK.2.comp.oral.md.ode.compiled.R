@@ -1,4 +1,3 @@
-
 #' An implementation of a two compartment model with oral absorption using ODEs.
 library(PopED)
 library(deSolve)

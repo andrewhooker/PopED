@@ -9,6 +9,8 @@ PopED 0.1.2.9000
 
 * Reorganized the database created from create.poped.database().  The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings.  Also removed duplicate entries in the database for easier manipulation.  This will cause some back compatibility issues when refering to elements in a database.
 
+* Added example 10 describing a PKPD design of HCV to /inst/examples
+
 PopED 0.1.2
 ===========
 
