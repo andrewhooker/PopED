@@ -74,12 +74,14 @@ pred
 FIM <- evaluate.fim(poped.db) 
 FIM
 det(FIM)
+det(FIM)^(1/length(get_unfixed_params(poped.db)[["all"]])) 
 get_rse(FIM,poped.db)
 
 ## Evaluate with full FIM
 FIM <- evaluate.fim(poped.db, fim.calc.type=0) 
 FIM
 det(FIM)
+det(FIM)^(1/length(get_unfixed_params(poped.db)[["all"]]))
 get_rse(FIM,poped.db)
 
 # Examine efficiency of sampling windows
