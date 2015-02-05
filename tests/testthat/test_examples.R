@@ -27,8 +27,12 @@ test_that("The Examples run", {
   source(file.path(run_dir,"ex.8.a.tmdd_qss_one_target.R"))  
   source(file.path(run_dir,"ex.8.b.tmdd_qss_one_target_compiled.R"),chdir=T)  
   source(file.path(run_dir,"ex.9.PK.2.comp.oral.md.ode.compiled.R"),chdir=T)  
-  #   source(file.path(run_dir,"ex.10.PKPD.HCV.compiled.R"),chdir=T)
-  #   expect_equal(crit,crit_reference,tolerance=0.9,scale=1)
-  #   expect_equal(rse, rse_reference,tolerance=0.9,scale=1,check.names=F)
+  
+  source(file.path(run_dir,"ex.10.PKPD.HCV.compiled.R"),chdir=T)
+  expect_equal(crit,crit_reference_reduced,tolerance=0.01,scale=crit_reference_reduced)
+  for(i in 1:length(rse)) expect_equal(rse[i], rse_reference_reduced[i],tolerance=0.05,scale=rse_reference_reduced[i],check.names=F)
+  expect_equal(crit_full,crit_reference_full,tolerance=0.01,scale=crit_reference_full)
+  for(i in 1:length(rse_full)) expect_equal(rse_full[i],rse_reference_full[i],tolerance=0.05,scale=rse_reference_full[i],check.names=F)
+  
   
 })

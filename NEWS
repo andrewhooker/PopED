@@ -9,7 +9,7 @@ PopED 0.1.2.9000
 
 * Reorganized the database created from create.poped.database().  The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings.  Also removed duplicate entries in the database for easier manipulation.  This will cause some back compatibility issues when refering to elements in a database.
 
-* Added example 10 describing a PKPD design of HCV to /inst/examples
+* Added example 10 describing a PKPD design of hepatitis C virus (HCV) kinetics the to system.file("examples",package="PopED") directory of the PopED installation.
 
 PopED 0.1.2
 ===========
@@ -23,8 +23,7 @@ PopED 0.1.2
 * Updated the create.poped.database() function to use create_design() and create_design_space()
 
 * Added examples for evaluation and optimization of a one-target quasi-steady-state 
-  target mediated drug disposition model (TMDD) to the system.file("examples", 
-  package="PopED") directory of the PopED installation.
+  target mediated drug disposition model (TMDD) to the system.file("examples",package="PopED") directory of the PopED installation.
 
 * Added a 2-compartment, oral absorption, multiple dose example to the system.file("examples", 
   package="PopED") directory of the PopED installation.
