@@ -41,7 +41,7 @@
 #'  Each row is a group/individual.
 #'  If only one vector is supplied, e.g. \code{c(1,2,3,4)}, then all groups will 
 #' have the same inital design. 
-#' @param m Number of groups/individuals 
+#' @param m Number of groups in the study.  Each individual in a group will have the same design. 
 #' @param x A matrix defining the initial discrete values for the model 
 #' Each row is a group/individual.
 #' @param nx Number of discrete design variables.
