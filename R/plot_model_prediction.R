@@ -97,6 +97,21 @@ plot_model_prediction <- function(poped.db,
                                   IPRED=T,
                                   DV=DV,
                                   ...)
+
+    # allow for more experiments to be simulated to get a better idea of the prediction spread
+    #     n_experiments=10
+    #     df.ipred <- c()
+    #     for(i in 1:n_experiments){
+    #       df.ipred <-  model_prediction(poped.db,
+    #                                     #models_to_use,
+    #                                     model_num_points=model_num_points,
+    #                                     ##model_minxt,
+    #                                     ##model_maxxt,
+    #                                     ##groups_to_plot,
+    #                                     IPRED=T,
+    #                                     DV=DV,
+    #                                     ...)
+    #     }    
     
     if(sample.times.IPRED || sample.times.DV || sample.times.DV.points || sample.times.DV.lines){
       df.ipred.samples <- df.ipred[df.ipred$Time %in% poped.db$design$xt,]  
