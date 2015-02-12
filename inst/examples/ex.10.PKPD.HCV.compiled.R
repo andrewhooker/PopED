@@ -72,8 +72,11 @@ feps_ODE_compiled <- function(model_switch,xt,parameters,epsi,poped.db){
   MS<-model_switch
   y <- ff_ODE_compiled(model_switch,xt,parameters,poped.db)[[1]]
   
-  y[MS==1] <- y[MS==1]+epsi[,1]
-  y[MS==2] <- y[MS==2]+epsi[,2]
+  pk.dv <- y + epsi[,1]
+  pd.dv <- y + epsi[,2]
+  
+  y[MS==1] = pk.dv[MS==1]
+  y[MS==2] = pd.dv[MS==2]
   
   return(list(y=y,poped.db=poped.db))
 }
