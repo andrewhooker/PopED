@@ -35,7 +35,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
                  trflag=T,
                  ...){
   
-  if((poped.db$EACriteria!=1)){
+  if((poped.db$settings$EACriteria!=1)){
     stop(sprintf('The criteria that can be used is Modified Fedorov Exchange Algorithm (EACriteria = 1)'))
   }
   poped.db$settings$parallel$bParallelMFEA

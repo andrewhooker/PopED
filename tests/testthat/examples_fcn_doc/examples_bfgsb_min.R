@@ -22,7 +22,8 @@
                     gen_des$xt,gen_des$x,gen_des$a,gen_des$bpop[,2,drop=F],
                     getfulld(gen_des$d[,2,drop=F],poped.db$parameters$covd),
                     poped.db$parameters$sigma,
-                    getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc),poped.db)
+                    getfulld(poped.db$parameters$docc[,2,drop=F],
+                             poped.db$parameters$covdocc),poped.db)
   
   options=list('factr'=poped.db$settings$BFGSConvergenceCriteriaMinStep,
                #'factr'=0.01,
