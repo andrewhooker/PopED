@@ -673,7 +673,7 @@ create.poped.database <-
     #       }
     #     }
     
-    #modifyList(settings, list(…)$settings)
+    #modifyList(settings, list()$settings)
     
     ## compare to a default input function.
     #   ## -- Filname and path of the model file --
