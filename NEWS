@@ -7,7 +7,7 @@ PopED 0.2.0
 
 * Fixed bug in `plot_model_prediction()` that did not plot the optimized design, but instead the initial design
 
-* Reorganized the database created from create.poped.database().  The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings.  Also removed duplicate entries in the database for easier manipulation.  This will cause some back compatibility issues when refering to elements in a database.
+* Reorganized the database created from `create.poped.database()`.  The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings.  Also removed duplicate entries in the database for easier manipulation.  This will cause some back compatibility issues when refering to elements in a database.
 
 * Added example 10 describing a PKPD design of hepatitis C virus (HCV) kinetics the to `system.file("examples",package="PopED")` directory of the PopED installation.
 
