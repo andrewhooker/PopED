@@ -25,7 +25,7 @@
 #'  \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}}, 
 #'  \code{\link{ff.PKPD.1.comp.sd.CL.emax}}.
 #' 
-#' Defne a residual unexplaind variability model (residual error model): 
+#' Defne a residual unexplained variability model (residual error model): 
 #' \code{\link{feps.add.prop}},
 #' \code{\link{feps.add}}, 
 #' \code{\link{feps.prop}}.
