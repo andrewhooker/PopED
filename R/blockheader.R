@@ -29,7 +29,7 @@
 
 blockheader <- function(poped.db,name="Default",iter=NULL,
                           e_flag=!(poped.db$settings$d_switch),opt_xt=poped.db$settings$optsw[2],
-                          opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
+                          opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
                           opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5],
                           fmf=0,dmf=0,bpop=NULL,d=NULL,docc=NULL,sigma=NULL,
                           name_header=poped.db$settings$strOutputFileName,
@@ -85,30 +85,35 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
   if(!header_flag) return(fn)
   
   
-  tic()
+  #tic()
   tic(name=".poped_total_time")
   
   # -------------- LOG FILE: initial status
   if(name=="RS"){
     alg_name <- "Adaptive Random Search"
-    fprintf(fn,'PopED Optimization Results for the %s Algorithm \n\n',alg_name)
+    if(fn!="") fprintf(fn,'PopED Optimization Results for the %s Algorithm \n\n',alg_name)
   }  else {
-    fprintf(fn,'PopED Results \n\n')
+    if(fn!="") fprintf(fn,'PopED Results \n\n')
   }
-  fprintf(fn,'        ')
-  fprintf(fn,datestr_poped(poped.db$settings$Engine$Type))
-  fprintf(fn,'\n\n')
+  if(fn!="") fprintf(fn,'        ')
+  if(fn!="") fprintf(fn,datestr_poped(poped.db$settings$Engine$Type))
+  if(fn!="") fprintf(fn,'\n\n')
   
-  blockexp(fn,poped.db,
-           e_flag=e_flag,opt_xt=opt_xt,
-           opt_a=opt_a,opt_x=opt_x,
-           opt_samps=opt_samps,opt_inds=opt_inds)
+  if(fn!="" || trflag>1) blockexp(fn,poped.db,
+                                   e_flag=e_flag,opt_xt=opt_xt,
+                                   opt_a=opt_a,opt_x=opt_x,
+                                   opt_samps=opt_samps,opt_inds=opt_inds)
   
-  if(dmf!=0 || fmf != 0) fprintf(fn,'===============================================================================\nInitial design evaluation\n')
-  if(dmf!=0) fprintf(fn,'\nOFV = %g\n',dmf)
+  if(dmf!=0 || fmf != 0){ 
+    fprintf(fn,paste0("===============================================================================\n",
+                      "Initial design evaluation\n"))
+    if(fn!="") fprintf(paste0("===============================================================================\n",
+                          "Initial design evaluation\n"))
+  }
+  if(dmf!=0) fprintf(fn,'\nInitial OFV = %g\n',dmf)
   if(dmf!=0 && fn!="") fprintf('\nInitial OFV = %g\n',dmf)
   
-  if(dmf!=0){
+  if(dmf!=0 && (fn!="" || trflag>1)){
     output <- get_unfixed_params(poped.db)
     npar <- length(output$all)
     
@@ -133,25 +138,25 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     #        ofv_criterion(dmf,length(params),poped.db))
     
     parnam <- get_parnam(poped.db)
-    fprintf(fn,'\nInitial design expected parameter variance \nand relative standard error (%sRSE)\n','%')
-    fprintf('\nInitial design expected parameter variance \nand relative standard error (%sRSE)\n','%')
-    df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, "RSE"=t(param_cvs*100))
+    fprintf(fn,'\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
+    if(fn!="") fprintf('\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
+    df <- data.frame("Parameter"=parnam,"Values"=params,"RSE_0"=t(param_cvs*100))
     print(df,digits=3, print.gap=3,row.names=F)
     if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     fprintf('\n')
-    fprintf(fn,'\n')
+    if(fn!="") fprintf(fn,'\n')
     
   }
   
-  blockopt(fn,poped.db,opt_method=name)
-  blockother(fn,poped.db,d_switch=!e_flag)
+  if(fn!="" || trflag>1) blockopt(fn,poped.db,opt_method=name)
+  if(fn!="" || trflag>1) blockother(fn,poped.db,d_switch=!e_flag)
   
-  blockoptwrt(fn,poped.db$settings$optsw, opt_xt=opt_xt,
-              opt_a=opt_a,opt_x=opt_x,
-              opt_samps=opt_samps,opt_inds=opt_inds)
+  if(fn!="" || trflag) blockoptwrt(fn,poped.db$settings$optsw, opt_xt=opt_xt,
+                                     opt_a=opt_a,opt_x=opt_x,
+                                     opt_samps=opt_samps,opt_inds=opt_inds)
   
-  fprintf('\n')
-  fprintf(fn,'\n')
+  #fprintf('\n')
+  #if(fn!="") fprintf(fn,'\n')
   
   return( fn) 
 }

@@ -24,7 +24,7 @@
 ## Author: Andrew Hooker
 
 blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,poped.db,
-                         opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
+                         opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
                          fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
                          compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,...){
   
@@ -35,7 +35,9 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     
     
     
-    fprintf(fn,'===============================================================================\nFINAL RESULTS\n\n')
+    fprintf(fn,'===============================================================================\nFINAL RESULTS\n')
+    if(fn!="") fprintf('===============================================================================\nFINAL RESULTS\n')
+    
     time_value <- NULL
     if(exists(".poped_total_time", envir=.PopedNamespaceEnv)) time_value = toc(echo=FALSE,name=".poped_total_time")
     if((opt_xt==TRUE)){
@@ -50,18 +52,18 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       tmp_txt <- "\nOptimized Discrete Variables"
       tmp_txt <- paste(tmp_txt,':\n',sep="")
       fprintf(fn,tmp_txt)
-      fprintf(tmp_txt)
+      if(fn!="") fprintf(tmp_txt)
       for(ct1 in 1:poped.db$design$m){
         fprintf(fn,'Group %g: ', ct1)
-        fprintf('Group %g: ', ct1)
+        if(fn!="") fprintf('Group %g: ', ct1)
         for(ct2 in 1:size(poped.db$design$x,2)){
           tmp_txt <- '%g'
           if(ct2<size(poped.db$design$x,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")        
           fprintf(fn,tmp_txt,x[ct1,ct2])
-          fprintf(tmp_txt,x[ct1,ct2])
+          if(fn!="") fprintf(tmp_txt,x[ct1,ct2])
         }
         fprintf(fn,'\n')
-        fprintf('\n')
+        if(fn!="") fprintf('\n')
       }
       #     fprintf(fn,'\n')
       #     fprintf('\n')
@@ -70,18 +72,18 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       tmp_txt <- "\nOptimized Covariates"
       tmp_txt <- paste(tmp_txt,':\n',sep="")
       fprintf(fn,tmp_txt)
-      fprintf(tmp_txt)
+      if(fn!="") fprintf(tmp_txt)
       for(ct1 in 1:poped.db$design$m){
         fprintf(fn,'Group %g: ', ct1)
-        fprintf('Group %g: ', ct1)
+        if(fn!="") fprintf('Group %g: ', ct1)
         for(ct2 in 1:size(poped.db$design$a,2)){
           tmp_txt <- '%g'
           if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
           fprintf(fn,tmp_txt,a[ct1,ct2])
-          fprintf(tmp_txt,a[ct1,ct2])
+          if(fn!="") fprintf(tmp_txt,a[ct1,ct2])
         }
         fprintf(fn,'\n')
-        fprintf('\n')
+        if(fn!="") fprintf('\n')
       }
       #     fprintf(fn,'\n')
       #     fprintf('\n')
@@ -91,7 +93,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       #     cat("Optimized a values:\n")
       #     print(a)
     }
-    if((poped.db$settings$d_switch==TRUE)){
+    if((poped.db$settings$d_switch==TRUE && (fn!="" || trflag>1))){
       fprintf(fn,'\n FIM: \n')
       #write_matrix(fn,fmf)
       MASS::write.matrix(fmf,file=fn)
@@ -99,7 +101,8 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       #write_matrix(fn,inv(fmf))
       if(compute_inv) MASS::write.matrix(inv(fmf),file=fn)
     }
-    fprintf(fn,'\ndet(FIM) = %g\n',dmf)
+    fprintf(fn,'\nOFV = %g\n',dmf)
+    if(fn!="") fprintf('\nOFV = %g\n',dmf)
     
     if(compute_inv){
       param_vars=diag_matlab(inv(fmf))
@@ -111,13 +114,13 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     output <- get_unfixed_params(poped.db)
     npar <- length(output$all)
     
-    fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
+    if(fn!="" || trflag>1) fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
             ofv_criterion(dmf,npar,poped.db))
     
-    fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',
+    fprintf(fn,'\nEfficiency [typically: (OFV_final/OFV_initial)^(1/npar)]: %g\n',
             ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
     if(fn!=""){
-      fprintf('\nEfficiency (final_design/initial_design): %g\n',
+      fprintf('\nEfficiency [typically: (OFV_final/OFV_initial)^(1/npar)]: %g\n',
               ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
     }
     #fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
@@ -133,10 +136,10 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     
     if(compute_inv){
       parnam <- get_parnam(poped.db)
-      fprintf(fn,'\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
-      if(fn!="") fprintf('\nExpected parameter variance \nand relative standard error (%sRSE):\n','%')
-      df <- data.frame("Parameter"=parnam,"Values"=params, "Variance"=param_vars, 
-                       "RSE"=t(param_cvs*100),"RSE_initial_design"=t(param_cvs_init*100))
+      fprintf(fn,'\nExpected parameter \nrelative standard error (%sRSE):\n','%')
+      if(fn!="") fprintf('\nExpected parameter \nrelative standard error (%sRSE):\n','%')
+      df <- data.frame("Parameter"=parnam,"Values"=params, #"Variance"=param_vars, 
+                       "RSE_0"=t(param_cvs_init*100),"RSE"=t(param_cvs*100))
       print(df,digits=3, print.gap=3,row.names=F)
       if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     }
