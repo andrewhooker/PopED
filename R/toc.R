@@ -24,8 +24,9 @@ toc <- function (echo = TRUE,name=".poped_savedTime")
   
   diffTimeSecs <- proc.time()[3] - prevTime
   if (echo) {
-    cat(sprintf("elapsed time is %f seconds", diffTimeSecs), 
-        "\n")
+    cat("Elapsed time:", diffTimeSecs, "seconds.\n") 
+    #cat(sprintf("Elapsed time is %f seconds.\n", diffTimeSecs)) 
+    #cat(sprintf("Elapsed time is %f seconds.", diffTimeSecs),"\n")
     return(invisible(diffTimeSecs))
   }
   else {
