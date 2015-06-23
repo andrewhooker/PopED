@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.2.0
+Version: 0.2.0.9000
 Depends:
     ggplot2
 Imports:
@@ -26,6 +26,7 @@ Description: Optimal experimental designs for both population and individual
     for pharmacometric problems, and examples and predefined models are available
     for these types of systems.
 License: LGPL (>= 3)
+ByteCompile: true
 URL: http://poped.sourceforge.net 
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2015 Andrew C. Hooker
