@@ -17,18 +17,18 @@ shinyUI(fluidPage(
                     "PK: 1-cpt, 1st order abs., multi. dose, KE param" = "ff.PK.1.comp.oral.md.KE"
                     ,"PKPD: 1-cpt, 1st order abs., multi. dose, CL param., direct effect IMAX" = "ff.PKPD.1.comp.oral.md.CL.imax"
                     ,"PKPD: 1-cpt, single dose, CL param., direct effect EMAX" = "ff.PKPD.1.comp.sd.CL.emax"
-                    ),width='100%'),
+                    )),#,width='100%'),
                   
       #br(),
       
       selectInput("bsv_model", "Between Subject Variability Model:",
                   list(
-                    "Exponential" = "sfg.exp",
-                    "Proportional" = "sfg.prop",
-                    "Additive" = "sfg.add"
+                    "Exponential" = "exp",
+                    "Proportional" = "prop",
+                    "Additive" = "add"
                   )),
       checkboxInput("per_param", label = "Choose per parameter", value = FALSE),  
-      textInput("param")
+      #textInput("param"),
       #br(),
       
       selectInput("ruv_model", "Residual Unexplained Variability Model:",
@@ -54,12 +54,10 @@ shinyUI(fluidPage(
       
       ## identifiers
       br(),
-      img(src = "poped_splash.png", height = 200, width = 200), 
-      br(),
-      paste("PopED for R (", packageVersion("PopED"),")",sep="") , br(), br(),
-      "(c) 2014, Andrew C. Hooker,", br(),
-      "Pharmacometrics Research Group", br(),
-      "Uppsala University, Sweden"
+      img(src = "poped_splash.png", height = 72, width = 72), 
+      a(paste("PopED for R (", packageVersion("PopED"),")",sep=""), 
+        href = "http://poped.sf.net"),
+      h6("(c) 2014, Andrew C. Hooker, Pharmacometrics Research Group, Uppsala University, Sweden")
     ),
     
     mainPanel(

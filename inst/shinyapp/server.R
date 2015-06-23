@@ -19,7 +19,7 @@ shinyServer(function(input, output) {
     ruv_model <- input$ruv_model
     bsv_model <- input$bsv_model
     
-    sfg <- build_sfg(model=input$struct_model)
+    sfg <- build_sfg(model=input$struct_model,etas=input$bsv_model)
     #environment(eval(parse(text=input$struct_model)))
     #parent.env(environment())
 
@@ -29,14 +29,11 @@ shinyServer(function(input, output) {
     #bpop_vals=c(CL=0.15, V=8, KA=1.0, Favail=1)
     #bpop_vals=c(CL=1, V=1, KA=1, Favail=1)
     #bpop_vals <- rep(1,nbpop)
-    nb <- find.largest.index(func.str=sfg,lab="b")
+    nb <- find.largest.index(func.str=sfg,lab="b")    
     
     
     
     if(input$struct_model=="ff.PK.1.comp.oral.sd.CL"){ 
-      notfixed_sigma <- c(1)
-      notfixed_d <- c(1,1,1)
-      
       bpop_vals=c(CL=0.15, V=8, KA=1.0, Favail=1) 
       notfixed_bpop=c(1,1,1,0)
       d_vals=c(CL=0.07, V=0.02, KA=0.6) 
@@ -48,7 +45,7 @@ shinyServer(function(input, output) {
       a=70
     }
     return(list(bpop=bpop_vals,d=d_vals,sigma=sigma_vals,
-                notfixed_bpop=notfixed_bpop,notfixed_d=notfixed_d,notfixed_sigma=notfixed_sigma,
+                notfixed_bpop=notfixed_bpop,
                 sfg=sfg))
   })
   
@@ -139,10 +136,10 @@ shinyServer(function(input, output) {
                                       #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                       bpop=model$bpop,  
                                       notfixed_bpop=c(1,1,1,0),
-                                      d=c(CL=0.07, V=0.02, KA=0.6,Favail=0.1), 
+                                      d=c(CL=0.07, V=0.02, KA=0.6), 
                                       sigma=c(0.01,0.1),
                                       groupsize=32,
-                                      xt=c( 0.5,1,2,6,24,36,72,120),
+                                      xt=design$xt,
                                       minxt=0,
                                       maxxt=120,
                                       a=70)
