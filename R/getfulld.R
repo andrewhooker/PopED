@@ -1,7 +1,7 @@
 #' Create a full D (between subject variability) matrix given a vector of variances and covariances.
 #' 
 #' @param variance_vector The vector of the variances.
-#' @param covariance_vector A vector of the covariances. Writen in row major 
+#' @param covariance_vector A vector of the covariances. Writen in column major 
 #'   order for the lower triangular matrix.
 #' @return The full matrix of variances for the between subject variances
 #' @example tests/testthat/examples_fcn_doc/examples_getfulld.R
