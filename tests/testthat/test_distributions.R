@@ -73,7 +73,6 @@ test_that("pargen works", {
   bpop_vals_ed_u["Favail",]  <- c(0,1,0)
   bpop_vals_ed_u
   
-  # with normal distributions
   set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
   pars.u <- pargen(par=bpop_vals_ed_u,
                    user_dist_pointer=NULL,
@@ -90,7 +89,34 @@ test_that("pargen works", {
   
   expect_that(all(mean.diff.u<20),is_true())
   expect_that(all(range.diff.u[1:3]<50),is_true())
+
+  # Adding user defined distributions
+  bpop_vals_ed_ud <- cbind(ones(length(bpop_vals),1)*3, # user dfined distribution
+                          bpop_vals,
+                          bpop_vals*0.1) # 10% of bpop value
+  bpop_vals_ed_ud["Favail",]  <- c(0,1,0)
+  bpop_vals_ed_ud
   
+  # 
+  my_dist <- function(...){
+    par_vec <- rnorm(c(1,1,1,1),mean=bpop_vals_ed_ud[,2],sd=bpop_vals_ed_ud[,3])
+  }
+  
+  set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
+  pars.ud <- pargen(par=bpop_vals_ed_ud,
+                   user_dist_pointer="my_dist",
+                   sample_size=1000,
+                   bLHS=1,
+                   sample_number=NULL,
+                   poped.db)
+  
+  mean.diff.ud <- (colMeans(pars.ud) - bpop_vals_ed_ud[,2])/bpop_vals_ed_ud[,2]*100
+  sd.diff.ud <- (sqrt(diag(var(pars.ud))) - bpop_vals_ed_ud[,3])/bpop_vals_ed_ud[,3]*100
+  
+  expect_that(all(mean.diff.ud<20),is_true())
+  expect_that(all(sd.diff.ud[1:3]<50),is_true())
+  
+    
 })
 
 test_that("log_prior_pdf works", {
