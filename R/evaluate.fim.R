@@ -20,6 +20,8 @@
 #' \item 6 = Calculate one model switch at a time, good for large matrices. See \code{\link{mftot6}}.
 #' \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance See \code{\link{mftot7}}.
 #' }
+#' @param approx.method Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI
+#' @param FOCE.num Number indivduals in each step of FOCE approximation method 
 #' @param bpop.val The fixed effects parameter values.  Supplied as a vector.
 #' @param d_full A between subject variability matrix (OMEGA in NONMEM).
 #' @param docc_full A between occasion variability matrix.
@@ -54,6 +56,8 @@
 
 evaluate.fim <- function(poped.db,
                          fim.calc.type=NULL,
+                         approx.method=NULL, 
+                         FOCE.num = NULL,
                          bpop.val=NULL,
                          d_full=NULL,
                          docc_full=NULL,
@@ -88,6 +92,8 @@ evaluate.fim <- function(poped.db,
   if(is.null(groupsize)) groupsize <- poped.db$design$groupsize
   
   if(!is.null(fim.calc.type)) poped.db$settings$iFIMCalculationType=fim.calc.type
+  if(!is.null(approx.method)) poped.db$settings$iApproximationMethod=approx.method
+  if(!is.null(FOCE.num)) poped.db$settings$iFOCENumInd=FOCE.num
   
   if(!is.null(deriv.type)){ 
     poped.db$settings$m1_switch=deriv.type
