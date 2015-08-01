@@ -89,9 +89,9 @@ pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,poped.db
         
         if((bUserSpecifiedDistribution)){
           if((isempty(sample_number))){
-            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,k,poped.db)
+            ret[k,] = feval(user_dist_pointer,ret[k,,drop=F],t,k,poped.db)
           } else {
-            ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,poped.db)
+            ret[k,] = feval(user_dist_pointer,ret[k,,drop=F],t,sample_number,poped.db)
           }
         }
       }
@@ -119,9 +119,9 @@ pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,poped.db
     if((bUserSpecifiedDistribution)){
       for(k in 1:sample_size){
         if((isempty(sample_number))){
-          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,poped.db)
+          ret[k,] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],k,poped.db)
         } else {
-          ret[k,,drop=F] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,poped.db)
+          ret[k,] = feval(user_dist_pointer,ret[k,,drop=F],par[,1,drop=F],sample_number,poped.db)
         }
       }
     }
