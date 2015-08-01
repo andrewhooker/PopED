@@ -141,14 +141,16 @@
 #' \item column 2  defines the mean.
 #' \item column 3 defines the variance of the distribution (or length of uniform distribution).
 #' }
-#' Can also just supply the parameter values as a vector \code{c()}
-#' @param d Matrix defining the diagnonals of the IIV (same logic as for the fixed efects). 
-#' can also just supply the parameter values as a \code{c()}. 
-#' @param covd Matrix defining the covariances of the IIV variances. Set to zero if not defined.
+#' Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
+#' parameter value is to be used.
+#' @param d Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+#' matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
+#' @param covd Column major vector defining the covariances of the IIV variances. 
+#' That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}. 
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
 #' can also just supply the diagnonal parameter values (variances) as a \code{c()}. 
-#' @param docc Matrix defining the IOV, the IOV variances and the IOV distribution 
-#' @param covdocc Matrix defining the covariance of the IOV. 
+#' @param docc Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop. 
+#' @param covdocc Column major vector defining the covariance of the IOV, as in covd. 
 
 #' @param notfixed_bpop  \itemize{
 #' \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
@@ -394,7 +396,7 @@ create.poped.database <-
            ## -- D-family design (1) or ED-familty design (0) (with or without parameter uncertainty) --
            d_switch=poped.choose(popedInput$d_switch,1),
            ## -- OFV calculation type for FIM (1=Determinant of FIM,4=log determinant of FIM,6=determinant of interesting part of FIM (Ds)) --
-           ofv_calc_type=poped.choose(popedInput$ofv_calc_type,1),
+           ofv_calc_type=poped.choose(popedInput$ofv_calc_type,4),
            ## -- Ds_index, set index to 1 if a parameter is uninteresting, otherwise 0.
            ## size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma --
            ## default is the fixed effects being important
