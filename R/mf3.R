@@ -51,15 +51,23 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       poped.db$mean_data = mean_data
     }
     
+    n_fixed_eff <- numnotfixed_bpop
+    n_rand_eff <- numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma
+    start_col <- 1
     
-    f1=zeros(n+n*n,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
-    returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
-    # if(numnotfixed_bpop==0) then redefine what to do
-    f1[1:n,1:numnotfixed_bpop] <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
-    f1[(n+1):(n+n*n),(numnotfixed_bpop+1):(numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)] <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
+    f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
+    
+    if(n_fixed_eff!=0){
+      returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
+      f1[1:n,start_col:(start_col+n_fixed_eff-1)] <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+      start_col <- start_col + n_fixed_eff
+    }
+    if(n_rand_eff!=0){
+      returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
+      f1[(n+1):(n+n*n),start_col:(start_col+n_rand_eff-1)] <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+    }
     
     f2=zeros(n+n*n,n+n*n)
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
