@@ -375,7 +375,7 @@ create_design_space <- function(
     
     
     ## for x ----------
-    if(is.null(x_space) && exists("x")){
+    if(is.null(x_space) && exists("x",inherits = F)){
       x_space <- cell(size(x))
       for(i in 1:size(x,1)){
         for(j in 1:size(x,2)){
@@ -475,7 +475,7 @@ create_design_space <- function(
     }  
     
     # grouped_a ------------------------
-    if(exists("a")){
+    if(exists("a",inherits = F)){
       if(is.null(grouped_a)){
         grouped_a <- a*NA
         val <- 1
@@ -529,7 +529,7 @@ create_design_space <- function(
     }
     
     # grouped_x ------------------------
-    if(exists("x")){
+    if(exists("x",inherits = F)){
       if(is.null(grouped_x)){
         grouped_x <- x*NA
         val <- 1

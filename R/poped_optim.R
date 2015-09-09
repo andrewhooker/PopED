@@ -224,7 +224,8 @@ poped_optim <- function(poped.db,
                                            fn=ofv_fun,
                                            lower=lower,
                                            upper=upper,
-                                           allowed_values = allowed_values#,
+                                           allowed_values = allowed_values,
+                                           maximize=T
                                            #par_df_full=par_df
                                            ),
                                       #par_grouping=par_grouping),
