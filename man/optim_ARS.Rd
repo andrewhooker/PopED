@@ -4,21 +4,194 @@
 \alias{optim_ARS}
 \title{Optimization Using Adaptive Random Search.}
 \usage{
-optim_ARS(par, fn, lower, upper, allowed_values = NULL, loc_fac = 4,
-  iter = 400, iter_adapt = 50, max_run = 200, iter_chunk = NULL,
-  trace = TRUE, trace_iter = 5, par_grouping = NULL,
-  new_par_max_it = 200, minimize = F, parallel = F,
-  parallel_type = NULL, num_cores = NULL, seed = round(runif(1, 0,
-  1e+07)), ...)
+optim_ARS(par, fn, lower = NULL, upper = NULL, allowed_values = NULL,
+  loc_fac = 4, no_bounds_sd = par, iter = 400, iter_adapt = 50,
+  adapt_scale = 1, max_run = 200, iter_chunk = NULL, trace = TRUE,
+  trace_iter = 5, par_grouping = NULL, new_par_max_it = 200,
+  maximize = F, parallel = F, parallel_type = NULL, num_cores = NULL,
+  seed = round(runif(1, 0, 1e+07)), allow_replicates = TRUE,
+  generator = NULL, ...)
 }
 \arguments{
-\item{loc_fac}{Locality factor}
+\item{allowed_values}{A list containing allowed values for each parameter \code{list(par1=c(2,3,4,5,6),par2=c(5,6,7,8))}.
+A vector containing allowed values for all parameters is also allowed \code{c(2,3,4,5,6)}.}
+
+\item{loc_fac}{Locality factor for determining the standard deviation of the sampling distribution around the current
+position of the parameters. The initial standard deviation is normally calculated as \code{(upper - lower)/loc_fac}
+except in cases when  there are no upper or lower limits (e.g. when \code{upper=Inf} or \code{lower=-Inf}).}
+
+\item{no_bounds_sd}{The standard deviation of the sampling distribution around the current
+position of the parameters when there are no upper or lower limits (e.g. when \code{upper=Inf} or \code{lower=-Inf}).}
+
+\item{adapt_scale}{The scale for adapting the size of the sampling distribution.  The adaptation of the
+standard deviation of the sampling distribution around the current
+position of the parameters is done after \code{iter_adapt} iteration with no change in the best objective function.
+When adapting, the  standard deviation of the sampling distribution is calculated as
+\code{(upper - lower)/(loc_fac*ff*adapt_scale)} where ff starts at 1 and increases by 1 for each adaptation.}
 }
 \description{
 Optimize an objective function using an adaptive random search algorithm.
 The function works for both discrete and continuous optimization parameters
-and allows for a number of constraints (box-constraints, sets of allowed values,
-constraints between parameters to be optimized).
+and allows for box-constraints and sets of allowed values.
+}
+\examples{
+require(graphics)
+
+## "wild" function , global minimum at about -15.81515
+fw <- function(x) 10*sin(0.3*x)*sin(1.3*x^2) + 0.00001*x^4 + 0.2*x+80
+
+plot(fw, -50, 50, n = 1000, main = "Minimizing 'wild function'")
+points(-15.81515, fw(-15.81515), pch = 16, col = "red", cex = 1)
+
+# optimization with fewer function evaluations compared to SANN
+res1 <- optim_ARS(50, fw,lower = -50, upper=100)
+
+points(res1$par, res1$ofv, pch = 16, col = "green", cex = 1)
+
+# often not as good performance when upper and lower bounds are poor
+res2 <- optim_ARS(50, fw, lower=-Inf,upper=Inf)
+points(res2$par, res2$ofv, pch = 16, col = "blue", cex = 1)
+
+# Rosenbrock Banana function
+# f(x, y) = (a-x)^2 + b(y-x^2)^2
+# global minimum at (x, y)=(a, a^2), where f(x, y)=0. 
+# Usually a = 1 and b = 100.
+fr <- function(x,a=1,b=100) {   
+  x1 <- x[1]
+  x2 <- x[2]
+  b*(x2 - x1*x1)^2 + (a - x1)^2
+}
+
+# plot the surface
+x <- seq(-50, 50, length= 30)
+y <- x
+f <- function(x,y){apply(cbind(x,y),1,fr)}
+z <- outer(x, y, f)
+persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "lightblue", ticktype="detailed") -> res
+points(trans3d(1, 1, 0, pmat = res), col = 2, pch = 16,cex=2)
+
+# does not work great for hard to find minima on flat surface
+res3 <- optim_ARS(c(-1.2,1), fr,lower = -5, upper = 5)
+points(trans3d(res3$par[1], res3$par[1], res3$ofv, pmat = res), col = "green", pch = 16,cex=2)
+
+# box constraints
+flb <- function(x){
+  p <- length(x) 
+  sum(c(1, rep(4, p-1)) * (x - c(1, x[-p])^2)^2) 
+}
+## 25-dimensional box constrained
+optim_ARS(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25)) 
+#optim(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),method = "L-BFGS-B") 
+
+## Combinatorial optimization: Traveling salesman problem
+eurodistmat <- as.matrix(eurodist)
+
+distance <- function(sq) {  # Target function
+  sq2 <- embed(sq, 2)
+  sum(eurodistmat[cbind(sq2[,2], sq2[,1])])
+}
+
+genseq <- function(sq) {  # Generate new candidate sequence
+  idx <- seq(2, NROW(eurodistmat)-1)
+  changepoints <- sample(idx, size = 2, replace = FALSE)
+  tmp <- sq[changepoints[1]]
+  sq[changepoints[1]] <- sq[changepoints[2]]
+  sq[changepoints[2]] <- tmp
+  sq
+}
+
+sq <- c(1:nrow(eurodistmat), 1)  # Initial sequence: alphabetic
+distance(sq)
+
+# rotate for conventional orientation
+loc <- -cmdscale(eurodist, add = TRUE)$points
+x <- loc[,1]; y <- loc[,2]
+s <- seq_len(nrow(eurodistmat))
+tspinit <- loc[sq,]
+
+plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
+     main = paste("Initial sequence of traveling salesman problem\\n",
+                  "Distance =",distance(sq)), axes = FALSE)
+arrows(tspinit[s,1], tspinit[s,2], tspinit[s+1,1], tspinit[s+1,2],
+       angle = 10, col = "green")
+text(x, y, labels(eurodist), cex = 0.8)
+
+res1 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 12842
+
+tspres <- loc[res1$par,]
+plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
+     main = paste("optim_ARS() 'solving' traveling salesman problem\\n",
+                  "Distance =",distance(c(1,res1$par,1))),axes = FALSE)
+arrows(tspres[s,1], tspres[s,2], tspres[s+1,1], tspres[s+1,2],
+       angle = 10, col = "red")
+text(x, y, labels(eurodist), cex = 0.8)
+
+set.seed(123) # chosen to get a good soln relatively quickly
+(res <- optim(sq, distance, genseq, method = "SANN",
+             control = list(maxit = 30000, temp = 2000, trace = TRUE,
+                            REPORT = 500))) 
+
+tspres <- loc[res$par,]
+plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
+     main = paste("optim() 'solving' traveling salesman problem\\n",
+           "Distance =",distance(res$par)),axes = FALSE)
+arrows(tspres[s,1], tspres[s,2], tspres[s+1,1], tspres[s+1,2],
+       angle = 10, col = "red")
+text(x, y, labels(eurodist), cex = 0.8)
+
+
+# 1) one-dimensional function
+f <- function(x)  abs(x)+cos(x)
+curve(f, -20, 20)
+
+res <- optim_ARS(-20,f,lower=-20, upper=20)
+abline(v = res$par, lty = 4,col="green")
+
+# 2) one-dimensional function
+f <- function(x)  (x^2+x)*cos(x) # -10 < x < 10
+curve(f, -10, 10)
+
+res_min <- optim_ARS(0,f,lower=-10, upper=10) # sometimes to local minima
+res_max <- optim_ARS(0,f,lower=-10, upper=10,maximize=T) # sometimes to local maxima
+abline(v = res_min$par, lty = 4,col="green")
+abline(v = res_max$par, lty = 4,col="red")
+
+# 3) two-dimensional Rastrigin function
+#It has a global minimum at f(x) = f(0) = 0.
+Rastrigin <- function(x1, x2)
+{
+  20 + x1^2 + x2^2 - 10*(cos(2*pi*x1) + cos(2*pi*x2))
+}
+
+
+x1 <- x2 <- seq(-5.12, 5.12, by = 0.1)
+z <- outer(x1, x2, Rastrigin)
+
+# color scale
+nrz <- nrow(z)
+ncz <- ncol(z)
+jet.colors <-
+  colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
+                     "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+# Generate the desired number of colors from this palette
+nbcol <- 100
+color <- jet.colors(nbcol)
+# Compute the z-value at the facet centres
+zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
+# Recode facet z-values into color indices
+facetcol <- cut(zfacet, nbcol)
+persp(x1, x2, z, col = color[facetcol], phi = 30, theta = 30)
+filled.contour(x1, x2, z, color.palette = jet.colors)
+
+res <- optim_ARS(c(-4,4),function(x) Rastrigin(x[1], x[2]),lower=-5.12, upper=5.12)
+
+## Parallel computation  
+## works better when each evaluation takes longer
+## here we have added extra time to the computations
+## just to show that it works
+res <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12)
+res <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12,parallel = T)
+res <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12,parallel = T,parallel_type = "snow")
 }
 \references{
 \enumerate{

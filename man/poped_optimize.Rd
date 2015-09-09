@@ -42,10 +42,11 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
 \item column 2  defines the mean.
 \item column 3 defines the variance of the distribution (or length of uniform distribution).
 }
-Can also just supply the parameter values as a vector \code{c()}}
+Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the
+parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects).
-can also just supply the parameter values as a \code{c()}.}
+\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects
+matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is
 supplied then all xt values are given the same maximum value.}

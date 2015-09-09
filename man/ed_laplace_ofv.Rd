@@ -33,12 +33,13 @@ ed_laplace_ofv(model_switch, groupsize, ni, xtopto, xopto, aopto, bpopdescr,
 
 \item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for the \code{bpopdescr}).}
 
-\item{covd}{Matrix defining the covariances of the IIV variances. Set to zero if not defined.}
+\item{covd}{Column major vector defining the covariances of the IIV variances.
+That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
-\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution}
+\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{poped.db}{A PopED database.}
 

@@ -44,7 +44,7 @@ create.poped.database(popedInput = list(),
   prior_fim = poped.choose(popedInput$prior_fim, matrix(0, 0, 1)),
   strAutoCorrelationFile = poped.choose(popedInput$strAutoCorrelationFile,
   ""), d_switch = poped.choose(popedInput$d_switch, 1),
-  ofv_calc_type = poped.choose(popedInput$ofv_calc_type, 1),
+  ofv_calc_type = poped.choose(popedInput$ofv_calc_type, 4),
   ds_index = popedInput$CriterionOptions$ds_index,
   strEDPenaltyFile = poped.choose(popedInput$strEDPenaltyFile, ""),
   iEDCalculationType = poped.choose(popedInput$iEDCalculationType, 0),
@@ -341,19 +341,21 @@ Number of typical values}
 \item column 2  defines the mean.
 \item column 3 defines the variance of the distribution (or length of uniform distribution).
 }
-Can also just supply the parameter values as a vector \code{c()}}
+Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the
+parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects).
-can also just supply the parameter values as a \code{c()}.}
+\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects
+matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
-\item{covd}{Matrix defining the covariances of the IIV variances. Set to zero if not defined.}
+\item{covd}{Column major vector defining the covariances of the IIV variances.
+That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
-\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution}
+\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
-\item{covdocc}{Matrix defining the covariance of the IOV.}
+\item{covdocc}{Column major vector defining the covariance of the IOV, as in covd.}
 
 \item{notfixed_bpop}{\itemize{
 \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}

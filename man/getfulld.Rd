@@ -9,7 +9,7 @@ getfulld(variance_vector, covariance_vector = NULL)
 \arguments{
 \item{variance_vector}{The vector of the variances.}
 
-\item{covariance_vector}{A vector of the covariances. Writen in row major
+\item{covariance_vector}{A vector of the covariances. Writen in column major
 order for the lower triangular matrix.}
 }
 \value{

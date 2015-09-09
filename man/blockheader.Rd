@@ -46,12 +46,13 @@ If \code{""} then output is to the screen.}
 \item column 2  defines the mean.
 \item column 3 defines the variance of the distribution (or length of uniform distribution).
 }
-Can also just supply the parameter values as a vector \code{c()}}
+Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the
+parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects).
-can also just supply the parameter values as a \code{c()}.}
+\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects
+matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
-\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution}
+\item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}

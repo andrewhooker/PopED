@@ -4,10 +4,10 @@
 \alias{evaluate.fim}
 \title{Evaluate the Fisher Information Matrix (FIM)}
 \usage{
-evaluate.fim(poped.db, fim.calc.type = NULL, bpop.val = NULL,
-  d_full = NULL, docc_full = NULL, sigma_full = NULL,
-  model_switch = NULL, ni = NULL, xt = NULL, x = NULL, a = NULL,
-  groupsize = NULL, deriv.type = NULL, ...)
+evaluate.fim(poped.db, fim.calc.type = NULL, approx.method = NULL,
+  FOCE.num = NULL, bpop.val = NULL, d_full = NULL, docc_full = NULL,
+  sigma_full = NULL, model_switch = NULL, ni = NULL, xt = NULL,
+  x = NULL, a = NULL, groupsize = NULL, deriv.type = NULL, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -26,6 +26,10 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 \item 6 = Calculate one model switch at a time, good for large matrices. See \code{\link{mftot6}}.
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance See \code{\link{mftot7}}.
 }}
+
+\item{approx.method}{Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI}
+
+\item{FOCE.num}{Number indivduals in each step of FOCE approximation method}
 
 \item{bpop.val}{The fixed effects parameter values.  Supplied as a vector.}
 
