@@ -45,3 +45,6 @@ system.file("examples", package="PopED")
 
 The same examples are located in the "inst/examples" directory of this repository.
 
+[![Travis-CI Build Status](https://travis-ci.org/andrewhooker/PopED.svg?branch=master)](https://travis-ci.org/andrewhooker/PopED)
+
+
