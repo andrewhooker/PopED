@@ -31,12 +31,17 @@ The function is suitable for input to the \code{\link{create.poped.database}} fu
  \code{ff_file} argument.
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
-
-library(PopED)
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -65,6 +70,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   minxt=0,
                                   maxxt=120,
                                   a=70)
+
+############# END ###################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 
 ##  create plot of model without variability 
 plot_model_prediction(poped.db)

@@ -35,12 +35,17 @@ Compute the full FIM for one individual given specific model(s), parameters, des
 This computation calculates the FIM for each model switch separately.  Correlations between the models parameters are assumed to be zero.
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
-
-library(PopED)
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -69,7 +74,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   minxt=0,
                                   maxxt=120,
                                   a=70)
-# warfarin optimization model
+
+############# END ###################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 
 #for the FO approximation
 ind=1

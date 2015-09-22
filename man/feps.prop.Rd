@@ -34,12 +34,17 @@ The function is suitable for input to the \code{\link{create.poped.database}} fu
  \code{fError_file} argument.
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
-
-library(PopED)
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -69,6 +74,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   maxxt=120,
                                   a=70)
 
+############# END ###################
+## Create PopED database
+## (warfarin example)
+#####################################
+
+
 ##  create plot of model without variability 
 plot_model_prediction(poped.db)
 
@@ -80,9 +91,6 @@ get_rse(FIM,poped.db)
 
 }
 \seealso{
-Other RUV_models: \code{\link{feps.add.prop}};
-  \code{\link{feps.add}}
-
 Other models: \code{\link{feps.add.prop}};
   \code{\link{feps.add}};
   \code{\link{ff.PK.1.comp.oral.md.CL}};
@@ -91,5 +99,8 @@ Other models: \code{\link{feps.add.prop}};
   \code{\link{ff.PK.1.comp.oral.sd.KE}};
   \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}};
   \code{\link{ff.PKPD.1.comp.sd.CL.emax}}
+
+Other RUV_models: \code{\link{feps.add.prop}};
+  \code{\link{feps.add}}
 }
 

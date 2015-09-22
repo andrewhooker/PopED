@@ -95,14 +95,21 @@ distributions of parameter uncertainty, design and methods defined in the
 PopED database.
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin model for optimization
+##  with parameter uncertainty)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
 
-## Optimization using an additive + proportional reidual error to 
-##   avoid sample times at very low concentrations (time 0 or very late samoples).
-library(PopED)
+## Optimization using an additive + proportional reidual error
+## to avoid sample times at very low concentrations (time 0 or very late samoples).
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -141,7 +148,13 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   a=70,
                                   mina=0,
                                   maxa=100)
-# warfarin ed model
+
+############# END ###################
+## Create PopED database
+## (warfarin model for optimization
+##  with parameter uncertainty)
+#####################################
+
 
 calc_ofv_and_fim(poped.db)
 
@@ -157,6 +170,9 @@ calc_ofv_and_fim(poped.db)
 Other E-family: \code{\link{ed_laplace_ofv}};
   \code{\link{ed_mftot}}; \code{\link{evaluate.e.ofv.fim}}
 
+Other evaluate_FIM: \code{\link{evaluate.e.ofv.fim}};
+  \code{\link{evaluate.fim}}; \code{\link{ofv_fim}}
+
 Other FIM: \code{\link{LinMatrixH}};
   \code{\link{LinMatrixLH}}; \code{\link{LinMatrixL_occ}};
   \code{\link{ed_laplace_ofv}}; \code{\link{ed_mftot}};
@@ -170,8 +186,5 @@ Other FIM: \code{\link{LinMatrixH}};
   \code{\link{mftot6}}; \code{\link{mftot7}};
   \code{\link{mftot}}; \code{\link{mf}};
   \code{\link{ofv_criterion}}; \code{\link{ofv_fim}}
-
-Other evaluate_FIM: \code{\link{evaluate.e.ofv.fim}};
-  \code{\link{evaluate.fim}}; \code{\link{ofv_fim}}
 }
 

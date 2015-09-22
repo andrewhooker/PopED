@@ -37,12 +37,17 @@ design variables as defined in
 poped.db are respected (e.g. poped.db$design_space$minxt and poped.db$design_space$maxxt).
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
-
-library(PopED)
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -72,6 +77,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   maxxt=120,
                                   a=70)
 
+############# END ###################
+## Create PopED database
+## (warfarin example)
+#####################################
+
+
 # Examine efficiency of sampling windows
 plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
@@ -97,13 +108,13 @@ plot_efficiency_of_windows(poped.db,
 
 }
 \seealso{
+Other evaluate_design: \code{\link{evaluate.fim}};
+  \code{\link{get_rse}}; \code{\link{model_prediction}};
+  \code{\link{plot_model_prediction}}
+
 Other Graphics: \code{\link{plot_model_prediction}}
 
 Other Simulation: \code{\link{model_prediction}};
-  \code{\link{plot_model_prediction}}
-
-Other evaluate_design: \code{\link{evaluate.fim}};
-  \code{\link{get_rse}}; \code{\link{model_prediction}};
   \code{\link{plot_model_prediction}}
 }
 

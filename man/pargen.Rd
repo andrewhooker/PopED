@@ -37,14 +37,17 @@ A matrix of random samples of size (sample_size x
 Function generates random samples for a list of parameters
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
-
-## Optimization using an additive + proportional reidual error to 
-##   avoid sample times at very low concentrations (time 0 or very late samoples).
-library(PopED)
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -63,19 +66,22 @@ sfg <- function(x,a,bpop,b,bocc){
 ## -- Define initial design  and design space
 poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   fg_file="sfg",
-                                  fError_file="feps.add.prop",
+                                  fError_file="feps.prop",
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 
-                                  sigma=c(0.01,0.25),
+                                  sigma=0.01,
                                   groupsize=32,
                                   xt=c( 0.5,1,2,6,24,36,72,120),
                                   minxt=0,
                                   maxxt=120,
-                                  a=70,
-                                  mina=0,
-                                  maxa=100)
-# warfarin optimize model
+                                  a=70)
+
+############# END ###################
+## Create PopED database
+## (warfarin example)
+#####################################
+
 
 # Adding 40\% Uncertainty to fixed effects log-normal (not Favail)
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
@@ -86,7 +92,7 @@ bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
 
 pars.ln <- pargen(par=bpop_vals_ed_ln,
                user_dist_pointer=NULL,
-               sample_size=100,
+               sample_size=1000,
                bLHS=1,
                sample_number=NULL,
                poped.db)
@@ -100,7 +106,7 @@ bpop_vals_ed_n["Favail",]  <- c(0,1,0)
 
 pars.n <- pargen(par=bpop_vals_ed_n,
                user_dist_pointer=NULL,
-               sample_size=100,
+               sample_size=1000,
                bLHS=1,
                sample_number=NULL,
                poped.db)
@@ -114,10 +120,29 @@ bpop_vals_ed_u["Favail",]  <- c(0,1,0)
 
 pars.u <- pargen(par=bpop_vals_ed_u,
                  user_dist_pointer=NULL,
-                 sample_size=100,
+                 sample_size=1000,
                  bLHS=1,
                  sample_number=NULL,
                  poped.db)
+
+
+# Adding user defined distributions
+bpop_vals_ed_ud <- cbind(ones(length(bpop_vals),1)*3, # user dfined distribution
+                         bpop_vals,
+                         bpop_vals*0.1) # 10\% of bpop value
+bpop_vals_ed_ud["Favail",]  <- c(0,1,0)
+
+# A normal distribution
+my_dist <- function(...){
+  par_vec <- rnorm(c(1,1,1,1),mean=bpop_vals_ed_ud[,2],sd=bpop_vals_ed_ud[,3])
+}
+
+pars.ud <- pargen(par=bpop_vals_ed_ud,
+                  user_dist_pointer=my_dist,
+                  sample_size=1000,
+                  bLHS=1,
+                  sample_number=NULL,
+                  poped.db)
 
 
 }

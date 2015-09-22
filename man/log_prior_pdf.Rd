@@ -28,14 +28,20 @@ log_prior_pdf(alpha, bpopdescr, ddescr, return_gradient = F,
 Compute the natural log of the PDF for the parameters in an E-family design
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
 
-## Optimization using an additive + proportional reidual error to 
-##   avoid sample times at very low concentrations (time 0 or very late samoples).
-library(PopED)
+## Optimization using an additive + proportional reidual error  
+## to avoid sample times at very low concentrations (time 0 or very late samples).
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -66,7 +72,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   a=70,
                                   mina=0,
                                   maxa=100)
-# warfarin optimize model
+
+############# END ###################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
 
 # Adding 40\% Uncertainty to fixed effects log-normal (not Favail)
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)

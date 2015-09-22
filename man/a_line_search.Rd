@@ -54,14 +54,20 @@ The function performs a grid search sequatially along
 design variables.  The grid is defined by ls_step_size.
 }
 \examples{
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
 
-## Optimization using an additive + proportional reidual error to 
-##   avoid sample times at very low concentrations (time 0 or very late samoples).
-library(PopED)
+## Optimization using an additive + proportional reidual error  
+## to avoid sample times at very low concentrations (time 0 or very late samples).
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -92,7 +98,12 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   a=70,
                                   mina=0,
                                   maxa=100)
-# warfarin optimization model 
+
+############# END ###################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
 
 # should give a warning
 output <- a_line_search(poped.db)
