@@ -29,8 +29,6 @@
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_poped_optimize.R
 
-
-
 poped_optim <- function(poped.db,
                         opt_xt=poped.db$settings$optsw[2],
                         opt_a=poped.db$settings$optsw[4],
@@ -270,6 +268,10 @@ poped_optim <- function(poped.db,
       }
       
       if(cur_meth=="GA"){
+        if (!requireNamespace("GA", quietly = TRUE)) {
+          stop("GA package needed for this function to work. Please install it.",
+               call. = FALSE)
+        }
         cat("*******************************************\n")
         cat("Running Genetic Algorithm (GA) Optimization\n")
         cat("*******************************************\n")
