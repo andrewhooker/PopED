@@ -21,7 +21,7 @@
 #'   
 #' @return A matrix of random samples of size (sample_size x
 #'   number_of_parameters)
-#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_pargen.R
 
 ## Function translated using 'matlab.to.r()'
