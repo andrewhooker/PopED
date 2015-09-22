@@ -3,6 +3,8 @@
 PopED: Population (and individual) Experimental Design in R
 ======
 
+[![Travis-CI Build Status](https://travis-ci.org/andrewhooker/PopED.svg?branch=master)](https://travis-ci.org/andrewhooker/PopED)
+
 PopED computes optimal experimental designs for both population 
 and individual studies based on nonlinear mixed-effect models. 
 Often this is based on a computation of the Fisher Information Matrix (FIM). 
