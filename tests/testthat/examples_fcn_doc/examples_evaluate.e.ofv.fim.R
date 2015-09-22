@@ -1,4 +1,3 @@
-# warfarin ed model
 
 ## ED evaluate (with very few samples)
 output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=10)

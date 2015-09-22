@@ -1,5 +1,3 @@
-# warfarin optimization model 
-
 
 \dontrun{  
   

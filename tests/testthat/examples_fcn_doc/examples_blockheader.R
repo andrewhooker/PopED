@@ -1,5 +1,3 @@
-# warfarin optimization model 
-
 
 FIM <- evaluate.fim(poped.db) 
 dmf <- det(FIM)

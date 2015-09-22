@@ -1,4 +1,3 @@
-# warfarin optimization model 
 
 # should give a warning
 output <- a_line_search(poped.db)

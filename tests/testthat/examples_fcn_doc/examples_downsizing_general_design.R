@@ -1,4 +1,3 @@
-# warfarin basic model
 
 dgd <- downsizing_general_design(poped.db)
 

@@ -2,25 +2,12 @@ context("Distributions")
 
 test_that("pargen works", {
   
-  source("examples_fcn_doc/warfarin_optimize.R")
+  set.seed(1234)
   
-  # Adding 40% Uncertainty to fixed effects log-normal (not Favail)
-  bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
-  bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
-                           bpop_vals,
-                           ones(length(bpop_vals),1)*(bpop_vals*0.4)^2) # 40% of bpop value
-  bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+  source("examples_fcn_doc/warfarin_basic.R")
+  source("examples_fcn_doc/examples_pargen.R")
   
-  # with log-normal distributions
-  set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
-  pars.ln <- pargen(par=bpop_vals_ed_ln,
-                    user_dist_pointer=NULL,
-                    sample_size=1000,
-                    bLHS=1,
-                    sample_number=NULL,
-                    poped.db)
-  
-  #   #looks ok
+  # with ln-normal distributions
   #   colMeans(pars.ln)
   #   var(pars.ln)
   mean.diff.ln <- (colMeans(pars.ln) - bpop_vals_ed_ln[,2])/bpop_vals_ed_ln[,2]*100
@@ -29,28 +16,29 @@ test_that("pargen works", {
   expect_that(all(mean.diff.ln<20),is_true())
   expect_that(all(var.diff.ln[1:3]<50),is_true())
   
+  set.seed(1234)
+  pars.ln.1 <- pargen(par=bpop_vals_ed_ln,
+                    user_dist_pointer=NULL,
+                    sample_size=1,
+                    bLHS=1,
+                    sample_number=NULL,
+                    poped.db)
+  
+  set.seed(1234)
+  pars.ln.2 <- pargen(par=bpop_vals_ed_ln,
+                      user_dist_pointer=NULL,
+                      sample_size=1,
+                      bLHS=1,
+                      sample_number=NULL,
+                      poped.db)
+  
+  expect_true(all(pars.ln.1==pars.ln.2))
+  
   p.vals <- apply(pars.ln[,1:3],2,function(x) shapiro.test(log(x))[["p.value"]])
   expect_that(all(p.vals > 0.8), is_true())
   
-  
-  
-  
   # Adding 10% Uncertainty to fixed effects normal-distribution (not Favail)
-  bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # log-normal distribution
-                          bpop_vals,
-                          ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
-  bpop_vals_ed_n["Favail",]  <- c(0,1,0)
-  bpop_vals_ed_n
-  
   # with normal distributions
-  set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
-  pars.n <- pargen(par=bpop_vals_ed_n,
-                   user_dist_pointer=NULL,
-                   sample_size=1000,
-                   bLHS=1,
-                   sample_number=NULL,
-                   poped.db)
-  
   #   # Looks ok
   #   colMeans(pars.n)
   #   var(pars.n)
@@ -64,23 +52,7 @@ test_that("pargen works", {
   p.vals <- apply(pars.n[,1:3],2,function(x) shapiro.test(x)[["p.value"]])
   expect_that(all(p.vals > 0.8), is_true())
   
-  
-  
   # Adding 10% Uncertainty to fixed effects uniform-distribution (not Favail)
-  bpop_vals_ed_u <- cbind(ones(length(bpop_vals),1)*2, # uniform distribution
-                          bpop_vals,
-                          ones(length(bpop_vals),1)*(bpop_vals*0.1)) # 10% of bpop value
-  bpop_vals_ed_u["Favail",]  <- c(0,1,0)
-  bpop_vals_ed_u
-  
-  set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
-  pars.u <- pargen(par=bpop_vals_ed_u,
-                   user_dist_pointer=NULL,
-                   sample_size=100,
-                   bLHS=1,
-                   sample_number=NULL,
-                   poped.db)
-  
   mean.diff.u <- (colMeans(pars.u) - bpop_vals_ed_u[,2])/bpop_vals_ed_u[,2]*100
   range.diff.u <- mean.diff.u
   for(i in 1:4){
@@ -91,25 +63,6 @@ test_that("pargen works", {
   expect_that(all(range.diff.u[1:3]<50),is_true())
 
   # Adding user defined distributions
-  bpop_vals_ed_ud <- cbind(ones(length(bpop_vals),1)*3, # user dfined distribution
-                          bpop_vals,
-                          bpop_vals*0.1) # 10% of bpop value
-  bpop_vals_ed_ud["Favail",]  <- c(0,1,0)
-  bpop_vals_ed_ud
-  
-  # 
-  my_dist <- function(...){
-    par_vec <- rnorm(c(1,1,1,1),mean=bpop_vals_ed_ud[,2],sd=bpop_vals_ed_ud[,3])
-  }
-  
-  set.seed(1234,kind="Mersenne-Twister",normal.kind="Inversion")
-  pars.ud <- pargen(par=bpop_vals_ed_ud,
-                   user_dist_pointer="my_dist",
-                   sample_size=1000,
-                   bLHS=1,
-                   sample_number=NULL,
-                   poped.db)
-  
   mean.diff.ud <- (colMeans(pars.ud) - bpop_vals_ed_ud[,2])/bpop_vals_ed_ud[,2]*100
   sd.diff.ud <- (sqrt(diag(var(pars.ud))) - bpop_vals_ed_ud[,3])/bpop_vals_ed_ud[,3]*100
   

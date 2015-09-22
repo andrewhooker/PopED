@@ -1,4 +1,3 @@
-# warfarin ed model
 
 # Just a few iterations, optimize on sample times 
 output <- RS_opt_gen(poped.db,opt_xt=TRUE,rsit=20)

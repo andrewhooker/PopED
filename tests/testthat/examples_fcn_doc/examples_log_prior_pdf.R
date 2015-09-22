@@ -1,4 +1,3 @@
-# warfarin optimize model
 
 # Adding 40% Uncertainty to fixed effects log-normal (not Favail)
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)

@@ -103,11 +103,15 @@ test_that("create.poped.database works for different inputs", {
   source("examples_fcn_doc/examples_create.poped.database.R")
   
   ## evaluate initial design
-  output <- calc_ofv_and_fim(poped.db)
-  crit <- ofv_criterion(output$ofv,size(output$fim,1),poped.db)
+  output <- calc_ofv_and_fim(poped.db,ofv_calc_type=1)
+  crit <- ofv_criterion(output$ofv,size(output$fim,1),poped.db,ofv_calc_type=1)
   
   expect_equal(crit,1794.658,tolerance=1e-3)
   expect_true(!is.null(dimnames(poped.db$design$xt)))
+  
+  output_2 <- calc_ofv_and_fim(poped.db,ofv_calc_type=4)
+  crit_2 <- ofv_criterion(output_2$ofv,size(output_2$fim,1),poped.db,ofv_calc_type=4)
+  expect_equal(crit_2,1.76066,tolerance=1e-3)
   
   poped.db_1 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                       fg_file="sfg",
@@ -125,7 +129,7 @@ test_that("create.poped.database works for different inputs", {
   
   output_1 <- calc_ofv_and_fim(poped.db_1)
   
-  expect_equivalent(output_1,output)
+  expect_equivalent(output_1,output_2)
   expect_true(!is.null(dimnames(poped.db$design$a)))
   
 })

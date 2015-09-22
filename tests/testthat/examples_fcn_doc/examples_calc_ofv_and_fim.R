@@ -1,4 +1,3 @@
-# warfarin ed model
 
 calc_ofv_and_fim(poped.db)
 

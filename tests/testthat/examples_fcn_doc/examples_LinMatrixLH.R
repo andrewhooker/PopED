@@ -1,4 +1,3 @@
-# warfarin optimization model
 
 #for the FOI approximation
 ind=1

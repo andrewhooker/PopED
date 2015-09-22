@@ -2,7 +2,7 @@ context("Examples")
 
 test_that("The Examples run", {
   
-  skip("don't run this")
+  if(skip_examples) skip("Examples with long run times")
   
   run_dir <- file.path("..","..","inst","examples")
   source(file.path(run_dir,"ex.1.a.PK.1.comp.oral.md.intro.R"))  

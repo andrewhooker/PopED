@@ -1,4 +1,3 @@
-# warfarin optimize model
 
 \dontrun{
   

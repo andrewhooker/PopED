@@ -1,4 +1,3 @@
-# warfarin optimization model 
 
 opta=TRUE
 aa=opta*poped.db$settings$cfaa*matrix(1,poped.db$design$m,size(poped.db$design$a,2))

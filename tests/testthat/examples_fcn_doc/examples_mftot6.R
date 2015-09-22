@@ -1,6 +1,3 @@
-# warfarin optimization model
-
-
 
 mftot6(model_switch=poped.db$design$model_switch,
       groupsize=poped.db$design$groupsize,

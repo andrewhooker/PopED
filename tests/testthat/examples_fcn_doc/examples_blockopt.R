@@ -1,4 +1,3 @@
-# warfarin optimization model 
 
 blockopt(fn="",poped.db,opt_method="SG")
 blockopt(fn="",poped.db,opt_method="RS")

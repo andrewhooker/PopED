@@ -1,4 +1,3 @@
-# warfarin ed model
 
 # very few samples
 poped.db$settings$ED_samp_size=10
