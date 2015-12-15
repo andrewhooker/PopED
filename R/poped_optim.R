@@ -231,6 +231,33 @@ poped_optim <- function(poped.db,
                                       ...))
         
       }
+      if(cur_meth=="LS"){
+        cat("*******************************************\n")
+        cat("Running Line Search Optimization\n")
+        cat("*******************************************\n")
+        
+        # handle control arguments
+        con <- list(trace = trace, 
+                    parallel=parallel,
+                    parallel_type=parallel_type,
+                    num_cores = num_cores)
+        nmsC <- names(con)
+        con[(namc <- names(control$LS))] <- control$LS
+        #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
+        
+        output <- do.call(optim_LS,c(list(par=par,
+                                           fn=ofv_fun,
+                                           lower=lower,
+                                           upper=upper,
+                                           allowed_values = allowed_values,
+                                           maximize=T
+                                           #par_df_full=par_df
+        ),
+        #par_grouping=par_grouping),
+        con,
+        ...))
+        
+      }
       if(cur_meth=="BFGS"){
         cat("*******************************************\n")
         cat("Running L-BFGS-B Optimization\n")
