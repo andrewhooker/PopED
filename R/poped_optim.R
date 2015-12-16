@@ -12,7 +12,8 @@
 #' @inheritParams create.poped.database
 #' @inheritParams Dtrace
 #' @inheritParams calc_ofv_and_fim
-#' @param ... arguments passed to other functions. See \code{\link{Doptim}}.
+#' @inheritParams optim_LS
+#' @param ... arguments passed to other functions. 
 #' @param control can contain control arguments for each method specified.
 #' 
 #' 
@@ -23,11 +24,11 @@
 #' parallelized, nonlinear mixed effects models optimal design tool",  
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' }
+#' 
 #' @family Optimize
 #' 
-#' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_poped_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
 
 poped_optim <- function(poped.db,
                         opt_xt=poped.db$settings$optsw[2],
@@ -35,7 +36,7 @@ poped_optim <- function(poped.db,
                         opt_x=poped.db$settings$optsw[3],
                         opt_samps=poped.db$settings$optsw[1],
                         opt_inds=poped.db$settings$optsw[5],
-                        method=c("ARS"),
+                        method=c("ARS","BFGS","LS"),
                         control=list(),
                         trace = TRUE,
                         fim.calc.type=poped.db$settings$iFIMCalculationType,
