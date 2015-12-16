@@ -1,11 +1,17 @@
 #' Optimization main module for PopED
 #' 
-#' Optimize the objective function.
-#' The function works for both discrete and continuous optimization variables.
-#' This function takes information from the PopED database supplied as an argument.
-#' The PopED database supplies information about the the model, parameters, design and methods to use.
-#' Some of the arguments coming from the PopED database can be overwritten;  
-#' if they are supplied then they are used instead of the arguments from the PopED database.
+#' Optimize the objective function. The function works for both discrete and 
+#' continuous optimization variables. If more than one optimization method is 
+#' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
+#' then the series of optimization methods will be run for \code{iter_max} 
+#' iterations, or until the efficiency of the design after the current series 
+#' (compared to the start of the series) is less than \code{eff_crit}.
+#' 
+#' This function takes information from the PopED database supplied as an 
+#' argument. The PopED database supplies information about the the model, 
+#' parameters, design and methods to use. Some of the arguments coming from the 
+#' PopED database can be overwritten; if they are supplied then they are used 
+#' instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
 #' @inheritParams Doptim
@@ -13,22 +19,38 @@
 #' @inheritParams Dtrace
 #' @inheritParams calc_ofv_and_fim
 #' @inheritParams optim_LS
-#' @param ... arguments passed to other functions. 
-#' @param control can contain control arguments for each method specified.
-#' 
-#' 
-#' @references \enumerate{
-#' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software fir optimal 
-#' experimental design in population kinetics", Computer Methods and Programs in Biomedicine, 74, 2004.
-#' \item J. Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C. Hooker, "PopED: An extended, 
-#' parallelized, nonlinear mixed effects models optimal design tool",  
-#' Computer Methods and Programs in Biomedicine, 108, 2012.
-#' }
-#' 
+#' @param ... arguments passed to other functions.
+#' @param control Contains control arguments for each method specified.
+#' @param method A vector of optimization methods to use in a sequential 
+#'   fashion.  Options are \code{c("ARS","BFGS","LS","GA")}. \code{c("ARS")} is 
+#'   for Adaptive Random Search \code{\link{optim_ARS}}.  \code{c("LS")} is for 
+#'   Line Search \code{\link{optim_LS}}. \code{c("BFGS")} is for Method 
+#'   "L-BFGS-B" from \code{\link[stats]{optim}}. \code{c("GA")} is for the 
+#'   genetic algorithm from \code{\link[GA]{ga}}.
+#' @param out_file Save output from the optimization to a file.
+#' @param loop_methods Should the optimization methods be looped for
+#'   \code{iter_max} iterations, or until the efficiency of the design after the
+#'   current series (compared to the start of the series) is less than, or equal to,
+#'   \code{eff_crit}?
+#' @param eff_crit If \code{loop_methods==TRUE}, the looping will stop if the
+#'   efficiency of the design after the current series (compared to the start of
+#'   the series) is less than, or equal to, \code{eff_crit}.
+#'   
+#'   
+#'   
+#' @references \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and A. 
+#'   Ruggeri, "PopED, a software fir optimal experimental design in population 
+#'   kinetics", Computer Methods and Programs in Biomedicine, 74, 2004. \item J.
+#'   Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C. 
+#'   Hooker, "PopED: An extended, parallelized, nonlinear mixed effects models 
+#'   optimal design tool", Computer Methods and Programs in Biomedicine, 108, 
+#'   2012. }
+#'   
 #' @family Optimize
-#' 
+#'   
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
+#' @export
 
 poped_optim <- function(poped.db,
                         opt_xt=poped.db$settings$optsw[2],
@@ -354,7 +376,7 @@ poped_optim <- function(poped.db,
       eff = ofv_criterion(output$ofv,p,poped.db)/ofv_criterion(ofv_init,p,poped.db)
       cat("Efficiency of design (start of loop / end of loop) = ",eff, "\n")
       cat("Efficiency stopping criteria (lower limit) = ",eff_crit, "\n")
-      if(eff<eff_crit) stop_crit <- TRUE
+      if(eff<=eff_crit) stop_crit <- TRUE
       
       # stop based on change in parameters
       
