@@ -165,18 +165,30 @@ poped_optim <- function(poped.db,
   par_df_unique <- NULL
   if(!all(!duplicated(par_df$par_grouping))){
     par_df_unique <- par_df[!duplicated(par_df$par_grouping),]
-    
     par <- par_df_unique$par
     lower <- par_df_unique$lower
     upper <- par_df_unique$upper
     par_cat_cont <- par_df_unique$par_cat_cont
-    
   }
   
+  par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
+  par_fixed_index <- which(upper==lower)
+  par_not_fixed_index <- which(upper!=lower)
+  if(length(par_fixed_index)!=0){
+    par <- par[-c(par_fixed_index)]
+    lower <- lower[-c(par_fixed_index)]
+    upper <- upper[-c(par_fixed_index)]
+    par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
+  }
   
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
-        
+    
+    if(length(par_fixed_index)!=0){
+      par_df_2[par_not_fixed_index,"par"] <- par
+      par <- par_df_2$par
+    }
+    
     if(!is.null(par_df_unique)){
       if(only_cont){ 
         par_df_unique[par_df_unique$par_cat_cont=="cont","par"] <- par
@@ -248,10 +260,10 @@ poped_optim <- function(poped.db,
                                            allowed_values = allowed_values,
                                            maximize=T
                                            #par_df_full=par_df
-                                           ),
-                                      #par_grouping=par_grouping),
-                                      con,
-                                      ...))
+        ),
+        #par_grouping=par_grouping),
+        con,
+        ...))
         
       }
       if(cur_meth=="LS"){
@@ -269,12 +281,12 @@ poped_optim <- function(poped.db,
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
         output <- do.call(optim_LS,c(list(par=par,
-                                           fn=ofv_fun,
-                                           lower=lower,
-                                           upper=upper,
-                                           allowed_values = allowed_values,
-                                           maximize=T
-                                           #par_df_full=par_df
+                                          fn=ofv_fun,
+                                          lower=lower,
+                                          upper=upper,
+                                          allowed_values = allowed_values,
+                                          maximize=T
+                                          #par_df_full=par_df
         ),
         #par_grouping=par_grouping),
         con,
@@ -394,15 +406,18 @@ poped_optim <- function(poped.db,
   if(!(fn=="")) sink()
   
   # add the results into a poped database 
-  
   # expand results to full size 
+  if(length(par_fixed_index)!=0){
+    par_df_2[par_not_fixed_index,"par"] <- par
+    par <- par_df_2$par
+  }
   if(!is.null(par_df_unique)){
-    par_df_unique$par <- output$par
+    par_df_unique$par <- par
     for(j in par_df_unique$par_grouping){
       par_df[par_df$par_grouping==j,"par"] <- par_df_unique[par_df_unique$par_grouping==j,"par"]
     }  
   } else {
-    par_df$par <- output$par
+    par_df$par <- par
   }  
   
   #poped.db$design$ni <- ni

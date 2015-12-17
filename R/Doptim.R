@@ -615,7 +615,8 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
 #' @family Optimize
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_calc_autofocus.R
-#' 
+#' @export
+#' @keywords internal
 calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,normgvar,
                            avar,model_switch,groupsize,xtopt,xopt,aopt,ni,bpop,d,sigma,docc,poped.db){
   navar = avar

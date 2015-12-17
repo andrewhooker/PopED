@@ -76,17 +76,17 @@ get_rse(FIM,poped.db)
 
 \dontrun{
   
-  # RS+SG+LS optimization of sample times
-  output <- poped_optimize(poped.db,opt_xt=T)
-  get_rse(output$fmf,output$poped.db)
+  # Optimization of sample times
+  output <- poped_optim(poped.db, opt_xt=TRUE, parallel = TRUE)
+  get_rse(output$FIM, output$poped.db)
+  plot_model_prediction(output$poped.db, IPRED=F, DV=F)
+  
+  # Optimization of sample times and doses
+  output <- poped_optim(poped.db, opt_xt=TRUE, opt_a=TRUE, parallel = TRUE)
+  get_rse(output$FIM,output$poped.db)
   plot_model_prediction(output$poped.db,IPRED=F,DV=F)
   
-  # RS+SG+LS optimization of sample times and doses
-  output <- poped_optimize(poped.db,opt_xt=T,opt_a=T)
-  get_rse(output$fmf,output$poped.db)
-  plot_model_prediction(output$poped.db,IPRED=F,DV=F)
-  
-  # MFEA optimization with only integer times allowed
+  # Optimization with only integer times and doses allowed
   mfea.output <- poped_optimize(poped.db,opt_xt=1,
                                 bUseExchangeAlgorithm=1,
                                 EAStepSize=1)
