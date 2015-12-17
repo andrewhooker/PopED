@@ -1,57 +1,57 @@
 #' D-family optimization function
 #' 
-#' Optimize the objective function. 
-#' There are 4 different optimization algorithms used in this 
-#' function 
-#' \enumerate{
-#' \item Adaptive random search. See \code{\link{RS_opt}}.
-#' \item Stochastic gradient.
-#' \item A Broyden Fletcher Goldfarb Shanno (BFGS) 
-#' method for nonlinear minimization with box constraints. 
-#' \item A line search. See \code{\link{a_line_search}}.
-#' }
-#' The optimization algorithms run in series, taking as input the output from the previous method.
-#' The stopping rule used is to test if the line search algorithm fids a better optimum then its inital value.
-#' If so, then the chain of algorithms is run again.  If line search is not used then the argument \code{iter_tot} defines the number of times the 
-#' chain of algorithms is run.
-#' This function takes information from the PopED database supplied as an argument.
-#' The PopED database supplies information about the the model, parameters, design and methods to use.
-#' Some of the arguments coming from the PopED database can be overwritten;  
-#' if they are supplied then they are used instead of the arguments from the PopED database.
+#' Optimize the objective function. There are 4 different optimization
+#' algorithms used in this function \enumerate{ \item Adaptive random search.
+#' See \code{\link{RS_opt}}. \item Stochastic gradient. \item A Broyden Fletcher
+#' Goldfarb Shanno (BFGS) method for nonlinear minimization with box
+#' constraints. \item A line search. See \code{\link{a_line_search}}. } The
+#' optimization algorithms run in series, taking as input the output from the
+#' previous method. The stopping rule used is to test if the line search
+#' algorithm fids a better optimum then its inital value. If so, then the chain
+#' of algorithms is run again.  If line search is not used then the argument
+#' \code{iter_tot} defines the number of times the chain of algorithms is run. 
+#' This function takes information from the PopED database supplied as an
+#' argument. The PopED database supplies information about the the model,
+#' parameters, design and methods to use. Some of the arguments coming from the
+#' PopED database can be overwritten; if they are supplied then they are used
+#' instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
 #' @inheritParams evaluate.fim
 #' @inheritParams create.poped.database
-#' @param bpopdescr Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
-#' \itemize{
-#' \item column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
-#'  3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal)
-#' \item column 2  defines the mean.
-#' \item column 3 defines the variance of the distribution (or length of uniform distribution).
-#' }
-#' @param ddescr Matrix defining the diagnonals of the IIV (same logic as for the \code{bpopdescr}). 
+#' @param bpopdescr Matrix defining the fixed effects, per row (row number =
+#'   parameter_number) we should have: \itemize{ \item column 1 the type of the
+#'   distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform, 3 =
+#'   User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
+#'   column 2  defines the mean. \item column 3 defines the variance of the
+#'   distribution (or length of uniform distribution). }
+#' @param ddescr Matrix defining the diagnonals of the IIV (same logic as for
+#'   the \code{bpopdescr}).
 #' @param fmf The initial value of the FIM. If set to zero then it is computed.
 #' @param dmf The inital OFV. If set to zero then it is computed.
 #' @param trflag Should the optimization be output to the screen and to a file?
-#' @param ls_step_size Number of grid points in the line search
-#' @param iter_tot Number of iterations to use if line search is not used. Must be less than \code{iter_max} to be used.  
-#' @param iter_max If line search is used then 
-#' the algorithm tests if line search (always run at the end of the optimization iteration) changes the 
-#' design in any way.  If not, the algorithm stops.  If yes, then a new iteration is run unless
-#' \code{iter_max} iterations have already been run.
-#' 
-#' @references \enumerate{
-#' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software for optimal 
-#' experimental design in population kinetics", Computer Methods and Programs in Biomedicine, 74, 2004.
-#' \item J. Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C. Hooker, "PopED: An extended, 
-#' parallelized, nonlinear mixed effects models optimal design tool",  
-#' Computer Methods and Programs in Biomedicine, 108, 2012.
-#' }
+#' @param ls_step_size Number of grid points in the line search.
+#' @param iter_tot Number of iterations to use if line search is not used. Must
+#'   be less than \code{iter_max} to be used.
+#' @param iter_max If line search is used then the algorithm tests if line
+#'   search (always run at the end of the optimization iteration) changes the 
+#'   design in any way.  If not, the algorithm stops.  If yes, then a new
+#'   iteration is run unless \code{iter_max} iterations have already been run.
+#'   
+#' @references \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and A.
+#'   Ruggeri, "PopED, a software for optimal experimental design in population
+#'   kinetics", Computer Methods and Programs in Biomedicine, 74, 2004. \item J.
+#'   Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and A.C.
+#'   Hooker, "PopED: An extended, parallelized, nonlinear mixed effects models
+#'   optimal design tool", Computer Methods and Programs in Biomedicine, 108,
+#'   2012. }
 #' @family Optimize
-#' 
+#'   
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_Doptim.R
-
+#' @export
+#' @keywords internal
+#' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
@@ -711,7 +711,8 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
 #' @family Optimize
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_calc_ofv_and_grad.R
-#' 
+#' @export
+#' @keywords internal
 calc_ofv_and_grad <- function(x,optxt,opta, model_switch,aa,axt,groupsize,ni,xtopto,
                               xopto,aopto,bpop,d,sigma,docc_full,poped.db,only_fim=FALSE){
   if(optxt){

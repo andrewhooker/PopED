@@ -24,6 +24,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_ed.R
 #' @example tests/testthat/examples_fcn_doc/examples_calc_ofv_and_fim.R
+#' @export
 
 calc_ofv_and_fim <- function (poped.db,
                               ofv=0,

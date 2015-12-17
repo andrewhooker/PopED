@@ -16,6 +16,15 @@
 #' \code{(upper - lower)/(loc_fac*ff*adapt_scale)} where ff starts at 1 and increases by 1 for each adaptation.
 #' @param allowed_values A list containing allowed values for each parameter \code{list(par1=c(2,3,4,5,6),par2=c(5,6,7,8))}. 
 #' A vector containing allowed values for all parameters is also allowed \code{c(2,3,4,5,6)}.
+#' @param iter The number of iterations for the algorithm to perfrom (this is a maximum number, it could be less).
+#' @param iter_adapt The number of iterations before adapting (shrinking) the parameter search space.
+#' @param max_run The maximum number of iterations to run without a change in the best parameter estimates.
+#' @param trace_iter How many interations between each update to the screen about the result of the search.
+#' @param new_par_max_it The algorithm randomly chooses samples based on the current best set of parameters.  If when drawing 
+#' these samples the new parameter set has already been tested then a new draw is performed. After \code{new_par_max_it} draws, with
+#' no new parameter sets, then the algorithm stops.
+#' @param allow_replicates Should the algorithm allow parameters to have the same value?
+#' @param generator A user-defined function that generates new parameter sets to try in the algorithm.  See examples below.
 #' 
 #' 
 #' @references \enumerate{
@@ -27,9 +36,10 @@
 #' }
 #' 
 #' @family Optimize
+#' @inheritParams optim_LS
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_optim_ARS.R
-
+#' @export
 optim_ARS <- function(par,
                       fn,
                       lower=NULL,
@@ -43,10 +53,9 @@ optim_ARS <- function(par,
                       iter_adapt = 50,# number of iterations with no change before adapting search space
                       adapt_scale = 1,
                       max_run=200,
-                      iter_chunk = NULL,
                       trace = TRUE,
                       trace_iter=5,
-                      par_grouping=NULL,
+                      #par_grouping=NULL,
                       new_par_max_it = 200,
                       maximize=F, # default is to minimize
                       parallel=F,
@@ -59,8 +68,7 @@ optim_ARS <- function(par,
   
   # constratints
   # uniform instead of normal sampling
-  # take away par_grouping
-  
+
   #---------------- start trace
   if((trace)){
     tic(name=".ars_savedTime")
@@ -96,7 +104,8 @@ optim_ARS <- function(par,
   if(parallel){
     parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,...) 
     on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
-  }   
+  }  
+  iter_chunk = NULL
   if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1
   
   # continuous and discrete parameters
@@ -160,11 +169,11 @@ optim_ARS <- function(par,
       }
       
       # Group samples that should be grouped
-      if(!is.null(par_grouping)){
-        for(k in unique(par_grouping)){
-          par[par_grouping==k] <- resample(par[par_grouping==k])
-        }
-      }
+      #       if(!is.null(par_grouping)){
+      #         for(k in unique(par_grouping)){
+      #           par[par_grouping==k] <- resample(par[par_grouping==k])
+      #         }
+      #       }
       
       # set to boundary if beyond the boundary
       if(!all(is.null(upper))) par[par>upper] <- upper[par>upper]

@@ -52,6 +52,7 @@
 # @example inst/examples_fcn_doc/examples_evaluate.fim.R
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate.fim.R
+#' @export
 
 
 evaluate.fim <- function(poped.db,

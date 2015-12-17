@@ -14,10 +14,12 @@
 #' @param param_cvs_init The inital design parameter RSE values.
 #' 
 #' @family Helper
-#' @export
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_blockfinal.R
-# @keywords internal
+#' @importFrom MASS write.matrix
+#' @export
+#' @keywords internal
+#' 
 #' 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

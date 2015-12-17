@@ -69,9 +69,9 @@
 #' @param minxt Matrix or single value defining the minimum value for each xt sample.  If a single value is 
 #' supplied then all xt values are given the same minimum value
 #' @param discrete_x Cell array defining the discrete variables for each x value.
-#' @param maxa Vector defining the max value for each covariate. IF a single value is supplied then
+#' @param maxa Vector defining the max value for each covariate. If a single value is supplied then
 #'  all a values are given the same max value
-#'  @param mina Vector defining the min value for each covariate. IF a single value is supplied then
+#' @param mina Vector defining the min value for each covariate. If a single value is supplied then
 #'  all a values are given the same max value
 #' @param bUseGrouped_xt Use grouped time points (1=TRUE, 0=FALSE).
 #' @param G_xt Matrix defining the grouping of sample points. Matching integers mean that the points are matched.
@@ -267,6 +267,9 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_create.poped.database.R
 #' 
+#' @importFrom mvtnorm rmvnorm
+#' @export
+
 
 create.poped.database <- 
   function(popedInput=list(),
@@ -1247,7 +1250,8 @@ create.poped.database <-
 #' 
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_poped.choose.R
-
+#' @export
+#' @keywords internal
 poped.choose <- function(arg1,arg2){
   #ifelse(!is.null(arg1), arg1, arg2)
   if(!is.null(arg1)){

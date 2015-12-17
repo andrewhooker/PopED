@@ -39,7 +39,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_ed.R
 #' @example tests/testthat/examples_fcn_doc/examples_RS_opt_gen.R
-
+#' @export
 RS_opt_gen <- function(poped.db,
                        ni=NULL, 
                        xt=NULL, 

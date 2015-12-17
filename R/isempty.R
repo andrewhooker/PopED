@@ -4,7 +4,8 @@
 #' @return Logical. True if the passed object has any dimension that is zero.
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_isempty.R
-
+#' @export
+#' @keywords internal
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

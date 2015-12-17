@@ -124,7 +124,7 @@ res3 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 1
 
 # one-dimensional function
 f <- function(x)  (x^2+x)*cos(x) # -10 < x < 10
-res_max <- optim_ARS(0,f,lower=-10, upper=10,maximize=T) # sometimes to local maxima
+res_max <- optim_ARS(0,f,lower=-10, upper=10,maximize=TRUE) # sometimes to local maxima
 
 \dontrun{ 
   res_min <- optim_ARS(0,f,lower=-10, upper=10) # sometimes to local minima
@@ -171,7 +171,10 @@ res_max <- optim_ARS(0,f,lower=-10, upper=10,maximize=T) # sometimes to local ma
 ## here we have added extra time to the computations
 ## just to show that it works
 \dontrun{ 
-  res7 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12)
-  res8 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12,parallel = T)
-  res9 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},lower=-5.12, upper=5.12,parallel = T,parallel_type = "snow")
+  res7 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
+                    lower=-5.12, upper=5.12)
+  res8 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
+                    lower=-5.12, upper=5.12,parallel = T)
+  res9 <- optim_ARS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
+                    lower=-5.12, upper=5.12,parallel = T,parallel_type = "snow")
 }

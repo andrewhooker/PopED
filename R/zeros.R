@@ -8,7 +8,7 @@
 #' @return A matrix of zeros.
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_zeros.R
-
+#' @export
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

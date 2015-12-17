@@ -27,7 +27,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_poped_optimize.R
-
+#' @export
 
 
 poped_optimize <- function(poped.db,

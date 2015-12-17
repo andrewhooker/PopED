@@ -12,6 +12,8 @@
 #' \item{all}{A vector with all of the above, in the order of this list.}
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_get_all_params.R
+#' @export
+#' @keywords internal
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

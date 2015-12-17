@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.2.0.9000
+Version: 0.2.0.9001
 Depends:
     ggplot2
 Imports:
@@ -21,14 +21,15 @@ Authors@R: c(
     person("Joakim", "Nyberg", role="aut", comment="MATLAB version"),
     person("Eric","Stroemberg", role="ctb", comment="MATLAB version")
     )
-Description: Optimal experimental designs for both population and individual 
-    studies based on nonlinear mixed-effect models.  Often this is based on a 
-    computation of the Fisher Information Matrix (FIM). This package was developed 
+Description: Optimal experimental designs for both population and individual
+    studies based on nonlinear mixed-effect models. Often this is based on a
+    computation of the Fisher Information Matrix (FIM). This package was developed
     for pharmacometric problems, and examples and predefined models are available
     for these types of systems.
 License: LGPL (>= 3)
 ByteCompile: true
-URL: http://poped.sourceforge.net 
+URL: http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2015 Andrew C. Hooker
 LazyData: true
+RoxygenNote: 5.0.1

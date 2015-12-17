@@ -18,7 +18,8 @@
 #'     
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_LinMatrixH.R
-#' 
+#' @export
+#' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
@@ -56,6 +57,8 @@ LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
 #' @family FIM
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_gradf_eps.R
+#' @export
+#' @keywords internal
 #' 
 gradf_eps <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,num_eps,poped.db){
   #----------Model linearization with respect to epsilon.

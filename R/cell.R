@@ -1,4 +1,4 @@
-#' MATLAB cell function
+#' Create a cell array (a matrix of lists) 
 #' 
 #' Create a cell array as in MATLAB.
 #' 
@@ -11,6 +11,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_cell.R
 #' 
+#' @export
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

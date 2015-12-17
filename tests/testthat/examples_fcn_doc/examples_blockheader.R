@@ -52,6 +52,6 @@ poped.db.1 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   maxa=100)
 
 
-blockheader(poped.db.1,name="",trflag=2,opt_xt=T)
+blockheader(poped.db.1,name="",trflag=2,opt_xt=TRUE)
 
 

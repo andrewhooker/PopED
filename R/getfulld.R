@@ -5,7 +5,8 @@
 #'   order for the lower triangular matrix.
 #' @return The full matrix of variances for the between subject variances
 #' @example tests/testthat/examples_fcn_doc/examples_getfulld.R
-
+#' @export
+#' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

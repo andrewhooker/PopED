@@ -26,7 +26,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_plot_efficiency_of_windows.R
-
+#' @export
 
 plot_efficiency_of_windows <- function(poped.db,
                                        xt_windows=NULL,

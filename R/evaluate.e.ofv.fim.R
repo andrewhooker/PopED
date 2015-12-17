@@ -22,6 +22,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_ed.R
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate.e.ofv.fim.R
+#' @export
 
 
 evaluate.e.ofv.fim <- function(poped.db,

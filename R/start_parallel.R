@@ -1,3 +1,29 @@
+#' Start parallel computational processes
+#' 
+#' This tool chooses the type of parallelization process to use based on the
+#' computer OS being used.  For windows the default is "snow" and for Linux-like
+#' systems the default is "multicore"
+#' 
+#' @param parallel Should the parallel functionality start up?
+#' @param num_cores How many cores to use.  Default is
+#'   \code{parallel::detectCores()}. See \code{\link[parallel]{detectCores}} for more information.
+#' @param parallel_type Which type of parallelization should be used? Can be
+#'   "snow" or "multicore".  "snow"  works on Linux-like systems & Windows.
+#'   "multicore" works only on Linux-like systems.  By default this is chosen
+#'   for you depending on your operating system.
+#' @param seed The random seed to use.
+#' @param dlls If the computations require compiled code (DLL's) and you are
+#'   using the "snow" method then you need to specify the name of the DLL's without 
+#'   the extension as a text vector \code{c("this_file","that_file")}. 
+#' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
+#'   
+#' @inheritParams optim_LS
+
+#'
+#' @return An atomic vector (TRUE or FALSE) with two attributes: "type" and "cores".
+#'
+#' 
+#' @export
 start_parallel <- function(parallel=TRUE,
                            num_cores=NULL,
                            parallel_type=NULL,

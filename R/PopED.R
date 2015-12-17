@@ -45,6 +45,7 @@
 #' \code{\link{get_rse}}.
 #' 
 #' Optimize the design (evaluate afterwards using the above functions): 
+#' \code{\link{poped_optim}}, 
 #' \code{\link{poped_optimize}}, 
 #'  \code{\link{RS_opt}}, 
 #'  \code{\link{a_line_search}}. 
@@ -69,8 +70,8 @@
 #' @importFrom MASS write.matrix
 #' @importFrom mvtnorm rmvnorm
 #' @docType package
-#' @name PopED-package
-#' @aliases PopED poped
+#' @name PopED
+#' @aliases poped PopED-package
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_poped-package.R
 #' 

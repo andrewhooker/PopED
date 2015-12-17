@@ -32,6 +32,7 @@
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_a_line_search.R
   
+
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

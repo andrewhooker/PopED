@@ -8,7 +8,8 @@
 #' @param poped.db A PopED database 
 #' @return A PopED database
 #' @family poped_input
-
+#' @export
+#' @keywords internal
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

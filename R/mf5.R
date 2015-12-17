@@ -22,6 +22,8 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_mf5.R
+#' @export
+#' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

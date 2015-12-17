@@ -46,7 +46,7 @@
 #' @family Optimize
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_optim_LS.R
-
+#' @export
 optim_LS <- function(par,
                      fn,
                      lower=NULL,

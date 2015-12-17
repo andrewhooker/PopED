@@ -11,9 +11,10 @@
 #' @param opt_method If "RS" (random search), "SG" (stochastic gradient) or "DO" (discrete optimization) then specifc output is produced.
 #' 
 #' @family Helper
-#' @export
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_blockopt.R
+#' @export
+#' @keywords internal
 # @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

@@ -23,6 +23,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.md.KE.R
 #' 
+#' @export
 
 ff.PK.1.comp.oral.md.KE <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
@@ -57,6 +58,7 @@ ff.PK.1.comp.oral.md.KE <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.md.CL.R
 #' 
+#' @export
 ff.PK.1.comp.oral.md.CL <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   ## -- Analytic solution for both mutiple and single dosing
@@ -90,6 +92,7 @@ ff.PK.1.comp.oral.md.CL <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.sd.KE.R
 #' 
+#' @export
 ff.PK.1.comp.oral.sd.KE <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   with(as.list(parameters),{
@@ -120,6 +123,7 @@ ff.PK.1.comp.oral.sd.KE <- function(model_switch,xt,parameters,poped.db){
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.sd.CL.R
 #' 
+#' @export
 ff.PK.1.comp.oral.sd.CL <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   with(as.list(parameters),{
@@ -148,7 +152,7 @@ ff.PK.1.comp.oral.sd.CL <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PKPD.1.comp.sd.CL.emax.R
 #' 
-
+#' @export
 ff.PKPD.1.comp.sd.CL.emax <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -187,7 +191,7 @@ ff.PKPD.1.comp.sd.CL.emax <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PKPD.1.comp.oral.md.CL.imax.R
 #' 
-
+#' @export
 ff.PKPD.1.comp.oral.md.CL.imax <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption + inhibitory imax
   ## -- works for both mutiple and single dosing  
@@ -231,7 +235,7 @@ ff.PKPD.1.comp.oral.md.CL.imax <- function(model_switch,xt,parameters,poped.db){
 #' @family RUV_models
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.md.CL.R
-
+#' @export
 feps.add.prop <- function(model_switch,xt,parameters,epsi,poped.db){
   ## -- Residual Error function
   ## -- Additive + Proportional 
@@ -264,7 +268,7 @@ feps.add.prop <- function(model_switch,xt,parameters,epsi,poped.db){
 #' @family RUV_models
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_feps.add.R
-
+#' @export
 feps.add <- function(model_switch,xt,parameters,epsi,poped.db){
   ## -- Residual Error function
   ## -- Additive 
@@ -299,6 +303,7 @@ feps.add <- function(model_switch,xt,parameters,epsi,poped.db){
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.sd.CL.R
 #' 
+#' @export
 feps.prop <- function(model_switch,xt,parameters,epsi,poped.db){
   ## -- Residual Error function
   ## -- Proportional 

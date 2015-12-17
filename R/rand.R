@@ -9,7 +9,8 @@
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_rand.R
-
+#' @export
+#' @keywords internal
 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker

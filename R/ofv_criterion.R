@@ -16,6 +16,7 @@
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_ofv_criterion.R
 #' 
+#' @export
 ofv_criterion <- function(ofv_f,
                           num_parameters,
                           poped.db,

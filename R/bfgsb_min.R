@@ -15,13 +15,13 @@
 #' \item{x_k}{The objective function.}
 #' \item{f_k}{The gradient.}
 #' \item{B_k}{The hessian.}
-#' @export
-# @keywords internal
 #' @family Optimize
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_bfgsb_min.R
 #' 
+#' @export
+#' @keywords internal
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

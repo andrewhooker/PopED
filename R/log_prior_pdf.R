@@ -9,7 +9,8 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_log_prior_pdf.R
-
+#' @export
+#' @keywords internal
 log_prior_pdf <- function(alpha, bpopdescr, ddescr,return_gradient=F,return_hessian=F){
   #returns the logarithm of the probability density for alpha,given the prior
   #and if required the gradient

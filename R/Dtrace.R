@@ -22,7 +22,9 @@
 #' @param opt_inds Are the nuber of individuals per group being optimized?
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_Dtrace.R
-
+#' @export
+#' @keywords internal
+#' 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

@@ -8,7 +8,8 @@
 #'  
 #' @family FIM
 #' 
-
+#' @export
+#' @keywords internal
 
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker

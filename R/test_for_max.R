@@ -9,7 +9,8 @@
 #' @return A matrix  
 #' @family matrix_manipulation
 #' @example tests/testthat/examples_fcn_doc/examples_test_for_max.R
-
+#' @export
+#' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 

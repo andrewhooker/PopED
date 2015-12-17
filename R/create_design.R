@@ -24,6 +24,9 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_create_design.R
 #' 
+#' @importFrom dplyr rbind_all
+#' @export
+
 
 create_design <- function(
   xt, ## -- Matrix defining the initial sampling schedule row major, can also be a list of vectors--

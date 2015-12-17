@@ -1,3 +1,5 @@
+#' @importFrom codetools findGlobals
+
 build_sfg <- function (model="ff.PK.1.comp.oral.sd.CL",covariates=c("DOSE"),
                        etas="exp", # can be exp, prop, add
                        no_etas=c("F","Favail"),

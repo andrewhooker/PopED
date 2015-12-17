@@ -13,6 +13,8 @@
 #' @family MATLAB
 #' @family matrix_manipulation
 #' @example tests/testthat/examples_fcn_doc/examples_diag_matlab.R
+#' @export
+#' @keywords internal
 
 diag_matlab <- function(mat){
     dim.mat <- dim(mat)

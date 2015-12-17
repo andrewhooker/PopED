@@ -43,6 +43,10 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_model_prediction.R
 #' 
+#' @importFrom mvtnorm rmvnorm
+#' @importFrom dplyr rbind_list
+#' @export
+
 
 model_prediction <- function(poped.db=NULL,
                              design=list( ## passed to create_design

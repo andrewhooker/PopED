@@ -37,7 +37,7 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_plot_model_prediction.R
 #' 
-
+#' @export
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,

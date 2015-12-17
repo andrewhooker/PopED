@@ -18,11 +18,10 @@
 #' 
 #' @family Helper
 #' @return fn A file handle (or \code{''} if \code{name=''})
-#' @export
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_blockheader.R
-# @keywords internal
-#' 
+#' @keywords internal
+#' @export
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker

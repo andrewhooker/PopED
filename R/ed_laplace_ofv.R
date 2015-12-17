@@ -31,6 +31,9 @@
 #' @family FIM
 #' @family E-family
 #' @example tests/testthat/examples_fcn_doc/examples_ed_laplace_ofv.R
+#' @importFrom nlme fdHess
+#' @export
+#' @keywords internal
 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work

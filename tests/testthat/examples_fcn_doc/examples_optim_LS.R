@@ -66,7 +66,7 @@ res_box <- optim_LS(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),line_
 
 # one-dimensional function
 f <- function(x)  (x^2+x)*cos(x) # -10 < x < 10
-res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=T,line_length = 1000) 
+res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000) 
 
 \dontrun{ 
   res_min <- optim_LS(0,f,lower=-10, upper=10, line_length = 1000) 
@@ -88,7 +88,8 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=T,line_length = 1000)
   x1 <- x2 <- seq(-5.12, 5.12, by = 0.1)
   z <- outer(x1, x2, Rastrigin)
   
-  res6 <- optim_LS(c(-4,4),function(x) Rastrigin(x[1], x[2]),lower=-5.12, upper=5.12, line_length = 1000)
+  res6 <- optim_LS(c(-4,4),function(x) Rastrigin(x[1], x[2]),
+                   lower=-5.12, upper=5.12, line_length = 1000)
   
   # color scale
   nrz <- nrow(z)
@@ -116,7 +117,8 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=T,line_length = 1000)
   res7 <- optim_LS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
                    lower=-5.12, upper=5.12, line_length = 200)
   res8 <- optim_LS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
-                   lower=-5.12, upper=5.12, line_length = 200, parallel = T)
+                   lower=-5.12, upper=5.12, line_length = 200, parallel = TRUE)
   res9 <- optim_LS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
-                   lower=-5.12, upper=5.12, line_length = 200, parallel = T, parallel_type = "snow")
+                   lower=-5.12, upper=5.12, line_length = 200, parallel = TRUE, 
+                   parallel_type = "snow")
 }

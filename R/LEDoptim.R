@@ -25,7 +25,8 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_ed.R
 #' @example tests/testthat/examples_fcn_doc/examples_LEDoptim.R
-
+#' @export
+# @keywords internal
 LEDoptim <- function(poped.db,
                      model_switch=NULL,
                      ni=NULL,

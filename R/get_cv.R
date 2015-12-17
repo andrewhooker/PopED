@@ -79,7 +79,7 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
 #' 
 # @example inst/examples_fcn_doc/examples_evaluate.fim.R
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate.fim.R
-#' 
+#' @export
 get_rse <- function (fmf, poped.db,
                      bpop=poped.db$parameters$bpop[,2,drop=F],
                      d=poped.db$parameters$d[,2,drop=F],

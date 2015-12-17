@@ -9,7 +9,7 @@
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_tic.R
-
+#' @export
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 

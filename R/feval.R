@@ -9,7 +9,9 @@
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_feval.R
-
+#' @export
+#' @keywords internal
+#' 
 ## Function written to match MATLAB function
 ## Author: Andrew Hooker
 
