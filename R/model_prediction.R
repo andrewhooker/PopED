@@ -43,10 +43,9 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_model_prediction.R
 #' 
-#' @importFrom mvtnorm rmvnorm
-#' @importFrom dplyr rbind_list
 #' @export
-
+# @importFrom mvtnorm rmvnorm
+# @importFrom dplyr rbind_list
 
 model_prediction <- function(poped.db=NULL,
                              design=list( ## passed to create_design
@@ -244,9 +243,9 @@ model_prediction <- function(poped.db=NULL,
         if(predictions){
           fulld = getfulld(parameters$d[,2],parameters$covd)
           fulldocc = getfulld(parameters$docc[,2,drop=F],parameters$covdocc)
-          b_sim_matrix = rmvnorm(num_ids,sigma=fulld)
+          b_sim_matrix = mvtnorm::rmvnorm(num_ids,sigma=fulld)
           bocc_sim_matrix = zeros(num_ids*NumOcc,length(parameters$docc[,2,drop=F]))
-          if(nrow(fulldocc)!=0) bocc_sim_matrix = rmvnorm(num_ids*NumOcc,sigma=fulldocc)
+          if(nrow(fulldocc)!=0) bocc_sim_matrix = mvtnorm::rmvnorm(num_ids*NumOcc,sigma=fulldocc)
         }
         
         for(j in 1:num_ids){
@@ -271,7 +270,7 @@ model_prediction <- function(poped.db=NULL,
           
           if(DV){
             if(predictions){
-              eps_sim = rmvnorm(length(xt_i),sigma=parameters$sigma)
+              eps_sim = mvtnorm::rmvnorm(length(xt_i),sigma=parameters$sigma)
               dv <- feval(model$ferror_pointer,model_switch_i,xt_i,fg_sim,eps_sim,poped.db) 
               dv <- drop(dv[[1]])
             } else {

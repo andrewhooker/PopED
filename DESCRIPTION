@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.2.0.9002
+Version: 0.2.0.9003
 Depends:
     ggplot2
 Imports:
@@ -9,7 +9,7 @@ Imports:
     mvtnorm,
     nlme,
     dplyr,
-    codetools
+    codetools,
 Suggests:
     testthat,
     Hmisc,

@@ -18,7 +18,7 @@
 #' @param y_eff Should one of the plots created have efficiency on the y-axis?
 #' @param y_rse Should created plots include the relative standard error of each parameter as a value on the y-axis?   
 #' 
-#' @return A \link[ggplot2]{ggplot2} object.
+#' @return A \link[ggplot2]{ggplot} object.
 #' 
 #' @family evaluate_design
 #' @family Simulation
@@ -27,6 +27,8 @@
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
 #' @example tests/testthat/examples_fcn_doc/examples_plot_efficiency_of_windows.R
 #' @export
+#' @import ggplot2
+
 
 plot_efficiency_of_windows <- function(poped.db,
                                        xt_windows=NULL,

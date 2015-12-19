@@ -31,10 +31,10 @@
 #' @family FIM
 #' @family E-family
 #' @example tests/testthat/examples_fcn_doc/examples_ed_laplace_ofv.R
-#' @importFrom nlme fdHess
 #' @export
 #' @keywords internal
-
+# @importFrom nlme fdHess
+ 
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
@@ -234,7 +234,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     
     ## Different hessian and gradient calculation
     if(method==2){ 
-      k_vals <- fdHess(output$par,
+      k_vals <- nlme::fdHess(output$par,
                              function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                                                 return_gradient=F)[["k"]]) 

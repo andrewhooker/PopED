@@ -66,13 +66,14 @@
 #' \item \url{https://github.com/andrewhooker/PopED.git}
 #' }
 #' 
-#' @import ggplot2
-#' @importFrom MASS write.matrix
-#' @importFrom mvtnorm rmvnorm
 #' @docType package
 #' @name PopED
 #' @aliases poped PopED-package
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_poped-package.R
 #' 
+# @importFrom MASS write.matrix
+# @importFrom mvtnorm rmvnorm
+# @import ggplot2
+
 NULL

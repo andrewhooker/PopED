@@ -29,7 +29,7 @@
 #' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
 #' 
 #' 
-#' @return A \link[ggplot2]{ggplot2} object.
+#' @return A \link[ggplot2]{ggplot} object.
 #' 
 #' @family evaluate_design
 #' @family Simulation
@@ -38,6 +38,8 @@
 #' @example tests/testthat/examples_fcn_doc/examples_plot_model_prediction.R
 #' 
 #' @export
+#' @import ggplot2
+# @import Hmisc
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,
@@ -70,6 +72,7 @@ plot_model_prediction <- function(poped.db,
                                   facet_scales="fixed", # could be "free", "fixed", "free_x" or "free_y"
                                   facet_label_names = T, 
                                   ...){
+  
   df <-  model_prediction(poped.db,
                           #models_to_use,
                           model_num_points=model_num_points,

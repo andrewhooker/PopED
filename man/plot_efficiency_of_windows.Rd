@@ -29,7 +29,7 @@ the xt matrix found in \code{poped.db$design$xt}.}
 \item{...}{Extra arguments passed to \code{evaluate.fim}}
 }
 \value{
-A \link[ggplot2]{ggplot2} object.
+A \link[ggplot2]{ggplot} object.
 }
 \description{
 Function plots the efficiency of windows around the optimal design points.  The maximal and minimal allowed values for all

@@ -267,8 +267,8 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_create.poped.database.R
 #' 
-#' @importFrom mvtnorm rmvnorm
 #' @export
+# @importFrom mvtnorm rmvnorm
 
 
 create.poped.database <- 
@@ -1076,10 +1076,10 @@ create.poped.database <-
       poped.db$parameters$bocc_global = cell(poped.db$settings$iFOCENumInd,1)
       
       if((poped.db$settings$d_switch)){
-        poped.db$parameters$b_global = t(rmvnorm(max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
+        poped.db$parameters$b_global = t(mvtnorm::rmvnorm(max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded),sigma=fulld))
         for(i in 1:poped.db$settings$iFOCENumInd){
           poped.db$parameters$bocc_global[[i]]=zeros(size(docc,1),poped.db$parameters$NumOcc)
-          if(poped.db$parameters$NumOcc!=0) poped.db$parameters$bocc_global[[i]]=t(rmvnorm(poped.db$parameters$NumOcc,sigma=fulldocc))
+          if(poped.db$parameters$NumOcc!=0) poped.db$parameters$bocc_global[[i]]=t(mvtnorm::rmvnorm(poped.db$parameters$NumOcc,sigma=fulldocc))
         }
       } else {
         d_dist=pargen(d,poped.db$model$user_distribution_pointer,max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded),poped.db$settings$bLHS,zeros(1,0),poped.db)
@@ -1087,13 +1087,13 @@ create.poped.database <-
         
         if((!isempty(d_dist))){
           for(i in 1:max(poped.db$settings$iFOCENumInd,iMaxCorrIndNeeded)){
-            poped.db$parameters$b_global[,i] = t(rmvnorm(1,sigma=getfulld(d_dist[i,],poped.db$parameters$covd)))
+            poped.db$parameters$b_global[,i] = t(mvtnorm::rmvnorm(1,sigma=getfulld(d_dist[i,],poped.db$parameters$covd)))
           }
         }
         
         if((!isempty(docc_dist))){
           for(i in 1:poped.db$settings$iFOCENumInd){
-            poped.db$parameters$bocc_global[[i]]=t(rmvnorm(poped.db$parameters$NumOcc,sigma=getfulld(docc_dist[i,],poped.db$parameters$covdocc)))
+            poped.db$parameters$bocc_global[[i]]=t(mvtnorm::rmvnorm(poped.db$parameters$NumOcc,sigma=getfulld(docc_dist[i,],poped.db$parameters$covdocc)))
           }
         }
       }
