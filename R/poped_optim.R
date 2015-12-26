@@ -95,7 +95,15 @@ poped_optim <- function(poped.db,
   #------------- initialization
   fmf = 0 #The best FIM so far
   dmf = 0 #The best ofv of FIM  so far
-  output <- calc_ofv_and_fim(poped.db,...)
+  #output <-calc_ofv_and_fim(poped.db,...)
+  output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
+                   ED_samp_size=ED_samp_size,
+                   bLHS=bLHS,
+                   use_laplace=use_laplace,
+                   ofv_calc_type=ofv_calc_type,
+                   fim.calc.type=fim.calc.type,
+                   ...)
+  
   fmf <- output$fim
   dmf <- output$ofv
   fmf_init <- fmf
@@ -210,8 +218,25 @@ poped_optim <- function(poped.db,
     a <- NULL
     if(opt_a) a <- matrix(par[par_type=="a"],par_dim$a)
     
-    FIM <- evaluate.fim(poped.db,xt=xt,a=a,...)
-    ofv <- ofv_fim(FIM,poped.db,...)
+    if(d_switch){
+      FIM <- evaluate.fim(poped.db,xt=xt,a=a,...)
+      ofv <- ofv_fim(FIM,poped.db,...)
+    } else{
+      output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
+                                ED_samp_size=ED_samp_size,
+                                bLHS=bLHS,
+                                use_laplace=use_laplace,
+                                ofv_calc_type=ofv_calc_type,
+                                fim.calc.type=fim.calc.type,
+                                xt=xt,
+                                a=a,
+                                ...)
+      
+      FIM <- output$fim
+      ofv <- output$ofv
+    }
+              
+        
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
     
     if(!is.finite(ofv)) ofv <- 1e-15
@@ -435,7 +460,20 @@ poped_optim <- function(poped.db,
   #--------- Write results
   #if((trflag)){
   #  if(footer_flag){
-  FIM <- evaluate.fim(poped.db,...)
+  #FIM <- evaluate.fim(poped.db,...)
+  if(d_switch){
+    FIM <- evaluate.fim(poped.db,...)
+  } else{
+    out <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
+                              ED_samp_size=ED_samp_size,
+                              bLHS=bLHS,
+                              use_laplace=use_laplace,
+                              ofv_calc_type=ofv_calc_type,
+                              fim.calc.type=fim.calc.type,
+                              ...)
+    
+    FIM <- out$fim
+  }
   blockfinal(fn=fn,fmf=FIM,
              dmf=output$ofv,
              groupsize=poped.db$design$groupsize,
