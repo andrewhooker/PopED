@@ -146,7 +146,11 @@ poped_optim <- function(poped.db,
     par <- c(par,poped.db$design$a)
     upper <- c(upper,poped.db$design_space$maxa)
     lower <- c(lower,poped.db$design_space$mina)
-    par_grouping <- c(par_grouping,poped.db$design_space$G_a + max(par_grouping))
+    if(opt_xt){
+      par_grouping <- c(par_grouping,poped.db$design_space$G_a + max(par_grouping)) 
+    } else {
+      par_grouping <- c(par_grouping,poped.db$design_space$G_a) 
+    }
     par_type <- c(par_type,rep("a",length(poped.db$design$a)))
     par_dim$a <- dim(poped.db$design$a)
     if(is.null(poped.db$design_space$a_space) && build_allowed_values){ 
@@ -238,10 +242,13 @@ poped_optim <- function(poped.db,
               
         
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
-    
-    if(!is.finite(ofv)) ofv <- 1e-15
-    #if(!is.finite(ofv)) ofv <- NA
-    #if(!is.finite(ofv)) ofv <- -Inf
+    if(!is.finite(ofv) && ofv_calc_type==4){
+      ofv <- -Inf 
+    } else {
+      if(!is.finite(ofv)) ofv <- 1e-15
+      #if(!is.finite(ofv)) ofv <- NA
+      #if(!is.finite(ofv)) ofv <- -Inf
+    }
     
     #cat(ofv,"\n")
     return(ofv)
