@@ -10,6 +10,8 @@ Imports:
     nlme,
     dplyr,
     codetools,
+    stats,
+    utils
 Suggests:
     testthat,
     Hmisc,

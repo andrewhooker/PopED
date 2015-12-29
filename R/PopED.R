@@ -72,6 +72,18 @@
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_poped-package.R
 #' 
+#' @importFrom stats dlnorm
+#' @importFrom stats dnorm
+#' @importFrom stats end
+#' @importFrom stats optim
+#' @importFrom stats qnorm
+#' @importFrom stats quantile
+#' @importFrom stats rnorm
+#' @importFrom stats runif
+#' @importFrom utils capture.output
+#' @importFrom utils find
+#' @importFrom utils packageVersion
+#' @importFrom utils stack
 # @importFrom MASS write.matrix
 # @importFrom mvtnorm rmvnorm
 # @import ggplot2
