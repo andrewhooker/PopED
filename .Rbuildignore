@@ -5,5 +5,5 @@
 ^.*\.o$
 ^tools$
 ^shinyapp$
-
+^cran-comments.md$
 ^\.travis\.yml$

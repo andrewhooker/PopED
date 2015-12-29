@@ -1,5 +1,15 @@
 PopED News/Changelog
 
+PopED 0.3.0
+===========
+
+* Added new optimization methods and tools, see `?poped_optim()`. This function incorporates the new optimization routines `optim_ARS()` and `optim_LS` which are optimized versions of previous optimization algorithms used in PopED. Both can be run with parallelization. `poped_optim()` also incorporates the genetic algorithm from `GA::ga()`, which can also be run with parallelization, and the "L-BFGS-B" method from `stats::optim()`. `poped_optim()` should be more efficient and faster than `poped_optimize()`.
+
+* Changed the default objective function to be the log of the determinant of the FIM.  `create.poped.database(ofv_calc_type=4)`
+
+* Various small changes and bug fixes.
+
+
 PopED 0.2.0
 ===========
 

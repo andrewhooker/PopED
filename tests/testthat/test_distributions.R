@@ -35,7 +35,7 @@ test_that("pargen works", {
   expect_true(all(pars.ln.1==pars.ln.2))
   
   p.vals <- apply(pars.ln[,1:3],2,function(x) shapiro.test(log(x))[["p.value"]])
-  expect_that(all(p.vals > 0.8), is_true())
+  expect_that(all(p.vals > 0.05), is_true())
   
   # Adding 10% Uncertainty to fixed effects normal-distribution (not Favail)
   # with normal distributions
@@ -50,7 +50,7 @@ test_that("pargen works", {
   expect_that(all(var.diff.n[1:3]<50),is_true())
   
   p.vals <- apply(pars.n[,1:3],2,function(x) shapiro.test(x)[["p.value"]])
-  expect_that(all(p.vals > 0.8), is_true())
+  expect_that(all(p.vals > 0.05), is_true())
   
   # Adding 10% Uncertainty to fixed effects uniform-distribution (not Favail)
   mean.diff.u <- (colMeans(pars.u) - bpop_vals_ed_u[,2])/bpop_vals_ed_u[,2]*100

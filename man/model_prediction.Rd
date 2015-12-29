@@ -216,12 +216,12 @@ model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = c(10
                  model_minxt=c(20,20),model_maxxt=c(100,100))
 }
 \seealso{
+Other Simulation: \code{\link{plot_efficiency_of_windows}},
+  \code{\link{plot_model_prediction}}
+
 Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{get_rse}},
   \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
-
-Other Simulation: \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}
 }
 
