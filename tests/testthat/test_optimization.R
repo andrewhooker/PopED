@@ -61,4 +61,5 @@ test_that("a_line_search, mfea, poped_optimize and poped_optim work", {
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
   
+  
 })
