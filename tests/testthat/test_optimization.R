@@ -22,7 +22,7 @@ test_that("optim_ARS works", {
   
 })
 
-test_that("a_line_search works", {
+test_that("a_line_search and mfea work", {
   
   ex_string_1 <- ex_to_string("examples_fcn_doc/warfarin_optimize.R",comment_dontrun=comment_dontrun)
   eval(parse(text=ex_string_1))
@@ -36,5 +36,13 @@ test_that("a_line_search works", {
   file.remove("tmp.txt")
   
   expect_true(output$best_changed)
+  
+  ex_string_3 <- ex_to_string("examples_fcn_doc/examples_mfea.R",comment_dontrun=comment_dontrun)
+  sink("tmp.txt")
+  eval(parse(text=ex_string_3))
+  sink()
+  file.remove("tmp.txt")
+  
+  expect_equivalent(out_1$poped.db$design$a[1,1],100)
   
 })

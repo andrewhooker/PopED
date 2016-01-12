@@ -1,17 +1,24 @@
+##############
+# typically one will use poped_optimize 
+# This then calls mfea 
+##############
+
+# optimization of covariate, with coarse grid
+out_1 <- poped_optimize(poped.db,opt_a=1,
+                              bUseExchangeAlgorithm=1,
+                              EAStepSize=25)
+
 
 \dontrun{
   
-  ##############
-  # typically one will use poped_optimize 
-  # This then calls mfea 
-  ##############
+  
   
   # MFEA optimization with only integer times allowed
-  mfea.output <- poped_optimize(poped.db,opt_xt=1,
+  out_2 <- poped_optimize(poped.db,opt_xt=1,
                                 bUseExchangeAlgorithm=1,
                                 EAStepSize=1)
-  get_rse(mfea.output$fmf,mfea.output$poped.db)
-  plot_model_prediction(mfea.output$poped.db)
+  get_rse(out_2$fmf,out_2$poped.db)
+  plot_model_prediction(out_2$poped.db)
   
   
   ##############
