@@ -1,23 +1,22 @@
+##############
+# D-family Optimization
+##############
+
+# below are a number of ways to optimize the problem
+
+
+# ARS+BFGS+LS optimization of dose
+# optimization with just a few iterations
+# only to check that things are working
+out_1 <- poped_optim(poped.db,opt_a =T,
+                      control = list(ARS=list(iter=2),
+                                     BFGS=list(maxit=2),
+                                     LS=list(line_length=2)),
+                      iter_max = 1)
 
 \dontrun{
   
-  ##############
-  # D-family Optimization
-  ##############
-  
-  # below are a number of ways to optimize the problem
-  
-  
-  # ARS+BFGS+LS optimization of sample times
-  # optimization with just a few iterations
-  # only to check that things are working
-  output <- poped_optim(poped.db,opt_xt=T,
-                        control = list(ARS=list(iter=5),
-                                       BFGS=list(maxit=5),
-                                       LS=list(line_length=5)))
-  
-  
-  # RS+SG+LS optimization of sample times 
+  # RS+BFGS+LS optimization of sample times 
   # (longer run time than above but more likely to reach a maximum)
   output <- poped_optim(poped.db,opt_xt=T,parallel = TRUE)
   
