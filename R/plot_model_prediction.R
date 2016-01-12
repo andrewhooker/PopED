@@ -29,7 +29,8 @@
 #' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
 #' 
 #' 
-#' @return A \link[ggplot2]{ggplot} object.
+#' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
+#' forget to load the ggplot2 library using \code{library(ggplot2)}.
 #' 
 #' @family evaluate_design
 #' @family Simulation
@@ -40,6 +41,7 @@
 #' @export
 #' @import ggplot2
 # @import Hmisc
+
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,
@@ -178,7 +180,7 @@ plot_model_prediction <- function(poped.db,
   if(IPRED.lines) p <- p + geom_line(aes(y=IPRED,group=ID),data=df.ipred,alpha=alpha.IPRED.lines)
   if(DV.lines) p <- p + geom_line(aes(y=DV,group=ID),data=df.ipred,alpha=alpha.DV.lines)
   if(DV.points) p <- p + geom_point(aes(y=DV,group=ID),data=df.ipred,alpha=alpha.DV.points)
-  if(IPRED) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=IPRED,color=NULL),geom="ribbon",fun.data="median_hilow",alpha=alpha.IPRED)
+  if(IPRED) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=IPRED,color=NULL),geom="ribbon",fun.data="median_hilow_poped",alpha=alpha.IPRED)
   if(IPRED.lines.pctls){ 
     p <- p + 
       stat_summary(data=df.ipred,
@@ -193,33 +195,33 @@ plot_model_prediction <- function(poped.db,
                    linetype="dotted")
       
   }
-  if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow",alpha=alpha.DV)
+  if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow_poped",alpha=alpha.DV)
   if(PRED) p <- p + geom_line()
   if(sample.times) p <- p+geom_point(data=df.2,size=sample.times.size)#,aes(x=Time,y=DV,group=Group))#,color=Group))
   #if(sample.times) p <- p+geom_point(data=df.2,size=sample.times.size,position = position_jitter(w = 0, h = 10),alpha=0.8)#,aes(x=Time,y=DV,group=Group))#,color=Group))
   #if(sample.times) p <- p+geom_jitter(data=df.2,size=sample.times.size,position = position_jitter(height = 10))#,aes(x=Time,y=DV,group=Group))#,color=Group))
   
-  if(sample.times.IPRED) p <- p+stat_summary(data=df.ipred.samples,aes(x=Time,y=IPRED),geom="pointrange",fun.data="median_hilow")
-  if(sample.times.DV) p <- p+stat_summary(data=df.ipred.samples,aes(x=Time,y=DV),geom="pointrange",fun.data="median_hilow")
+  if(sample.times.IPRED) p <- p+stat_summary(data=df.ipred.samples,aes(x=Time,y=IPRED),geom="pointrange",fun.data="median_hilow_poped")
+  if(sample.times.DV) p <- p+stat_summary(data=df.ipred.samples,aes(x=Time,y=DV),geom="pointrange",fun.data="median_hilow_poped")
   if(sample.times.DV.lines) p <- p + geom_line(aes(y=DV,group=ID),data=df.ipred.samples,alpha=alpha.sample.times.DV.lines)
   if(sample.times.DV.points) p <- p + geom_point(aes(y=DV,group=ID),data=df.ipred.samples,alpha=alpha.sample.times.DV.points)
   p <- p+ylab(y_lab)
   
   #,scales="free",space="free"
   #ggplot(data=df,aes(x=Time,y=PRED))+  geom_line()+facet_wrap(~Model,scales="free")
-  #     p1 + stat_summary(data=df.ipred,aes(x=Time,y=IPRED,fill=Group),geom="ribbon",fun.data="median_hilow",alpha=0.3)
+  #     p1 + stat_summary(data=df.ipred,aes(x=Time,y=IPRED,fill=Group),geom="ribbon",fun.data="median_hilow_poped",alpha=0.3)
   #     p <- ggplot(data=df.ipred,aes(x=Time,y=IPRED))
   #     p + geom_line(aes(group=ID))
   #     p + geom_line(aes(group=ID,colour=Group))
   #     p + geom_line(alpha=0.3,aes(colour=Group,group=ID))
   #     p + geom_line(aes(group=ID))+facet_grid(~Group) 
   #     
-  #     p + geom_line(aes(group=ID)) + stat_summary(geom="ribbon",fun.data="median_hilow",alpha=0.3,fill="red")
+  #     p + geom_line(aes(group=ID)) + stat_summary(geom="ribbon",fun.data="median_hilow_poped",alpha=0.3,fill="red")
   #     
-  #     p + stat_summary(geom="ribbon",fun.data="median_hilow",alpha=0.3) +
+  #     p + stat_summary(geom="ribbon",fun.data="median_hilow_poped",alpha=0.3) +
   #       geom_line(aes(x=Time,y=PRED,group=Group),data=df) + geom_point(aes(x=Time,y=PRED,group=Group),data=df.2,size=4)
   #     
-  #     p + stat_summary(geom="ribbon",fun.data="median_hilow",alpha=0.3)+
+  #     p + stat_summary(geom="ribbon",fun.data="median_hilow_poped",alpha=0.3)+
   #       stat_summary(fun.y = median, #fun.ymin = min, fun.ymax = max,
   #                    colour = "red")
   #     
@@ -227,7 +229,7 @@ plot_model_prediction <- function(poped.db,
   #     p <- ggplot(data=df,aes(x=Time,y=IPRED))
   #     p  + stat_summary(fun.y = median, fun.ymin = min, fun.ymax = max,
   #                       colour = "red")
-  #     stat_summary(aes(group=Group,fill=Group),geom="ribbon",fun.data="median_hilow",alpha=0.3) +
+  #     stat_summary(aes(group=Group,fill=Group),geom="ribbon",fun.data="median_hilow_poped",alpha=0.3) +
   #     fun.ymin="min",fun.ymax="max"
   #     
   #     p+geom_line()+facet_grid(~Group)+geom_point(data=df.2,size=4)

@@ -73,7 +73,8 @@ If \code{NULL} then only the input design is used.  Can be a single value or a v
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \value{
-A \link[ggplot2]{ggplot} object.
+A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
+forget to load the ggplot2 library using \code{library(ggplot2)}.
 }
 \description{
 Function plots model predictions for the typical value in the population,

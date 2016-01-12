@@ -3,8 +3,9 @@ Type: Package
 Title: Population (and Individual) Optimal Experimental Design
 Version: 0.3.0.9000
 Depends:
-    ggplot2
+    R (>= 2.14)
 Imports:
+    ggplot2,
     MASS,
     mvtnorm,
     nlme,

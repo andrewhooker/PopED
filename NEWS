@@ -3,6 +3,7 @@ PopED News/Changelog
 PopED 0.3.0.9000
 ===========
 
+* NAMESPACE: removed ggplot2 from "Depends" and added to "Imports" 
 
 PopED 0.3.0
 ===========
