@@ -3,6 +3,7 @@ PopED: Population (and individual) Experimental Design in R
 
 [![Travis-CI Build Status](https://travis-ci.org/andrewhooker/PopED.svg?branch=master)](https://travis-ci.org/andrewhooker/PopED)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PopED)](http://cran.r-project.org/package=PopED)
+[![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
 
 PopED computes optimal experimental designs for both population 
 and individual studies based on nonlinear mixed-effect models. 
