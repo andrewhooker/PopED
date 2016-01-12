@@ -8,7 +8,6 @@ Imports:
     ggplot2,
     MASS,
     mvtnorm,
-    nlme,
     dplyr,
     codetools,
     stats,
@@ -16,6 +15,7 @@ Imports:
 Suggests:
     testthat,
     Hmisc,
+    nlme,
     GA
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),

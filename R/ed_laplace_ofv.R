@@ -234,6 +234,10 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     
     ## Different hessian and gradient calculation
     if(method==2){ 
+      if (!requireNamespace("nlme", quietly = TRUE)) {
+        stop("nlme package needed for this function to work with option 'method=2'. Please install it.",
+             call. = FALSE)
+      }
       k_vals <- nlme::fdHess(output$par,
                              function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
