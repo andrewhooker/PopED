@@ -824,10 +824,12 @@ a_line_search <- function(poped.db,
     
   } else {
     if((optsw[1]==TRUE || optsw[5]==TRUE)){
-      fprintf('No line search when optimizing samples per subject or number of individuals in group\n')
+      #fprintf('No line search when optimizing samples per subject or number of individuals in group\n')
+      warning('No line search when optimizing samples per subject or number of individuals in group')
       if(fn!="") fprintf(fn,'No line search when optimizing samples per subject or number of individuals in group\n')
     } else {
-      fprintf('No design variable specified for line search optimization\n')
+      warning('No design variable specified for line search optimization')
+      #fprintf('No design variable specified for line search optimization\n')
       if(fn!="") fprintf(fn,'No design variable specified for line search optimization\n')
     }
   }

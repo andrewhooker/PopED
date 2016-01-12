@@ -1,6 +1,6 @@
 context("Optimization")
 
-test_that("optim_ARS() works", {
+test_that("optim_ARS works", {
   
   ex_string <- ex_to_string("examples_fcn_doc/examples_optim_ARS.R",comment_dontrun=comment_dontrun)
   sink("tmp.txt")
@@ -19,5 +19,22 @@ test_that("optim_ARS() works", {
   
   # check that function in maximizing
   expect_true(res_max$ofv >= 0)
+  
+})
+
+test_that("a_line_search works", {
+  
+  ex_string_1 <- ex_to_string("examples_fcn_doc/warfarin_optimize.R",comment_dontrun=comment_dontrun)
+  eval(parse(text=ex_string_1))
+  
+  expect_warning(a_line_search(poped.db))
+  
+  ex_string_2 <- ex_to_string("examples_fcn_doc/examples_a_line_search.R",comment_dontrun=comment_dontrun)
+  sink("tmp.txt")
+  eval(parse(text=ex_string_2))
+  sink()
+  file.remove("tmp.txt")
+  
+  expect_true(output$best_changed)
   
 })
