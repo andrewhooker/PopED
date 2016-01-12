@@ -1,18 +1,18 @@
 
+##############
+# D-family Optimization
+##############
+
+# below are a number of ways to optimize the problem
+
+# RS+SG+LS optimization of DOSE and sample times
+# optimization with just a few iterations
+# only to check that things are working
+out_1 <- poped_optimize(poped.db,opt_a=T,opt_xt=T,
+                         rsit=2,sgit=2,ls_step_size=2, 
+                         iter_max=1)
+
 \dontrun{
-  
-  ##############
-  # D-family Optimization
-  ##############
-  
-  # below are a number of ways to optimize the problem
-  
-  
-  # RS+SG+LS optimization of sample times
-  # optimization with just a few iterations
-  # only to check that things are working
-  output <- poped_optimize(poped.db,opt_xt=T,
-                           rsit=5,sgit=5,ls_step_size=5)
   
   # RS+SG+LS optimization of sample times 
   # (longer run time than above but more likely to reach a maximum)
