@@ -1,4 +1,4 @@
-# warfain ed model
+# warfarin ed model
 
 \dontrun{
   
