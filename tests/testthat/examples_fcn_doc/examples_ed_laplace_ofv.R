@@ -57,7 +57,7 @@ output$E_ofv
 \dontrun{
   
   
-  ## expected value (roughly)
+  ## ED value using MC integration (roughly)
   tic()
   e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500)
   toc()
@@ -65,17 +65,17 @@ output$E_ofv
   
   
   ## Using ed_laplce_ofv directly
-  ed_laplace_ofv(model_switch=poped.db.n$global_model_switch,
-                 groupsize=poped.db.n$groupsize,
-                 ni=poped.db.n$gni,
-                 xtopto=poped.db.n$gxt,
-                 xopto=poped.db.n$gx,
-                 aopto=poped.db.n$ga,
-                 bpopdescr=poped.db.n$gbpop,
-                 ddescr=poped.db.n$gd,
-                 covd=poped.db.n$covd,
-                 sigma=poped.db.n$sigma,
-                 docc=poped.db.n$docc, 
+  ed_laplace_ofv(model_switch=poped.db.n$design$model_switch,
+                 groupsize=poped.db.n$design$groupsize,
+                 ni=poped.db.n$design$ni,
+                 xtopto=poped.db.n$design$xt,
+                 xopto=poped.db.n$design$x,
+                 aopto=poped.db.n$design$a,
+                 bpopdescr=poped.db.n$parameters$bpop,
+                 ddescr=poped.db.n$parameters$d,
+                 covd=poped.db.n$parameters$covd,
+                 sigma=poped.db.n$parameters$sigma,
+                 docc=poped.db.n$parameters$docc, 
                  poped.db.n)
   
   
@@ -122,17 +122,17 @@ output$E_ofv
   e_ofv_mc_ln
   
   ## Using ed_laplce_ofv directly
-  ed_laplace_ofv(model_switch=poped.db.ln$global_model_switch,
-                 groupsize=poped.db.ln$groupsize,
-                 ni=poped.db.ln$gni,
-                 xtopto=poped.db.ln$gxt,
-                 xopto=poped.db.ln$gx,
-                 aopto=poped.db.ln$ga,
-                 bpopdescr=poped.db.ln$gbpop,
-                 ddescr=poped.db.ln$gd,
-                 covd=poped.db.ln$covd,
-                 sigma=poped.db.ln$sigma,
-                 docc=poped.db.ln$docc, 
+  ed_laplace_ofv(model_switch=poped.db.ln$design$model_switch,
+                 groupsize=poped.db.ln$design$groupsize,
+                 ni=poped.db.ln$design$ni,
+                 xtopto=poped.db.ln$design$xt,
+                 xopto=poped.db.ln$design$x,
+                 aopto=poped.db.ln$design$a,
+                 bpopdescr=poped.db.ln$parameters$bpop,
+                 ddescr=poped.db.ln$parameters$d,
+                 covd=poped.db.ln$parameters$covd,
+                 sigma=poped.db.ln$parameters$sigma,
+                 docc=poped.db.ln$parameters$docc, 
                  poped.db.ln)
   
   

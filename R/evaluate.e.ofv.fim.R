@@ -85,7 +85,6 @@ evaluate.e.ofv.fim <- function(poped.db,
     E_ofv <- output$ED_ofv
     poped.db=output$poped.db
   } else { 
-    #stop("Laplce method not yet implemented in R version of PopED")
     E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db,...)[["f"]]   
     if(laplace.fim) {
       E_fim <- ed_mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["ED_fim"]]
