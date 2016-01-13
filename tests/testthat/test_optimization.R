@@ -22,7 +22,7 @@ test_that("optim_ARS works", {
   
 })
 
-test_that("a_line_search, mfea, poped_optimize and poped_optim work", {
+test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work", {
   
   ex_string_1 <- ex_to_string("examples_fcn_doc/warfarin_optimize.R",comment_dontrun=comment_dontrun)
   eval(parse(text=ex_string_1))
@@ -61,5 +61,20 @@ test_that("a_line_search, mfea, poped_optimize and poped_optim work", {
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
   
+  ex_string_6 <- ex_to_string("examples_fcn_doc/examples_RS_opt_gen.R",comment_dontrun=comment_dontrun)
+  sink("tmp.txt")
+  eval(parse(text=ex_string_6))
+  sink()
+  file.remove("tmp.txt")
+  
+  expect_output(str(out_1),"List of 6")
+  
+  ex_string_7 <- ex_to_string("examples_fcn_doc/examples_RS_opt.R",comment_dontrun=comment_dontrun)
+  sink("tmp.txt")
+  eval(parse(text=ex_string_7))
+  sink()
+  file.remove("tmp.txt")
+  
+  expect_output(str(out_1),"List of 6")
   
 })
