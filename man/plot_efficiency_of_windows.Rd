@@ -6,7 +6,8 @@
 \usage{
 plot_efficiency_of_windows(poped.db, xt_windows = NULL,
   xt_plus = xt_windows, xt_minus = xt_windows, iNumSimulations = 100,
-  y_eff = T, y_rse = T, ...)
+  y_eff = T, y_rse = T, ofv_calc_type = poped.db$settings$ofv_calc_type,
+  ...)
 }
 \arguments{
 \item{poped.db}{A poped database}
@@ -25,6 +26,17 @@ the xt matrix found in \code{poped.db$design$xt}.}
 \item{y_eff}{Should one of the plots created have efficiency on the y-axis?}
 
 \item{y_rse}{Should created plots include the relative standard error of each parameter as a value on the y-axis?}
+
+\item{ofv_calc_type}{OFV calculation type for FIM 
+\itemize{ 
+\item 1 = "D-optimality". Determinant of the FIM: det(FIM)
+\item 2 = "A-optimality".  Inverse of the sum of the expected parameter variances: 
+1/trace_matrix(inv(FIM)) 
+\item 4 = "lnD-optimality".  Natural logarithm of the determinant of the FIM: log(det(FIM)) 
+\item 6 = "Ds-optimality". Ratio of the Determinant of the FIM and the Determinant of the uninteresting
+rows and columns of the FIM: det(FIM)/det(FIM_u)
+\item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
+}}
 
 \item{...}{Extra arguments passed to \code{evaluate.fim}}
 }

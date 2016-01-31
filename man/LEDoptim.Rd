@@ -163,7 +163,7 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 ##  with parameter uncertainty)
 #####################################
 
-# warfain ed model
+# warfarin ed model
 
 \dontrun{
   

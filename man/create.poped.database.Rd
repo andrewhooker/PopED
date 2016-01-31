@@ -28,10 +28,10 @@ create.poped.database(popedInput = list(),
   maxtotgroupsize = poped.choose(popedInput$design$maxtotgroupsize, NULL),
   mintotgroupsize = poped.choose(popedInput$design$mintotgroupsize, NULL),
   maxxt = poped.choose(popedInput$design$maxxt, NULL),
-  minxt = poped.choose(popedInput$design$minxt, NULL),
+  minxt = poped.choose(popedInput$design$minxt, NULL), discrete_xt = NULL,
   discrete_x = poped.choose(popedInput$design$discrete_x, NULL),
   maxa = poped.choose(popedInput$design$maxa, NULL),
-  mina = poped.choose(popedInput$design$mina, NULL),
+  mina = poped.choose(popedInput$design$mina, NULL), discrete_a = NULL,
   bUseGrouped_xt = poped.choose(popedInput$bUseGrouped_xt, FALSE),
   G_xt = poped.choose(popedInput$design$G, NULL),
   bUseGrouped_a = poped.choose(popedInput$bUseGrouped_a, FALSE),
@@ -246,13 +246,22 @@ supplied then all xt values are given the same maximum value.}
 \item{minxt}{Matrix or single value defining the minimum value for each xt sample.  If a single value is 
 supplied then all xt values are given the same minimum value}
 
-\item{discrete_x}{Cell array defining the discrete variables for each x value.}
+\item{discrete_xt}{Cell array \code{\link{cell}} defining the discrete variables allowed for each xt value.
+ Can also be a list of values \code{list(1:10)} (same values allowed for all xt), or a list of lists 
+\code{list(1:10, 2:23, 4:6)} (one for each value in xt). See examples in \code{\link{create_design_space}}.}
+
+\item{discrete_x}{Cell array defining the discrete variables for each x value. 
+See examples in \code{\link{create_design_space}}.}
 
 \item{maxa}{Vector defining the max value for each covariate. If a single value is supplied then
 all a values are given the same max value}
 
 \item{mina}{Vector defining the min value for each covariate. If a single value is supplied then
 all a values are given the same max value}
+
+\item{discrete_a}{Cell array \code{\link{cell}} defining the discrete variables allowed for each a value.
+ Can also be a list of values \code{list(1:10)} (same values allowed for all a), or a list of lists 
+\code{list(1:10, 2:23, 4:6)} (one for each value in a). See examples in \code{\link{create_design_space}}.}
 
 \item{bUseGrouped_xt}{Use grouped time points (1=TRUE, 0=FALSE).}
 

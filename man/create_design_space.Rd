@@ -7,10 +7,10 @@
 create_design_space(design, maxni = NULL, minni = NULL, maxtotni = NULL,
   mintotni = NULL, maxgroupsize = NULL, mingroupsize = NULL,
   maxtotgroupsize = NULL, mintotgroupsize = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, x_space = NULL,
-  use_grouped_xt = FALSE, grouped_xt = NULL, use_grouped_a = FALSE,
-  grouped_a = NULL, use_grouped_x = FALSE, grouped_x = NULL,
-  our_zero = NULL)
+  minxt = NULL, xt_space = NULL, maxa = NULL, mina = NULL,
+  a_space = NULL, x_space = NULL, use_grouped_xt = FALSE,
+  grouped_xt = NULL, use_grouped_a = FALSE, grouped_a = NULL,
+  use_grouped_x = FALSE, grouped_x = NULL, our_zero = NULL)
 }
 \arguments{
 \item{design}{The output from a call to \code{\link{create_design}}.}
@@ -37,11 +37,19 @@ supplied then all xt values are given the same maximum value.}
 \item{minxt}{Matrix or single value defining the minimum value for each xt sample.  If a single value is 
 supplied then all xt values are given the same minimum value}
 
+\item{xt_space}{Cell array \code{\link{cell}} defining the discrete variables allowed for each xt value.
+ Can also be a list of values \code{list(1:10)} (same values allowed for all xt), or a list of lists 
+\code{list(1:10, 2:23, 4:6)} (one for each value in xt).}
+
 \item{maxa}{Vector defining the maximum value for each covariate. IF a single value is supplied then
 all a values are given the same maximum value}
 
 \item{mina}{Vector defining the minimum value for each covariate. IF a single value is supplied then
 all a values are given the same minimum value}
+
+\item{a_space}{Cell array \code{\link{cell}} defining the discrete variables allowed for each a value.
+ Can also be a list of values \code{list(1:10)} (same values allowed for all a), or a list of lists 
+\code{list(1:10, 2:23, 4:6)} (one for each value in a).}
 
 \item{x_space}{Cell array \code{\link{cell}} defining the discrete variables for each x value.}
 
@@ -140,6 +148,19 @@ ds_12 <- create_design_space(design_3,
 ds_13 <- create_design_space(design_3,
                              x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
                              grouped_x=list(c(1,2),c(3,2)))
+
+seq_1 <- 1:10
+ds_14 <- create_design_space(design_1,maxxt=10,minxt=0,
+                             xt_space = list(seq_1,seq_1,seq_1,seq_1,seq_1))
+ds_15 <- create_design_space(design_1,maxxt=10,minxt=0,xt_space = list(seq_1))
+
+possible_values <- as.matrix(cbind(list(0:10),list(0:10),list(0:10),list(0:20),list(0:20)))
+xt_space <- as.matrix(rbind(possible_values,possible_values))
+
+ds_16 <- create_design_space(design_1,maxxt=10,minxt=0,xt_space = xt_space)
+
+ds_17 <- create_design_space(design_1,a_space = list(1:100,seq(1000,100000,by=1000)))
+
 }
 \seealso{
 Other poped_input: \code{\link{convert_variables}},
