@@ -129,6 +129,16 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     #fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
     #if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
     
+    if((poped.db$settings$ofv_calc_type==4) && !is.null(fmf_init) && !is.null(fmf) ){#D-Optimal Design
+      fprintf(fn,'\nD-Efficiency [(det(FIM_final)/det(FIM_initial))^(1/npar)]: %g\n',
+              (det(fmf)/det(fmf_init))^(1/npar))
+      if(fn!=""){
+        fprintf(fn,'\nD-Efficiency [(det(FIM_final)/det(FIM_initial))^(1/npar)]: %g\n',
+                (det(fmf)/det(fmf_init))^(1/npar))
+      }
+    }
+    
+    
     if(is.null(param_cvs_init) && !is.null(fmf_init) && is.matrix(fmf_init) && compute_inv){
       param_vars_init=diag_matlab(inv(fmf_init))
       returnArgs <-  get_cv(param_vars_init,bpop,d,docc,sigma,poped.db) 
