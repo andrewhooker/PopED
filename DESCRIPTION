@@ -16,7 +16,8 @@ Suggests:
     testthat,
     Hmisc,
     nlme,
-    GA
+    GA,
+    deSolve
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
     person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
@@ -33,6 +34,6 @@ License: LGPL (>= 3)
 ByteCompile: true
 URL: http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
-Copyright: 2014-2015 Andrew C. Hooker
+Copyright: 2014-2016 Andrew C. Hooker
 LazyData: true
 RoxygenNote: 5.0.1
