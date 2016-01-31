@@ -97,12 +97,12 @@ poped_optim <- function(poped.db,
   dmf = 0 #The best ofv of FIM  so far
   #output <-calc_ofv_and_fim(poped.db,...)
   output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-                   ED_samp_size=ED_samp_size,
-                   bLHS=bLHS,
-                   use_laplace=use_laplace,
-                   ofv_calc_type=ofv_calc_type,
-                   fim.calc.type=fim.calc.type,
-                   ...)
+                            ED_samp_size=ED_samp_size,
+                            bLHS=bLHS,
+                            use_laplace=use_laplace,
+                            ofv_calc_type=ofv_calc_type,
+                            fim.calc.type=fim.calc.type,
+                            ...)
   
   fmf <- output$fim
   dmf <- output$ofv
@@ -175,12 +175,14 @@ poped_optim <- function(poped.db,
   # Parameter grouping
   par_df <- data.frame(par,par_grouping,upper,lower,par_type,par_cat_cont)
   par_df_unique <- NULL
+  #allowed_values_full <- allowed_values 
   if(!all(!duplicated(par_df$par_grouping))){
     par_df_unique <- par_df[!duplicated(par_df$par_grouping),]
     par <- par_df_unique$par
     lower <- par_df_unique$lower
     upper <- par_df_unique$upper
     par_cat_cont <- par_df_unique$par_cat_cont
+    allowed_values <- allowed_values[!duplicated(par_df$par_grouping)]
   }
   
   par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
@@ -191,6 +193,7 @@ poped_optim <- function(poped.db,
     lower <- lower[-c(par_fixed_index)]
     upper <- upper[-c(par_fixed_index)]
     par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
+    allowed_values <- allowed_values[-c(par_fixed_index)]
   }
   
   #------- create optimization function with optimization parameters first
@@ -239,8 +242,8 @@ poped_optim <- function(poped.db,
       FIM <- output$fim
       ofv <- output$ofv
     }
-              
-        
+    
+    
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
     if(!is.finite(ofv) && ofv_calc_type==4){
       ofv <- -Inf 
@@ -326,9 +329,15 @@ poped_optim <- function(poped.db,
         
       }
       if(cur_meth=="BFGS"){
+        
         cat("*******************************************\n")
         cat("Running L-BFGS-B Optimization\n")
         cat("*******************************************\n")
+        
+        if(all(par_cat_cont=="cat")){
+          cat("\nNo continuous variables to optimize, L-BFGS-B Optimization skipped\n\n")
+          next
+        }
         
         if(trace) trace_optim=3
         if(is.numeric(trace)) trace_optim = trace
@@ -362,13 +371,20 @@ poped_optim <- function(poped.db,
       }
       
       if(cur_meth=="GA"){
+        
+        cat("*******************************************\n")
+        cat("Running Genetic Algorithm (GA) Optimization\n")
+        cat("*******************************************\n")
+        
         if (!requireNamespace("GA", quietly = TRUE)) {
           stop("GA package needed for this function to work. Please install it.",
                call. = FALSE)
         }
-        cat("*******************************************\n")
-        cat("Running Genetic Algorithm (GA) Optimization\n")
-        cat("*******************************************\n")
+        
+        if(all(par_cat_cont=="cat")){
+          cat("\nNo continuous variables to optimize, GA Optimization skipped\n\n")
+          next
+        }
         
         # handle control arguments
         parallel_ga <- parallel
@@ -472,12 +488,12 @@ poped_optim <- function(poped.db,
     FIM <- evaluate.fim(poped.db,...)
   } else{
     out <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-                              ED_samp_size=ED_samp_size,
-                              bLHS=bLHS,
-                              use_laplace=use_laplace,
-                              ofv_calc_type=ofv_calc_type,
-                              fim.calc.type=fim.calc.type,
-                              ...)
+                           ED_samp_size=ED_samp_size,
+                           bLHS=bLHS,
+                           use_laplace=use_laplace,
+                           ofv_calc_type=ofv_calc_type,
+                           fim.calc.type=fim.calc.type,
+                           ...)
     
     FIM <- out$fim
   }

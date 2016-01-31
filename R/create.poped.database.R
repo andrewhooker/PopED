@@ -68,7 +68,14 @@
 #' supplied then all xt values are given the same maximum value.
 #' @param minxt Matrix or single value defining the minimum value for each xt sample.  If a single value is 
 #' supplied then all xt values are given the same minimum value
-#' @param discrete_x Cell array defining the discrete variables for each x value.
+#' @param discrete_x Cell array defining the discrete variables for each x value. 
+#'   See examples in \code{\link{create_design_space}}.
+#' @param discrete_xt Cell array \code{\link{cell}} defining the discrete variables allowed for each xt value.
+#'   Can also be a list of values \code{list(1:10)} (same values allowed for all xt), or a list of lists 
+#'  \code{list(1:10, 2:23, 4:6)} (one for each value in xt). See examples in \code{\link{create_design_space}}.
+#' @param discrete_a Cell array \code{\link{cell}} defining the discrete variables allowed for each a value.
+#'   Can also be a list of values \code{list(1:10)} (same values allowed for all a), or a list of lists 
+#'  \code{list(1:10, 2:23, 4:6)} (one for each value in a). See examples in \code{\link{create_design_space}}.
 #' @param maxa Vector defining the max value for each covariate. If a single value is supplied then
 #'  all a values are given the same max value
 #' @param mina Vector defining the min value for each covariate. If a single value is supplied then
@@ -348,14 +355,16 @@ create.poped.database <-
            ## -- Matrix defining the max value for each sample --
            maxxt=poped.choose(popedInput$design$maxxt,NULL),   
            ## -- Matrix defining the min value for each sample --
-           minxt=poped.choose(popedInput$design$minxt,NULL),   
+           minxt=poped.choose(popedInput$design$minxt,NULL), 
+           discrete_xt=NULL,  
            ## -- Cell defining the discrete variables --
            #discrete_x=poped.choose(popedInput$design$discrete_x,cell(m,nx)),     
            discrete_x=poped.choose(popedInput$design$discrete_x,NULL),     
            ## -- Vector defining the max value for each covariate --
            maxa=poped.choose(popedInput$design$maxa,NULL),   
            ## -- Vector defining the min value for each covariate --
-           mina=poped.choose(popedInput$design$mina,NULL),   
+           mina=poped.choose(popedInput$design$mina,NULL),  
+           discrete_a=NULL,  
            ## -- Use grouped time points (1=TRUE, 0=FALSE) --
            bUseGrouped_xt=poped.choose(popedInput$bUseGrouped_xt,FALSE),               
            ## -- Matrix defining the grouping of sample points --
@@ -745,9 +754,11 @@ create.poped.database <-
                                         maxtotgroupsize=maxtotgroupsize,   
                                         mintotgroupsize=mintotgroupsize,   
                                         maxxt=maxxt,   
-                                        minxt=minxt,    
+                                        minxt=minxt,
+                                        xt_space = discrete_xt,
                                         maxa=maxa,   
-                                        mina=mina,   
+                                        mina=mina, 
+                                        a_space = discrete_a, 
                                         x_space = discrete_x,    
                                         use_grouped_xt=bUseGrouped_xt, 
                                         grouped_xt=G_xt, 
