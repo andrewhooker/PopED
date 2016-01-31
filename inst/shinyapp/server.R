@@ -6,20 +6,57 @@ library(PopED)
 # Define server logic required to plot various variables against mpg
 shinyServer(function(input, output) {
   
+
   # Compute the forumla text in a reactive expression since it is 
   # shared by the output$caption and output$mpgPlot expressions
   updateDesign <- reactive({
-    xt_txt <- input$xt
-    xt <-  eval(parse(text=paste("c(",xt_txt,")")))
+    xt <- list()
+    for(i in 1:input$num_groups){
+      xt_txt <- input[[paste0("xt_",i)]]
+      xt <-  c(xt,list(eval(parse(text=paste("c(",xt_txt,")")))))
+    }
     return(list(xt=xt))
   })
   
+  output$group_designs <- renderUI({
+    out <- list()
+    num_groups <- number_of_groups()
+    for(i in 1:num_groups){
+      out <- c(out,list(h2(paste0("Group ", i))))
+      out <- c(out,list(textInput(paste0("groupsize_",i), paste0("Number of individuals in group ",i,":"), "" )))
+      out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"), "" )))
+      if(num_groups > 1){
+        out <- c(out,list(actionButton(paste0("remove_group_",i),"Remove Group"))) 
+        out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
+      }
+    }
+    out <- c(out,list(renderPrint({ input$new_group })))
+    #out <- c(out,list(actionButton("new_group","Add a new group")))  
+    return(as.list(out))
+  })
+  
+  number_of_groups <- reactive({
+    max_groups <- input$new_group + 1
+    num_groups <- max_groups
+    cat("\n\n NEW search:\n")
+    for(i in 1:max_groups){
+      if(length(input[[paste0("remove_group_",i)]])!=0) {
+        cat("remove_group",i, input[[paste0("remove_group_",i)]], "\n")
+        num_groups <- num_groups - input[[paste0("remove_group_",i)]]
+      }
+    }
+    return(num_groups)
+  })
+  
   updateModel <- reactive({
-    struct_model <- input$struct_model
-    ruv_model <- input$ruv_model
-    bsv_model <- input$bsv_model
+    struct_pk_model <- input$struct_pk_model
+    struct_pd_model <- input$struct_pd_model
+    ruv_pk_model <- input$ruv_pk_model
+    ruv_pd_model <- input$ruv_pd_model
+    bsv_pk_model <- input$bsv_pk_model
+    bsv_pd_model <- input$bsv_pd_model
     
-    sfg <- build_sfg(model=input$struct_model,etas=input$bsv_model)
+    sfg <- build_sfg(model=input$struct_pk_model,etas=input$bsv_pk_model)
     #environment(eval(parse(text=input$struct_model)))
     #parent.env(environment())
 
@@ -49,6 +86,9 @@ shinyServer(function(input, output) {
                 sfg=sfg))
   })
   
+  create_sfg <- reactive({
+    build_sfg(model=input$struct_PK_model,etas=input$bsv_pk_model)
+  })
   # Return the formula text for printing as a caption
   #output$caption <- renderText({
   #  "Model predictions"
@@ -80,73 +120,89 @@ shinyServer(function(input, output) {
     #       facet_scales="fixed"
     #       #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
     #     }
-    model <- updateModel()
+    
+    #model <- updateModel()
+    #design <- updateDesign()
+    
+
+    #     ff <- function(model_switch,xt,parameters,poped.db){
+    #       ##-- Model: One comp first order absorption
+    #       with(as.list(parameters),{
+    #         y=xt
+    #         y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    #         return(list(y=y,poped.db=poped.db))
+    #       })
+    #     }
+    #     
+    #     sfg <- function(x,a,bpop,b,bocc){
+    #       ## -- parameter definition function 
+    #       parameters=c(CL=bpop[1]*exp(b[1]),
+    #                    V=bpop[2]*exp(b[2]),
+    #                    KA=bpop[3]*exp(b[3]),
+    #                    Favail=bpop[4],
+    #                    DOSE=a[1])
+    #       return(parameters) 
+    #     }
+    
+    #     feps <- function(model_switch,xt,parameters,epsi,poped.db){
+    #       ## -- Residual Error function
+    #       ## -- Proportional 
+    #       returnArgs <- ff(model_switch,xt,parameters,poped.db) 
+    #       y <- returnArgs[[1]]
+    #       poped.db <- returnArgs[[2]]
+    #       y = y*(1+epsi[,1])
+    #       
+    #       return(list(y=y,poped.db=poped.db)) 
+    #     }
+    
+    # input bpop, not_fixed (for all), d_vec, sigma
+    # get design variables
+    # get design space
+    
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
+    bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
+    d_vec <- c(CL=0.07, V=0.02, KA=0.6)
+    sigma <- c(prop=0.01,add=0.1)
+    parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+    new_bpop <- c()
+    new_bpop_notfixed <- c()
+    new_d_vec <- c()
+    for(var in parameter_names){
+      if(var %in% names(bpop)) new_bpop <- c(new_bpop,bpop[var])
+      if(var %in% names(bpop_notfixed))  new_bpop_notfixed <- c(new_bpop_notfixed,bpop_notfixed[var])
+      if(var %in% names(d_vec)) new_d_vec <- c(new_d_vec,d_vec[var])
+    }
+    
+    new_sigma <- sigma
+
     design <- updateDesign()
     
-    #     poped.db <- create.poped.database(ff_file=input$struct_model,
-    #                                       fError_file=input$ruv_model,
-    #                                       fg_file="sfg",
-    #                                       groupsize=32,
-    #                                       sigma=model$sigma,
-    #                                       #bpop=model$bpop,  
-    #                                       bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-    #                                       d=model$d, 
-    #                                       xt=design$xt,
-    #                                       maxxt=120, 
-    #                                       minxt=0, 
-    #                                       a=70) 
-    
-    
-    ff <- function(model_switch,xt,parameters,poped.db){
-      ##-- Model: One comp first order absorption
-      with(as.list(parameters),{
-        y=xt
-        y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-        return(list(y=y,poped.db=poped.db))
-      })
-    }
-    
-    sfg <- function(x,a,bpop,b,bocc){
-      ## -- parameter definition function 
-      parameters=c(CL=bpop[1]*exp(b[1]),
-                   V=bpop[2]*exp(b[2]),
-                   KA=bpop[3]*exp(b[3]),
-                   Favail=bpop[4],
-                   DOSE=a[1])
-      return(parameters) 
-    }
-    
-    feps <- function(model_switch,xt,parameters,epsi,poped.db){
-      ## -- Residual Error function
-      ## -- Proportional 
-      returnArgs <- ff(model_switch,xt,parameters,poped.db) 
-      y <- returnArgs[[1]]
-      poped.db <- returnArgs[[2]]
-      y = y*(1+epsi[,1])
-      
-      return(list(y=y,poped.db=poped.db)) 
-    }
-    
     ## -- Define initial design  and design space
-    poped.db <- create.poped.database(ff_file=input$struct_model,
+    poped.db <- create.poped.database(ff_file=input$struct_PK_model,
                                       #ff_file="ff",
-                                      fg_fun=model$sfg,
+                                      #fg_fun=model$sfg,
+                                      #fg_fun=sfg,
+                                      fg_fun=create_sfg(),
                                       #fError_file="feps",
-                                      fError_file=input$ruv_model,
+                                      fError_file=input$ruv_pk_model,
                                       #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                      bpop=model$bpop,  
-                                      notfixed_bpop=c(1,1,1,0),
-                                      d=c(CL=0.07, V=0.02, KA=0.6), 
-                                      sigma=c(0.01,0.1),
+                                      bpop=new_bpop,  
+                                      notfixed_bpop=new_bpop_notfixed,
+                                      #d=c(CL=0.07, V=0.02, KA=0.6), 
+                                      d=new_d_vec, 
+                                      sigma=new_sigma,
                                       groupsize=32,
+                                      #xt=c(0.5,1,2,6,24,36,72,120),
+                                      #xt=design$xt,
+                                      #xt=eval(parse(text=paste("c(",input$xt,")"))),
                                       xt=design$xt,
                                       minxt=0,
                                       maxxt=120,
                                       a=70)
-    
+    #plot_model_prediction(poped.db)
     #print(plot_model_prediction(poped.db))
     
-    print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
+    plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups)
     #print(plot_model_prediction(poped.db.1,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
     #print(plot_model_prediction(poped.db.2,IPRED=TRUE,DV=TRUE))
   })
