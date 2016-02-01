@@ -11,27 +11,47 @@ shinyServer(function(input, output) {
   # shared by the output$caption and output$mpgPlot expressions
   updateDesign <- reactive({
     xt <- list()
-    for(i in 1:input$num_groups){
+    #a <- list()
+    groupsize <- list()
+    num_groups <- input$num_groups
+    for(i in 1:num_groups){
       xt_txt <- input[[paste0("xt_",i)]]
+      #a_txt <- input[[paste0("a_",i)]]
+      groupsize_txt <- input[[paste0("groupsize_",i)]]
       xt <-  c(xt,list(eval(parse(text=paste("c(",xt_txt,")")))))
+      #a <-  c(a,list(eval(parse(text=paste("c(",a_txt,")")))))
+      groupsize <-  c(groupsize,list(eval(parse(text=paste("c(",groupsize_txt,")")))))
     }
-    return(list(xt=xt))
+    return(list(xt=xt,a=a,groupsize=groupsize))
   })
   
   output$group_designs <- renderUI({
     out <- list()
-    num_groups <- number_of_groups()
+    num_groups <- input$num_groups
     for(i in 1:num_groups){
       out <- c(out,list(h2(paste0("Group ", i))))
-      out <- c(out,list(textInput(paste0("groupsize_",i), paste0("Number of individuals in group ",i,":"), "" )))
-      out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"), "" )))
-      if(num_groups > 1){
-        out <- c(out,list(actionButton(paste0("remove_group_",i),"Remove Group"))) 
-        out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
-      }
+      out <- c(out,list(textInput(paste0("groupsize_",i), 
+                                  paste0("Number of individuals in group ",i,":"), "" )))
+      out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"))))
+#       if(num_groups > 1){
+#         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
+#         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
+#       }
     }
-    out <- c(out,list(renderPrint({ input$new_group })))
+    #out <- c(out,list(renderPrint({ input$new_group })))
     #out <- c(out,list(actionButton("new_group","Add a new group")))  
+    return(as.list(out))
+  })
+  
+  output$parameter_vales <- renderUI({
+    out <- list()
+    parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+    
+    for(i in 1:length(parameter_names)){
+      out <- c(out,list(textInput(parameter_names[i],parameter_names[i])))
+    }
+    
+        
     return(as.list(out))
   })
   
@@ -191,11 +211,11 @@ shinyServer(function(input, output) {
                                       #d=c(CL=0.07, V=0.02, KA=0.6), 
                                       d=new_d_vec, 
                                       sigma=new_sigma,
-                                      groupsize=32,
+                                      groupsize=design$groupsize[[1]],
                                       #xt=c(0.5,1,2,6,24,36,72,120),
                                       #xt=design$xt,
                                       #xt=eval(parse(text=paste("c(",input$xt,")"))),
-                                      xt=design$xt,
+                                      xt=design$xt[[1]],
                                       minxt=0,
                                       maxxt=120,
                                       a=70)

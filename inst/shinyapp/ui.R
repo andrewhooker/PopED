@@ -97,12 +97,15 @@ shinyUI(
                br()
                
              )),
-             
+             tabPanel("Parameter Definition",
+                      uiOutput("parameter_vales"),
+                      br()
+             ),
              tabPanel("Design Definition",
-                      #textInput("num_groups", "Nunber of design groups", "1"),
+                      textInput("num_groups", "Nunber of design groups", "1"),
                       uiOutput("group_designs"),
                       hr(),
-                      actionButton("new_group","Add a new group"),
+                      #actionButton("new_group","Add a new group"),
                       ##  create plot of model 
                       ## plot_model_prediction(poped.db,IPRED=T,DV=T)
                       
