@@ -27,7 +27,7 @@ i.e. `make` and compilers must be installed on your system -- see the R FAQ for 
 you may also need to install dependencies manually.
 
 ```
-devtools::install_github("PopED",username="andrewhooker")
+devtools::install_github("andrewhooker/PopED")
 ```
 
 ## Getting started
