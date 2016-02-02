@@ -46,9 +46,20 @@ shinyServer(function(input, output) {
   output$parameter_vales <- renderUI({
     out <- list()
     parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+    df <- data.frame(par_names=parameter_names)
+    df$covariate <- df$par_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")
     
-    for(i in 1:length(parameter_names)){
-      out <- c(out,list(textInput(parameter_names[i],parameter_names[i])))
+    for(i in 1:length(df$par_names)){
+      if(!df$covariate[i]){
+        out <- c(out,list(textInput(df$par_names[i],df$par_names[i])))
+        out <- c(out,list(selectInput("struct_PK_model", "Structural PK Model:",
+                                      list(
+                                        "1-cpt, 1st order abs., single dose, CL param." = "ff.PK.1.comp.oral.sd.CL",
+                                        "1-cpt, 1st order abs., single dose, KE param." = "ff.PK.1.comp.oral.sd.KE",
+                                        "1-cpt, 1st order abs., multi. dose, CL param." = "ff.PK.1.comp.oral.md.CL",
+                                        "1-cpt, 1st order abs., multi. dose, KE param" = "ff.PK.1.comp.oral.md.KE"
+                                      ))))
+      }
     }
     
         
