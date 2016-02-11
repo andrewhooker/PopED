@@ -15,7 +15,7 @@ toc(echo = TRUE, name = ".poped_savedTime")
 Funtion to stop a timer.  Start with tic().
 }
 \note{
-This is a modified version of the same function in the matlab package \code{\link[matlab]{toc}}
+This is a modified version of the same function in the matlab R-package.
 }
 \examples{
 

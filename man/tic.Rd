@@ -15,7 +15,7 @@ tic(gcFirst = FALSE, name = ".poped_savedTime")
 Funtion to start a timer.  Stop with toc().
 }
 \note{
-This is a modified version of the same function in the matlab package \code{\link[matlab]{tic}}
+This is a modified version of the same function in the matlab R-package.
 }
 \examples{
 

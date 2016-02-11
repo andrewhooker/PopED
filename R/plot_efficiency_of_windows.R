@@ -44,6 +44,7 @@ plot_efficiency_of_windows <- function(poped.db,
                                        mean_color="red",
                                        #a_windows=NULL,x_windows=NULL,
                                        #d_switch=poped.db$settings$d_switch,
+                                       deviate_by_id=FALSE,
                                        ...){
   
   

@@ -19,7 +19,7 @@ A list with the following components:
 Get the various parts of a file with path string.
 }
 \note{
-This is a modified version of the same function in \code{\link[matlab]{fileparts}}
+This is a modified version of the same function in the matlab R-package.
 }
 \examples{
 

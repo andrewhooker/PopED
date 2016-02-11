@@ -16,7 +16,7 @@ A list of empty lists.
 Create a cell array as in MATLAB.
 }
 \note{
-This is a modified version of the same function in \code{\link[matlab]{cell}}
+This is a modified version of the same function in the matlab R-package.
 }
 \examples{
 

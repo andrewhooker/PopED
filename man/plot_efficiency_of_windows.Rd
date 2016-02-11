@@ -6,8 +6,9 @@
 \usage{
 plot_efficiency_of_windows(poped.db, xt_windows = NULL,
   xt_plus = xt_windows, xt_minus = xt_windows, iNumSimulations = 100,
-  y_eff = T, y_rse = T, ofv_calc_type = poped.db$settings$ofv_calc_type,
-  ...)
+  y_eff = TRUE, y_rse = TRUE,
+  ofv_calc_type = poped.db$settings$ofv_calc_type, mean_line = TRUE,
+  mean_color = "red", deviate_by_id = FALSE, ...)
 }
 \arguments{
 \item{poped.db}{A poped database}
@@ -37,6 +38,10 @@ the xt matrix found in \code{poped.db$design$xt}.}
 rows and columns of the FIM: det(FIM)/det(FIM_u)
 \item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
 }}
+
+\item{mean_line}{Should a mean value line be created?}
+
+\item{mean_color}{The color of the mean value line.}
 
 \item{...}{Extra arguments passed to \code{evaluate.fim}}
 }
@@ -120,13 +125,13 @@ plot_efficiency_of_windows(poped.db,
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{get_rse}}, \code{\link{model_prediction}},
-  \code{\link{plot_model_prediction}}
-
 Other Graphics: \code{\link{plot_model_prediction}}
 
 Other Simulation: \code{\link{model_prediction}},
+  \code{\link{plot_model_prediction}}
+
+Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{get_rse}}, \code{\link{model_prediction}},
   \code{\link{plot_model_prediction}}
 }
 
