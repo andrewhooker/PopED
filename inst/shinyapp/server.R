@@ -1,4 +1,5 @@
 library(PopED)
+
 #source("models/MODEL.2.PK.one.comp.oral.R")
 
 #sfg <- function(){}
@@ -49,9 +50,48 @@ shinyServer(function(input, output) {
     df <- data.frame(par_names=parameter_names)
     df$covariate <- df$par_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")
     
+    out <- c(out,list(fluidRow(
+      
+      column(3, wellPanel(
+        
+        h3("Prameter")              
+      )),
+      
+      column(3, wellPanel(
+        h3("Fixed effect value")
+        # This outputs the dynamic UI component
+        #uiOutput("ui")
+      )),
+      
+      column(3, wellPanel(
+        h3("Random effect value")
+      )
+      ))))
+    
+    
     for(i in 1:length(df$par_names)){
       if(!df$covariate[i]){
-        out <- c(out,list(textInput(df$par_names[i],df$par_names[i])))
+        out <- c(out,list(fluidRow(
+          
+          column(3, wellPanel(
+            
+              h3(df$par_names[i])              
+          )),
+          
+          column(3, wellPanel(
+            textInput(df$par_names[i],NULL)
+            # This outputs the dynamic UI component
+            #uiOutput("ui")
+          )),
+          
+          column(3, wellPanel(
+                 textInput(df$par_names[i],NULL)
+          )
+        ))))
+        #out <- c(out,list(h3(df$par_names[i])))
+        #out <- c(out,list(textInput(df$par_names[i],"Fixed effect value")))
+        #out <- c(out,list(textInput(df$par_names[i],"Random effect value")))
+        
         #         out <- c(out,list(selectInput("struct_PK_model", "Structural PK Model:",
         #                                       list(
         #                                         "1-cpt, 1st order abs., single dose, CL param." = "ff.PK.1.comp.oral.sd.CL",

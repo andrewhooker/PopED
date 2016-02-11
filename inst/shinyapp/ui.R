@@ -99,6 +99,18 @@ shinyUI(
              )),
              tabPanel("Parameter Definition",
                       uiOutput("parameter_vales"),
+                      h3("Residual Unexplained Variability Model"),
+                      conditionalPanel(
+                        condition = "input.bsv_per_param == false",
+                        selectInput("bsv_model","",
+                                    list(
+                                      "Exponential" = "exp",
+                                      "Proportional" = "prop",
+                                      "Additive" = "add",
+                                      "None" = "none"
+                                    ))
+                      ),
+                      checkboxInput("bsv_per_param", label = "Choose BSV model per parameter", value = FALSE),
                       br()
              ),
              tabPanel("Design Definition",
