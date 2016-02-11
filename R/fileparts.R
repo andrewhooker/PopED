@@ -9,7 +9,7 @@
 #' \item{filename}{The file name}
 #' \item{fileext}{The file extension}
 #' 
-#' @note This is a modified version of the same function in \code{\link[matlab]{fileparts}}
+#' @note This is a modified version of the same function in the matlab R-package.
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_fileparts.R

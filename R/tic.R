@@ -5,7 +5,7 @@
 #' @param gcFirst Perform garbage collection?
 #' @param name The saved name of the time object.
 #' 
-#' @note This is a modified version of the same function in the matlab package \code{\link[matlab]{tic}}
+#' @note This is a modified version of the same function in the matlab R-package.
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_tic.R

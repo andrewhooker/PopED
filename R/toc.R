@@ -5,7 +5,7 @@
 #' @param echo Print time to screen?
 #' @param name The saved name of the time object.
 #' 
-#' @note This is a modified version of the same function in the matlab package \code{\link[matlab]{toc}}
+#' @note This is a modified version of the same function in the matlab R-package.
 #' 
 #' @family MATLAB
 #' @example tests/testthat/examples_fcn_doc/examples_toc.R

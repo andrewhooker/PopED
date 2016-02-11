@@ -6,7 +6,7 @@
 #' 
 #' @return A list of empty lists.
 #' 
-#' @note This is a modified version of the same function in \code{\link[matlab]{cell}}
+#' @note This is a modified version of the same function in the matlab R-package.
 #' @family MATLAB
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_cell.R
