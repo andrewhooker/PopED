@@ -8,7 +8,7 @@ plot_efficiency_of_windows(poped.db, xt_windows = NULL,
   xt_plus = xt_windows, xt_minus = xt_windows, iNumSimulations = 100,
   y_eff = TRUE, y_rse = TRUE,
   ofv_calc_type = poped.db$settings$ofv_calc_type, mean_line = TRUE,
-  mean_color = "red", deviate_by_id = FALSE, ...)
+  mean_color = "red", ...)
 }
 \arguments{
 \item{poped.db}{A poped database}
