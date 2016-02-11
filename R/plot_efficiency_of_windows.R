@@ -16,7 +16,9 @@
 #' @param xt_minus The lower distance from the optimal sample times (xt - xt_minus). Can be a number or a matrix of the same size as 
 #' the xt matrix found in \code{poped.db$design$xt}.
 #' @param y_eff Should one of the plots created have efficiency on the y-axis?
-#' @param y_rse Should created plots include the relative standard error of each parameter as a value on the y-axis?   
+#' @param y_rse Should created plots include the relative standard error of each parameter as a value on the y-axis? 
+#' @param mean_line Should a mean value line be created?
+#' @param mean_color The color of the mean value line.  
 #' 
 #' @return A \link[ggplot2]{ggplot} object.
 #' 
@@ -35,9 +37,11 @@ plot_efficiency_of_windows <- function(poped.db,
                                        xt_plus=xt_windows,
                                        xt_minus=xt_windows,
                                        iNumSimulations=100,
-                                       y_eff = T,
-                                       y_rse = T,
+                                       y_eff = TRUE,
+                                       y_rse = TRUE,
                                        ofv_calc_type = poped.db$settings$ofv_calc_type,
+                                       mean_line=TRUE,
+                                       mean_color="red",
                                        #a_windows=NULL,x_windows=NULL,
                                        #d_switch=poped.db$settings$d_switch,
                                        ...){
@@ -280,8 +284,18 @@ plot_efficiency_of_windows <- function(poped.db,
     }
     #levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
   }
+  
+  
+  
   p <- ggplot(data=df_stack,aes(x=sample,y=values, group=ind))
   p <- p+geom_line()+geom_point() + facet_wrap(~ind,scales="free")
+  
+  # Compute sample mean and standard deviation in each group
+  if(mean_line){
+    ds <- dplyr::summarise(dplyr::group_by(df_stack, ind), mean=mean(values), sd=sd(values)) 
+    p <- p + geom_hline(data = ds, aes(yintercept = mean),colour = mean_color)
+  }
+  
   #p
   
   #p <- ggplot(data=df,aes(x=sample,y=efficiency)) #+ labs(colour = NULL)
@@ -290,5 +304,6 @@ plot_efficiency_of_windows <- function(poped.db,
   #p+geom_histogram()
   #p <- p+geom_line()+geom_point()+ylab("Normalized Efficiency (%)")
   p <- p+ylab("Value in %")+xlab("Simulation number of design sampled from defined windows")
+  #p <- p + stat_summary(fun.y = "mean", geom="hline")
   return(p)
 }
