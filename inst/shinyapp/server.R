@@ -10,6 +10,13 @@ shinyServer(function(input, output, session) {
   data = reactive({
     if (!is.null(input$hot)) {
       DF = hot_to_r(input$hot)
+      names(DF) <- c("name",
+                     "pop_val" ,
+                     "pop_fixed",
+                     "bsv_model",
+                     "variance" ,
+                     "var_fixed",
+                     "covariate")
     } else {
       if (is.null(values[["DF"]])){
         name <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
@@ -40,7 +47,13 @@ shinyServer(function(input, output, session) {
       }
     }
     
+    DF[DF[,"covariate"],"variance"] <- 0
+    #DF[DF[,"covariate"],"var_fixed"] <- TRUE
+    DF[DF[,"covariate"],"bsv_model"] <- "none"
     
+    DF[DF[,"bsv_model"]=="none","variance"] <- 0
+    #DF[DF[,"bsv_model"]=="none","var_fixed"] <- TRUE
+
     values[["DF"]] = DF
     DF
   })
@@ -48,12 +61,17 @@ shinyServer(function(input, output, session) {
   output$hot <- renderRHandsontable({
     DF = data()
     if (!is.null(DF))
-      rhandsontable(DF, useTypes = as.logical(input$useType), stretchH = "all",highlightCol = TRUE, highlightRow = TRUE)
+      rhandsontable(DF, useTypes = TRUE, 
+                    #stretchH = "all", stretchV="all", 
+                    overflow="visible",
+                    colHeaders = c("Parameter names","Pop. value","Fix pop. value",
+                                   "BSV model", "BSV Value", "Fix BSV value", "Treat as \ncovariate"),
+                    highlightCol = TRUE, highlightRow = TRUE)
   })
   
   
   
-
+  
   # Compute the forumla text in a reactive expression since it is 
   # shared by the output$caption and output$mpgPlot expressions
   updateDesign <- reactive({
@@ -80,10 +98,10 @@ shinyServer(function(input, output, session) {
       out <- c(out,list(textInput(paste0("groupsize_",i), 
                                   paste0("Number of individuals in group ",i,":"), "" )))
       out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"))))
-#       if(num_groups > 1){
-#         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
-#         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
-#       }
+      #       if(num_groups > 1){
+      #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
+      #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
+      #       }
     }
     #out <- c(out,list(renderPrint({ input$new_group })))
     #out <- c(out,list(actionButton("new_group","Add a new group")))  
@@ -121,7 +139,7 @@ shinyServer(function(input, output, session) {
           
           column(3, wellPanel(
             
-              h3(df$par_names[i])              
+            h3(df$par_names[i])              
           )),
           
           column(3, wellPanel(
@@ -131,9 +149,9 @@ shinyServer(function(input, output, session) {
           )),
           
           column(3, wellPanel(
-                 textInput(df$par_names[i],NULL)
+            textInput(df$par_names[i],NULL)
           )
-        ))))
+          ))))
         #out <- c(out,list(h3(df$par_names[i])))
         #out <- c(out,list(textInput(df$par_names[i],"Fixed effect value")))
         #out <- c(out,list(textInput(df$par_names[i],"Random effect value")))
@@ -148,7 +166,7 @@ shinyServer(function(input, output, session) {
       }
     }
     
-        
+    
     return(as.list(out))
   })
   
@@ -176,7 +194,7 @@ shinyServer(function(input, output, session) {
     sfg <- build_sfg(model=input$struct_pk_model,etas=input$bsv_pk_model)
     #environment(eval(parse(text=input$struct_model)))
     #parent.env(environment())
-
+    
     #browser()
     
     nbpop <- find.largest.index(func.str=sfg,lab="bpop") 
@@ -241,7 +259,7 @@ shinyServer(function(input, output, session) {
     #model <- updateModel()
     #design <- updateDesign()
     
-
+    
     #     ff <- function(model_switch,xt,parameters,poped.db){
     #       ##-- Model: One comp first order absorption
     #       with(as.list(parameters),{
@@ -276,7 +294,7 @@ shinyServer(function(input, output, session) {
     # get design variables
     # get design space
     
-
+    
     df <- data()
     df_2 <- df[df$covariate==F,]
     bpop <- df_2[["pop_val"]]
@@ -291,11 +309,11 @@ shinyServer(function(input, output, session) {
                      bsv_model=df[["bsv_model"]],
                      covariates=c("DOSE"),
                      etas="exp", # can be exp, prop, add
-                                  no_etas=c("F","Favail"),
-                                  env = parent.frame())
+                     no_etas=c("F","Favail"),
+                     env = parent.frame())
     
     browser()
-        
+    
     bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
     bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
     d_vec <- c(CL=0.07, V=0.02, KA=0.6)
@@ -311,7 +329,7 @@ shinyServer(function(input, output, session) {
     }
     
     new_sigma <- sigma
-
+    
     design <- updateDesign()
     
     ## -- Define initial design  and design space

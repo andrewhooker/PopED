@@ -6,7 +6,7 @@ shinyUI(
   navbarPage(title="PopED - Population Experimental Design",
              tabPanel("Model Definition",fluidPage(
                
-               h2("Structural Model"),
+               h2("PK Model"),
                checkboxInput("pk_mod", label = "PK model", value = TRUE),  
                conditionalPanel(
                  condition = "input.pk_mod == true",
@@ -14,19 +14,37 @@ shinyUI(
                  ## TODO: add more structural models, create function like in PKPDmodels or with PKPDsim
                  ## allow for different parameterizations as in PKPDsim (list to change values in equations)
                  ## print out equation so that users can sse what they are using
-                 selectInput("struct_PK_model", "Structural PK Model:",
+                 selectInput("struct_PK_model", "Structural model:",
                              list(
                                "1-cpt, 1st order abs., single dose, CL param." = "ff.PK.1.comp.oral.sd.CL",
                                "1-cpt, 1st order abs., single dose, KE param." = "ff.PK.1.comp.oral.sd.KE",
                                "1-cpt, 1st order abs., multi. dose, CL param." = "ff.PK.1.comp.oral.md.CL",
                                "1-cpt, 1st order abs., multi. dose, KE param" = "ff.PK.1.comp.oral.md.KE"
+                             )),
+                 
+                 selectInput("ruv_pk_model", "Residual error model",
+                             list(
+                               "Additive + Proportional" = "feps.add.prop",
+                               "Proportional" = "feps.prop",
+                               "Additive" = "feps.add"
                              ))
                ),
-               
+               br(),
+               br(),
+               h2("PD Model"),
                checkboxInput("pd_mod", label = "PD model", value = FALSE), 
                conditionalPanel(
                  condition = "input.pd_mod == true && input.pk_mod == true",
-                 checkboxInput("effect_compartment", label = "Use effect compartment", value = FALSE)
+                 checkboxInput("effect_compartment", label = "Use effect compartment", value = FALSE),
+                 checkboxInput("turnover", label = "Use turnover model", value = FALSE),
+                 conditionalPanel(
+                   condition = "input.turnover == true && input.pd_mod == true",
+                   selectInput("turnover_model", label = "Choose turnover model", list(
+                     "Inhibit Kin"="inhib_kin",
+                     "Stimulate Kin"="stim_kin",
+                     "Inhibit Kout"="inhib_kout",
+                     "Stimulate Kout"="stim_kout"))
+                 )
                ),
                
                conditionalPanel(
@@ -39,82 +57,65 @@ shinyUI(
                              list(
                                "Emax" = "emax",
                                "Linear" = "linear"
+                             )),
+                 selectInput("ruv_pd_model", "Residual error model",
+                             list(
+                               "Additive + Proportional" = "feps.add.prop",
+                               "Proportional" = "feps.prop",
+                               "Additive" = "feps.add"
                              ))
                ),
                br(),
                
-               h2("Between Subject Variability Model"),
-               conditionalPanel(
-                 condition = "input.pk_mod == true",
-                 
-                 selectInput("bsv_pk_model","PK BSV",
-                             list(
-                               "Exponential" = "exp",
-                               "Proportional" = "prop",
-                               "Additive" = "add",
-                               "None" = "none"
-                             )),
-                 checkboxInput("per_pd_param", label = "Choose per PK parameter", value = FALSE)  
-               ),
-               conditionalPanel(
-                 condition = "input.pd_mod == true",
-                 
-                 selectInput("bsv_pd_model","PD BSV",
-                             list(
-                               "Exponential" = "exp",
-                               "Proportional" = "prop",
-                               "Additive" = "add",
-                               "None" = "none"
-                             )),
-                 checkboxInput("per_pd_param", label = "Choose per PD parameter", value = FALSE)  
-               ),
+               # h2("Between Subject Variability Model"),
+               # conditionalPanel(
+               #   condition = "input.pk_mod == true",
+               #   
+               #   selectInput("bsv_pk_model","PK BSV",
+               #               list(
+               #                 "Exponential" = "exp",
+               #                 "Proportional" = "prop",
+               #                 "Additive" = "add",
+               #                 "None" = "none"
+               #               )),
+               #   checkboxInput("per_pd_param", label = "Choose per PK parameter", value = FALSE)  
+               # ),
+               # conditionalPanel(
+               #   condition = "input.pd_mod == true",
+               #   
+               #   selectInput("bsv_pd_model","PD BSV",
+               #               list(
+               #                 "Exponential" = "exp",
+               #                 "Proportional" = "prop",
+               #                 "Additive" = "add",
+               #                 "None" = "none"
+               #               )),
+               #   checkboxInput("per_pd_param", label = "Choose per PD parameter", value = FALSE)  
+               # ),
                
                
                #textInput("param"),
-               br(),
-               
-               h2("Residual Unexplained Variability Model"),
-               conditionalPanel(
-                 condition = "input.pk_mod == true",
-                 
-                 selectInput("ruv_pk_model", "PK RUV",
-                             list(
-                               "Additive + Proportional" = "feps.add.prop",
-                               "Proportional" = "feps.prop",
-                               "Additive" = "feps.add"
-                             ))
-               ),
-               conditionalPanel(
-                 condition = "input.pd_mod == true",
-                 
-                 selectInput("ruv_pd_model", "PD RUV",
-                             list(
-                               "Additive + Proportional" = "feps.add.prop",
-                               "Proportional" = "feps.prop",
-                               "Additive" = "feps.add"
-                             ))
-               ),
-               #                
                br()
+               
                
              )),
              tabPanel("Parameter Definition",
-                      uiOutput("parameter_vales"),
-                      radioButtons("useType", "Use Data Types", c("TRUE", "FALSE")),
-                      rHandsontableOutput("hot", width = 500),
-                      helpText(paste0("value is ")),
-                      h3("Residual Unexplained Variability Model"),
-                      conditionalPanel(
-                        condition = "input.bsv_per_param == false",
-                        selectInput("bsv_model","",
-                                    list(
-                                      "Exponential" = "exp",
-                                      "Proportional" = "prop",
-                                      "Additive" = "add",
-                                      "None" = "none"
-                                    ))
-                      ),
-                      checkboxInput("bsv_per_param", label = "Choose BSV model per parameter", value = FALSE),
+                      #uiOutput("parameter_vales"),
+                      #radioButtons("useType", "Use Data Types", c("TRUE", "FALSE")),
+                      rHandsontableOutput("hot"),
+                      #helpText(paste0("value is ")),
+                      #h3("Residual Unexplained Variability Model"),
+                      # conditionalPanel(
+                      #   condition = "input.bsv_per_param == false",
+                      #   selectInput("bsv_model","",
+                      #               list(
+                      #                 "Exponential" = "exp",
+                      #                 "Proportional" = "prop",
+                      #                 "Additive" = "add",
+                      #                 "None" = "none"
+                      #               ))
+                      # ),
+                      #checkboxInput("bsv_per_param", label = "Choose BSV model per parameter", value = FALSE),
                       br()
              ),
              tabPanel("Design Definition",
@@ -176,14 +177,15 @@ shinyUI(
                  "Sweden"
                ))
              )
+             )
   )
-)
-#plotOutput("modelPlot")
-#   footer=(
-#     br(),
-#     img(src = "poped_splash.png", height = 72, width = 72), 
-#     a(paste("PopED for R (", packageVersion("PopED"),")",sep=""), 
-#       href = "http://poped.sf.net"),
-#     h6("(c) 2014, Andrew C. Hooker, Pharmacometrics Research Group, Uppsala University, Sweden")
-#     
-#   )
+  #plotOutput("modelPlot")
+  #   footer=(
+  #     br(),
+  #     img(src = "poped_splash.png", height = 72, width = 72), 
+  #     a(paste("PopED for R (", packageVersion("PopED"),")",sep=""), 
+  #       href = "http://poped.sf.net"),
+  #     h6("(c) 2014, Andrew C. Hooker, Pharmacometrics Research Group, Uppsala University, Sweden")
+  #     
+  #   )
+  
