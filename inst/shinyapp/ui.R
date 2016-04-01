@@ -1,4 +1,5 @@
 library(shiny)
+library(rhandsontable)
 
 # Define UI for miles per gallon application
 shinyUI(
@@ -99,6 +100,9 @@ shinyUI(
              )),
              tabPanel("Parameter Definition",
                       uiOutput("parameter_vales"),
+                      radioButtons("useType", "Use Data Types", c("TRUE", "FALSE")),
+                      rHandsontableOutput("hot", width = 500),
+                      helpText(paste0("value is ")),
                       h3("Residual Unexplained Variability Model"),
                       conditionalPanel(
                         condition = "input.bsv_per_param == false",

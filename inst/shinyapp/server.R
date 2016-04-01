@@ -1,11 +1,57 @@
 library(PopED)
 
-#source("models/MODEL.2.PK.one.comp.oral.R")
-
-#sfg <- function(){}
+library(rhandsontable)
 
 # Define server logic required to plot various variables against mpg
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
+  
+  values = reactiveValues()
+  
+  data = reactive({
+    if (!is.null(input$hot)) {
+      DF = hot_to_r(input$hot)
+    } else {
+      if (is.null(values[["DF"]])){
+        name <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+        covariate <- name %in% c("Dose","DOSE","dose","tau","TAU","Tau")
+        bsv_model <- rep("exp",length(name))
+        
+        
+        df <- data.frame(name=name,
+                         pop_val = rep(1,length(name)),
+                         pop_fixed=FALSE,
+                         bsv_model=factor(bsv_model,levels = c("exp","add","prop","none"),ordered=TRUE),
+                         variance = rep(0.09,length(name)),
+                         var_fixed=FALSE,
+                         covariate=covariate, 
+                         stringsAsFactors = FALSE)
+        
+        #no_eta <- 1:length(parameter_names_ff)*FALSE
+        #names(no_eta) <- parameter_names_ff
+        #no_eta[parameter_names_ff %in% no_etas]  <- TRUE
+        
+        
+        #         DF = data.frame(val = 1:10, bool = TRUE, nm = LETTERS[1:10],
+        #                         dt = seq(from = Sys.Date(), by = "days", length.out = 10),
+        #                         stringsAsFactors = F)
+        DF = df
+      } else{
+        DF = values[["DF"]]
+      }
+    }
+    
+    
+    values[["DF"]] = DF
+    DF
+  })
+  
+  output$hot <- renderRHandsontable({
+    DF = data()
+    if (!is.null(DF))
+      rhandsontable(DF, useTypes = as.logical(input$useType), stretchH = "all",highlightCol = TRUE, highlightRow = TRUE)
+  })
+  
+  
   
 
   # Compute the forumla text in a reactive expression since it is 
@@ -230,6 +276,26 @@ shinyServer(function(input, output) {
     # get design variables
     # get design space
     
+
+    df <- data()
+    df_2 <- df[df$covariate==F,]
+    bpop <- df_2[["pop_val"]]
+    names(bpop) <- df_2[["name"]]
+    bpop_notfixed <- !df_2[["pop_fixed"]]
+    names(bpop_notfixed) <- df_2[["name"]]
+    par_names <- df_2[["name"]]
+    
+    sfg <- build_sfg(model=NULL,
+                     par_names = df[["name"]],
+                     covariates = df[["covariate"]],
+                     bsv_model=df[["bsv_model"]],
+                     covariates=c("DOSE"),
+                     etas="exp", # can be exp, prop, add
+                                  no_etas=c("F","Favail"),
+                                  env = parent.frame())
+    
+    browser()
+        
     bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
     bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
     d_vec <- c(CL=0.07, V=0.02, KA=0.6)
