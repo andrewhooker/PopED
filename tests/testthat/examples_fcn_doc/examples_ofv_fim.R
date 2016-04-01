@@ -1,6 +1,6 @@
 
 ## evaluate initial design 
-FIM <- evaluate.fim(poped.db) # new name for function needed
+FIM <- evaluate.fim(poped.db) 
 FIM
 get_rse(FIM,poped.db)
 

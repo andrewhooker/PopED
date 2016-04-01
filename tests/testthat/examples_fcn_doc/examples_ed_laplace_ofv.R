@@ -59,7 +59,7 @@ output$E_ofv
   
   ## ED value using MC integration (roughly)
   tic()
-  e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500)
+  e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500,ofv_calc_type = 1)
   toc()
   e_ofv_mc_n$E_ofv
   
@@ -117,7 +117,7 @@ output$E_ofv
   
   ## expected value (roughly)
   tic()
-  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500)[["E_ofv"]]
+  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500,ofv_calc_type = 1)[["E_ofv"]]
   toc()
   e_ofv_mc_ln
   

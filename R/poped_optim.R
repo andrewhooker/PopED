@@ -109,6 +109,8 @@ poped_optim <- function(poped.db,
   fmf_init <- fmf
   dmf_init <- dmf
   
+  if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
+  
   #--------------------- write out info to a file
   fn=blockheader(poped.db,name="optim",e_flag=!d_switch,
                  fmf=fmf_init,dmf=dmf_init,

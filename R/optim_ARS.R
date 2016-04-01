@@ -213,8 +213,12 @@ optim_ARS <- function(par,
     } else {
       res <- mapply(c,lapply(it_seq,gen_par_ofv,par_opt))  
     }
-    
-    res2 <- res[,!sapply(res["ofv",],is.null),drop=F]
+
+    # hamndle error messages and NULL values in OFV calculation  
+    #print(res)
+    res2 <- res
+    if(is.null(dim(res2))) res2 <- mapply(c,res2[sapply(res2,is.list)])
+    res2 <- res2[,!sapply(res2["ofv",],is.null),drop=F]
     
     if(maximize){
       out <- res2[,which.max(res2["ofv",])]  

@@ -4,7 +4,10 @@ PopED 0.3.0.9000
 ===========
 
 * NAMESPACE: removed ggplot2 from "Depends" and added to "Imports" 
+
 * Added mean line to efficiency plots.
+
+* Update to error handling for Laplace approximation to ED objective function. 
 
 
 PopED 0.3.0

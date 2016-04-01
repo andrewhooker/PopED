@@ -20,7 +20,7 @@
 #' @param optxt If sampling times are optimized
 #' @param opta If continuous design variables are optimized
 #' @param aopto the continuous design variables
-#' @param method If 0 then use an optimization routine translated from poped code written in MATLAB to
+#' @param method If 0 then use an optimization routine translated from PopED code written in MATLAB to
 #'        optimize the parameters in the Laplace approximation.  If 1 then use \code{\link{optim}} to compute both
 #'        k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
 #'        to compute the hessian.
@@ -34,7 +34,7 @@
 #' @export
 #' @keywords internal
 # @importFrom nlme fdHess
- 
+
 ## Function translated using 'matlab.to.r()'
 ## Then manually adjusted to make work
 ## Author: Andrew Hooker
@@ -53,9 +53,9 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     stop(sprintf('Only lognormal prior is supported for random effects!')) 
   }
   if(any(bpopdescr[,1,drop=F]!=0 & 
-           bpopdescr[,1,drop=F]!=4 & 
-           #bpopdescr[,1,drop=F]!=2 & 
-           bpopdescr[,1,drop=F]!=1)){
+         bpopdescr[,1,drop=F]!=4 & 
+         #bpopdescr[,1,drop=F]!=2 & 
+         bpopdescr[,1,drop=F]!=1)){
     #stop(sprintf('Only uniform, normal and lognormal priors are supported for fixed effects!')) 
     stop(sprintf('Only normal and lognormal priors are supported for fixed effects!')) 
     
@@ -107,16 +107,37 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
   #trans  <- function(x) matrix(c(x[bpop_index],exp(x[d_index])),ncol=1,byrow=T)
   
   #calc initial k value and gradient
-  returnArgs <- calc_k(alpha_k,model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
-                       return_gradient=T) 
-  f_k <- returnArgs[[1]]
-  gf_k <- returnArgs[[2]]
+  ret_grad <- F
+  if(method==0) ret_grad <- T
+  ret_args <- calc_k(alpha_k,model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+                     return_gradient=ret_grad) 
+  f_k <- ret_args[[1]]
+  gf_k <- NULL
+  if(method==0) gf_k <- ret_args[["grad_k"]]
   
+  ret_args <- tryCatch.W.E(inv(evaluate.fim(poped.db)))
+  if(any(class(ret_args$value)=="error")){
+    warning("Inversion of the FIM is not possible, the current design cannot estimate all parameters")
+    warning("In ", deparse(ret_args$value$call)," : \n    ", ret_args$value$message)
+    f=NaN
+    if(return_gradient) return(list( f= f,gf=NaN))
+    return(list(f=f))
+  }
+  # tryCatch.W.E( numDeriv::grad(function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
+  #                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+  #                                                 return_gradient=F),
+  #                              alpha_k) )
+  # 
+  # tryCatch.W.E( numDeriv::hessian(function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
+  #                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+  #                                                 return_gradient=F),
+  #                              alpha_k) )
+  # 
   #   ## test f_k value
-  #   fim <- det(evaluate.fim(poped.db))
+  #fim <- det(evaluate.fim(poped.db))
   #   # assuming all normal distributions and only first 3 fixed effects
-  #   p <- prod(dnorm(bpopdescr[1:3,2],mean=bpopdescr[1:3,2],sd=sqrt(bpopdescr[1:3,3]))) 
-  #   k_test <- -log(fim*p)
+  #p <- prod(dnorm(bpopdescr[1:3,2],mean=bpopdescr[1:3,2],sd=sqrt(bpopdescr[1:3,3]))) 
+  #k_test <- -log(fim*0.36)
   #   k_test==f_k
   
   #   ## test gf_k
@@ -131,7 +152,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
   #   if(!isempty(d_index)){
   #     gf_k[d_index]=gf_k[d_index]*exp(alpha_k_log[d_index])
   #   }
-  if(!isempty(exp_index)){
+  if(!isempty(exp_index) && !is.null(gf_k)){
     gf_k[exp_index]=gf_k[exp_index]*exp(alpha_k_log[exp_index])
   }
   if(isnan(f_k)){
@@ -165,10 +186,9 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
         # check this that it is the same as in matlab
         break
       }
-      returnArgs <- calc_k(trans(alpha_k1_log),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
-                           return_gradient=T) 
-      f_k1 <- returnArgs[[1]]
-      gf_k1 <- returnArgs[[2]]
+      f_k1 <- calc_k(trans(alpha_k1_log),model_switch,groupsize,ni,xtopto,xopto,aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+                     return_gradient=T) 
+      gf_k1 <- attr(f_k1,"grad")
       #transform gradient for ds (log(alpha))
       #     if(!isempty(d_index)){
       #       gf_k1[d_index]=gf_k1[d_index]*exp(alpha_k1_log(d_index))
@@ -212,22 +232,55 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     
     
     ## minimize K(alpha_k)
-    
+    opt_meth <- "Nelder-Mead"
+    if(length(alpha_k)==1) opt_meth <- "BFGS"
+    # initial_k <- calc_k(alpha_k,model_switch,groupsize,ni,xtopto,xopto,
+    #                     aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+    #                     return_gradient=F)
+    # cat("alpha_k = ",alpha_k," initial k = ", initial_k, "\n")
+    # cat("xt = ",xtopto, "\n")
+    # 
+    # bpop=bpopdescr[,2,drop=F]
+    # bpop[bpopdescr[,1,drop=F]!=0]=alpha_k[1:sum(bpopdescr[,1,drop=F]!=0),drop=F]
+    # d=ddescr[,2,drop=F]
+    # d[ddescr[,1]==4]=alpha_k[(sum(bpopdescr[,1,drop=F]!=0)+1):length(alpha_k),drop=F]
+    # d=getfulld(d,covd)
+    # retargs=mftot(model_switch,groupsize,ni,xtopto,xopto,aopto,bpop,d,sigma,docc,poped.db)
+    # fim <- retargs$ret
+    # det(fim)
+    # inv(fim)
+    # 
+    # for(tmp in seq(0.0993,10, by=1)){
+    #   cat(calc_k(tmp,model_switch,groupsize,ni,xtopto,xopto,
+    #              aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+    #              return_gradient=F),"\n")
+    # }
+    # 
+    # nlme::fdHess(alpha_k,
+    #              function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
+    #                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+    #                                 return_gradient=F)) 
+    # 
+    # numDeriv::hessian(function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
+    #                                      aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+    #                                      return_gradient=F),
+    #                   alpha_k)
+    # 
     output <- optim(alpha_k, 
                     function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                        aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
-                                       return_gradient=F)[["k"]],
+                                       return_gradient=F),
                     #gr=function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                     #                     aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
                     #                     return_gradient=T)[["grad_k"]],
-                    #method="L-BFGS-B",
+                    method=opt_meth,
                     #method="BFGS",
                     #method="Brent",
-                    #lower=-100000000000,
-                    #upper=0,
-                    #lower=0,
+                    #lower=1e-6,
+                    #upper=1e6,
+                    #lower=0.0000001,
                     #lower=lb,
-                    #upper=ub,
+                    #upper=1000,
                     hessian=T)
     hess <- output$hessian
     f_k <- output$value
@@ -241,7 +294,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
       k_vals <- nlme::fdHess(output$par,
                              function(x) calc_k(x,model_switch,groupsize,ni,xtopto,xopto,
                                                 aopto,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
-                                                return_gradient=F)[["k"]]) 
+                                                return_gradient=F)) 
       hess <- k_vals$Hessian
     }  
   }
@@ -409,9 +462,8 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
     }
     
     gf=Re(exp(-f_k)*(2*detHessPi*dkdxt+ddetHessdxt)/(2*detHessPi^(3/2)))
-    
+    return(list( f= f,gf=gf))
   }
-  if(return_gradient) return(list( f= f,gf=gf))
   return(list(f=f))
 }
 
@@ -424,29 +476,56 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
   d=getfulld(d,covd)
   retargs=mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop,d,sigma,docc,poped.db)
   fim <- retargs$ret
-  if((!return_gradient)){
-    #tryCatch(log(det(fim)), warning = function(w) browser())
-    det_fim <- det(fim)
-    if(det_fim<0) det_fim <- 0
-    k=-log_prior_pdf(alpha, bpopdescr, ddescr)-log(det_fim)
-    grad_k=matrix(0,0,0)
-  } else {
-    returnArgs <- log_prior_pdf(alpha, bpopdescr, ddescr,return_gradient=T) 
-    logp <- returnArgs[[1]]
-    grad_p <- returnArgs[[2]]
-    returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-6) 
-    d_fim <- returnArgs[[1]]
-    fim <- returnArgs[[2]]
-    ifim <- inv(fim)
-    dim(ifim) <- c(length(ifim),1)
-    gradlogdfim=t(reshape_matlab(d_fim,length(fim),length(grad_p)))%*%ifim
-    grad_k=-(gradlogdfim+grad_p)
+  
+  det_fim <- det(fim)
+  if(det_fim<0){
+    warning("Determinant of the FIM is negative")
+    if(return_gradient) return(list(k=NaN,grad_k = NaN))
+    return(c(k=NaN))
+  }
+  returnArgs <- log_prior_pdf(alpha, bpopdescr, ddescr,return_gradient=return_gradient) 
+  logp <- returnArgs[[1]]
+  if(return_gradient) grad_p <- returnArgs[["grad"]]
+  k=-logp-log(det_fim)
+  
+  if(return_gradient){
+    
+    comp_grad_1 <- function(alpha, model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr, ddescr, covd, sigma, docc, poped.db, grad_p) {
+      returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-6) 
+      d_fim <- returnArgs[[1]]
+      fim <- returnArgs[[2]]
+      ifim <- inv(fim)
+      dim(ifim) <- c(length(ifim),1)
+      gradlogdfim=t(reshape_matlab(d_fim,length(fim),length(grad_p)))%*%ifim
+      grad_k=-(gradlogdfim+grad_p)
+    }
+    
+    # foo <- tryCatch.W.E( comp_grad_1(alpha, model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr, ddescr, covd, sigma, docc, poped.db, grad_p) )
+    # is.numeric(foo$value)
+    # 
+    # tryCatch.W.E( numDeriv::grad(function(x) calc_k(x,model_switch,groupsize,ni,xtoptn,xoptn,
+    #                                                 aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,Engine,
+    #                                                 return_gradient=F),
+    #                              alpha) )
+    # 
+    grad_k <- comp_grad_1(alpha, model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr, ddescr, covd, sigma, docc, poped.db, grad_p)
     ## if not positive definite set grad_k=zeros(length(alpha),1)
     
     #tryCatch(log(det(fim)), warning = function(w) browser())
-    det_fim <- det(fim)
-    if(det_fim<0) det_fim <- 0
-    k=-logp-log(det_fim)
+    return(list(k=k,grad_k=grad_k)) 
   }
-  return(list( k= k, grad_k= grad_k)) 
+  
+  return(c(k=k)) 
+}
+
+
+tryCatch.W.E <- function(expr){
+  W <- NULL
+  w.handler <- function(w){ # warning handler
+    W <<- w
+    invokeRestart("muffleWarning")
+  }
+  list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+                                   warning = w.handler),
+       warning = W)
 }
