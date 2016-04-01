@@ -268,14 +268,19 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
                                     mina=0,
                                     maxa=100)
   
-  # ED optimization using Random search (just a few samples here)
-  output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=10,d_switch=0)
+  
+  # E_ln(D) optimization using Random search (just a few samples here)
+  output <- poped_optim(poped.db,opt_xt=TRUE,opt_a=TRUE,d_switch=0,
+                        method = c("ARS","LS"),
+                        control = list(ARS=list(iter=2),
+                                       LS=list(line_length=2)),
+                        iter_max = 1)
   get_rse(output$fmf,output$poped.db)
   
   # ED with laplace approximation, 
-  # optimization using Random search (just a few samples here)
+  # optimization using Random search (just a few iterations here)
   ars.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "ARS",
-                            d_switch=0,use_laplace=TRUE,laplace.fim=TRUE,
+                            d_switch=0,use_laplace=TRUE,#laplace.fim=TRUE,
                             parallel=T,
                             control = list(ARS=list(iter=5)))
   

@@ -90,7 +90,7 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 
 
 ## evaluate initial design 
-FIM <- evaluate.fim(poped.db) # new name for function needed
+FIM <- evaluate.fim(poped.db) 
 FIM
 get_rse(FIM,poped.db)
 
@@ -105,6 +105,10 @@ ofv_fim(FIM,poped.db,ofv_calc_type=7) # 1/sum(get_rse(FIM,poped.db,use_percent=F
 
 }
 \seealso{
+Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
+  \code{\link{evaluate.e.ofv.fim}},
+  \code{\link{evaluate.fim}}
+
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
@@ -119,9 +123,5 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot6}}, \code{\link{mftot7}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_criterion}}
-
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}
 }
 

@@ -43,7 +43,7 @@ can also just supply the diagnonal parameter values (variances) as a \code{c()}.
 
 \item{poped.db}{A PopED database.}
 
-\item{method}{If 0 then use an optimization routine translated from poped code written in MATLAB to
+\item{method}{If 0 then use an optimization routine translated from PopED code written in MATLAB to
 optimize the parameters in the Laplace approximation.  If 1 then use \code{\link{optim}} to compute both
 k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
 to compute the hessian.}
@@ -133,7 +133,7 @@ output$E_ofv
   
   ## ED value using MC integration (roughly)
   tic()
-  e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500)
+  e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500,ofv_calc_type = 1)
   toc()
   e_ofv_mc_n$E_ofv
   
@@ -191,7 +191,7 @@ output$E_ofv
   
   ## expected value (roughly)
   tic()
-  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500)[["E_ofv"]]
+  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500,ofv_calc_type = 1)[["E_ofv"]]
   toc()
   e_ofv_mc_ln
   
