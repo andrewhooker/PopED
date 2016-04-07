@@ -25,7 +25,7 @@ shinyServer(function(input, output, session) {
         
         
         df <- data.frame(name=name,
-                         pop_val = rep(1,length(name)),
+                         pop_val = runif(length(name)),
                          pop_fixed=FALSE,
                          bsv_model=factor(bsv_model,levels = c("exp","add","prop","none"),ordered=TRUE),
                          variance = rep(0.09,length(name)),
@@ -53,7 +53,8 @@ shinyServer(function(input, output, session) {
     
     DF[DF[,"bsv_model"]=="none","variance"] <- 0
     #DF[DF[,"bsv_model"]=="none","var_fixed"] <- TRUE
-
+    DF[DF[,"variance"]==0,"var_fixed"] <- TRUE
+    
     values[["DF"]] = DF
     DF
   })
@@ -65,7 +66,7 @@ shinyServer(function(input, output, session) {
                     #stretchH = "all", stretchV="all", 
                     overflow="visible",
                     colHeaders = c("Parameter names","Pop. value","Fix pop. value",
-                                   "BSV model", "BSV Value", "Fix BSV value", "Treat as \ncovariate"),
+                                   "BSV model", "BSV Value", "Fix BSV value", "Treat as \ndesign variable"),
                     highlightCol = TRUE, highlightRow = TRUE)
   })
   
@@ -76,16 +77,31 @@ shinyServer(function(input, output, session) {
   # shared by the output$caption and output$mpgPlot expressions
   updateDesign <- reactive({
     xt <- list()
-    #a <- list()
-    groupsize <- list()
+    groupsize <- c()
+
+    DF <- data()
+    cov_names <- DF[DF["covariate"]==T,"name"]
+    a <- list()
+    if(length(cov_names)==0) a <- NULL
+    
     num_groups <- input$num_groups
+    
     for(i in 1:num_groups){
       xt_txt <- input[[paste0("xt_",i)]]
-      #a_txt <- input[[paste0("a_",i)]]
-      groupsize_txt <- input[[paste0("groupsize_",i)]]
       xt <-  c(xt,list(eval(parse(text=paste("c(",xt_txt,")")))))
-      #a <-  c(a,list(eval(parse(text=paste("c(",a_txt,")")))))
-      groupsize <-  c(groupsize,list(eval(parse(text=paste("c(",groupsize_txt,")")))))
+      
+      groupsize_txt <- input[[paste0("groupsize_",i)]]
+      groupsize <-  c(groupsize,eval(parse(text=groupsize_txt)))
+      
+      # find covariates
+      if(length(cov_names)!=0){
+        cov_vals <- c()
+        for(j in cov_names){
+          a_txt <- input[[paste0(j,"_",i)]]          
+          cov_vals <-  c(cov_vals,eval(parse(text=paste0(j,"=",a_txt))))
+        }
+        a <- c(a,cov_vals)
+      }
     }
     return(list(xt=xt,a=a,groupsize=groupsize))
   })
@@ -93,11 +109,20 @@ shinyServer(function(input, output, session) {
   output$group_designs <- renderUI({
     out <- list()
     num_groups <- input$num_groups
+    DF <- data()
+    if(any(DF$covariate))
     for(i in 1:num_groups){
       out <- c(out,list(h2(paste0("Group ", i))))
       out <- c(out,list(textInput(paste0("groupsize_",i), 
                                   paste0("Number of individuals in group ",i,":"), "" )))
       out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"))))
+      if(any(DF$covariate)){
+        cov_names <- DF[DF["covariate"]==T,"name"]
+        
+        for(j in cov_names){
+          out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
+        }
+      }
       #       if(num_groups > 1){
       #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
       #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
@@ -296,64 +321,74 @@ shinyServer(function(input, output, session) {
     
     
     df <- data()
-    df_2 <- df[df$covariate==F,]
-    bpop <- df_2[["pop_val"]]
-    names(bpop) <- df_2[["name"]]
-    bpop_notfixed <- !df_2[["pop_fixed"]]
-    names(bpop_notfixed) <- df_2[["name"]]
-    par_names <- df_2[["name"]]
+    # df_2 <- df[df$covariate==F,]
+    # bpop <- df_2[["pop_val"]]
+    # names(bpop) <- df_2[["name"]]
+    # bpop_notfixed <- !df_2[["pop_fixed"]]
+    # names(bpop_notfixed) <- df_2[["name"]]
+    # par_names <- df_2[["name"]]
     
     sfg <- build_sfg(model=NULL,
                      par_names = df[["name"]],
-                     covariates = df[["covariate"]],
-                     bsv_model=df[["bsv_model"]],
-                     covariates=c("DOSE"),
-                     etas="exp", # can be exp, prop, add
-                     no_etas=c("F","Favail"),
+                     covariates = df[["name"]][df[["covariate"]]],
+                     etas=df[["bsv_model"]],
+                     #covariates=c("DOSE"),
+                     #etas="exp", # can be exp, prop, add
+                     no_etas=NULL,
                      env = parent.frame())
     
-    browser()
     
-    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
-    bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
-    d_vec <- c(CL=0.07, V=0.02, KA=0.6)
+    #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
+    bpop=df[df$covariate==F,"pop_val"]
+    names(bpop) <- df[df$covariate==F,"name"]
+    #bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
+    bpop_notfixed <- !df[df$covariate==F,"pop_fixed"]
+    names(bpop_notfixed) <- df[df$covariate==F,"name"]
+    #d_vec <- c(CL=0.07, V=0.02, KA=0.6)
+    d_vec <- df[df$bsv_model!="none","variance"]
+    names(d_vec) <- df[df$bsv_model!="none","name"]
+    d_notfixed <- !df[df$bsv_model!="none","var_fixed"]
+    names(d_notfixed) <- df[df$bsv_model!="none","name"]
+    #sigma <- c(prop=0.01,add=0.1)
     sigma <- c(prop=0.01,add=0.1)
-    parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
-    new_bpop <- c()
-    new_bpop_notfixed <- c()
-    new_d_vec <- c()
-    for(var in parameter_names){
-      if(var %in% names(bpop)) new_bpop <- c(new_bpop,bpop[var])
-      if(var %in% names(bpop_notfixed))  new_bpop_notfixed <- c(new_bpop_notfixed,bpop_notfixed[var])
-      if(var %in% names(d_vec)) new_d_vec <- c(new_d_vec,d_vec[var])
-    }
     
-    new_sigma <- sigma
+    # parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+    # new_bpop <- c()
+    # new_bpop_notfixed <- c()
+    # new_d_vec <- c()
+    # for(var in parameter_names){
+    #   if(var %in% names(bpop)) new_bpop <- c(new_bpop,bpop[var])
+    #   if(var %in% names(bpop_notfixed))  new_bpop_notfixed <- c(new_bpop_notfixed,bpop_notfixed[var])
+    #   if(var %in% names(d_vec)) new_d_vec <- c(new_d_vec,d_vec[var])
+    # }
+    
+    # new_sigma <- sigma
     
     design <- updateDesign()
-    
+
     ## -- Define initial design  and design space
     poped.db <- create.poped.database(ff_file=input$struct_PK_model,
                                       #ff_file="ff",
                                       #fg_fun=model$sfg,
                                       #fg_fun=sfg,
-                                      fg_fun=create_sfg(),
+                                      fg_fun=sfg,
                                       #fError_file="feps",
                                       fError_file=input$ruv_pk_model,
                                       #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                      bpop=new_bpop,  
-                                      notfixed_bpop=new_bpop_notfixed,
+                                      bpop=bpop,  
+                                      notfixed_bpop=bpop_notfixed,
                                       #d=c(CL=0.07, V=0.02, KA=0.6), 
-                                      d=new_d_vec, 
-                                      sigma=new_sigma,
-                                      groupsize=design$groupsize[[1]],
+                                      d=d_vec, 
+                                      notfixed_d = d_notfixed,
+                                      sigma=sigma,
+                                      groupsize=design$groupsize,
                                       #xt=c(0.5,1,2,6,24,36,72,120),
-                                      #xt=design$xt,
+                                      xt=design$xt,
                                       #xt=eval(parse(text=paste("c(",input$xt,")"))),
-                                      xt=design$xt[[1]],
-                                      minxt=0,
-                                      maxxt=120,
-                                      a=70)
+                                      #xt=design$xt[[1]],
+                                      minxt = 0,
+                                      maxxt = 120,
+                                      a=design$a)
     #plot_model_prediction(poped.db)
     #print(plot_model_prediction(poped.db))
     
