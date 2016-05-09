@@ -124,7 +124,8 @@ model_prediction <- function(poped.db=NULL,
       }
     }
     
-    used_times <- 0*xt
+  
+    used_times <- zeros(size(xt))
     for(i in 1:size(xt,1)) used_times[i,1:ni[i]] <- 1
     
     if(all(groups_to_use=="all")){
@@ -167,13 +168,13 @@ model_prediction <- function(poped.db=NULL,
         if(length(models_to_use)>1 && length(model_num_points)==1) model_num_points <- rep(model_num_points,length(models_to_use))
         for(j in models_to_use){
           if(is.null(model_minxt)){
-            minv <- min(as.vector(minxt[model_switch==j])) 
+            minv <- min(as.vector(minxt[model_switch==j]),na.rm = TRUE) 
           } else {                    
             if(length(models_to_use)>1 && length(model_minxt)==1) model_minxt <- rep(model_minxt,length(models_to_use))
             minv = model_minxt[j]
           }
           if(is.null(model_maxxt)){
-            maxv <- max(as.vector(maxxt[model_switch==j])) 
+            maxv <- max(as.vector(maxxt[model_switch==j]),na.rm = TRUE) 
           } else {
             if(length(models_to_use)>1 && length(model_maxxt)==1) model_maxxt <- rep(model_maxxt,length(models_to_use))
             maxv = model_maxxt[j]

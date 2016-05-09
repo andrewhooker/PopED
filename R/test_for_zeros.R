@@ -17,7 +17,7 @@
 
 test_for_zeros <- function(mat,ourzero){
 
-if(any(any(mat==0))){
+if(any(any(mat==0, na.rm = TRUE))){
   for(i in 1:size(mat,1)){
     for(j in 1:size(mat,2)){
       if(mat[i,j]==0){
