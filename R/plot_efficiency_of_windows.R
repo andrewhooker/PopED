@@ -360,7 +360,7 @@ plot_efficiency_of_windows <- function(poped.db,
   
   # Compute sample mean and standard deviation in each group
   if(mean_line){
-    ds <- dplyr::summarise(dplyr::group_by(df_stack, ind), mean=mean(values), sd=sd(values)) 
+    ds <- dplyr::summarise_(dplyr::group_by(df_stack, ind), mean=~mean(values), sd=~sd(values)) 
     p <- p + geom_hline(data = ds, aes(yintercept = mean),colour = mean_color)
   }
   
