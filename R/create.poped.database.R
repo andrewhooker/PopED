@@ -454,7 +454,7 @@ create.poped.database <-
            bpop=poped.choose(popedInput$design$bpop,stop('bpop must be defined')),
            ## -- Matrix defining the diagnonals of the IIV (same logic as for the fixed efects) --
            # can also just supply the parameter values as a c()
-           d=poped.choose(popedInput$design$d,stop('d must be defined')),
+           d=poped.choose(popedInput$design$d,NULL),
            ## -- Matrix defining the covariances of the IIV variances --
            # set to zero if not defined
            covd=popedInput$design$covd,
