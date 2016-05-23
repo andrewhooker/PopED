@@ -63,6 +63,9 @@ m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,poped.db){
             ferror_plus = ferror_plus+hess_eta_plus
             ferror_minus = ferror_minus+hess_eta_minus
           }
+
+          #if(length((ferror_plus-ferror_minus)/(2.0*h))<size(xt_ind,1)) browser()
+
           df_dbeta[,k]=(ferror_plus-ferror_minus)/(2.0*h)
         } else { #FOCE, FOCEI
           returnArgs <- feval(poped.db$model$ferror_pointer,model_switch,xt_ind,g_plus,epsi0,poped.db) 
