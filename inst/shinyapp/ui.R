@@ -4,8 +4,11 @@ library(rhandsontable)
 # Define UI for miles per gallon application
 shinyUI(
   navbarPage(title="PopED - Population Experimental Design",
+             collapsible = TRUE,
              tabPanel("Model Definition",fluidPage(
-               
+               title = "Hello Shiny!",
+               h1("Model Definition"),
+               'hh',
                h2("PK Model"),
                checkboxInput("pk_mod", label = "PK model", value = TRUE),  
                conditionalPanel(

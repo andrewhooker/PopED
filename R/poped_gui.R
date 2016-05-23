@@ -3,9 +3,7 @@
 #'
 #' @export
 #'
-#' @examples
-#' poped_gui()
-#' 
+
 poped_gui <- function(){
 
   if (!requireNamespace("shiny", quietly = TRUE)) {

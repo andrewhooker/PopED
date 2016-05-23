@@ -17,7 +17,8 @@ Suggests:
     Hmisc,
     nlme,
     GA,
-    deSolve
+    deSolve,
+    shiny
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
     person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),

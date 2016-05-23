@@ -9,8 +9,4 @@ poped_gui()
 \description{
 Run the graphical interface for PopED
 }
-\examples{
-poped_gui()
-
-}
 
