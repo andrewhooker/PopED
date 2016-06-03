@@ -10,6 +10,10 @@ poped_gui <- function(){
     stop("shiny package needed for this function to work. Please install it.",
          call. = FALSE)
   }
+  if (!requireNamespace("rhandsontable", quietly = TRUE)) {
+    stop("rhandsontable package needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
   shiny::runApp(system.file('shinyapp', package='PopED'))
   
 }

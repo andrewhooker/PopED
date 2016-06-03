@@ -5,7 +5,21 @@ library(rhandsontable)
 # Define server logic required to plot various variables against mpg
 shinyServer(function(input, output, session) {
   
+  
+  
+  
+  model_name <- reactive({
+    mod_name <- NULL
+    if(input$struct_PK_model!="NULL") mod_name <- paste(input$struct_PK_model,"sd",input$param_PK_model,sep=".")
+    if(input$struct_PD_model!="NULL"){
+      if(input$struct_PK_model=="NULL") mod_name <- paste0(input$struct_PD_model)
+      if(input$struct_PK_model!="NULL") mod_name <- paste(mod_name,input$link_fcn,input$struct_PD_model,sep=".")
+    }
+    return(mod_name)
+  })
+  
   values = reactiveValues()
+  setHot = function(x) values[["hot"]] = x
   
   data = reactive({
     if (!is.null(input$hot)) {
@@ -19,7 +33,8 @@ shinyServer(function(input, output, session) {
                      "covariate")
     } else {
       if (is.null(values[["DF"]])){
-        name <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+        mod_name <- model_name()
+        name <- codetools::findGlobals(eval(parse(text=mod_name)),merge=F)$variables  
         covariate <- name %in% c("Dose","DOSE","dose","tau","TAU","Tau")
         bsv_model <- rep("exp",length(name))
         
@@ -66,19 +81,283 @@ shinyServer(function(input, output, session) {
                     #stretchH = "all", stretchV="all", 
                     overflow="visible",
                     colHeaders = c("Parameter names","Pop. value","Fix pop. value",
-                                   "BSV model", "BSV Value", "Fix BSV value", "Treat as \ndesign variable"),
-                    highlightCol = TRUE, highlightRow = TRUE)
+                                   "BSV model", "BSV Value", "Fix BSV value", "Treat as \ndesign variable")
+                    #highlightCol = TRUE, highlightRow = TRUE
+      )
   })
   
   
+  param_names <- reactive({
+    mod_name <- model_name()
+    name <- codetools::findGlobals(eval(parse(text=mod_name)),merge=F)$variables  
+    names_par <- name[!name %in% c("Dose","DOSE","dose","tau","TAU","Tau")]
+  })
   
+  
+  #values = reactiveValues()
+  setHot2 = function(x) values[["hot2"]] = x
+  
+  output$hot2 = renderRHandsontable({
+    if (!is.null(input$hot2)) {
+      DF = hot_to_r(input$hot2)
+    } else {
+      
+      par_name <- param_names()
+      bsv_model <- rep("Exponential",length(par_name))
+      
+      
+      df <- data.frame(name=par_name,
+                       bsv_model=factor(bsv_model,levels = c("Exponential","Additive","Proportional","None"),ordered=TRUE),
+                       stringsAsFactors = FALSE)
+      
+      df$bsv_model[df$name %in% c("Favail","F")] <- "None"
+      DF = df 
+    }
+    
+    setHot2(DF)
+    rhandsontable(DF) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+  })
+  
+  setHot3 = function(x) values[["hot3"]] = x
+  
+  output$hot3 = renderRHandsontable({
+    if (!is.null(input$hot3)) {
+      DF = hot_to_r(input$hot3)
+    } else {
+      par_names <- param_names()
+      
+      df <- data.frame(name=par_names,
+                       value = runif(length(par_names)),
+                       fixed=FALSE,
+                       stringsAsFactors = FALSE)
+      
+      df$fixed[df$name %in% c("Favail","F")] <- TRUE
+      df$value[df$name %in% c("Favail","F")] <- 1
+      DF = df 
+    }
+    
+    setHot3(DF)
+    rhandsontable(DF) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+  })
+  
+  setHot4 = function(x) values[["hot4"]] = x
+  
+  output$hot4 = renderRHandsontable({
+    
+    par_names <- values[["hot2"]] %>% dplyr::filter(bsv_model!="None") %>% dplyr::select(name)
+    
+    if (!is.null(input$hot4)) {
+      MAT = hot_to_r(input$hot4)
+      update <- FALSE
+      if(length(dimnames(MAT)[[1]])!=length(par_names[[1]])){
+        update <- TRUE
+      } else {
+        if(any(dimnames(MAT)[[1]]!=par_names[[1]])) update <- TRUE        
+      }
+      if(update){
+        MAT1 <-  zeros(nrow(par_names))
+        diag(MAT1) <- 0.09
+        dimnames(MAT1) <- c(par_names,par_names)
+        old_names <- dimnames(MAT)[[1]]
+        still_here_old_names <- old_names[old_names %in% par_names[[1]]]
+        MAT1[still_here_old_names,still_here_old_names] <- MAT[still_here_old_names,still_here_old_names]
+        MAT <- MAT1
+      }
+    } else {
+      
+      #par_names <- values[["hot2"]] %>% dplyr::filter(bsv_model!="None") %>% dplyr::select(name)
+      MAT <-  zeros(nrow(par_names))
+      diag(MAT) <- 0.09
+      dimnames(MAT) <- c(par_names,par_names)
+      
+    }
+    
+    setHot4(MAT)
+    rhandsontable(MAT) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible") %>%
+      hot_cols(renderer = "
+               function (instance, td, row, col, prop, value, cellProperties) {
+               Handsontable.renderers.TextRenderer.apply(this, arguments);
+               if (row == col) {
+               td.style.background = 'lightgrey';
+               } else if (col > row) {
+               td.style.background = 'grey';
+               td.style.color = 'grey';
+               } else if (value != 0) {
+               td.style.background = 'lightgreen';
+               } else if (value > 0.75) {
+               td.style.background = 'lightgreen';
+               }
+               }")
+  })
+  
+  setHot5 = function(x) values[["hot5"]] = x
+  
+  output$hot5 = renderRHandsontable({
+    
+    bsv_parameters <- values[["hot4"]]
+    
+    if (!is.null(input$hot5)) {
+      MAT = hot_to_r(input$hot5)
+      update <- FALSE
+      if(length(MAT)!=length(bsv_parameters)){
+        update <- TRUE
+      } else {
+        if(any(dimnames(MAT)[[1]]!=dimnames(bsv_parameters)[[1]])) update <- TRUE        
+      }
+      if(update){
+        MAT1 <-  bsv_parameters*FALSE
+        MAT1[bsv_parameters==0] <- TRUE
+        MAT1 <- as.data.frame(MAT1)
+        MAT1 <- sapply(MAT1,as.logical)
+        MAT1[upper.tri(MAT1)] <- NA
+        MAT1 <- data.frame(MAT1,stringsAsFactors = FALSE)
+        rownames(MAT1) <- names(MAT1)
+        
+        new_names <- dimnames(MAT1)[[1]] 
+        old_names <- dimnames(MAT)[[1]]
+        still_here_old_names <- old_names[old_names %in% new_names]
+        MAT1[still_here_old_names,still_here_old_names] <- MAT[still_here_old_names,still_here_old_names]
+        MAT <- MAT1
+      }
+    } else {
+      
+      #par_names <- values[["hot2"]] %>% dplyr::filter(bsv_model!="None") %>% dplyr::select(name)
+      MAT <-  bsv_parameters*FALSE
+      MAT[bsv_parameters==0] <- TRUE
+      MAT <- as.data.frame(MAT)
+      MAT <- sapply(MAT,as.logical)
+      MAT[upper.tri(MAT)] <- NA
+      MAT <- data.frame(MAT,stringsAsFactors = FALSE)
+      rownames(MAT) <- names(MAT)
+      
+      
+    }
+    
+    setHot5(MAT)
+    rhandsontable(MAT) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+  })
+  
+  setHot6 = function(x) values[["hot6"]] = x
+  
+  output$hot6 = renderRHandsontable({
+    par_names <- c()
+    if(input$struct_PK_model!="NULL"){
+      if (input$ruv_pk_model=="feps.add.prop") par_names <- c(par_names,"PK_prop","PK_add")
+      if (input$ruv_pk_model=="feps.prop") par_names <- c(par_names,"PK_prop")
+      if (input$ruv_pk_model=="feps.add") par_names <- c(par_names,"PK_add")
+    }
+    if(input$struct_PD_model!="NULL"){
+      if (input$ruv_pd_model=="feps.add.prop") par_names <- c(par_names,"PD_prop","PD_add")
+      if (input$ruv_pd_model=="feps.prop") par_names <- c(par_names,"PD_prop")
+      if (input$ruv_pd_model=="feps.add") par_names <- c(par_names,"PD_add")
+    }
+    
+    if (!is.null(input$hot6)) {
+      MAT = hot_to_r(input$hot6)
+      update <- FALSE
+      if(length(dimnames(MAT)[[1]])!=length(par_names)){
+        update <- TRUE
+      } else {
+        if(any(dimnames(MAT)[[1]]!=par_names)) update <- TRUE        
+      }
+      if(update){
+        MAT1 <-  zeros(length(par_names))
+        diag(MAT1) <- 0.01
+        dimnames(MAT1) <- c(list(par_names),list(par_names))
+        old_names <- dimnames(MAT)[[1]]
+        still_here_old_names <- old_names[old_names %in% par_names]
+        MAT1[still_here_old_names,still_here_old_names] <- MAT[still_here_old_names,still_here_old_names]
+        MAT <- MAT1
+      }
+    } else {
+      
+      
+      
+      #par_names <- values[["hot2"]] %>% dplyr::filter(bsv_model!="None") %>% dplyr::select(name)
+      MAT <-  zeros(length(par_names))
+      diag(MAT) <- 0.01
+      dimnames(MAT) <- c(list(par_names),list(par_names))
+      
+    }
+    
+    setHot6(MAT)
+    rhandsontable(MAT) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible",stretchH = "right") %>%
+      hot_cols(renderer = "
+               function (instance, td, row, col, prop, value, cellProperties) {
+               Handsontable.renderers.TextRenderer.apply(this, arguments);
+               if (row == col) {
+               td.style.background = 'lightgrey';
+               } else if (col > row) {
+               td.style.background = 'grey';
+               td.style.color = 'grey';
+               } else if (value != 0) {
+               td.style.background = 'lightgreen';
+               } else if (value > 0.75) {
+               td.style.background = 'lightgreen';
+               }
+               }")
+  })
+  
+  setHot7 = function(x) values[["hot7"]] = x
+  
+  output$hot7 = renderRHandsontable({
+    
+    bsv_parameters <- values[["hot6"]]
+    
+    if (!is.null(input$hot7)) {
+      MAT = hot_to_r(input$hot7)
+      update <- FALSE
+      if(length(MAT)!=length(bsv_parameters)){
+        update <- TRUE
+      } else {
+        if(any(dimnames(MAT)[[1]]!=dimnames(bsv_parameters)[[1]])) update <- TRUE        
+      }
+      if(update){
+        MAT1 <-  bsv_parameters*FALSE
+        MAT1[bsv_parameters==0] <- TRUE
+        MAT1 <- as.data.frame(MAT1)
+        MAT1 <- sapply(MAT1,as.logical)
+        MAT1[upper.tri(MAT1)] <- NA
+        MAT1 <- data.frame(MAT1,stringsAsFactors = FALSE)
+        rownames(MAT1) <- names(MAT1)
+        
+        new_names <- dimnames(MAT1)[[1]] 
+        old_names <- dimnames(MAT)[[1]]
+        still_here_old_names <- old_names[old_names %in% new_names]
+        MAT1[still_here_old_names,still_here_old_names] <- MAT[still_here_old_names,still_here_old_names]
+        MAT <- MAT1
+      }
+    } else {
+      
+      #par_names <- values[["hot2"]] %>% dplyr::filter(bsv_model!="None") %>% dplyr::select(name)
+      MAT <-  bsv_parameters*FALSE
+      MAT[bsv_parameters==0] <- TRUE
+      MAT <- as.data.frame(MAT)
+      MAT <- sapply(MAT,as.logical)
+      MAT[upper.tri(MAT)] <- NA
+      MAT <- data.frame(MAT,stringsAsFactors = FALSE)
+      names(MAT) <- colnames(bsv_parameters)
+      rownames(MAT) <- names(MAT)
+      
+      
+    }
+    
+    setHot7(MAT)
+    rhandsontable(MAT) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible") 
+  })
   
   # Compute the forumla text in a reactive expression since it is 
   # shared by the output$caption and output$mpgPlot expressions
   updateDesign <- reactive({
     xt <- list()
     groupsize <- c()
-
+    
     DF <- data()
     cov_names <- DF[DF["covariate"]==T,"name"]
     a <- list()
@@ -106,36 +385,101 @@ shinyServer(function(input, output, session) {
     return(list(xt=xt,a=a,groupsize=groupsize))
   })
   
+  get_dose_type <- reactive({
+    dose_type <- input$dose_type
+    return(dose_type)
+  })
+  
+  
   output$group_designs <- renderUI({
     out <- list()
     num_groups <- input$num_groups
     DF <- data()
     if(any(DF$covariate))
-    for(i in 1:num_groups){
-      out <- c(out,list(h2(paste0("Group ", i))))
-      out <- c(out,list(textInput(paste0("groupsize_",i), 
-                                  paste0("Number of individuals in group ",i,":"), "" )))
-      out <- c(out,list(textInput(paste0("xt_",i), paste0("Sample times:"))))
-      if(any(DF$covariate)){
-        cov_names <- DF[DF["covariate"]==T,"name"]
-        
-        for(j in cov_names){
-          out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
+      for(i in 1:num_groups){
+        out <- c(out,list(h3(paste0("Group ", i))))
+        out <- c(out,list(textInput(paste0("groupsize_",i), 
+                                    paste0("Number of individuals in group ",i,":"), "" )))
+        if(input$struct_PK_model!="NULL"){
+          out <- c(out,list(
+            #wellPanel(
+            h3(paste0("Regimen")),
+            textInput(paste0("amt_",i),
+                      paste0("Dose amount(s):")),
+            textInput(paste0("d_time_",i),
+                      paste0("Dose time(s):"),
+                      value="0"),
+            selectInput(paste0("dose_type_",i), "Dose type",
+                        list(
+                          "Bolus" = "bolus",
+                          "Infusion" = "infusion"
+                        ))
+            #)
+            
+            # conditionalPanel(
+            #   condition = "input.dose_type == 'infusion'",
+            #   sliderInput("breakCount", "Break Count", min=1, max=1000, value=10)
+            # )
+          ))
+          #if(!is.null(input$dose_type)){
+          out <- c(out,list(
+            conditionalPanel(
+              condition = paste0("input.dose_type_",i," == 'infusion'"),
+              textInput(paste0("inf_time_",i),
+                        paste0("Infusion time(s):"),
+                        value="")
+              )))
+              
+          #   if(input$dose_type=="bolus") textInput(paste0("amt33_",i),paste0("dooo amount"))
+          #}
+          #if(get_dose_type()=="bolus") out <- c(out,list(h3(paste0("Group ", i))))
+          
         }
+        
+        if(input$struct_PK_model!="NULL"){
+          out <- c(out,list(textInput(paste0("xt_pk_",i), paste0("PK Sample times:"))))
+        }
+        if(input$struct_PD_model!="NULL"){
+          out <- c(out,list(textInput(paste0("xt_pd_",i), paste0("PD Sample times:"))))
+        }
+        if(any(DF$covariate)){
+          cov_names <- DF[DF["covariate"]==T,"name"]
+          
+          for(j in cov_names){
+            out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
+          }
+        }
+        #       if(num_groups > 1){
+        #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
+        #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
+        #       }
       }
-      #       if(num_groups > 1){
-      #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
-      #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
-      #       }
-    }
     #out <- c(out,list(renderPrint({ input$new_group })))
     #out <- c(out,list(actionButton("new_group","Add a new group")))  
     return(as.list(out))
   })
   
+  # result <- list()
+  # for(i in 1:input$num_groups){
+  #   test <- renderUI({
+  #     out <- list()
+  #     if(input$dose_type=="bolus") out <- c(out,list(h3(paste0("Group "))))
+  #     return(as.list(out))
+  #   })
+  #   
+  #   test2 <- renderUI({
+  #     out <- list()
+  #     if(input$dose_type=="bolus") out <- c(out,list(h3(paste0("Group "))))
+  #     return(as.list(out))
+  #   })
+  #   result <- c(result, test,test2)
+  # }
+  # output$test <- result
+  # 
+  
   output$parameter_vales <- renderUI({
     out <- list()
-    parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
+    parameter_names <- codetools::findGlobals(eval(parse(text="ff.PK.1.comp.oral.sd.CL")),merge=F)$variables  
     df <- data.frame(par_names=parameter_names)
     df$covariate <- df$par_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")
     
@@ -365,7 +709,7 @@ shinyServer(function(input, output, session) {
     # new_sigma <- sigma
     
     design <- updateDesign()
-
+    
     ## -- Define initial design  and design space
     poped.db <- create.poped.database(ff_file=input$struct_PK_model,
                                       #ff_file="ff",
