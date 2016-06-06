@@ -244,7 +244,11 @@ model_prediction <- function(poped.db=NULL,
         if(predictions){
           fulld = getfulld(parameters$d[,2],parameters$covd)
           fulldocc = getfulld(parameters$docc[,2,drop=F],parameters$covdocc)
-          b_sim_matrix = mvtnorm::rmvnorm(num_ids,sigma=fulld)
+          if(any(size(fulld)==0)){
+            b_sim_matrix = zeros(num_ids,0)
+          } else {
+            b_sim_matrix = mvtnorm::rmvnorm(num_ids,sigma=fulld)            
+          }
           bocc_sim_matrix = zeros(num_ids*NumOcc,length(parameters$docc[,2,drop=F]))
           if(nrow(fulldocc)!=0) bocc_sim_matrix = mvtnorm::rmvnorm(num_ids*NumOcc,sigma=fulldocc)
         }
