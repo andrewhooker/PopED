@@ -27,7 +27,8 @@
 #' @param facet_scales Can be "free", "fixed", "free_x" or "free_y"
 #' @param facet_label_names TRUE or FALSE
 #' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
-#' 
+#' @param groupsize_sim How many individuals per group  should be 
+#'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
 #' forget to load the ggplot2 library using \code{library(ggplot2)}.
@@ -45,6 +46,7 @@
 plot_model_prediction <- function(poped.db,
                                   ##models_to_use="all",
                                   model_num_points=100,
+                                  groupsize_sim = 100,
                                   ##model_minxt,
                                   ##model_maxxt,
                                   ##groups_to_plot,
@@ -93,14 +95,18 @@ plot_model_prediction <- function(poped.db,
   }
   
   if(IPRED || IPRED.lines || DV || IPRED.lines.pctls){
-    df.ipred <-  model_prediction(poped.db,
+    dv_val <- FALSE
+    if(DV) dv_val <- TRUE
+    poped.db_tmp <- poped.db
+    poped.db_tmp$design$groupsize <- poped.db$design$groupsize*0+groupsize_sim
+    df.ipred <-  model_prediction(poped.db_tmp,
                                   #models_to_use,
                                   model_num_points=model_num_points,
                                   ##model_minxt,
                                   ##model_maxxt,
                                   ##groups_to_plot,
                                   IPRED=T,
-                                  DV=DV,
+                                  DV=dv_val,
                                   ...)
 
     # allow for more experiments to be simulated to get a better idea of the prediction spread
