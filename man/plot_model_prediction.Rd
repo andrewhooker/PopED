@@ -4,15 +4,16 @@
 \alias{plot_model_prediction}
 \title{Plot model predictions}
 \usage{
-plot_model_prediction(poped.db, model_num_points = 100, separate.groups = F,
-  sample.times = T, sample.times.IPRED = F, sample.times.DV = F,
-  PRED = T, IPRED = F, IPRED.lines = F, IPRED.lines.pctls = F,
-  alpha.IPRED.lines = 0.1, alpha.IPRED = 0.3, sample.times.size = 4,
-  DV = F, alpha.DV = 0.3, DV.lines = F, DV.points = F,
-  alpha.DV.lines = 0.3, alpha.DV.points = 0.3, sample.times.DV.points = F,
-  sample.times.DV.lines = F, alpha.sample.times.DV.points = 0.3,
-  alpha.sample.times.DV.lines = 0.3, y_lab = "Model Predictions",
-  facet_scales = "fixed", facet_label_names = T, ...)
+plot_model_prediction(poped.db, model_num_points = 100, groupsize_sim = 100,
+  separate.groups = F, sample.times = T, sample.times.IPRED = F,
+  sample.times.DV = F, PRED = T, IPRED = F, IPRED.lines = F,
+  IPRED.lines.pctls = F, alpha.IPRED.lines = 0.1, alpha.IPRED = 0.3,
+  sample.times.size = 4, DV = F, alpha.DV = 0.3, DV.lines = F,
+  DV.points = F, alpha.DV.lines = 0.3, alpha.DV.points = 0.3,
+  sample.times.DV.points = F, sample.times.DV.lines = F,
+  alpha.sample.times.DV.points = 0.3, alpha.sample.times.DV.lines = 0.3,
+  y_lab = "Model Predictions", facet_scales = "fixed",
+  facet_label_names = T, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -21,6 +22,9 @@ plot_model_prediction(poped.db, model_num_points = 100, separate.groups = F,
 per model.  If used then the points are placed evenly between \code{model_minxt} and \code{model_maxxt}. This option
 is used by \code{\link{plot_model_prediction}} to simulate the response of the model on a finer grid then the defined design.
 If \code{NULL} then only the input design is used.  Can be a single value or a vector the same length as the number of models.}
+
+\item{groupsize_sim}{How many individuals per group  should be 
+simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 
 \item{separate.groups}{Should there be separate plots for each group.}
 
@@ -124,13 +128,13 @@ plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{get_rse}}, \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}}
-
 Other Graphics: \code{\link{plot_efficiency_of_windows}}
 
 Other Simulation: \code{\link{model_prediction}},
+  \code{\link{plot_efficiency_of_windows}}
+
+Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{get_rse}}, \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}}
 }
 
