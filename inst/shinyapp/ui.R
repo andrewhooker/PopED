@@ -197,6 +197,7 @@ shinyUI(
                       textInput("num_groups", "Nunber of design groups", "1"),
                       uiOutput("group_designs"),
                       uiOutput("test"),
+                      rHandsontableOutput("hot8"),
                       
                       hr(),
                       #actionButton("new_group","Add a new group"),

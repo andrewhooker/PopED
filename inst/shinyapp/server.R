@@ -391,11 +391,35 @@ shinyServer(function(input, output, session) {
   })
   
   
+  setHot8 = function(x) values[["hot8"]] = x
+  
+  output$hot8 = renderRHandsontable({
+    if (!is.null(input$hot8)) {
+      DF = hot_to_r(input$hot8)
+    } else {
+      
+      
+      df <- data.frame(group = 1L, 
+                         amount = 20,
+                       time = 0,
+                       duration = 0,
+                       n = 1L,
+                       tau = 0,
+                       stringsAsFactors = FALSE)
+      
+      DF = df 
+    }
+    
+    setHot8(DF)
+    rhandsontable(DF) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+  })
+  
   output$group_designs <- renderUI({
     out <- list()
     num_groups <- input$num_groups
     DF <- data()
-    if(any(DF$covariate))
+    #if(any(DF$covariate))
       for(i in 1:num_groups){
         out <- c(out,list(h3(paste0("Group ", i))))
         out <- c(out,list(textInput(paste0("groupsize_",i), 
@@ -425,8 +449,8 @@ shinyServer(function(input, output, session) {
           out <- c(out,list(
             conditionalPanel(
               condition = paste0("input.dose_type_",i," == 'infusion'"),
-              textInput(paste0("inf_time_",i),
-                        paste0("Infusion time(s):"),
+              textInput(paste0("inf_dur_",i),
+                        paste0("Infusion duration(s):"),
                         value="")
               )))
               
@@ -444,8 +468,8 @@ shinyServer(function(input, output, session) {
         }
         if(any(DF$covariate)){
           cov_names <- DF[DF["covariate"]==T,"name"]
-          
-          for(j in cov_names){
+          names_par <- cov_names[!cov_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")]
+          for(j in names_par){
             out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
           }
         }
@@ -671,6 +695,7 @@ shinyServer(function(input, output, session) {
     # bpop_notfixed <- !df_2[["pop_fixed"]]
     # names(bpop_notfixed) <- df_2[["name"]]
     # par_names <- df_2[["name"]]
+
     
     sfg <- build_sfg(model=NULL,
                      par_names = df[["name"]],
@@ -711,6 +736,7 @@ shinyServer(function(input, output, session) {
     design <- updateDesign()
     
     ## -- Define initial design  and design space
+    
     poped.db <- create.poped.database(ff_file=input$struct_PK_model,
                                       #ff_file="ff",
                                       #fg_fun=model$sfg,
