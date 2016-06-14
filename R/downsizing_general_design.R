@@ -47,7 +47,11 @@ downsizing_general_design <- function(poped.db){
   bpop=poped.db$parameters$bpop[1:poped.db$parameters$nbpop,1:3,drop=F]
   n=t(ni)%*%matrix(1,poped.db$design$m,1)
   
-  d=poped.db$parameters$d[1:poped.db$parameters$NumRanEff,1:3,drop=F]
+  if(poped.db$parameters$NumRanEff != 0){
+    d=poped.db$parameters$d[1:poped.db$parameters$NumRanEff,1:3,drop=F]
+  } else {
+    d=poped.db$parameters$d
+  }
   maxxt=poped.db$design_space$maxxt[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
   minxt=poped.db$design_space$minxt[1:poped.db$design$m,1:max(poped.db$design_space$maxni),drop=F]
   
