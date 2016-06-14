@@ -9,6 +9,7 @@
 #' @param xtoptn The xtoptn value
 #' @param xoptn The xoptn
 #' @param aoptn The aoptn value
+#' @param calc_fim Should the FIM be calculated or should we just use the user defined ed_penalty_pointer.
 #' 
 #' @return A list containing the E(FIM) and E(OFV(FIM)) and the a poped.db.
 #' 
@@ -24,7 +25,8 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-ed_mftot <- function(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db){
+ed_mftot <- function(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,
+                     calc_fim=TRUE){
   #+++++++++++++++++++++++ ED OFV(MF) VALUE
   s=0
   s1=0
@@ -36,21 +38,24 @@ ed_mftot <- function(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddes
   
   bpop_gen  <-  pargen(bpopdescr,poped.db$model$user_distribution_pointer,
                     poped.db$settings$ED_samp_size,poped.db$settings$bLHS,zeros(1,0),poped.db)
-  
-  for(ct in 1:poped.db$settings$ED_samp_size){
-    d_gen = getfulld(pargen(ddescr,poped.db$model$user_distribution_pointer,1,poped.db$settings$bLHS,ct,poped.db),covd)
-    docc_gen = getfulld(pargen(docc,poped.db$model$user_distribution_pointer,1,poped.db$settings$bLHS,ct,poped.db),poped.db$parameters$covdocc)
-    returnArgs <- mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop_gen[ct,],d_gen,sigma,docc_gen,poped.db) 
-    mftmp <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    s=s+ofv_fim(mftmp,poped.db)
-    s1=s1+mftmp
-    fim_list[[ct]]=mftmp
-    d_gen_list[[ct]]=d_gen
-    docc_gen_list[[ct]]=docc_gen
+  if(calc_fim){
+    for(ct in 1:poped.db$settings$ED_samp_size){
+      d_gen = getfulld(pargen(ddescr,poped.db$model$user_distribution_pointer,1,poped.db$settings$bLHS,ct,poped.db),covd)
+      docc_gen = getfulld(pargen(docc,poped.db$model$user_distribution_pointer,1,poped.db$settings$bLHS,ct,poped.db),poped.db$parameters$covdocc)
+      returnArgs <- mftot(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop_gen[ct,],d_gen,sigma,docc_gen,poped.db) 
+      mftmp <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+      s=s+ofv_fim(mftmp,poped.db)
+      s1=s1+mftmp
+      fim_list[[ct]]=mftmp
+      d_gen_list[[ct]]=d_gen
+      docc_gen_list[[ct]]=docc_gen
+    }
   }
   if((!isempty(poped.db$settings$ed_penalty_pointer))){
-    returnArgs <- feval(poped.db$settings$ed_penalty_pointer,fim_list,bpop_gen,d_gen_list,docc_gen_list,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db) 
+    returnArgs <- feval(poped.db$settings$ed_penalty_pointer,fim_list,bpop_gen,d_gen_list,
+                        docc_gen_list,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,
+                        bpopdescr,ddescr,covd,sigma,docc,poped.db) 
     ED_fim <- returnArgs[[1]]
     ED_ofv <- returnArgs[[2]]
     poped.db <- returnArgs[[3]]
