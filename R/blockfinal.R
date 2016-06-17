@@ -140,10 +140,14 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     
     
     if(is.null(param_cvs_init) && !is.null(fmf_init) && is.matrix(fmf_init) && compute_inv){
+      if(is.finite(dmf_init)) {
+        
+      
       param_vars_init=diag_matlab(inv(fmf_init))
       returnArgs <-  get_cv(param_vars_init,bpop,d,docc,sigma,poped.db) 
       params_init <- returnArgs[[1]]
       param_cvs_init <- returnArgs[[2]]
+      }
     }
     
     if(compute_inv){

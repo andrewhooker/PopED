@@ -124,7 +124,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     }
   }
   
-  if(is.matrix(fmf) && compute_inv){
+  if(is.matrix(fmf) && compute_inv && is.finite(dmf)){
     param_vars=diag_matlab(inv(fmf))
     returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
     params <- returnArgs[[1]]
