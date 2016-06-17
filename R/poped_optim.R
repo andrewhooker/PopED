@@ -75,6 +75,7 @@ poped_optim <- function(poped.db,
                         loop_methods=ifelse(length(method)>1,TRUE,FALSE),
                         iter_max = 10,
                         eff_crit = 1.001,
+                        ofv_fun = poped.db$settings$ofv_fun,
                         ...){
   
   #------------ update poped.db with options supplied in function
@@ -92,6 +93,23 @@ poped_optim <- function(poped.db,
     stop('No optimization parameter is set.')
   }
   
+  if(is.null(ofv_fun) || is.function(ofv_fun)){
+    ofv_fun_user <- ofv_fun 
+  } else {
+    # source explicit file
+    # here I assume that function in file has same name as filename minus .txt and pathnames
+    if(file.exists(as.character(ofv_fun))){
+      source(as.character(ofv_fun))
+      ofv_fun_user <- eval(parse(text=fileparts(ofv_fun)[["filename"]]))
+    } else {
+      stop("ofv_fun is not a function or NULL, and no file with that name was found")
+    }
+
+  }
+  
+
+  
+  #---------- functions
   dots <- function(...) {
     eval(substitute(alist(...)))
   }
@@ -106,6 +124,7 @@ poped_optim <- function(poped.db,
                             use_laplace=use_laplace,
                             ofv_calc_type=ofv_calc_type,
                             fim.calc.type=fim.calc.type,
+                            ofv_fun = ofv_fun_user,
                             ...)
   
   fmf <- output$fim
@@ -262,7 +281,9 @@ poped_optim <- function(poped.db,
                         ofv_calc_type=ofv_calc_type,
                         fim.calc.type=fim.calc.type,
                         xt=xt,
-                        a=a),
+                        a=a,
+                        ofv_fun = ofv_fun_user
+                      ),
                         extra_args))
               
     
@@ -544,6 +565,8 @@ poped_optim <- function(poped.db,
                             use_laplace=use_laplace,
                             ofv_calc_type=ofv_calc_type,
                             fim.calc.type=fim.calc.type,
+                         ofv_fun = ofv_fun_user,
+                         
                             ...)[["fim"]]
   
   

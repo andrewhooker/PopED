@@ -84,7 +84,8 @@ the FIM does not need to be computed and, if desired,  this calculation
 is done usng the standard MC integration technique, so can be slow.}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.}
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{evaluate_fim}{Should the FIM be calculated?}
 
