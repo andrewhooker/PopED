@@ -14,7 +14,7 @@ calc_ofv_and_fim(poped.db, ofv = 0, fim = 0,
   xt = poped.db$design$xt, x = poped.db$design$x, a = poped.db$design$a,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   use_laplace = poped.db$settings$iEDCalculationType, laplace.fim = FALSE,
-  ...)
+  ofv_fun = poped.db$settings$ofv_fun, evaluate_fim = TRUE, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -82,6 +82,11 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 the FIM does not need to be computed and, if desired,  this calculation
 is done usng the standard MC integration technique, so can be slow.}
+
+\item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
+argument and have "..." in its argument list.}
+
+\item{evaluate_fim}{Should the FIM be calculated?}
 
 \item{...}{Other arguments passed to the function.}
 }

@@ -126,6 +126,8 @@
 #' \code{ofv_calc_type=6}.
 #' @param strEDPenaltyFile Penalty function name or path and filename, empty string means no penalty.  
 #' User defined criterion can be defined this way.
+#' @param ofv_fun User defined function used to compute the objective function. The function must have a poped database object as its first
+#' argument and have "..." in its argument list.
 
 #' @param iEDCalculationType  \itemize{
 #' \item \bold{******START OF E-FAMILY CRITERION SPECIFICATION OPTIONS**********}}
@@ -415,6 +417,7 @@ create.poped.database <-
            ds_index=popedInput$CriterionOptions$ds_index,   
            ## -- Penalty function, empty string means no penalty.  User defined criterion --
            strEDPenaltyFile=poped.choose(popedInput$strEDPenaltyFile,''),
+           ofv_fun = NULL,
            
            
            
@@ -948,6 +951,28 @@ create.poped.database <-
         poped.db$settings$ed_penalty_pointer = strEDPenaltyFilename
       }
     } 
+    
+    if(is.null(ofv_fun) || is.function(ofv_fun)){
+      poped.db$settings$ofv_fun = ofv_fun
+    } else {
+      stop("ofv_fun must be a function or NULL")
+    }
+      
+    # if(is.function(ofv_fun)){
+    #   poped.db$settings$ofv_fun = ofv_fun 
+    # } else if(exists(ofv_fun)){
+    #   poped.db$settings$ofv_fun = ofv_fun 
+    # } else {
+    #   source(ofv_fun)
+    #   returnArgs <-  fileparts(ofv_fun) 
+    #   strffModelFilePath <- returnArgs[[1]]
+    #   strffModelFilename  <- returnArgs[[2]]
+    #   ## if (~strcmp(strffModelFilePath,''))
+    #   ##    cd(strffModelFilePath);
+    #   ## end
+    #   poped.db$settings$ofv_fun = strffModelFilename
+    # }
+    
     
     poped.db$model$auto_pointer=zeros(1,0)
     if((!as.character(strAutoCorrelationFile)=='')){

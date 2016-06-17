@@ -14,6 +14,7 @@
 #' @param laplace.fim Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 #' the FIM does not need to be computed and, if desired,  this calculation
 #' is done usng the standard MC integration technique, so can be slow. 
+#' @param evaluate_fim Should the FIM be calculated?
 #' 
 #' @return A list containing the FIM and OFV(FIM) or the E(FIM) and E(OFV(FIM)) according  to the function arguments.
 #' 
@@ -43,32 +44,49 @@ calc_ofv_and_fim <- function (poped.db,
                               fim.calc.type=poped.db$settings$iFIMCalculationType, 
                               use_laplace=poped.db$settings$iEDCalculationType, 
                               laplace.fim=FALSE, 
+                              ofv_fun = poped.db$settings$ofv_fun,
+                              evaluate_fim = TRUE,
                               ...) {
   
   ## compute the OFV
   if((ofv==0)){
     if(d_switch){ 
-      if(!is.matrix(fim)){ 
-        fmf <- evaluate.fim(poped.db,
-                            bpop.val=bpop,
-                            d_full=d,
-                            docc_full=docc_full,
-                            sigma_full=poped.db$parameters$sigma,
-                            model_switch=model_switch,
-                            ni=ni,
-                            xt=xt,
-                            x=x,
-                            a=a,
-                            groupsize=poped.db$design$groupsize,
-                            fim.calc.type=fim.calc.type,
-                            ...)
-        
-        #     returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
-        #     fmf <- returnArgs[[1]]
-        #     poped.db <- returnArgs[[2]]
+      if(is.null(ofv_fun)){
+        if(!is.matrix(fim)){ 
+          fmf <- evaluate.fim(poped.db,
+                              bpop.val=bpop,
+                              d_full=d,
+                              docc_full=docc_full,
+                              sigma_full=poped.db$parameters$sigma,
+                              model_switch=model_switch,
+                              ni=ni,
+                              xt=xt,
+                              x=x,
+                              a=a,
+                              groupsize=poped.db$design$groupsize,
+                              fim.calc.type=fim.calc.type,
+                              ...)
+          
+          #     returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt,x,a,bpop,d,poped.db$parameters$sigma,docc_full,poped.db) 
+          #     fmf <- returnArgs[[1]]
+          #     poped.db <- returnArgs[[2]]
+        }
+        dmf=ofv_fim(fmf,poped.db,...)
+      } else {
+        ## update poped.db with options supplied in function
+        called_args <- match.call()
+        default_args <- formals()
+        for(i in names(called_args)[-1]){
+          if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
+            #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+            if(!is.null(eval(parse(text=paste(i))))) eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
+          }
+        }
+        dmf <- do.call(ofv_fun,list(poped.db,...))
+        fmf <- NULL
       }
-      dmf=ofv_fim(fmf,poped.db,...)
-    } else {
+    } else { # e-family
+      if(is.null(ofv_fun)){
       output <- evaluate.e.ofv.fim(poped.db,
                                    fim.calc.type=fim.calc.type,
                                    bpop=bpopdescr,
@@ -87,7 +105,22 @@ calc_ofv_and_fim <- function (poped.db,
                                    ...)
       dmf <- output$E_ofv
       fmf <- output$E_fim 
+      } else {
+        ## update poped.db with options supplied in function
+        called_args <- match.call()
+        default_args <- formals()
+        for(i in names(called_args)[-1]){
+          if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
+            #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+            if(!is.null(eval(parse(text=paste(i))))) eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
+          }
+        }
+        
+        dmf <- mc_mean(ofv_fun,poped.db,...)
+        fmf <- NULL
+      }
     }
+  
     ofv <- dmf
     if(!is.matrix(fim)) fim <- fmf
   }
@@ -100,7 +133,7 @@ calc_ofv_and_fim <- function (poped.db,
     calc_fim <- TRUE
   }    
   if(use_laplace && !laplace.fim) calc_fim <- FALSE
-  
+  if(!evaluate_fim) calc_fim <- FALSE
   
   if(calc_fim){
     if(d_switch){ 

@@ -14,6 +14,21 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
                                      LS=list(line_length=2)),
                       iter_max = 1)
 
+# cost function
+# maximize PRED at 120 hours
+crit_fcn <- function(poped.db,...){
+  pred_df <- model_prediction(poped.db)
+  return(pred_df[pred_df$Time==120,"PRED"])
+}
+
+poped_optim(poped.db,opt_a =TRUE,
+            ofv_fun=crit_fcn,
+            control = list(ARS=list(iter=2),
+                           BFGS=list(maxit=2),
+                           LS=list(line_length=2)),
+            iter_max = 1)
+
+
 \dontrun{
   
   # RS+BFGS+LS optimization of sample times 

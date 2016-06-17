@@ -9,6 +9,10 @@ PopED 0.3.0.9000
 
 * Update to error handling for Laplace approximation to ED objective function. 
 
+* Update to more easily allow discrete optimization of xt and a variables.
+
+* Added more intuitive cost function input.  See examples in `?poped_optim`
+
 
 PopED 0.3.0
 ===========
