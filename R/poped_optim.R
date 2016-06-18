@@ -106,6 +106,9 @@ poped_optim <- function(poped.db,
     }
 
   }
+  if(!is.null(ofv_fun)){
+    poped.db$settings$ofv_calc_type = 0
+  }
   
 
   

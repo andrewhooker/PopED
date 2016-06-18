@@ -960,13 +960,13 @@ create.poped.database <-
     # }
     
     if(is.null(ofv_fun) || is.function(ofv_fun)){
-      ofv_fun_user <- ofv_fun 
+      poped.db$settings$ofv_fun <- ofv_fun 
     } else {
       # source explicit file
       # here I assume that function in file has same name as filename minus .txt and pathnames
       if(file.exists(as.character(ofv_fun))){
         source(as.character(ofv_fun))
-        ofv_fun_user <- eval(parse(text=fileparts(ofv_fun)[["filename"]]))
+        poped.db$settings$ofv_fun <- eval(parse(text=fileparts(ofv_fun)[["filename"]]))
       } else {
         stop("ofv_fun is not a function or NULL, and no file with that name was found")
       }
