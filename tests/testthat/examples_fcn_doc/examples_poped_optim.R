@@ -15,18 +15,30 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
                       iter_max = 1)
 
 # cost function
-# maximize PRED at 120 hours
+# PRED at 120 hours
 crit_fcn <- function(poped.db,...){
   pred_df <- model_prediction(poped.db)
   return(pred_df[pred_df$Time==120,"PRED"])
 }
 
-poped_optim(poped.db,opt_a =TRUE,
-            ofv_fun=crit_fcn,
-            control = list(ARS=list(iter=2),
-                           BFGS=list(maxit=2),
-                           LS=list(line_length=2)),
-            iter_max = 1)
+# maximize cost function
+out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2)
+
+# minimize the cost function
+out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2,
+                     maximize = F,
+                     evaluate_fim = F
+                    )
 
 
 \dontrun{
@@ -74,6 +86,24 @@ poped_optim(poped.db,opt_a =TRUE,
   # genetic algorithm from the GA::ga() function, 
   # DOSE and sample time optimization
   ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "GA",parallel=T)
+  
+  # cost function with GA
+  # maximize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"))
+  
+  # cost function with GA
+  # minimize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"),
+                       iter_max = 1,
+                       maximize = F,
+                       evaluate_fim = F)
+  
   
   ##############
   # E-family Optimization

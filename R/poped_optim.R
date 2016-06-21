@@ -34,7 +34,9 @@
 #'   \code{eff_crit}?
 #' @param eff_crit If \code{loop_methods==TRUE}, the looping will stop if the
 #'   efficiency of the design after the current series (compared to the start of
-#'   the series) is less than, or equal to, \code{eff_crit}.
+#'   the series) is less than, or equal to, \code{eff_crit} (if \code{maximize==FALSE} then 1/eff_crit is the cut
+#'   off and the efficiency must be greater than or equal to this value to stop the looping).
+#' @param maximize Should the objective function be maximized or minimized?
 #'   
 #'   
 #'   
@@ -76,6 +78,7 @@ poped_optim <- function(poped.db,
                         iter_max = 10,
                         eff_crit = 1.001,
                         ofv_fun = poped.db$settings$ofv_fun,
+                        maximize=T,
                         ...){
   
   #------------ update poped.db with options supplied in function
@@ -353,7 +356,7 @@ poped_optim <- function(poped.db,
                                            lower=lower,
                                            upper=upper,
                                            allowed_values = allowed_values,
-                                           maximize=T
+                                           maximize=maximize
                                            #par_df_full=par_df
         ),
         #par_grouping=par_grouping),
@@ -380,7 +383,7 @@ poped_optim <- function(poped.db,
                                           lower=lower,
                                           upper=upper,
                                           allowed_values = allowed_values,
-                                          maximize=T
+                                          maximize=maximize
                                           #par_df_full=par_df
         ),
         #par_grouping=par_grouping),
@@ -406,9 +409,12 @@ poped_optim <- function(poped.db,
         #if(trace==4) trace_optim = 6
         
         # handle control arguments
-        con <- list(trace=trace_optim,fnscale=-1)
+        con <- list(trace=trace_optim)
         nmsC <- names(con)
         con[(namc <- names(control$BFGS))] <- control$BFGS
+        fnscale=-1
+        if(!maximize) fnscale=1
+        if(is.null(con[["fnscale"]])) con$fnscale <- fnscale
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
         par_full <- par
@@ -452,14 +458,22 @@ poped_optim <- function(poped.db,
         if(!is.null(parallel_type))  parallel_ga <- parallel_type
         
         con <- list(parallel=parallel_ga)
+        dot_vals <- dots(...)
+        if(is.null(dot_vals[["monitor"]]) && exists('gaMonitor2', where='package:GA', mode='function')) con$monitor <- GA::gaMonitor2
         
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
         par_full <- par
+        ofv_fun_2 <- ofv_fun
+        if(!maximize) {
+          ofv_fun_2 <- function(par,only_cont=F,...){
+            -ofv_fun(par,only_cont=F,...) 
+          }
+        }
         output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
-                                           fitness = ofv_fun,
+                                           fitness = ofv_fun_2,
                                            #par_full=par_full,
                                            only_cont=T,
                                            min=lower[par_cat_cont=="cont"],
@@ -471,6 +485,8 @@ poped_optim <- function(poped.db,
         
         
         output$ofv <- output_ga@fitnessValue
+        if(!maximize) output$ofv <- -output$ofv
+        
         
         output$par <- output_ga@solution
         
@@ -494,13 +510,24 @@ poped_optim <- function(poped.db,
       # stop based on efficiency
       p = get_fim_size(poped.db)
       eff = ofv_criterion(output$ofv,p,poped.db)/ofv_criterion(ofv_init,p,poped.db)
-      cat("Efficiency of design (start of loop / end of loop) = ",eff, "\n")
-      cat("Efficiency stopping criteria (lower limit) = ",eff_crit, "\n")
-      if(eff<=eff_crit) stop_crit <- TRUE
+      cat("Efficiency of design (end of loop / start of loop) = ",eff, "\n")
+      #if(eff<=eff_crit) stop_crit <- TRUE
       
-      # stop based on change in parameters
+      compare <-function(eff,eff_crit,maximize){
+        if(is.nan(eff)){
+          cat("Stopping criteria cannot be used\n")
+          return(FALSE)
+        } 
+        
+        if(maximize) cat("Efficiency stopping criteria (lower limit) = ",eff_crit, "\n")
+        if(!maximize) cat("Efficiency stopping criteria (upper limit) = ",1/eff_crit, "\n")
+        
+        if(maximize) return(eff <= eff_crit)
+        if(!maximize) return(eff >= 1/eff_crit)
+      } 
       
-      # stop based on own function
+      if(compare(eff,eff_crit,maximize)) stop_crit <- TRUE
+      
       if(stop_crit){
         cat("Stopping criteria achieved\n")
       } else {
