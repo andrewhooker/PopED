@@ -18,7 +18,8 @@ poped_optim(poped.db, opt_xt = poped.db$settings$optsw[2],
   use_laplace = poped.db$settings$iEDCalculationType, out_file = "",
   parallel = F, parallel_type = NULL, num_cores = NULL,
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE), iter_max = 10,
-  eff_crit = 1.001, ofv_fun = poped.db$settings$ofv_fun, ...)
+  eff_crit = 1.001, ofv_fun = poped.db$settings$ofv_fun, maximize = T,
+  ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -108,11 +109,14 @@ iteration is run unless \code{iter_max} iterations have already been run.}
 
 \item{eff_crit}{If \code{loop_methods==TRUE}, the looping will stop if the
 efficiency of the design after the current series (compared to the start of
-the series) is less than, or equal to, \code{eff_crit}.}
+the series) is less than, or equal to, \code{eff_crit} (if \code{maximize==FALSE} then 1/eff_crit is the cut
+off and the efficiency must be greater than or equal to this value to stop the looping).}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
 argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.}
+
+\item{maximize}{Should the objective function be maximized or minimized?}
 
 \item{...}{arguments passed to other functions.}
 }
@@ -199,18 +203,30 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
                       iter_max = 1)
 
 # cost function
-# maximize PRED at 120 hours
+# PRED at 120 hours
 crit_fcn <- function(poped.db,...){
   pred_df <- model_prediction(poped.db)
   return(pred_df[pred_df$Time==120,"PRED"])
 }
 
-poped_optim(poped.db,opt_a =TRUE,
-            ofv_fun=crit_fcn,
-            control = list(ARS=list(iter=2),
-                           BFGS=list(maxit=2),
-                           LS=list(line_length=2)),
-            iter_max = 1)
+# maximize cost function
+out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2)
+
+# minimize the cost function
+out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2,
+                     maximize = FALSE,
+                     evaluate_fim = FALSE
+                    )
 
 
 \dontrun{
@@ -258,6 +274,24 @@ poped_optim(poped.db,opt_a =TRUE,
   # genetic algorithm from the GA::ga() function, 
   # DOSE and sample time optimization
   ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "GA",parallel=T)
+  
+  # cost function with GA
+  # maximize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"))
+  
+  # cost function with GA
+  # minimize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"),
+                       iter_max = 1,
+                       maximize = F,
+                       evaluate_fim = F)
+  
   
   ##############
   # E-family Optimization

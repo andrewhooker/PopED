@@ -95,6 +95,8 @@ design_1 <- create_design(xt=list(c(1,2,3,4,5),
 
 ds_1 <- create_design_space(design_1)
 
+ds_1_a <- create_design_space(design_1,our_zero = 1e-5)
+
 ds_2 <- create_design_space(design_1,maxni=10,maxxt=10,minxt=0)
 
 ds_3 <- create_design_space(design_1,maxni=10,mingroupsize=20,maxxt=10,minxt=0)

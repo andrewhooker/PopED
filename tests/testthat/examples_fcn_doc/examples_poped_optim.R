@@ -36,8 +36,8 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
                                     BFGS=list(maxit=2),
                                     LS=list(line_length=2)),
                      iter_max = 2,
-                     maximize = F,
-                     evaluate_fim = F
+                     maximize = FALSE,
+                     evaluate_fim = FALSE
                     )
 
 
