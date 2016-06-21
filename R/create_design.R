@@ -60,6 +60,8 @@ create_design <- function(
   }
   
   ## for model_switch --------
+  if(is.list(model_switch)) model_switch <- t(sapply(model_switch,'[',seq(max(sapply(model_switch,length)))))
+  #if(is.list(model_switch)) model_switch <- as.matrix(dplyr::rbind_all(lapply(model_switch,function(x){data.frame(rbind(unlist(x)))})))
   if(is.null(model_switch)) model_switch <- xt*0+1 
   if(size(model_switch,1)==1 && m!=1) model_switch <- matrix(rep(model_switch,m),ncol=length(model_switch),nrow=m,byrow=T)
   if(!is.matrix(model_switch)) model_switch  <- rbind(model_switch)
