@@ -161,17 +161,27 @@ poped_optim <- function(poped.db,
   if(opt_samps) stop('Sample number optimization is not yet implemented in the R-version of PopED.')
   if(opt_inds) stop('Optimization  of number of individuals in different groups is not yet implemented in the R-version of PopED.')
   if(opt_xt){ 
-    par <- c(par,poped.db$design$xt)
-    upper <- c(upper,poped.db$design_space$maxxt)
-    lower <- c(lower,poped.db$design_space$minxt)
-    par_grouping <- c(par_grouping,poped.db$design_space$G_xt)
-    par_type <- c(par_type,rep("xt",length(poped.db$design$xt)))
+    #par <- c(par,poped.db$design$xt)
+    # upper <- c(upper,poped.db$design_space$maxxt)
+    # lower <- c(lower,poped.db$design_space$minxt)
+    # par_grouping <- c(par_grouping,poped.db$design_space$G_xt)
+    # par_type <- c(par_type,rep("xt",length(poped.db$design$xt)))
     par_dim$xt <- dim(poped.db$design$xt)
     if(is.null(poped.db$design_space$xt_space) && build_allowed_values){ 
       poped.db$design_space$xt_space <- cell(par_dim$xt)
     }
-    allowed_values <- c(allowed_values,poped.db$design_space$xt_space)
+    # allowed_values <- c(allowed_values,poped.db$design_space$xt_space)
     
+    for(i in 1:poped.db$design$m){
+      if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
+        par <- c(par,poped.db$design$xt[i,1:poped.db$design$ni[i]])
+        upper <- c(upper,poped.db$design_space$maxxt[i,1:poped.db$design$ni[i]])
+        lower <- c(lower,poped.db$design_space$minxt[i,1:poped.db$design$ni[i]])
+        par_grouping <- c(par_grouping,poped.db$design_space$G_xt[i,1:poped.db$design$ni[i]])
+        par_type <- c(par_type,rep("xt",length(poped.db$design$xt[i,1:poped.db$design$ni[i]])))
+        allowed_values <- c(allowed_values,poped.db$design_space$xt_space[i,1:poped.db$design$ni[i]])
+      }
+    }
   }
   if(opt_a) { 
     par <- c(par,poped.db$design$a)
@@ -226,6 +236,8 @@ poped_optim <- function(poped.db,
     par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
     allowed_values <- allowed_values[-c(par_fixed_index)]
   }
+
+  if(length(par)==0) stop("No design parameters have a design space to optimize")
   
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
@@ -252,7 +264,18 @@ poped_optim <- function(poped.db,
       par <- par_df$par
     }
     xt <- NULL
-    if(opt_xt) xt <- matrix(par[par_type=="xt"],par_dim$xt)
+    #if(opt_xt) xt <- matrix(par[par_type=="xt"],par_dim$xt)
+    if(opt_xt){
+      xt <- zeros(par_dim$xt)
+      par_xt <- par[par_type=="xt"]
+      for(i in 1:poped.db$design$m){
+        if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
+          xt[i,1:poped.db$design$ni[i]] <- par_xt[1:poped.db$design$ni[i]]
+          par_xt <- par_xt[-c(1:poped.db$design$ni[i])]
+        }
+      }
+    } 
+    
     a <- NULL
     if(opt_a) a <- matrix(par[par_type=="a"],par_dim$a)
     
@@ -350,7 +373,7 @@ poped_optim <- function(poped.db,
         nmsC <- names(con)
         con[(namc <- names(control$ARS))] <- control$ARS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
-        
+
         output <- do.call(optim_ARS,c(list(par=par,
                                            fn=ofv_fun,
                                            lower=lower,
@@ -459,7 +482,7 @@ poped_optim <- function(poped.db,
         
         con <- list(parallel=parallel_ga)
         dot_vals <- dots(...)
-        if(is.null(dot_vals[["monitor"]]) && exists('gaMonitor2', where='package:GA', mode='function')) con$monitor <- GA::gaMonitor2
+        if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
         
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA
@@ -556,7 +579,19 @@ poped_optim <- function(poped.db,
   }  
   
   #poped.db$design$ni <- ni
-  if(opt_xt) poped.db$design$xt[,]=matrix(par_df[par_type=="xt","par"],par_dim$xt)
+  #if(opt_xt) poped.db$design$xt[,]=matrix(par_df[par_type=="xt","par"],par_dim$xt)
+  if(opt_xt){
+    xt <- zeros(par_dim$xt)
+    par_xt <- par_df[par_type=="xt","par"]
+    for(i in 1:poped.db$design$m){
+      if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
+        xt[i,1:poped.db$design$ni[i]] <- par_xt[1:poped.db$design$ni[i]]
+        par_xt <- par_xt[-c(1:poped.db$design$ni[i])]
+      }
+    }
+    poped.db$design$xt[,]=xt[,]
+  }
+  
   if(opt_a) poped.db$design$a[,]=matrix(par_df[par_type=="a","par"],par_dim$a)
   #   if((!isempty(x))){
   #     poped.db$design$x[1:size(x,1),1:size(x,2)]=x
@@ -587,18 +622,16 @@ poped_optim <- function(poped.db,
   # }
   
   FIM <-calc_ofv_and_fim(poped.db,
-                            ofv=output$ofv,
-                            fim=0, 
-                            d_switch=d_switch,
-                            ED_samp_size=ED_samp_size,
-                            bLHS=bLHS,
-                            use_laplace=use_laplace,
-                            ofv_calc_type=ofv_calc_type,
-                            fim.calc.type=fim.calc.type,
+                         ofv=output$ofv,
+                         fim=0, 
+                         d_switch=d_switch,
+                         ED_samp_size=ED_samp_size,
+                         bLHS=bLHS,
+                         use_laplace=use_laplace,
+                         ofv_calc_type=ofv_calc_type,
+                         fim.calc.type=fim.calc.type,
                          ofv_fun = ofv_fun_user,
-                         
-                            ...)[["fim"]]
-  
+                         ...)[["fim"]]
   
   blockfinal(fn=fn,fmf=FIM,
              dmf=output$ofv,

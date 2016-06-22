@@ -175,10 +175,10 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                   sigma=c(0.01,0.25),
                                   groupsize=32,
                                   xt=c( 0.5,1,2,6,24,36,72,120),
-                                  minxt=0,
+                                  minxt=0.01,
                                   maxxt=120,
                                   a=70,
-                                  mina=0,
+                                  mina=0.01,
                                   maxa=100)
 
 ############# END ###################
@@ -273,7 +273,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
   
   # genetic algorithm from the GA::ga() function, 
   # DOSE and sample time optimization
-  ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "GA",parallel=T)
+  ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=F,method = "GA",parallel=T)
   
   # cost function with GA
   # maximize

@@ -179,8 +179,8 @@ print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized xt value
     for(i in unique(as.vector(model_switch_i))){
       xtopt_i_sort = sort(xtopt_i[model_switch_i==i])
       if(!is.null(xt_other)) xt_other_i_sort = xt_other_i[order(xtopt_i[model_switch_i==i])]
-      if(length(unique(as.vector(model_switch_i)))>1) cat(sprintf("Model %g : ", i),file=fn)
       if(size(xtopt,1)>1) cat(sprintf("Group %g : ", j),file=fn)
+      if(length(unique(as.vector(model_switch_i)))>1) cat(sprintf("Model %g : ", i),file=fn)
       if(!is.null(xt_other)) {
         cat(sprintf("%6.4g", xt_other_i_sort),file=fn)
       } else {

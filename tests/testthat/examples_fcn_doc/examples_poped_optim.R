@@ -85,7 +85,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
   
   # genetic algorithm from the GA::ga() function, 
   # DOSE and sample time optimization
-  ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "GA",parallel=T)
+  ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=F,method = "GA",parallel=T)
   
   # cost function with GA
   # maximize
