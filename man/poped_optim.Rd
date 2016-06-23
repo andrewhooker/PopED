@@ -18,8 +18,8 @@ poped_optim(poped.db, opt_xt = poped.db$settings$optsw[2],
   use_laplace = poped.db$settings$iEDCalculationType, out_file = "",
   parallel = F, parallel_type = NULL, num_cores = NULL,
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE), iter_max = 10,
-  eff_crit = 1.001, ofv_fun = poped.db$settings$ofv_fun, maximize = T,
-  ...)
+  stop_crit_eff = 1.001, stop_crit_diff = NULL, stop_crit_rel = NULL,
+  ofv_fun = poped.db$settings$ofv_fun, maximize = T, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -100,17 +100,27 @@ See \code{\link{start_parallel}}.}
 \item{loop_methods}{Should the optimization methods be looped for
 \code{iter_max} iterations, or until the efficiency of the design after the
 current series (compared to the start of the series) is less than, or equal to,
-\code{eff_crit}?}
+\code{stop_crit_eff}?}
 
 \item{iter_max}{If line search is used then the algorithm tests if line
 search (always run at the end of the optimization iteration) changes the 
 design in any way.  If not, the algorithm stops.  If yes, then a new
 iteration is run unless \code{iter_max} iterations have already been run.}
 
-\item{eff_crit}{If \code{loop_methods==TRUE}, the looping will stop if the
+\item{stop_crit_eff}{If \code{loop_methods==TRUE}, the looping will stop if the
 efficiency of the design after the current series (compared to the start of
-the series) is less than, or equal to, \code{eff_crit} (if \code{maximize==FALSE} then 1/eff_crit is the cut
+the series) is less than, or equal to, \code{stop_crit_eff} (if \code{maximize==FALSE} then 1/stop_crit_eff is the cut
 off and the efficiency must be greater than or equal to this value to stop the looping).}
+
+\item{stop_crit_diff}{If \code{loop_methods==TRUE}, the looping will stop if the
+difference in criterion value of the design after the current series (compared to the start of
+the series) is less than, or equal to, \code{stop_crit_diff} (if \code{maximize==FALSE} then -stop_crit_diff is the cut
+off and the difference in criterion value must be greater than or equal to this value to stop the looping).}
+
+\item{stop_crit_rel}{If \code{loop_methods==TRUE}, the looping will stop if the
+relative difference in criterion value of the design after the current series (compared to the start of
+the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==FALSE} then -stop_crit_rel is the cut
+off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
 argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
@@ -126,7 +136,7 @@ continuous optimization variables. If more than one optimization method is
 specified then the methods are run in series.  If \code{loop_methods=TRUE} 
 then the series of optimization methods will be run for \code{iter_max} 
 iterations, or until the efficiency of the design after the current series 
-(compared to the start of the series) is less than \code{eff_crit}.
+(compared to the start of the series) is less than \code{stop_crit_eff}.
 }
 \details{
 This function takes information from the PopED database supplied as an 

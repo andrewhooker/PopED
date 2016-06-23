@@ -111,7 +111,7 @@ test_that("create.poped.database works for different inputs", {
   
   output_2 <- calc_ofv_and_fim(poped.db,ofv_calc_type=4)
   crit_2 <- ofv_criterion(output_2$ofv,size(output_2$fim,1),poped.db,ofv_calc_type=4)
-  expect_equal(crit_2,1.76066,tolerance=1e-3)
+  expect_equal(crit_2,1794.658,tolerance=1e-3)
   
   poped.db_1 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
                                       fg_file="sfg",

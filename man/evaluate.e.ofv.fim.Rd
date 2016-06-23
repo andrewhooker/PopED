@@ -205,9 +205,6 @@ output$E_ofv
 Other E-family: \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}}
 
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
-
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
@@ -221,5 +218,8 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot6}}, \code{\link{mftot7}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
+
+Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
+  \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
 }
 
