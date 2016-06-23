@@ -31,10 +31,12 @@ ofv_criterion <- function(ofv_f,
     criterion_value=ofv_f
   }
   
-  if((ofv_calc_type==1 || ofv_calc_type==4) ){#D-Optimal Design
+  if((ofv_calc_type==1) ){#D-Optimal Design
     criterion_value = ofv_f^(1/num_parameters)
   }
-  
+  if((ofv_calc_type==4) ){#D-Optimal Design
+    criterion_value = exp(ofv_f)^(1/num_parameters)
+  }
   if((ofv_calc_type==2) ){#A-Optimal Design
     criterion_value=ofv_f/num_parameters
   }
