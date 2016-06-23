@@ -5,7 +5,7 @@
 #' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
 #' then the series of optimization methods will be run for \code{iter_max} 
 #' iterations, or until the efficiency of the design after the current series 
-#' (compared to the start of the series) is less than \code{eff_crit}.
+#' (compared to the start of the series) is less than \code{stop_crit_eff}.
 #' 
 #' This function takes information from the PopED database supplied as an 
 #' argument. The PopED database supplies information about the the model, 
@@ -31,11 +31,19 @@
 #' @param loop_methods Should the optimization methods be looped for
 #'   \code{iter_max} iterations, or until the efficiency of the design after the
 #'   current series (compared to the start of the series) is less than, or equal to,
-#'   \code{eff_crit}?
-#' @param eff_crit If \code{loop_methods==TRUE}, the looping will stop if the
+#'   \code{stop_crit_eff}?
+#' @param stop_crit_eff If \code{loop_methods==TRUE}, the looping will stop if the
 #'   efficiency of the design after the current series (compared to the start of
-#'   the series) is less than, or equal to, \code{eff_crit} (if \code{maximize==FALSE} then 1/eff_crit is the cut
+#'   the series) is less than, or equal to, \code{stop_crit_eff} (if \code{maximize==FALSE} then 1/stop_crit_eff is the cut
 #'   off and the efficiency must be greater than or equal to this value to stop the looping).
+#' @param stop_crit_diff If \code{loop_methods==TRUE}, the looping will stop if the
+#'   difference in criterion value of the design after the current series (compared to the start of
+#'   the series) is less than, or equal to, \code{stop_crit_diff} (if \code{maximize==FALSE} then -stop_crit_diff is the cut
+#'   off and the difference in criterion value must be greater than or equal to this value to stop the looping).
+#' @param stop_crit_rel If \code{loop_methods==TRUE}, the looping will stop if the
+#'   relative difference in criterion value of the design after the current series (compared to the start of
+#'   the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==FALSE} then -stop_crit_rel is the cut
+#'   off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).
 #' @param maximize Should the objective function be maximized or minimized?
 #'   
 #'   
@@ -76,7 +84,9 @@ poped_optim <- function(poped.db,
                         num_cores = NULL,
                         loop_methods=ifelse(length(method)>1,TRUE,FALSE),
                         iter_max = 10,
-                        eff_crit = 1.001,
+                        stop_crit_eff = 1.001,
+                        stop_crit_diff = NULL,
+                        stop_crit_rel = NULL,
                         ofv_fun = poped.db$settings$ofv_fun,
                         maximize=T,
                         ...){
@@ -107,13 +117,13 @@ poped_optim <- function(poped.db,
     } else {
       stop("ofv_fun is not a function or NULL, and no file with that name was found")
     }
-
+    
   }
   if(!is.null(ofv_fun)){
     poped.db$settings$ofv_calc_type = 0
   }
   
-
+  
   
   #---------- functions
   dots <- function(...) {
@@ -236,7 +246,7 @@ poped_optim <- function(poped.db,
     par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
     allowed_values <- allowed_values[-c(par_fixed_index)]
   }
-
+  
   if(length(par)==0) stop("No design parameters have a design space to optimize")
   
   #------- create optimization function with optimization parameters first
@@ -300,7 +310,7 @@ poped_optim <- function(poped.db,
     
     extra_args <- dots(...)
     extra_args$evaluate_fim <- FALSE
-
+    
     output <- do.call(calc_ofv_and_fim,
                       c(list(
                         poped.db,d_switch=d_switch,
@@ -313,8 +323,8 @@ poped_optim <- function(poped.db,
                         a=a,
                         ofv_fun = ofv_fun_user
                       ),
-                        extra_args))
-              
+                      extra_args))
+    
     
     # output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
     #                           ED_samp_size=ED_samp_size,
@@ -373,7 +383,7 @@ poped_optim <- function(poped.db,
         nmsC <- names(con)
         con[(namc <- names(control$ARS))] <- control$ARS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
-
+        
         output <- do.call(optim_ARS,c(list(par=par,
                                            fn=ofv_fun,
                                            lower=lower,
@@ -528,35 +538,76 @@ poped_optim <- function(poped.db,
     } else {
       cat("*******************************************\n")
       cat("Stopping criteria testing\n")
+      cat("(Compare between start of iteration and end of iteration)\n")
       cat("*******************************************\n")
       
-      # stop based on efficiency
+      # relative difference
+      rel_diff <- (output$ofv - ofv_init)/ofv_init
+      abs_diff <- (output$ofv - ofv_init)
+      fprintf("Difference in OFV:  %.3g\n",abs_diff)
+      fprintf("Relative difference in OFV:  %.3g%%\n",rel_diff*100)
+      
+      # efficiency
       p = get_fim_size(poped.db)
       eff = ofv_criterion(output$ofv,p,poped.db)/ofv_criterion(ofv_init,p,poped.db)
-      cat("Efficiency of design (end of loop / start of loop) = ",eff, "\n")
-      #if(eff<=eff_crit) stop_crit <- TRUE
+      cat("Efficiency: ",sprintf("%.5g",eff), "\n")
+      #if(eff<=stop_crit_eff) stop_crit <- TRUE
       
-      compare <-function(eff,eff_crit,maximize){
-        if(is.nan(eff)){
-          cat("Stopping criteria cannot be used\n")
+      #cat("eff: ",sprintf("%.3g",(output$ofv - ofv_init)/p), "\n")
+      #cat("eff: ",sprintf("%.3g",(exp(output$ofv)/exp(ofv_init))^(1/p)), "\n")
+      
+      
+      compare <-function(crit,crit_stop,maximize,inv=FALSE,neg=FALSE,text=""){
+        
+        if(is.null(crit_stop)){
+          #cat("  Stopping criteria not defined\n")
+          return(FALSE)
+        }
+        cat("\n",text,"\n")
+        if(is.nan(crit)){
+          fprintf("  Stopping criteria using 'NaN' as a comparitor cannot be used\n")
           return(FALSE)
         } 
         
-        if(maximize) cat("Efficiency stopping criteria (lower limit) = ",eff_crit, "\n")
-        if(!maximize) cat("Efficiency stopping criteria (upper limit) = ",1/eff_crit, "\n")
+        comparitor <- "<="
+        if(!maximize) comparitor <- ">="
+        if(inv) crit_stop <- 1/crit_stop
+        if(neg) crit_stop <- -crit_stop
+        fprintf("  Is (%0.5g %s %0.5g)? ",crit,comparitor,crit_stop)
+        res <- do.call(comparitor,list(crit,crit_stop))
+        if(res) cat("  Yes.\n  Stopping criteria achieved.\n")
+        if(!res) cat("  No.\n  Stopping criteria NOT achieved.\n")
+        return(res)
+        #if(maximize) cat("Efficiency stopping criteria (lower limit) = ",crit_stop, "\n")
+        #if(!maximize) cat("Efficiency stopping criteria (upper limit) = ",1/crit_stop, "\n")
         
-        if(maximize) return(eff <= eff_crit)
-        if(!maximize) return(eff >= 1/eff_crit)
+        #if(maximize) return(crit <= crit_stop)
+        #if(!maximize) return(crit >= 1/crit_stop)
       } 
       
-      if(compare(eff,eff_crit,maximize)) stop_crit <- TRUE
-      
-      if(stop_crit){
-        cat("Stopping criteria achieved\n")
+      if(all(is.null(c(stop_crit_eff,stop_crit_rel,stop_crit_diff)))){
+        cat("No stopping criteria defined")
       } else {
-        cat("Stopping criteria NOT achieved\n")
+        
+        
+        stop_eff <- compare(eff,stop_crit_eff,maximize,inv=!maximize,
+                            text="Efficiency stopping criteria:")
+        
+        stop_abs <- compare(abs_diff,stop_crit_diff,maximize,neg=!maximize,
+                            text="OFV difference stopping criteria:")
+        
+        stop_rel <- compare(rel_diff,stop_crit_rel,maximize,neg=!maximize,
+                            text="Relative OFV difference stopping criteria:")
+        
+        if(stop_eff || stop_rel || stop_abs) stop_crit <- TRUE
+        
+        if(stop_crit){
+          cat("\nStopping criteria achieved.\n")
+        } else {
+          cat("\nStopping criteria NOT achieved.\n")
+        }
+        cat("\n")
       }
-      cat("\n")
     }
     
   } # end of total loop 
