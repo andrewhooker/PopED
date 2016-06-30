@@ -12,9 +12,6 @@ create_ofv <- function(poped.db,
                        ED_samp_size = poped.db$settings$ED_samp_size,
                        bLHS=poped.db$settings$bLHS,
                        use_laplace=poped.db$settings$iEDCalculationType,
-                       parallel=F,
-                       parallel_type=NULL,
-                       num_cores = NULL,
                        ofv_fun = poped.db$settings$ofv_fun,
                        transform_parameters=T,
                        ...){
@@ -50,33 +47,6 @@ create_ofv <- function(poped.db,
   if(!is.null(ofv_fun)){
     poped.db$settings$ofv_calc_type = 0
   }
-  
-  
-  
-  #---------- functions
-  dots <- function(...) {
-    eval(substitute(alist(...)))
-  }
-  
-  #------------- initialization
-  fmf = 0 #The best FIM so far
-  dmf = 0 #The best ofv of FIM  so far
-  #output <-calc_ofv_and_fim(poped.db,...)
-  output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-                            ED_samp_size=ED_samp_size,
-                            bLHS=bLHS,
-                            use_laplace=use_laplace,
-                            ofv_calc_type=ofv_calc_type,
-                            fim.calc.type=fim.calc.type,
-                            ofv_fun = ofv_fun_user,
-                            ...)
-  
-  fmf <- output$fim
-  dmf <- output$ofv
-  fmf_init <- fmf
-  dmf_init <- dmf
-  
-  if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
   
   # Collect the parameters to optimize
   par <- c()
