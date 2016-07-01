@@ -348,7 +348,11 @@ create_design_space <- function(
     ## for a ---------
     if(!is.null(maxa)){
       if(is.list(maxa)){
-        maxa <- as.matrix(dplyr::rbind_all(lapply(maxa,function(x){data.frame(rbind(unlist(x)))})))
+        if(packageVersion("dplyr") >= "0.5.0"){
+          maxa <- as.matrix(dplyr::bind_rows(lapply(maxa,function(x){data.frame(rbind(unlist(x)))})))
+        } else {
+          maxa <- as.matrix(dplyr::rbind_all(lapply(maxa,function(x){data.frame(rbind(unlist(x)))})))
+        }
       }
       if(size(maxa,1)==1 && m!=1) maxa <- matrix(rep(maxa,m),ncol=length(maxa),nrow=m,byrow=T)
       if(!is.matrix(maxa)) maxa  <- rbind(maxa)
@@ -360,7 +364,11 @@ create_design_space <- function(
     
     if(!is.null(mina)){
       if(is.list(mina)){
-        mina <- as.matrix(dplyr::rbind_all(lapply(mina,function(x){data.frame(rbind(unlist(x)))})))
+        if(packageVersion("dplyr") >= "0.5.0"){
+          mina <- as.matrix(dplyr::bind_rows(lapply(mina,function(x){data.frame(rbind(unlist(x)))})))
+        } else {
+          mina <- as.matrix(dplyr::rbind_all(lapply(mina,function(x){data.frame(rbind(unlist(x)))})))
+        }
       }
       if(size(mina,1)==1 && m!=1) mina <- matrix(rep(mina,m),ncol=length(mina),nrow=m,byrow=T)
       if(!is.matrix(mina)) mina  <- rbind(mina)
