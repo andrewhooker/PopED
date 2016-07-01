@@ -292,7 +292,11 @@ model_prediction <- function(poped.db=NULL,
               if(length(unique(tmp.df[nam]))==1) dose.df[nam] <- tmp.df[1,nam]  
             }
             dose.df$dose_record_tmp <- 1
-            tmp.df <- dplyr::rbind_list(dose.df,tmp.df)
+            if(packageVersion("dplyr") >= "0.5.0"){
+              tmp.df <- dplyr::bind_rows(dose.df,tmp.df)
+            } else {
+              tmp.df <- dplyr::rbind_list(dose.df,tmp.df)
+            }
             tmp.df <- tmp.df[order(tmp.df$Time,tmp.df$dose_record_tmp),]
             tmp.df$dose_record_tmp <- NULL
           }
