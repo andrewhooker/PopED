@@ -220,7 +220,7 @@
 #' @param hle Step length of derivative of model w.r.t. sigma
 #' @param AbsTol The absolute tolerance for the diff equation solver
 #' @param RelTol The relative tolerance for the diff equation solver
-#' @param iDiffSolverMethod The diff equation solver method, 0, no other option 
+#' @param iDiffSolverMethod The diff equation solver method, NULL as default.
 #' @param bUseMemorySolver If the differential equation results should be stored in memory (1) or not (0)
 #' @param rsit Number of Random search iterations 
 #' @param sgit Number of stochastic gradient iterations
@@ -576,11 +576,11 @@ create.poped.database <-
            ## -- Step length of derivative of model w.r.t. sigma --
            hle=poped.choose(popedInput$hle,0.00001),
            ## -- The absolute tolerance for the diff equation solver --
-           AbsTol=poped.choose(popedInput$AbsTol,0.00001),
+           AbsTol=poped.choose(popedInput$AbsTol,0.000001),
            ## -- The relative tolerance for the diff equation solver --
-           RelTol=poped.choose(popedInput$RelTol,0.00001),
+           RelTol=poped.choose(popedInput$RelTol,0.000001),
            ## -- The diff equation solver method, 0, no other option --
-           iDiffSolverMethod=poped.choose(popedInput$iDiffSolverMethod,0),
+           iDiffSolverMethod=poped.choose(popedInput$iDiffSolverMethod,NULL),
            ## -- If the differential equation results should be stored in memory (1) or not (0) --
            bUseMemorySolver=poped.choose(popedInput$bUseMemorySolver,FALSE),
            ## -- Number of Random search iterations --
