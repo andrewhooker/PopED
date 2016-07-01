@@ -126,9 +126,11 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     #           ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
     # }
     
-    fprintf(fn,'\nEfficiency (Final/Initial): %0.5g\n',
-            ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db),both=TRUE)
-    
+    eff <- efficiency(dmf_init, dmf, poped.db)
+    fprintf(fn,"\nEfficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff,both=TRUE)
+    # fprintf(fn,'\nEfficiency (Final/Initial): %0.5g\n',
+    #         ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db),both=TRUE)
+    # 
     #fprintf(fn,'\nEfficiency criterion: det(FIM)^(1/npar) = %g\n',dmf^(1/length(params)))
     #fprintf(fn,'\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))
     #if(fn!="") fprintf('\nEfficiency (final_design/initial_design): %g\n',(dmf^(1/length(params)))/(dmf_init^(1/length(params))))

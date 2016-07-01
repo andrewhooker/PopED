@@ -79,9 +79,9 @@ plot_efficiency_of_windows <- function(poped.db,
   
   if(y_eff){
     eff = zeros(1,iNumSimulations)
-    if(ofv_calc_type==4) {
-      d_eff = zeros(1,iNumSimulations)
-    }
+    # if(ofv_calc_type==4) {
+    #   d_eff = zeros(1,iNumSimulations)
+    # }
   }
   if(y_rse) rse <- zeros(iNumSimulations,p)
   
@@ -206,13 +206,13 @@ plot_efficiency_of_windows <- function(poped.db,
       tmp2 <- ofv_criterion(ofv_fim(ref_fmf,poped.db,ofv_calc_type=ofv_calc_type),
                             p,poped.db,ofv_calc_type=ofv_calc_type) 
       eff[1,i] = tmp1/tmp2  
-      if(ofv_calc_type==4) {
-        tmp1 <- ofv_criterion(ofv_fim(fmf,poped.db,ofv_calc_type=1),
-                              p,poped.db,ofv_calc_type=1)
-        tmp2 <- ofv_criterion(ofv_fim(ref_fmf,poped.db,ofv_calc_type=1),
-                              p,poped.db,ofv_calc_type=1) 
-        d_eff[1,i] = tmp1/tmp2  
-      }
+      # if(ofv_calc_type==4) {
+      #   tmp1 <- ofv_criterion(ofv_fim(fmf,poped.db,ofv_calc_type=1),
+      #                         p,poped.db,ofv_calc_type=1)
+      #   tmp2 <- ofv_criterion(ofv_fim(ref_fmf,poped.db,ofv_calc_type=1),
+      #                         p,poped.db,ofv_calc_type=1) 
+      #   d_eff[1,i] = tmp1/tmp2  
+      # }
     }
     if(y_rse){
       rse_tmp <- get_rse(fmf,poped.db)
@@ -324,16 +324,16 @@ plot_efficiency_of_windows <- function(poped.db,
   ind <- NULL
   if(y_eff){
     efficiency <- eff[1,]*100
-    if(ofv_calc_type==4) {
-      d_efficiency <-  d_eff[1,]*100
-    }
+    # if(ofv_calc_type==4) {
+    #   d_efficiency <-  d_eff[1,]*100
+    # }
   }
   df <- data.frame(sample=c(1:iNumSimulations))
   if(y_eff){
     df$Efficiency <- efficiency
-    if(ofv_calc_type==4) {
-      df["D-Efficiency"] <- d_efficiency
-    }
+    # if(ofv_calc_type==4) {
+    #   df["D-Efficiency"] <- d_efficiency
+    # }
   }
   if(y_rse){
     rse_df <- data.frame(rse)
@@ -345,11 +345,11 @@ plot_efficiency_of_windows <- function(poped.db,
   names(df_stack) <- c("sample","values","ind")
   if(y_eff){
     levs <- levels(df_stack$ind)
-    if(ofv_calc_type==4) {
-      df_stack$ind <- factor(df_stack$ind,levels=c("D-Efficiency","Efficiency",levs[-c(grep("Efficiency",levs))]))        
-    } else {
-      df_stack$ind <- factor(df_stack$ind,levels=c("Efficiency",levs[-c(grep("Efficiency",levs))]))      
-    }
+    # if(ofv_calc_type==4) {
+    #   df_stack$ind <- factor(df_stack$ind,levels=c("D-Efficiency","Efficiency",levs[-c(grep("Efficiency",levs))]))        
+    # } else {
+    df_stack$ind <- factor(df_stack$ind,levels=c("Efficiency",levs[-c(grep("Efficiency",levs))]))      
+    # }
     #levels(df_stack$ind) <- c("Efficiency",levs[-c(grep("Efficiency",levs))])
   }
   
