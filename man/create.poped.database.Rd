@@ -104,9 +104,9 @@ create.poped.database(popedInput = list(),
   hm2 = poped.choose(popedInput$hm2, 1e-05),
   hgd = poped.choose(popedInput$hgd, 1e-05),
   hle = poped.choose(popedInput$hle, 1e-05),
-  AbsTol = poped.choose(popedInput$AbsTol, 1e-05),
-  RelTol = poped.choose(popedInput$RelTol, 1e-05),
-  iDiffSolverMethod = poped.choose(popedInput$iDiffSolverMethod, 0),
+  AbsTol = poped.choose(popedInput$AbsTol, 1e-06),
+  RelTol = poped.choose(popedInput$RelTol, 1e-06),
+  iDiffSolverMethod = poped.choose(popedInput$iDiffSolverMethod, NULL),
   bUseMemorySolver = poped.choose(popedInput$bUseMemorySolver, FALSE),
   rsit = poped.choose(popedInput$rsit, 300),
   sgit = poped.choose(popedInput$sgit, 150),
@@ -466,7 +466,7 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{RelTol}{The relative tolerance for the diff equation solver}
 
-\item{iDiffSolverMethod}{The diff equation solver method, 0, no other option}
+\item{iDiffSolverMethod}{The diff equation solver method, NULL as default.}
 
 \item{bUseMemorySolver}{If the differential equation results should be stored in memory (1) or not (0)}
 

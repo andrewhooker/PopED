@@ -128,13 +128,13 @@ plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{get_rse}}, \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}}
-
 Other Graphics: \code{\link{plot_efficiency_of_windows}}
 
 Other Simulation: \code{\link{model_prediction}},
+  \code{\link{plot_efficiency_of_windows}}
+
+Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{get_rse}}, \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}}
 }
 
