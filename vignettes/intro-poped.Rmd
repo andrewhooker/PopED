@@ -19,48 +19,55 @@ To get started you need to define
 4. A design space (if you want to optimize)
 5. The tasks to perform.
 
-There are a number of functions to help you with these tasks. The user-level functions defined below are meant to be run with a minimum of arguments (for begininers to advanced users). Many of the other functions in the package (and not listed here) are called by these user-level functions and are often not as user freindly (developer level or advanced user functions).
+There are a number of functions to help you with these tasks. The user-level functions illustrated below are meant to be run with a minimum of arguments.
+
+## Define a model
+
+## Define a structural model
 
 
 
-## Vignette Info
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
 
-## Styles
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+<!-- ## Vignette Info -->
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+<!-- Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette. -->
 
-## Figures
+<!-- ## Styles -->
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+<!-- The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows: -->
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
+<!--     output:  -->
+<!--       rmarkdown::html_vignette: -->
+<!--         css: mystyles.css -->
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+<!-- ## Figures -->
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+<!-- The figure sizes have been customised so that you can easily put two images side-by-side.  -->
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+<!-- ```{r, fig.show='hold'} -->
+<!-- plot(1:10) -->
+<!-- plot(10:1) -->
+<!-- ``` -->
 
-## More Examples
+<!-- You can enable figure captions by `fig_caption: yes` in YAML: -->
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+<!--     output: -->
+<!--       rmarkdown::html_vignette: -->
+<!--         fig_caption: yes -->
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
+<!-- Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**. -->
 
-Also a quote using `>`:
+<!-- ## More Examples -->
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+<!-- You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`. -->
+
+<!-- ```{r, echo=FALSE, results='asis'} -->
+<!-- knitr::kable(head(mtcars, 10)) -->
+<!-- ``` -->
+
+<!-- Also a quote using `>`: -->
+
+<!-- > "He who gives up [code] safety for [code] speed deserves neither." -->
+<!-- ([via](https://twitter.com/hadleywickham/status/504368538874703872)) -->
