@@ -237,8 +237,18 @@ poped_optim <- function(poped.db,
   }
   
   par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
-  par_fixed_index <- which(upper==lower)
-  par_not_fixed_index <- which(upper!=lower)
+  #par_fixed_index <- which(upper==lower)
+  par_fixed_index <- which(upper==lower & par_cat_cont=="cont")
+  for(npar in 1:length(par)){
+    if(par_cat_cont[npar]=="cont") next
+    if(all(par[npar]==allowed_values[[npar]])){
+      par_fixed_index <- c(par_fixed_index,npar)
+    } 
+  }
+  par_fixed_index <- sort(unique(par_fixed_index))
+  par_not_fixed_index <- 1:length(par)
+  par_not_fixed_index <- par_not_fixed_index[par_fixed_index!=par_not_fixed_index]
+  
   if(length(par_fixed_index)!=0){
     par <- par[-c(par_fixed_index)]
     lower <- lower[-c(par_fixed_index)]
