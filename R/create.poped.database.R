@@ -195,7 +195,7 @@
 #' \item \bold{******START OF Miscelaneous SPECIFICATION OPTIONS**********}}
 #' User defined data structure that, for example could be used to send in data to the model 
 #' @param ourzero Value to interpret as zero in design 
-#' @param dSeed The seed number used for optimization and sampling -- integer or -1 which creates a random seed
+#' @param dSeed The seed number used for optimization and sampling -- integer or -1 which creates a random seed \code{as.integer(Sys.time())} or NULL.
 #' @param line_opta Vector for line search on continuous design variables (1=TRUE,0=FALSE)
 #' @param line_optx Vector for line search on discrete design variables (1=TRUE,0=FALSE) 
 #' @param bShowGraphs Use graph output during search
@@ -535,7 +535,7 @@ create.poped.database <-
            ourzero=poped.choose(popedInput$ourzero,1e-5),                    
            #ourzero=poped.choose(popedInput$ourzero,0),                    
            ## -- The seed number used for optimization and sampling -- integer or -1 which creates a random seed
-           dSeed=poped.choose(popedInput$dSeed,-1),
+           dSeed=poped.choose(popedInput$dSeed,NULL),
            ## -- Vector for line search on continuous design variables (1=TRUE,0=FALSE) --
            line_opta=poped.choose(popedInput$line_opta,NULL),
            ## -- Vector for line search on discrete design variables (1=TRUE,0=FALSE) --
@@ -1063,12 +1063,14 @@ create.poped.database <-
     #==================================
     # Initialize the randomization    
     #==================================
-    if((dSeed == -1)){
-      poped.db$settings$dSeed = as.integer(Sys.time())
-    } else {
-      poped.db$settings$dSeed = dSeed
-    }
-    set.seed(poped.db$settings$dSeed)
+    if(!is.null(dSeed)){
+      if((dSeed == -1)){
+        poped.db$settings$dSeed = as.integer(Sys.time())
+      } else {
+        poped.db$settings$dSeed = dSeed
+      }
+      set.seed(poped.db$settings$dSeed)
+    }    
     
     poped.db$parameters$nbpop = poped.choose(nbpop,find.largest.index(poped.db$model$fg_pointer,"bpop"))
     poped.db$parameters$NumRanEff = poped.choose(NumRanEff,find.largest.index(poped.db$model$fg_pointer,"b"))
