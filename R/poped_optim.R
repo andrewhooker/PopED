@@ -247,7 +247,7 @@ poped_optim <- function(poped.db,
   }
   par_fixed_index <- sort(unique(par_fixed_index))
   par_not_fixed_index <- 1:length(par)
-  par_not_fixed_index <- par_not_fixed_index[par_fixed_index!=par_not_fixed_index]
+  par_not_fixed_index <- par_not_fixed_index[!(par_not_fixed_index %in% par_fixed_index)]
   
   if(length(par_fixed_index)!=0){
     par <- par[-c(par_fixed_index)]
@@ -257,7 +257,10 @@ poped_optim <- function(poped.db,
     allowed_values <- allowed_values[-c(par_fixed_index)]
   }
   
-  if(length(par)==0) stop("No design parameters have a design space to optimize")
+  if(length(par)==0){
+    message("No design parameters have a design space to optimize")
+    return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
+  } 
   
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
