@@ -116,10 +116,26 @@ create_design_space <- function(
   if(is.null(minni)) minni=design$ni
   if(is.null(maxgroupsize)) maxgroupsize=design$groupsize
   if(is.null(mingroupsize)) mingroupsize=design$groupsize
-  if(is.null(maxxt)) maxxt=design$xt
-  if(is.null(minxt)) minxt=design$xt
-  if(is.null(maxa)) maxa=design$a
-  if(is.null(mina)) mina=design$a
+  maxxt_imputed <- F
+  if(is.null(maxxt)){
+    maxxt=design$xt
+    maxxt_imputed <- T
+  } 
+  minxt_imputed <- F
+  if(is.null(minxt)){
+    minxt=design$xt
+    minxt_imputed <- T
+  } 
+  maxa_imputed <- F
+  if(is.null(maxa)){
+    maxa=design$a
+    maxa_imputed <- T
+  } 
+  mina_imputed <- F
+  if(is.null(mina)){
+    mina=design$a
+    mina_imputed <- T
+  } 
   
   design_space <- list()
   design_new <- design
@@ -683,7 +699,40 @@ create_design_space <- function(
     
     design_space$a_space <- a_space
     
+    # update max and min of a and xt if imputed and discrete
+    if(maxa_imputed && !is.null(a_space)){
+      for(i in 1:nrow(a_space)){
+        for(j in 1:ncol(a_space) ){
+          maxa[i,j] <- max(a_space[i,j][[1]])
+        }
+      }
+    }
+    if(mina_imputed && !is.null(a_space)){
+      for(i in 1:nrow(a_space)){
+        for(j in 1:ncol(a_space) ){
+          mina[i,j] <- min(a_space[i,j][[1]])
+        }
+      }
+    }
+    design_space$maxa <- maxa
+    design_space$mina <- mina
     
+    if(maxxt_imputed && !is.null(xt_space)){
+      for(i in 1:nrow(xt_space)){
+        for(j in 1:ncol(xt_space) ){
+          maxxt[i,j] <- max(xt_space[i,j][[1]])
+        }
+      }
+    }
+    if(minxt_imputed && !is.null(xt_space)){
+      for(i in 1:nrow(xt_space)){
+        for(j in 1:ncol(xt_space) ){
+          minxt[i,j] <- min(xt_space[i,j][[1]])
+        }
+      }
+    }
+    design_space$maxxt <- maxxt
+    design_space$minxt <- minxt
     
     return(list(design=design_new,design_space=design_space)) 
   }) # end with(design,{})
