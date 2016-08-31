@@ -86,7 +86,7 @@ create.poped.database(popedInput = list(),
   paste("PopED", "_current.R", sep = "")),
   user_data = poped.choose(popedInput$user_data, cell(0, 0)),
   ourzero = poped.choose(popedInput$ourzero, 1e-05),
-  dSeed = poped.choose(popedInput$dSeed, -1),
+  dSeed = poped.choose(popedInput$dSeed, NULL),
   line_opta = poped.choose(popedInput$line_opta, NULL),
   line_optx = poped.choose(popedInput$line_optx, NULL),
   bShowGraphs = poped.choose(popedInput$bShowGraphs, FALSE),
@@ -421,7 +421,7 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{ourzero}{Value to interpret as zero in design}
 
-\item{dSeed}{The seed number used for optimization and sampling -- integer or -1 which creates a random seed}
+\item{dSeed}{The seed number used for optimization and sampling -- integer or -1 which creates a random seed \code{as.integer(Sys.time())} or NULL.}
 
 \item{line_opta}{Vector for line search on continuous design variables (1=TRUE,0=FALSE)}
 
