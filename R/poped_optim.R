@@ -147,6 +147,7 @@ poped_optim <- function(poped.db,
   dmf <- output$ofv
   fmf_init <- fmf
   dmf_init <- dmf
+  poped.db_init <- poped.db
   
   if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
   
@@ -261,7 +262,7 @@ poped_optim <- function(poped.db,
     message("No design parameters have a design space to optimize")
     return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
   } 
-  
+
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
     
@@ -699,28 +700,31 @@ poped_optim <- function(poped.db,
                          ofv_fun = ofv_fun_user,
                          ...)[["fim"]]
   
-  blockfinal(fn=fn,fmf=FIM,
-             dmf=output$ofv,
-             groupsize=poped.db$design$groupsize,
-             ni=poped.db$design$ni,
-             xt=poped.db$design$xt,
-             x=poped.db$design$x,
-             a=poped.db$design$a,
-             model_switch=poped.db$design$model_switch,
-             poped.db$parameters$param.pt.val$bpop,
-             poped.db$parameters$param.pt.val$d,
-             poped.db$parameters$docc,
-             poped.db$parameters$param.pt.val$sigma,
-             poped.db,
-             fmf_init=fmf_init,
-             dmf_init=dmf_init,
-             ...)
+  time_value <- 
+    blockfinal(fn=fn,fmf=FIM,
+               dmf=output$ofv,
+               groupsize=poped.db$design$groupsize,
+               ni=poped.db$design$ni,
+               xt=poped.db$design$xt,
+               x=poped.db$design$x,
+               a=poped.db$design$a,
+               model_switch=poped.db$design$model_switch,
+               poped.db$parameters$param.pt.val$bpop,
+               poped.db$parameters$param.pt.val$d,
+               poped.db$parameters$docc,
+               poped.db$parameters$param.pt.val$sigma,
+               poped.db,
+               fmf_init=fmf_init,
+               dmf_init=dmf_init,
+               ...)
   
   
   #  }
   #}
-  
-  return(invisible(list( ofv= output$ofv, FIM=FIM, poped.db = poped.db ))) 
+  results <- list( ofv= output$ofv, FIM=FIM, initial=list(ofv=dmf_init, FIM=fmf_init, poped.db=poped.db_init), 
+                   run_time=time_value, poped.db = poped.db )
+  class(results) <- "poped_optim"
+  return(invisible(results)) 
 }
 
 #' Compute efficiency.
