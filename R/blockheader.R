@@ -109,6 +109,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     if(fn!="") fprintf(paste0("===============================================================================\n",
                           "Initial design evaluation\n"))
   }
+  
   if(dmf!=0) fprintf(fn,'\nInitial OFV = %g\n',dmf)
   if(dmf!=0 && fn!="") fprintf('\nInitial OFV = %g\n',dmf)
   
