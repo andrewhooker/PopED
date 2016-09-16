@@ -83,7 +83,7 @@ mf <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
     }
     
     if((sum(sum(f2!=0))==0) ){#Only zeros in f2, uses FIM = m1'*m1
-      ret = ret+t(m1_tmp)*m1_tmp
+      ret = ret+t(m1_tmp)%*%m1_tmp
     } else {
       ret=ret+t(f1)%*%f2%*%f1
     }

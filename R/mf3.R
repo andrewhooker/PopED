@@ -81,7 +81,7 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       f2[(n+1):(n+n*n),(n+1):(n+n*n)]=inv(tmp_m4)
     }
     if((all(f2==0))){
-      ret = ret+t(f1)*f1
+      ret = ret+t(f1)%*%f1
     } else {
       ret = ret+t(f1)%*%f2%*%f1
     }
