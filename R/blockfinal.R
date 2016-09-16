@@ -26,9 +26,11 @@
 ## Author: Andrew Hooker
 
 blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,poped.db,
-                         opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
-                         fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
-                         compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,...){
+                       opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
+                       fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
+                       compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,
+                       run_time = NULL,
+                       ...){
   
   if(!trflag) return(invisible() ) 
   if(footer_flag){
@@ -40,8 +42,8 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     fprintf(fn,'===============================================================================\nFINAL RESULTS\n')
     if(fn!="") fprintf('===============================================================================\nFINAL RESULTS\n')
     
-    time_value <- NULL
-    if(exists(".poped_total_time", envir=.PopedNamespaceEnv)) time_value = toc(echo=FALSE,name=".poped_total_time")
+    time_value <- run_time
+    if(is.null(time_value) & exists(".poped_total_time", envir=.PopedNamespaceEnv)) time_value = toc(echo=FALSE,name=".poped_total_time")
     if((opt_xt==TRUE)){
       print_xt(xt,ni,model_switch,fn,head_txt="Optimized Sampling Schedule\n")
       if(fn!="") print_xt(xt,ni,model_switch,head_txt="\nOptimized Sampling Schedule\n")
@@ -126,8 +128,10 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     #           ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db))
     # }
     
-    eff <- efficiency(dmf_init, dmf, poped.db)
-    fprintf(fn,"\nEfficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff,both=TRUE)
+    if(!is.null(dmf_init)){
+      eff <- efficiency(dmf_init, dmf, poped.db)
+      fprintf(fn,"\nEfficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff,both=TRUE)
+    }
     # fprintf(fn,'\nEfficiency (Final/Initial): %0.5g\n',
     #         ofv_criterion(dmf,npar,poped.db)/ofv_criterion(dmf_init,npar,poped.db),both=TRUE)
     # 
@@ -166,14 +170,14 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     }
     
-    #if(!is.null(time_value)){
-    fprintf(fn,'\nTotal running time: %g seconds\n',time_value)
-    if(fn!="") fprintf('\nTotal running time: %g seconds\n',time_value)
-    #}
+    if(!is.null(time_value)){
+      fprintf(fn,'\nTotal running time: %g seconds\n',time_value)
+      if(fn!="") fprintf('\nTotal running time: %g seconds\n',time_value)
+    }
   } # end footer_flag
   if(!any(class(out_file)=="file") && (fn != '')) close(fn)
   
-  return(invisible() ) 
+  return(invisible(time_value)) 
 }
 
 print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized xt values:\n",xt_other=NULL) {
