@@ -27,7 +27,7 @@ A vector containing allowed values for all parameters is also allowed \code{c(2,
 \item{line_length}{The number of different parameter values per parameter to evaluate.  The values are 
 selected as an evenly spaced grid between the upper and lower bounds.}
 
-\item{trace}{Should the algorithm outpur results intermittently.}
+\item{trace}{Should the algorithm output results intermittently.}
 
 \item{maximize}{Should the function be maximized?  Default is to minimize.}
 

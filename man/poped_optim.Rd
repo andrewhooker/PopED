@@ -43,7 +43,7 @@ genetic algorithm from \code{\link[GA]{ga}}.}
 
 \item{control}{Contains control arguments for each method specified.}
 
-\item{trace}{Should the algorithm outpur results intermittently.}
+\item{trace}{Should the algorithm output results intermittently.}
 
 \item{fim.calc.type}{The method used for calculating the FIM. Potential values:
 \itemize{

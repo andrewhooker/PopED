@@ -23,44 +23,24 @@ Below is an example to introduce the package.  There are several other examples,
 PopED installation directory located at:
 
 
-```{r,eval=FALSE}
+```
 system.file("examples", package="PopED")
-```
-
-
-## Installation
-
-You need to have R installed.  Download the latest version of R from www.r-project.org.
-Install PopED in R using one of the following methods:
-
-* latest stable release -- From CRAN.  Write at the R command line:
-
-```
-install.packages("PopED")
-```
-
-* Latest development version -- from Github. Note that the command below installs the "master" 
-(development) branch; if you want the release branch from Github add `ref="release"` to the
-`install_github()` call. The `install_github()` approach requires that you build from source, 
-i.e. `make` and compilers must be installed on your system -- see the R FAQ for your operating system; 
-you may also need to install dependencies manually.
-
-```
-devtools::install_github("andrewhooker/PopED")
 ```
 
 ## Define a model
 
 Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution.  In this case the solution is applicable for both multiple and single dosing.  Note that this function is also predefined in PopED as `ff.PK.1.comp.oral.md.CL`.
 
-```{r,eval=FALSE}
+```{r,eval=TRUE}
 library(PopED)
 ```
 
+
 ```{r,include = FALSE}
-devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
 set.seed(1234)
+knitr::opts_chunk$set(cache = FALSE)
 ```
+
 
 
 ```{r struct_model}
@@ -136,12 +116,12 @@ poped.db <- create.poped.database(ff_file="ff",
 
 ### Simulation
 First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values:
-```{r, cache=TRUE, eval=T, fig.width=6}
+```{r, fig.width=6}
 plot_model_prediction(poped.db, model_num_points = 500)
 ```
 
 Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the resuldual, unexplained, variability with the `DV=T` argument): 
-```{r simulate with BSV, cache=TRUE, eval=T, fig.width=6}
+```{r simulate_with_BSV, fig.width=6}
 plot_model_prediction(poped.db, model_num_points=500, IPRED=T)
 ```
 
@@ -161,31 +141,36 @@ get_rse(FIM,poped.db)
 We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.
 
 ### Design optimization
-Now we can optimize the sample times of the design
-```{r optimize,cache=TRUE,message = FALSE,results='hide'}
-output <- poped_optim(poped.db, opt_xt=T, parallel = T)
+Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = T` in the `poped_optim` command.].
+```{r optimize,message = FALSE,results='hide'}
+output <- poped_optim(poped.db, opt_xt=T)
 ```
+
+
 ```{r, fig.width=6}
 summary(output)
 get_rse(output$FIM, output$poped.db)
 plot_model_prediction(output$poped.db)
 ```
 
+
 We see that there are four distinct sample times for this design.  This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.  
 
 ### Examine efficiency of sampling windows
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimial points ($\pm 30$ minutes).  
-```{r,fig.width=6,fig.height=6,cache=TRUE}
+```{r,fig.width=6,fig.height=6}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
 Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples may be in order here.  To investigate see `?plot_efficiency_of_windows`. 
 
 ## Optimize 'Other' design variables
-One could also optimize over dose, to see if a different dose could help in parameter estimation.
-```{r optimize dose,cache=TRUE,message = FALSE,results='hide', eval=FALSE}
-output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T, parallel = T)
+One could also optimize over dose, to see if a different dose could help in parameter estimation .
+```{r optimize_dose,message = FALSE,results='hide', eval=FALSE}
+output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
 ```
+
+
 In this case the results are predictable ... higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).
 
 ## Cost function to optimize dose
@@ -201,11 +186,10 @@ crit_fcn(output$poped.db)
 ```
 
 Now we minimize the cost function 
-```{r cost optimization, cache=TRUE, message = FALSE,results='hide'}
+```{r cost_optimization, message = FALSE,results='hide'}
 output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
                      ofv_fun=crit_fcn,
-                     maximize = F, 
-                     parallel=T)
+                     maximize = F)
 ```
 
 ```{r, fig.width=6}
