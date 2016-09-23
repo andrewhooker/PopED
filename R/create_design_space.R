@@ -456,11 +456,12 @@ create_design_space <- function(
     
     ## for a_space
     if(!is.null(a_space)){
-      #       if(is.list(x_space)) x_space <- as.matrix(dplyr::rbind_all(lapply(x_space,function(x){data.frame(rbind(unlist(x)))})))
+      #       if(is.list(x_space)) x_space <- dplyr::bind_rows(lapply(x_space,function(x){data.frame(rbind(unlist(x)))})))
       if(size(a_space,1)==1 && m!=1) a_space <- matrix(rep(a_space,m),ncol=length(a_space),nrow=m,byrow=T)
       if(size(a_space,2)==1 && size(a,2)!=1) a_space <- matrix(rep(a_space,size(a,2)),ncol=size(a,2),nrow=m,byrow=F)
       #       if(!is.matrix(x_space)) x_space  <- rbind(x_space)
       if((test_mat_size(size(a),a_space,'a_space')==1)){
+        if(is.null(dim(a_space)) && all(size(a_space)==1)) a_space <- matrix(a_space)
         rownames(a_space) <- paste("grp_",1:m,sep="")
         colnames(a_space) <- colnames(a)
       }
