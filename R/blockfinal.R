@@ -31,6 +31,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
                        compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,
                        run_time = NULL,
                        ...){
+  time_value <- NULL
   
   if(!trflag) return(invisible() ) 
   if(footer_flag){
@@ -176,7 +177,6 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     }
   } # end footer_flag
   if(!any(class(out_file)=="file") && (fn != '')) close(fn)
-  
   return(invisible(time_value)) 
 }
 
