@@ -5,16 +5,6 @@
 
 library(PopED)
 
-# This option is used to make this script run fast but without convergence 
-# (fast means a few seconds for each argument at the most).
-# This allows you to "source" this file and easily see how things work
-# without waiting for more than 10-30 seconds.
-# Change to FALSE if you want to run each function so that
-# the solutions have converged (can take many minutes).
-fast <- TRUE 
-
-iNumSimulations <- ifelse(fast,5,100)
-
 ff <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   with(as.list(parameters),{
@@ -67,23 +57,14 @@ plot_model_prediction(poped.db)
 plot_model_prediction(poped.db,IPRED=T,DV=T)
 
 ## get predictions from model
-pred <- model_prediction(poped.db)
-pred
+model_prediction(poped.db)
 
 ## evaluate initial design
-FIM <- evaluate.fim(poped.db) 
-FIM
-det(FIM)
-det(FIM)^(1/length(get_unfixed_params(poped.db)[["all"]])) 
-get_rse(FIM,poped.db)
+evaluate_design(poped.db)
 
 ## Evaluate with full FIM
-FIM <- evaluate.fim(poped.db, fim.calc.type=0) 
-FIM
-det(FIM)
-det(FIM)^(1/length(get_unfixed_params(poped.db)[["all"]]))
-get_rse(FIM,poped.db)
+evaluate_design(poped.db, fim.calc.type=0)
 
 # Examine efficiency of sampling windows
-plot_efficiency_of_windows(poped.db,xt_windows=0.5,iNumSimulations = iNumSimulations)
+plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
