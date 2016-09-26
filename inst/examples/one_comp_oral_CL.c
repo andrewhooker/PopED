@@ -1,16 +1,14 @@
 /* file tmdd_qss_one_target.c */
 #include <R.h>
-static double parms[5];
+static double parms[3];
 #define CL parms[0]
 #define V parms[1]
 #define KA parms[2]
-#define DOSE parms[3]
-#define FAVAIL parms[4]
 
 /* initializer  */
 void initmod(void (* odeparms)(int *, double *))
 {
-  int N=5;
+  int N=3;
   odeparms(&N, parms);
 }
 
