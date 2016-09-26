@@ -262,6 +262,16 @@ poped_optim <- function(poped.db,
     message("No design parameters have a design space to optimize")
     return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
   } 
+  
+
+  if(!is.null(allowed_values)){
+    for(k in 1:npar){
+      if(!all(is.na(allowed_values[[k]]))){
+        if(length(upper)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]<=upper[k]]
+        if(length(lower)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]>=lower[k]]
+      }
+    }
+  }
 
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
@@ -356,10 +366,11 @@ poped_optim <- function(poped.db,
     
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
     if(!is.finite(ofv) && ofv_calc_type==4){
-      ofv <- -Inf 
+      #ofv <- -Inf 
+      ofv <- NA
     } else {
-      if(!is.finite(ofv)) ofv <- 1e-15
-      #if(!is.finite(ofv)) ofv <- NA
+      #if(!is.finite(ofv)) ofv <- 1e-15
+      if(!is.finite(ofv)) ofv <- NA
       #if(!is.finite(ofv)) ofv <- -Inf
     }
     
@@ -519,6 +530,7 @@ poped_optim <- function(poped.db,
             -ofv_fun(par,only_cont=F,...) 
           }
         }
+
         output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                            fitness = ofv_fun_2,
                                            #par_full=par_full,
@@ -529,7 +541,6 @@ poped_optim <- function(poped.db,
                                       #allowed_values = allowed_values),
                                       con,
                                       ...))
-        
         
         output$ofv <- output_ga@fitnessValue
         if(!maximize) output$ofv <- -output$ofv
