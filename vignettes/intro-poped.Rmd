@@ -87,7 +87,7 @@ We have now defined all aspects of the model.
 
 Now we define the model parameter values, the initial design  and design space for optimization.
 
-In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  Fixing a parameter means that we assume the parameter will not be estimated.  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quaitfication measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
+In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  Fixing a parameter means that we assume the parameter will not be estimated.  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
 
 
 For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   Finally, we fix the two groups of subjects to have the sample sample times (`bUseGrouped_xt=TRUE`). 
@@ -120,12 +120,12 @@ First it may make sense to check your model and design to make sure you get what
 plot_model_prediction(poped.db, model_num_points = 500)
 ```
 
-Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the resuldual, unexplained, variability with the `DV=T` argument): 
+Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the `DV=T` argument): 
 ```{r simulate_with_BSV, fig.width=6}
 plot_model_prediction(poped.db, model_num_points=500, IPRED=T)
 ```
 
-We can get these predictions nemerically as well:
+We can get these predictions numerically as well:
 ```{r}
 dat <- model_prediction(poped.db,DV=T)
 head(dat,n=5);tail(dat,n=5)
@@ -134,9 +134,7 @@ head(dat,n=5);tail(dat,n=5)
 ### Design evaluation
 Next, we evaluate the initial design
 ```{r}
-(FIM <- evaluate.fim(poped.db)) 
-ofv_fim(FIM,poped.db )
-get_rse(FIM,poped.db)
+evaluate_design(poped.db)
 ```
 We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.
 
@@ -149,7 +147,6 @@ output <- poped_optim(poped.db, opt_xt=T)
 
 ```{r, fig.width=6}
 summary(output)
-get_rse(output$FIM, output$poped.db)
 plot_model_prediction(output$poped.db)
 ```
 
@@ -157,12 +154,46 @@ plot_model_prediction(output$poped.db)
 We see that there are four distinct sample times for this design.  This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.  
 
 ### Examine efficiency of sampling windows
-Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimial points ($\pm 30$ minutes).  
+Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
 ```{r,fig.width=6,fig.height=6}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
 Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples may be in order here.  To investigate see `?plot_efficiency_of_windows`. 
+
+## Optimize over a discrete design space
+In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the hour are allowed.
+
+```{r, message = FALSE,results='hide'}
+poped.db.2 <- create.poped.database(ff_file="ff",
+                                  fg_file="sfg",
+                                  fError_file="feps",
+                                  bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
+                                  sigma=c(0.04,5e-6),
+                                  notfixed_sigma=c(0,0),
+                                  m=2,
+                                  groupsize=20,
+                                  xt=c( 1,2,8,240,245),
+                                  minxt=c(0,0,0,240,240),
+                                  maxxt=c(10,10,10,248,248),
+                                  discrete_xt = list(0:248),
+                                  bUseGrouped_xt=1,
+                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
+                                  maxa=c(DOSE=200,TAU=24),
+                                  mina=c(DOSE=0,TAU=24))
+
+output_discrete <- poped_optim(poped.db.2, opt_xt=T, parallel = TRUE)
+
+```
+
+```{r,fig.width=6}
+summary(output_discrete)
+plot_model_prediction(output_discrete$poped.db)
+```
+
+Here we see that the optimization ran somewhat quicker, but gave a less efficient design.
 
 ## Optimize 'Other' design variables
 One could also optimize over dose, to see if a different dose could help in parameter estimation .
