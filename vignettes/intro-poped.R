@@ -99,7 +99,7 @@ poped.db.2 <- create.poped.database(ff_file="ff",
                                   maxa=c(DOSE=200,TAU=24),
                                   mina=c(DOSE=0,TAU=24))
 
-output_discrete <- poped_optim(poped.db.2, opt_xt=T, parallel = TRUE)
+output_discrete <- poped_optim(poped.db.2, opt_xt=T)
 
 
 ## ----fig.width=6---------------------------------------------------------
