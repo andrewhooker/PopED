@@ -38,9 +38,9 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 
 ## ------------------------------------------------------------------------
-poped.db <- create.poped.database(ff_file="ff",
-                                  fg_file="sfg",
-                                  fError_file="feps",
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps,
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
@@ -69,14 +69,14 @@ head(dat,n=5);tail(dat,n=5)
 ## ------------------------------------------------------------------------
 evaluate_design(poped.db)
 
-## ----optimize,message = FALSE,results='hide'-----------------------------
+## ----optimize,message = FALSE,results='hide',cache=TRUE------------------
 output <- poped_optim(poped.db, opt_xt=T)
 
 ## ---- fig.width=6--------------------------------------------------------
 summary(output)
 plot_model_prediction(output$poped.db)
 
-## ----fig.width=6,fig.height=6--------------------------------------------
+## ----fig.width=6,fig.height=6,cache=TRUE---------------------------------
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 
 ## ---- message = FALSE,results='hide'-------------------------------------
@@ -106,7 +106,7 @@ output_discrete <- poped_optim(poped.db.2, opt_xt=T)
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 
-## ----optimize_dose,message = FALSE,results='hide', eval=FALSE------------
+## ----optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE----
 #  output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
 
 ## ------------------------------------------------------------------------
@@ -116,7 +116,7 @@ crit_fcn <- function(poped.db,...){
 }
 crit_fcn(output$poped.db)
 
-## ----cost_optimization, message = FALSE,results='hide'-------------------
+## ----cost_optimization, message = FALSE,results='hide',cache=TRUE--------
 output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
                      ofv_fun=crit_fcn,
                      maximize = F)

@@ -93,9 +93,9 @@ In this example, the parameter values are defined for the fixed effects (`bpop`)
 For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   Finally, we fix the two groups of subjects to have the sample sample times (`bUseGrouped_xt=TRUE`). 
 
 ```{r}
-poped.db <- create.poped.database(ff_file="ff",
-                                  fg_file="sfg",
-                                  fError_file="feps",
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps,
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
@@ -140,7 +140,7 @@ We see that the fixed-effect and residual variability parameters are relatively 
 
 ### Design optimization
 Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = T` in the `poped_optim` command.].
-```{r optimize,message = FALSE,results='hide'}
+```{r optimize,message = FALSE,results='hide',cache=TRUE}
 output <- poped_optim(poped.db, opt_xt=T)
 ```
 
@@ -155,7 +155,7 @@ We see that there are four distinct sample times for this design.  This means th
 
 ### Examine efficiency of sampling windows
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
-```{r,fig.width=6,fig.height=6}
+```{r,fig.width=6,fig.height=6,cache=TRUE}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
@@ -197,7 +197,7 @@ Here we see that the optimization ran somewhat quicker, but gave a less efficien
 
 ## Optimize 'Other' design variables
 One could also optimize over dose, to see if a different dose could help in parameter estimation .
-```{r optimize_dose,message = FALSE,results='hide', eval=FALSE}
+```{r optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE}
 output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
 ```
 
@@ -217,7 +217,7 @@ crit_fcn(output$poped.db)
 ```
 
 Now we minimize the cost function 
-```{r cost_optimization, message = FALSE,results='hide'}
+```{r cost_optimization, message = FALSE,results='hide',cache=TRUE}
 output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
                      ofv_fun=crit_fcn,
                      maximize = F)
