@@ -4,10 +4,14 @@
 \alias{inv}
 \title{Compute the inverse of a matrix}
 \usage{
-inv(mat)
+inv(mat, method = 1, tol = .Machine$double.eps)
 }
 \arguments{
 \item{mat}{A matrix}
+
+\item{method}{Which method to use. 1 is cholesky, 2 is using solve and 3 is the Moore-Penrose generalized inverse.}
+
+\item{tol}{The tolerance at wich we should identify a sigular value as zero.}
 }
 \value{
 The inverse matrix
