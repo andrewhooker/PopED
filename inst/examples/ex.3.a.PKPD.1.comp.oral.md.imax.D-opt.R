@@ -1,19 +1,8 @@
 library(PopED)
 
-# This option is used to make this script run fast but without convergence 
-# (fast means a few seconds for each argument at the most).
-# This allows you to "source" this file and easily see how things work
-# without waiting for more than 10-30 seconds.
-# Change to FALSE if you want to run each function so that
-# the solutions have converged (can take many minutes).
-fast <- TRUE 
-
-EAStepSize <- ifelse(fast,40,1)
-
-
+##-- Model: One comp first order absorption + inhibitory imax
+## -- works for both mutiple and single dosing  
 ff <- function(model_switch,xt,parameters,poped.db){
-  ##-- Model: One comp first order absorption + inhibitory imax
-  ## -- works for both mutiple and single dosing  
   with(as.list(parameters),{
     
     y=xt
@@ -35,8 +24,8 @@ ff <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
+## -- parameter definition function 
 sfg <- function(x,a,bpop,b,bocc){
-  ## -- parameter definition function 
   parameters=c( V=bpop[1]*exp(b[1]),
                 KA=bpop[2]*exp(b[2]),
                 CL=bpop[3]*exp(b[3]),
@@ -50,9 +39,8 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 
-
+## -- Residual Error function
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
-  ## -- Residual Error function
   returnArgs <- ff(model_switch,xt,parameters,poped.db) 
   y <- returnArgs[[1]]
   poped.db <- returnArgs[[2]]
@@ -68,9 +56,9 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
   return(list( y= y,poped.db =poped.db )) 
 }
 
-poped.db <- create.poped.database(ff_file="ff",
-                                  fError_file="feps",
-                                  fg_file="sfg",
+poped.db <- create.poped.database(ff_fun="ff",
+                                  fError_fun="feps",
+                                  fg_fun="sfg",
                                   groupsize=20,
                                   m=3,
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,E0=1120,IMAX=0.807,IC50=0.0993),  
@@ -81,32 +69,29 @@ poped.db <- create.poped.database(ff_file="ff",
                                   xt=c( 1,2,8,240,240,1,2,8,240,240),
                                   minxt=c(0,0,0,240,240,0,0,0,240,240),
                                   maxxt=c(10,10,10,248,248,10,10,10,248,248),
+                                  discrete_xt = list(0:248),
                                   G_xt=c(1,2,3,4,5,1,2,3,4,5),
-                                  model_switch=c(1,1,1,1,1,2,2,2,2,2),
-                                  a=cbind(c(20,40,0),c(24,24,24)),
                                   bUseGrouped_xt=1,
-                                  ourzero=0,
-                                  maxa=c(200,40),
-                                  mina=c(0,2))
+                                  model_switch=c(1,1,1,1,1,2,2,2,2,2),
+                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24),c(DOSE=0, TAU=24)),
+                                  maxa=c(DOSE=200,TAU=40),
+                                  mina=c(DOSE=0,TAU=2),
+                                  ourzero=0)
 
 ##  create plot of model and design 
 plot_model_prediction(poped.db,facet_scales="free")
 plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T)
 
 ## evaluate initial design
-FIM <- evaluate.fim(poped.db) 
-FIM
-det(FIM)
-get_rse(FIM,poped.db)
+evaluate_design(poped.db)
 
-# MFEA optimization 
-mfea.output <- poped_optimize(poped.db,opt_xt=1,
-                              bUseExchangeAlgorithm=1,
-                              EAStepSize=EAStepSize)
+# Optimization 
+output <- poped_optim(poped.db, opt_xt = T, parallel = T)
 
-get_rse(mfea.output$fmf,mfea.output$poped.db)
-result.db <- mfea.output$poped.db
-plot_model_prediction(result.db,separate.groups=T,facet_scales="free")
+summary(output)
+
+get_rse(output$FIM,output$poped.db)
+plot_model_prediction(output$poped.db,facet_scales="free")
 
 
 
