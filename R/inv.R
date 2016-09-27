@@ -21,7 +21,7 @@ inv<- function(mat,method=1,tol = .Machine$double.eps){
     #if (is.complex(mat)) Xsvd$u <- Conj(Xsvd$u)
     Positive <- Xsvd$d > max(tol * max(dim(mat))*max(Xsvd$d), 0)
     if (all(Positive)) return(Xsvd$v %*% (1/Xsvd$d * t(Xsvd$u)))
-    else if (!any(Positive)) return(array(0, dim(X)[2L:1L]))
+    else if (!any(Positive)) return(array(0, dim(mat)[2L:1L]))
     else return(Xsvd$v[, Positive, drop = FALSE] %*% ((1/Xsvd$d[Positive]) * t(Xsvd$u[, Positive, drop = FALSE])))
   }
 }
