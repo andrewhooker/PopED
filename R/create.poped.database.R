@@ -1,6 +1,6 @@
 #' Create a PopED database 
 #' 
-#' This function takes the input file supplied by the user, or function arguments, 
+#' This function takes the input file (a previously created poped database) supplied by the user, or function arguments, 
 #' and creates a database that can then be used to 
 #' run all other PopED functions.  The function supplies default values to elements of the 
 #' database that are not specified in the
@@ -8,8 +8,8 @@
 #' (easiest to use a text search to find values you are interested in).  
 #' 
 #' @inheritParams create_design_space
-#' @param popedInput An input file to PopED.  List elements should match the values seen in 
-#' the Usage section (the defaults to function arguments). Can also be an empty list \code{list()}. 
+#' @param popedInput A PopED database file or an empty list \code{list()}.  List elements should match the values seen in 
+#' the Usage section (the defaults to function arguments). 
 #' @param ff_file  \itemize{
 #' \item \bold{******START OF MODEL DEFINITION OPTIONS**********}
 #' }
@@ -49,7 +49,7 @@
 #' n_rows=number of groups, n_cols=number of covariates.
 #' If the number of rows is one and the number of groups > 1 then all groups are assigned the 
 #' same values.
-#' @param na The number of covariates in the model.
+# @param na The number of covariates in the model.
 #' @param groupsize Vector defining the size of the different groups (num individuals in each group).
 #' If only one numer then the number will be the same in every group.
 #' @param ni Vector defining the number of samples for each group. 
@@ -143,7 +143,7 @@
 #' @param NumRanEff Number of IIV parameters. Typically can be computed from other values and not supplied. 
 #' @param NumDocc Number of IOV variance parameters. Typically can be computed from other values and not supplied. 
 #' @param NumOcc Number of occassions. Typically can be computed from other values and not supplied. 
-#' @param ng The length of the g parameter vector. Typically can be computed from other values and not supplied.
+# @param ng The length of the g parameter vector. Typically can be computed from other values and not supplied.
 #' @param bpop Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
 #' \itemize{
 #' \item column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
@@ -288,14 +288,14 @@ create.poped.database <-
            ## --------------------------
            
            # -- Filname and path of the model file --
-           ff_file=poped.choose(popedInput[["ff_file"]],"ff"),
-           ff_fun = NULL,
+           ff_file=NULL,
+           ff_fun = poped.choose(popedInput$model$ff_pointer,NULL),
            # -- Filname and path of the g parameter file --
-           fg_file=poped.choose(popedInput$fg_file,'sfg'),
-           fg_fun=NULL,
+           fg_file=NULL,
+           fg_fun=poped.choose(popedInput$model$fg_pointer,NULL),
            # -- Filname and path of the error model file --
-           fError_file=poped.choose(popedInput$fError_file,'feps'),
-           fError_fun=NULL,
+           fError_file=NULL,
+           fError_fun=poped.choose(popedInput$model$ferror_pointer,NULL),
            
            ## --------------------------
            ## ---- What to optimize
@@ -304,7 +304,7 @@ create.poped.database <-
            ## -- Vector of optimization tasks (1=TRUE,0=FALSE)
            ## (Samples per subject, Sampling schedule, Discrete design variable, Continuous design variable, Number of id per group)
            ## -- All elements set to zero => only calculate the FIM with current design --
-           optsw=poped.choose(popedInput$optsw,cbind(0,0,0,0,0)),           
+           optsw=poped.choose(popedInput$settings$optsw,cbind(0,0,0,0,0)),           
            
            ## --------------------------
            ## ---- Initial Design 
@@ -314,19 +314,19 @@ create.poped.database <-
            xt=poped.choose(popedInput$design[["xt"]],stop("'xt' needs to be defined")),
            ## -- Number of groups/individuals --
            #m=poped.choose(popedInput[["m"]],size(xt,1)),                     
-           m=poped.choose(popedInput[["m"]],NULL),                     
+           m=poped.choose(popedInput$design[["m"]],NULL),                     
            ## -- Matrix defining the initial discrete values --
            #x=poped.choose(popedInput$design[["x"]],zeros(m,0)),               
            x=poped.choose(popedInput$design[["x"]],NULL),               
            ## -- Number of discrete design variables --
            #nx=poped.choose(popedInput$nx,size(x,2)),      
-           nx=poped.choose(popedInput$nx,NULL),      
+           nx=poped.choose(popedInput$design$nx,NULL),      
            ## -- Vector defining the initial covariate values --
            #a=poped.choose(popedInput$design[["a"]],zeros(m,0)),    
            a=poped.choose(popedInput$design[["a"]],NULL),    
            ## number of continuous design variables that are not time (e.g. continuous covariates)
            #na=poped.choose(popedInput$na,size(a,2)),      
-           na=poped.choose(popedInput$na,NULL),      
+           #na=poped.choose(popedInput$na,NULL),      
            ## -- Vector defining the size of the different groups (num individuals in each group) --
            groupsize=poped.choose(popedInput$design$groupsize,stop("'groupsize' needs to be defined")),      
            ## -- Vector defining the number of samples for each group --
@@ -341,45 +341,45 @@ create.poped.database <-
            ## --------------------------
            
            ## -- Max number of samples per group/individual --
-           maxni=poped.choose(popedInput$maxni,NULL),                     
+           maxni=poped.choose(popedInput$design_space$maxni,NULL),                     
            ## -- Min number of samples per group/individual --
-           minni=poped.choose(popedInput$minni,NULL), 
-           maxtotni=poped.choose(popedInput$maxtotni,NULL),
-           mintotni=poped.choose(popedInput$mintotni,NULL),
+           minni=poped.choose(popedInput$design_space$minni,NULL), 
+           maxtotni=poped.choose(popedInput$design_space$maxtotni,NULL),
+           mintotni=poped.choose(popedInput$design_space$mintotni,NULL),
            ## -- Vector defining the max size of the different groups (max num individuals in each group) --
-           maxgroupsize=poped.choose(popedInput$design$maxgroupsize,NULL),       
+           maxgroupsize=poped.choose(popedInput$design_space$maxgroupsize,NULL),       
            ## -- Vector defining the min size of the different groups (min num individuals in each group) --
            #mingroupsize=poped.choose(popedInput$design$mingroupsize,ones(m,1)),   
-           mingroupsize=poped.choose(popedInput$design$mingroupsize,NULL),   
+           mingroupsize=poped.choose(popedInput$design_space$mingroupsize,NULL),   
            ## -- The total maximal groupsize over all groups--
-           maxtotgroupsize=poped.choose(popedInput$design$maxtotgroupsize,NULL),   
+           maxtotgroupsize=poped.choose(popedInput$design_space$maxtotgroupsize,NULL),   
            ## -- The total minimal groupsize over all groups--
-           mintotgroupsize=poped.choose(popedInput$design$mintotgroupsize,NULL),   
+           mintotgroupsize=poped.choose(popedInput$design_space$mintotgroupsize,NULL),   
            ## -- Matrix defining the max value for each sample --
-           maxxt=poped.choose(popedInput$design$maxxt,NULL),   
+           maxxt=poped.choose(popedInput$design_space$maxxt,NULL),   
            ## -- Matrix defining the min value for each sample --
-           minxt=poped.choose(popedInput$design$minxt,NULL), 
-           discrete_xt=NULL,  
+           minxt=poped.choose(popedInput$design_space$minxt,NULL), 
+           discrete_xt=poped.choose(popedInput$design_space$xt_space,NULL),  
            ## -- Cell defining the discrete variables --
            #discrete_x=poped.choose(popedInput$design$discrete_x,cell(m,nx)),     
-           discrete_x=poped.choose(popedInput$design$discrete_x,NULL),     
+           discrete_x=poped.choose(popedInput$design_space$discrete_x,NULL),     
            ## -- Vector defining the max value for each covariate --
-           maxa=poped.choose(popedInput$design$maxa,NULL),   
+           maxa=poped.choose(popedInput$design_space$maxa,NULL),   
            ## -- Vector defining the min value for each covariate --
-           mina=poped.choose(popedInput$design$mina,NULL),  
-           discrete_a=NULL,  
+           mina=poped.choose(popedInput$design_space$mina,NULL),  
+           discrete_a=poped.choose(popedInput$design_space$a_space,NULL),  
            ## -- Use grouped time points (1=TRUE, 0=FALSE) --
-           bUseGrouped_xt=poped.choose(popedInput$bUseGrouped_xt,FALSE),               
+           bUseGrouped_xt=poped.choose(popedInput$design_space$bUseGrouped_xt,FALSE),               
            ## -- Matrix defining the grouping of sample points --
-           G_xt=poped.choose(popedInput$design$G,NULL),               
+           G_xt=poped.choose(popedInput$design_space$G_xt,NULL),               
            ## -- Use grouped covariates (1=TRUE, 0=FALSE) --
-           bUseGrouped_a=poped.choose(popedInput$bUseGrouped_a,FALSE),               
+           bUseGrouped_a=poped.choose(popedInput$design_space$bUseGrouped_a,FALSE),               
            ## -- Matrix defining the grouping of covariates --
-           G_a=poped.choose(popedInput$design$Ga,NULL),               
+           G_a=poped.choose(popedInput$design_space$G_a,NULL),               
            ## -- Use grouped discrete design variables (1=TRUE, 0=FALSE) --
-           bUseGrouped_x=poped.choose(popedInput$bUseGrouped_x,FALSE),               
+           bUseGrouped_x=poped.choose(popedInput$design_space$bUseGrouped_x,FALSE),               
            ## -- Matrix defining the grouping of discrete design variables --
-           G_x=poped.choose(popedInput$design$Gx,NULL),        
+           G_x=poped.choose(popedInput$design_space[["G_x"]],NULL),        
            
            ## --------------------------
            ## ---- FIM calculation 
@@ -394,31 +394,31 @@ create.poped.database <-
            ##  5=FULL FIM parameterized with A,B,C matrices & derivative of variance,
            ##  6=Calculate one model switch at a time, good for large matrices,
            ##  7=Reduced FIM parameterized with A,B,C matrices & derivative of variance) --
-           iFIMCalculationType=poped.choose(popedInput$iFIMCalculationType,1),
+           iFIMCalculationType=poped.choose(popedInput$settings$iFIMCalculationType,1),
            ## -- Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI --
-           iApproximationMethod=poped.choose(popedInput$iApproximationMethod,0),
+           iApproximationMethod=poped.choose(popedInput$settings$iApproximationMethod,0),
            ## -- Num indivduals in each step of FOCE --
-           iFOCENumInd=poped.choose(popedInput$iFOCENumInd,1000),
+           iFOCENumInd=poped.choose(popedInput$settings$iFOCENumInd,1000),
            ## -- The prior FIM (added to calculated FIM) --
-           prior_fim=poped.choose(popedInput$prior_fim,matrix(0,0,1)),
+           prior_fim=poped.choose(popedInput$settings$prior_fim,matrix(0,0,1)),
            ## -- Filname and path for the Autocorrelation function, empty string means no autocorrelation --
-           strAutoCorrelationFile=poped.choose(popedInput$strAutoCorrelationFile,''),
+           strAutoCorrelationFile=poped.choose(popedInput$model$auto_pointer,''),
            
            ## --------------------------
            ## ---- Criterion specification
            ## --------------------------
            
            ## -- D-family design (1) or ED-familty design (0) (with or without parameter uncertainty) --
-           d_switch=poped.choose(popedInput$d_switch,1),
+           d_switch=poped.choose(popedInput$settings$d_switch,1),
            ## -- OFV calculation type for FIM (1=Determinant of FIM,4=log determinant of FIM,6=determinant of interesting part of FIM (Ds)) --
-           ofv_calc_type=poped.choose(popedInput$ofv_calc_type,4),
+           ofv_calc_type=poped.choose(popedInput$settings$ofv_calc_type,4),
            ## -- Ds_index, set index to 1 if a parameter is uninteresting, otherwise 0.
            ## size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma --
            ## default is the fixed effects being important
-           ds_index=popedInput$CriterionOptions$ds_index,   
+           ds_index=popedInput$parameters$ds_index,   
            ## -- Penalty function, empty string means no penalty.  User defined criterion --
-           strEDPenaltyFile=poped.choose(popedInput$strEDPenaltyFile,''),
-           ofv_fun = NULL,
+           strEDPenaltyFile=poped.choose(popedInput$settings$strEDPenaltyFile,''),
+           ofv_fun = poped.choose(popedInput$settings$ofv_fun, NULL),
            
            
            
@@ -426,28 +426,28 @@ create.poped.database <-
            ## ---- E-family Criterion options
            ## --------------------------
            ## -- ED Integral Calculation, 0=Monte-Carlo-Integration, 1=Laplace Approximation, 2=BFGS Laplace Approximation  -- --
-           iEDCalculationType=poped.choose(popedInput$iEDCalculationType,0),     
+           iEDCalculationType=poped.choose(popedInput$settings$iEDCalculationType,0),     
            ## -- Sample size for E-family sampling --
-           ED_samp_size=poped.choose(popedInput$ED_samp_size,45),     
+           ED_samp_size=poped.choose(popedInput$settings$ED_samp_size,45),     
            ## -- How to sample from distributions in E-family calculations. 0=Random Sampling, 1=LatinHyperCube --
-           bLHS=poped.choose(popedInput$bLHS,1),     
+           bLHS=poped.choose(popedInput$settings$bLHS,1),     
            ## -- Filname and path for user defined distributions for E-family designs --
-           strUserDistributionFile=poped.choose(popedInput$strUserDistributionFile,''), 
+           strUserDistributionFile=poped.choose(popedInput$model$user_distribution_pointer,''), 
            
            ## --------------------------
            ## ---- Model parameters 
            ## --------------------------
            
            ## -- Number of typical values --
-           nbpop=popedInput$nbpop,
+           nbpop=popedInput$parameters$nbpop,
            ## -- Number of IIV parameters --
-           NumRanEff=popedInput$nb,
+           NumRanEff=popedInput$parameters$NumRanEff,
            ## -- Number of IOV variance parameters --
-           NumDocc=popedInput$ndocc,
+           NumDocc=popedInput$parameters$NumDocc,
            ## -- Number of occassions --
-           NumOcc= popedInput$NumOcc,
+           NumOcc= popedInput$parameters$NumOcc,
            ## -- The length of the g parameter vector --
-           ng=popedInput$ng,
+           #ng=popedInput$parameters$ng,
            
            ## -- Matrix defining the fixed effects, per row (row number = parameter_number),
            ## the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
@@ -455,40 +455,40 @@ create.poped.database <-
            ## The second column defines the mean.
            ## The third column defines the variance of the distribution.
            # can also just supply the parameter values as a c()
-           bpop=poped.choose(popedInput$design$bpop,stop('bpop must be defined')),
+           bpop=poped.choose(popedInput$parameters$bpop,stop('bpop must be defined')),
            ## -- Matrix defining the diagnonals of the IIV (same logic as for the fixed efects) --
            # can also just supply the parameter values as a c()
-           d=poped.choose(popedInput$design$d,NULL),
+           d=poped.choose(popedInput$parameters$d,NULL),
            ## -- Matrix defining the covariances of the IIV variances --
            # set to zero if not defined
-           covd=popedInput$design$covd,
+           covd=popedInput$parameters$covd,
            ## -- Matrix defining the variances of the residual variability terms --
            ## REQUIRED! No defaults given.
            # can also just supply the diagonal values as a c()
-           sigma=popedInput$design$sigma,
+           sigma=popedInput$parameters$sigma,
            ## -- Matrix defining the IOV, the IOV variances and the IOV distribution --
-           docc=poped.choose(popedInput$design$docc,matrix(0,0,3)),
+           docc=poped.choose(popedInput$parameters$docc,matrix(0,0,3)),
            ## -- Matrix defining the covariance of the IOV --
-           covdocc=poped.choose(popedInput$design$covdocc,zeros(1,length(docc[,2,drop=F])*(length(docc[,2,drop=F])-1)/2)),
+           covdocc=poped.choose(popedInput$parameters$covdocc,zeros(1,length(docc[,2,drop=F])*(length(docc[,2,drop=F])-1)/2)),
            
            ## --------------------------
            ## ---- Model parameters fixed or not
            ## --------------------------
            ## -- Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_bpop=popedInput$notfixed_bpop,
+           notfixed_bpop=popedInput$parameters$notfixed_bpop,
            ## -- Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_d=popedInput$notfixed_d,
+           notfixed_d=popedInput$parameters$notfixed_d,
            ## -- Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_covd=popedInput$notfixed_covd,           
+           notfixed_covd=popedInput$parameters$notfixed_covd,           
            ## -- Vector defining if an IOV variance is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_docc=popedInput$notfixed_docc,
+           notfixed_docc=popedInput$parameters$notfixed_docc,
            ## -- Vector row major order for lower triangular matrix defining if a covariance IOV is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_covdocc=poped.choose(popedInput$notfixed_covdocc,zeros(1,length(covdocc))),
+           notfixed_covdocc=poped.choose(popedInput$parameters$notfixed_covdocc,zeros(1,length(covdocc))),
            ## -- Vector defining if a residual error parameter is fixed or not (1=not fixed, 0=fixed) --
-           notfixed_sigma=poped.choose(popedInput$notfixed_sigma,t(rep(1,size(sigma,2)))),   
+           notfixed_sigma=poped.choose(popedInput$parameters$notfixed_sigma,t(rep(1,size(sigma,2)))),   
            ## -- Vector defining if a covariance residual error parameter is fixed or not (1=not fixed, 0=fixed) --
            ## default is fixed
-           notfixed_covsigma=poped.choose(popedInput$notfixed_covsigma,zeros(1,length(notfixed_sigma)*(length(notfixed_sigma)-1)/2)),  
+           notfixed_covsigma=poped.choose(popedInput$parameters$notfixed_covsigma,zeros(1,length(notfixed_sigma)*(length(notfixed_sigma)-1)/2)),  
            
            
            ## --------------------------
@@ -496,142 +496,142 @@ create.poped.database <-
            ## --------------------------
            
            ## -- Use random search (1=TRUE, 0=FALSE) --
-           bUseRandomSearch=poped.choose(popedInput$bUseRandomSearch,TRUE),           
+           bUseRandomSearch=poped.choose(popedInput$settings$bUseRandomSearch,TRUE),           
            ## -- Use Stochastic Gradient search (1=TRUE, 0=FALSE) --
-           bUseStochasticGradient=poped.choose(popedInput$bUseStochasticGradient,TRUE),
+           bUseStochasticGradient=poped.choose(popedInput$settings$bUseStochasticGradient,TRUE),
            ## -- Use Line search (1=TRUE, 0=FALSE) --
-           bUseLineSearch=poped.choose(popedInput$bUseLineSearch,TRUE),
+           bUseLineSearch=poped.choose(popedInput$settings$bUseLineSearch,TRUE),
            ## -- Use Exchange algorithm (1=TRUE, 0=FALSE) --
-           bUseExchangeAlgorithm=poped.choose(popedInput$bUseExchangeAlgorithm,FALSE),       
+           bUseExchangeAlgorithm=poped.choose(popedInput$settings$bUseExchangeAlgorithm,FALSE),       
            ## -- Use BFGS Minimizer (1=TRUE, 0=FALSE) --
-           bUseBFGSMinimizer=poped.choose(popedInput$bUseBFGSMinimizer,FALSE),
+           bUseBFGSMinimizer=poped.choose(popedInput$settings$bUseBFGSMinimizer,FALSE),
            ## -- Exchange Algorithm Criteria, 1 = Modified, 2 = Fedorov --
-           EACriteria=poped.choose(popedInput$EACriteria,1),
+           EACriteria=poped.choose(popedInput$settings$EACriteria,1),
            ## -- Filename and path for a run file that is used instead of the regular PopED call --
-           strRunFile=poped.choose(popedInput$strRunFile,''),
+           strRunFile=poped.choose(popedInput$settings$run_file_pointer,''),
            
            ## --------------------------
            ## ---- Labeling and file names
            ## --------------------------
            
            ## -- The current PopED version --
-           poped_version=poped.choose(popedInput$strPopEDVersion, packageVersion("PopED")),  
+           poped_version=poped.choose(popedInput$settings$poped_version, packageVersion("PopED")),  
            ## -- The model title --
-           modtit=poped.choose(popedInput$modtit,'PopED model'),
+           modtit=poped.choose(popedInput$settings$modtit,'PopED model'),
            ## -- Filname and path of the output file during search --
-           output_file=poped.choose(popedInput$output_file,paste("PopED_output",'_summary',sep='')),
+           output_file=poped.choose(popedInput$settings$output_file,paste("PopED_output",'_summary',sep='')),
            ## -- Filname suffix of the result function file --
-           output_function_file=poped.choose(popedInput$output_function_file,paste("PopED",'_output_',sep='')),
+           output_function_file=poped.choose(popedInput$settings$output_function_file,paste("PopED",'_output_',sep='')),
            ## -- Filename and path for storage of current optimal design --
-           strIterationFileName=poped.choose(popedInput$strIterationFileName,paste("PopED",'_current.R',sep='')),
+           strIterationFileName=poped.choose(popedInput$settings$strIterationFileName,paste("PopED",'_current.R',sep='')),
            
            
            ## --------------------------
            ## ---- Misc options
            ## --------------------------
            ## -- User defined data structure that, for example could be used to send in data to the model --
-           user_data=poped.choose(popedInput$user_data,cell(0,0)),
+           user_data=poped.choose(popedInput$settings$user_data,cell(0,0)),
            ## -- Value to interpret as zero in design --
-           ourzero=poped.choose(popedInput$ourzero,1e-5),                    
+           ourzero=poped.choose(popedInput$settings$ourzero,1e-5),                    
            #ourzero=poped.choose(popedInput$ourzero,0),                    
            ## -- The seed number used for optimization and sampling -- integer or -1 which creates a random seed
-           dSeed=poped.choose(popedInput$dSeed,NULL),
+           dSeed=poped.choose(popedInput$settings$dSeed,NULL),
            ## -- Vector for line search on continuous design variables (1=TRUE,0=FALSE) --
-           line_opta=poped.choose(popedInput$line_opta,NULL),
+           line_opta=poped.choose(popedInput$settings$line_opta,NULL),
            ## -- Vector for line search on discrete design variables (1=TRUE,0=FALSE) --
-           line_optx=poped.choose(popedInput$line_optx,NULL), #matrix(0,0,1)           
+           line_optx=poped.choose(popedInput$settings$line_optx,NULL), #matrix(0,0,1)           
            ## -- Use graph output during search --
-           bShowGraphs=poped.choose(popedInput$bShowGraphs,FALSE),
+           bShowGraphs=poped.choose(popedInput$settings$bShowGraphs,FALSE),
            ## -- If a log file should be used (0=FALSE, 1=TRUE) --
-           use_logfile=poped.choose(popedInput$use_logfile,FALSE),          
+           use_logfile=poped.choose(popedInput$settings$use_logfile,FALSE),          
            ## -- Method used to calculate M1
            ## (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) --
-           m1_switch=poped.choose(popedInput$m1_switch,1),
+           m1_switch=poped.choose(popedInput$settings$m1_switch,1),
            ## -- Method used to calculate M2
            ## (0=Central difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) --
-           m2_switch=poped.choose(popedInput$m2_switch,1),
+           m2_switch=poped.choose(popedInput$settings$m2_switch,1),
            ## -- Method used to calculate linearization of residual error
            ## (0=Complex difference, 1=Central difference, 30=Automatic differentiation) --
-           hle_switch=poped.choose(popedInput$hle_switch,1),
+           hle_switch=poped.choose(popedInput$settings$hle_switch,1),
            ## -- Method used to calculate the gradient of the model
            ## (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) --
-           gradff_switch=poped.choose(popedInput$gradff_switch,1),
+           gradff_switch=poped.choose(popedInput$settings$gradff_switch,1),
            ## -- Method used to calculate the gradient of the parameter vector g
            ## (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) --
-           gradfg_switch=poped.choose(popedInput$gradfg_switch,1),
+           gradfg_switch=poped.choose(popedInput$settings$gradfg_switch,1),
            ## -- Number of iterations in random search between screen output --
-           rsit_output=poped.choose(popedInput$rsit_output,5),          
+           rsit_output=poped.choose(popedInput$settings$rsit_output,5),          
            ## -- Number of iterations in stochastic gradient search between screen output --
-           sgit_output=poped.choose(popedInput$sgit_output,1),
+           sgit_output=poped.choose(popedInput$settings$sgit_output,1),
            ## -- Step length of derivative of linearized model w.r.t. typical values --
-           hm1=poped.choose(popedInput$hm1,0.00001),
+           hm1=poped.choose(popedInput$settings[["hm1"]],0.00001),
            ## -- Step length of derivative of model w.r.t. g --
-           hlf=poped.choose(popedInput$hlf,0.00001),
+           hlf=poped.choose(popedInput$settings[["hlf"]],0.00001),
            ## -- Step length of derivative of g w.r.t. b --
-           hlg=poped.choose(popedInput$hlg,0.00001),
+           hlg=poped.choose(popedInput$settings[["hlg"]],0.00001),
            ## -- Step length of derivative of variance w.r.t. typical values --
-           hm2=poped.choose(popedInput$hm2,0.00001),
+           hm2=poped.choose(popedInput$settings[["hm2"]],0.00001),
            ## -- Step length of derivative of OFV w.r.t. time --
-           hgd=poped.choose(popedInput$hgd,0.00001),
+           hgd=poped.choose(popedInput$settings[["hgd"]],0.00001),
            ## -- Step length of derivative of model w.r.t. sigma --
-           hle=poped.choose(popedInput$hle,0.00001),
+           hle=poped.choose(popedInput$settings[["hle"]],0.00001),
            ## -- The absolute tolerance for the diff equation solver --
-           AbsTol=poped.choose(popedInput$AbsTol,0.000001),
+           AbsTol=poped.choose(popedInput$settings$AbsTol,0.000001),
            ## -- The relative tolerance for the diff equation solver --
-           RelTol=poped.choose(popedInput$RelTol,0.000001),
+           RelTol=poped.choose(popedInput$settings$RelTol,0.000001),
            ## -- The diff equation solver method, 0, no other option --
-           iDiffSolverMethod=poped.choose(popedInput$iDiffSolverMethod,NULL),
+           iDiffSolverMethod=poped.choose(popedInput$settings$iDiffSolverMethod,NULL),
            ## -- If the differential equation results should be stored in memory (1) or not (0) --
-           bUseMemorySolver=poped.choose(popedInput$bUseMemorySolver,FALSE),
+           bUseMemorySolver=poped.choose(popedInput$settings$bUseMemorySolver,FALSE),
            ## -- Number of Random search iterations --
-           rsit=poped.choose(popedInput$rsit,300),
+           rsit=poped.choose(popedInput$settings[["rsit"]],300),
            ## -- Number of Stochastic gradient search iterations --
-           sgit=poped.choose(popedInput$sgit,150),
+           sgit=poped.choose(popedInput$settings[["sgit"]],150),
            ## -- Number of Random search iterations with discrete optimization --
-           intrsit=poped.choose(popedInput$intrsit,250),
+           intrsit=poped.choose(popedInput$settings$intrsit,250),
            ## -- Number of Stochastic Gradient search iterations with discrete optimization --
-           intsgit=poped.choose(popedInput$intsgit,50),
+           intsgit=poped.choose(popedInput$settings$intsgit,50),
            ## -- Iterations until adaptive narrowing in random search --
-           maxrsnullit=poped.choose(popedInput$maxrsnullit,50),
+           maxrsnullit=poped.choose(popedInput$settings$maxrsnullit,50),
            ## -- Stoachstic Gradient convergence value,
            ## (difference in OFV for D-optimal, difference in gradient for ED-optimal) --
-           convergence_eps=poped.choose(popedInput$convergence_eps,1e-08),
+           convergence_eps=poped.choose(popedInput$settings$convergence_eps,1e-08),
            ## -- Random search locality factor for sample times --
-           rslxt=poped.choose(popedInput$rslxt,10),
+           rslxt=poped.choose(popedInput$settings$rslxt,10),
            ## -- Random search locality factor for covariates --
-           rsla=poped.choose(popedInput$rsla,10),
+           rsla=poped.choose(popedInput$settings$rsla,10),
            ## -- Stochastic Gradient search first step factor for sample times --
-           cfaxt=poped.choose(popedInput$cfaxt,0.001),
+           cfaxt=poped.choose(popedInput$settings$cfaxt,0.001),
            ## -- Stochastic Gradient search first step factor for covariates --
-           cfaa=poped.choose(popedInput$cfaa,0.001),
+           cfaa=poped.choose(popedInput$settings$cfaa,0.001),
            ## -- Use greedy algorithm for group assignment optimization --
-           bGreedyGroupOpt=poped.choose(popedInput$bGreedyGroupOpt,FALSE),
+           bGreedyGroupOpt=poped.choose(popedInput$settings$bGreedyGroupOpt,FALSE),
            ## -- Exchange Algorithm StepSize --
-           EAStepSize=poped.choose(popedInput$EAStepSize,0.01),
+           EAStepSize=poped.choose(popedInput$settings$EAStepSize,0.01),
            ## -- Exchange Algorithm NumPoints --
-           EANumPoints=poped.choose(popedInput$EANumPoints,FALSE),
+           EANumPoints=poped.choose(popedInput$settings$EANumPoints,FALSE),
            ## -- Exchange Algorithm Convergence Limit/Criteria --
-           EAConvergenceCriteria=poped.choose(popedInput$EAConvergenceCriteria,1e-20),
+           EAConvergenceCriteria=poped.choose(popedInput$settings$EAConvergenceCriteria,1e-20),
            ## -- Avoid replicate samples when using Exchange Algorithm --
-           bEANoReplicates=poped.choose(popedInput$bEANoReplicates,FALSE),
+           bEANoReplicates=poped.choose(popedInput$settings$bEANoReplicates,FALSE),
            ## -- BFGS Minimizer Convergence Criteria Minimum Step --
-           BFGSConvergenceCriteriaMinStep=poped.choose(popedInput$BFGSConvergenceCriteriaMinStep,1e-08),
+           BFGSConvergenceCriteriaMinStep=poped.choose(popedInput$settings$BFGSConvergenceCriteriaMinStep,1e-08),
            ## -- BFGS Minimizer Convergence Criteria Normalized Projected Gradient Tolerance --
-           BFGSProjectedGradientTol=poped.choose(popedInput$BFGSProjectedGradientTol,0.0001),
+           BFGSProjectedGradientTol=poped.choose(popedInput$settings$BFGSProjectedGradientTol,0.0001),
            ## -- BFGS Minimizer Line Search Tolerance f --
-           BFGSTolerancef=poped.choose(popedInput$BFGSTolerancef,0.001),
+           BFGSTolerancef=poped.choose(popedInput$settings$BFGSTolerancef,0.001),
            ## -- BFGS Minimizer Line Search Tolerance g --
-           BFGSToleranceg=poped.choose(popedInput$BFGSToleranceg,0.9),
+           BFGSToleranceg=poped.choose(popedInput$settings$BFGSToleranceg,0.9),
            ## -- BFGS Minimizer Line Search Tolerance x --
-           BFGSTolerancex=poped.choose(popedInput$BFGSTolerancex,0.1),
+           BFGSTolerancex=poped.choose(popedInput$settings$BFGSTolerancex,0.1),
            ## -- Number of iterations in ED-optimal design to calculate convergence criteria --
-           ED_diff_it=poped.choose(popedInput$ED_diff_it,30),
+           ED_diff_it=poped.choose(popedInput$settings$ED_diff_it,30),
            ## -- ED-optimal design convergence criteria in percent --
-           ED_diff_percent=poped.choose(popedInput$ED_diff_percent,10),
+           ED_diff_percent=poped.choose(popedInput$settings$ED_diff_percent,10),
            ## -- Number of grid points in the line search --
-           line_search_it=poped.choose(popedInput$line_search_it,50),
+           line_search_it=poped.choose(popedInput$settings$ls_step_size,50),
            ## -- Number of iterations of full Random search and full Stochastic Gradient if line search is not used --
-           Doptim_iter=poped.choose(popedInput$iNumSearchIterationsIfNotLineSearch,1),
+           Doptim_iter=poped.choose(popedInput$settings$iNumSearchIterationsIfNotLineSearch,1),
            
            ## --------------------------
            ## -- Parallel options for PopED -- --
@@ -642,35 +642,35 @@ create.poped.database <-
            #     ## 1 or 4 = Only using MCC (shared lib),
            #     ## 2 or 5 = Only MPI,
            #     ## Option 0,1,2 runs PopED and option 3,4,5 stops after compilation --
-           iCompileOption=poped.choose(popedInput$parallelSettings$iCompileOption,-1),
+           iCompileOption=poped.choose(popedInput$settings$parallel$iCompileOption,-1),
            ## -- Parallel method to use (0 = Matlab PCT, 1 = MPI) --
-           iUseParallelMethod=poped.choose(popedInput$parallelSettings$iUseParallelMethod,1),
+           iUseParallelMethod=poped.choose(popedInput$settings$parallel$iUseParallelMethod,1),
            ## -- Additional dependencies used in MCC compilation (mat-files), if several space separated --
-           MCC_Dep=poped.choose(popedInput$parallelSettings$strAdditionalMCCCompilerDependencies,''),
+           MCC_Dep=poped.choose(popedInput$settings$parallel$strAdditionalMCCCompilerDependencies,''),
            ## -- Compilation output executable name --
-           strExecuteName=poped.choose(popedInput$parallelSettings$strExecuteName,'calc_fim.exe'),
+           strExecuteName=poped.choose(popedInput$settings$parallel$strExecuteName,'calc_fim.exe'),
            ## -- Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) --
-           iNumProcesses=poped.choose(popedInput$parallelSettings$iNumProcesses,2),
+           iNumProcesses=poped.choose(popedInput$settings$parallel$iNumProcesses,2),
            ## -- Number of design evaluations that should be evaluated in each process before getting new work from job manager --
-           iNumChunkDesignEvals=poped.choose(popedInput$parallelSettings$iNumChunkDesignEvals,-2),
+           iNumChunkDesignEvals=poped.choose(popedInput$settings$parallel$iNumChunkDesignEvals,-2),
            ## -- The prefix of the input mat file to communicate with the excutable --
-           strMatFileInputPrefix=poped.choose(popedInput$parallelSettings$strMatFileInputPrefix,'parallel_input'),
+           strMatFileInputPrefix=poped.choose(popedInput$settings$parallel$strMatFileInputPrefix,'parallel_input'),
            ## -- The prefix of the output mat file to communicate with the excutable --
-           Mat_Out_Pre=poped.choose(popedInput$parallelSettings$strMatFileOutputPrefix,'parallel_output'),
+           Mat_Out_Pre=poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,'parallel_output'),
            ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
-           strExtraRunOptions=poped.choose(popedInput$parallelSettings$strExtraRunOptions,''),
+           strExtraRunOptions=poped.choose(popedInput$settings$parallel$strExtraRunOptions,''),
            ## -- Polling time to check if the parallel execution is finished --
-           dPollResultTime=poped.choose(popedInput$parallelSettings$dPollResultTime,0.1),
+           dPollResultTime=poped.choose(popedInput$settings$parallel$dPollResultTime,0.1),
            ## -- The file containing the popedInput structure that should be used to evaluate the designs --
-           strFunctionInputName=poped.choose(popedInput$parallelSettings$strFunctionInputName,'function_input'),
+           strFunctionInputName=poped.choose(popedInput$settings$parallel$strFunctionInputName,'function_input'),
            ## -- If the random search is going to be executed in parallel --
-           bParallelRS=poped.choose(popedInput$parallelSettings$bParallelRS,FALSE),
+           bParallelRS=poped.choose(popedInput$settings$parallel$bParallelRS,FALSE),
            ## -- If the stochastic gradient search is going to be executed in parallel --
-           bParallelSG=poped.choose(popedInput$parallelSettings$bParallelSG,FALSE),
+           bParallelSG=poped.choose(popedInput$settings$parallel$bParallelSG,FALSE),
            ## -- If the modified exchange algorithm is going to be executed in parallel --
-           bParallelMFEA=poped.choose(popedInput$parallelSettings$bParallelMFEA,FALSE),
+           bParallelMFEA=poped.choose(popedInput$settings$parallel$bParallelMFEA,FALSE),
            ## -- If the line search is going to be executed in parallel --
-           bParallelLS=poped.choose(popedInput$parallelSettings$bParallelLS,FALSE)
+           bParallelLS=poped.choose(popedInput$settings$parallel$bParallelLS,FALSE)
   ){
     
     poped.db <- list()
@@ -924,6 +924,8 @@ create.poped.database <-
     
     if(is.function(fg_fun)){
       poped.db$model$fg_pointer = fg_fun 
+    } else if(is.character(fg_fun)){
+      if(exists(fg_fun)) poped.db$model$fg_pointer = fg_fun 
     } else if(exists(fg_file)){
       poped.db$model$fg_pointer = fg_file
     } else {
@@ -990,23 +992,28 @@ create.poped.database <-
     
     
     poped.db$model$auto_pointer=zeros(1,0)
-    if((!as.character(strAutoCorrelationFile)=='')){
-      if(exists(strAutoCorrelationFile)){
-        poped.db$model$auto_pointer = strAutoCorrelationFile
-      } else {
-        source(popedInput$strAutoCorrelationFile) 
-        returnArgs <-  fileparts(popedInput$strAutoCorrelationFile) 
-        strAutoCorrelationFilePath <- returnArgs[[1]]
-        strAutoCorrelationFilename  <- returnArgs[[2]]
-        ##     if (~strcmp(strAutoCorrelationFilePath,''))
-        ##        cd(strAutoCorrelationFilePath);
-        ##     end
-        poped.db$model$auto_pointer = strAutoCorrelationFilename
+    #poped.db$model$auto_pointer=''
+    if(!isempty(strAutoCorrelationFile)){
+      if((!as.character(strAutoCorrelationFile)=='')){
+        if(exists(strAutoCorrelationFile)){
+          poped.db$model$auto_pointer = strAutoCorrelationFile
+        } else {
+          source(popedInput$strAutoCorrelationFile) 
+          returnArgs <-  fileparts(popedInput$strAutoCorrelationFile) 
+          strAutoCorrelationFilePath <- returnArgs[[1]]
+          strAutoCorrelationFilename  <- returnArgs[[2]]
+          ##     if (~strcmp(strAutoCorrelationFilePath,''))
+          ##        cd(strAutoCorrelationFilePath);
+          ##     end
+          poped.db$model$auto_pointer = strAutoCorrelationFilename
+        }
       }
     }
     
     if(is.function(ff_fun)){
       poped.db$model$ff_pointer = ff_fun 
+    } else if(is.character(ff_fun)){
+      if(exists(ff_fun)) poped.db$model$ff_pointer = ff_fun 
     } else if(exists(ff_file)){
       poped.db$model$ff_pointer = ff_file 
     } else {
@@ -1038,6 +1045,8 @@ create.poped.database <-
     
     if(is.function(fError_fun)){
       poped.db$model$ferror_pointer = fError_fun 
+    } else if(is.character(fError_fun)){
+      if(exists(fError_fun)) poped.db$model$ferror_pointer = fError_fun 
     } else if(exists(fError_file)){
       poped.db$model$ferror_pointer = fError_file
     } else {
@@ -1076,7 +1085,8 @@ create.poped.database <-
     poped.db$parameters$NumRanEff = poped.choose(NumRanEff,find.largest.index(poped.db$model$fg_pointer,"b"))
     poped.db$parameters$NumDocc = poped.choose(NumDocc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=T))
     poped.db$parameters$NumOcc = poped.choose(NumOcc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=F))
-    poped.db$parameters$ng = poped.choose(ng,length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0))))    
+    #poped.db$parameters$ng = poped.choose(ng,length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0))))    
+    poped.db$parameters$ng = length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0)))    
     
     poped.db$parameters$notfixed_docc = poped.choose(notfixed_docc,matrix(1,nrow=1,ncol=poped.db$parameters$NumDocc))
     poped.db$parameters$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$parameters$NumRanEff))
@@ -1229,21 +1239,23 @@ create.poped.database <-
     poped.db$settings$bCalculateEBE = FALSE
     poped.db$settings$bGreedyGroupOpt = bGreedyGroupOpt
     poped.db$settings$bEANoReplicates = bEANoReplicates
-        
-    if(strRunFile==''){
-      poped.db$settings$run_file_pointer=zeros(1,0)
-    } else {
-      if(exists(strRunFile)){
-        poped.db$settings$run_file_pointer = strRunFile
+    
+    if(!isempty(strRunFile)){    
+      if(strRunFile==''){
+        poped.db$settings$run_file_pointer=zeros(1,0)
       } else {
-        source(popedInput$strRunFile)
-        returnArgs <-  fileparts(popedInput$strRunFile) 
-        strRunFilePath <- returnArgs[[1]]
-        strRunFilename  <- returnArgs[[2]]
-        ## if (~strcmp(strErrorModelFilePath,''))
-        ##    cd(strErrorModelFilePath);
-        ## end
-        poped.db$settings$run_file_pointer = strRunFilename
+        if(exists(strRunFile)){
+          poped.db$settings$run_file_pointer = strRunFile
+        } else {
+          source(popedInput$strRunFile)
+          returnArgs <-  fileparts(popedInput$strRunFile) 
+          strRunFilePath <- returnArgs[[1]]
+          strRunFilename  <- returnArgs[[2]]
+          ## if (~strcmp(strErrorModelFilePath,''))
+          ##    cd(strErrorModelFilePath);
+          ## end
+          poped.db$settings$run_file_pointer = strRunFilename
+        }
       }
     }
     #poped.db <- convert_popedInput(popedInput,...)
