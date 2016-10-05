@@ -65,9 +65,7 @@ poped.db <- create.poped.database(ff_fun=ff.ode,
 plot_model_prediction(poped.db)
 
 # calculations are noticeably slower than with the analytic solution
-tic()
-evaluate_design(poped.db)
-toc()
+tic(); evaluate_design(poped.db); toc()
 
 
 
@@ -108,31 +106,13 @@ ff.ode.compiled <- function(model_switch, xt, parameters, poped.db){
   })
 }
 
-poped.db.compiled <- create.poped.database(ff_fun=ff.ode.compiled,
-                                           fError_fun = feps.add.prop,
-                                           fg_fun = sfg,
-                                           groupsize=20,
-                                           m=2,      #number of groups
-                                           sigma=c(0.04,5e-6),
-                                           bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                           d=c(V=0.09,KA=0.09,CL=0.25^2), 
-                                           notfixed_bpop=c(1,1,1,0),
-                                           notfixed_sigma=c(0,0),
-                                           xt=c( 1,2,8,240,245),
-                                           minxt=c(0,0,0,240,240),
-                                           maxxt=c(10,10,10,248,248),
-                                           discrete_xt = list(0:248),
-                                           bUseGrouped_xt=1,
-                                           a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                           maxa=c(DOSE=200,TAU=24),
-                                           mina=c(DOSE=0,TAU=24))
+## -- Update poped.db with compiled function
+poped.db.compiled <- create.poped.database(poped.db,ff_fun=ff.ode.compiled)
 
 plot_model_prediction(poped.db.compiled)
 
-# calculations are much faster than with the pure R solution
-tic()
-evaluate_design(poped.db.compiled)
-toc()
+# calculations are faster than with the pure R solution
+tic(); evaluate_design(poped.db.compiled); toc()
 
 ## optimize with line search
 output <- poped_optim(poped.db.compiled, opt_xt =TRUE, parallel=TRUE, method = c("LS"))
@@ -172,31 +152,13 @@ ff.ode.rcpp <- function(model_switch, xt, parameters, poped.db){
   })
 }
 
-poped.db.compiled.rcpp <- create.poped.database(ff_fun=ff.ode.rcpp,
-                                                fError_fun = feps.add.prop,
-                                                fg_fun = sfg,
-                                                groupsize=20,
-                                                m=2,      #number of groups
-                                                sigma=c(0.04,5e-6),
-                                                bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                                d=c(V=0.09,KA=0.09,CL=0.25^2), 
-                                                notfixed_bpop=c(1,1,1,0),
-                                                notfixed_sigma=c(0,0),
-                                                xt=c( 1,2,8,240,245),
-                                                minxt=c(0,0,0,240,240),
-                                                maxxt=c(10,10,10,248,248),
-                                                discrete_xt = list(0:248),
-                                                bUseGrouped_xt=1,
-                                                a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                                maxa=c(DOSE=200,TAU=24),
-                                                mina=c(DOSE=0,TAU=24))
+## -- Update poped.db with compiled function
+poped.db.compiled.rcpp <- create.poped.database(poped.db,ff_fun=ff.ode.rcpp)
 
 plot_model_prediction(poped.db.compiled.rcpp)
 
-# calculations are much faster than with the pure R solution but slower than dll in desolve
-tic()
-evaluate_design(poped.db.compiled.rcpp)
-toc()
+# calculations are much faster than with the pure R solution but slower than .dll compiled solution in desolve
+tic(); evaluate_design(poped.db.compiled.rcpp); toc()
 
 
   

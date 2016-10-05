@@ -165,26 +165,9 @@ Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop
 In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the hour are allowed.
 
 ```{r, message = FALSE,results='hide'}
-poped.db.2 <- create.poped.database(ff_file="ff",
-                                  fg_file="sfg",
-                                  fError_file="feps",
-                                  bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                  notfixed_bpop=c(1,1,1,0),
-                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
-                                  sigma=c(0.04,5e-6),
-                                  notfixed_sigma=c(0,0),
-                                  m=2,
-                                  groupsize=20,
-                                  xt=c( 1,2,8,240,245),
-                                  minxt=c(0,0,0,240,240),
-                                  maxxt=c(10,10,10,248,248),
-                                  discrete_xt = list(0:248),
-                                  bUseGrouped_xt=1,
-                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                  maxa=c(DOSE=200,TAU=24),
-                                  mina=c(DOSE=0,TAU=24))
-
-output_discrete <- poped_optim(poped.db.2, opt_xt=T)
+poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
+                                          
+output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 
 ```
 

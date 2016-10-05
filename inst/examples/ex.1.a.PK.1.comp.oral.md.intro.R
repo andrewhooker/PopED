@@ -82,24 +82,7 @@ plot_model_prediction(output_2$poped.db)
 
 # Optimization of sample times with only integer time points in design space
 # faster than continuous optimization in this case
-poped.db.discrete <- create.poped.database(ff_file="ff",
-                                           fg_file="sfg",
-                                           fError_file="feps",
-                                           bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                           notfixed_bpop=c(1,1,1,0),
-                                           d=c(V=0.09,KA=0.09,CL=0.25^2), 
-                                           sigma=c(0.04,5e-6),
-                                           notfixed_sigma=c(0,0),
-                                           m=2,
-                                           groupsize=20,
-                                           xt=c( 1,2,8,240,245),
-                                           minxt=c(0,0,0,240,240),
-                                           maxxt=c(10,10,10,248,248),
-                                           discrete_xt = list(0:248),
-                                           bUseGrouped_xt=1,
-                                           a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                           maxa=c(DOSE=200,TAU=24),
-                                           mina=c(DOSE=0,TAU=24))
+poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
 
 output_discrete <- poped_optim(poped.db.discrete, opt_xt=T, parallel = TRUE)
 

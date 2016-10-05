@@ -49,9 +49,9 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
   return(list( y= y,poped.db =poped.db )) 
 }
 
-poped.db <- create.poped.database(ff_fun="ff",
-                                  fError_fun="feps",
-                                  fg_fun="sfg",
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fError_fun=feps,
+                                  fg_fun=sfg,
                                   groupsize=20,
                                   m=3,
                                   sigma=diag(c(0.15,0.015)),
@@ -62,7 +62,7 @@ poped.db <- create.poped.database(ff_fun="ff",
                                   model_switch=c( 1,1,1,1,2,2,2,2),
                                   minxt=0,
                                   maxxt=5,
-                                  #ourzero = 0,
+                                  ourzero = 0,
                                   a=list(c(DOSE=0),c(DOSE=1),c(DOSE=2)),
                                   maxa=c(DOSE=10),
                                   mina=c(DOSE=0))

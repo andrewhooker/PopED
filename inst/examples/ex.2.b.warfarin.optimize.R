@@ -84,21 +84,9 @@ plot_model_prediction(output_D_T$poped.db)
 
 # Discrete optimization with only integer times allowed
 # and Dose in units of 10
-poped.db.discrete <- create.poped.database(ff_file="ff",
-                                           fg_file="sfg",
-                                           fError_file="feps",
-                                           bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                           notfixed_bpop=c(1,1,1,0),
-                                           d=c(CL=0.07, V=0.02, KA=0.6), 
-                                           sigma=c(0.01,0.25),
-                                           groupsize=32,
+poped.db.discrete <- create.poped.database(poped.db,
                                            xt=c( 1,2,3,6,24,36,72,120),
-                                           minxt=0,
-                                           maxxt=120,
                                            discrete_xt = list(0:120),
-                                           a=70,
-                                           mina=0,
-                                           maxa=100,
                                            discrete_a = list(seq(10,100,10)))
 
 output_discrete <- poped_optim(poped.db.discrete, opt_xt = T, opt_a = T, parallel = T)

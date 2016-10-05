@@ -1,15 +1,21 @@
 library(PopED)
 library(deSolve)
 
-# This option is used to make this script run fast but without convergence 
-# (fast means a few seconds for each argument at the most).
-# This allows you to "source" this file and easily see how things work
-# without waiting for more than 10-30 seconds.
-# Change to FALSE if you want to run each function so that
-# the solutions have converged (can take many minutes).
-fast <- TRUE 
 
-
+tmdd_qss_one_target_model_ode <- function(Time,State,Pars){
+  with(as.list(c(State, Pars)), {   
+    RTOT = A4
+    CTOT= A2/V1
+    CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)^2+4*KSSS*CTOT))
+    
+    dA1 = -KA*A1
+    dA2 = FAVAIL*KA*A1+(Q/V2)*A3-(CL/V1+Q/V1)*CFREE*V1-RTOT*KINT*CFREE*V1/(KSSS+CFREE)  
+    dA3 = (Q/V1)*CFREE*V1 - (Q/V2)*A3
+    dA4 = R0*KDEG - KDEG*RTOT - (KINT-KDEG)*(RTOT*CFREE/(KSSS+CFREE))
+    
+    return(list(c(dA1,dA2,dA3,dA4)))  
+  })
+}
 
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1])  ,
@@ -25,7 +31,7 @@ sfg <- function(x,a,bpop,b,bocc){
                 KDEG=bpop[11]*exp(b[11])	,
                 KINT=bpop[12]*exp(b[12])	,
                 DOSE=a[1]	,
-                SC_FLAG=x[1])   
+                SC_FLAG=a[2])   
   return(parameters) 
 }
 
@@ -66,20 +72,6 @@ tmdd_qss_one_target_model <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-tmdd_qss_one_target_model_ode <- function(Time,State,Pars){
-  with(as.list(c(State, Pars)), {   
-    RTOT = A4
-    CTOT= A2/V1
-    CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)^2+4*KSSS*CTOT))
-    
-    dA1 = -KA*A1
-    dA2 = FAVAIL*KA*A1+(Q/V2)*A3-(CL/V1+Q/V1)*CFREE*V1-RTOT*KINT*CFREE*V1/(KSSS+CFREE)  
-    dA3 = (Q/V1)*CFREE*V1 - (Q/V2)*A3
-    dA4 = R0*KDEG - KDEG*RTOT - (KINT-KDEG)*(RTOT*CFREE/(KSSS+CFREE))
-    
-    return(list(c(dA1,dA2,dA3,dA4)))  
-  })
-}
 
 tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
   returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
@@ -97,9 +89,6 @@ tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.
 #################################################
 # for study 1 in gibiansky,JPKPD,2012 table 2 
 #################################################
-
-x.space <- cell(4,1)
-for(i in 1:4) x.space[i,1] <- list(c(0,1))
 
 # for study 1 in gibiansky,JPKPD,2012 table 2 
 poped.db.1 <- create.poped.database(ff_file="tmdd_qss_one_target_model",
@@ -121,15 +110,19 @@ poped.db.1 <- create.poped.database(ff_file="tmdd_qss_one_target_model",
                                   bUseGrouped_xt=1,
                                   G_xt=c(1,2,3,4,5,6,7,8,9,10,11,12,13,
                                          1,2,3,4,5,6,7,8,9,10,11,12,13),
-                                  a=rbind(100,300,600,1000),
-                                  x=rbind(0,0,0,1),
-                                  discrete_x=x.space)
+                                  a=list(c(DOSE=100, SC_FLAG=0),
+                                         c(DOSE=300, SC_FLAG=0),
+                                         c(DOSE=600, SC_FLAG=0),
+                                         c(DOSE=1000, SC_FLAG=1)),
+                                  discrete_a = list(DOSE=seq(100,1000,by=100),
+                                                    SC_FLAG=c(0,1)))
 
 plot_model_prediction(poped.db.1,facet_scales="free")
 
 # evaluation time is roughly 40 seconds 
 # (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
 # see compiled version ex.8.b for a faster implementation
+evaluate_design(poped.db.1)
 if(!fast){ 
   tic()
   FIM <- evaluate.fim(poped.db.1) 

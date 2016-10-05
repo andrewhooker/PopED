@@ -70,9 +70,7 @@ plot_model_prediction(poped.db,IPRED=T,DV=T)
 
 ## evaluate initial design
 # speed is quite slow with the ODE model if not using compiled code (see below)
-tic()
-evaluate_design(poped.db)
-toc()
+tic(); design_ode <- evaluate_design(poped.db); toc()
 
 
 ##################################
@@ -109,21 +107,8 @@ ff.ODE.compiled <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-## -- Define initial design  and design space
-poped.db.compiled <- create.poped.database(ff_fun=ff.ODE.compiled,
-                                           fg_fun = sfg,
-                                           fError_fun = feps.add.prop,
-                                           bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                           notfixed_bpop=c(1,1,1,0),
-                                           d=c(CL=0.07, V=0.02, KA=0.6), 
-                                           sigma=c(0.01,0.25),
-                                           groupsize=32,
-                                           xt=c( 0.5,1,2,6,24,36,72,120),
-                                           minxt=0,
-                                           maxxt=120,
-                                           a=70,
-                                           mina=0,
-                                           maxa=100)
+## -- Update poped.db with compiled function
+poped.db.compiled <- create.poped.database(poped.db, ff_fun=ff.ODE.compiled)
 
 ##  create plot of model without variability 
 plot_model_prediction(poped.db.compiled)
@@ -132,10 +117,10 @@ plot_model_prediction(poped.db.compiled)
 plot_model_prediction(poped.db.compiled,IPRED=T,DV=T)
 
 ## evaluate initial design (much faster than pure R solution)
-tic(); evaluate_design(poped.db.compiled); toc()
+tic(); design_ode_compiled <- evaluate_design(poped.db.compiled); toc()
 
 # no difference in computation
-evaluate_design(poped.db.compiled)[["ofv"]] - evaluate_design(poped.db)[["ofv"]]
+design_ode_compiled[["ofv"]] - design_ode[["ofv"]]
 
 ## making optimization times more resonable
 output <- poped_optim(poped.db.compiled, opt_xt =TRUE, parallel=TRUE, method = c("LS"))
@@ -178,23 +163,11 @@ ff.ode.rcpp <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-poped.db.compiled.rcpp <- create.poped.database(ff_fun=ff.ode.rcpp,
-                                                fg_fun = sfg,
-                                                fError_fun = feps.add.prop,
-                                                bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                                notfixed_bpop=c(1,1,1,0),
-                                                d=c(CL=0.07, V=0.02, KA=0.6), 
-                                                sigma=c(0.01,0.25),
-                                                groupsize=32,
-                                                xt=c( 0.5,1,2,6,24,36,72,120),
-                                                minxt=0,
-                                                maxxt=120,
-                                                a=70,
-                                                mina=0,
-                                                maxa=100)
+## -- Update poped.db with compiled function
+poped.db.compiled.rcpp <- create.poped.database(poped.db,ff_fun=ff.ode.rcpp)
 
-## evaluate initial design (much faster than pure R solution)
-tic(); evaluate_design(poped.db.compiled.rcpp); toc()
+## evaluate initial design (much faster than pure R solution, slower than desilve method)
+tic(); design_ode_compiled_rcpp <- evaluate_design(poped.db.compiled.rcpp); toc()
 
 ##################################
 # comapre to the analytic solution
@@ -208,35 +181,11 @@ ff <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-feps <- function(model_switch,xt,parameters,epsi,poped.db){
-  ## -- Residual Error function
-  ## -- Proportional + additive
-  y <- ff(model_switch,xt,parameters,poped.db)[[1]] 
-  y = y*(1+epsi[,1]) + epsi[,2]  
-  return(list(y=y,poped.db=poped.db)) 
-}
-
-
-poped.db.1 <- create.poped.database(ff_file="ff",
-                                    fg_file="sfg",
-                                    fError_file="feps",
-                                    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                    notfixed_bpop=c(1,1,1,0),
-                                    d=c(CL=0.07, V=0.02, KA=0.6), 
-                                    sigma=c(0.01,0.25),
-                                    groupsize=32,
-                                    xt=c( 0.5,1,2,6,24,36,72,120),
-                                    minxt=0,
-                                    maxxt=120,
-                                    a=70,
-                                    mina=0,
-                                    maxa=100)
+## -- Update poped.db with analytic function
+poped.db.analytic <- create.poped.database(poped.db,ff_fun=ff)
 
 ## computation times are ~6x faster with the analytic solution
-tic(); evaluate_design(poped.db.1); toc()
+tic(); design_analytic <- evaluate_design(poped.db.analytic); toc()
 
-## differences can be reduced by decreasing atol and rtol in the "ode" function 
-design_analytic <- evaluate_design(poped.db.1)
-design_ode_compiled <- evaluate_design(poped.db.compiled)
-
+## differences can be reduced by decreasing atol and rtol in the desolve "ode" function 
 (design_analytic$ofv - design_ode_compiled$ofv)/design_ode_compiled$ofv*100
