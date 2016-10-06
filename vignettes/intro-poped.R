@@ -69,45 +69,19 @@ head(dat,n=5);tail(dat,n=5)
 ## ------------------------------------------------------------------------
 evaluate_design(poped.db)
 
-## ----optimize,message = FALSE,results='hide',cache=TRUE------------------
-output <- poped_optim(poped.db, opt_xt=T)
-
 ## ---- fig.width=6--------------------------------------------------------
 summary(output)
 plot_model_prediction(output$poped.db)
 
-## ----fig.width=6,fig.height=6,cache=TRUE---------------------------------
-plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
-
 ## ---- message = FALSE,results='hide'-------------------------------------
-poped.db.2 <- create.poped.database(ff_file="ff",
-                                  fg_file="sfg",
-                                  fError_file="feps",
-                                  bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-                                  notfixed_bpop=c(1,1,1,0),
-                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
-                                  sigma=c(0.04,5e-6),
-                                  notfixed_sigma=c(0,0),
-                                  m=2,
-                                  groupsize=20,
-                                  xt=c( 1,2,8,240,245),
-                                  minxt=c(0,0,0,240,240),
-                                  maxxt=c(10,10,10,248,248),
-                                  discrete_xt = list(0:248),
-                                  bUseGrouped_xt=1,
-                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                  maxa=c(DOSE=200,TAU=24),
-                                  mina=c(DOSE=0,TAU=24))
-
-output_discrete <- poped_optim(poped.db.2, opt_xt=T)
+poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
+                                          
+output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 
 
 ## ----fig.width=6---------------------------------------------------------
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
-
-## ----optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE----
-#  output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
 
 ## ------------------------------------------------------------------------
 crit_fcn <- function(poped.db,...){
@@ -115,11 +89,6 @@ crit_fcn <- function(poped.db,...){
   sum((pred_df[pred_df["Time"]==240,"PRED"] - c(0.2,0.35))^2)
 }
 crit_fcn(output$poped.db)
-
-## ----cost_optimization, message = FALSE,results='hide',cache=TRUE--------
-output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
-                     ofv_fun=crit_fcn,
-                     maximize = F)
 
 ## ---- fig.width=6--------------------------------------------------------
 summary(output_cost)
