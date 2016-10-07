@@ -615,8 +615,8 @@ create.poped.database <-
            ## -- Avoid replicate samples when using Exchange Algorithm --
            bEANoReplicates=poped.choose(popedInput$settings$bEANoReplicates,FALSE),
            ## -- BFGS Minimizer Convergence Criteria Minimum Step --
-           BFGSConvergenceCriteriaMinStep = 
-             poped.choose(popedInput$settings$BFGSConvergenceCriteriaMinStep,1e-08),
+           BFGSConvergenceCriteriaMinStep=NULL,
+           #poped.choose(popedInput$settings$BFGSConvergenceCriteriaMinStep,1e-08),
            ## -- BFGS Minimizer Convergence Criteria Normalized Projected Gradient Tolerance --
            BFGSProjectedGradientTol=poped.choose(popedInput$settings$BFGSProjectedGradientTol,0.0001),
            ## -- BFGS Minimizer Line Search Tolerance f --
@@ -647,8 +647,8 @@ create.poped.database <-
            ## -- Parallel method to use (0 = Matlab PCT, 1 = MPI) --
            iUseParallelMethod=poped.choose(popedInput$settings$parallel$iUseParallelMethod,1),
            ## -- Additional dependencies used in MCC compilation (mat-files), if several space separated --
-           MCC_Dep = 
-             poped.choose(popedInput$settings$parallel$strAdditionalMCCCompilerDependencies, ''),
+           MCC_Dep = NULL,
+           #poped.choose(popedInput$settings$parallel$strAdditionalMCCCompilerDependencies, ''),
            ## -- Compilation output executable name --
            strExecuteName=poped.choose(popedInput$settings$parallel$strExecuteName,'calc_fim.exe'),
            ## -- Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) --
@@ -708,6 +708,14 @@ create.poped.database <-
     poped.db$settings <- list()
     poped.db$settings$poped_version = poped_version
     
+    if(is.null(BFGSConvergenceCriteriaMinStep)){
+      BFGSConvergenceCriteriaMinStep <- poped.choose(popedInput$settings$BFGSConvergenceCriteriaMinStep,
+                                                     1e-08)
+    }
+   
+    if(is.null(MCC_Dep)){
+      MCC_Dep <- poped.choose(popedInput$settings$parallel$strAdditionalMCCCompilerDependencies, '')
+    }
     
     poped.db$model <- list()
     poped.db$model$user_distribution_pointer=''
