@@ -456,7 +456,44 @@ create_design_space <- function(
     
     ## for a_space
     if(!is.null(a_space)){
-      #       if(is.list(x_space)) x_space <- dplyr::bind_rows(lapply(x_space,function(x){data.frame(rbind(unlist(x)))})))
+      if(is.null(dim(a_space)) && is.list(a_space)){
+        if(!is.list(unlist(a_space, recursive = F))){ # only one set of values
+          a_space <- matrix(rep(a_space,m),ncol=length(a_space),nrow=m,byrow=T)
+        } else {
+          tmp_lst <- lapply(a_space,function(x){matrix(x,ncol=length(x),nrow=1,byrow=T,dimnames = list(NULL,names(x)))})
+          mat <- NULL
+          for(jj in 1:length(tmp_lst)){
+            tmp <- tmp_lst[[jj]]
+            if(!is.null(colnames(tmp)) && !is.null(colnames(a))) tmp <- tmp[, colnames(a)]
+            mat <- rbind(mat,tmp)
+          }
+          a_space <- mat
+        }
+      }
+      #       if(is.list(x_space)) x_space <- dplyr::bind_rows(lapply(a_space,function(x){data.frame(rbind(unlist(x)))}))
+      # browser()
+      # a_space
+      # str(a_space)
+      # tmp <- list(a_space,a_space)
+      # str(tmp)
+      # 
+      # a_tmp =c(DOSE=100,TAU=24)
+      # dplyr::bind_rows(list(a_tmp))
+      # as.matrix(dplyr::bind_rows(lapply(a_tmp,function(x){data.frame(rbind(unlist(x,recursive = FALSE)))})))
+      # 
+      # if(is.list(a_space)){
+      #   #plyr::rbind.fill.matrix(t(a[[1]]),t(a[[2]]))
+      #   #a <- t(sapply(a,'[',seq(max(sapply(a,length)))))
+      #   #all_cov_names <- unique(unlist(sapply(a,names)))
+      #   
+      #   #a <- as.matrix(plyr::rbind.fill(lapply(a,function(x){data.frame(rbind(unlist(x)))})))
+      #   if(packageVersion("dplyr") >= "0.5.0"){
+      #     a <- 
+      #       as.matrix(dplyr::bind_rows(lapply(a_space,function(x){data.frame(rbind(unlist(x,recursive = FALSE)))})))
+      #   } else {
+      #     a <- as.matrix(dplyr::rbind_all(lapply(a,function(x){data.frame(rbind(unlist(x)))})))
+      #   }
+      # }
       if(size(a_space,1)==1 && m!=1) a_space <- matrix(rep(a_space,m),ncol=length(a_space),nrow=m,byrow=T)
       if(size(a_space,2)==1 && size(a,2)!=1) a_space <- matrix(rep(a_space,size(a,2)),ncol=size(a,2),nrow=m,byrow=F)
       #       if(!is.matrix(x_space)) x_space  <- rbind(x_space)
