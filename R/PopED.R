@@ -39,6 +39,7 @@
 #' \code{\link{plot_efficiency_of_windows}}.
 #' 
 #' Evaluate the design using the FIM:
+#' \code{\link{evaluate_design}}, 
 #' \code{\link{evaluate.fim}}, 
 #' \code{\link{evaluate.e.ofv.fim}}, 
 #' \code{\link{ofv_fim}},
@@ -46,9 +47,6 @@
 #' 
 #' Optimize the design (evaluate afterwards using the above functions): 
 #' \code{\link{poped_optim}}, 
-#' \code{\link{poped_optimize}}, 
-#'  \code{\link{RS_opt}}, 
-#'  \code{\link{a_line_search}}. 
 #' 
 #' See the "Examples" section below for a short introduction to using the above functions. 
 #' There are several other examples, as r-scripts, in the "examples" folder in the 
