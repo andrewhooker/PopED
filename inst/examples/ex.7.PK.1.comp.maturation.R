@@ -36,10 +36,11 @@ get_typical_weight <- function(PMA,SEX=2){
 }
 
 # plot typical weight function
-df1 <- data.frame(PMA = seq(0,80,by=0.1),WT=get_typical_weight(PMA,SEX=2),SEX=as.factor(2))
-df2 <- data.frame(PMA = seq(0,80,by=0.1),WT=get_typical_weight(PMA,SEX=1),SEX=as.factor(1))
+PMA = seq(0,80,by=0.1)
+df1 <- data.frame(PMA = PMA, WT=get_typical_weight(PMA,SEX=2),SEX=as.factor(2))
+df2 <- data.frame(PMA = PMA,WT=get_typical_weight(PMA,SEX=1),SEX=as.factor(1))
 df <- rbind.data.frame(df1,df2)
-levels(df$SEX) <- c("Female","Male")
+levels(df$SEX) <- c("Male","Female")
 library(ggplot2)
 (plot1 <- ggplot(data=df,aes(x = PMA, y=WT, group=SEX)) + geom_line(aes(color=SEX)) + 
   labs(y="Weight (kg)",x="Post Menstrual Age (years)", title = "Prediction of typical weight from PMA"))
