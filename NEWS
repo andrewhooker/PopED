@@ -1,17 +1,31 @@
 PopED News/Changelog
 
-PopED 0.3.0.9000
+PopED 0.3.1
 ===========
+
+* Added a vignette to introduce PopED!
+
+* Improved optimization with `poped_optim`, plus all example scripts now running with `poped_optim`.
+
+* Update to more easily allow discrete optimization of xt and a variables.  See the example scripts.
+
+* Added a summary method for the results of `poped_optim`.  Just use `summary(output)`.
+
+* changed handling of seed numbers in optimizations.
+
+* more robust handling of non-population models
+
+* more natural handling of NA values in design vectors
 
 * NAMESPACE: removed ggplot2 from "Depends" and added to "Imports" 
 
 * Added mean line to efficiency plots.
 
-* Update to error handling for Laplace approximation to ED objective function. 
-
-* Update to more easily allow discrete optimization of xt and a variables.
+* Update to computation and error handling for Laplace approximation to ED objective function. 
 
 * Added more intuitive cost function input.  See examples in `?poped_optim`
+
+* Various small changes and bug fixes.
 
 
 PopED 0.3.0
