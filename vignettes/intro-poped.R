@@ -70,7 +70,7 @@ head(dat,n=5);tail(dat,n=5)
 evaluate_design(poped.db)
 
 ## ---- fig.width=6--------------------------------------------------------
-summary(output)
+print(output)
 plot_model_prediction(output$poped.db)
 
 ## ---- message = FALSE,results='hide'-------------------------------------
@@ -80,7 +80,7 @@ output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 
 
 ## ----fig.width=6---------------------------------------------------------
-summary(output_discrete)
+print(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 
 ## ------------------------------------------------------------------------
@@ -91,7 +91,7 @@ crit_fcn <- function(poped.db,...){
 crit_fcn(output$poped.db)
 
 ## ---- fig.width=6--------------------------------------------------------
-summary(output_cost)
+print(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)
 

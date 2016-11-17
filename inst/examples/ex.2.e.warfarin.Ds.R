@@ -57,5 +57,5 @@ evaluate_design(poped.db)
 # RS+SG+LS optimization of sample times
 output <- poped_optim(poped.db, opt_xt=T, parallel=T)
 
-summary(output)
+print(output)
 plot_model_prediction(output$poped.db)

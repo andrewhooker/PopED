@@ -1,4 +1,16 @@
-summary.poped_optim <- function(object,
+
+#' print a summary of output from poped_optim
+#'
+#' @param object An object rturned from \code{\link{poped_optim}}. 
+#' @param fn A file handle to write to.  Default is to the R console.
+#' @param ... Additional arguments passed to \code{\link{blockfinal}}
+#'
+#' @return NULL
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+#' @example tests/testthat/examples_fcn_doc/examples_print.poped_optim.R
+#' @export
+
+print.poped_optim <- function(object,
                                 fn="",
                                 ...){
   
@@ -31,5 +43,6 @@ summary.poped_optim <- function(object,
              dmf_init=object$initial$ofv,
              run_time = object$run_time,
              ...)
+  return(invisible())
   
 }

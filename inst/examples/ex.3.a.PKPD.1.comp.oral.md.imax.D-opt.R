@@ -88,7 +88,7 @@ evaluate_design(poped.db)
 # Optimization 
 output <- poped_optim(poped.db, opt_xt = T, parallel = T)
 
-summary(output)
+print(output)
 
 get_rse(output$FIM,output$poped.db)
 plot_model_prediction(output$poped.db,facet_scales="free")

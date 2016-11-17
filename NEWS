@@ -1,5 +1,13 @@
 PopED News/Changelog
 
+PopED 0.3.2
+===========
+
+* Changed the `summary` method for the results of `poped_optim` to a `print` method.  Just use `print(output)`.  Also exported the method in the NAMESPACE so everyone can actually use it!
+
+* Fixed some old bugs that used `return` as a varible in functions, a la MATLAB.
+
+
 PopED 0.3.1
 ===========
 

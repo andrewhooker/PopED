@@ -98,7 +98,7 @@ output <- poped_optim(poped.db, opt_xt = T, parallel = T,
                       d_switch=F,ED_samp_size=20,
                       method = c("LS"))
 
-summary(output)
+print(output)
 
 get_rse(output$FIM,output$poped.db)
 plot_model_prediction(output$poped.db,facet_scales="free")
