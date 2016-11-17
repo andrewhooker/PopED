@@ -17,7 +17,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
-    return
+      return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
   }
   
   if((poped.db$settings$ofv_calc_type==2) ){#Trace of inverse 
@@ -25,7 +25,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
       returnArgs <-  gradtrmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
-      return
+        return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
     } else {
       fprintf('Warning: grad mf for grouped xt on A-optimal design is not implemented analytically\nNumerical difference is used instead\n')
     }
@@ -45,7 +45,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
-    return
+      return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
   }
   
   #All other types of criterions, i$e. Ds-optimal design, CV-optimal etc.
@@ -120,7 +120,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
       }
     }
     ofv_grad = gdmf
-    return
+      return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
   }
   if((poped.db$design_space$bUseGrouped_xt) ){#All other OFV with grouped xt
     m=size(ni,1)

@@ -10,7 +10,7 @@ for(i in 1:size(mat,1)){
             if((k==iOffIndex)){
                 mat[i,j] = mat[i,j]+add_value
                 mat[j,i] = mat[j,i]+add_value
-                return
+                return( mat ) 
             }
         }
     }

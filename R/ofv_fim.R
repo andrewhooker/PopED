@@ -53,14 +53,14 @@ ofv_fim <- function(fmf,poped.db,
     } else {
       ofv_value = det(fmf)
     }
-    return
+    return( ofv_value ) 
   }
   
   if((ofv_calc_type==2) ){#trace of the inverse of FIM
     imf = inv(fmf)
     ofv_value = trace_matrix(imf)
     ofv_value = 1/ofv_value #Make it a max-problem
-    return
+    return( ofv_value ) 
   }
   
   if((ofv_calc_type==3) ){#S-Optimal Design
@@ -97,7 +97,7 @@ ofv_fim <- function(fmf,poped.db,
     } else {
       ofv_value = 0
     }
-    return
+    return( ofv_value ) 
   }
   return( ofv_value ) 
 }

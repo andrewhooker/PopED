@@ -44,8 +44,7 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
   params_cv = zeros(size(param_vars))
   
   if((length(param_vars)!=length(params))){
-    fprintf('Warning: Number of unfixed params not the same as size of FIM, no RSE reported!\n')
-    return
+    stop("Number of unfixed parameters not the same as the size of the FIM,\nno RSE can be computed!\n")
   }
   
   for(i in 1:length(params)){
