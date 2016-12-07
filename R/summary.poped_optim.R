@@ -1,18 +1,18 @@
 
-#' print a summary of output from poped_optim
+#' Display a summary of output from poped_optim
 #'
-#' @param object An object rturned from \code{\link{poped_optim}}. 
-#' @param fn A file handle to write to.  Default is to the R console.
-#' @param ... Additional arguments passed to \code{\link{blockfinal}}
+#' @param object An object returned from \code{\link{poped_optim}} to summarize. 
+# @param fn A file handle to write to.  Default is to the R console.
+#' @param ... Additional arguments. Passed to \code{\link{blockfinal}}.
 #'
 #' @return NULL
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_print.poped_optim.R
+#' @example tests/testthat/examples_fcn_doc/examples_summary.poped_optim.R
 #' @export
 
-print.poped_optim <- function(object,
-                                fn="",
-                                ...){
+summary.poped_optim <- function(object,
+                              #fn="",
+                              ...){
   
   # fn=blockheader(object$initial$poped.db,
   #                name=fn,
@@ -26,7 +26,9 @@ print.poped_optim <- function(object,
   # blockexp(fn=fn,object$initial$poped.db,
   #          e_flag=!(object$initial$poped.db$settings$d_switch),...)
   
-  blockfinal(fn=fn,fmf=object$FIM,
+  #object <- x
+  
+  blockfinal(fn="",fmf=object$FIM,
              dmf=object$ofv,
              groupsize=object$poped.db$design$groupsize,
              ni=object$poped.db$design$ni,
@@ -43,6 +45,7 @@ print.poped_optim <- function(object,
              dmf_init=object$initial$ofv,
              run_time = object$run_time,
              ...)
+  #NextMethod("print")
   return(invisible())
   
 }

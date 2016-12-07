@@ -108,5 +108,5 @@ evaluate_design(poped.db.3)
 output.1 <- poped_optim(poped.db.1,opt_xt=T,parallel=T)
 output.2 <- poped_optim(poped.db.2,opt_xt=T,parallel=T)
 
-print(output.1)
-print(output.2)
+summary(output.1)
+summary(output.2)

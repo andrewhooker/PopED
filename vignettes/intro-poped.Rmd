@@ -146,7 +146,7 @@ output <- poped_optim(poped.db, opt_xt=T)
 
 
 ```{r, fig.width=6}
-print(output)
+summary(output)
 plot_model_prediction(output$poped.db)
 ```
 
@@ -172,7 +172,7 @@ output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 ```
 
 ```{r,fig.width=6}
-print(output_discrete)
+summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 ```
 
@@ -207,7 +207,7 @@ output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
 ```
 
 ```{r, fig.width=6}
-print(output_cost)
+summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)
 ```

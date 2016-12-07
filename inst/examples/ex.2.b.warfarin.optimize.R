@@ -79,7 +79,7 @@ plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 # Optimization of DOSE and sampling times
 output_D_T <- poped_optim(poped.db.discrete, opt_xt = T, opt_a = T, parallel = T)
 
-print(output_D_T)
+summary(output_D_T)
 plot_model_prediction(output_D_T$poped.db)
 
 # Discrete optimization with only integer times allowed
@@ -98,5 +98,5 @@ plot_model_prediction(output_discrete$poped.db)
 # Optimization using a genetic algorithm
 output_ga <- poped_optim(poped.db, opt_xt = T, parallel = T, method = c("GA"))
 
-print(output_ga)
+summary(output_ga)
 plot_model_prediction(output_ga$poped.db)

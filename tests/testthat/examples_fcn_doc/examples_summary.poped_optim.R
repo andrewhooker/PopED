@@ -13,4 +13,4 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
                       iter_max = 1)
 
 
-print(out_1)
+summary(out_1)

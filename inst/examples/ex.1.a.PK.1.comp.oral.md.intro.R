@@ -69,14 +69,14 @@ evaluate_design(poped.db)
 output <- poped_optim(poped.db, opt_xt =TRUE, parallel=TRUE)
 
 # Evaluate optimization results
-print(output)
+summary(output)
 get_rse(output$FIM,output$poped.db)
 plot_model_prediction(output$poped.db)
 
 # Optimization of sample times and doses
 output_2 <- poped_optim(output$poped.db, opt_xt =TRUE, opt_a = TRUE, parallel = TRUE)
 
-print(output_2)
+summary(output_2)
 get_rse(output_2$FIM,output_2$poped.db)
 plot_model_prediction(output_2$poped.db)
 
@@ -87,7 +87,7 @@ poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
 output_discrete <- poped_optim(poped.db.discrete, opt_xt=T, parallel = TRUE)
 
 
-print(output_discrete)
+summary(output_discrete)
 get_rse(output_discrete$FIM,output_discrete$poped.db)
 plot_model_prediction(output_discrete$poped.db)
 
