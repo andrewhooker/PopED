@@ -75,13 +75,13 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
-    if((matrix_any(v_tmp)!=0) ){#If the inverse is not empty
-      f2[1:n,1:n]=inv(v_tmp)
+    if((matrix_any(v_tmp)!=0) ){#If there are some non-zero elements to v_tmp
+      f2[1:n,1:n]=inv(v_tmp,method=3) # pseudoinverse
       tmp_m4=m4(v_tmp,n)
-      f2[(n+1):(n+n*n),(n+1):(n+n*n)]=inv(tmp_m4)
+      f2[(n+1):(n+n*n),(n+1):(n+n*n)]=inv(tmp_m4,method=3) # pseudoinverse
     }
     if((all(f2==0))){
-      ret = ret+t(f1)*f1
+      ret = ret+t(f1)%*%f1
     } else {
       ret = ret+t(f1)%*%f2%*%f1
     }

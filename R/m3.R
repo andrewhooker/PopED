@@ -40,7 +40,7 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
       poped.db <- returnArgs[[2]]
     }
     j=1
-    #Differentiate the variance w$r.t iiv
+    #Differentiate the variance w.r.t iiv
     for(i in 1:poped.db$parameters$NumRanEff){
       if((poped.db$parameters$notfixed_d[i]==1)){
         dv_db_new[,j]=reshape_matlab(l[,i,drop=F]*t(l[,i,drop=F])+diag_matlab(diag_matlab(lh[,(i-1)*NumSigma+1:i*NumSigma,drop=F]*sigma*t(lh[,(i-1)*NumSigma+1:i*NumSigma,drop=F]))),ns,1) #Last term is interaction
@@ -55,7 +55,7 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
           m <- returnArgs[[1]]
           n <- returnArgs[[2]]
           if((m==-1 || n==-1)){
-            stop(sprintf('Wrong index in get_covariance_matrix_index d, PopED is }ing!'))
+            stop(sprintf('Wrong index in get_covariance_matrix_index d, PopED is stoping!'))
           }
           lh1 = diag_matlab(diag_matlab(lh[,(m-1)*NumSigma+1:m*NumSigma,drop=F]*sigma*t(lh[,(n-1)*NumSigma+1:n*NumSigma,drop=F]))) #Interaction term
           lh2 = diag_matlab(diag_matlab(lh[,(n-1)*NumSigma+1:n*NumSigma,drop=F]*sigma*t(lh[,(m-1)*NumSigma+1:m*NumSigma,drop=F]))) #Interaction term
@@ -65,7 +65,7 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
       }
     }
     
-    #Differentiate the variance w$r.t occasion_variability
+    #Differentiate the variance w.r.t occasion_variability
     for(i in 1:NumDocc){
       if((poped.db$parameters$notfixed_docc[i]==1)){
         tmp = zeros(size(xt_ind,1),size(xt_ind,1))
@@ -85,7 +85,7 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
           m <- returnArgs[[1]]
           n <- returnArgs[[2]]
           if((m==-1 || n==-1)){
-            stop(sprintf('Wrong index in get_covariance_matrix_index docc, PopED is }ing!'))
+            stop(sprintf('Wrong index in get_covariance_matrix_index docc, PopED is stoping!'))
           }
           tmp = zeros(size(xt_ind,1),size(xt_ind,1))
           for(k in 1:poped.db$parameters$NumOcc){

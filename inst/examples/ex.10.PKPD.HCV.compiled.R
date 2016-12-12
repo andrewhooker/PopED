@@ -91,10 +91,8 @@ poped_db_compiled <- create.poped.database(ff_file="ff_ODE_compiled",
                                                   s=20000,
                                                   KA=log(0.8),
                                                   KE=log(0.15),
-                                                  VD=log(100), 
-                                                  #VD=log(100000),
-                                                  EC50=log(0.12), 
-                                                  #EC50=log(0.00012),
+                                                  VD=log(100),#VD=log(100000),
+                                                  EC50=log(0.12), #EC50=log(0.00012),
                                                   n=log(2),
                                                   delta=log(0.2),
                                                   c=log(7)),
@@ -119,9 +117,8 @@ plot_model_prediction(poped_db_compiled, facet_scales = "free")
 #' #####################################
 #' The reduced FIM 
 #' ####################################
-tic() # computation time
-FIM_compiled <- evaluate.fim(poped_db_compiled) 
-toc()
+ # computation time
+tic(); FIM_compiled <- evaluate.fim(poped_db_compiled); toc()
 
 #' design evaluation
 crit <- det(FIM_compiled)^(1/length(get_unfixed_params(poped_db_compiled)[["all"]]))

@@ -105,10 +105,15 @@ ofv_fim(FIM,poped.db,ofv_calc_type=7) # 1/sum(get_rse(FIM,poped.db,use_percent=F
 
 }
 \seealso{
+Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
+  \code{\link{evaluate.e.ofv.fim}},
+  \code{\link{evaluate.fim}}
+
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
+  \code{\link{efficiency}},
   \code{\link{evaluate.e.ofv.fim}},
   \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
   \code{\link{mf3}}, \code{\link{mf5}}, \code{\link{mf6}},
@@ -119,9 +124,5 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot6}}, \code{\link{mftot7}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_criterion}}
-
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}
 }
 

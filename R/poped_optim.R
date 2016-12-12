@@ -147,6 +147,7 @@ poped_optim <- function(poped.db,
   dmf <- output$ofv
   fmf_init <- fmf
   dmf_init <- dmf
+  poped.db_init <- poped.db
   
   if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
   
@@ -237,8 +238,18 @@ poped_optim <- function(poped.db,
   }
   
   par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
-  par_fixed_index <- which(upper==lower)
-  par_not_fixed_index <- which(upper!=lower)
+  #par_fixed_index <- which(upper==lower)
+  par_fixed_index <- which(upper==lower & par_cat_cont=="cont")
+  for(npar in 1:length(par)){
+    if(par_cat_cont[npar]=="cont") next
+    if(all(par[npar]==allowed_values[[npar]])){
+      par_fixed_index <- c(par_fixed_index,npar)
+    } 
+  }
+  par_fixed_index <- sort(unique(par_fixed_index))
+  par_not_fixed_index <- 1:length(par)
+  par_not_fixed_index <- par_not_fixed_index[!(par_not_fixed_index %in% par_fixed_index)]
+  
   if(length(par_fixed_index)!=0){
     par <- par[-c(par_fixed_index)]
     lower <- lower[-c(par_fixed_index)]
@@ -247,8 +258,21 @@ poped_optim <- function(poped.db,
     allowed_values <- allowed_values[-c(par_fixed_index)]
   }
   
-  if(length(par)==0) stop("No design parameters have a design space to optimize")
+  if(length(par)==0){
+    message("No design parameters have a design space to optimize")
+    return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
+  } 
   
+
+  if(!is.null(allowed_values)){
+    for(k in 1:npar){
+      if(!all(is.na(allowed_values[[k]]))){
+        if(length(upper)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]<=upper[k]]
+        if(length(lower)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]>=lower[k]]
+      }
+    }
+  }
+
   #------- create optimization function with optimization parameters first
   ofv_fun <- function(par,only_cont=F,...){
     
@@ -342,10 +366,11 @@ poped_optim <- function(poped.db,
     
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
     if(!is.finite(ofv) && ofv_calc_type==4){
-      ofv <- -Inf 
+      #ofv <- -Inf 
+      ofv <- NA
     } else {
-      if(!is.finite(ofv)) ofv <- 1e-15
-      #if(!is.finite(ofv)) ofv <- NA
+      #if(!is.finite(ofv)) ofv <- 1e-15
+      if(!is.finite(ofv)) ofv <- NA
       #if(!is.finite(ofv)) ofv <- -Inf
     }
     
@@ -505,6 +530,7 @@ poped_optim <- function(poped.db,
             -ofv_fun(par,only_cont=F,...) 
           }
         }
+
         output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                            fitness = ofv_fun_2,
                                            #par_full=par_full,
@@ -515,7 +541,6 @@ poped_optim <- function(poped.db,
                                       #allowed_values = allowed_values),
                                       con,
                                       ...))
-        
         
         output$ofv <- output_ga@fitnessValue
         if(!maximize) output$ofv <- -output$ofv
@@ -548,9 +573,11 @@ poped_optim <- function(poped.db,
       fprintf("Relative difference in OFV:  %.3g%%\n",rel_diff*100)
       
       # efficiency
-      p = get_fim_size(poped.db)
-      eff = ofv_criterion(output$ofv,p,poped.db)/ofv_criterion(ofv_init,p,poped.db)
-      cat("Efficiency: ",sprintf("%.5g",eff), "\n")
+      
+        
+      eff <- efficiency(ofv_init, output$ofv, poped.db)
+      fprintf("Efficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff)
+      #cat("Efficiency: \n  ", attr(eff,"description"), sprintf("%.5g",eff), "\n")
       #if(eff<=stop_crit_eff) stop_crit <- TRUE
       
       #cat("eff: ",sprintf("%.3g",(output$ofv - ofv_init)/p), "\n")
@@ -684,27 +711,90 @@ poped_optim <- function(poped.db,
                          ofv_fun = ofv_fun_user,
                          ...)[["fim"]]
   
-  blockfinal(fn=fn,fmf=FIM,
-             dmf=output$ofv,
-             groupsize=poped.db$design$groupsize,
-             ni=poped.db$design$ni,
-             xt=poped.db$design$xt,
-             x=poped.db$design$x,
-             a=poped.db$design$a,
-             model_switch=poped.db$design$model_switch,
-             poped.db$parameters$param.pt.val$bpop,
-             poped.db$parameters$param.pt.val$d,
-             poped.db$parameters$docc,
-             poped.db$parameters$param.pt.val$sigma,
-             poped.db,
-             fmf_init=fmf_init,
-             dmf_init=dmf_init,
-             ...)
+  time_value <- 
+    blockfinal(fn=fn,fmf=FIM,
+               dmf=output$ofv,
+               groupsize=poped.db$design$groupsize,
+               ni=poped.db$design$ni,
+               xt=poped.db$design$xt,
+               x=poped.db$design$x,
+               a=poped.db$design$a,
+               model_switch=poped.db$design$model_switch,
+               poped.db$parameters$param.pt.val$bpop,
+               poped.db$parameters$param.pt.val$d,
+               poped.db$parameters$docc,
+               poped.db$parameters$param.pt.val$sigma,
+               poped.db,
+               fmf_init=fmf_init,
+               dmf_init=dmf_init,
+               ...)
   
   
   #  }
   #}
+  results <- list( ofv= output$ofv, FIM=FIM, initial=list(ofv=dmf_init, FIM=fmf_init, poped.db=poped.db_init), 
+                   run_time=time_value, poped.db = poped.db )
+  class(results) <- "poped_optim"
+  return(invisible(results)) 
+}
+
+#' Compute efficiency.
+#' 
+#' Efficiency calculation between two designs.
+#' 
+#' 
+#' @param ofv_init An initial objective function
+#' @param ofv_final A final objective function.
+#' @param npar The number of parameters to use for normalization.
+#' @param poped_db a poped database
+#' @inheritParams ofv_fim
+#' @inheritParams poped_optim
+#' @inheritParams create.poped.database
+#' 
+#' @return The specified efficiency value depending on the ofv_calc_type.  
+#' The attribute "description" tells you how the calculation was made 
+#' \code{attr(return_vale,"description")}
+#' 
+#' @family FIM
+#' 
+#' 
+## @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+## @example tests/testthat/examples_fcn_doc/examples_ofv_criterion.R
+#' 
+#' @export
+
+efficiency <- function(ofv_init, ofv_final, poped_db,
+                       npar = get_fim_size(poped_db),
+                       ofv_calc_type=poped_db$settings$ofv_calc_type,
+                       ds_index = poped_db$parameters$ds_index) {
   
-  return(invisible(list( ofv= output$ofv, FIM=FIM, poped.db = poped.db ))) 
+  
+  eff = ofv_final/ofv_init
+  attr(eff,"description") <- "ofv_final / ofv_init"
+  
+  if((ofv_calc_type==1) ){#D-Optimal Design
+    eff = eff^(1/npar)
+    attr(eff,"description") <- "(ofv_final / ofv_init)^(1/n_parameters)"
+  }
+  if((ofv_calc_type==4) ){#lnD-Optimal Design
+    eff = (exp(ofv_final)/exp(ofv_init))^(1/npar)
+    attr(eff,"description") <- "(exp(ofv_final) / exp(ofv_init))^(1/n_parameters)"
+    
+  }
+  # if((ofv_calc_type==2) ){#A-Optimal Design
+  #   eff=ofv_f/npar
+  # }
+  # 
+  # if((ofv_calc_type==3) ){#S-Optimal Design
+  #   stop(sprintf('Criterion for S-optimal design not implemented yet'))
+  # }
+  # 
+  if((ofv_calc_type==6) ){#Ds-Optimal design
+    eff = eff^(1/sum(ds_index))
+    attr(eff,"description") <- "(ofv_final / ofv_init)^(1/sum(interesting_parameters))"
+    
+  }   
+  
+  return( eff ) 
 }
 

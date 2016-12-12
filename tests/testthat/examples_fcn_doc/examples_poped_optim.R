@@ -62,7 +62,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
   plot_efficiency_of_windows(output_2$poped.db,xt_windows=0.5)
   plot_efficiency_of_windows(output_2$poped.db,xt_windows=1)
   
-  # Random search (just a few samples here)
+  # Adaptive Random Search (ARS, just a few samples here)
   rs.output <- poped_optim(poped.db,opt_xt=T,method = "ARS",
                            control = list(ARS=list(iter=5)))
   
@@ -140,7 +140,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
                         control = list(ARS=list(iter=2),
                                        LS=list(line_length=2)),
                         iter_max = 1)
-  get_rse(output$fmf,output$poped.db)
+  get_rse(output$FIM,output$poped.db)
   
   # ED with laplace approximation, 
   # optimization using Random search (just a few iterations here)

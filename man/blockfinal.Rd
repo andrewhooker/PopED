@@ -9,7 +9,7 @@ blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d, docc,
   opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
   fmf_init = NULL, dmf_init = NULL, param_cvs_init = NULL,
   compute_inv = TRUE, out_file = NULL, trflag = TRUE,
-  footer_flag = TRUE, ...)
+  footer_flag = TRUE, run_time = NULL, ...)
 }
 \arguments{
 \item{fn}{The file handle to write to.}

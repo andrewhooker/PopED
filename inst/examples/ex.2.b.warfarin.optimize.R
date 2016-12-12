@@ -7,22 +7,6 @@
 ##   avoid sample times at very low concentrations (time 0 or very late samoples).
 library(PopED)
 
-
-# This option is used to make this script run fast but without convergence 
-# (fast means a few seconds for each argument at the most).
-# This allows you to "source" this file and easily see how things work
-# without waiting for more than 10-30 seconds.
-# Change to FALSE if you want to run each function so that
-# the solutions have converged (can take many minutes).
-fast <- TRUE 
-
-iNumSimulations <- ifelse(fast,5,100)
-EAStepSize <- ifelse(fast,40,1)
-rsit <- ifelse(fast,3,300)
-sgit <- ifelse(fast,3,150)
-ls_step_size <- ifelse(fast,3,50)
-iter_max <- ifelse(fast,1,10)
-
 sfg <- function(x,a,bpop,b,bocc){
   ## -- parameter definition function 
   parameters=c(CL=bpop[1]*exp(b[1]),
@@ -74,10 +58,7 @@ plot_model_prediction(poped.db)
 plot_model_prediction(poped.db,IPRED=T,DV=T)
 
 ## evaluate initial design
-FIM <- evaluate.fim(poped.db) 
-FIM
-det(FIM)
-get_rse(FIM,poped.db)
+evaluate_design(poped.db)
 
 ##############
 # Optimization
@@ -85,62 +66,37 @@ get_rse(FIM,poped.db)
 
 # below are a number of ways to optimize the problem
 
-# RS+SG+LS optimization of sample times
-output <- poped_optimize(poped.db,opt_xt=T,
-                         rsit=rsit,sgit=sgit,ls_step_size=ls_step_size,
-                         iter_max=iter_max)
-get_rse(output$fmf,output$poped.db)
+# Optimization of sample times
+output <- poped_optim(poped.db, opt_xt = T, parallel = T)
+get_rse(output$FIM,output$poped.db)
 plot_model_prediction(output$poped.db)
 
 
-# MFEA optimization with only integer times (or steps of 40 units if fast==TRUE) allowed
-mfea.output <- poped_optimize(poped.db,opt_xt=1,
-                              bUseExchangeAlgorithm=1,
-                              EAStepSize=EAStepSize)
-get_rse(mfea.output$fmf,mfea.output$poped.db)
-plot_model_prediction(mfea.output$poped.db)
-
 # Examine efficiency of sampling windows
-plot_efficiency_of_windows(mfea.output$poped.db,xt_windows=0.5,iNumSimulations = iNumSimulations)
+plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 
 
-# Random search optimization of DOSE and sampling times
-rs.output <- RS_opt(poped.db,opt_xt=1,opt_a=1,rsit=rsit)
-rs.output$xt
-names(rs.output)
-result.db <- rs.output$poped.db
-plot_model_prediction(result.db)
+# Optimization of DOSE and sampling times
+output_D_T <- poped_optim(poped.db.discrete, opt_xt = T, opt_a = T, parallel = T)
 
-# RS using the full FIM
-rs.output <- RS_opt(poped.db,opt_xt=1,opt_a=1,rsit=rsit,fim.calc.type=0) 
+summary(output_D_T)
+plot_model_prediction(output_D_T$poped.db)
 
-# RS within poped_optimize 
-rs.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
-                            rsit=rsit,
-                            bUseRandomSearch= 1,
-                            bUseStochasticGradient = 0,
-                            bUseBFGSMinimizer = 0,
-                            bUseLineSearch = 0)
-names(rs.output)
-get_rse(rs.output$fmf,rs.output$poped.db)
+# Discrete optimization with only integer times allowed
+# and Dose in units of 10
+poped.db.discrete <- create.poped.database(poped.db,
+                                           xt=c( 1,2,3,6,24,36,72,120),
+                                           discrete_xt = list(0:120),
+                                           discrete_a = list(seq(10,100,10)))
 
-# line search, DOSE and sample time optimization
-ls.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
-                            bUseRandomSearch= 0,
-                            bUseStochasticGradient = 0,
-                            bUseBFGSMinimizer = 0,
-                            bUseLineSearch = 1,
-                            ls_step_size=ls_step_size,
-                            iter_max=iter_max)
+output_discrete <- poped_optim(poped.db.discrete, opt_xt = T, opt_a = T, parallel = T)
+
+get_rse(output_discrete$FIM,output_discrete$poped.db)
+plot_model_prediction(output_discrete$poped.db)
 
 
-# Stochastic gradient search, DOSE and sample time optimization
-sg.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1, 
-                            bUseRandomSearch= 0,bUseStochasticGradient = 1,bUseBFGSMinimizer = 0,bUseLineSearch = 0,
-                            sgit=sgit)
+# Optimization using a genetic algorithm
+output_ga <- poped_optim(poped.db, opt_xt = T, parallel = T, method = c("GA"))
 
-# BFGS search, DOSE and sample time optimization
-if(fast) poped.db$settings$BFGSConvergenceCriteriaMinStep <- 0.01
-bfgs.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
-                              bUseRandomSearch= 0,bUseStochasticGradient = 0,bUseBFGSMinimizer = 1,bUseLineSearch = 0)
-
+summary(output_ga)
+plot_model_prediction(output_ga$poped.db)

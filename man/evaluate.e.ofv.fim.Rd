@@ -205,21 +205,22 @@ output$E_ofv
 Other E-family: \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}}
 
+Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
+  \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
+
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf5}}, \code{\link{mf6}},
-  \code{\link{mf7}}, \code{\link{mf8}},
-  \code{\link{mftot0}}, \code{\link{mftot1}},
-  \code{\link{mftot2}}, \code{\link{mftot3}},
-  \code{\link{mftot4}}, \code{\link{mftot5}},
-  \code{\link{mftot6}}, \code{\link{mftot7}},
-  \code{\link{mftot}}, \code{\link{mf}},
-  \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
-
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
+  \code{\link{efficiency}}, \code{\link{evaluate.fim}},
+  \code{\link{gradf_eps}}, \code{\link{mf3}},
+  \code{\link{mf5}}, \code{\link{mf6}}, \code{\link{mf7}},
+  \code{\link{mf8}}, \code{\link{mftot0}},
+  \code{\link{mftot1}}, \code{\link{mftot2}},
+  \code{\link{mftot3}}, \code{\link{mftot4}},
+  \code{\link{mftot5}}, \code{\link{mftot6}},
+  \code{\link{mftot7}}, \code{\link{mftot}},
+  \code{\link{mf}}, \code{\link{ofv_criterion}},
+  \code{\link{ofv_fim}}
 }
 

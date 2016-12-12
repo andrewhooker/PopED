@@ -908,11 +908,11 @@ get_step_size <- function(inters,gmaxvar,gminvar,np){
     for(j in 1:size(inters,2)){
       if((inters[i,j]==1)){
         step=(gmaxvar[i,j]-gminvar[i,j])/np
-        return
+        #return
       }
     }
   }
-  return( step) 
+  return(step) 
 }
 
 #Get the discrete values for an intersection matrix inters
@@ -921,7 +921,7 @@ get_discrete_val <- function(inters,discrete_x){
     for(j in 1:size(inters,2)){
       if((inters[i,j]==1)){
         discrete_val=discrete_x[[i,j]]
-        return
+        #return
       }
     }
   }

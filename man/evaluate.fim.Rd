@@ -144,10 +144,19 @@ get_rse(FIM.7,poped.db,fim.calc.type=7)
 
 }
 \seealso{
+Other evaluate_design: \code{\link{evaluate_design}},
+  \code{\link{get_rse}}, \code{\link{model_prediction}},
+  \code{\link{plot_efficiency_of_windows}},
+  \code{\link{plot_model_prediction}}
+
+Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
+  \code{\link{evaluate.e.ofv.fim}}, \code{\link{ofv_fim}}
+
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
+  \code{\link{efficiency}},
   \code{\link{evaluate.e.ofv.fim}},
   \code{\link{gradf_eps}}, \code{\link{mf3}},
   \code{\link{mf5}}, \code{\link{mf6}}, \code{\link{mf7}},
@@ -158,13 +167,5 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot7}}, \code{\link{mftot}},
   \code{\link{mf}}, \code{\link{ofv_criterion}},
   \code{\link{ofv_fim}}
-
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.e.ofv.fim}}, \code{\link{ofv_fim}}
-
-Other evaluate_design: \code{\link{get_rse}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
 }
 

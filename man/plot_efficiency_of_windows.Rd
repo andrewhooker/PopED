@@ -137,13 +137,14 @@ plot_efficiency_of_windows(poped.db,
 
 }
 \seealso{
+Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{evaluate_design}}, \code{\link{get_rse}},
+  \code{\link{model_prediction}},
+  \code{\link{plot_model_prediction}}
+
 Other Graphics: \code{\link{plot_model_prediction}}
 
 Other Simulation: \code{\link{model_prediction}},
-  \code{\link{plot_model_prediction}}
-
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{get_rse}}, \code{\link{model_prediction}},
   \code{\link{plot_model_prediction}}
 }
 

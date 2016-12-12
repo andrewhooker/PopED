@@ -16,7 +16,7 @@
 #' @param lower Lower bounds on the parameters. A vector.
 #' @param line_length The number of different parameter values per parameter to evaluate.  The values are 
 #' selected as an evenly spaced grid between the upper and lower bounds. 
-#' @param trace Should the algorithm outpur results intermittently.
+#' @param trace Should the algorithm output results intermittently.
 #' @param maximize Should the function be maximized?  Default is to minimize.
 #' @param parallel Should we use parallelize the computation.
 #' @param parallel_type Which type of parallelization should be used? 

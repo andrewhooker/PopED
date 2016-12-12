@@ -44,7 +44,7 @@ When adapting, the  standard deviation of the sampling distribution is calculate
 
 \item{max_run}{The maximum number of iterations to run without a change in the best parameter estimates.}
 
-\item{trace}{Should the algorithm outpur results intermittently.}
+\item{trace}{Should the algorithm output results intermittently.}
 
 \item{trace_iter}{How many interations between each update to the screen about the result of the search.}
 

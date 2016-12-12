@@ -131,6 +131,7 @@ get_rse(FIM.7,poped.db,fim.calc.type=7)
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{evaluate_design}},
   \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}

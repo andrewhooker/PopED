@@ -2,20 +2,6 @@
 library(PopED)
 library(deSolve)
 
-#' This option is used to make this script run fast but without convergence 
-#' (fast means a few seconds for each argument at the most).
-#' This allows you to "source" this file and easily see how things work
-#' without waiting for more than 10-30 seconds.
-#' Change to FALSE if you want to run each function so that
-#' the solutions have converged (can take many minutes).
-fast <- TRUE 
-
-rsit <- ifelse(fast,3,300)
-sgit <- ifelse(fast,3,150)
-ls_step_size <- ifelse(fast,3,50)
-iter_max <- ifelse(fast,1,10)
-
-
 #' Define the ODE system
 PK.2.comp.oral.ode <- function(Time, State, Pars){
   with(as.list(c(State, Pars)), {    
@@ -60,9 +46,12 @@ fg <- function(x,a,bpop,b,bocc){
 
 
 #' create poped database
-poped.db <- create.poped.database(ff_file="ff.PK.2.comp.oral.md.ode",
-                                  fError_file="feps.add.prop",
-                                  fg_file="fg",
+
+discrete_a <- cell(2,1)
+
+poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
+                                  fError_fun="feps.add.prop",
+                                  fg_fun="fg",
                                   groupsize=20,
                                   m=1,      #number of groups
                                   sigma=c(prop=0.1^2,add=0.05^2),
@@ -72,9 +61,13 @@ poped.db <- create.poped.database(ff_file="ff.PK.2.comp.oral.md.ode",
                                   xt=c( 48,50,55,65,70,85,90,120), 
                                   minxt=0,
                                   maxxt=144,
-                                  a=c(100,24),
-                                  maxa=c(1000,24),
-                                  mina=c(0,8))
+                                  discrete_xt = list(0:144),
+                                  a=c(DOSE=100,TAU=24),
+                                  maxa=c(DOSE=1000,TAU=24),
+                                  mina=c(DOSE=0,TAU=8),
+                                  discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
+
+
 
 #' plot intial design just PRED
 plot_model_prediction(poped.db)
@@ -83,22 +76,8 @@ plot_model_prediction(poped.db)
 plot_model_prediction(poped.db,IPRED=T,DV=T)
 
 #' how long does one evaluation of the FIM take? 
-tic()
-FIM <- evaluate.fim(poped.db) 
-toc()
+tic(); (eval <- evaluate_design(poped.db)); toc()
 
-#' and the results
-FIM
-det(FIM)
-get_rse(FIM,poped.db)
-
-#' optimize using line search using the following code:
-# ls.output <- poped_optimize(poped.db,opt_xt=1,
-#                             bUseRandomSearch= 0,bUseStochasticGradient = 0,bUseBFGSMinimizer = 0,bUseLineSearch = 1,
-#                             ls_step_size=1)
-
-#' Plot final design
-# plot_model_prediction(ls.output$poped.db)
 
 #' To make optimization more reasonable you can use compiled code
 #' 
@@ -106,7 +85,8 @@ get_rse(FIM,poped.db)
 #' To set this up see the 
 #' "R Package deSolve, Writing Code in Compiled Languages" 
 #' vingette in the deSolve documentation
-
+#' 
+#' make sure your working directory contains the c code
 system("R CMD SHLIB two_comp_oral_CL.c")
 dyn.load(paste("two_comp_oral_CL", .Platform$dynlib.ext, sep = ""))
 
@@ -133,22 +113,7 @@ ff.PK.2.comp.oral.md.ode.compiled <- function(model_switch, xt, parameters, pope
 }
 
 #' create poped database
-poped.db.compiled <- create.poped.database(ff_file="ff.PK.2.comp.oral.md.ode.compiled",
-                                           fError_file="feps.add.prop",
-                                           fg_file="fg",
-                                           groupsize=20,
-                                           m=1,      #number of groups
-                                           sigma=c(prop=0.1^2,add=0.05^2),
-                                           bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
-                                           d=c(CL=0.15^2,KA=0.25^2),
-                                           notfixed_bpop=c(1,1,1,1,1,0),
-                                           xt=c( 48,50,55,65,70,85,90,120), 
-                                           minxt=0,
-                                           maxxt=144,
-                                           a=c(100,24),
-                                           maxa=c(1000,24),
-                                           mina=c(0,8))
-
+poped.db.compiled <- create.poped.database(poped.db, ff_fun="ff.PK.2.comp.oral.md.ode.compiled")
 
 ##  create plot of model without variability 
 plot_model_prediction(poped.db.compiled)
@@ -157,29 +122,12 @@ plot_model_prediction(poped.db.compiled)
 plot_model_prediction(poped.db.compiled,IPRED=T,DV=T)
 
 #' how long does one evaluation of the FIM take? 
-tic()
-FIM.compiled <- evaluate.fim(poped.db.compiled) 
-toc()
-
-#' initial design evaluation
-det(FIM.compiled)
-get_rse(FIM.compiled,poped.db.compiled) 
+tic(); (eval_compiled <- evaluate_design(poped.db.compiled)); toc()
 
 #' very small differences in computation value
-(det(FIM)-det(FIM.compiled))/det(FIM)
-
 #' but a large difference in computation time (8 times faster with the compiled code)
+(eval_compiled$ofv-eval$ofv)/eval$ofv
 
-if(!fast){
-  library(microbenchmark)
-  compare <- microbenchmark(evaluate.fim(poped.db.compiled), evaluate.fim(poped.db), times = 100)
-  print(compare)
-  library(ggplot2)
-  autoplot(compare)
-  
-  
-  #' making optimization times more resonable
-  output <- poped_optimize(poped.db.compiled,opt_xt=T, opt_a=T,
-                           rsit=rsit,sgit=sgit,ls_step_size=ls_step_size,
-                           iter_max=iter_max)
-}
+#' making optimization times more resonable
+# output <- poped_optim(poped.db.compiled,opt_xt=T, opt_a=T, parallel=T)
+
