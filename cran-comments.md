@@ -1,3 +1,12 @@
+## Changes
+
+Changes in this version of PopED are:
+
+* A fix to a bug pointed out by Duncan Murdoch about the use of 
+  C-like `return` code.
+  
+* A change to the PopED NAMESPACE so that an S3 method can be seen by users.
+
 ## Test environments
 * local macOS (10.12.1) install, R 3.3.2
 * ubuntu 12.04 (on travis-ci), R 3.3.1
