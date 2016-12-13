@@ -62,7 +62,7 @@
 #' @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
 #' @export
 
-poped_optim <- function(poped.db,
+poped_optim_2 <- function(poped.db,
                         opt_xt=poped.db$settings$optsw[2],
                         opt_a=poped.db$settings$optsw[4],
                         opt_x=poped.db$settings$optsw[3],
