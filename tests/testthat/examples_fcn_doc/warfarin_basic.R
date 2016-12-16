@@ -25,9 +25,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                  fg_file="sfg",
-                                  fError_file="feps.prop",
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.prop,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 

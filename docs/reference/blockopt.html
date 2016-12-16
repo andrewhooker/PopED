@@ -138,9 +138,9 @@ you will use to optimize.</p>
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -151,7 +151,8 @@ you will use to optimize.</p>
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -161,13 +162,26 @@ you will use to optimize.</p>
 <span class='fu'>blockopt</span>(<span class='kw'>fn</span><span class='kw'>=</span><span class='st'>""</span>,<span class='no'>poped.db</span>,<span class='kw'>opt_method</span><span class='kw'>=</span><span class='st'>"SG"</span>)</div><div class='output co'>#&gt; ==============================================================================
 #&gt; Optimization Settings
 #&gt; 
-#&gt; Stochastic Gradient :</div><div class='output co'>#&gt; <span class='error'>Error in blockopt(fn = &quot;&quot;, poped.db, opt_method = &quot;SG&quot;): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='fu'>blockopt</span>(<span class='kw'>fn</span><span class='kw'>=</span><span class='st'>""</span>,<span class='no'>poped.db</span>,<span class='kw'>opt_method</span><span class='kw'>=</span><span class='st'>"RS"</span>)</div><div class='output co'>#&gt; ==============================================================================
+#&gt; Stochastic Gradient :
+#&gt; Maximum number of cycles : 150
+#&gt; Epsilon for termination : 1e-08
+#&gt; First step factor for xt: 0.001
+#&gt; First step factor for a: 0.001
+#&gt; RS m0it: 50
+#&gt; </div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>blockopt</span>(<span class='kw'>fn</span><span class='kw'>=</span><span class='st'>""</span>,<span class='no'>poped.db</span>,<span class='kw'>opt_method</span><span class='kw'>=</span><span class='st'>"RS"</span>)</div><div class='output co'>#&gt; ==============================================================================
 #&gt; Optimization Settings
 #&gt; 
-#&gt; Random Search :</div><div class='output co'>#&gt; <span class='error'>Error in sprintf(...): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='fu'>blockopt</span>(<span class='kw'>fn</span><span class='kw'>=</span><span class='st'>""</span>,<span class='no'>poped.db</span>,<span class='kw'>opt_method</span><span class='kw'>=</span><span class='st'>"DO"</span>)</div><div class='output co'>#&gt; ==============================================================================
+#&gt; Random Search :
+#&gt; Number of cycles : 300
+#&gt; Locality factor for xt : 10
+#&gt; Locality factor for a  : 10
+#&gt; </div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>blockopt</span>(<span class='kw'>fn</span><span class='kw'>=</span><span class='st'>""</span>,<span class='no'>poped.db</span>,<span class='kw'>opt_method</span><span class='kw'>=</span><span class='st'>"DO"</span>)</div><div class='output co'>#&gt; ==============================================================================
 #&gt; Optimization Settings
 #&gt; 
-#&gt; Discrete Optimization  :</div><div class='output co'>#&gt; <span class='error'>Error in sprintf(...): object &#39;poped.db&#39; not found</span></div></pre>
+#&gt; Discrete Optimization  :
+#&gt; RS int it: 250
+#&gt; SG int it: 50
+#&gt; </div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

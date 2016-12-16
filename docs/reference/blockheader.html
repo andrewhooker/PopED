@@ -205,9 +205,9 @@ except for diagnostic purposes.</dd>
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -218,20 +218,25 @@ except for diagnostic purposes.</dd>
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
 <span class='co'>#####################################</span>
 
 
-<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>dmf</span> <span class='kw'>&lt;-</span> <span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM&#39; not found</span></div><div class='input'>
+<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)
+<span class='no'>dmf</span> <span class='kw'>&lt;-</span> <span class='fu'>det</span>(<span class='no'>FIM</span>)
+
 <span class='fu'>blockheader</span>(<span class='no'>poped.db</span>,<span class='kw'>name</span><span class='kw'>=</span><span class='st'>""</span>)</div><div class='output co'>#&gt; ==============================================================================
 #&gt; Optimization of design parameters
-#&gt; </div><div class='output co'>#&gt; <span class='error'>Error in blockoptwrt(fn, poped.db$settings$optsw, opt_xt = opt_xt, opt_a = opt_a,     opt_x = opt_x, opt_samps = opt_samps, opt_inds = opt_inds): object &#39;poped.db&#39; not found</span></div><div class='input'>
+#&gt; 
+#&gt; </div><div class='output co'>#&gt; [1] &quot;&quot;</div><div class='input'>
 <span class='fu'>blockheader</span>(<span class='kw'>name</span><span class='kw'>=</span><span class='st'>""</span>,<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; ==============================================================================
 #&gt; Optimization of design parameters
-#&gt; </div><div class='output co'>#&gt; <span class='error'>Error in blockoptwrt(fn, poped.db$settings$optsw, opt_xt = opt_xt, opt_a = opt_a,     opt_x = opt_x, opt_samps = opt_samps, opt_inds = opt_inds): object &#39;poped.db&#39; not found</span></div><div class='input'>
+#&gt; 
+#&gt; </div><div class='output co'>#&gt; [1] &quot;&quot;</div><div class='input'>
 
 <span class='fu'>blockheader</span>(<span class='kw'>name</span><span class='kw'>=</span><span class='st'>''</span>,
               <span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>1</span>,
@@ -243,7 +248,29 @@ except for diagnostic purposes.</dd>
               <span class='kw'>fmf</span><span class='kw'>=</span><span class='no'>FIM</span>,<span class='kw'>dmf</span><span class='kw'>=</span><span class='no'>dmf</span>,
               <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>bpop</span>,
               <span class='kw'>d</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
-              <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,<span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>)</div><div class='output co'>#&gt; <span class='error'>Error in blockheader(name = &quot;&quot;, iter = 1, poped.db, e_flag = FALSE, opt_xt = TRUE,     opt_a = TRUE, opt_x = poped.db$settings$optsw[4], opt_samps = poped.db$settings$optsw[1],     opt_inds = poped.db$settings$optsw[5], fmf = FIM, dmf = dmf,     bpop = poped.db$parameters$param.pt.val$bpop, d = poped.db$parameters$param.pt.val$d,     docc = poped.db$parameters$docc, sigma = poped.db$parameters$param.pt.val$sigma): object &#39;dmf&#39; not found</span></div><div class='input'>
+              <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,<span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; Initial design evaluation
+#&gt; 
+#&gt; Initial OFV = 1.14386e+24
+#&gt; 
+#&gt; Initial design expected parameter 
+#&gt; relative standard error (%RSE)
+#&gt;     Parameter   Values   RSE_0
+#&gt;       bpop[1]     0.15    5.10
+#&gt;       bpop[2]     8.00    3.03
+#&gt;       bpop[3]     1.00   14.26
+#&gt;        D[1,1]     0.07   29.76
+#&gt;        D[2,2]     0.02   36.68
+#&gt;        D[3,3]     0.60   26.75
+#&gt;    SIGMA[1,1]     0.01   32.01
+#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Sampling Schedule
+#&gt; * Optimize Covariates
+#&gt; </div><div class='output co'>#&gt; [1] &quot;&quot;</div><div class='input'>
 
 
 <span class='fu'>blockheader</span>(<span class='kw'>name</span><span class='kw'>=</span><span class='st'>''</span>,
@@ -256,7 +283,29 @@ except for diagnostic purposes.</dd>
               <span class='kw'>fmf</span><span class='kw'>=</span><span class='no'>FIM</span>,<span class='kw'>dmf</span><span class='kw'>=</span><span class='no'>dmf</span>,
               <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>bpop</span>,
               <span class='kw'>d</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
-              <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,<span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>)</div><div class='output co'>#&gt; <span class='error'>Error in blockheader(name = &quot;&quot;, iter = 1, poped.db, e_flag = TRUE, opt_xt = TRUE,     opt_a = TRUE, opt_x = poped.db$settings$optsw[4], opt_samps = poped.db$settings$optsw[1],     opt_inds = poped.db$settings$optsw[5], fmf = FIM, dmf = dmf,     bpop = poped.db$parameters$param.pt.val$bpop, d = poped.db$parameters$param.pt.val$d,     docc = poped.db$parameters$docc, sigma = poped.db$parameters$param.pt.val$sigma): object &#39;dmf&#39; not found</span></div><div class='input'>
+              <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,<span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; Initial design evaluation
+#&gt; 
+#&gt; Initial OFV = 1.14386e+24
+#&gt; 
+#&gt; Initial design expected parameter 
+#&gt; relative standard error (%RSE)
+#&gt;     Parameter   Values   RSE_0
+#&gt;       bpop[1]     0.15    5.10
+#&gt;       bpop[2]     8.00    3.03
+#&gt;       bpop[3]     1.00   14.26
+#&gt;        D[1,1]     0.07   29.76
+#&gt;        D[2,2]     0.02   36.68
+#&gt;        D[3,3]     0.60   26.75
+#&gt;    SIGMA[1,1]     0.01   32.01
+#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Sampling Schedule
+#&gt; * Optimize Covariates
+#&gt; </div><div class='output co'>#&gt; [1] &quot;&quot;</div><div class='input'>
 
 <span class='no'>poped.db.1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
                                   <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
@@ -273,9 +322,103 @@ except for diagnostic purposes.</dd>
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>12</span>,<span class='fl'>13</span>,<span class='fl'>14</span>,<span class='fl'>15</span>,<span class='fl'>26</span>,<span class='fl'>44</span>,<span class='fl'>78</span>,<span class='fl'>120</span>),
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
 
-<span class='fu'>blockheader</span>(<span class='no'>poped.db.1</span>,<span class='kw'>name</span><span class='kw'>=</span><span class='st'>""</span>,<span class='kw'>trflag</span><span class='kw'>=</span><span class='fl'>2</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; ==============================================================================</div><div class='output co'>#&gt; <span class='error'>Error in sprintf(...): object &#39;poped.db.1&#39; not found</span></div><div class='input'>
+
+<span class='fu'>blockheader</span>(<span class='no'>poped.db.1</span>,<span class='kw'>name</span><span class='kw'>=</span><span class='st'>""</span>,<span class='kw'>trflag</span><span class='kw'>=</span><span class='fl'>2</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; ==============================================================================
+#&gt; Model description : PopED model 
+#&gt; 
+#&gt; Model Sizes : 
+#&gt; Number of individual model parameters                  g[j]    : Ng    = 5
+#&gt; Number of population model fixed parameters            bpop[j] : Nbpop = 4
+#&gt; Number of population model random effects parameters   b[j]    : Nb    = 3
+#&gt; 
+#&gt; Typical Population Parameters:
+#&gt; bpop[1]:  0.15 
+#&gt; bpop[2]:     8 
+#&gt; bpop[3]:     1 
+#&gt; bpop[4]:     1 
+#&gt; 
+#&gt; Between Subject Variability matrix D (variance units) 
+#&gt; 0.07 0.00 0.00
+#&gt; 0.00 0.02 0.00
+#&gt; 0.00 0.00 0.60
+#&gt; 
+#&gt; Diagonal Elements of D [sqrt(param)]:
+#&gt; D[1,1]:  0.07 [0.2646] 
+#&gt; D[2,2]:  0.02 [0.1414] 
+#&gt; D[3,3]:   0.6 [0.7746] 
+#&gt; 
+#&gt; Residual Unexplained Variability matrix SIGMA (variance units) : 
+#&gt; 0.01 0.00
+#&gt; 0.00 0.25
+#&gt; 
+#&gt; Diagonal Elements of SIGMA [sqrt(param)]:
+#&gt; SIGMA[1,1]:  0.01 [  0.1] 
+#&gt; SIGMA[2,2]:  0.25 [  0.5] 
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Experiment description (design and design space)
+#&gt; 
+#&gt; Numer of individuals: 64
+#&gt; Number of groups (individuals with same design): 2
+#&gt; Numer of individuals per group:
+#&gt;      Group 1: 32
+#&gt;      Group 2: 32
+#&gt; Numer of samples per group:
+#&gt;  Number of discrete experimental variables: 0
+#&gt; Number of model covariates: 1
+#&gt; 
+#&gt; Initial Sampling Schedule
+#&gt; Group 1 :    0.5      1      2      6     24     36     72    120
+#&gt; Group 2 :    0.5    1.1      2      6     24     36     72    120
+#&gt; 
+#&gt; Minimum allowed sampling values
+#&gt; Group 1 :  1e-05      1    1.5      3     20     30     70    118
+#&gt; Group 2 :    0.1    1.1    1.6    3.1   20.1   30.1   70.1  118.1
+#&gt; 
+#&gt; Maximum allowed sampling values
+#&gt; Group 1 :     12     13     14     15     26     44     78    120
+#&gt; Group 2 :     12     13     14     15     26     44     78    120
+#&gt; 
+#&gt; Covariates:
+#&gt; Group 1: 70
+#&gt; Group 2: 70
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Criterion Specification
+#&gt; 
+#&gt; OFV calculation for FIM: 4 
+#&gt;   1=Determinant of FIM,
+#&gt;   4=log determinant of FIM,
+#&gt;   6=determinant of interesting part of FIM (Ds)
+#&gt; 
+#&gt; Approximation method: 0
+#&gt;   0=FO, 
+#&gt;   1=FOCE, 
+#&gt;   2=FOCEI, 
+#&gt;   3=FOI
+#&gt; 
+#&gt; Fisher Information Matrix type: 1
+#&gt;   0=Full FIM,
+#&gt;   1=Reduced FIM,
+#&gt;   2=weighted models,
+#&gt;   3=Loc models,
+#&gt;   4=reduced FIM with derivative of SD of sigma as pfim,
+#&gt;   5=FULL FIM parameterized with A,B,C matrices &amp; derivative of variance,
+#&gt;   6=Calculate one model switch at a time, good for large matrices,
+#&gt;   7=Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance
+#&gt; 
+#&gt; Design family: 1
+#&gt;   D-family design (1) or 
+#&gt;   ED-familty design (0) 
+#&gt;   (with or without parameter uncertainty)
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Sampling Schedule
+#&gt; </div><div class='output co'>#&gt; [1] &quot;&quot;</div><div class='input'>
 
 </div></pre>
   </div>

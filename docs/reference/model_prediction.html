@@ -158,11 +158,11 @@ based on the input design.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <p>Other Simulation: <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
+  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
     <p>Other evaluate_design: <code><a href='evaluate.fim.html'>evaluate.fim</a></code>,
   <code><a href='evaluate_design.html'>evaluate_design</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
   <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
-  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
-    <p>Other Simulation: <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
   <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
     
 
@@ -226,50 +226,50 @@ based on the input design.</p>
 #&gt; 8 120.0 0.9398657     1     1  70</div><div class='input'>
 <span class='co'>##  data frame with variability </span>
 <span class='no'>df_2</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'>head</span>(<span class='no'>df_2</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time         DV     IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5  9.3048816 8.9006881 3.4254357     1     1  70
-#&gt; 2   1   1.0 10.3651845 9.8839885 5.4711041     1     1  70
-#&gt; 3   1   2.0 11.3867519 9.8745952 7.3821834     1     1  70
-#&gt; 4   1   6.0 10.1825240 9.3025251 7.9462805     1     1  70
-#&gt; 5   1  24.0  5.8438750 7.1052321 5.6858561     1     1  70
-#&gt; 6   1  36.0  6.9693340 5.9369475 4.5402483     1     1  70
-#&gt; 7   1  72.0  3.3201001 3.4635228 2.3116966     1     1  70
-#&gt; 8   1 120.0  1.7005245 1.6883319 0.9398657     1     1  70
-#&gt; 9   2   0.5  6.1440283 5.1242402 3.4254357     1     1  70
-#&gt; 10  2   1.0  7.8591077 7.2534028 5.4711041     1     1  70
-#&gt; 11  2   2.0  8.0465826 8.4291039 7.3821834     1     1  70
-#&gt; 12  2   6.0  6.8815222 8.1030795 7.9462805     1     1  70
-#&gt; 13  2  24.0  6.0026487 5.8150571 5.6858561     1     1  70
-#&gt; 14  2  36.0  4.7720371 4.6609965 4.5402483     1     1  70
-#&gt; 15  2  72.0  2.5182265 2.4002316 2.3116966     1     1  70
-#&gt; 16  2 120.0  0.9907266 0.9907232 0.9398657     1     1  70
-#&gt; 17  3   0.5  3.1976865 3.3614805 3.4254357     1     1  70
-#&gt; 18  3   1.0  6.1141354 5.4976412 5.4711041     1     1  70
-#&gt; 19  3   2.0  7.4555897 7.6711650 7.3821834     1     1  70
-#&gt; 20  3   6.0  9.2395211 8.4849971 7.9462805     1     1  70</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>df_2</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time        DV     IPRED      PRED Group Model a_i
+#&gt; 1   1   0.5  3.394646  3.547804 3.4254357     1     1  70
+#&gt; 2   1   1.0  5.498171  5.570736 5.4711041     1     1  70
+#&gt; 3   1   2.0  6.980363  7.345298 7.3821834     1     1  70
+#&gt; 4   1   6.0  8.117293  7.786182 7.9462805     1     1  70
+#&gt; 5   1  24.0  5.972914  5.886222 5.6858561     1     1  70
+#&gt; 6   1  36.0  4.935760  4.879805 4.5402483     1     1  70
+#&gt; 7   1  72.0  2.694613  2.780354 2.3116966     1     1  70
+#&gt; 8   1 120.0  1.257668  1.313298 0.9398657     1     1  70
+#&gt; 9   2   0.5  4.722251  4.392630 3.4254357     1     1  70
+#&gt; 10  2   1.0  6.471373  6.051905 5.4711041     1     1  70
+#&gt; 11  2   2.0  6.615673  6.866282 7.3821834     1     1  70
+#&gt; 12  2   6.0  6.728483  6.661364 7.9462805     1     1  70
+#&gt; 13  2  24.0  5.074291  5.249191 5.6858561     1     1  70
+#&gt; 14  2  36.0  3.679286  4.478253 4.5402483     1     1  70
+#&gt; 15  2  72.0  2.462606  2.780720 2.3116966     1     1  70
+#&gt; 16  2 120.0  1.416612  1.473066 0.9398657     1     1  70
+#&gt; 17  3   0.5  7.595140  7.452300 3.4254357     1     1  70
+#&gt; 18  3   1.0 10.470877  9.800569 5.4711041     1     1  70
+#&gt; 19  3   2.0  9.414314 10.567282 7.3821834     1     1  70
+#&gt; 20  3   6.0 10.750368  9.428282 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## data frame with variability (only IPRED, no DV)</span>
 <span class='no'>df_3</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>IPRED</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='fu'>head</span>(<span class='no'>df_3</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time      IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5 3.76583870 3.4254357     1     1  70
-#&gt; 2   1   1.0 5.52071724 5.4711041     1     1  70
-#&gt; 3   1   2.0 6.67286799 7.3821834     1     1  70
-#&gt; 4   1   6.0 6.59871601 7.9462805     1     1  70
-#&gt; 5   1  24.0 4.93489892 5.6858561     1     1  70
-#&gt; 6   1  36.0 4.06552279 4.5402483     1     1  70
-#&gt; 7   1  72.0 2.27316424 2.3116966     1     1  70
-#&gt; 8   1 120.0 1.04708845 0.9398657     1     1  70
-#&gt; 9   2   0.5 4.29865355 3.4254357     1     1  70
-#&gt; 10  2   1.0 6.65672156 5.4711041     1     1  70
-#&gt; 11  2   2.0 8.53647728 7.3821834     1     1  70
-#&gt; 12  2   6.0 8.09262169 7.9462805     1     1  70
-#&gt; 13  2  24.0 3.69871777 5.6858561     1     1  70
-#&gt; 14  2  36.0 2.19237783 4.5402483     1     1  70
-#&gt; 15  2  72.0 0.45657069 2.3116966     1     1  70
-#&gt; 16  2 120.0 0.05635921 0.9398657     1     1  70
-#&gt; 17  3   0.5 3.48438443 3.4254357     1     1  70
-#&gt; 18  3   1.0 5.00734556 5.4711041     1     1  70
-#&gt; 19  3   2.0 5.92113964 7.3821834     1     1  70
-#&gt; 20  3   6.0 5.79984915 7.9462805     1     1  70</div><div class='input'>
+#&gt; 1   1   0.5  2.1421719 3.4254357     1     1  70
+#&gt; 2   1   1.0  3.6890789 5.4711041     1     1  70
+#&gt; 3   1   2.0  5.5949959 7.3821834     1     1  70
+#&gt; 4   1   6.0  7.2045558 7.9462805     1     1  70
+#&gt; 5   1  24.0  5.3488743 5.6858561     1     1  70
+#&gt; 6   1  36.0  4.3093649 4.5402483     1     1  70
+#&gt; 7   1  72.0  2.2535402 2.3116966     1     1  70
+#&gt; 8   1 120.0  0.9494411 0.9398657     1     1  70
+#&gt; 9   2   0.5  5.8219731 3.4254357     1     1  70
+#&gt; 10  2   1.0  8.4427565 5.4711041     1     1  70
+#&gt; 11  2   2.0 10.0492875 7.3821834     1     1  70
+#&gt; 12  2   6.0  9.6196262 7.9462805     1     1  70
+#&gt; 13  2  24.0  6.3503111 5.6858561     1     1  70
+#&gt; 14  2  36.0  4.8141734 4.5402483     1     1  70
+#&gt; 15  2  72.0  2.0974997 2.3116966     1     1  70
+#&gt; 16  2 120.0  0.6928015 0.9398657     1     1  70
+#&gt; 17  3   0.5  7.6846470 3.4254357     1     1  70
+#&gt; 18  3   1.0  8.8311976 5.4711041     1     1  70
+#&gt; 19  3   2.0  8.8500953 7.3821834     1     1  70
+#&gt; 20  3   6.0  8.0414320 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## data frame with model predictions, no continuous design variables in data frame</span>
 <span class='no'>df_4</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>include_a</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>head</span>(<span class='no'>df_4</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    Time      PRED Group Model
@@ -297,27 +297,27 @@ based on the input design.</p>
                                     <span class='kw'>a</span><span class='kw'>=</span><span class='fu'>rbind</span>(<span class='fl'>70</span>,<span class='fl'>50</span>))
 
 <span class='no'>df_5</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db.2</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'>head</span>(<span class='no'>df_5</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time         DV    IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5  2.8453620 2.784086 3.4254357     1     1  70
-#&gt; 2   1   1.0  4.3060489 4.629191 5.4711041     1     1  70
-#&gt; 3   1   2.0  7.4768934 6.638028 7.3821834     1     1  70
-#&gt; 4   1   6.0  6.8322946 7.798051 7.9462805     1     1  70
-#&gt; 5   1  24.0  5.3975778 5.894734 5.6858561     1     1  70
-#&gt; 6   1  36.0  5.0230606 4.861772 4.5402483     1     1  70
-#&gt; 7   1  72.0  3.0033613 2.727632 2.3116966     1     1  70
-#&gt; 8   1 120.0  1.0564546 1.262139 0.9398657     1     1  70
-#&gt; 9   2   0.5  3.6132429 3.368218 3.4254357     1     1  70
-#&gt; 10  2   1.0  5.7473560 5.522999 5.4711041     1     1  70
-#&gt; 11  2   2.0  7.0784212 7.746824 7.3821834     1     1  70
-#&gt; 12  2   6.0  9.4688521 8.750195 7.9462805     1     1  70
-#&gt; 13  2  24.0  6.4036110 6.260169 5.6858561     1     1  70
-#&gt; 14  2  36.0  4.9720824 4.986649 4.5402483     1     1  70
-#&gt; 15  2  72.0  2.6898255 2.520443 2.3116966     1     1  70
-#&gt; 16  2 120.0  0.9468552 1.014770 0.9398657     1     1  70
-#&gt; 17  3   0.5  7.1983526 7.094425 3.4254357     1     1  70
-#&gt; 18  3   1.0  8.6377901 8.207183 5.4711041     1     1  70
-#&gt; 19  3   2.0 10.0163255 8.289471 7.3821834     1     1  70
-#&gt; 20  3   6.0  6.9447990 7.733695 7.9462805     1     1  70</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>df_5</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time        DV    IPRED      PRED Group Model a_i
+#&gt; 1   1   0.5  6.693751 7.113174 3.4254357     1     1  70
+#&gt; 2   1   1.0  8.791754 8.415194 5.4711041     1     1  70
+#&gt; 3   1   2.0  8.663540 8.576928 7.3821834     1     1  70
+#&gt; 4   1   6.0  7.045313 8.000118 7.9462805     1     1  70
+#&gt; 5   1  24.0  6.059806 5.811526 5.6858561     1     1  70
+#&gt; 6   1  36.0  4.811184 4.696266 4.5402483     1     1  70
+#&gt; 7   1  72.0  2.620539 2.478222 2.3116966     1     1  70
+#&gt; 8   1 120.0  1.048045 1.056794 0.9398657     1     1  70
+#&gt; 9   2   0.5  1.584265 1.397753 3.4254357     1     1  70
+#&gt; 10  2   1.0  2.900559 2.597356 5.4711041     1     1  70
+#&gt; 11  2   2.0  4.507574 4.504135 7.3821834     1     1  70
+#&gt; 12  2   6.0  7.287351 8.083943 7.9462805     1     1  70
+#&gt; 13  2  24.0  6.425844 7.251408 5.6858561     1     1  70
+#&gt; 14  2  36.0  6.032531 5.814109 4.5402483     1     1  70
+#&gt; 15  2  72.0  3.205223 2.982467 2.3116966     1     1  70
+#&gt; 16  2 120.0  1.188681 1.224593 0.9398657     1     1  70
+#&gt; 17  3   0.5  3.640501 3.805904 3.4254357     1     1  70
+#&gt; 18  3   1.0  4.741068 6.131628 5.4711041     1     1  70
+#&gt; 19  3   2.0  8.437041 8.390097 7.3821834     1     1  70
+#&gt; 20  3   6.0 10.338089 9.320845 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## without a poped database, just describing the design</span>
 <span class='co'>## Useful for creating datasets for use in other software (like NONMEM)</span>
 <span class='no'>design_1</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
@@ -439,26 +439,26 @@ based on the input design.</p>
                           <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'>expression</span>({<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'>unique</span>(<span class='no'>ID</span>))
                               <span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>,<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.1</span>);<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>}))
 <span class='fu'>head</span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
-#&gt; 1   1   0.5 NA    NA   NA     1     1 72.51705  50
-#&gt; 2   1   1.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 3   1   2.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 4   1   6.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 5   1  24.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 6   1  36.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 7   1  72.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 8   1 120.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 9   2   0.5 NA    NA   NA     1     1 64.27774  50
-#&gt; 10  2   1.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 11  2   2.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 12  2   6.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 13  2  24.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 14  2  36.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 15  2  72.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 16  2 120.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 17  3   0.5 NA    NA   NA     1     1 69.87315  50
-#&gt; 18  3   1.0 NA    NA   NA     1     1 69.87315  50
-#&gt; 19  3   2.0 NA    NA   NA     1     1 69.87315  50
-#&gt; 20  3   6.0 NA    NA   NA     1     1 69.87315  50</div><div class='input'>
+#&gt; 1   1   0.5 NA    NA   NA     1     1 61.25619  50
+#&gt; 2   1   1.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 3   1   2.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 4   1   6.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 5   1  24.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 6   1  36.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 7   1  72.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 8   1 120.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 9   2   0.5 NA    NA   NA     1     1 72.47772  50
+#&gt; 10  2   1.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 11  2   2.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 12  2   6.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 13  2  24.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 14  2  36.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 15  2  72.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 16  2 120.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 17  3   0.5 NA    NA   NA     1     1 61.68346  50
+#&gt; 18  3   1.0 NA    NA   NA     1     1 61.68346  50
+#&gt; 19  3   2.0 NA    NA   NA     1     1 61.68346  50
+#&gt; 20  3   6.0 NA    NA   NA     1     1 61.68346  50</div><div class='input'>
 <span class='co'># generate random deviations in WT and AGE for each individual</span>
 <span class='no'>df_11</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_3</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
                           <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'>list</span>(
@@ -469,26 +469,26 @@ based on the input design.</p>
                             <span class='fu'>expression</span>(<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>)
                           ))
 <span class='fu'>head</span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
-#&gt; 1   1   0.5 NA    NA   NA     1     1 72.51705  50
-#&gt; 2   1   1.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 3   1   2.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 4   1   6.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 5   1  24.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 6   1  36.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 7   1  72.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 8   1 120.0 NA    NA   NA     1     1 72.51705  50
-#&gt; 9   2   0.5 NA    NA   NA     1     1 64.27774  50
-#&gt; 10  2   1.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 11  2   2.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 12  2   6.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 13  2  24.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 14  2  36.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 15  2  72.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 16  2 120.0 NA    NA   NA     1     1 64.27774  50
-#&gt; 17  3   0.5 NA    NA   NA     1     1 69.87315  50
-#&gt; 18  3   1.0 NA    NA   NA     1     1 69.87315  50
-#&gt; 19  3   2.0 NA    NA   NA     1     1 69.87315  50
-#&gt; 20  3   6.0 NA    NA   NA     1     1 69.87315  50</div><div class='input'>
+#&gt; 1   1   0.5 NA    NA   NA     1     1 61.25619  50
+#&gt; 2   1   1.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 3   1   2.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 4   1   6.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 5   1  24.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 6   1  36.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 7   1  72.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 8   1 120.0 NA    NA   NA     1     1 61.25619  50
+#&gt; 9   2   0.5 NA    NA   NA     1     1 72.47772  50
+#&gt; 10  2   1.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 11  2   2.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 12  2   6.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 13  2  24.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 14  2  36.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 15  2  72.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 16  2 120.0 NA    NA   NA     1     1 72.47772  50
+#&gt; 17  3   0.5 NA    NA   NA     1     1 61.68346  50
+#&gt; 18  3   1.0 NA    NA   NA     1     1 61.68346  50
+#&gt; 19  3   2.0 NA    NA   NA     1     1 61.68346  50
+#&gt; 20  3   6.0 NA    NA   NA     1     1 61.68346  50</div><div class='input'>
 <span class='co'>## create dosing rows </span>
 <span class='no'>dosing_1</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>list</span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>),<span class='fu'>list</span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>3000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
 <span class='no'>dosing_2</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>list</span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))

@@ -189,9 +189,9 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
 }
 
 <span class='co'>## -- Define design and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>V</span><span class='kw'>=</span><span class='fl'>72.8</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.25</span>,<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>3.75</span>,<span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>0.9</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.09</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.09</span>,<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.25</span>^<span class='fl'>2</span>),
@@ -205,9 +205,10 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
                                   <span class='kw'>bUseGrouped_xt</span><span class='kw'>=</span><span class='fl'>1</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>20</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>),<span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>40</span>, <span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>)),
                                   <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>200</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>),
-                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>))
+
 <span class='co'>##  create plot of model without variability </span>
-<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>300</span>)</div><div class='output co'>#&gt; <span class='error'>Error in model_prediction(poped.db, model_num_points = model_num_points,     ...): object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>300</span>)</div><img src='PopED-2.png' alt='' width='540' height='400' /><div class='input'>
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
@@ -217,7 +218,22 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
 <span class='co'>## ---------------------------------------------</span>
 
 <span class='co'>## evaluate initial design</span>
-<span class='fu'><a href='evaluate_design.html'>evaluate_design</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in calc_ofv_and_fim(poped.db, ...): object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='fu'><a href='evaluate_design.html'>evaluate_design</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; $ofv
+#&gt; [1] 28.9197
+#&gt; 
+#&gt; $fim
+#&gt;             [,1]        [,2]         [,3]       [,4]       [,5]        [,6]
+#&gt; [1,]  0.05336692   -8.683963  -0.05863412   0.000000   0.000000    0.000000
+#&gt; [2,] -8.68396266 2999.851007 -14.43058560   0.000000   0.000000    0.000000
+#&gt; [3,] -0.05863412  -14.430586  37.15243290   0.000000   0.000000    0.000000
+#&gt; [4,]  0.00000000    0.000000   0.00000000 999.953587 312.240246    3.202847
+#&gt; [5,]  0.00000000    0.000000   0.00000000 312.240246 439.412556    2.287838
+#&gt; [6,]  0.00000000    0.000000   0.00000000   3.202847   2.287838 3412.005199
+#&gt; 
+#&gt; $rse
+#&gt;   bpop[1]   bpop[2]   bpop[3]    D[1,1]    D[2,2]    D[3,3] 
+#&gt;  8.215338 10.090955  4.400304 39.833230 60.089601 27.391518 
+#&gt; </div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   # Optimization of sample times</span>
@@ -234,9 +250,9 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
 <span class='co'>#   </span>
 <span class='co'>#   # Optimization of sample times with only integer time points in design space</span>
 <span class='co'>#   # faster than continuous optimization in this case</span>
-<span class='co'>#   poped.db.discrete &lt;- create.poped.database(ff_file="ff",</span>
-<span class='co'>#                                              fg_file="sfg",</span>
-<span class='co'>#                                              fError_file="feps",</span>
+<span class='co'>#   poped.db.discrete &lt;- create.poped.database(ff_fun=ff,</span>
+<span class='co'>#                                              fg_fun=sfg,</span>
+<span class='co'>#                                              fError_fun=feps,</span>
 <span class='co'>#                                              bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), </span>
 <span class='co'>#                                              notfixed_bpop=c(1,1,1,0),</span>
 <span class='co'>#                                              d=c(V=0.09,KA=0.09,CL=0.25^2), </span>

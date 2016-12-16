@@ -1,6 +1,6 @@
 PopED Optimization Results for the Adaptive Random Search Algorithm 
 
-        2016-12-16 11:35:55
+        2016-12-16 16:48:35
 
 ==============================================================================
 Model description : PopED model 
@@ -186,4 +186,4 @@ relative standard error (%RSE):
    SIGMA[1,1]     0.01   32.87   32.87
    SIGMA[2,2]     0.25   26.03   26.03
 
-Total running time: 0.105 seconds
+Total running time: 0.093 seconds

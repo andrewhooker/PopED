@@ -93,9 +93,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                  fg_file="sfg",
-                                  fError_file="feps.prop",
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.prop,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 
@@ -137,14 +137,14 @@ plot_efficiency_of_windows(poped.db,
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}}, \code{\link{get_rse}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_model_prediction}}
-
 Other Graphics: \code{\link{plot_model_prediction}}
 
 Other Simulation: \code{\link{model_prediction}},
+  \code{\link{plot_model_prediction}}
+
+Other evaluate_design: \code{\link{evaluate.fim}},
+  \code{\link{evaluate_design}}, \code{\link{get_rse}},
+  \code{\link{model_prediction}},
   \code{\link{plot_model_prediction}}
 }
 

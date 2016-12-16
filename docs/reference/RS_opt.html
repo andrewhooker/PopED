@@ -252,9 +252,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -265,7 +265,8 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -273,7 +274,53 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 
 
 <span class='co'># Just a few iterations, optimize on DOSE and sample times using the full FIM</span>
-<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>rsit</span><span class='kw'>=</span><span class='fl'>3</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$optsw[2] &lt;- opt_xt: object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>rsit</span><span class='kw'>=</span><span class='fl'>3</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; Initial design evaluation
+#&gt; 
+#&gt; Initial OFV = 57.0828
+#&gt; 
+#&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1255.57
+#&gt; 
+#&gt; Initial design expected parameter 
+#&gt; relative standard error (%RSE)
+#&gt;     Parameter   Values   RSE_0
+#&gt;       bpop[1]     0.15    4.84
+#&gt;       bpop[2]     8.00    2.96
+#&gt;       bpop[3]     1.00    6.59
+#&gt;        D[1,1]     0.07   30.20
+#&gt;        D[2,2]     0.02   37.10
+#&gt;        D[3,3]     0.60   27.62
+#&gt;    SIGMA[1,1]     0.01   32.87
+#&gt;    SIGMA[2,2]     0.25   26.03
+#&gt; 
+#&gt; RS - It. : 3   OFV : 57.0828
+#&gt; ===============================================================================
+#&gt; FINAL RESULTS
+#&gt; 
+#&gt; Optimized Sampling Schedule
+#&gt;    0.5      1      2      6     24     36     72    120
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 70
+#&gt; 
+#&gt; OFV = 57.0828
+#&gt; 
+#&gt; Efficiency: 
+#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1
+#&gt; 
+#&gt; Expected parameter 
+#&gt; relative standard error (%RSE):
+#&gt;     Parameter   Values   RSE_0     RSE
+#&gt;       bpop[1]     0.15    4.84    4.84
+#&gt;       bpop[2]     8.00    2.96    2.96
+#&gt;       bpop[3]     1.00    6.59    6.59
+#&gt;        D[1,1]     0.07   30.20   30.20
+#&gt;        D[2,2]     0.02   37.10   37.10
+#&gt;        D[3,3]     0.60   27.62   27.62
+#&gt;    SIGMA[1,1]     0.01   32.87   32.87
+#&gt;    SIGMA[2,2]     0.25   26.03   26.03
+#&gt; 
+#&gt; Total running time: 0.086 seconds</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   # More iterations</span>

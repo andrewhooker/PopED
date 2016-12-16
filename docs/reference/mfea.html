@@ -211,9 +211,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -224,7 +224,8 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -238,7 +239,54 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 <span class='co'># optimization of covariate, with coarse grid</span>
 <span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,
                               <span class='kw'>bUseExchangeAlgorithm</span><span class='kw'>=</span><span class='fl'>1</span>,
-                              <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>25</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$optsw[4] &lt;- opt_a: object &#39;poped.db&#39; not found</span></div><div class='input'>
+                              <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>25</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; Initial design evaluation
+#&gt; 
+#&gt; Initial OFV = 55.3964
+#&gt; 
+#&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1016.94
+#&gt; 
+#&gt; Initial design expected parameter 
+#&gt; relative standard error (%RSE)
+#&gt;     Parameter   Values   RSE_0
+#&gt;       bpop[1]     0.15    5.10
+#&gt;       bpop[2]     8.00    3.03
+#&gt;       bpop[3]     1.00   14.26
+#&gt;        D[1,1]     0.07   29.76
+#&gt;        D[2,2]     0.02   36.68
+#&gt;        D[3,3]     0.60   26.75
+#&gt;    SIGMA[1,1]     0.01   32.01
+#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt; 
+#&gt; MFEA - It. : 1
+#&gt; Exchanged covariate 1 in group/ind 1 from 70 to 100
+#&gt; Delta : 0.0114735   OFV. : 56.032
+#&gt; MFEA - It. : 2
+#&gt; Delta : 0   OFV. : 56.032
+#&gt; ===============================================================================
+#&gt; FINAL RESULTS
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 100
+#&gt; 
+#&gt; OFV = 56.032
+#&gt; 
+#&gt; Efficiency: 
+#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#&gt; 
+#&gt; Expected parameter 
+#&gt; relative standard error (%RSE):
+#&gt;     Parameter   Values   RSE_0     RSE
+#&gt;       bpop[1]     0.15    5.10    4.93
+#&gt;       bpop[2]     8.00    3.03    2.92
+#&gt;       bpop[3]     1.00   14.26   14.11
+#&gt;        D[1,1]     0.07   29.76   27.85
+#&gt;        D[2,2]     0.02   36.68   34.08
+#&gt;        D[3,3]     0.60   26.75   26.32
+#&gt;    SIGMA[1,1]     0.01   32.01   23.16
+#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; 
+#&gt; Total running time: 0.083 seconds</div><div class='input'>
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>

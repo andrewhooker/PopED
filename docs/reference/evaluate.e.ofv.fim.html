@@ -212,8 +212,6 @@ is done usng the standard MC integration technique, so can be slow.</dd>
 
     <p>Other E-family: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
   <code><a href='ed_laplace_ofv.html'>ed_laplace_ofv</a></code>, <code><a href='ed_mftot.html'>ed_mftot</a></code></p>
-    <p>Other evaluate_FIM: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
-  <code><a href='evaluate.fim.html'>evaluate.fim</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
     <p>Other FIM: <code><a href='LinMatrixH.html'>LinMatrixH</a></code>,
   <code><a href='LinMatrixLH.html'>LinMatrixLH</a></code>, <code><a href='LinMatrixL_occ.html'>LinMatrixL_occ</a></code>,
   <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
@@ -228,6 +226,8 @@ is done usng the standard MC integration technique, so can be slow.</dd>
   <code><a href='mftot7.html'>mftot7</a></code>, <code><a href='mftot.html'>mftot</a></code>,
   <code><a href='mf.html'>mf</a></code>, <code><a href='ofv_criterion.html'>ofv_criterion</a></code>,
   <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
+    <p>Other evaluate_FIM: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
+  <code><a href='evaluate.fim.html'>evaluate.fim</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -280,9 +280,9 @@ is done usng the standard MC integration technique, so can be slow.</dd>
 #&gt; KA     4      1.00 0.010000
 #&gt; Favail 0      1.00 0.000000</div><div class='input'>
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>bpop_vals_ed_ln</span>,
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -293,7 +293,8 @@ is done usng the standard MC integration technique, so can be slow.</dd>
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization</span>
@@ -302,12 +303,15 @@ is done usng the standard MC integration technique, so can be slow.</dd>
 
 
 <span class='co'>## ED evaluate (with very few samples)</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$ED_samp_size &lt;- ED_samp_size: object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;output&#39; not found</span></div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 55.32024</div><div class='input'>
 <span class='co'>## API evaluate (with very few samples)</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>ofv_calc_type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$ofv_calc_type &lt;- ofv_calc_type: object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;output&#39; not found</span></div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>ofv_calc_type</span><span class='kw'>=</span><span class='fl'>4</span>)
+<span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 55.3907</div><div class='input'>
 <span class='co'>## ED evaluate using Laplace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object &#39;poped.db&#39; not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.003 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;output&#39; not found</span></div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 2.082 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.302806e+24</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># </span>
 <span class='co'>#   ## ED expected value with more precision. </span>

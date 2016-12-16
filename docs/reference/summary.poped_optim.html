@@ -131,9 +131,9 @@
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -144,7 +144,8 @@
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -162,9 +163,138 @@
                       <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
                                      <span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>2</span>),
                                      <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                      <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$optsw[4] &lt;- opt_a: object &#39;poped.db&#39; not found</span></div><div class='input'>
+                      <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; Initial design evaluation
+#&gt; 
+#&gt; Initial OFV = 55.3964
+#&gt; 
+#&gt; Initial design expected parameter 
+#&gt; relative standard error (%RSE)
+#&gt;     Parameter   Values   RSE_0
+#&gt;       bpop[1]     0.15    5.10
+#&gt;       bpop[2]     8.00    3.03
+#&gt;       bpop[3]     1.00   14.26
+#&gt;        D[1,1]     0.07   29.76
+#&gt;        D[2,2]     0.02   36.68
+#&gt;        D[3,3]     0.60   26.75
+#&gt;    SIGMA[1,1]     0.01   32.01
+#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Covariates
+#&gt; 
+#&gt; ************* Iteration 1  for all optimization methods***********************
+#&gt; 
+#&gt; *******************************************
+#&gt; Running Adaptive Random Search Optimization
+#&gt; *******************************************
+#&gt; 
+#&gt; Total iterations: 2 
+#&gt; Elapsed time: 0.035 seconds.
+#&gt; 
+#&gt; Final OFV =  55.98047 
+#&gt; Parameters: 95.75377 
+#&gt; 
+#&gt; *******************************************
+#&gt; Running L-BFGS-B Optimization
+#&gt; *******************************************
+#&gt; N = 1, M = 5 machine precision = 2.22045e-16
+#&gt; At X0, 0 variables are exactly at the bounds
+#&gt; At iterate     0  f=       -55.98  |proj g|=     0.013216
+#&gt; 
+#&gt; iterations 2
+#&gt; function evaluations 3
+#&gt; segments explored during Cauchy searches 2
+#&gt; BFGS updates skipped 0
+#&gt; active bounds at final generalized Cauchy point 1
+#&gt; norm of the final projected gradient 0
+#&gt; final function value -56.032
+#&gt; 
+#&gt; F = -56.032
+#&gt; final  value -56.032042 
+#&gt; stopped after 2 iterations
+#&gt; 
+#&gt; *******************************************
+#&gt; Running Line Search Optimization
+#&gt; *******************************************
+#&gt; 
+#&gt;    Initial parameters: 100 
+#&gt;    Initial OFV: 56.03204 
+#&gt; 
+#&gt;    Searching parameter 1 
+#&gt;      No change 
+#&gt; 
+#&gt;    Elapsed time: 0.046 seconds.
+#&gt; 
+#&gt;    Final OFV =  56.03204 
+#&gt;    Parameters: 100 
+#&gt; 
+#&gt; *******************************************
+#&gt; Stopping criteria testing
+#&gt; (Compare between start of iteration and end of iteration)
+#&gt; *******************************************
+#&gt; Difference in OFV:  0.636
+#&gt; Relative difference in OFV:  1.15%
+#&gt; Efficiency: 
+#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#&gt; 
+#&gt;  Efficiency stopping criteria: 
+#&gt;   Is (1.0827 &lt;= 1.001)?   No.
+#&gt;   Stopping criteria NOT achieved.
+#&gt; 
+#&gt; Stopping criteria NOT achieved.
+#&gt; 
+#&gt; ===============================================================================
+#&gt; FINAL RESULTS
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 100
+#&gt; 
+#&gt; OFV = 56.032
+#&gt; 
+#&gt; Efficiency: 
+#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#&gt; 
+#&gt; Expected parameter 
+#&gt; relative standard error (%RSE):
+#&gt;     Parameter   Values   RSE_0     RSE
+#&gt;       bpop[1]     0.15    5.10    4.93
+#&gt;       bpop[2]     8.00    3.03    2.92
+#&gt;       bpop[3]     1.00   14.26   14.11
+#&gt;        D[1,1]     0.07   29.76   27.85
+#&gt;        D[2,2]     0.02   36.68   34.08
+#&gt;        D[3,3]     0.60   26.75   26.32
+#&gt;    SIGMA[1,1]     0.01   32.01   23.16
+#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; 
+#&gt; Total running time: 0.262 seconds</div><div class='input'>
 
-<span class='fu'>summary</span>(<span class='no'>out_1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(out_1): object &#39;out_1&#39; not found</span></div></pre>
+<span class='fu'>summary</span>(<span class='no'>out_1</span>)</div><div class='output co'>#&gt; ===============================================================================
+#&gt; FINAL RESULTS
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 100
+#&gt; 
+#&gt; OFV = 56.032
+#&gt; 
+#&gt; Efficiency: 
+#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#&gt; 
+#&gt; Expected parameter 
+#&gt; relative standard error (%RSE):
+#&gt;     Parameter   Values   RSE_0     RSE
+#&gt;       bpop[1]     0.15    5.10    4.93
+#&gt;       bpop[2]     8.00    3.03    2.92
+#&gt;       bpop[3]     1.00   14.26   14.11
+#&gt;        D[1,1]     0.07   29.76   27.85
+#&gt;        D[2,2]     0.02   36.68   34.08
+#&gt;        D[3,3]     0.60   26.75   26.32
+#&gt;    SIGMA[1,1]     0.01   32.01   23.16
+#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; 
+#&gt; Total running time: 0.262 seconds</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

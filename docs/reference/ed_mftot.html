@@ -203,9 +203,9 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
 #&gt; KA     4      1.00 0.010000
 #&gt; Favail 0      1.00 0.000000</div><div class='input'>
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>bpop_vals_ed_ln</span>,
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -216,7 +216,8 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization</span>
@@ -225,7 +226,8 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
 
 
 <span class='co'># very few samples</span>
-<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span></div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$ED_samp_size = 10: object &#39;poped.db&#39; not found</span></div><div class='input'><span class='fu'>ed_mftot</span>(<span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>,
+<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>10</span>
+<span class='fu'>ed_mftot</span>(<span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>,
          <span class='kw'>groupsize</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>,
          <span class='kw'>ni</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>ni</span>,
          <span class='kw'>xtoptn</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>xt</span>,
@@ -236,7 +238,9 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
          <span class='kw'>covd</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>,
          <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
          <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,
-         <span class='no'>poped.db</span>)[<span class='st'>"ED_ofv"</span>]</div><div class='output co'>#&gt; <span class='error'>Error in cell(1, poped.db$settings$ED_samp_size): object &#39;poped.db&#39; not found</span></div><div class='input'>
+         <span class='no'>poped.db</span>)[<span class='st'>"ED_ofv"</span>]</div><div class='output co'>#&gt; $ED_ofv
+#&gt; [1] 55.27273
+#&gt; </div><div class='input'>
   
 </div></pre>
   </div>

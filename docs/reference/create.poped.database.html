@@ -752,10 +752,28 @@ User defined data structure that, for example could be used to send in data to t
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
+
 
 <span class='co'>## evaluate initial design</span>
-<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM&#39; not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chol(mat): object &#39;FIM&#39; not found</span></div><div class='input'>
+<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)
+<span class='no'>FIM</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -17,9 +17,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define design and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.md.KE",
-                                  fg_file="sfg",
-                                  fError_file="feps.add.prop",
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.md.KE,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.add.prop,
                                   groupsize=20,
                                   m=2,
                                   sigma=c(0.04,5e-6),

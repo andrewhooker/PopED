@@ -116,6 +116,8 @@ function.</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <p>Other RUV_models: <code><a href='feps.add.prop.html'>feps.add.prop</a></code>,
+  <code><a href='feps.add.html'>feps.add</a></code></p>
     <p>Other models: <code><a href='feps.add.prop.html'>feps.add.prop</a></code>,
   <code><a href='feps.add.html'>feps.add</a></code>,
   <code><a href='ff.PK.1.comp.oral.md.CL.html'>ff.PK.1.comp.oral.md.CL</a></code>,
@@ -124,8 +126,6 @@ function.</dd>
   <code><a href='ff.PK.1.comp.oral.sd.KE.html'>ff.PK.1.comp.oral.sd.KE</a></code>,
   <code><a href='ff.PKPD.1.comp.oral.md.CL.imax.html'>ff.PKPD.1.comp.oral.md.CL.imax</a></code>,
   <code><a href='ff.PKPD.1.comp.sd.CL.emax.html'>ff.PKPD.1.comp.sd.CL.emax</a></code></p>
-    <p>Other RUV_models: <code><a href='feps.add.prop.html'>feps.add.prop</a></code>,
-  <code><a href='feps.add.html'>feps.add</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -163,9 +163,9 @@ function.</dd>
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -174,7 +174,8 @@ function.</dd>
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin example)</span>
@@ -182,9 +183,26 @@ function.</dd>
 
 
 <span class='co'>##  create plot of model without variability </span>
-<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in model_prediction(poped.db, model_num_points = model_num_points,     ...): object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>)</div><img src='feps.prop-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## evaluate initial design</span>
-<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM&#39; not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chol(mat): object &#39;FIM&#39; not found</span></div><div class='input'>
+<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)
+<span class='no'>FIM</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

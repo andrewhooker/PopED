@@ -39,9 +39,9 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 
 ## -- Define design and design space
-poped.db <- create.poped.database(ff_file="ff",
-                                  fg_file="sfg",
-                                  fError_file="feps",
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps,
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
@@ -87,9 +87,9 @@ evaluate_design(poped.db)
   
   # Optimization of sample times with only integer time points in design space
   # faster than continuous optimization in this case
-  poped.db.discrete <- create.poped.database(ff_file="ff",
-                                             fg_file="sfg",
-                                             fError_file="feps",
+  poped.db.discrete <- create.poped.database(ff_fun=ff,
+                                             fg_fun=sfg,
+                                             fError_fun=feps,
                                              bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
                                              notfixed_bpop=c(1,1,1,0),
                                              d=c(V=0.09,KA=0.09,CL=0.25^2), 

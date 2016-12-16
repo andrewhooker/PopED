@@ -191,9 +191,9 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -204,7 +204,8 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -212,9 +213,13 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
 
 
 <span class='no'>opta</span><span class='kw'>=</span><span class='fl'>TRUE</span>
-<span class='no'>aa</span><span class='kw'>=</span><span class='no'>opta</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>*<span class='fu'>matrix</span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'><a href='size.html'>size</a></span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>a</span>,<span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>aa</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;aa&#39; not found</span></div><div class='input'>
+<span class='no'>aa</span><span class='kw'>=</span><span class='no'>opta</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>*<span class='fu'>matrix</span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'><a href='size.html'>size</a></span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>a</span>,<span class='fl'>2</span>))
+<span class='no'>aa</span></div><div class='output co'>#&gt;       [,1]
+#&gt; [1,] 0.001</div><div class='input'>
 <span class='no'>optxt</span><span class='kw'>=</span><span class='fl'>TRUE</span>
-<span class='no'>axt</span><span class='kw'>=</span><span class='no'>optxt</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>*<span class='fu'>matrix</span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'>max</span>(<span class='no'>poped.db</span>$<span class='no'>design_space</span>$<span class='no'>maxni</span>))</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>axt</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;axt&#39; not found</span></div><div class='input'>
+<span class='no'>axt</span><span class='kw'>=</span><span class='no'>optxt</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>*<span class='fu'>matrix</span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'>max</span>(<span class='no'>poped.db</span>$<span class='no'>design_space</span>$<span class='no'>maxni</span>))
+<span class='no'>axt</span></div><div class='output co'>#&gt;       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]
+#&gt; [1,] 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001</div><div class='input'>
 <span class='fu'>calc_ofv_and_grad</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>xt</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>a</span>),
                   <span class='kw'>optxt</span><span class='kw'>=</span><span class='no'>optxt</span>, <span class='kw'>opta</span><span class='kw'>=</span><span class='no'>opta</span>,
                   <span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>,
@@ -230,7 +235,21 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
                   <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>,
                   <span class='kw'>docc_full</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>docc</span>,
                   <span class='no'>poped.db</span>,
-                  <span class='kw'>only_fim</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in calc_ofv_and_grad(x = c(poped.db$design$xt, poped.db$design$a),     optxt = optxt, opta = opta, model_switch = poped.db$design$model_switch,     aa = aa, axt = axt, groupsize = poped.db$design$groupsize,     ni = poped.db$design$ni, xtopto = poped.db$design$xt, xopto = poped.db$design$x,     aopto = poped.db$design$a, bpop = poped.db$parameters$param.pt.val$bpop,     d = poped.db$parameters$param.pt.val$d, sigma = poped.db$parameters$param.pt.val$sigma,     docc_full = poped.db$parameters$param.pt.val$docc, poped.db,     only_fim = FALSE): object &#39;poped.db&#39; not found</span></div><div class='input'>
+                  <span class='kw'>only_fim</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; $f
+#&gt; [1] -55.39645
+#&gt; 
+#&gt; $g
+#&gt;               [,1]
+#&gt;  [1,]  0.079631586
+#&gt;  [2,] -0.025697640
+#&gt;  [3,] -0.312973636
+#&gt;  [4,]  0.009484130
+#&gt;  [5,]  0.019485351
+#&gt;  [6,] -0.001675734
+#&gt;  [7,] -0.009543718
+#&gt;  [8,] -0.001929123
+#&gt;  [9,] -0.035843408
+#&gt; </div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   # BFGS search, DOSE and sample time optimization</span>

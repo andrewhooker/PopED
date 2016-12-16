@@ -201,23 +201,109 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
+
 
 <span class='co'>## evaluate initial design with the reduced FIM</span>
-<span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM.1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM.1&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM.1&#39; not found</span></div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in chol(mat): object &#39;FIM.1&#39; not found</span></div><div class='input'>
+<span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)
+<span class='no'>FIM.1</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM</span>
-<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 0): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM.0</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM.0&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM.0&#39; not found</span></div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)
+<span class='no'>FIM.0</span></div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
+#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
+#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
+#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
+#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
+#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
+#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
+#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
+#&gt;             [,6]         [,7]
+#&gt; [1,]  4.49053810 -54419.72354
+#&gt; [2,] -6.55031322  -1070.93366
+#&gt; [3,] 18.65386273   2955.92423
+#&gt; [4,]  0.02613561    521.54030
+#&gt; [5,]  3.26560786  11214.21071
+#&gt; [6,] 41.81083599     71.08764
+#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM </span>
 <span class='co'>## computing all derivatives with respect to the </span>
 <span class='co'>## standard deviation of the residual unexplained variation </span>
-<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 4): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM.4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM.4&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM.4&#39; not found</span></div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)
+<span class='no'>FIM.4</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 1.043081e+02  2242.842141 14.21752779
+#&gt;             [,7]
+#&gt; [1,]     0.00000
+#&gt; [2,]     0.00000
+#&gt; [3,]     0.00000
+#&gt; [4,]   104.30806
+#&gt; [5,]  2242.84214
+#&gt; [6,]    14.21753
+#&gt; [7,] 32247.07803</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; [1] 2.398459e+21</div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327   5.585392 </div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM with A,B,C matricies</span>
 <span class='co'>## should give same answer as fim.calc.type=0</span>
-<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 5): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM.5</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM.5&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM.5&#39; not found</span></div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)
+<span class='no'>FIM.5</span></div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
+#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
+#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
+#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
+#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
+#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
+#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
+#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
+#&gt;             [,6]         [,7]
+#&gt; [1,]  4.49053810 -54419.72354
+#&gt; [2,] -6.55031322  -1070.93366
+#&gt; [3,] 18.65386273   2955.92423
+#&gt; [4,]  0.02613561    521.54030
+#&gt; [5,]  3.26560786  11214.21071
+#&gt; [6,] 41.81083599     71.08764
+#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM with </span>
 <span class='co'>## A,B,C matricies and derivative of variance</span>
 <span class='co'>## should give same answer as fim.calc.type=1 (default)</span>
-<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 7): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM.7</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;FIM.7&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM.7&#39; not found</span></div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)
+<span class='no'>FIM.7</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'>get_rse</span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -151,12 +151,12 @@ individual instead of per group?</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <p>Other Graphics: <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
+    <p>Other Simulation: <code><a href='model_prediction.html'>model_prediction</a></code>,
+  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
     <p>Other evaluate_design: <code><a href='evaluate.fim.html'>evaluate.fim</a></code>,
   <code><a href='evaluate_design.html'>evaluate_design</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
   <code><a href='model_prediction.html'>model_prediction</a></code>,
-  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
-    <p>Other Graphics: <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
-    <p>Other Simulation: <code><a href='model_prediction.html'>model_prediction</a></code>,
   <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
     
 
@@ -195,9 +195,9 @@ individual instead of per group?</dd>
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -206,7 +206,8 @@ individual instead of per group?</dd>
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin example)</span>
@@ -214,10 +215,10 @@ individual instead of per group?</dd>
 
 
 <span class='co'># Examine efficiency of sampling windows</span>
-<span class='fu'>plot_efficiency_of_windows</span>(<span class='no'>poped.db</span>,<span class='kw'>xt_windows</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot_efficiency_of_windows(poped.db, xt_windows = 0.5): object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='fu'>plot_efficiency_of_windows</span>(<span class='no'>poped.db</span>,<span class='kw'>xt_windows</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><img src='plot_efficiency_of_windows-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='fu'>plot_efficiency_of_windows</span>(<span class='no'>poped.db</span>,
                            <span class='kw'>xt_plus</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>7</span>,<span class='fl'>1</span>),
-                           <span class='kw'>xt_minus</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.1</span>,<span class='fl'>2</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='error'>Error in plot_efficiency_of_windows(poped.db, xt_plus = c(0.5, 1, 2, 1,     2, 3, 7, 1), xt_minus = c(0.1, 2, 5, 4, 2, 3, 6, 2)): object &#39;poped.db&#39; not found</span></div><div class='input'>
+                           <span class='kw'>xt_minus</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.1</span>,<span class='fl'>2</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>2</span>))</div><img src='plot_efficiency_of_windows-6.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   </span>

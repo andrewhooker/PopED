@@ -172,9 +172,9 @@ This computation makes no assumption that fixed and random effects are uncorrela
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -185,7 +185,8 @@ This computation makes no assumption that fixed and random effects are uncorrela
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -202,7 +203,26 @@ This computation makes no assumption that fixed and random effects are uncorrela
       <span class='kw'>d</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
       <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
       <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>docc</span>,
-      <span class='no'>poped.db</span>)[<span class='st'>"ret"</span>]</div><div class='output co'>#&gt; <span class='error'>Error in size(ni, 1): object &#39;poped.db&#39; not found</span></div><div class='input'>
+      <span class='no'>poped.db</span>)[<span class='st'>"ret"</span>]</div><div class='output co'>#&gt; $ret
+#&gt;              [,1]        [,2]       [,3]          [,4]         [,5]        [,6]
+#&gt; [1,] 19865.003641    1.431549  11.016119 -708.59723999 -1875.499055  4.61927134
+#&gt; [2,]     1.431549   20.679817  -6.826283  -29.26097775   -86.321369 -6.13548328
+#&gt; [3,]    11.016119   -6.826283 239.199604   -0.21645901   -71.065641 13.00805966
+#&gt; [4,]  -708.597240  -29.260978  -0.216459 2324.34120373     9.770352  0.03523364
+#&gt; [5,] -1875.499055  -86.321369 -71.065641    9.77035192 19083.877564 11.72131703
+#&gt; [6,]     4.619271   -6.135483  13.008060    0.03523364    11.721317 38.85137516
+#&gt; [7,] -4227.062232 -473.560406 716.704415  726.84097215  9656.158553 64.78095548
+#&gt; [8,]  -470.162834  -11.193854  36.702955   90.62738594   266.487127  2.94728469
+#&gt;              [,7]        [,8]
+#&gt; [1,]  -4227.06223 -470.162834
+#&gt; [2,]   -473.56041  -11.193854
+#&gt; [3,]    716.70442   36.702955
+#&gt; [4,]    726.84097   90.627386
+#&gt; [5,]   9656.15855  266.487127
+#&gt; [6,]     64.78096    2.947285
+#&gt; [7,] 192840.20092 6659.569867
+#&gt; [8,]   6659.56987  475.500111
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -129,9 +129,9 @@
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.prop"</span>,
+<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
@@ -140,14 +140,59 @@
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
+
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin example)</span>
 <span class='co'>#####################################</span>
 
 
-<span class='fu'>get_all_params</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get_all_params(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'>
+<span class='fu'>get_all_params</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; $bpop
+#&gt;      [,1]
+#&gt; [1,] 0.15
+#&gt; [2,] 8.00
+#&gt; [3,] 1.00
+#&gt; [4,] 1.00
+#&gt; 
+#&gt; $d
+#&gt;      [,1]
+#&gt; [1,] 0.07
+#&gt; [2,] 0.02
+#&gt; [3,] 0.60
+#&gt; 
+#&gt; $covd
+#&gt;      [,1] [,2] [,3]
+#&gt; [1,]    0    0    0
+#&gt; 
+#&gt; $docc
+#&gt;      [,1]
+#&gt; 
+#&gt; $covdocc
+#&gt;     
+#&gt; [1,]
+#&gt; 
+#&gt; $sigma
+#&gt; [1] 0.01
+#&gt; 
+#&gt; $covsigma
+#&gt;     
+#&gt; [1,]
+#&gt; 
+#&gt; $all
+#&gt;       [,1]
+#&gt;  [1,] 0.15
+#&gt;  [2,] 8.00
+#&gt;  [3,] 1.00
+#&gt;  [4,] 1.00
+#&gt;  [5,] 0.07
+#&gt;  [6,] 0.02
+#&gt;  [7,] 0.60
+#&gt;  [8,] 0.00
+#&gt;  [9,] 0.00
+#&gt; [10,] 0.00
+#&gt; [11,] 0.01
+#&gt; </div><div class='input'>
 
 </div></pre>
   </div>

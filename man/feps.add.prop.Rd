@@ -52,9 +52,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define design and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.md.CL",
-                                  fg_file="sfg",
-                                  fError_file="feps.add.prop",
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.md.CL,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.add.prop,
                                   groupsize=20,
                                   m=2,
                                   sigma=c(0.04,5e-6),
@@ -81,6 +81,9 @@ get_rse(FIM,poped.db)
 
 }
 \seealso{
+Other RUV_models: \code{\link{feps.add}},
+  \code{\link{feps.prop}}
+
 Other models: \code{\link{feps.add}},
   \code{\link{feps.prop}},
   \code{\link{ff.PK.1.comp.oral.md.CL}},
@@ -89,8 +92,5 @@ Other models: \code{\link{feps.add}},
   \code{\link{ff.PK.1.comp.oral.sd.KE}},
   \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}},
   \code{\link{ff.PKPD.1.comp.sd.CL.emax}}
-
-Other RUV_models: \code{\link{feps.add}},
-  \code{\link{feps.prop}}
 }
 
