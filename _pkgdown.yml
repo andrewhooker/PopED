@@ -1,0 +1,19 @@
+templates:
+  params:
+    bootswatch: cerulean
+
+navbar:
+  title: "PopED"
+  type: inverse
+  left:
+    - text: "Intro"
+      href: articles/intro-poped.html
+    - text: "Reference"
+      href: reference/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/andrewhooker/PopED
+      
+authors:
+  Andrew C. Hooker:
+    href: http://katalog.uu.se/empinfo/?languageId=1&id=N4-631 

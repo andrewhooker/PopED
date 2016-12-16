@@ -8,3 +8,4 @@
 ^cran-comments.md$
 ^\.travis\.yml$
 ^docs$
+^_pkgdown\.yml$
