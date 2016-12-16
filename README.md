@@ -40,6 +40,8 @@ To get started you need to define
 
 Learn more in this [introduction to PopED](https://andrewhooker.github.io/PopED/articles/intro-poped.html)
 
+[folder](./articles/intro-poped.html)
+
 
 ## Contact
 
