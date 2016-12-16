@@ -183,8 +183,7 @@ nonlinear mixed effects models with evaluation in population pharmacokinetics&qu
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
-
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin example)</span>
@@ -203,11 +202,10 @@ nonlinear mixed effects models with evaluation in population pharmacokinetics&qu
    <span class='kw'>d</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
    <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
    <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>docc</span>,
-   <span class='no'>poped.db</span>)
-
+   <span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mf6(model_switch = t(poped.db$design$model_switch[ind, , drop = FALSE]),     xt = t(poped.db$design$xt[ind, , drop = FALSE]), x = zeros(0,         1), a = t(poped.db$design$a[ind, , drop = FALSE]), bpop = poped.db$parameters$bpop[,         2, drop = FALSE], d = poped.db$parameters$param.pt.val$d,     sigma = poped.db$parameters$sigma, docc = poped.db$parameters$param.pt.val$docc,     poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'>
 <span class='co'># in this simple case the full FIM is just the sum of the individual FIMs</span>
 <span class='co'># and all the individual FIMs are the same</span>
-<span class='fu'>det</span>(<span class='no'>output</span>$<span class='no'>ret</span>*<span class='fl'>32</span>) <span class='kw'>==</span> <span class='fu'>det</span>(<span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>det</span>(<span class='no'>output</span>$<span class='no'>ret</span>*<span class='fl'>32</span>) <span class='kw'>==</span> <span class='fu'>det</span>(<span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>))</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;output&#39; not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

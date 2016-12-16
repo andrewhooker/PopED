@@ -233,13 +233,11 @@ to compute the hessian.</dd>
                                     <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                     <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                     <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                    <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
-
+                                    <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 2.376 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.331516e+24</div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object &#39;poped.db.n&#39; not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.003 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;output&#39; not found</span></div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   </span>

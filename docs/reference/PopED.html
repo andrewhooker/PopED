@@ -205,10 +205,9 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
                                   <span class='kw'>bUseGrouped_xt</span><span class='kw'>=</span><span class='fl'>1</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>20</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>),<span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>40</span>, <span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>)),
                                   <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>200</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>),
-                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>))
-
+                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>TAU</span><span class='kw'>=</span><span class='fl'>24</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
 <span class='co'>##  create plot of model without variability </span>
-<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>300</span>)</div><img src='PopED-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>300</span>)</div><div class='output co'>#&gt; <span class='error'>Error in model_prediction(poped.db, model_num_points = model_num_points,     ...): object &#39;poped.db&#39; not found</span></div><div class='input'>
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
@@ -218,22 +217,7 @@ experimental design in population kinetics&quot;, Computer Methods and Programs 
 <span class='co'>## ---------------------------------------------</span>
 
 <span class='co'>## evaluate initial design</span>
-<span class='fu'><a href='evaluate_design.html'>evaluate_design</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; $ofv
-#&gt; [1] -80.74917
-#&gt; 
-#&gt; $fim
-#&gt;             [,1]        [,2]       [,3]         [,4]         [,5]         [,6]
-#&gt; [1,]  0.01371751 -0.05144065  0.6499434   0.00000000 0.000000e+00 0.000000e+00
-#&gt; [2,] -0.05144065  0.19290244 -2.4372878   0.00000000 0.000000e+00 0.000000e+00
-#&gt; [3,]  0.64994341 -2.43728781 35.5005869   0.00000000 0.000000e+00 0.000000e+00
-#&gt; [4,]  0.00000000  0.00000000  0.0000000  66.21695621 1.098118e-02 3.935809e+02
-#&gt; [5,]  0.00000000  0.00000000  0.0000000   0.01098118 1.821079e-06 6.527002e-02
-#&gt; [6,]  0.00000000  0.00000000  0.0000000 393.58086469 6.527002e-02 3.115811e+03
-#&gt; 
-#&gt; $rse
-#&gt;      bpop[1]      bpop[2]      bpop[3]       D[1,1]       D[2,2]       D[3,3] 
-#&gt; 6.913778e+08 5.368779e+10 1.229287e+01 7.339898e+09 4.425988e+13 5.764995e+01 
-#&gt; </div><div class='input'>
+<span class='fu'><a href='evaluate_design.html'>evaluate_design</a></span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in calc_ofv_and_fim(poped.db, ...): object &#39;poped.db&#39; not found</span></div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'>#   </span>
 <span class='co'>#   # Optimization of sample times</span>

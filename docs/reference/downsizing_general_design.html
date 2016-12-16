@@ -153,25 +153,21 @@ variables and resuces the design so that a FIM can be calculated using <code><a 
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
-
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
 <span class='co'>#####################################</span>
 
 
-<span class='no'>dgd</span> <span class='kw'>&lt;-</span> <span class='fu'>downsizing_general_design</span>(<span class='no'>poped.db</span>)
-
+<span class='no'>dgd</span> <span class='kw'>&lt;-</span> <span class='fu'>downsizing_general_design</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in downsizing_general_design(poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'>
 <span class='no'>output</span> <span class='kw'>=</span> <span class='fu'><a href='mftot.html'>mftot</a></span>(<span class='no'>dgd</span>$<span class='no'>model_switch</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>,
                <span class='no'>dgd</span>$<span class='no'>ni</span>,<span class='no'>dgd</span>$<span class='no'>xt</span>,<span class='no'>dgd</span>$<span class='no'>x</span>,<span class='no'>dgd</span>$<span class='no'>a</span>,
                <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>bpop</span>,
                <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
                <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>sigma</span>,
                <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>docc</span>,
-               <span class='no'>poped.db</span>)
-<span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='no'>output</span>$<span class='no'>ret</span>
-<span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; [1] 1.143859e+24</div></pre>
+               <span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mftot(dgd$model_switch, poped.db$design$groupsize, dgd$ni, dgd$xt,     dgd$x, dgd$a, poped.db$parameters$param.pt.val$bpop, poped.db$parameters$param.pt.val$d,     poped.db$parameters$param.pt.val$sigma, poped.db$parameters$param.pt.val$docc,     poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'><span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='no'>output</span>$<span class='no'>ret</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object &#39;output&#39; not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object &#39;FIM&#39; not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

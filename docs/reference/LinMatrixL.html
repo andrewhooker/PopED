@@ -162,8 +162,7 @@ a defined point
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
                                   <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
-
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file &#39;sfg&#39;: No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection</span></div><div class='input'>
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
 <span class='co'>## (warfarin model for optimization)</span>
@@ -179,17 +178,7 @@ a defined point
           <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>[,<span class='fl'>2</span>,<span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>],
           <span class='kw'>b_ind</span><span class='kw'>=</span><span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>NumRanEff</span>,<span class='fl'>1</span>),
           <span class='kw'>bocc_ind</span><span class='kw'>=</span><span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>NumDocc</span>,<span class='fl'>1</span>),
-          <span class='no'>poped.db</span>)[<span class='st'>"y"</span>]</div><div class='output co'>#&gt; $y
-#&gt;             [,1]       [,2]        [,3]
-#&gt; [1,] -0.01736446 -3.4080713  2.63882264
-#&gt; [2,] -0.05954832 -5.4115558  3.17591023
-#&gt; [3,] -0.18102648 -7.2011569  2.27256206
-#&gt; [4,] -0.74460344 -7.2016770 -0.01921862
-#&gt; [5,] -2.44998833 -3.2358678 -0.10864692
-#&gt; [6,] -2.97791129 -1.5623370 -0.08675634
-#&gt; [7,] -3.07661786  0.7649213 -0.04417255
-#&gt; [8,] -2.09673861  1.1568729 -0.01795922
-#&gt; </div><div class='input'>
+          <span class='no'>poped.db</span>)[<span class='st'>"y"</span>]</div><div class='output co'>#&gt; <span class='error'>Error in LinMatrixL(model_switch = t(poped.db$design$model_switch[ind,     , drop = FALSE]), xt_ind = t(poped.db$design$xt[ind, , drop = FALSE]),     x = zeros(0, 1), a = t(poped.db$design$a[ind, , drop = FALSE]),     bpop = poped.db$parameters$bpop[, 2, drop = FALSE], b_ind = zeros(poped.db$parameters$NumRanEff,         1), bocc_ind = zeros(poped.db$parameters$NumDocc, 1),     poped.db): object &#39;poped.db&#39; not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
