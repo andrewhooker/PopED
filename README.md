@@ -36,18 +36,10 @@ To get started you need to define
 
 1. A model.
 2. An initial design (and design space if you want to optimize). 
-3. The tasks to perform.  
+3. The tasks to perform. 
 
-There are a number of functions to help you with these tasks.  See `?poped` for more information.  
- 
-There are several other examples, as r-scripts, in the "examples" folder in the 
-PopED installation directory located at:
+Learn more in this [introduction to PopED](https://andrewhooker.github.io/PopED/articles/intro-poped.html)
 
-```
-system.file("examples", package="PopED")
-```
-
-The same examples are located in the "inst/examples" directory of this repository.
 
 ## Contact
 
