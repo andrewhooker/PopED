@@ -44,7 +44,7 @@ output <- poped_optim(poped.db, opt_xt = T, parallel = T)
 
 summary(output)
 get_rse(output$FIM,output$poped.db)
-plot_model_prediction(output$poped.db)
+plot_model_prediction(output$poped.db) + xlab("Dose")
 
 
 
