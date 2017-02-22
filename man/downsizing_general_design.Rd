@@ -93,4 +93,3 @@ Other poped_input: \code{\link{convert_variables}},
   \code{\link{create_design}}, \code{\link{poped.choose}}
 }
 \keyword{internal}
-

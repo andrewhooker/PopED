@@ -7,7 +7,7 @@
 get_rse(fmf, poped.db, bpop = poped.db$parameters$bpop[, 2, drop = F],
   d = poped.db$parameters$d[, 2, drop = F], docc = poped.db$parameters$docc,
   sigma = poped.db$parameters$sigma, use_percent = T,
-  fim.calc.type = poped.db$settings$iFIMCalculationType)
+  fim.calc.type = poped.db$settings$iFIMCalculationType, ...)
 }
 \arguments{
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
@@ -48,6 +48,8 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 \item 6 = Calculate one model switch at a time, good for large matrices. See \code{\link{mftot6}}.
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance See \code{\link{mftot7}}.
 }}
+
+\item{...}{Additional arguments passed to \code{\link{inv}}.}
 }
 \value{
 A named list of RSE values.
@@ -136,4 +138,3 @@ Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}
 }
-

@@ -125,4 +125,3 @@ Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
   \code{\link{evaluate.e.ofv.fim}},
   \code{\link{evaluate.fim}}
 }
-

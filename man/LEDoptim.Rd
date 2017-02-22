@@ -16,24 +16,15 @@ LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL, x = NULL,
 \arguments{
 \item{poped.db}{A PopED database.}
 
-\item{model_switch}{Matrix defining which response a certain sampling time belongs to.}
+\item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{ni}{Vector defining the number of samples for each group.}
+\item{ni}{A vector of the number of samples in each group.}
 
-\item{xt}{\itemize{
-\item \bold{******START OF INITIAL DESIGN OPTIONS**********}}
- Matrix defining the initial sampling schedule. 
- Each row is a group/individual.
- If only one vector is supplied, e.g. \code{c(1,2,3,4)}, then all groups will 
-have the same inital design.}
+\item{xt}{A matrix of sample times.  Each row is a vector of sample times for a group.}
 
-\item{x}{A matrix defining the initial discrete values for the model 
-Each row is a group/individual.}
+\item{x}{A matrix for the discrete design variables.  Each row is a group.}
 
-\item{a}{Matrix defining the initial continuous covariate values. 
-n_rows=number of groups, n_cols=number of covariates.
-If the number of rows is one and the number of groups > 1 then all groups are assigned the 
-same values.}
+\item{a}{A matrix of covariates.  Each row is a group.}
 
 \item{bpopdescr}{Matrix defining the fixed effects, per row (row number =
 parameter_number) we should have: \itemize{ \item column 1 the type of the
@@ -213,4 +204,3 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
-

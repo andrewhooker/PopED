@@ -117,4 +117,3 @@ log_prior_pdf(alpha=alpha, bpopdescr=bpop_vals_ed_u, ddescr=poped.db$parameters$
 
 }
 \keyword{internal}
-

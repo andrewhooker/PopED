@@ -246,4 +246,3 @@ Other Optimize: \code{\link{LEDoptim}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
 \keyword{internal}
-

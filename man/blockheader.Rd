@@ -193,4 +193,3 @@ Other Helper: \code{\link{blockexp}},
   \code{\link{blockfinal}}, \code{\link{blockopt}}
 }
 \keyword{internal}
-

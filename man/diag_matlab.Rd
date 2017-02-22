@@ -47,4 +47,3 @@ Other matrix_manipulation: \code{\link{test_for_max}},
   \code{\link{test_for_min}}, \code{\link{test_for_zeros}}
 }
 \keyword{internal}
-

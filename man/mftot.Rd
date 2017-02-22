@@ -122,4 +122,3 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{ofv_fim}}
 }
 \keyword{internal}
-

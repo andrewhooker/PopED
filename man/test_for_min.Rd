@@ -33,4 +33,3 @@ Other matrix_manipulation: \code{\link{diag_matlab}},
   \code{\link{test_for_max}}, \code{\link{test_for_zeros}}
 }
 \keyword{internal}
-

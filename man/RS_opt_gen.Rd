@@ -229,4 +229,3 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
-

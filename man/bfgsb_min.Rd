@@ -132,4 +132,3 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
 \keyword{internal}
-

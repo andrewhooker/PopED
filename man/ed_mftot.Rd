@@ -129,10 +129,6 @@ ed_mftot(model_switch=poped.db$design$model_switch,
   
 }
 \seealso{
-Other E-family: \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_laplace_ofv}},
-  \code{\link{evaluate.e.ofv.fim}}
-
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},
@@ -147,6 +143,9 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot6}}, \code{\link{mftot7}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
+
+Other E-family: \code{\link{calc_ofv_and_fim}},
+  \code{\link{ed_laplace_ofv}},
+  \code{\link{evaluate.e.ofv.fim}}
 }
 \keyword{internal}
-

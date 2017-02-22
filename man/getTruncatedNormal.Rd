@@ -24,4 +24,3 @@ getTruncatedNormal(mean=3,variance=100)
 
 }
 \keyword{internal}
-

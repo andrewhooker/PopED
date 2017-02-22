@@ -113,4 +113,3 @@ Other FIM: \code{\link{LinMatrixLH}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
 }
 \keyword{internal}
-

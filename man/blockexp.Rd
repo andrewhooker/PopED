@@ -90,4 +90,3 @@ Other Helper: \code{\link{blockfinal}},
   \code{\link{blockheader}}, \code{\link{blockopt}}
 }
 \keyword{internal}
-

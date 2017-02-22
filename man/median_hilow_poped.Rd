@@ -16,4 +16,3 @@ median_hilow_poped(x, ...)
 Created for back compatibility with older versions of ggplot, and so that 
 PopED does not have to load ggplot when started.
 }
-

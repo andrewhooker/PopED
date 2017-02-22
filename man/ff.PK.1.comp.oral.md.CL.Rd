@@ -92,4 +92,3 @@ Other structural_models: \code{\link{ff.PK.1.comp.oral.md.KE}},
   \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}},
   \code{\link{ff.PKPD.1.comp.sd.CL.emax}}
 }
-

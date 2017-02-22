@@ -25,4 +25,3 @@ params is supplied then the parameter is taken from this vector instead of
 poped.db
 }
 \keyword{internal}
-

@@ -48,4 +48,3 @@ The mean of the function evaluated at different parameter values.
 \description{
 Function computes the monte-carlo mean of a function by varying the parameter inputs to the function
 }
-

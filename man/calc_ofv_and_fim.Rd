@@ -173,9 +173,6 @@ calc_ofv_and_fim(poped.db)
 }
 }
 \seealso{
-Other E-family: \code{\link{ed_laplace_ofv}},
-  \code{\link{ed_mftot}}, \code{\link{evaluate.e.ofv.fim}}
-
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
@@ -191,7 +188,9 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
 
+Other E-family: \code{\link{ed_laplace_ofv}},
+  \code{\link{ed_mftot}}, \code{\link{evaluate.e.ofv.fim}}
+
 Other evaluate_FIM: \code{\link{evaluate.e.ofv.fim}},
   \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
 }
-

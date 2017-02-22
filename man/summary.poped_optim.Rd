@@ -82,4 +82,3 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 
 summary(out_1)
 }
-

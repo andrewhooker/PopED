@@ -132,4 +132,3 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mftot}}, \code{\link{mf}},
   \code{\link{ofv_fim}}
 }
-

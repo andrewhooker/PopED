@@ -3,8 +3,9 @@
 \docType{package}
 \name{PopED}
 \alias{PopED}
-\alias{PopED-package}
 \alias{poped}
+\alias{PopED-package}
+\alias{PopED-package}
 \title{PopED - \bold{Pop}ulation (and individual) optimal \bold{E}xperimental \bold{D}esign.}
 \description{
 PopED computes optimal experimental designs for both 
@@ -195,4 +196,3 @@ experimental design in population kinetics", Computer Methods and Programs in Bi
 \item \url{https://github.com/andrewhooker/PopED.git}
 }
 }
-

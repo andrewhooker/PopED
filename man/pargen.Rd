@@ -146,4 +146,3 @@ pars.ud <- pargen(par=bpop_vals_ed_ud,
 
 
 }
-

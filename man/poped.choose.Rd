@@ -30,4 +30,3 @@ Other poped_input: \code{\link{convert_variables}},
   \code{\link{downsizing_general_design}}
 }
 \keyword{internal}
-

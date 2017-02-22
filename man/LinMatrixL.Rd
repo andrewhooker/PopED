@@ -99,4 +99,3 @@ LinMatrixL(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
 
 }
 \keyword{internal}
-
