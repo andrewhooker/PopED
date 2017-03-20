@@ -29,8 +29,7 @@ cell <- function (...)
     }
     if (!(length(dims) > 1)) {
         stop("dimensions must be of length greater than 1")
-    }
-    else if (!(all(dims > 0))) {
+    } else if (!(all(dims > 0))) {
         ##stop("dimensions must be a positive quantity")
         L <- list()
         dim(L) <- dims
