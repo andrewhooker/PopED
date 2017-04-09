@@ -33,4 +33,3 @@ Other MATLAB: \code{\link{cell}},
   \code{\link{rand}}, \code{\link{size}},
   \code{\link{tic}}, \code{\link{toc}}
 }
-

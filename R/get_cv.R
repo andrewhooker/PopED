@@ -71,6 +71,7 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
 #' @param use_percent Should RSE be reported as percent or not?
+#' @param ... Additional arguments passed to \code{\link{inv}}. 
 #' 
 #' @return A named list of RSE values.
 #' 
@@ -85,7 +86,8 @@ get_rse <- function (fmf, poped.db,
                      docc=poped.db$parameters$docc,
                      sigma=poped.db$parameters$sigma,
                      use_percent=T,
-                     fim.calc.type=poped.db$settings$iFIMCalculationType) {
+                     fim.calc.type=poped.db$settings$iFIMCalculationType,
+                     ...) {
   
   ## update poped.db with options supplied in function
   called_args <- match.call()
@@ -97,7 +99,31 @@ get_rse <- function (fmf, poped.db,
     }
   }
   
-  param_vars=diag_matlab(inv(fmf))
+  inv_fim <- tryCatch({
+    inv(fmf,...)
+  }, error=function(e){
+    warning(e)
+    return(NULL)
+  })
+   
+  if(is.null(inv_fim)){
+    mess <- paste0("\n  Could not invert the FIM.",
+                   "\n  Is the design adequate to estimate all parameters?")
+    eig <- eigen(fmf)[["values"]]
+    names(eig) <- get_parnam(poped.db)
+    neg.vals <- eig[eig< 0]
+    num.neg <- length(neg.vals)
+    if(num.neg>0){
+      mess <- paste0(mess,"\n  Potentially problematic parameters and associated eigenvalues:")
+      for(i in 1:num.neg){
+        mess <- paste0(mess,sprintf("\n %12s  %8.7e",names(neg.vals[i]),neg.vals[i]))
+      }
+    }
+    #warning(simpleWarning(mess,call="get_rse()"))
+    warning(mess)
+    return(rep(NA,length(get_parnam(poped.db))))
+  }  
+  param_vars=diag_matlab(inv_fim)
   returnArgs <-  get_cv(param_vars,bpop=bpop,d=d,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
   params <- returnArgs[[1]]
   params_rse <- returnArgs[[2]]

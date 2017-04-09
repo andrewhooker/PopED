@@ -232,4 +232,3 @@ Other evaluate_design: \code{\link{evaluate.fim}},
 Other Simulation: \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}
 }
-

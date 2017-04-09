@@ -133,9 +133,8 @@ Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}}
 
-Other Graphics: \code{\link{plot_efficiency_of_windows}}
-
 Other Simulation: \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}}
-}
 
+Other Graphics: \code{\link{plot_efficiency_of_windows}}
+}

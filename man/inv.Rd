@@ -20,4 +20,3 @@ The inverse matrix
 Function computes the inverse of a matrix.
 }
 \keyword{internal}
-

@@ -252,6 +252,7 @@ poped_optim <- function(poped.db,
   
   if(length(par_fixed_index)!=0){
     par <- par[-c(par_fixed_index)]
+    npar <- length(par)
     lower <- lower[-c(par_fixed_index)]
     upper <- upper[-c(par_fixed_index)]
     par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
@@ -263,7 +264,6 @@ poped_optim <- function(poped.db,
     return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
   } 
   
-
   if(!is.null(allowed_values)){
     for(k in 1:npar){
       if(!all(is.na(allowed_values[[k]]))){

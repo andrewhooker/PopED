@@ -42,9 +42,9 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff.PKPD.1.comp.oral.md.CL.imax",
-                                  fError_file="feps",
-                                  fg_file="sfg",
+poped.db <- create.poped.database(ff_fun=ff.PKPD.1.comp.oral.md.CL.imax,
+                                  fError_fun=feps,
+                                  fg_fun=sfg,
                                   groupsize=20,
                                   m=3,
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,

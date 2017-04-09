@@ -31,4 +31,3 @@ Other MATLAB: \code{\link{cell}},
   \code{\link{size}}, \code{\link{tic}}, \code{\link{toc}},
   \code{\link{zeros}}
 }
-

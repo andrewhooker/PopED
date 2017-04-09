@@ -36,4 +36,3 @@ Other MATLAB: \code{\link{cell}},
   \code{\link{zeros}}
 }
 \keyword{internal}
-

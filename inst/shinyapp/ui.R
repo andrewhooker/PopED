@@ -1,10 +1,10 @@
 library(shiny)
+library(PopED)
 library(rhandsontable)
 
-offset <- 0
-
-# Define UI for miles per gallon application
-shinyUI(
+ui <- function(){
+  offset <- 0
+  
   navbarPage(title="PopED - Population Experimental Design",
              collapsible = TRUE,
              tabPanel("Model Definition",fluidPage(
@@ -60,7 +60,7 @@ shinyUI(
                                       "Emax with hill coefficient" = "hill"
                                     ))
                  ),
-               
+                 
                  column(3, offset = 0,
                         conditionalPanel(
                           condition = "input.struct_PD_model != 'NULL' && input.struct_PK_model != 'NULL'",
@@ -260,7 +260,8 @@ shinyUI(
                )
              )
   )
-)
+}
+
 #plotOutput("modelPlot")
 #   footer=(
 #     br(),

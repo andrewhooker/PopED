@@ -26,4 +26,3 @@ Other poped_input: \code{\link{create.poped.database}},
   \code{\link{poped.choose}}
 }
 \keyword{internal}
-

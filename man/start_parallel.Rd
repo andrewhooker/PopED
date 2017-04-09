@@ -34,4 +34,3 @@ This tool chooses the type of parallelization process to use based on the
 computer OS being used.  For windows the default is "snow" and for Linux-like
 systems the default is "multicore"
 }
-

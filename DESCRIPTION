@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.3.2
+Version: 0.3.2.9001
 Depends:
     R (>= 2.14)
 Imports:
@@ -40,5 +40,5 @@ URL: http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2016 Andrew C. Hooker
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr

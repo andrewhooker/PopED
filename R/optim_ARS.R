@@ -221,15 +221,20 @@ optim_ARS <- function(par,
     res2 <- res2[,!sapply(res2["ofv",],is.null),drop=F]
     
     if(maximize){
-      out <- res2[,which.max(res2["ofv",])]  
+      out <- res2[,which.max(res2["ofv",])] 
     } else {
-      out <- res2[,which.min(res2["ofv",])]  
+      out <- res2[,which.min(res2["ofv",])] 
+      # x <- res2["ofv",]$ofv
+      # which(x == min(x, na.rm = F))
     }
     
     # check if a unique new parameter vector was generated
-    if(is.null(out$ofv)){
-      cat(paste0("Maximum number of duplicate parameter samples reached (new_par_max_it=",new_par_max_it,"), optimization stopped.\n"))
-      break
+    if(!is.null(out$need_new_par)){
+      if(out$need_new_par){
+        cat(paste0("Maximum number of duplicate parameter samples reached\n(new_par_max_it=",
+                   new_par_max_it,"), optimization stopped.\n"))
+        break
+      }
     }
     
     ofv <- out$ofv
@@ -237,7 +242,13 @@ optim_ARS <- function(par,
     
     par_vec[it_seq] <- res["par",] # save new parameter vectors in a list
     
-    if((compare(ofv,ofv_opt) || is.null(ofv_opt))){
+    if(
+      (
+        (compare(ofv,ofv_opt) && !is.null(ofv)) 
+        || 
+        (is.null(ofv_opt) && !is.null(ofv))
+      )
+      ){
       par_opt <- par 
       ofv_opt <- ofv
       nullit=1

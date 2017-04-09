@@ -1,12 +1,8 @@
+library(shiny)
 library(PopED)
-
 library(rhandsontable)
 
-# Define server logic required to plot various variables against mpg
-shinyServer(function(input, output, session) {
-  
-  
-  
+function(input, output, session) {
   
   model_name <- reactive({
     mod_name <- NULL
@@ -400,7 +396,7 @@ shinyServer(function(input, output, session) {
       
       
       df <- data.frame(group = 1L, 
-                         amount = 20,
+                       amount = 20,
                        time = 0,
                        duration = 0,
                        n = 1L,
@@ -420,64 +416,64 @@ shinyServer(function(input, output, session) {
     num_groups <- input$num_groups
     DF <- data()
     #if(any(DF$covariate))
-      for(i in 1:num_groups){
-        out <- c(out,list(h3(paste0("Group ", i))))
-        out <- c(out,list(textInput(paste0("groupsize_",i), 
-                                    paste0("Number of individuals in group ",i,":"), "" )))
-        if(input$struct_PK_model!="NULL"){
-          out <- c(out,list(
-            #wellPanel(
-            h3(paste0("Regimen")),
-            textInput(paste0("amt_",i),
-                      paste0("Dose amount(s):")),
-            textInput(paste0("d_time_",i),
-                      paste0("Dose time(s):"),
-                      value="0"),
-            selectInput(paste0("dose_type_",i), "Dose type",
-                        list(
-                          "Bolus" = "bolus",
-                          "Infusion" = "infusion"
-                        ))
-            #)
-            
-            # conditionalPanel(
-            #   condition = "input.dose_type == 'infusion'",
-            #   sliderInput("breakCount", "Break Count", min=1, max=1000, value=10)
-            # )
-          ))
-          #if(!is.null(input$dose_type)){
-          out <- c(out,list(
-            conditionalPanel(
-              condition = paste0("input.dose_type_",i," == 'infusion'"),
-              textInput(paste0("inf_dur_",i),
-                        paste0("Infusion duration(s):"),
-                        value="")
-              )))
-              
-          #   if(input$dose_type=="bolus") textInput(paste0("amt33_",i),paste0("dooo amount"))
-          #}
-          #if(get_dose_type()=="bolus") out <- c(out,list(h3(paste0("Group ", i))))
+    for(i in 1:num_groups){
+      out <- c(out,list(h3(paste0("Group ", i))))
+      out <- c(out,list(textInput(paste0("groupsize_",i), 
+                                  paste0("Number of individuals in group ",i,":"), "" )))
+      if(input$struct_PK_model!="NULL"){
+        out <- c(out,list(
+          #wellPanel(
+          h3(paste0("Regimen")),
+          textInput(paste0("amt_",i),
+                    paste0("Dose amount(s):")),
+          textInput(paste0("d_time_",i),
+                    paste0("Dose time(s):"),
+                    value="0"),
+          selectInput(paste0("dose_type_",i), "Dose type",
+                      list(
+                        "Bolus" = "bolus",
+                        "Infusion" = "infusion"
+                      ))
+          #)
           
-        }
+          # conditionalPanel(
+          #   condition = "input.dose_type == 'infusion'",
+          #   sliderInput("breakCount", "Break Count", min=1, max=1000, value=10)
+          # )
+        ))
+        #if(!is.null(input$dose_type)){
+        out <- c(out,list(
+          conditionalPanel(
+            condition = paste0("input.dose_type_",i," == 'infusion'"),
+            textInput(paste0("inf_dur_",i),
+                      paste0("Infusion duration(s):"),
+                      value="")
+          )))
         
-        if(input$struct_PK_model!="NULL"){
-          out <- c(out,list(textInput(paste0("xt_pk_",i), paste0("PK Sample times:"))))
-        }
-        if(input$struct_PD_model!="NULL"){
-          out <- c(out,list(textInput(paste0("xt_pd_",i), paste0("PD Sample times:"))))
-        }
-        if(any(DF$covariate)){
-          cov_names <- DF[DF["covariate"]==T,"name"]
-          names_par <- cov_names[!cov_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")]
-          for(j in names_par){
-            out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
-          }
-        }
-        #       if(num_groups > 1){
-        #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
-        #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
-        #       }
+        #   if(input$dose_type=="bolus") textInput(paste0("amt33_",i),paste0("dooo amount"))
+        #}
+        #if(get_dose_type()=="bolus") out <- c(out,list(h3(paste0("Group ", i))))
+        
       }
+      
+      if(input$struct_PK_model!="NULL"){
+        out <- c(out,list(textInput(paste0("xt_pk_",i), paste0("PK Sample times:"))))
+      }
+      if(input$struct_PD_model!="NULL"){
+        out <- c(out,list(textInput(paste0("xt_pd_",i), paste0("PD Sample times:"))))
+      }
+      if(any(DF$covariate)){
+        cov_names <- DF[DF["covariate"]==T,"name"]
+        names_par <- cov_names[!cov_names %in% c("Dose","DOSE","dose","tau","TAU","Tau")]
+        for(j in names_par){
+          out <- c(out,list(textInput(paste0(j,"_",i),paste0(j,":"))))
+        }
+      }
+      #       if(num_groups > 1){
+      #         out <- c(out,list(actionButton(paste0("remove_group_",i),paste0("Remove Group ",i)))) 
+      #         #out <- c(out,list(renderPrint({ input[[paste0("remove_group_",i)]] })))
+      #       }
+    }
     #out <- c(out,list(renderPrint({ input$new_group })))
     #out <- c(out,list(actionButton("new_group","Add a new group")))  
     return(as.list(out))
@@ -695,7 +691,7 @@ shinyServer(function(input, output, session) {
     # bpop_notfixed <- !df_2[["pop_fixed"]]
     # names(bpop_notfixed) <- df_2[["name"]]
     # par_names <- df_2[["name"]]
-
+    
     
     sfg <- build_sfg(model=NULL,
                      par_names = df[["name"]],
@@ -766,4 +762,4 @@ shinyServer(function(input, output, session) {
     #print(plot_model_prediction(poped.db.1,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
     #print(plot_model_prediction(poped.db.2,IPRED=TRUE,DV=TRUE))
   })
-})
+}

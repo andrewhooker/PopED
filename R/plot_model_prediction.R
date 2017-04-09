@@ -94,9 +94,9 @@ plot_model_prediction <- function(poped.db,
                               ...)
   }
   
-  if(IPRED || IPRED.lines || DV || IPRED.lines.pctls){
+  if(IPRED || IPRED.lines || DV || IPRED.lines.pctls || sample.times.DV || sample.times.DV.points || sample.times.DV.lines){
     dv_val <- FALSE
-    if(DV) dv_val <- TRUE
+    if(DV || sample.times.DV || sample.times.DV.points || sample.times.DV.lines) dv_val <- TRUE
     poped.db_tmp <- poped.db
     poped.db_tmp$design$groupsize <- poped.db$design$groupsize*0+groupsize_sim
     df.ipred <-  model_prediction(poped.db_tmp,

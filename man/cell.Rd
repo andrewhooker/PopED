@@ -40,4 +40,3 @@ Other MATLAB: \code{\link{diag_matlab}},
   \code{\link{size}}, \code{\link{tic}}, \code{\link{toc}},
   \code{\link{zeros}}
 }
-

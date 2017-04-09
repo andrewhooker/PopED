@@ -1,0 +1,189 @@
+PopED Optimization Results for the Adaptive Random Search Algorithm 
+
+        2016-12-16 16:48:35
+
+==============================================================================
+Model description : PopED model 
+
+Model Sizes : 
+Number of individual model parameters                  g[j]    : Ng    = 5
+Number of population model fixed parameters            bpop[j] : Nbpop = 4
+Number of population model random effects parameters   b[j]    : Nb    = 3
+
+Typical Population Parameters:
+bpop[1]:  0.15 
+bpop[2]:     8 
+bpop[3]:     1 
+bpop[4]:     1 
+
+Between Subject Variability matrix D (variance units) 
+0.07 0.00 0.00
+0.00 0.02 0.00
+0.00 0.00 0.60
+
+Diagonal Elements of D [sqrt(param)]:
+D[1,1]:  0.07 [0.2646] 
+D[2,2]:  0.02 [0.1414] 
+D[3,3]:   0.6 [0.7746] 
+
+Residual Unexplained Variability matrix SIGMA (variance units) : 
+0.01 0.00
+0.00 0.25
+
+Diagonal Elements of SIGMA [sqrt(param)]:
+SIGMA[1,1]:  0.01 [  0.1] 
+SIGMA[2,2]:  0.25 [  0.5] 
+
+==============================================================================
+Experiment description (design and design space)
+
+Numer of individuals: 32
+Number of groups (individuals with same design): 1
+Numer of individuals per group:
+     Group 1: 32
+Numer of samples per group:
+ Number of discrete experimental variables: 0
+Number of model covariates: 1
+
+Initial Sampling Schedule
+   0.5      1      2      6     24     36     72    120
+
+Minimum allowed sampling values
+ 1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05
+
+Maximum allowed sampling values
+   120    120    120    120    120    120    120    120
+
+Covariates  (min, max):
+Group 1: 70 (0, 100)
+
+===============================================================================
+Initial design evaluation
+
+Initial OFV = 57.0828
+
+Efficiency criterion [usually defined as OFV^(1/npar)]  = 1255.57
+
+Initial design expected parameter 
+relative standard error (%RSE)
+    Parameter   Values   RSE_0
+      bpop[1]     0.15    4.84
+      bpop[2]     8.00    2.96
+      bpop[3]     1.00    6.59
+       D[1,1]     0.07   30.20
+       D[2,2]     0.02   37.10
+       D[3,3]     0.60   27.62
+   SIGMA[1,1]     0.01   32.87
+   SIGMA[2,2]     0.25   26.03
+
+==============================================================================
+Optimization Settings
+
+Random Search :
+Number of cycles : 3
+Locality factor for xt : 10
+Locality factor for a  : 10
+
+==============================================================================
+Criterion Specification
+
+OFV calculation for FIM: 4 
+  1=Determinant of FIM,
+  4=log determinant of FIM,
+  6=determinant of interesting part of FIM (Ds)
+
+Approximation method: 0
+  0=FO, 
+  1=FOCE, 
+  2=FOCEI, 
+  3=FOI
+
+Fisher Information Matrix type: 0
+  0=Full FIM,
+  1=Reduced FIM,
+  2=weighted models,
+  3=Loc models,
+  4=reduced FIM with derivative of SD of sigma as pfim,
+  5=FULL FIM parameterized with A,B,C matrices & derivative of variance,
+  6=Calculate one model switch at a time, good for large matrices,
+  7=Reduced FIM parameterized with A,B,C matrices & derivative of variance
+
+Design family: 1
+  D-family design (1) or 
+  ED-familty design (0) 
+  (with or without parameter uncertainty)
+
+==============================================================================
+Optimization of design parameters
+
+* Optimize Sampling Schedule
+* Optimize Covariates
+
+*******************************
+Initial Value
+ OFV(mf) = 57.0828
+*******************************
+
+RS - It. : 3   OFV : 57.0828
+
+*******************************
+RS Results
+ OFV(mf) = 57.0828
+
+Optimized Sampling Schedule
+   0.5      1      2      6     24     36     72    120
+
+Optimized Covariates:
+Group 1: 70
+
+*********************************
+
+===============================================================================
+FINAL RESULTS
+Optimized Sampling Schedule
+   0.5      1      2      6     24     36     72    120
+
+Optimized Covariates:
+Group 1: 70
+
+ FIM: 
+ 1.986500e+04  1.431549e+00  1.101612e+01 -7.085972e+02 -1.875499e+03  4.619271e+00 -4.227062e+03 -4.701628e+02
+ 1.431549e+00  2.067982e+01 -6.826283e+00 -2.926098e+01 -8.632137e+01 -6.135483e+00 -4.735604e+02 -1.119385e+01
+ 1.101612e+01 -6.826283e+00  2.391996e+02 -2.164590e-01 -7.106564e+01  1.300806e+01  7.167044e+02  3.670295e+01
+-7.085972e+02 -2.926098e+01 -2.164590e-01  2.324341e+03  9.770352e+00  3.523364e-02  7.268410e+02  9.062739e+01
+-1.875499e+03 -8.632137e+01 -7.106564e+01  9.770352e+00  1.908388e+04  1.172132e+01  9.656159e+03  2.664871e+02
+ 4.619271e+00 -6.135483e+00  1.300806e+01  3.523364e-02  1.172132e+01  3.885138e+01  6.478096e+01  2.947285e+00
+-4.227062e+03 -4.735604e+02  7.167044e+02  7.268410e+02  9.656159e+03  6.478096e+01  1.928402e+05  6.659570e+03
+-4.701628e+02 -1.119385e+01  3.670295e+01  9.062739e+01  2.664871e+02  2.947285e+00  6.659570e+03  4.755001e+02
+
+
+Inverse(FIM):
+ 5.262233e-05  4.084226e-05 -5.839093e-06  1.435819e-05  5.071977e-06 -2.224067e-06 -1.327247e-06  6.646717e-05
+ 4.084226e-05  5.600404e-02  9.087621e-04  7.166204e-04  1.898377e-04  8.301367e-03  1.660120e-04 -1.330852e-03
+-5.839093e-06  9.087621e-04  4.341708e-03  2.123368e-05  2.728146e-05 -1.288375e-03 -7.010881e-06 -2.326690e-04
+ 1.435819e-05  7.166204e-04  2.123368e-05  4.468471e-04  3.994183e-06  1.047293e-04  4.068689e-06 -1.156094e-04
+ 5.071977e-06  1.898377e-04  2.728146e-05  3.994183e-06  5.506955e-05  7.177755e-06 -2.827935e-06  1.531593e-05
+-2.224067e-06  8.301367e-03 -1.288375e-03  1.047293e-04  7.177755e-06  2.745822e-02  2.274821e-05 -2.201027e-04
+-1.327247e-06  1.660120e-04 -7.010881e-06  4.068689e-06 -2.827935e-06  2.274821e-05  1.080207e-05 -1.474820e-04
+ 6.646717e-05 -1.330852e-03 -2.326690e-04 -1.156094e-04  1.531593e-05 -2.201027e-04 -1.474820e-04  4.235760e-03
+
+OFV = 57.0828
+
+Efficiency criterion [usually defined as det(FIM)^(1/npar)]  = 1255.57
+
+Efficiency: 
+  ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1
+
+Expected parameter 
+relative standard error (%RSE):
+    Parameter   Values   RSE_0     RSE
+      bpop[1]     0.15    4.84    4.84
+      bpop[2]     8.00    2.96    2.96
+      bpop[3]     1.00    6.59    6.59
+       D[1,1]     0.07   30.20   30.20
+       D[2,2]     0.02   37.10   37.10
+       D[3,3]     0.60   27.62   27.62
+   SIGMA[1,1]     0.01   32.87   32.87
+   SIGMA[2,2]     0.25   26.03   26.03
+
+Total running time: 0.093 seconds
