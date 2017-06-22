@@ -128,10 +128,21 @@ create_ofv <- function(poped.db,
   }
   
   par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
-  par_fixed_index <- which(upper==lower)
-  par_not_fixed_index <- which(upper!=lower)
+  #par_fixed_index <- which(upper==lower)
+  par_fixed_index <- which(upper==lower & par_cat_cont=="cont")
+  for(npar in 1:length(par)){
+    if(par_cat_cont[npar]=="cont") next
+    if(all(par[npar]==allowed_values[[npar]])){
+      par_fixed_index <- c(par_fixed_index,npar)
+    } 
+  }
+  par_fixed_index <- sort(unique(par_fixed_index))
+  par_not_fixed_index <- 1:length(par)
+  par_not_fixed_index <- par_not_fixed_index[!(par_not_fixed_index %in% par_fixed_index)]
+  
   if(length(par_fixed_index)!=0){
     par <- par[-c(par_fixed_index)]
+    npar <- length(par)
     lower <- lower[-c(par_fixed_index)]
     upper <- upper[-c(par_fixed_index)]
     par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
@@ -140,6 +151,19 @@ create_ofv <- function(poped.db,
   
   if(length(par)==0) stop("No design parameters have a design space to optimize")
   
+  # if(length(par)==0){
+  #   message("No design parameters have a design space to optimize")
+  #   return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
+  # } 
+  
+  if(!is.null(allowed_values)){
+    for(k in 1:npar){
+      if(!all(is.na(allowed_values[[k]]))){
+        if(length(upper)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]<=upper[k]]
+        if(length(lower)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]>=lower[k]]
+      }
+    }
+  }
   
   if(transform_parameters){
     for(i in 1:length(par)){
@@ -238,7 +262,8 @@ create_ofv <- function(poped.db,
     
     output <- do.call(calc_ofv_and_fim,
                       c(list(
-                        poped.db,d_switch=d_switch,
+                        poped.db,
+                        d_switch=d_switch,
                         ED_samp_size=ED_samp_size,
                         bLHS=bLHS,
                         use_laplace=use_laplace,
@@ -267,10 +292,11 @@ create_ofv <- function(poped.db,
     
     #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
     if(!is.finite(ofv) && ofv_calc_type==4){
-      ofv <- -Inf 
+      #ofv <- -Inf 
+      ofv <- NA
     } else {
-      if(!is.finite(ofv)) ofv <- 1e-15
-      #if(!is.finite(ofv)) ofv <- NA
+      #if(!is.finite(ofv)) ofv <- 1e-15
+      if(!is.finite(ofv)) ofv <- NA
       #if(!is.finite(ofv)) ofv <- -Inf
     }
     
