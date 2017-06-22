@@ -29,6 +29,7 @@
 #' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
 #' @param groupsize_sim How many individuals per group  should be 
 #'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
+#' @param ... Other arguments passed to \code{\link{model_prediction}}.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
 #' forget to load the ggplot2 library using \code{library(ggplot2)}.
@@ -36,6 +37,8 @@
 #' @family evaluate_design
 #' @family Simulation
 #' @family Graphics
+#' 
+#' @seealso \code{\link{model_prediction}}
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_plot_model_prediction.R
 #' 
