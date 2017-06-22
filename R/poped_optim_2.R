@@ -63,33 +63,33 @@
 #' @export
 
 poped_optim_2 <- function(poped.db,
-                        opt_xt=poped.db$settings$optsw[2],
-                        opt_a=poped.db$settings$optsw[4],
-                        opt_x=poped.db$settings$optsw[3],
-                        opt_samps=poped.db$settings$optsw[1],
-                        opt_inds=poped.db$settings$optsw[5],
-                        method=c("ARS","BFGS","LS"),
-                        control=list(),
-                        trace = TRUE,
-                        fim.calc.type=poped.db$settings$iFIMCalculationType,
-                        ofv_calc_type=poped.db$settings$ofv_calc_type,
-                        approx_type=poped.db$settings$iApproximationMethod,
-                        d_switch=poped.db$settings$d_switch,
-                        ED_samp_size = poped.db$settings$ED_samp_size,
-                        bLHS=poped.db$settings$bLHS,
-                        use_laplace=poped.db$settings$iEDCalculationType,
-                        out_file="",
-                        parallel=F,
-                        parallel_type=NULL,
-                        num_cores = NULL,
-                        loop_methods=ifelse(length(method)>1,TRUE,FALSE),
-                        iter_max = 10,
-                        stop_crit_eff = 1.001,
-                        stop_crit_diff = NULL,
-                        stop_crit_rel = NULL,
-                        ofv_fun = poped.db$settings$ofv_fun,
-                        maximize=T,
-                        ...){
+                          opt_xt=poped.db$settings$optsw[2],
+                          opt_a=poped.db$settings$optsw[4],
+                          opt_x=poped.db$settings$optsw[3],
+                          opt_samps=poped.db$settings$optsw[1],
+                          opt_inds=poped.db$settings$optsw[5],
+                          method=c("ARS","BFGS","LS"),
+                          control=list(),
+                          trace = TRUE,
+                          fim.calc.type=poped.db$settings$iFIMCalculationType,
+                          ofv_calc_type=poped.db$settings$ofv_calc_type,
+                          approx_type=poped.db$settings$iApproximationMethod,
+                          d_switch=poped.db$settings$d_switch,
+                          ED_samp_size = poped.db$settings$ED_samp_size,
+                          bLHS=poped.db$settings$bLHS,
+                          use_laplace=poped.db$settings$iEDCalculationType,
+                          out_file="",
+                          parallel=F,
+                          parallel_type=NULL,
+                          num_cores = NULL,
+                          loop_methods=ifelse(length(method)>1,TRUE,FALSE),
+                          iter_max = 10,
+                          stop_crit_eff = 1.001,
+                          stop_crit_diff = NULL,
+                          stop_crit_rel = NULL,
+                          ofv_fun = poped.db$settings$ofv_fun,
+                          maximize=T,
+                          ...){
   
   #------------ update poped.db with options supplied in function
   called_args <- match.call()
@@ -101,24 +101,27 @@ poped_optim_2 <- function(poped.db,
     }
   }
   
-  #----------- checks
-  if(is.null(ofv_fun) || is.function(ofv_fun)){
-    ofv_fun_user <- ofv_fun 
-  } else {
-    # source explicit file
-    # here I assume that function in file has same name as filename minus .txt and pathnames
-    if(file.exists(as.character(ofv_fun))){
-      source(as.character(ofv_fun))
-      ofv_fun_user <- eval(parse(text=fileparts(ofv_fun)[["filename"]]))
-    } else {
-      stop("ofv_fun is not a function or NULL, and no file with that name was found")
-    }
-    
-  }
-  if(!is.null(ofv_fun)){
-    poped.db$settings$ofv_calc_type = 0
-  }
 
+  #---------------------- ofv for optimization
+  my_ofv <- create_ofv(poped.db=poped.db,
+                       opt_xt=opt_xt,
+                       opt_a=opt_a,
+                       opt_x=opt_x,
+                       opt_samps=opt_samps,
+                       opt_inds=opt_inds,
+                       fim.calc.type=fim.calc.type,
+                       ofv_calc_type=ofv_calc_type,
+                       approx_type=approx_type,
+                       d_switch=d_switch,
+                       ED_samp_size = ED_samp_size,
+                       bLHS=bLHS,
+                       use_laplace=use_laplace,
+                       ofv_fun = ofv_fun,
+                       ...) 
+  par_trans <- my_ofv$par
+  ofv_fun <- my_ofv$fun
+  back_transform_par_fun <- my_ofv$back_transform_par
+  
   
   #------------- initialization
   fmf = 0 #The best FIM so far
@@ -137,6 +140,7 @@ poped_optim_2 <- function(poped.db,
   dmf <- output$ofv
   fmf_init <- fmf
   dmf_init <- dmf
+  poped.db_init <- poped.db
   
   if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
   
@@ -146,25 +150,6 @@ poped_optim_2 <- function(poped.db,
                  out_file=out_file,
                  trflag=trace,
                  ...)
-  
-  #---------------------- ofv for optimization
-  my_ofv <- create_ofv(poped.db=poped.db,
-                       opt_xt=opt_xt,
-                       opt_a=opt_a,
-                       opt_x=opt_x,
-                       opt_samps=opt_samps,
-                       opt_inds=opt_inds,
-                       fim.calc.type=fim.calc.type,
-                       ofv_calc_type=ofv_calc_type,
-                       approx_type=approx_type,
-                       d_switch=d_switch,
-                       ED_samp_size = ED_samp_size,
-                       bLHS=bLHS,
-                       use_laplace=use_laplace,
-                       ofv_fun = ofv_fun,
-                       ...) 
-  par <- my_ofv$par
-  ofv_fun <- my_ofv$fun
   
   #------------ optimize
   if(!(fn=="")) sink(fn, append=TRUE, split=TRUE)
@@ -318,6 +303,7 @@ poped_optim_2 <- function(poped.db,
             -ofv_fun(par,only_cont=F,...) 
           }
         }
+        
         output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                            fitness = ofv_fun_2,
                                            #par_full=par_full,
@@ -328,7 +314,6 @@ poped_optim_2 <- function(poped.db,
                                       #allowed_values = allowed_values),
                                       con,
                                       ...))
-        
         
         output$ofv <- output_ga@fitnessValue
         if(!maximize) output$ofv <- -output$ofv
@@ -361,9 +346,11 @@ poped_optim_2 <- function(poped.db,
       fprintf("Relative difference in OFV:  %.3g%%\n",rel_diff*100)
       
       # efficiency
-      p = get_fim_size(poped.db)
-      eff = ofv_criterion(output$ofv,p,poped.db)/ofv_criterion(ofv_init,p,poped.db)
-      cat("Efficiency: ",sprintf("%.5g",eff), "\n")
+      
+      
+      eff <- efficiency(ofv_init, output$ofv, poped.db)
+      fprintf("Efficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff)
+      #cat("Efficiency: \n  ", attr(eff,"description"), sprintf("%.5g",eff), "\n")
       #if(eff<=stop_crit_eff) stop_crit <- TRUE
       
       #cat("eff: ",sprintf("%.3g",(output$ofv - ofv_init)/p), "\n")
@@ -497,27 +484,30 @@ poped_optim_2 <- function(poped.db,
                          ofv_fun = ofv_fun_user,
                          ...)[["fim"]]
   
-  blockfinal(fn=fn,fmf=FIM,
-             dmf=output$ofv,
-             groupsize=poped.db$design$groupsize,
-             ni=poped.db$design$ni,
-             xt=poped.db$design$xt,
-             x=poped.db$design$x,
-             a=poped.db$design$a,
-             model_switch=poped.db$design$model_switch,
-             poped.db$parameters$param.pt.val$bpop,
-             poped.db$parameters$param.pt.val$d,
-             poped.db$parameters$docc,
-             poped.db$parameters$param.pt.val$sigma,
-             poped.db,
-             fmf_init=fmf_init,
-             dmf_init=dmf_init,
-             ...)
+  time_value <- 
+    blockfinal(fn=fn,fmf=FIM,
+               dmf=output$ofv,
+               groupsize=poped.db$design$groupsize,
+               ni=poped.db$design$ni,
+               xt=poped.db$design$xt,
+               x=poped.db$design$x,
+               a=poped.db$design$a,
+               model_switch=poped.db$design$model_switch,
+               poped.db$parameters$param.pt.val$bpop,
+               poped.db$parameters$param.pt.val$d,
+               poped.db$parameters$docc,
+               poped.db$parameters$param.pt.val$sigma,
+               poped.db,
+               fmf_init=fmf_init,
+               dmf_init=dmf_init,
+               ...)
   
   
   #  }
   #}
-  
-  return(invisible(list( ofv= output$ofv, FIM=FIM, poped.db = poped.db ))) 
+  results <- list( ofv= output$ofv, FIM=FIM, initial=list(ofv=dmf_init, FIM=fmf_init, poped.db=poped.db_init), 
+                   run_time=time_value, poped.db = poped.db )
+  class(results) <- "poped_optim"
+  return(invisible(results)) 
 }
 
