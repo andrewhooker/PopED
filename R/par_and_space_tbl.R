@@ -1,4 +1,4 @@
-par_and_space_tbl <- function(poped.db,...) {
+par_and_space_tbl <- function(poped.db) {
   df <- NULL
   
   design=poped.db$design
@@ -65,7 +65,7 @@ par_and_space_tbl <- function(poped.db,...) {
   df_a <- tibble::add_column(df_a,group=t(group_mat)[t(sel_mat_a)])
   
   # name column
-  if(!any(dim(design$a)==0)){
+  if(!any(dim(design$a)==0) & !all(is.null(colnames(design$a)))){
     name_mat <- matrix(colnames(design$a),nrow=nrow(design$a),ncol = ncol(design$a),byrow=T)
     df_a <- tibble::add_column(df_a,name=t(name_mat)[t(sel_mat_a)])
   }
@@ -246,13 +246,12 @@ par_and_space_tbl <- function(poped.db,...) {
   return(df)
 }
 
-par_optim <- function(poped.db,
-                      opt_xt=as.logical(poped.db$settings$optsw[2]),
-                      opt_a=as.logical(poped.db$settings$optsw[4]),
-                      opt_samps=as.logical(poped.db$settings$optsw[1]),
-                      opt_inds=as.logical(poped.db$settings$optsw[5]),
-                      #transform_parameters=T,
-                      ...) {
+get_par_and_space_optim <- function(df,
+                      opt_xt=FALSE,
+                      opt_a=FALSE,
+                      opt_samps=FALSE,
+                      opt_inds=FALSE,
+                      transform_parameters=F) {
   
   #----------- checks
   if(!any(opt_xt,opt_a,opt_samps,opt_inds)){
@@ -263,38 +262,82 @@ par_optim <- function(poped.db,
   if(opt_inds) stop('Optimization  of number of individuals in different groups is not yet implemented in the R-version of PopED.')
   
   # Parameter grouping
-  # df <- dplyr::distinct(df,grouping,type,.keep_all=TRUE) 
+  df <- dplyr::distinct(df,grouping,type,.keep_all=TRUE) 
   
-  # df <- dplyr::filter(df,fixed==FALSE)
-  # if(nrow(df)==0) stop("No design parameters have a design space to optimize")
-  # 
-  # 
+  # removed fixed parameters
+  df <- dplyr::filter(df,fixed==FALSE)
+  if(nrow(df)==0) stop("No design parameters have a design space to optimize")
   
-  # if(transform_parameters){
-  #   for(i in 1:length(par)){
-  #     if(par_cat_cont[i]=="cont"){
-  #       par[i] <- FastImputation::NormalizeBoundedVariable(par[i],
-  #                                                          constraints = 
-  #                                                            list(lower=lower[i],
-  #                                                                 upper=upper[i]))
-  #       
-  #       #     if(is.finite(lower[i]) && is.finite(upper[i])){
-  #       #       par[i] <- (par[i] - lower[i])/(upper[i]-lower[i])
-  #       #       par[i] <- stats::qlogis(par[i])
-  #       #     }
-  #       #     
-  #     }
-  #   }
-  # }
+  # filter out non-optimized parameters
+  filter_var <- c()
+  if(opt_xt) filter_var <- c(filter_var,"'xt'")
+  if(opt_a) filter_var <- c(filter_var,"'a'")
+  exp <- parse(text=paste0("type==",filter_var,collapse = " | "))
+  df <- dplyr::filter(df,eval(exp))
+  
+  if(transform_parameters){
+    df <- df %>% dplyr::rowwise() %>% 
+      dplyr::mutate(par=dplyr::if_else(cont==TRUE,
+                                   FastImputation::NormalizeBoundedVariable(par,
+                                                                            constraints =
+                                                                              list(lower=lower,
+                                                                                   upper=upper)),
+                                   par))
+    
+    df <- df %>% dplyr::mutate(transformed=dplyr::if_else(cont==TRUE,TRUE,FALSE),
+                               lower_orig=lower, upper_orig=upper)
+    df <- df %>% dplyr::mutate(
+                               upper=dplyr::if_else(cont==TRUE,Inf,upper),
+                               lower=dplyr::if_else(cont==TRUE,-Inf,lower)
+                               )
+    
+    #     if(is.finite(lower[i]) && is.finite(upper[i])){
+    #       par[i] <- (par[i] - lower[i])/(upper[i]-lower[i])
+    #       par[i] <- stats::qlogis(par[i])
+    #     }
+    #
+  }
+    
+  
+  return(df)
+  
 }
 
-"par_optim <-" <-  function(poped.db,
-                            opt_xt=as.logical(poped.db$settings$optsw[2]),
-                            opt_a=as.logical(poped.db$settings$optsw[4]),
-                            opt_samps=as.logical(poped.db$settings$optsw[1]),
-                            opt_inds=as.logical(poped.db$settings$optsw[5]),
-                            #transform_parameters=T,
-                            ...) {
+put_par_optim <- function(tbl_opt,tbl_full) {
+  
+  #transformed back to normal scale
+  if("lower_orig" %in% names(tbl_opt)){
+    tbl_opt <- tbl_opt %>% dplyr::rowwise() %>% 
+      dplyr::mutate(par=dplyr::if_else(transformed==TRUE,
+                                       FastImputation::BoundNormalizedVariable(par,
+                                                                               constraints =
+                                                                                 list(lower=lower_orig,
+                                                                                      upper=upper_orig)),
+                                       par))
+  }
+  
+  tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
+  
+  tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>% 
+    dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>% 
+    dplyr::select(-par_opt)
+  
+  return(tbl_full)
 }
 
 
+get_xt_from_tbl <- function(tbl_full){
+  tbl_full %>% dplyr::filter(type=="xt") %>% dplyr::select(par,group,name) %>% 
+    tidyr::spread(key=name,value = par) %>% 
+    #dplyr::select(-group)
+    dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
+    tibble::column_to_rownames(var="group") %>% data.matrix()  
+}
+
+get_a_from_tbl <- function(tbl_full){
+  tbl_full %>% dplyr::filter(type=="a") %>% dplyr::select(par,group,name) %>% 
+    tidyr::spread(key=name,value = par) %>% 
+    #dplyr::select(-group)
+    dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
+    tibble::column_to_rownames(var="group") %>% data.matrix()  
+}
