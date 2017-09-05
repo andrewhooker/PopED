@@ -2,7 +2,14 @@
 % Please edit documentation in R/poped_optim.R
 \name{poped_optim}
 \alias{poped_optim}
-\title{Optimization main module for PopED}
+\title{Optimization main module for PopED 
+ 
+Optimize the objective function. The function works for both discrete and 
+continuous optimization variables. If more than one optimization method is 
+specified then the methods are run in series.  If \code{loop_methods=TRUE} 
+then the series of optimization methods will be run for \code{iter_max} 
+iterations, or until the efficiency of the design after the current series 
+(compared to the start of the series) is less than \code{stop_crit_eff}.}
 \usage{
 poped_optim(poped.db, opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
@@ -131,14 +138,6 @@ e.g. "cost.txt" has a function named "cost" in it.}
 \item{...}{arguments passed to other functions.}
 }
 \description{
-Optimize the objective function. The function works for both discrete and 
-continuous optimization variables. If more than one optimization method is 
-specified then the methods are run in series.  If \code{loop_methods=TRUE} 
-then the series of optimization methods will be run for \code{iter_max} 
-iterations, or until the efficiency of the design after the current series 
-(compared to the start of the series) is less than \code{stop_crit_eff}.
-}
-\details{
 This function takes information from the PopED database supplied as an 
 argument. The PopED database supplies information about the the model, 
 parameters, design and methods to use. Some of the arguments coming from the 
@@ -365,5 +364,5 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optimize}}
+  \code{\link{poped_optim_2}}, \code{\link{poped_optimize}}
 }

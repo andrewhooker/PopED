@@ -243,6 +243,7 @@ Other Optimize: \code{\link{LEDoptim}},
   \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
+  \code{\link{poped_optim_2}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
 \keyword{internal}

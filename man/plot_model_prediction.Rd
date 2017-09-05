@@ -74,7 +74,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 
 \item{facet_label_names}{TRUE or FALSE}
 
-\item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
+\item{...}{Other arguments passed to \code{\link{model_prediction}}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
@@ -128,6 +128,8 @@ plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
 
 }
 \seealso{
+\code{\link{model_prediction}}
+
 Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{evaluate_design}}, \code{\link{get_rse}},
   \code{\link{model_prediction}},
