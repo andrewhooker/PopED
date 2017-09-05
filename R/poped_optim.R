@@ -1,5 +1,5 @@
-#' Optimization main module for PopED
-#' 
+#' Optimization main module for PopED 
+#'  
 #' Optimize the objective function. The function works for both discrete and 
 #' continuous optimization variables. If more than one optimization method is 
 #' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
