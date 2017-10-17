@@ -62,7 +62,7 @@
 # @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
 #' @export
 
-poped_optim_2 <- function(poped.db,
+poped_optim_3 <- function(poped.db,
                           opt_xt=poped.db$settings$optsw[2],
                           opt_a=poped.db$settings$optsw[4],
                           opt_x=poped.db$settings$optsw[3],
@@ -179,6 +179,13 @@ poped_optim_2 <- function(poped.db,
   par_df=my_ofv$space[["par_df"]]
   par_dim=my_ofv$space[["par_dim"]]
   
+  pst <- par_and_space_tbl(poped.db)
+  
+  browser()
+  
+  (df <- par_and_space_tbl(poped.db))
+  (df_opt <- get_par_and_space_optim(df,opt_xt = T,opt_a=T,transform_parameters = T))
+  ofv_optim(df_opt$par,df_opt,df,poped.db)
   
   #------------ optimize
   if(!(fn=="")) sink(fn, append=TRUE, split=TRUE)
