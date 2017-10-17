@@ -18,7 +18,7 @@
 #' selected as an evenly spaced grid between the upper and lower bounds. 
 #' @param trace Should the algorithm output results intermittently.
 #' @param maximize Should the function be maximized?  Default is to minimize.
-#' @param parallel Should we use parallelize the computation.
+#' @param parallel Should we use parallel computations?
 #' @param parallel_type Which type of parallelization should be used? 
 #' Can be "snow" or "multicore".  "snow"  works on Linux-like systems & Windows. "multicore" works only on 
 #' Linux-like systems.  By default this is chosen for you depending on your operating system. 
