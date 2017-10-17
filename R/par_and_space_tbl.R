@@ -326,12 +326,16 @@ put_par_optim <- function(tbl_opt,tbl_full) {
 }
 
 
-get_xt_from_tbl <- function(tbl_full){
-  tbl_full %>% dplyr::filter(type=="xt") %>% dplyr::select(par,group,name) %>% 
-    tidyr::spread(key=name,value = par) %>% 
-    #dplyr::select(-group)
-    dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
-    tibble::column_to_rownames(var="group") %>% data.matrix()  
+get_xt_from_tbl <- function(tbl_full,add_names=TRUE){
+  ret <- tbl_full %>% dplyr::filter(type=="xt") %>% dplyr::select(par,group,name) %>% 
+    tidyr::spread(key=name,value = par) #%>% 
+  if(add_names){ 
+    ret <- ret %>% dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
+      tibble::column_to_rownames(var="group") %>% data.matrix()  
+  } else {
+    ret <- ret %>% dplyr::select(-group)
+  }
+  return(ret)
 }
 
 get_a_from_tbl <- function(tbl_full){
