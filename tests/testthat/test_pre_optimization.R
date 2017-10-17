@@ -95,6 +95,10 @@ test_that("get_par_and_space works", {
   expect_true(all(df_6$allowed_values[[1]]==c(0:10)))
   
   
+  poped_db_7 <- create.poped.database(poped_db_1,a=list(c(70,1000),c(35,1000)))
+  df_7 <- par_and_space_tbl(poped_db_7)
+  df_7 %>% filter(type=="a") %>% select(name) %>% is.na() %>% all() %>% expect_true()
+
   # ds_2 <- create_design_space(design_1,maxni=10,maxxt=10,minxt=0)
   # 
   # ds_3 <- create_design_space(design_1,maxni=10,mingroupsize=20,maxxt=10,minxt=0)
