@@ -96,6 +96,18 @@ function(input, output, session) {
   output$hot2 = renderRHandsontable({
     if (!is.null(input$hot2)) {
       DF = hot_to_r(input$hot2)
+      par_name <- param_names()
+      if(!all(DF$name == par_name)){
+        df <- data.frame(name=par_name,
+                         bsv_model=factor(rep("Exponential",length(par_name)),
+                                          levels = c("Exponential","Additive","Proportional","None"),ordered=TRUE),
+                         stringsAsFactors = FALSE)
+        
+        df$bsv_model[df$name %in% c("Favail","F")] <- "None"
+        
+        #dplyr::inner_join(df,DF)
+        #DF <- df
+      }
     } else {
       
       par_name <- param_names()
@@ -575,6 +587,7 @@ function(input, output, session) {
   updateModel <- reactive({
     struct_pk_model <- input$struct_pk_model
     struct_pd_model <- input$struct_pd_model
+    link_model <- input$link_fcn
     ruv_pk_model <- input$ruv_pk_model
     ruv_pd_model <- input$ruv_pd_model
     bsv_pk_model <- input$bsv_pk_model

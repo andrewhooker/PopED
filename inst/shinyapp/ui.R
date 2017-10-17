@@ -35,7 +35,9 @@ ui <- function(){
                  ),
                  #),
                  #fluidRow(
-                 column(3, offset = 0,#offset+1,
+                 column(3, 
+                        offset = 0,
+                        #offset = offset+1,
                         #checkboxInput("pk_mod", label = "PK model", value = TRUE),  
                         #h4("PK Model"),
                         selectInput("param_PK_model", "PK model parameterization:",
@@ -56,6 +58,7 @@ ui <- function(){
                                     list(
                                       "None" = "NULL",
                                       "Linear" = "linear",
+                                      "Log-Linear" = "log_linear",
                                       "Emax" = "emax",
                                       "Emax with hill coefficient" = "hill"
                                     ))
