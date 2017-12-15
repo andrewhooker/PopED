@@ -567,7 +567,7 @@ poped_optim <- function(poped.db,
       cat("*******************************************\n")
       
       # relative difference
-      rel_diff <- (output$ofv - ofv_init)/ofv_init
+      rel_diff <- (output$ofv - ofv_init)/abs(ofv_init)
       abs_diff <- (output$ofv - ofv_init)
       fprintf("Difference in OFV:  %.3g\n",abs_diff)
       fprintf("Relative difference in OFV:  %.3g%%\n",rel_diff*100)
