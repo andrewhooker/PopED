@@ -478,8 +478,8 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
   fim <- retargs$ret
   
   det_fim <- det(fim)
-  if(det_fim<0){
-    warning("Determinant of the FIM is negative")
+  if(det_fim<.Machine$double.eps){
+    warning("Determinant of the FIM is not positive")
     if(return_gradient) return(list(k=NaN,grad_k = NaN))
     return(c(k=NaN))
   }
