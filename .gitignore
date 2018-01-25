@@ -1,8 +1,8 @@
 .Rproj.user
 .Rhistory
 .RData
-
 .Rbuildignore~
 PopED_output_summary_D_cont_opt_1.txt
 PopED_output_summary_mfea_opt_1.txt
 inst/doc
+.DS_Store
