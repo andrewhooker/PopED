@@ -76,10 +76,11 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     if((matrix_any(v_tmp)!=0) ){#If there are some non-zero elements to v_tmp
-      v_tmp_inv = inv(v_tmp)
+      v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
       f2[1:n,1:n] = v_tmp_inv
       
-      tmp_m4_inv=0.25*m4(v_tmp_inv,n)
+      #tmp_m4_inv=0.25*m4(v_tmp_inv,n)
+      tmp_m4_inv <- 1/2*kronecker(v_tmp_inv,v_tmp_inv)
       f2[(n+1):(n+n*n),(n+1):(n+n*n)] = tmp_m4_inv
     }
     if((all(f2==0))){
