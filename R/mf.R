@@ -74,12 +74,20 @@ mf <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
     if((matrix_any(v_tmp)!=0)){
+      
+      v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
+      f2[1:n,1:n] = v_tmp_inv
+      
+      #tmp_m4_inv=0.25*m4(v_tmp_inv,n)
+      tmp_m4_inv <- 1/2*kronecker(v_tmp_inv,v_tmp_inv)
+      f2[(n+1):(n+n*n),(n+1):(n+n*n)] = tmp_m4_inv
+      
       #f2[1:n,1:n]=v_tmp\diag_matlab(1,size(v_tmp))
       #v_tmp\diag_matlab(1,size(v_tmp))
-      f2[1:n,1:n]=inv(v_tmp)
+      #f2[1:n,1:n]=inv(v_tmp)
       #m4_tmp = m4(v_tmp,n)
       #f2[(n+1):(n+n*n),(n+1):(n+n*n)]=m4_tmp\diag_matlab(1,size(m4_tmp))
-      f2[(n+1):(n+n*n),(n+1):(n+n*n)]=inv(m4(v_tmp,n))
+      #f2[(n+1):(n+n*n),(n+1):(n+n*n)]=inv(m4(v_tmp,n))
     }
     
     if((sum(sum(f2!=0))==0) ){#Only zeros in f2, uses FIM = m1'*m1
