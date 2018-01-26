@@ -85,7 +85,7 @@ test_that("log_prior_pdf works", {
   par <- bpop_vals_ed_n[bpop_vals_ed_n[,1]==1,]
   lp.2 <- log(prod(dnorm(par[,2],par[,2],sqrt(par[,3]))))
   
-  test_that(lp.1,equals(lp.2))
+  expect_equal(lp.1,lp.2)
   
   # then compute the log density 
   alpha <- bpop_vals_ed_ln[bpop_vals_ed_ln[,1]!=0,2]
@@ -95,7 +95,7 @@ test_that("log_prior_pdf works", {
   par <- bpop_vals_ed_ln[bpop_vals_ed_ln[,1]==4,]
   lp.4 <- log(prod(dlnorm(par[,2],log(par[,2]^2/sqrt(par[,3]+par[,2]^2)),sqrt(log(par[,3]/par[,2]^2+1)))))
   
-  test_that(lp.3,equals(lp.4))
+  expect_equal(lp.3,lp.4)
   
   # then compute the log density 
   alpha <- bpop_vals_ed_ln[bpop_vals_ed_u[,1]!=0,2]
@@ -105,7 +105,7 @@ test_that("log_prior_pdf works", {
   par <- bpop_vals_ed_u[bpop_vals_ed_u[,1]==2,]
   lp.6 <- log(prod(dunif(par[,2],min=par[,2]-par[,3]/2,max=par[,2]+par[,3]/2)))
   
-  test_that(lp.5,equals(lp.6))
+  expect_equal(lp.5,lp.6)
   
   
 })
