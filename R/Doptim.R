@@ -485,7 +485,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           aopto=aopt
           
           
-          if((sum(sum(isnan(xtopt)))>0 || sum(sum(isnan(xopt)))>0 || sum(sum(isnan(aopt)))>0)){
+          if((sum(sum(is.nan(xtopt)))>0 || sum(sum(is.nan(xopt)))>0 || sum(sum(is.nan(aopt)))>0)){
             break
           }
           

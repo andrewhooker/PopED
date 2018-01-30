@@ -155,7 +155,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
   if(!isempty(exp_index) && !is.null(gf_k)){
     gf_k[exp_index]=gf_k[exp_index]*exp(alpha_k_log[exp_index])
   }
-  if(isnan(f_k)){
+  if(is.nan(f_k)){
     f=0
     gf=zeros(size(x))
     if(return_gradient) return(list( f= f,gf=gf))
