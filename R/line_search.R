@@ -22,7 +22,7 @@ line_search <- function(f_name, f_options, l, u, x, f, g, d, options=list()){
   fixed=(x<=l | x>=u)
   stpmx=Inf
   temp1=Inf
-  for(i in find_matlab(!fixed)){
+  for(i in which(!fixed)){
     dk=d[i]
     if(dk<0){
       temp2=l[i]-x[i]
