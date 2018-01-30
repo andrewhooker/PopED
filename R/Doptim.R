@@ -449,7 +449,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         xopt=xopto
         aopt=aopto
         
-        if((matrix_all(axt==0) && matrix_all(aa==0))){
+        if((all(axt==0) && all(aa==0))){
           diff=0
         }
         
