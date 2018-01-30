@@ -5,13 +5,13 @@
 line_search <- function(f_name, f_options, l, u, x, f, g, d, options=list()){
   #determine maximum step size
   
-  if(!isfield(options, 'ftol')){
+  if(!any(names(options)=='ftol')){
     options$ftol=1e-3
   }
-  if(!isfield(options, 'gtol')){
+  if(!any(names(options)=='gtol')){
     options$gtol=0.9
   }
-  if(!isfield(options, 'xtol')){
+  if(!any(names(options)=='xtol')){
     options$xtol=0.1
   }
   
