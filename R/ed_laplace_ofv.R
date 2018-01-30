@@ -496,7 +496,8 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
       fim <- returnArgs[[2]]
       ifim <- inv(fim)
       dim(ifim) <- c(length(ifim),1)
-      gradlogdfim=t(reshape_matlab(d_fim,length(fim),length(grad_p)))%*%ifim
+      dim(d_fim) = c(length(fim),length(grad_p))
+      gradlogdfim=t(d_fim)%*%ifim
       grad_k=-(gradlogdfim+grad_p)
     }
     

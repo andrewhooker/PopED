@@ -19,9 +19,10 @@ hesskalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpop
     }
   }
   d2=d2fimdalpha2(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-4)[["hess"]]
-  d2Fim=reshape_matlab(d2,length(fim),length(hessp))
-  d2logdfim=t(d2Fim)%*%cbind(as.vector(ifim))
-  hess=-(hessp+reshape_matlab(d2logdfim,size(hessp,1),size(hessp,2))-tigi)
+  dim(d2) = c(length(fim),length(hessp))
+  d2logdfim=t(d2)%*%cbind(as.vector(ifim))
+  dim(d2logdfim) = c(size(hessp,1),size(hessp,2))
+  hess=-(hessp+d2logdfim-tigi)
   #   try({
   #     L=chol(fim)
   #     # calc inverse

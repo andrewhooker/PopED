@@ -44,7 +44,7 @@ poped.db <- returnArgs[[2]]
                 if((!isempty(dv))){
                     #Central
                     ir=dv/(2*poped.db$settings$hm2)
-                    ir=reshape_matlab(ir,ns,1)
+                    dim(ir) = c(ns,1)
                     dv_dbeta[,k]=ir
                 }
             #else #Complex differentiation

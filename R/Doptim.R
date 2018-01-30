@@ -666,7 +666,7 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
   varopt=varopt-((varopt>maxvar)*(varopt-maxvar))
   varopt=varopt+((varopt<minvar)*(minvar-varopt))
   lgvar=varopt-varopto
-  lgvar=reshape_matlab(lgvar,m*numvar,1)
+  dim(lgvar) = c(m*numvar,1)
   if(any(t(lgvar)%*%lgvaro<0)){
     kitvar=oldkitvar+1
     inversionvar=TRUE
