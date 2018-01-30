@@ -62,7 +62,7 @@ mf5 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
-    if((matrix_any(v_tmp)!=0) ){#If the inverse is not empty
+    if(any(v_tmp!=0)){#If the inverse is not empty
       
       v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
       f2[1:n,1:n] = v_tmp_inv

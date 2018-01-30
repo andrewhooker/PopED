@@ -73,7 +73,7 @@ mf <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
     returnArgs <-  v(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
-    if((matrix_any(v_tmp)!=0)){
+    if(any(v_tmp!=0)){
       
       v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
       f2[1:n,1:n] = v_tmp_inv
