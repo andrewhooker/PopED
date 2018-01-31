@@ -6,7 +6,7 @@ gradff <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
   #
   # size of return is (samples per individual x number of g's)
   #
-  # derivative of model w$r.t. g eval at b=b_ind
+  # derivative of model w.r.t. g eval at b=b_ind
   #
   #
   dff_dg0=zeros(size(xt_ind,1),poped.db$parameters$ng)
