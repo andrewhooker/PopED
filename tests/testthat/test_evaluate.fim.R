@@ -9,7 +9,7 @@ test_that("RSE from evaluate.fim", {
   comp.red.1 <- get_rse(FIM.1,poped.db)
   comp.red.4 <- get_rse(FIM.4,poped.db,fim.calc.type=4)
   comp.full.0 <- get_rse(FIM.0,poped.db)
-  
+  comp.red.1.prior <- get_rse(FIM.1.prior, poped.db.prior)
   
   for(i in 1:length(expected.reduced)){
     expect_that(round(comp.red.1[[i]],digits=1), equals(expected.reduced[i], 
@@ -23,6 +23,8 @@ test_that("RSE from evaluate.fim", {
     expect_that(round(comp.red.4[[i]],digits=1), equals(expected.reduced[i], 
                                         tolerance = 0.01, scale = expected.reduced[i]))
   }
+  
+  expect_true(all.equal(comp.red.1/sqrt(2), comp.red.1.prior))
   
 })
 

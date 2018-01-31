@@ -69,3 +69,7 @@ FIM.7
 det(FIM.7)
 get_rse(FIM.7,poped.db,fim.calc.type=7)
 
+## evaluate FIM and rse with prior FIM.1
+poped.db.prior = create.poped.database(poped.db, prior_fim = FIM.1)
+FIM.1.prior <- evaluate.fim(poped.db.prior)
+FIM.1.prior
