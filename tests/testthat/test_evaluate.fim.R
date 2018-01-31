@@ -78,12 +78,14 @@ test_that("internal FIM calculations", {
   
   source("examples_fcn_doc/examples_mf.R")    
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=0))))
+  mf_result <- output$ret
   source("examples_fcn_doc/examples_mf3.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=1))))
   source("examples_fcn_doc/examples_mf5.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=4))))
   source("examples_fcn_doc/examples_mf6.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=5))))
+  expect_equal(output$ret,mf_result)
   source("examples_fcn_doc/examples_mf7.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=6))))
   source("examples_fcn_doc/examples_mf8.R")
