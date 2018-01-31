@@ -86,7 +86,7 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 #for the FO approximation
 ind=1
 
-# no occasion defined in this example, so result is zero
+# no occasion defined in this example
 output <- mf6(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
    xt=t(poped.db$design$xt[ind,,drop=FALSE]),
    x=zeros(0,1),
