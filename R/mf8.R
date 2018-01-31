@@ -56,6 +56,9 @@ v_tmp <- returnArgs[[1]]
 poped.db <- returnArgs[[2]]
     invv = inv(v_tmp)
     
+    numtotalnotfixed = numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma
+    dim(m3_tmp) = c(n,n,numtotalnotfixed)
+
     tmp_fim[1:numnotfixed_bpop,1:numnotfixed_bpop]=2*t(m1_tmp)%*%invv%*%m1_tmp
     for(m in 1:numnotfixed_bpop){
         for(k in 1:numnotfixed_bpop){
@@ -63,9 +66,9 @@ poped.db <- returnArgs[[2]]
         }
     }
 
-    for(m in 1:(numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)){
-        for(k in 1:(numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)){
-            tmp_fim[numnotfixed_bpop+m,numnotfixed_bpop+k]=trace_matrix(reshape_matlab(m3_tmp[,m,drop=F],n,n)%*%invv%*%reshape_matlab(m3_tmp[,k,drop=F],n,n)%*%invv)
+    for(m in 1:numtotalnotfixed){
+        for(k in 1:numtotalnotfixed){
+            tmp_fim[numnotfixed_bpop+m,numnotfixed_bpop+k]=trace_matrix(m3_tmp[,,m]%*%invv%*%m3_tmp[,,k]%*%invv)
         }
     }
 

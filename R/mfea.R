@@ -98,7 +98,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
       }
     }
     if((iParallelN==1)){
-      if((it==0 && (optofv<=0 || isnan(optofv)))){
+      if((it==0 && (optofv<=0 || is.nan(optofv)))){
         fprintf('The OFV is negative or zero, new initial values might be needed. OFV : %g\n',optofv)
       }
     }
@@ -138,7 +138,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
               nfmf = designout[[des_num]]$FIM
               optofv = ofv_fim(nfmf,poped.db)
               des_num = des_num +1
-              if((it==0 && (optofv<=0 || isnan(optofv)))){
+              if((it==0 && (optofv<=0 || is.nan(optofv)))){
                 fprintf('The OFV is negative or zero, new initial values might be needed. OFV : %g\n',optofv)
               }
             }
@@ -311,7 +311,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
               nfmf = designout[[des_num]]$FIM
               optofv = ofv_fim(nfmf,poped.db)
               des_num = des_num +1
-              if((it==0 && (optofv<=0 || isnan(optofv)))){
+              if((it==0 && (optofv<=0 || is.nan(optofv)))){
                 fprintf('The OFV is negative or zero, new initial values might be needed. OFV : %g\n',optofv)
               }
             }
@@ -448,7 +448,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
               nfmf = designout[[des_num]]$FIM
               optofv = ofv_fim(nfmf,poped.db)
               des_num = des_num +1
-              if((it==0 && (optofv<=0 || isnan(optofv)))){
+              if((it==0 && (optofv<=0 || is.nan(optofv)))){
                 fprintf('The OFV is negative or zero, new initial values might be needed. OFV : %g\n',optofv)
               }
             }

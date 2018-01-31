@@ -50,7 +50,7 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
   for(i in 1:length(params)){
     if((params[i]!=0)){
       if((var_derivative[i]==1)){
-        params_cv[i] = sqrt(param_vars[i])/params[i]
+        params_cv[i] = sqrt(param_vars[i])/abs(params[i])
       } else { #Derivative w$r.t to SD instead of var
         params_cv[i] = sqrt(param_vars[i])/sqrt(params[i])
       }
