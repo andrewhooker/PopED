@@ -98,6 +98,11 @@ get_rse <- function (fmf, poped.db,
       eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
     }
   }
+
+  ## if prior is given in poped.db then add it to the given fim
+  if((!isempty(poped.db$settings$prior_fim) && all(size(poped.db$settings$prior_fim)==size(fmf)))){
+    fmf = fmf + poped.db$settings$prior_fim
+  }
   
   inv_fim <- tryCatch({
     inv(fmf,...)
