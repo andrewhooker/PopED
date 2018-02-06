@@ -66,7 +66,8 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       start_col <- start_col + n_fixed_eff
     }
     if(n_rand_eff!=0){
-      returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,TRUE,poped.db) 
+      bUseVarSigmaDerivative = poped.db$settings$iFIMCalculationType != 4
+      returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarSigmaDerivative,poped.db) 
       f1[(n+1):(n+n*n),start_col:(start_col+n_rand_eff-1)] <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
@@ -82,11 +83,9 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       #tmp_m4_inv=0.25*m4(v_tmp_inv,n)
       tmp_m4_inv <- 1/2*kronecker(v_tmp_inv,v_tmp_inv)
       f2[(n+1):(n+n*n),(n+1):(n+n*n)] = tmp_m4_inv
-    }
-    if((all(f2==0))){
-      ret = ret+t(f1)%*%f1
-    } else {
       ret = ret+t(f1)%*%f2%*%f1
+    } else {
+      ret = ret+t(f1)%*%f1
     }
   }
   ret = ret/poped.db$settings$iFOCENumInd
