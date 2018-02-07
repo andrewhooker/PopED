@@ -1,9 +1,10 @@
 
 #for the FO approximation
 ind=1
+poped.db$settings$iFIMCalculationType = 7
 
 # no occasion defined in this example, so result is zero
-output <- mf8(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
+output <- mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
    xt=t(poped.db$design$xt[ind,,drop=FALSE]),
    x=zeros(0,1),
    a=t(poped.db$design$a[ind,,drop=FALSE]),

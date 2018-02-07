@@ -12,7 +12,7 @@ mf_all <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Reduced FIM with derivative of SD sigma
                          mf6(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #FULL FIM parameterized with A,B,C matrices & derivative of variance
                          mf7(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Calculate one model switch at a time, good for large matrices
-                         mf8(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db)) #Reduced FIM parameterized with A,B,C matrices & derivative of variance
+                         mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db)) #Reduced FIM parameterized with A,B,C matrices & derivative of variance
     
     if(is.null(returnArgs)) stop(sprintf('Unknown FIM-calculation type'))
     ret <- returnArgs[[1]]

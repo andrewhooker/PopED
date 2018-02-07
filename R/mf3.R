@@ -32,6 +32,9 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
   numnotfixed_sigma  = sum(poped.db$parameters$notfixed_sigma)
   numnotfixed_covsigma  = sum(poped.db$parameters$notfixed_covsigma)
   
+  n_fixed_eff <- numnotfixed_bpop
+  n_rand_eff <- numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma
+
   n=size(xt,1)
   ret = 0
   
@@ -53,42 +56,60 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       poped.db$mean_data = mean_data
     }
     
-    n_fixed_eff <- numnotfixed_bpop
-    n_rand_eff <- numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma
-    start_col <- 1
-    
-    f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
-    
     if(n_fixed_eff!=0){
-      returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
-      f1[1:n,start_col:(start_col+n_fixed_eff-1)] <- returnArgs[[1]]
+      returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db)
+      m1_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
-      start_col <- start_col + n_fixed_eff
     }
     if(n_rand_eff!=0){
       bUseVarSigmaDerivative = poped.db$settings$iFIMCalculationType != 4
-      returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarSigmaDerivative,poped.db) 
-      f1[(n+1):(n+n*n),start_col:(start_col+n_rand_eff-1)] <- returnArgs[[1]]
+      returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarSigmaDerivative,poped.db)
+      m3_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
     
-    f2=zeros(n+n*n,n+n*n)
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
-    if(any(v_tmp!=0)){#If there are some non-zero elements to v_tmp
-      v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
-      f2[1:n,1:n] = v_tmp_inv
+
+    if (poped.db$settings$iFIMCalculationType != 7) {
+      f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
+      f1[1:n,1:n_fixed_eff] <- m1_tmp
+      f1[(n+1):(n+n*n),(n_fixed_eff+1):(n_fixed_eff+n_rand_eff)] <- m3_tmp
       
-      #tmp_m4_inv=0.25*m4(v_tmp_inv,n)
-      tmp_m4_inv <- 1/2*kronecker(v_tmp_inv,v_tmp_inv)
-      f2[(n+1):(n+n*n),(n+1):(n+n*n)] = tmp_m4_inv
-      ret = ret+t(f1)%*%f2%*%f1
+      if(any(v_tmp!=0)){#If there are some non-zero elements to v_tmp
+        f2=zeros(n+n*n,n+n*n)
+        
+        v_tmp_inv = inv(v_tmp,pseudo_on_fail = T)
+        f2[1:n,1:n] = v_tmp_inv
+        
+        tmp_m4_inv <- 1/2*kronecker(v_tmp_inv,v_tmp_inv)
+        f2[(n + 1):(n + n*n), (n + 1):(n + n*n)] = tmp_m4_inv
+        ret = ret + t(f1) %*% f2 %*% f1
+      } else {
+        ret = ret + t(f1) %*% f1
+      }
     } else {
-      ret = ret+t(f1)%*%f1
+      v_tmp_inv = inv(v_tmp)
+      dim(m3_tmp) = c(n,n,n_rand_eff)
+      
+      tmp_fim = zeros(n_fixed_eff + n_rand_eff, n_fixed_eff + n_rand_eff)
+      tmp_fim[1:n_fixed_eff,1:n_fixed_eff] = 2*t(m1_tmp) %*% v_tmp_inv %*% m1_tmp
+      for (m in 1:n_fixed_eff) {
+        for (k in 1:n_fixed_eff) {
+          tmp_fim[m,k] = tmp_fim[m,k]
+        }
+      }
+      
+      for (m in 1:n_rand_eff) {
+        for (k in 1:n_rand_eff) {
+          tmp_fim[n_fixed_eff + m, n_fixed_eff + k] = trace_matrix(m3_tmp[,,m] %*% v_tmp_inv %*% m3_tmp[,,k] %*% v_tmp_inv)
+        }
+      }
+      ret = ret + 1/2*tmp_fim
     }
   }
   ret = ret/poped.db$settings$iFOCENumInd
   
-  return(list( ret= ret,poped.db=poped.db)) 
+  return(list(ret = ret,poped.db = poped.db)) 
 }
