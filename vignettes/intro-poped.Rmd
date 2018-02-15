@@ -211,4 +211,24 @@ summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)
 ```
-
+## Examples
+1.	One comp first order absorption - Analytic solution for both mutiple and single dosing (design evaluation and optimization)	
+2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)	
+3.	Two compartment model with oral absorption using ODEs	
+4.	Different dose regimens per arm	
+5.	Model with discrete covariates	
+6.	Model with continuous covariates	
+7.	Model with Inter-occasion variability and full covariance matrix	
+8.	Handling BLQ data	
+9.	Include previous FIM	
+10.	Robust design	
+11.	Power Calculation	
+12.	Espresso design	
+Further examples	
+13.	Shrinkage	
+14.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
+15.	Constraining the optimization to different allowed sampling times for each group	
+16.	Constraining the optimization to different allowed sampling times for each response	
+17.	Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
+18.	Handling derived outputs	
+19.	Symbolic differentiation
