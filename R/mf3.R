@@ -74,12 +74,12 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     } else {
       m2_tmp <- 0
     }
-    
+
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
 
-    if (!poped.db$settings$iFIMCalculationType %in% c(7)) {
+    if (!poped.db$settings$iFIMCalculationType %in% c(5,7)) {
       f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
       f1[1:n,1:n_fixed_eff] <- m1_tmp
       f1[(n+1):(n+n*n),1:n_fixed_eff] <- m2_tmp
@@ -103,9 +103,20 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       
       tmp_fim = zeros(n_fixed_eff + n_rand_eff, n_fixed_eff + n_rand_eff)
       tmp_fim[1:n_fixed_eff,1:n_fixed_eff] = 2*t(m1_tmp) %*% v_tmp_inv %*% m1_tmp
-      for (m in 1:n_fixed_eff) {
-        for (k in 1:n_fixed_eff) {
-          tmp_fim[m,k] = tmp_fim[m,k]
+
+      if (is.matrix(m2_tmp)) {
+        dim(m2_tmp) = c(n,n,n_fixed_eff)
+        for (m in 1:n_fixed_eff) {
+          for (k in 1:n_fixed_eff) {
+            tmp_fim[m,k] = tmp_fim[m,k] + trace_matrix(m2_tmp[,,m]%*%v_tmp_inv%*%m2_tmp[,,k]%*%v_tmp_inv)
+          }
+        }
+        for(m in 1:n_rand_eff){
+          for(k in 1:n_fixed_eff){
+            num = trace_matrix(m3_tmp[,,m]%*%v_tmp_inv%*%m2_tmp[,,k]%*%v_tmp_inv)
+            tmp_fim[n_fixed_eff + m, k]=num
+            tmp_fim[k, n_fixed_eff + m]=num
+          }
         }
       }
       

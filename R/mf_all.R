@@ -10,7 +10,7 @@ mf_all <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
                          stop("Not yet implemented"), #Weighted models
                          stop("Not yet implemented"), #Loc models
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Reduced FIM with derivative of SD sigma
-                         mf6(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #FULL FIM parameterized with A,B,C matrices & derivative of variance
+                         mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #FULL FIM parameterized with A,B,C matrices & derivative of variance
                          mf7(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Calculate one model switch at a time, good for large matrices
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db)) #Reduced FIM parameterized with A,B,C matrices & derivative of variance
     
