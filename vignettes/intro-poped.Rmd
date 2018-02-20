@@ -211,24 +211,77 @@ summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)
 ```
-## Examples
-1.	One comp first order absorption - Analytic solution for both mutiple and single dosing (design evaluation and optimization)	
-2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)	
-3.	Two compartment model with oral absorption using ODEs	
-4.	Different dose regimens per arm	
-5.	Model with discrete covariates	
-6.	Model with continuous covariates	
-7.	Model with Inter-occasion variability and full covariance matrix	
-8.	Handling BLQ data	
-9.	Include previous FIM	
-10.	Robust design	
-11.	Power Calculation	
-12.	Espresso design	
+
+# Examples
+
+1.	One comp first order absorption - Analytic solution for both mutiple and single dosing (design evaluation)	
+2.	Example 1 with optimization of times and/or doses using different methods	
+
+##3.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)	
+
+### Define a model
+
+Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination, whereas the PD is an ordinary Emax model.
+```{r}
+f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+    MS <- model_switch
+    
+    # PK model
+    CONC = DOSE/V*exp(-CL/V*xt) 
+    
+    # PD model
+    EFF = E0 + CONC*EMAX/(EC50 + CONC)
+    
+    y[MS==1] = CONC[MS==1]
+    y[MS==2] = EFF[MS==2]
+    
+    return(list( y= y,poped.db=poped.db))
+  })
+}
+```
+
+The error model has to accommodate both response models:
+```{r}
+## -- Residual Error function
+## -- Proportional PK + additive PD
+f_Err <- function(model_switch,xt,parameters,epsi,poped.db){
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+  
+  MS <- model_switch
+  
+  prop.err <- y*(1+epsi[,1])
+  add.err <- y+epsi[,2]
+  
+  y[MS==1] = prop.err[MS==1]
+  y[MS==2] = add.err[MS==2]
+  
+  return(list( y= y,poped.db =poped.db )) 
+}
+```
+
+4.	Two compartment model with oral absorption using ODEs	
+5.	Different dose regimens per arm	
+
+##6.	Model with discrete covariates	
+
+7.	Model with continuous covariates	
+8.	Model with Inter-occasion variability and full covariance matrix	
+9.	Handling BLQ data	
+10.	Include previous FIM
+11.	Robust design	
+12.	Power Calculation	
+13.	Espresso design	
+
 Further examples	
-13.	Shrinkage	
-14.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
-15.	Constraining the optimization to different allowed sampling times for each group	
-16.	Constraining the optimization to different allowed sampling times for each response	
-17.	Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
-18.	Handling derived outputs	
-19.	Symbolic differentiation
+
+14.	Shrinkage	
+15.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
+16.	Constraining the optimization to different allowed sampling times for each group	
+17.	Constraining the optimization to different allowed sampling times for each response	
+18.	Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
+19.	Handling derived outputs	
+20.	Symbolic differentiation	
