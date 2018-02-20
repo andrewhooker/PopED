@@ -29,6 +29,8 @@
 #' @param IPRED.lines.pctls Should lines be drawn at the chosen percentiles of the IPRED values?  
 #' @param groupsize_sim How many individuals per group  should be 
 #'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
+#' @param model.names A vector of names of the response model/s (the length of the 
+#' vector should be equal to the number of respose models). It is Null by default.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
 #' forget to load the ggplot2 library using \code{library(ggplot2)}.
@@ -75,6 +77,7 @@ plot_model_prediction <- function(poped.db,
                                   y_lab="Model Predictions",
                                   facet_scales="fixed", # could be "free", "fixed", "free_x" or "free_y"
                                   facet_label_names = T, 
+                                  model.names=NULL,
                                   ...){
   
   df <-  model_prediction(poped.db,
@@ -84,6 +87,9 @@ plot_model_prediction <- function(poped.db,
                           ##model_maxxt,
                           ##groups_to_plot,
                           ...)
+  if(!is.null(model.names)){
+    levels(df$Model) <- model.names
+  }
   
   if(sample.times){
     df.2 <-  model_prediction(poped.db,
@@ -92,6 +98,9 @@ plot_model_prediction <- function(poped.db,
                               ##model_minxt,model_maxxt,
                               ##groups_to_plot,
                               ...)
+  }
+  if(!is.null(model.names)){
+    levels(df.2$Model) <- model.names
   }
   
   if(IPRED || IPRED.lines || DV || IPRED.lines.pctls || sample.times.DV || sample.times.DV.points || sample.times.DV.lines){
@@ -123,9 +132,14 @@ plot_model_prediction <- function(poped.db,
     #                                     DV=DV,
     #                                     ...)
     #     }    
-    
+    if(!is.null(model.names)){
+      levels(df.ipred$Model) <- model.names
+    }
     if(sample.times.IPRED || sample.times.DV || sample.times.DV.points || sample.times.DV.lines){
       df.ipred.samples <- df.ipred[df.ipred$Time %in% poped.db$design$xt,]  
+      if(!is.null(model.names)){  
+        levels(df.ipred.samples$Model) <- model.names 
+      }
     }
   }
   
