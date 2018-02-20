@@ -5,7 +5,7 @@
 mf_all <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
 
     returnArgs <- switch(poped.db$settings$iFIMCalculationType+1,
-                         mf(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Default (with no assumption that bpop and b are uncorrelated)
+                         mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Default (with no assumption that bpop and b are uncorrelated)
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Reduced FIM
                          stop("Not yet implemented"), #Weighted models
                          stop("Not yet implemented"), #Loc models

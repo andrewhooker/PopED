@@ -67,14 +67,22 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       m3_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
+    if(n_fixed_eff!=0 & n_rand_eff!=0 & poped.db$settings$iFIMCalculationType %in% c(0,5,6)){
+      returnArgs <- m2(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
+      m2_tmp <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+    } else {
+      m2_tmp <- 0
+    }
     
     returnArgs <-  v(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
     v_tmp <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
 
-    if (poped.db$settings$iFIMCalculationType != 7) {
+    if (!poped.db$settings$iFIMCalculationType %in% c(7)) {
       f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
       f1[1:n,1:n_fixed_eff] <- m1_tmp
+      f1[(n+1):(n+n*n),1:n_fixed_eff] <- m2_tmp
       f1[(n+1):(n+n*n),(n_fixed_eff+1):(n_fixed_eff+n_rand_eff)] <- m3_tmp
       
       if(any(v_tmp!=0)){#If there are some non-zero elements to v_tmp
