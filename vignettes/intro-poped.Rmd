@@ -214,10 +214,22 @@ plot_model_prediction(output_cost$poped.db)
 
 # Examples
 
-1.	One comp first order absorption - Analytic solution for both mutiple and single dosing (design evaluation)	
-2.	Example 1 with optimization of times and/or doses using different methods	
+In this section, further PopED features are described within a series of examples that are stored at the usual directory, located at:
 
-##3.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)	
+```
+system.file("examples", package="PopED")
+```
+
+Of note, only the code related to the specific "new" feature is here described. The complete R code is in the corresponding R script related to each of the examples.
+
+##1.	One comp first order absorption - analytical solution for both mutiple and single dosing (design evaluation); design evaluation and design optimization of times and/or doses over a continuous or discrete design space.
+
+This example is the intro example illustrated in the first part of this document, before the Examples section.
+The corresponding R script is the PopED example "ex.1.a.PK.1.comp.oral.md.intro.R"
+
+##2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)- design optimization using Line Search (LS) method	
+
+This corresponds to example "ex.4.PKPD.1.comp.emax.R", with object names update. It would be nice to have the plot function "plot_model_prediction" updated for this example, so that in the plot we see the name of the models, i.e. PK and PD, instead of the current predefined form, i.e. Model 1 and Model 2.
 
 ### Define a model
 
@@ -242,6 +254,22 @@ f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
+```{r, echo=FALSE}
+## -- parameter definition function
+## ETAs into Parameter Values
+f_etaToParam <- function(x,a,bpop,b,bocc){
+  parameters=c( 
+    CL=bpop[1]*exp(b[1])  ,
+    V=bpop[2]*exp(b[2])	,
+    E0=bpop[3]*exp(b[3])	,
+    EMAX=bpop[4],
+    EC50=bpop[5]*exp(b[4])	,
+    DOSE=a[1]
+  )
+  return( parameters ) 
+}
+```
+
 The error model has to accommodate both response models:
 ```{r}
 ## -- Residual Error function
@@ -263,20 +291,86 @@ f_Err <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 ```
 
-4.	Two compartment model with oral absorption using ODEs	
-5.	Different dose regimens per arm	
+### Define design and design space
+
+We specify in the poped.db object the vector "model_switch" in order to assign the sampling times written in the vector "xt" to the PK (1) or PD (2) models. 
+
+```{r}
+poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
+                                  fError_fun=f_Err,
+                                  fg_fun=f_etaToParam,
+                                  groupsize=20,
+                                  m=3,
+                                  sigma=diag(c(0.15,0.015)),
+                                  bpop=c(CL=0.5,V=0.2,E0=1,EMAX=1,EC50=1),  
+                                  d=c(CL=0.09,V=0.09,E0=0.04,EC50=0.09), 
+                                  xt=c( 0.33,0.66,0.9,5,0.1,1,2,5),
+                                  bUseGrouped_xt=1,
+                                  model_switch=c(1,1,1,1,2,2,2,2),
+                                  minxt=0,
+                                  maxxt=5,
+                                  ourzero = 0,
+                                  a=list(c(DOSE=0),c(DOSE=1),c(DOSE=2)),
+                                  maxa=c(DOSE=10),
+                                  mina=c(DOSE=0))
+
+
+```
+
+Below the model predictions of the typical PK and PD profiles, i.e. Model 1 and Model 2, respectively, for three dose groups, are displayed. The current design, as shown in the "poped.db" object, consists in 3 arms with dose 0,1, and 2 per arm; PK times of 0.33,0.66,0.9,5 hours; PD times of 0.1,1,2,5 hours.
+
+```{r,fig.width=6,fig.height=6}
+plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T) 
+```
+
+## Optimal design (doses and times) using the LS method
+
+```{r,message = FALSE,results='hide',cache=TRUE}
+output <- poped_optim(poped.db, opt_xt = T, opt_a = T, parallel = T,method = c("LS"))
+```
+
+We can similarly plot the predicted typical PK and PD profiles for the optimal design:
+
+```{r,fig.width=6,fig.height=6}
+plot_model_prediction(output$poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T) 
+```
+
+The results are printed in the R consol when the optimization is finalized. One can also retreive them from the "output" object.
+
+The optimal doses and sampling times obtained by Linear Search optimizations are retreived with the following:
+
+```{r}
+output$poped.db$design
+```
+
+
+##4.	Two compartment model with oral absorption using ODEs	
+
+"ex.9.PK.2.comp.oral.md.ode.compiled.R"
+
+##5.	Different dose regimens per arm	
+
+In ex.8.tmdd_qss_one_target_compiled.R there is an example of different sampling schemes per arm using matrices. This starts at line 190.
 
 ##6.	Model with discrete covariates	
 
-7.	Model with continuous covariates	
-8.	Model with Inter-occasion variability and full covariance matrix	
-9.	Handling BLQ data	
-10.	Include previous FIM
-11.	Robust design	
-12.	Power Calculation	
-13.	Espresso design	
+##7.	Model with continuous covariates	
 
-Further examples	
+##8.	Model with Inter-occasion variability and full covariance matrix	
+
+##9.	Handling BLQ data	
+
+##10.	Include previous FIM
+
+##11.	Robust design	
+
+"ex.2.d.warfarin.ED.R"
+
+##12.	Power Calculation	
+
+##13.	Espresso design	
+
+##Further examples	
 
 14.	Shrinkage	
 15.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
