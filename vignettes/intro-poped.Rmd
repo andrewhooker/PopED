@@ -227,11 +227,11 @@ Of note, only the code related to the specific "new" feature is here described. 
 This example is the intro example illustrated in the first part of this document, before the Examples section.
 The corresponding R script is the PopED example "ex.1.a.PK.1.comp.oral.md.intro.R"
 
-##2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)- design optimization using Line Search (LS) method	
+##2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)
 
-This corresponds to example "ex.4.PKPD.1.comp.emax.R", with object names update. It would be nice to have the plot function "plot_model_prediction" updated for this example, so that in the plot we see the name of the models, i.e. PK and PD, instead of the current predefined form, i.e. Model 1 and Model 2.
+The full code for this example is available at the usual PopED examples directory, under the name of "ex.4.PKPD.1.comp.emax.R". It would be nice to have the plot function "plot_model_prediction" updated for this example, so that in the plot we see the name of the models, i.e. PK and PD, instead of the current predefined form, i.e. Model 1 and Model 2.
 
-### Define a model
+### Define the PKPD model
 
 Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination, whereas the PD is an ordinary Emax model.
 ```{r}
@@ -254,7 +254,7 @@ f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-```{r, echo=FALSE}
+```{r}
 ## -- parameter definition function
 ## ETAs into Parameter Values
 f_etaToParam <- function(x,a,bpop,b,bocc){
@@ -317,54 +317,252 @@ poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
 
 ```
 
-Below the model predictions of the typical PK and PD profiles, i.e. Model 1 and Model 2, respectively, for three dose groups, are displayed. The current design, as shown in the "poped.db" object, consists in 3 arms with dose 0,1, and 2 per arm; PK times of 0.33,0.66,0.9,5 hours; PD times of 0.1,1,2,5 hours.
+Below the model predictions of the typical PK and PD profiles, i.e. Model 1 and Model 2, respectively, for three dose groups, are displayed. The current design, as shown in the "poped.db" object, consists in 3 arms with dose 0,1, and 2 (mg?) per arm; PK times of 0.33,0.66,0.9,5 (hours ?); PD times of 0.1,1,2,5 (hours?).
 
 ```{r,fig.width=6,fig.height=6}
 plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T) 
 ```
 
-## Optimal design (doses and times) using the LS method
+##3.	Two compartment model with oral absorption using ODEs. Multiple dose dosing scheme.
 
-```{r,message = FALSE,results='hide',cache=TRUE}
-output <- poped_optim(poped.db, opt_xt = T, opt_a = T, parallel = T,method = c("LS"))
+The full code for this example is available at the usual PopED examples directory, under the name of "ex.9.PK.2.comp.oral.md.ode.compiled.R". 
+
+Of note, the "deSolve" library needs to be installed for computing the system of differential equations. 
+
+```{r, echo=F, message = FALSE,results='hide'}
+library(deSolve)
 ```
 
-We can similarly plot the predicted typical PK and PD profiles for the optimal design:
 
-```{r,fig.width=6,fig.height=6}
-plot_model_prediction(output$poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T) 
-```
-
-The results are printed in the R consol when the optimization is finalized. One can also retreive them from the "output" object.
-
-The optimal doses and sampling times obtained by Linear Search optimizations are retreived with the following:
+### Define the two compartment model
 
 ```{r}
-output$poped.db$design
+#' Define the ODE system
+PK.2.comp.oral.ode <- function(Time, State, Pars){
+  with(as.list(c(State, Pars)), {    
+    dA1 <- -KA*A1 
+    dA2 <- KA*A1 + A3* Q/V2 -A2*(CL/V1+Q/V1)
+    dA3 <- A2* Q/V1-A3* Q/V2
+    return(list(c(dA1, dA2, dA3)))
+  })
+}
+```
+
+Define the initial conditions and the dosing
+
+```{r}
+ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
+  with(as.list(parameters),{
+    A_ini <- c(A1=0, A2=0, A3=0)
+    times_xt <- drop(xt)
+    dose_times = seq(from=0,to=max(times_xt),by=TAU)
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(DOSE), method = c("add"))
+    times <- sort(c(times_xt,dose_times))
+    out <- ode(A_ini, times, PK.2.comp.oral.ode, parameters, events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
+    y = out[, "A2"]/(V1/Favail)
+    y=y[match(times_xt,out[,"time"])]
+    y=cbind(y)
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+```
+
+```{r}
+#' parameter definition function 
+#' names match parameters in function ff
+fg <- function(x,a,bpop,b,bocc){
+  parameters=c( CL=bpop[1]*exp(b[1]),
+                V1=bpop[2],
+                KA=bpop[3]*exp(b[2]),
+                Q=bpop[4],
+                V2=bpop[5],
+                Favail=bpop[6],
+                DOSE=a[1],
+                TAU=a[2])
+  return( parameters ) 
+}
+```
+
+### Define design and design space
+
+```{r}
+#' create poped database
+
+discrete_a <- cell(2,1)
+
+poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
+                                  fError_fun="feps.add.prop",
+                                  fg_fun="fg",
+                                  groupsize=20,
+                                  m=1,      #number of groups
+                                  sigma=c(prop=0.1^2,add=0.05^2),
+                                  bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
+                                  d=c(CL=0.15^2,KA=0.25^2),
+                                  notfixed_bpop=c(1,1,1,1,1,0),
+                                  xt=c( 48,50,55,65,70,85,90,120), 
+                                  minxt=0,
+                                  maxxt=144,
+                                  discrete_xt = list(0:144),
+                                  a=c(DOSE=100,TAU=24),
+                                  maxa=c(DOSE=1000,TAU=24),
+                                  mina=c(DOSE=0,TAU=8),
+                                  discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
+```
+
+### Plot intial design (just PRED)
+
+```{r,fig.width=6}
+plot_model_prediction(poped.db)
+```
+
+### Design evaluation
+
+```{r}
+#' how long does one evaluation of the FIM take? 
+tic(); (eval <- evaluate_design(poped.db)); toc()
+```
+
+##4.	Different dose regimens per arm	
+
+In ex.8.tmdd_qss_one_target_compiled.R there is an example of different sampling schemes per arm using matrices. This starts at line 190. (Waiting for nice and compressed version of the example from Martin)
+
+##5.	Model with discrete covariates	
+
+##6.	Model with continuous covariates	
+
+##7.	Model with Inter-occasion variability and full covariance matrix	
+
+##8.	Handling BLQ data	
+
+##9.	Include previous FIM
+
+##10.	Robust design	
+
+The aim is to evaluate a design incorporating uncertainty around parameter values in the model.
+The full code for this example is available at the usual PopED examples directory, under the name of "ex.2.d.warfarin.ED.R".
+This illustration is one of the Warfarin examples from software comparison in: Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014. 
+
+### Define the model
+
+```{r}
+sfg <- function(x,a,bpop,b,bocc){
+  ## -- parameter definition function 
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+ff <- function(model_switch,xt,parameters,poped.db){
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+```
+
+Adding 10% Uncertainty to all fixed effects (not Favail)
+
+```{r}
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                      bpop_vals,
+                      ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+bpop_vals_ed["Favail",] <- c(0,1,0)
+bpop_vals_ed
+```
+
+### Define initial design  and design space
+
+```{r}
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.add.prop,
+                                  bpop=bpop_vals_ed, 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100,
+                                  ED_samp_size=20)
+
+```
+
+### Design evaluation
+
+```{r}
+tic(); output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=20); toc()
+output$E_ofv
+output$E_fim
 ```
 
 
-##4.	Two compartment model with oral absorption using ODEs	
 
-"ex.9.PK.2.comp.oral.md.ode.compiled.R"
+##11. Ds optimality
 
-##5.	Different dose regimens per arm	
+Ds-optimality is the criterion that can be used in case one is interested in estimating a subset (s) of the model parameters as precisely as possible (Atkinson 2007).
+The full code for this example is available at the usual PopED examples directory, under the name of "ex.2.e.warfarin.Ds.R". This illustration is one of the Warfarin examples from software comparison in: Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014. 
 
-In ex.8.tmdd_qss_one_target_compiled.R there is an example of different sampling schemes per arm using matrices. This starts at line 190.
+### Define initial design  and design space
 
-##6.	Model with discrete covariates	
+```{r, echo=FALSE}
+sfg <- function(x,a,bpop,b,bocc){
+  ## -- parameter definition function 
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
 
-##7.	Model with continuous covariates	
+ff <- function(model_switch,xt,parameters,poped.db){
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+```
 
-##8.	Model with Inter-occasion variability and full covariance matrix	
+For Ds optimality we add in the create.poped.database function the "ds_index" to indicate whether a paramter is interesting (=1) or not (=0). Moreover we need to set the "ofv_calc_type" to 6.
 
-##9.	Handling BLQ data	
+```{r}
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.add.prop,
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=70,
+                                  mina=0,
+                                  maxa=100,
+                                  ds_index=c(0,0,0,1,1,1,1,1), # size is number_of_non_fixed_parameters
+                                  ofv_calc_type=6) # Ds OFV calculation
+```
 
-##10.	Include previous FIM
+### Design evaluation
 
-##11.	Robust design	
-
-"ex.2.d.warfarin.ED.R"
+```{r}
+evaluate_design(poped.db)
+```
 
 ##12.	Power Calculation	
 
