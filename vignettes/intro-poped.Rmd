@@ -426,7 +426,185 @@ tic(); (eval <- evaluate_design(poped.db)); toc()
 
 ##4.	Different dose regimens per arm	
 
-In ex.8.tmdd_qss_one_target_compiled.R there is an example of different sampling schemes per arm using matrices. This starts at line 190. (Waiting for nice and compressed version of the example from Martin)
+The full code for this example is available at the usual PopED examples directory, under the name of "ex.8.tmdd_qss_one_target_compiled.R".
+
+
+Import the required libraries. 
+```{r,results= 'hide', message=FALSE}
+library(deSolve)
+library(Rcpp)# for compiled code
+library(PopED)
+```
+
+### Compiled code for tmdd model
+
+```{r}
+# cppFunction('List tmdd_qss_one_target_model_ode(double Time, NumericVector A, NumericVector Pars) {
+#             int n = A.size();
+#             NumericVector dA(n);
+#             
+#             double CL = Pars[0];
+#             double V1 = Pars[1];
+#             double Q  = Pars[2];
+#             double V2 = Pars[3];
+#             double FAVAIL = Pars[4];
+#             double KA = Pars[5];
+#             double VMAX = Pars[6];
+#             double KMSS = Pars[7];
+#             double R0 = Pars[8];
+#             double KSSS = Pars[9];
+#             double KDEG = Pars[10];
+#             double KINT = Pars[11];
+#             double DOSE = Pars[12];
+#             double SC_FLAG = Pars[13];
+# 
+#             double RTOT, CTOT, CFREE;
+#             RTOT = A[3];
+#             CTOT= A[1]/V1;
+#             CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)*(CTOT-RTOT-KSSS)+4*KSSS*CTOT));
+#     
+#             dA[0] = -KA*A[0];
+#             dA[1] = FAVAIL*KA*A[0]+(Q/V2)*A[2]-(CL/V1+Q/V1)*CFREE*V1-RTOT*KINT*CFREE*V1/(KSSS+CFREE);
+#             dA[2] = (Q/V1)*CFREE*V1 - (Q/V2)*A[2];
+#             dA[3] = R0*KDEG - KDEG*RTOT - (KINT-KDEG)*(RTOT*CFREE/(KSSS+CFREE));
+#             return List::create(dA);
+# }')
+```
+
+### Define parameters
+
+```{r}
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c( CL=bpop[1]*exp(b[1])  ,
+                V1=bpop[2]*exp(b[2])	,
+                Q=bpop[3]*exp(b[3])	,
+                V2=bpop[4]*exp(b[4])	,
+                FAVAIL=bpop[5]*exp(b[5])	,
+                KA=bpop[6]*exp(b[6])	,                       
+                VMAX=bpop[7]*exp(b[7])	,
+                KMSS=bpop[8]*exp(b[8])	,
+                R0=bpop[9]*exp(b[9])	,
+                KSSS=bpop[10]*exp(b[10])	,
+                KDEG=bpop[11]*exp(b[11])	,
+                KINT=bpop[12]*exp(b[12])	,
+                DOSE=a[1]	,
+                SC_FLAG=a[2])   
+  return(parameters) 
+}
+```
+
+### Define the model
+
+```{r}
+# tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.db){
+#   with(as.list(parameters),{
+#     y=xt
+#     
+#     #The initialization vector for the compartment 
+#     A_ini <- c(A1=DOSE*SC_FLAG,
+#                A2=DOSE*(1-SC_FLAG),
+#                A3=0,
+#                A4=R0)
+#     
+#     #Set up time points for the ODE
+#     times_xt <- drop(xt)
+#     times <- sort(times_xt) 
+#     times <- c(0,times) ## add extra time for start of integration
+#     
+#     # solve the ODE
+#     out <- ode(A_ini, times, tmdd_qss_one_target_model_ode, parameters)#,atol=1e-13,rtol=1e-13)
+#     
+#     
+#     # extract the time points of the observations
+#     out = out[match(times_xt,out[,"time"]),]
+#     
+#     # Match ODE output to measurements
+#     RTOT = out[,"A4"]
+#     CTOT = out[,"A2"]/V1
+#     CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)^2+4*KSSS*CTOT))
+#     COMPLEX=((RTOT*CFREE)/(KSSS+CFREE))
+#     RFREE= RTOT-COMPLEX
+#     
+#     y[model_switch==1]= RTOT[model_switch==1]
+#     y[model_switch==2] =CFREE[model_switch==2]
+#     #y[model_switch==3]=RFREE[model_switch==3]
+#     
+#     return(list( y=y,poped.db=poped.db))
+#   })
+# }
+# 
+# 
+# tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
+#   returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+#   y <- returnArgs[[1]]
+#   poped.db <- returnArgs[[2]]
+#   
+#   y[model_switch==1] = log(y[model_switch==1])+epsi[,1]
+#   y[model_switch==2] = log(y[model_switch==2])+epsi[,2]
+# 
+#   return(list(y=y,poped.db=poped.db)) 
+# }
+
+```
+
+### Define the design 
+
+```{r}
+#################################################
+# for study 1 + 2 in gibiansky,JPKPD,2012 table 2 
+#################################################
+
+# xt <- zeros(6,30)
+# study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=T)
+# study_2_xt <- matrix(rep(c(0.0417,1,1,7,14,21,28,56,63,70,77,84,91,98,105),4),nrow=2,byrow=T)
+# xt[1:4,1:26] <- study_1_xt
+# xt[5:6,] <- study_2_xt
+# 
+# model_switch <- zeros(6,30)
+# model_switch[1:4,1:13] <- 1
+# model_switch[1:4,14:26] <- 2
+# model_switch[5:6,1:15] <- 1
+# model_switch[5:6,16:30] <- 2
+# 
+# G_xt <- zeros(6,30)
+# study_1_G_xt <- matrix(rep(c(1:13),8),nrow=4,byrow=T)
+# study_2_G_xt <- matrix(rep(c(14:28),4),nrow=2,byrow=T)
+# G_xt[1:4,1:26] <- study_1_G_xt
+# G_xt[5:6,] <- study_2_G_xt
+# 
+# poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
+#                                     fError_fun=tmdd_qss_one_target_model_ruv,
+#                                     fg_fun=sfg,
+#                                     groupsize=rbind(6,6,6,6,100,100),
+#                                     m=6,      #number of groups
+#                                     sigma=c(0.04,0.0225), 
+#                                     bpop=c(CL=0.3,V1=3,Q=0.2,V2=3,FAVAIL=0.7,KA=0.5,VMAX=0,
+#                                            KMSS=0,R0=0.1,KSSS=0.015,KDEG=10,KINT=0.05),
+#                                     d=c(CL=0.09,V1=0.09,Q=0.04,V2=0.04,FAVAIL=0.04,KA=0.16,VMAX=0,
+#                                         KMSS=0,R0=0.09,KSSS=0.09,KDEG=0.04,KINT=0.04), 
+#                                     notfixed_bpop=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+#                                     notfixed_d=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+#                                     xt=xt,
+#                                     model_switch=model_switch,
+#                                     ni=rbind(26,26,26,26,30,30),
+#                                     bUseGrouped_xt=1,
+#                                     G_xt=G_xt,
+#                                     a=list(c(DOSE=100, SC_FLAG=0),
+#                                            c(DOSE=300, SC_FLAG=0),
+#                                            c(DOSE=600, SC_FLAG=0),
+#                                            c(DOSE=1000, SC_FLAG=1),
+#                                            c(DOSE=600, SC_FLAG=0),
+#                                            c(DOSE=1000, SC_FLAG=1)),
+#                                     discrete_a = list(DOSE=seq(100,1000,by=100),
+#                                                       SC_FLAG=c(0,1)))
+
+```
+
+### Plot model predisctions
+```{r, fig.width=6}
+#plot_model_prediction(poped.db.2,facet_scales="free")
+```
+
 
 ##5.	Model with discrete covariates	
 
@@ -438,7 +616,7 @@ In ex.8.tmdd_qss_one_target_compiled.R there is an example of different sampling
 
 ##9.	Include previous FIM
 
-##10.	Robust design	
+##10.	Design evaluation including uncertainty in the model parameters (robust design)	
 
 The aim is to evaluate a design incorporating uncertainty around parameter values in the model.
 The full code for this example is available at the usual PopED examples directory, under the name of "ex.2.d.warfarin.ED.R".
@@ -509,7 +687,7 @@ output$E_fim
 
 
 
-##11. Ds optimality
+##11. Design evaluation for a subset of model parameters of interest (Ds optimality)
 
 Ds-optimality is the criterion that can be used in case one is interested in estimating a subset (s) of the model parameters as precisely as possible (Atkinson 2007).
 The full code for this example is available at the usual PopED examples directory, under the name of "ex.2.e.warfarin.Ds.R". This illustration is one of the Warfarin examples from software comparison in: Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014. 

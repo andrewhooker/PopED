@@ -103,7 +103,7 @@ evaluate_design(poped.db)
 
 
 # Optimization of sample times and WT
-output <- poped_optim(poped.db,opt_xt=T,opt_a=T,parallel=T,method=c("LS"))
+output <- poped_optim(poped.db,opt_xt=T,opt_a=T)
 
 summary(output)
 get_rse(output$FIM,output$poped.db)
