@@ -3,8 +3,12 @@
 #' This tunction evaluates the design defined in a poped database.
 #' 
 #' @param poped.db A poped database
-#' @param alpha Type 1 error - user to adjust for one- or two-sided (default = 0.05)
+#' @param bpopIdx Indices for unfixed parameters for which power should be evaluated for being non-zero
+#' @param alpha Type 1 error (default = 0.05)
 #' @param power Targeted power (default = 80%)
+#' @param twoSided Is two-sided test (default = TRUE)
+#' @param fim Optional to provide FIM from a previous calculation
+#' @param out Optional to provide output from a previous calculation (e.g., calc_ofv_and_fim, ...)
 #' @param ... Extra parameters passed to \code{\link{calc_ofv_and_fim}} and \code{\link{get_rse}}
 #' @return A list of elements evaluating the current design including the power.
 #' @export
@@ -13,7 +17,10 @@
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate_design.R
 #' @family evaluate_design
 
-evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.025, power=80, ...) {
+evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, ...) {
+  # If two-sided then halve the alpha
+  if (twSided == TRUE) alpha = alpha/2
+  
   # Check if bpopIdx is given and within the non-fixed parameters
   if (is.null(bpopIdx)) stop("Population parameter index must be given in bpopIdx")
   if (!all(bpopIdx %in% which(poped.db$parameters$notfixed_bpop==1))) stop("bpopIdx can only include non-fixed population parameters bpop")
