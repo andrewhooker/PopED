@@ -32,7 +32,9 @@ system.file("examples", package="PopED")
 Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution.  In this case the solution is applicable for both multiple and single dosing.  Note that this function is also predefined in PopED as `ff.PK.1.comp.oral.md.CL`.
 
 ```{r,eval=TRUE}
+library(Rcpp)
 library(PopED)
+library(deSolve)
 ```
 
 
@@ -87,10 +89,16 @@ We have now defined all aspects of the model.
 
 Now we define the model parameter values, the initial design  and design space for optimization.
 
-In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  Fixing a parameter means that we assume the parameter will not be estimated.  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
+In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  
+
+Fixing a parameter means that we assume the parameter will not be estimated.  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
 
 
-For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   Finally, we fix the two groups of subjects to have the sample sample times (`bUseGrouped_xt=TRUE`). 
+For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). 
+
+For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   
+
+Finally, we fix the two groups of subjects to have the sample sample times (`bUseGrouped_xt=TRUE`). 
 
 ```{r}
 poped.db <- create.poped.database(ff_fun=ff,
@@ -220,14 +228,14 @@ In this section, further PopED features are described within a series of example
 system.file("examples", package="PopED")
 ```
 
-Of note, only the code related to the specific "new" feature is here described. The complete R code is in the corresponding R script related to each of the examples.
+Of note, only the code related to the specific "new" feature is here described. The complete R code is in the corresponding R script for each of the examples.
 
-##1.	One comp first order absorption - analytical solution for both mutiple and single dosing (design evaluation); design evaluation and design optimization of times and/or doses over a continuous or discrete design space.
+##1.	One compartment first order absorption - analytical solution for both mutiple and single dosing (design evaluation); design evaluation and design optimization of times and/or doses over a continuous or discrete design space
 
 This example is the intro example illustrated in the first part of this document, before the Examples section.
 The corresponding R script is the PopED example "ex.1.a.PK.1.comp.oral.md.intro.R"
 
-##2.	PKPD model (analytical equations) & multiple arms (different doses, sampling times)
+##2.	PKPD model, multiple arms for different doses and sampling times, using analytical equations 
 
 The full code for this example is available at the usual PopED examples directory, under the name of "ex.4.PKPD.1.comp.emax.R". It would be nice to have the plot function "plot_model_prediction" updated for this example, so that in the plot we see the name of the models, i.e. PK and PD, instead of the current predefined form, i.e. Model 1 and Model 2.
 
@@ -329,11 +337,6 @@ The full code for this example is available at the usual PopED examples director
 
 Of note, the "deSolve" library needs to be installed for computing the system of differential equations. 
 
-```{r, echo=F, message = FALSE,results='hide'}
-library(deSolve)
-```
-
-
 ### Define the two compartment model
 
 ```{r}
@@ -360,16 +363,15 @@ ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
                            time = dose_times,
                            value = c(DOSE), method = c("add"))
     times <- sort(c(times_xt,dose_times))
-    out <- ode(A_ini, times, PK.2.comp.oral.ode, parameters, events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
+    out <- ode(A_ini, times, PK.2.comp.oral.ode, parameters,
+           events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
     y = out[, "A2"]/(V1/Favail)
     y=y[match(times_xt,out[,"time"])]
     y=cbind(y)
     return(list(y=y,poped.db=poped.db))
   })
 }
-```
 
-```{r}
 #' parameter definition function 
 #' names match parameters in function ff
 fg <- function(x,a,bpop,b,bocc){
@@ -428,47 +430,43 @@ tic(); (eval <- evaluate_design(poped.db)); toc()
 
 The full code for this example is available at the usual PopED examples directory, under the name of "ex.8.tmdd_qss_one_target_compiled.R".
 
-
-Import the required libraries. 
-```{r,results= 'hide', message=FALSE}
-library(deSolve)
-library(Rcpp)# for compiled code
-library(PopED)
-```
-
 ### Compiled code for tmdd model
 
+We write the model using compiled code according to the Rcpp package.
+
 ```{r}
-# cppFunction('List tmdd_qss_one_target_model_ode(double Time, NumericVector A, NumericVector Pars) {
-#             int n = A.size();
-#             NumericVector dA(n);
-#             
-#             double CL = Pars[0];
-#             double V1 = Pars[1];
-#             double Q  = Pars[2];
-#             double V2 = Pars[3];
-#             double FAVAIL = Pars[4];
-#             double KA = Pars[5];
-#             double VMAX = Pars[6];
-#             double KMSS = Pars[7];
-#             double R0 = Pars[8];
-#             double KSSS = Pars[9];
-#             double KDEG = Pars[10];
-#             double KINT = Pars[11];
-#             double DOSE = Pars[12];
-#             double SC_FLAG = Pars[13];
-# 
-#             double RTOT, CTOT, CFREE;
-#             RTOT = A[3];
-#             CTOT= A[1]/V1;
-#             CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)*(CTOT-RTOT-KSSS)+4*KSSS*CTOT));
-#     
-#             dA[0] = -KA*A[0];
-#             dA[1] = FAVAIL*KA*A[0]+(Q/V2)*A[2]-(CL/V1+Q/V1)*CFREE*V1-RTOT*KINT*CFREE*V1/(KSSS+CFREE);
-#             dA[2] = (Q/V1)*CFREE*V1 - (Q/V2)*A[2];
-#             dA[3] = R0*KDEG - KDEG*RTOT - (KINT-KDEG)*(RTOT*CFREE/(KSSS+CFREE));
-#             return List::create(dA);
-# }')
+cppFunction('List tmdd_qss_one_target_model_ode
+            (double Time, NumericVector A, NumericVector Pars) {
+            int n = A.size();
+            NumericVector dA(n);
+
+            double CL = Pars[0];
+            double V1 = Pars[1];
+            double Q  = Pars[2];
+            double V2 = Pars[3];
+            double FAVAIL = Pars[4];
+            double KA = Pars[5];
+            double VMAX = Pars[6];
+            double KMSS = Pars[7];
+            double R0 = Pars[8];
+            double KSSS = Pars[9];
+            double KDEG = Pars[10];
+            double KINT = Pars[11];
+            double DOSE = Pars[12];
+            double SC_FLAG = Pars[13];
+
+            double RTOT, CTOT, CFREE;
+            RTOT = A[3];
+            CTOT= A[1]/V1;
+            CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)*(CTOT-RTOT-KSSS)+4*KSSS*CTOT));
+
+            dA[0] = -KA*A[0];
+            dA[1] = FAVAIL*KA*A[0]+(Q/V2)*A[2]-
+                    (CL/V1+Q/V1)*CFREE*V1-RTOT*KINT*CFREE*V1/(KSSS+CFREE);
+            dA[2] = (Q/V1)*CFREE*V1 - (Q/V2)*A[2];
+            dA[3] = R0*KDEG - KDEG*RTOT - (KINT-KDEG)*(RTOT*CFREE/(KSSS+CFREE));
+            return List::create(dA);
+}')
 ```
 
 ### Define parameters
@@ -496,54 +494,54 @@ sfg <- function(x,a,bpop,b,bocc){
 ### Define the model
 
 ```{r}
-# tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.db){
-#   with(as.list(parameters),{
-#     y=xt
-#     
-#     #The initialization vector for the compartment 
-#     A_ini <- c(A1=DOSE*SC_FLAG,
-#                A2=DOSE*(1-SC_FLAG),
-#                A3=0,
-#                A4=R0)
-#     
-#     #Set up time points for the ODE
-#     times_xt <- drop(xt)
-#     times <- sort(times_xt) 
-#     times <- c(0,times) ## add extra time for start of integration
-#     
-#     # solve the ODE
-#     out <- ode(A_ini, times, tmdd_qss_one_target_model_ode, parameters)#,atol=1e-13,rtol=1e-13)
-#     
-#     
-#     # extract the time points of the observations
-#     out = out[match(times_xt,out[,"time"]),]
-#     
-#     # Match ODE output to measurements
-#     RTOT = out[,"A4"]
-#     CTOT = out[,"A2"]/V1
-#     CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)^2+4*KSSS*CTOT))
-#     COMPLEX=((RTOT*CFREE)/(KSSS+CFREE))
-#     RFREE= RTOT-COMPLEX
-#     
-#     y[model_switch==1]= RTOT[model_switch==1]
-#     y[model_switch==2] =CFREE[model_switch==2]
-#     #y[model_switch==3]=RFREE[model_switch==3]
-#     
-#     return(list( y=y,poped.db=poped.db))
-#   })
-# }
-# 
-# 
-# tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
-#   returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
-#   y <- returnArgs[[1]]
-#   poped.db <- returnArgs[[2]]
-#   
-#   y[model_switch==1] = log(y[model_switch==1])+epsi[,1]
-#   y[model_switch==2] = log(y[model_switch==2])+epsi[,2]
-# 
-#   return(list(y=y,poped.db=poped.db)) 
-# }
+tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+
+    #The initialization vector for the compartment
+    A_ini <- c(A1=DOSE*SC_FLAG,
+               A2=DOSE*(1-SC_FLAG),
+               A3=0,
+               A4=R0)
+
+    #Set up time points for the ODE
+    times_xt <- drop(xt)
+    times <- sort(times_xt)
+    times <- c(0,times) ## add extra time for start of integration
+
+    # solve the ODE
+    out <- ode(A_ini, times, tmdd_qss_one_target_model_ode, parameters)#,atol=1e-13,rtol=1e-13)
+
+
+    # extract the time points of the observations
+    out = out[match(times_xt,out[,"time"]),]
+
+    # Match ODE output to measurements
+    RTOT = out[,"A4"]
+    CTOT = out[,"A2"]/V1
+    CFREE = 0.5*((CTOT-RTOT-KSSS)+sqrt((CTOT-RTOT-KSSS)^2+4*KSSS*CTOT))
+    COMPLEX=((RTOT*CFREE)/(KSSS+CFREE))
+    RFREE= RTOT-COMPLEX
+
+    y[model_switch==1]= RTOT[model_switch==1]
+    y[model_switch==2] =CFREE[model_switch==2]
+    #y[model_switch==3]=RFREE[model_switch==3]
+
+    return(list( y=y,poped.db=poped.db))
+  })
+}
+
+
+tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db))
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+
+  y[model_switch==1] = log(y[model_switch==1])+epsi[,1]
+  y[model_switch==2] = log(y[model_switch==2])+epsi[,2]
+
+  return(list(y=y,poped.db=poped.db))
+}
 
 ```
 
@@ -554,57 +552,64 @@ sfg <- function(x,a,bpop,b,bocc){
 # for study 1 + 2 in gibiansky,JPKPD,2012 table 2 
 #################################################
 
-# xt <- zeros(6,30)
-# study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=T)
-# study_2_xt <- matrix(rep(c(0.0417,1,1,7,14,21,28,56,63,70,77,84,91,98,105),4),nrow=2,byrow=T)
-# xt[1:4,1:26] <- study_1_xt
-# xt[5:6,] <- study_2_xt
-# 
-# model_switch <- zeros(6,30)
-# model_switch[1:4,1:13] <- 1
-# model_switch[1:4,14:26] <- 2
-# model_switch[5:6,1:15] <- 1
-# model_switch[5:6,16:30] <- 2
-# 
-# G_xt <- zeros(6,30)
-# study_1_G_xt <- matrix(rep(c(1:13),8),nrow=4,byrow=T)
-# study_2_G_xt <- matrix(rep(c(14:28),4),nrow=2,byrow=T)
-# G_xt[1:4,1:26] <- study_1_G_xt
-# G_xt[5:6,] <- study_2_G_xt
-# 
-# poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
-#                                     fError_fun=tmdd_qss_one_target_model_ruv,
-#                                     fg_fun=sfg,
-#                                     groupsize=rbind(6,6,6,6,100,100),
-#                                     m=6,      #number of groups
-#                                     sigma=c(0.04,0.0225), 
-#                                     bpop=c(CL=0.3,V1=3,Q=0.2,V2=3,FAVAIL=0.7,KA=0.5,VMAX=0,
-#                                            KMSS=0,R0=0.1,KSSS=0.015,KDEG=10,KINT=0.05),
-#                                     d=c(CL=0.09,V1=0.09,Q=0.04,V2=0.04,FAVAIL=0.04,KA=0.16,VMAX=0,
-#                                         KMSS=0,R0=0.09,KSSS=0.09,KDEG=0.04,KINT=0.04), 
-#                                     notfixed_bpop=c( 1,1,1,1,1,1,0,0,1,1,1,1),
-#                                     notfixed_d=c( 1,1,1,1,1,1,0,0,1,1,1,1),
-#                                     xt=xt,
-#                                     model_switch=model_switch,
-#                                     ni=rbind(26,26,26,26,30,30),
-#                                     bUseGrouped_xt=1,
-#                                     G_xt=G_xt,
-#                                     a=list(c(DOSE=100, SC_FLAG=0),
-#                                            c(DOSE=300, SC_FLAG=0),
-#                                            c(DOSE=600, SC_FLAG=0),
-#                                            c(DOSE=1000, SC_FLAG=1),
-#                                            c(DOSE=600, SC_FLAG=0),
-#                                            c(DOSE=1000, SC_FLAG=1)),
-#                                     discrete_a = list(DOSE=seq(100,1000,by=100),
-#                                                       SC_FLAG=c(0,1)))
+xt <- zeros(6,30)
+study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=T)
+study_2_xt <- matrix(rep(c(0.0417,1,1,7,14,21,28,56,63,70,77,84,91,98,105),4),nrow=2,byrow=T)
+xt[1:4,1:26] <- study_1_xt
+xt[5:6,] <- study_2_xt
+
+model_switch <- zeros(6,30)
+model_switch[1:4,1:13] <- 1
+model_switch[1:4,14:26] <- 2
+model_switch[5:6,1:15] <- 1
+model_switch[5:6,16:30] <- 2
+
+G_xt <- zeros(6,30)
+study_1_G_xt <- matrix(rep(c(1:13),8),nrow=4,byrow=T)
+study_2_G_xt <- matrix(rep(c(14:28),4),nrow=2,byrow=T)
+G_xt[1:4,1:26] <- study_1_G_xt
+G_xt[5:6,] <- study_2_G_xt
+
+poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
+                                    fError_fun=tmdd_qss_one_target_model_ruv,
+                                    fg_fun=sfg,
+                                    groupsize=rbind(6,6,6,6,100,100),
+                                    m=6,      #number of groups
+                                    sigma=c(0.04,0.0225),
+                                    bpop=c(CL=0.3,V1=3,Q=0.2,V2=3,FAVAIL=0.7,KA=0.5,VMAX=0,
+                                           KMSS=0,R0=0.1,KSSS=0.015,KDEG=10,KINT=0.05),
+                                    d=c(CL=0.09,V1=0.09,Q=0.04,V2=0.04,FAVAIL=0.04,
+                                        KA=0.16,VMAX=0,KMSS=0,R0=0.09,KSSS=0.09,KDEG=0.04,
+                                        KINT=0.04),
+                                    notfixed_bpop=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+                                    notfixed_d=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+                                    xt=xt,
+                                    model_switch=model_switch,
+                                    ni=rbind(26,26,26,26,30,30),
+                                    bUseGrouped_xt=1,
+                                    G_xt=G_xt,
+                                    a=list(c(DOSE=100, SC_FLAG=0),
+                                           c(DOSE=300, SC_FLAG=0),
+                                           c(DOSE=600, SC_FLAG=0),
+                                           c(DOSE=1000, SC_FLAG=1),
+                                           c(DOSE=600, SC_FLAG=0),
+                                           c(DOSE=1000, SC_FLAG=1)),
+                                    discrete_a = list(DOSE=seq(100,1000,by=100),
+                                                      SC_FLAG=c(0,1)))
 
 ```
 
 ### Plot model predisctions
 ```{r, fig.width=6}
-#plot_model_prediction(poped.db.2,facet_scales="free")
+plot_model_prediction(poped.db.2,facet_scales="free")
 ```
 
+### Design evaluation
+
+```{r}
+tic(); eval_2 <- evaluate_design(poped.db.2); toc()
+eval_2
+```
 
 ##5.	Model with discrete covariates	
 
@@ -645,7 +650,7 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-Adding 10% Uncertainty to all fixed effects (not Favail)
+Adding 10% uncertainty to all fixed effects (not Favail)
 
 ```{r}
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
@@ -715,7 +720,7 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-For Ds optimality we add in the create.poped.database function the "ds_index" to indicate whether a paramter is interesting (=1) or not (=0). Moreover we need to set the "ofv_calc_type" to 6.
+For Ds optimality we add in the create.poped.database function the "ds_index" to indicate whether a paramter is interesting (=1) or not (=0). Moreover we need to set the "ofv_calc_type" to 6 for computing the Ds optimality criterion, as it is set to 4 by default, i.e. for computing the log of the determiant of FIM. More details are available in the help of R, by runiing the command ?create.poped.database.
 
 ```{r}
 poped.db <- create.poped.database(ff_fun=ff,
@@ -732,7 +737,8 @@ poped.db <- create.poped.database(ff_fun=ff,
                                   a=70,
                                   mina=0,
                                   maxa=100,
-                                  ds_index=c(0,0,0,1,1,1,1,1), # size is number_of_non_fixed_parameters
+                                  ds_index=c(0,0,0,1,1,1,1,1), # size is 
+                                  #number_of_non_fixed_parameters
                                   ofv_calc_type=6) # Ds OFV calculation
 ```
 
