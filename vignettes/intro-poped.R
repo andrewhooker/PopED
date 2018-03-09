@@ -69,15 +69,9 @@ head(dat,n=5);tail(dat,n=5)
 ## ------------------------------------------------------------------------
 evaluate_design(poped.db)
 
-## ----optimize,message = FALSE,results='hide',cache=TRUE------------------
-output <- poped_optim(poped.db, opt_xt=T)
-
 ## ---- fig.width=6--------------------------------------------------------
 summary(output)
 plot_model_prediction(output$poped.db)
-
-## ----fig.width=6,fig.height=6,cache=TRUE---------------------------------
-plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 
 ## ---- message = FALSE,results='hide'-------------------------------------
 poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
@@ -89,20 +83,12 @@ output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 
-## ----optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE----
-#  output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
-
 ## ------------------------------------------------------------------------
 crit_fcn <- function(poped.db,...){
   pred_df <- model_prediction(poped.db)
   sum((pred_df[pred_df["Time"]==240,"PRED"] - c(0.2,0.35))^2)
 }
 crit_fcn(output$poped.db)
-
-## ----cost_optimization, message = FALSE,results='hide',cache=TRUE--------
-output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
-                     ofv_fun=crit_fcn,
-                     maximize = F)
 
 ## ---- fig.width=6--------------------------------------------------------
 summary(output_cost)
