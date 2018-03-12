@@ -3,7 +3,8 @@
 ind=1
 
 # no occasion defined in this example
-output <- mf6(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
+poped.db$settings$iFIMCalculationType = 5
+output <- mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
    xt=t(poped.db$design$xt[ind,,drop=FALSE]),
    x=zeros(0,1),
    a=t(poped.db$design$a[ind,,drop=FALSE]),
@@ -12,6 +13,7 @@ output <- mf6(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
    sigma=poped.db$parameters$sigma,
    docc=poped.db$parameters$param.pt.val$docc,
    poped.db)
+poped.db$settings$iFIMCalculationType = 1
 
 # in this simple case the full FIM is just the sum of the individual FIMs
 # and all the individual FIMs are the same

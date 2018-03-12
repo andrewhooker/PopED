@@ -3,8 +3,9 @@
 ind=1
 
 # no occasion defined in this example, so result is zero
-output <- mf(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
-   xt_ind=t(poped.db$design$xt[ind,,drop=FALSE]),
+poped.db$settings$iFIMCalculationType = 0
+output <- mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
+   xt=t(poped.db$design$xt[ind,,drop=FALSE]),
    x=zeros(0,1),
    a=t(poped.db$design$a[ind,,drop=FALSE]),
    bpop=poped.db$parameters$bpop[,2,drop=FALSE],
@@ -12,7 +13,7 @@ output <- mf(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
    sigma=poped.db$parameters$sigma,
    docc=poped.db$parameters$param.pt.val$docc,
    poped.db)
-
+poped.db$settings$iFIMCalculationType = 1
 # in this simple case the full FIM is just the sum of the individual FIMs
 # and all the individual FIMs are the same
 det(output$ret*32) == det(evaluate.fim(poped.db,fim.calc.type=0))  
