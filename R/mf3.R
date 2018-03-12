@@ -5,7 +5,10 @@
 #' and set these elements in the FIM to zero.
 #' 
 #' @param xt A vector of sample times.  
-#' @inheritParams mf
+#' @param model_switch A vector that is the same size as xt, specifying which model each sample belongs to.
+#' @param x A vector for the discrete design variables.
+#' @param a A vector of covariates.  
+#' @inheritParams mftot
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM for one individual}

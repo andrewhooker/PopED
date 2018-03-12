@@ -5,7 +5,7 @@
 #' a defined point 
 #' (b_ind and bocc_ind).
 #' 
-#' @inheritParams mf
+#' @inheritParams mf3
 #' @param bpop The fixed effects parameter values.  Supplied as a vector.
 #' @param b_ind The point at which to evaluate the derivative
 #' @param bocc_ind The point at which to evaluate the derivative
