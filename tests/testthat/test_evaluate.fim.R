@@ -93,5 +93,16 @@ test_that("internal FIM calculations", {
   source("examples_fcn_doc/examples_mf8.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=7))))
   
+  
+})
+
+test_that("FIM calculations are as expected", {
+  source("examples_fcn_doc/warfarin_basic.R")
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=0)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=1)),5.996147e+22,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=4)),2.398459e+21,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=5)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=6)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=7)),5.996147e+22,tolerance=1e-5)
 })
 
