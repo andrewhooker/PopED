@@ -216,7 +216,8 @@ plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"))
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}}, \code{\link{get_rse}},
+  \code{\link{evaluate_design}},
+  \code{\link{evaluate_power}}, \code{\link{get_rse}},
   \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}}
 

@@ -1,4 +1,5 @@
 #' Evaluate power of a design for detecting a parameter to be non-zero
+#' using the linear Wald test.
 #' 
 #' This tunction evaluates the design defined in a poped database.
 #' 
@@ -13,17 +14,22 @@
 #' @return A list of elements evaluating the current design including the power.
 #' @export
 #' 
-#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
-#' @example tests/testthat/examples_fcn_doc/examples_evaluate_design.R
+#' @example tests/testthat/examples_fcn_doc/examples_evaluate_power.R
+#' 
 #' @family evaluate_design
 
 evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, ...) {
   # If two-sided then halve the alpha
-  if (twSided == TRUE) alpha = alpha/2
+  if (twoSided == TRUE) alpha = alpha/2
   
   # Check if bpopIdx is given and within the non-fixed parameters
   if (is.null(bpopIdx)) stop("Population parameter index must be given in bpopIdx")
   if (!all(bpopIdx %in% which(poped.db$parameters$notfixed_bpop==1))) stop("bpopIdx can only include non-fixed population parameters bpop")
+  if (poped.db$parameters$param.pt.val$bpop[bpopIdx]==0) 
+    stop("
+  Population parameter is assumed to be zero, 
+  there is 0% power in identifying this parameter 
+  as non-zero assuming no bias in parameter estimation")
   
   # Prepare output structure with at least out$fim available
   if (is.null(fim) & is.null(out$fim)) {

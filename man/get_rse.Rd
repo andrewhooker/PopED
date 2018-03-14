@@ -24,7 +24,7 @@ get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
-\item{use_percent}{Should RSE be reported as percent or not?}
+\item{use_percent}{Should RSE be reported as percent?}
 
 \item{fim.calc.type}{The method used for calculating the FIM. Potential values:
 \itemize{
@@ -46,7 +46,8 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 \item{...}{Additional arguments passed to \code{\link{inv}}.}
 }
 \value{
-A named list of RSE values.
+A named list of RSE values.  If the estimated parameter is assumed to be zero then for that 
+  parameter the standard error is returned.
 }
 \description{
 This function  computes the expected relative standard errors of a model given a design and a previously computed
@@ -133,6 +134,7 @@ get_rse(FIM.1.prior,poped.db.prior) # the RSE is computed with the prior informa
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{evaluate_design}},
+  \code{\link{evaluate_power}},
   \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}
