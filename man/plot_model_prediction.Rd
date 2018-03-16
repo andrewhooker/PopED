@@ -77,7 +77,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 \item{model.names}{A vector of names of the response model/s (the length of the 
 vector should be equal to the number of respose models). It is Null by default.}
 
-\item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
+\item{...}{Additional arguments passed to the \link{model_prediction} function.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
