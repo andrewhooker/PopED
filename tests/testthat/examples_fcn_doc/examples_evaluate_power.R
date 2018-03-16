@@ -1,4 +1,4 @@
-
+# Folowing the examples presented in Retout, 2007
 
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{

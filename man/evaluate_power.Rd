@@ -2,8 +2,8 @@
 % Please edit documentation in R/evaluate_power.R
 \name{evaluate_power}
 \alias{evaluate_power}
-\title{Evaluate power of a design for detecting a parameter to be non-zero
-using the linear Wald test.}
+\title{Evaluate power of a design for detecting a parameter to be non-zero using the
+linear Wald test.}
 \usage{
 evaluate_power(poped.db, bpopIdx = NULL, fim = NULL, out = NULL,
   alpha = 0.05, power = 80, twoSided = TRUE, ...)
@@ -11,19 +11,22 @@ evaluate_power(poped.db, bpopIdx = NULL, fim = NULL, out = NULL,
 \arguments{
 \item{poped.db}{A poped database}
 
-\item{bpopIdx}{Indices for unfixed parameters for which power should be evaluated for being non-zero}
+\item{bpopIdx}{Indices for unfixed parameters for which power should be
+evaluated for being non-zero}
 
 \item{fim}{Optional to provide FIM from a previous calculation}
 
-\item{out}{Optional to provide output from a previous calculation (e.g., calc_ofv_and_fim, ...)}
+\item{out}{Optional to provide output from a previous calculation (e.g.,
+calc_ofv_and_fim, ...)}
 
 \item{alpha}{Type 1 error (default = 0.05)}
 
-\item{power}{Targeted power (default = 80%)}
+\item{power}{Targeted power (default = 80\%)}
 
 \item{twoSided}{Is two-sided test (default = TRUE)}
 
-\item{...}{Extra parameters passed to \code{\link{calc_ofv_and_fim}} and \code{\link{get_rse}}}
+\item{...}{Extra parameters passed to \code{\link{calc_ofv_and_fim}} and
+\code{\link{get_rse}}}
 }
 \value{
 A list of elements evaluating the current design including the power.
@@ -32,7 +35,7 @@ A list of elements evaluating the current design including the power.
 This tunction evaluates the design defined in a poped database.
 }
 \examples{
-
+# Folowing the examples presented in Retout, 2007
 
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
@@ -84,6 +87,16 @@ plot_model_prediction(poped.db_2)
 evaluate_design(poped.db_2)
 
 evaluate_power(poped.db_2,bpopIdx = 4)
+}
+\references{
+\enumerate{ \item Retout, S., Comets, E., Samson, A., & Mentré,
+  F. (2007). Design in nonlinear mixed effects models: Optimization using the
+  Fedorov–Wynn algorithm and power of the Wald test for binary covariates.
+  Statistics in Medicine, 26(28), 5162–5179. \url{https://doi.org/10.1002/sim.2910}
+  \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., & Hooker, A. C.
+  (2013). Optimizing disease progression study designs for drug effect
+  discrimination. Journal of Pharmacokinetics and Pharmacodynamics, 40(5),
+  587–596. \url{https://doi.org/10.1007/s10928-013-9331-3} }
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},

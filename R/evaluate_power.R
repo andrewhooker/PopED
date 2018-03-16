@@ -1,22 +1,33 @@
-#' Evaluate power of a design for detecting a parameter to be non-zero
-#' using the linear Wald test.
-#' 
+#' Evaluate power of a design for detecting a parameter to be non-zero using the
+#' linear Wald test.
+#'
 #' This tunction evaluates the design defined in a poped database.
-#' 
+#'
 #' @param poped.db A poped database
-#' @param bpopIdx Indices for unfixed parameters for which power should be evaluated for being non-zero
+#' @param bpopIdx Indices for unfixed parameters for which power should be
+#'   evaluated for being non-zero
 #' @param alpha Type 1 error (default = 0.05)
-#' @param power Targeted power (default = 80%)
+#' @param power Targeted power (default = 80\%)
 #' @param twoSided Is two-sided test (default = TRUE)
 #' @param fim Optional to provide FIM from a previous calculation
-#' @param out Optional to provide output from a previous calculation (e.g., calc_ofv_and_fim, ...)
-#' @param ... Extra parameters passed to \code{\link{calc_ofv_and_fim}} and \code{\link{get_rse}}
+#' @param out Optional to provide output from a previous calculation (e.g.,
+#'   calc_ofv_and_fim, ...)
+#' @param ... Extra parameters passed to \code{\link{calc_ofv_and_fim}} and
+#'   \code{\link{get_rse}}
 #' @return A list of elements evaluating the current design including the power.
-#' @export
-#' 
+#' @references \enumerate{ \item Retout, S., Comets, E., Samson, A., & Mentré,
+#'   F. (2007). Design in nonlinear mixed effects models: Optimization using the
+#'   Fedorov–Wynn algorithm and power of the Wald test for binary covariates.
+#'   Statistics in Medicine, 26(28), 5162–5179. \url{https://doi.org/10.1002/sim.2910}
+#'   \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., & Hooker, A. C.
+#'   (2013). Optimizing disease progression study designs for drug effect
+#'   discrimination. Journal of Pharmacokinetics and Pharmacodynamics, 40(5),
+#'   587–596. \url{https://doi.org/10.1007/s10928-013-9331-3} }
+#'   
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate_power.R
-#' 
+#'
 #' @family evaluate_design
+#' @export
 
 evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, ...) {
   # If two-sided then halve the alpha
