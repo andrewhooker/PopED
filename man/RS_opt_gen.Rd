@@ -76,17 +76,17 @@ all a values are given the same max value}
 
 \item{fim.calc.type}{The method used for calculating the FIM. Potential values:
 \itemize{
-\item 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  See \code{\link{mftot0}}.
+\item 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  
 \item 1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
-the FIM to zero. See \code{\link{mftot1}}.
+the FIM to zero. 
 \item 2 = weighted models (placeholder).
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). See \code{\link{mftot4}}.
-\item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. See \code{\link{mftot5}}.
-\item 6 = Calculate one model switch at a time, good for large matrices. See \code{\link{mftot6}}.
-\item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance See \code{\link{mftot7}}.
+(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+\item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
+\item 6 = Calculate one model switch at a time, good for large matrices. 
+\item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
 }}
 
 \item{approx_type}{Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.}

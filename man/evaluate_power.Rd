@@ -87,14 +87,14 @@ evaluate_design(poped.db_2)
 evaluate_power(poped.db_2,bpopIdx = 4)
 }
 \references{
-\enumerate{ \item Retout, S., Comets, E., Samson, A., & Mentré,
+\enumerate{ \item Retout, S., Comets, E., Samson, A., and Mentre,
   F. (2007). Design in nonlinear mixed effects models: Optimization using the
-  Fedorov–Wynn algorithm and power of the Wald test for binary covariates.
-  Statistics in Medicine, 26(28), 5162–5179. \url{https://doi.org/10.1002/sim.2910}
-  \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., & Hooker, A. C.
+  Fedorov-Wynn algorithm and power of the Wald test for binary covariates.
+  Statistics in Medicine, 26(28), 5162-5179. \url{https://doi.org/10.1002/sim.2910}.
+  \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., and Hooker, A. C.
   (2013). Optimizing disease progression study designs for drug effect
   discrimination. Journal of Pharmacokinetics and Pharmacodynamics, 40(5),
-  587–596. \url{https://doi.org/10.1007/s10928-013-9331-3} }
+  587-596. \url{https://doi.org/10.1007/s10928-013-9331-3}. }
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},

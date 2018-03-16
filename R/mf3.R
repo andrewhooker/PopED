@@ -1,8 +1,6 @@
-#' The reduced  Fisher Information Matrix (FIM) for one individual
+#' The Fisher Information Matrix (FIM) for one individual
 #' 
-#' Compute the reduced  FIM for one individual given specific model(s), parameters, design and methods. 
-#' This computation assumes that there is no correlation in the FIM between the fixed and random effects, 
-#' and set these elements in the FIM to zero.
+#' Compute the FIM for one individual given specific model(s), parameters, design and methods. 
 #' 
 #' @param xt A vector of sample times.  
 #' @param model_switch A vector that is the same size as xt, specifying which model each sample belongs to.
@@ -14,7 +12,6 @@
 #' \item{ret}{The FIM for one individual}
 #' \item{poped.db}{A PopED database}
 #' 
-#' @seealso Used by \code{\link{mftot1}}.  
 #' @family FIM
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
@@ -25,8 +22,7 @@
 ## Author: Andrew Hooker
 
 mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
-  #Calculate the reduced FIM
-  
+
   numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
   numnotfixed_d    = sum(poped.db$parameters$notfixed_d)
   numnotfixed_covd = sum(poped.db$parameters$notfixed_covd)

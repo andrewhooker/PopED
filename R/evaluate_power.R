@@ -17,12 +17,12 @@
 #' @return A list of elements evaluating the current design including the power.
 #' @references \enumerate{ \item Retout, S., Comets, E., Samson, A., and Mentre,
 #'   F. (2007). Design in nonlinear mixed effects models: Optimization using the
-#'   Fedorov–Wynn algorithm and power of the Wald test for binary covariates.
-#'   Statistics in Medicine, 26(28), 5162–5179. \url{https://doi.org/10.1002/sim.2910}.
+#'   Fedorov-Wynn algorithm and power of the Wald test for binary covariates.
+#'   Statistics in Medicine, 26(28), 5162-5179. \url{https://doi.org/10.1002/sim.2910}.
 #'   \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., and Hooker, A. C.
 #'   (2013). Optimizing disease progression study designs for drug effect
 #'   discrimination. Journal of Pharmacokinetics and Pharmacodynamics, 40(5),
-#'   587–596. \url{https://doi.org/10.1007/s10928-013-9331-3}. }
+#'   587-596. \url{https://doi.org/10.1007/s10928-013-9331-3}. }
 #'   
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate_power.R
 #'
@@ -57,8 +57,8 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
   rse = out$rse[which(poped.db$parameters$notfixed_bpop==1)[bpopIdx]] # in percent!!
 
   # Following the paper of Retout et al., 2007 for the Wald-test:
-  powPred = round(100*(1 - pnorm(norm.val-(100/rse)) + pnorm(-norm.val-(100/rse))), digits=1)
-  needRSE = 100/(norm.val-qnorm(1-power/100))
+  powPred = round(100*(1 - stats::pnorm(norm.val-(100/rse)) + stats::pnorm(-norm.val-(100/rse))), digits=1)
+  needRSE = 100/(norm.val-stats::qnorm(1-power/100))
 
   out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
   return(out)
