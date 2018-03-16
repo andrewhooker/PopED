@@ -93,6 +93,7 @@ res2 <- optim_ARS(50, fw, lower=-Inf,upper=Inf)
 # Only integer values allowed
 res_int <- optim_ARS(50, fw, allowed_values = seq(-50,100,by=1))
 
+
 \dontrun{ 
   #plot of the function and solutions
   require(graphics)

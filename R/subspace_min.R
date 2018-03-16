@@ -17,7 +17,7 @@ d[!fixed]=solve(rB,rgc)
 d[!fixed]=-d[!fixed]
 alpha=1
 temp1=alpha
-for(i in find_matlab(!fixed)){
+for(i in which(!fixed)){
     dk=d[i]
     if(dk<0){
         temp2=l[i]-x_cp[i]

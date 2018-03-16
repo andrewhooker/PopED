@@ -1038,9 +1038,9 @@ create.poped.database <-
     }
     
     #Check if there is any sub models defined
-    if((isfield(popedInput,'SubModels'))){
+    if(any(names(popedInput)=='SubModels')){
       i=1
-      while(isfield(popedInput$SubModels,sprintf('ff_file%d',i))){
+      while(any(names(popedInput$SubModels)==sprintf('ff_file%d',i))){
         source(eval(sprintf('popedInput$SubModels$ff_file%d',i))) ##ok<NASGU> 
         returnArgs <-  fileparts(eval(sprintf('popedInput$SubModels$ff_file%d',i))) ##ok<NASGU> 
         strffModelFilePath <- returnArgs[[1]]

@@ -69,3 +69,8 @@ FIM.7
 det(FIM.7)
 get_rse(FIM.7,poped.db,fim.calc.type=7)
 
+## evaluate FIM and rse with prior FIM.1
+poped.db.prior = create.poped.database(poped.db, prior_fim = FIM.1)
+FIM.1.prior <- evaluate.fim(poped.db.prior)
+all.equal(FIM.1.prior,FIM.1) # the FIM is only computed from the design in the poped.db
+get_rse(FIM.1.prior,poped.db.prior) # the RSE is computed with the prior information

@@ -9,8 +9,6 @@ mf7(model_switch, xt_ind, x, a, bpop, d, sigma, docc, poped.db)
 \arguments{
 \item{model_switch}{A vector that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{xt_ind}{A vector of sample times.}
-
 \item{x}{A vector for the discrete design variables.}
 
 \item{a}{A vector of covariates.}
@@ -109,13 +107,7 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{efficiency}},
   \code{\link{evaluate.e.ofv.fim}},
   \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf5}}, \code{\link{mf6}},
-  \code{\link{mf8}}, \code{\link{mftot0}},
-  \code{\link{mftot1}}, \code{\link{mftot2}},
-  \code{\link{mftot3}}, \code{\link{mftot4}},
-  \code{\link{mftot5}}, \code{\link{mftot6}},
-  \code{\link{mftot7}}, \code{\link{mftot}},
-  \code{\link{mf}}, \code{\link{ofv_criterion}},
-  \code{\link{ofv_fim}}
+  \code{\link{mf3}}, \code{\link{mftot}},
+  \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
 }
 \keyword{internal}

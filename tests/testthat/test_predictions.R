@@ -50,5 +50,6 @@ test_that("model_prediction works", {
 test_that("plot_model_prediction works", {
 
   source("examples_fcn_doc/examples_plot_model_prediction.R")
+  expect_output(str(plot_model_prediction(poped.db)))
   
 })

@@ -243,7 +243,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
               fmf=designsout[[it]]$FIM
             }
             
-            if((trflag && (rem(it,poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
+            if((trflag && ((it %% poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
               itvector[ceiling(it/poped.db$settings$rsit_output)+1]=it
               dmfvector[ceiling(it/poped.db$settings$rsit_output)+1]=dmf
               Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
@@ -303,7 +303,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
               write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$design$groupsize,fmf,dmf,poped.db)
             }
             
-            if((trflag && (rem(it,poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
+            if((trflag && ((it %% poped.db$settings$rsit_output)==0 || it==poped.db$settings$rsit))){
               itvector[ceiling(it/poped.db$settings$rsit_output)+1]=it
               dmfvector[ceiling(it/poped.db$settings$rsit_output)+1]=dmf
               Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
@@ -449,7 +449,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
         xopt=xopto
         aopt=aopto
         
-        if((matrix_all(axt==0) && matrix_all(aa==0))){
+        if((all(axt==0) && all(aa==0))){
           diff=0
         }
         
@@ -485,7 +485,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
           aopto=aopt
           
           
-          if((sum(sum(isnan(xtopt)))>0 || sum(sum(isnan(xopt)))>0 || sum(sum(isnan(aopt)))>0)){
+          if((sum(sum(is.nan(xtopt)))>0 || sum(sum(is.nan(xopt)))>0 || sum(sum(is.nan(aopt)))>0)){
             break
           }
           
@@ -515,7 +515,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
             }
             odmf=ndmf
           }
-          if((trflag==TRUE && (rem(it,poped.db$settings$sgit_output)==0 || abs(diff)<poped.db$settings$convergence_eps || it==sgit))){
+          if((trflag==TRUE && ((it %% poped.db$settings$sgit_output)==0 || abs(diff)<poped.db$settings$convergence_eps || it==sgit))){
             itvector[ceiling(it/poped.db$settings$sgit_output)]=it
             dmfvector[ceiling(it/poped.db$settings$sgit_output)]=dmf
             ga_tmp=0
@@ -666,7 +666,7 @@ sg_search <- function(graddetvar,mnormvar,avar,maxvar,minvar,varopto,lgvaro,oldk
   varopt=varopt-((varopt>maxvar)*(varopt-maxvar))
   varopt=varopt+((varopt<minvar)*(minvar-varopt))
   lgvar=varopt-varopto
-  lgvar=reshape_matlab(lgvar,m*numvar,1)
+  dim(lgvar) = c(m*numvar,1)
   if(any(t(lgvar)%*%lgvaro<0)){
     kitvar=oldkitvar+1
     inversionvar=TRUE

@@ -84,12 +84,12 @@ ofv_fim <- function(fmf,poped.db,
     ofv_value = det(fmf)/det(tmp)
   }
   if((ofv_calc_type==7) ){#sum of CV
-    if((sum(sum(fmf))!=0 && !isnan(sum(sum(fmf))))){
+    if((sum(sum(fmf))!=0 && !is.nan(sum(sum(fmf))))){
       imf = inv(fmf)
       returnArgs <-  get_cv(diag_matlab(imf),poped.db$parameters$bpop,poped.db$parameters$d,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db) 
       params <- returnArgs[[1]]
       params_cvs <- returnArgs[[2]]
-      if((isnan(sum(diag_matlab(imf))))){
+      if((is.nan(sum(diag_matlab(imf))))){
         ofv_value = 0
       } else {
         ofv_value=1/sum(abs(params_cvs))

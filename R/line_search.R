@@ -5,13 +5,13 @@
 line_search <- function(f_name, f_options, l, u, x, f, g, d, options=list()){
   #determine maximum step size
   
-  if(!isfield(options, 'ftol')){
+  if(!any(names(options)=='ftol')){
     options$ftol=1e-3
   }
-  if(!isfield(options, 'gtol')){
+  if(!any(names(options)=='gtol')){
     options$gtol=0.9
   }
-  if(!isfield(options, 'xtol')){
+  if(!any(names(options)=='xtol')){
     options$xtol=0.1
   }
   
@@ -22,7 +22,7 @@ line_search <- function(f_name, f_options, l, u, x, f, g, d, options=list()){
   fixed=(x<=l | x>=u)
   stpmx=Inf
   temp1=Inf
-  for(i in find_matlab(!fixed)){
+  for(i in which(!fixed)){
     dk=d[i]
     if(dk<0){
       temp2=l[i]-x[i]

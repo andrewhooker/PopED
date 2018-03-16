@@ -264,7 +264,7 @@ optim_ARS <- function(par,
       nullit=1
     }
     
-    if((trace && any(rem(it_seq,trace_iter)==0))){
+    if((trace && any((it_seq %% trace_iter)==0))){
       if(length(it_seq)==1){ 
         cat(sprintf(paste0("It. %",wd_iter,"i"),start_it))
       } else {

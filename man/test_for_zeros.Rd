@@ -31,7 +31,6 @@ test_for_zeros(cbind(1,2,3,NA,0),1e-5)
 
 }
 \seealso{
-Other matrix_manipulation: \code{\link{diag_matlab}},
-  \code{\link{test_for_max}}, \code{\link{test_for_min}}
+Other matrix_manipulation: \code{\link{diag_matlab}}
 }
 \keyword{internal}

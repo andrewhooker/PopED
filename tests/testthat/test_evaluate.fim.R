@@ -9,7 +9,7 @@ test_that("RSE from evaluate.fim", {
   comp.red.1 <- get_rse(FIM.1,poped.db)
   comp.red.4 <- get_rse(FIM.4,poped.db,fim.calc.type=4)
   comp.full.0 <- get_rse(FIM.0,poped.db)
-  
+  comp.red.1.prior <- get_rse(FIM.1.prior, poped.db.prior)
   
   for(i in 1:length(expected.reduced)){
     expect_that(round(comp.red.1[[i]],digits=1), equals(expected.reduced[i], 
@@ -23,6 +23,8 @@ test_that("RSE from evaluate.fim", {
     expect_that(round(comp.red.4[[i]],digits=1), equals(expected.reduced[i], 
                                         tolerance = 0.01, scale = expected.reduced[i]))
   }
+  
+  expect_true(all.equal(comp.red.1/sqrt(2), comp.red.1.prior))
   
 })
 
@@ -78,17 +80,30 @@ test_that("internal FIM calculations", {
   
   source("examples_fcn_doc/examples_mf.R")    
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=0))))
+  mf_result <- output$ret
   source("examples_fcn_doc/examples_mf3.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=1))))
   source("examples_fcn_doc/examples_mf5.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=4))))
   source("examples_fcn_doc/examples_mf6.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=5))))
+  expect_equal(output$ret,mf_result)
   source("examples_fcn_doc/examples_mf7.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=6))))
   source("examples_fcn_doc/examples_mf8.R")
   expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=7))))
   
+  
+})
+
+test_that("FIM calculations are as expected", {
+  source("examples_fcn_doc/warfarin_basic.R")
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=0)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=1)),5.996147e+22,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=4)),2.398459e+21,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=5)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=6)),1.220371e+24,tolerance=1e-5)
+  expect_equal(det(evaluate.fim(poped.db,fim.calc.type=7)),5.996147e+22,tolerance=1e-5)
 })
 
 test_that("group FIM calculations work", {

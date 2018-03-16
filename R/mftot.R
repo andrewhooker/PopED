@@ -30,19 +30,28 @@
 ## Author: Andrew Hooker
 
 mftot <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
-    
-    returnArgs <- switch(poped.db$settings$iFIMCalculationType+1,
-                         mftot0(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
-                         mftot1(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
-                         mftot2(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
-                         mftot3(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db), 
-                         mftot4(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
-                         mftot5(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
-                         mftot6(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db),
-                         mftot7(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db)) 
-    
-    if(is.null(returnArgs)) stop(sprintf('Unknown FIM-calculation type'))
-    ret <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    return(list( ret= ret,poped.db =poped.db )) 
+  m=size(ni,1)
+  s=0
+  for(i in 1:m){
+    if((ni[i]!=0 && groupsize[i]!=0)){
+      if((!isempty(x))){
+        x_i = t(x[i,,drop=F])      
+      } else {
+        x_i =  zeros(0,1)
+      }
+      if((!isempty(a))){
+        a_i = t(a[i,,drop=F])
+      } else {
+        a_i =  zeros(0,1)
+      }
+      # mf_all <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
+      returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
+      if(is.null(returnArgs)) stop(sprintf('Unknown FIM-calculation type'))
+      mf_tmp <- returnArgs[[1]]
+      poped.db <- returnArgs[[2]]
+      s=s+groupsize[i]*mf_tmp
+    }
+  }
+
+  return(list( ret= s,poped.db =poped.db )) 
 }

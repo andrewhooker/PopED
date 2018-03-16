@@ -9,8 +9,6 @@ LinMatrixL(model_switch, xt_ind, x, a, bpop, b_ind, bocc_ind, poped.db)
 \arguments{
 \item{model_switch}{A vector that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{xt_ind}{A vector of sample times.}
-
 \item{x}{A vector for the discrete design variables.}
 
 \item{a}{A vector of covariates.}

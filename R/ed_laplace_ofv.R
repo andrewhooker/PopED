@@ -155,7 +155,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
   if(!isempty(exp_index) && !is.null(gf_k)){
     gf_k[exp_index]=gf_k[exp_index]*exp(alpha_k_log[exp_index])
   }
-  if(isnan(f_k)){
+  if(is.nan(f_k)){
     f=0
     gf=zeros(size(x))
     if(return_gradient) return(list( f= f,gf=gf))
@@ -478,8 +478,8 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
   fim <- retargs$ret
   
   det_fim <- det(fim)
-  if(det_fim<0){
-    warning("Determinant of the FIM is negative")
+  if(det_fim<.Machine$double.eps){
+    warning("Determinant of the FIM is not positive")
     if(return_gradient) return(list(k=NaN,grad_k = NaN))
     return(c(k=NaN))
   }
@@ -496,7 +496,8 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
       fim <- returnArgs[[2]]
       ifim <- inv(fim)
       dim(ifim) <- c(length(ifim),1)
-      gradlogdfim=t(reshape_matlab(d_fim,length(fim),length(grad_p)))%*%ifim
+      dim(d_fim) = c(length(fim),length(grad_p))
+      gradlogdfim=t(d_fim)%*%ifim
       grad_k=-(gradlogdfim+grad_p)
     }
     

@@ -6,7 +6,7 @@ gradfg <- function(x,a,bpop,b_ind,bocc_ind,poped.db){
 #
 # size: (number of g's x number of random effects)
 #
-# deriv of g's w$r.t. b's and bocc's eval at b_ind
+# deriv of g's w.r.t. b's and bocc's eval at b_ind
 #
 
 dfg_db0=zeros(poped.db$parameters$ng,poped.db$parameters$NumRanEff)

@@ -287,7 +287,7 @@ RS_opt <- function(poped.db,
         fmf=designsout[[it]]$FIM
       }
       
-      if((trflag && (rem(it,rsit_output)==0 || it==rsit))){
+      if((trflag && ((it %% rsit_output)==0 || it==rsit))){
         itvector[ceiling(it/rsit_output)+1]=it
         dmfvector[ceiling(it/rsit_output)+1]=dmf
         Dtrace(fn,it,ni,xtopt,xopt,aopt,matrix(0,0,0),matrix(0,0,0),dmf,matrix(0,0,0),matrix(0,0,0),matrix(0,0,0),itvector,dmfvector,poped.db)
@@ -362,7 +362,7 @@ RS_opt <- function(poped.db,
           write_iterationfile('Random Search',it,xtopt,aopt,xopt,ni,poped.db$design$groupsize,fmf,dmf,poped.db)
         }
         
-        if((trflag && (rem(it,rsit_output)==0 || trflag && it==rsit))){
+        if((trflag && ((it %% rsit_output)==0 || trflag && it==rsit))){
           itvector[ceiling(it/rsit_output)+1]=it
           dmfvector[ceiling(it/rsit_output)+1]=dmf
           # fix so that the iterations are output to summary file.

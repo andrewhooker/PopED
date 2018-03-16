@@ -4,35 +4,27 @@
 \alias{get_rse}
 \title{Compute the expected parameter relative standard errors}
 \usage{
-get_rse(fmf, poped.db, bpop = poped.db$parameters$bpop[, 2, drop = F],
-  d = poped.db$parameters$d[, 2, drop = F], docc = poped.db$parameters$docc,
+get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
+  d = poped.db$parameters$d[, 2], docc = poped.db$parameters$docc,
   sigma = poped.db$parameters$sigma, use_percent = T,
-  fim.calc.type = poped.db$settings$iFIMCalculationType, ...)
+  fim.calc.type = poped.db$settings$iFIMCalculationType,
+  prior_fim = poped.db$settings$prior_fim, ...)
 }
 \arguments{
-\item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
+\item{fim}{A Fisher Information Matrix (FIM).}
 
 \item{poped.db}{A PopED database.}
 
-\item{bpop}{Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
-\itemize{
-\item column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform,
- 3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal)
-\item column 2  defines the mean.
-\item column 3 defines the variance of the distribution (or length of uniform distribution).
-}
-Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
-parameter value is to be used.}
+\item{bpop}{A vector containing the values of the fixed effects used to compute the \code{fim}.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
+\item{d}{A vector containing the values of the diagnonals of the betwen subject variability matrix.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
-\item{use_percent}{Should RSE be reported as percent or not?}
+\item{use_percent}{Should RSE be reported as percent?}
 
 \item{fim.calc.type}{The method used for calculating the FIM. Potential values:
 \itemize{
@@ -49,10 +41,13 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance See \code{\link{mftot7}}.
 }}
 
+\item{prior_fim}{A prior FIM to be added to the \code{fim}. Should be the same size as the \code{fim}.}
+
 \item{...}{Additional arguments passed to \code{\link{inv}}.}
 }
 \value{
-A named list of RSE values.
+A named list of RSE values.  If the estimated parameter is assumed to be zero then for that 
+  parameter the standard error is returned.
 }
 \description{
 This function  computes the expected relative standard errors of a model given a design and a previously computed
@@ -130,10 +125,16 @@ FIM.7
 det(FIM.7)
 get_rse(FIM.7,poped.db,fim.calc.type=7)
 
+## evaluate FIM and rse with prior FIM.1
+poped.db.prior = create.poped.database(poped.db, prior_fim = FIM.1)
+FIM.1.prior <- evaluate.fim(poped.db.prior)
+all.equal(FIM.1.prior,FIM.1) # the FIM is only computed from the design in the poped.db
+get_rse(FIM.1.prior,poped.db.prior) # the RSE is computed with the prior information
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{evaluate_design}},
+  \code{\link{evaluate_power}},
   \code{\link{model_prediction}},
   \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}

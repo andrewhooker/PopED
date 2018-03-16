@@ -49,7 +49,7 @@ graddetmfxt_ext <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,do
         mft = mft + poped.db$settings$prior_fim
       }
       imft=inv(mft)
-      if((isinf(imft[1,1]))){
+      if((is.infinite(imft[1,1]))){
         imft = zeros(size(mft))
       }
     }
