@@ -40,9 +40,15 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 
 
 ## optimize on where the individuals should be
-optimize_n_dist <- function(poped.db,
-                         props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
-                         ...){
+optimize_n_dist <- 
+  function(poped.db,
+           props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
+           ...){
+  
+  # need to fix:
+  # limits on the proportions to account for max and min values of N in each group
+  # return actual values.
+  
   
   if(sum(props) != 1) stop("The sum of the proportions are not equal to 1\n") # check that the proportions add up to one
   
@@ -87,6 +93,8 @@ optimize_n_dist <- function(poped.db,
     ofv_fim(fim_tmp,poped.db,...)
   }
   
+  initial_ofv <- ofv_fun(props,norm_group_fim,n_tot, poped.db, ...)
+  
   # ofv_fun(poped.db$design$groupsize/sum(poped.db$design$groupsize),norm_group_fim,
   #         sum(poped.db$design$groupsize),poped.db)
   
@@ -110,9 +118,13 @@ optimize_n_dist <- function(poped.db,
   if(sum(final_props) != 1) stop("something went wrong\n the sum of the optimized proportions are not equal to 1\n") # check that the proportions add up to one
   n_per_group_opt <- final_props*n_tot # the numbers of individuals in each group
   ofv_opt <- p$value # the new OFV value
-  #evaluate_design(poped.db)$ofv # the original value
+  #initial_ofv <- evaluate_design(poped.db)$ofv # the original value
   
-  return(list( par=final_props,ofv=ofv_opt)) 
+  return(list(initial_props=props,
+               initial_ofv=initial_ofv,
+               opt_props=final_props,
+               opt_ofv=ofv_opt,
+               opt_n_per_group=n_per_group_opt) )
   
 }
 
