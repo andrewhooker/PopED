@@ -31,7 +31,7 @@
 #'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
 #' @param model.names A vector of names of the response model/s (the length of the 
 #' vector should be equal to the number of respose models). It is Null by default.
-#' @param ... Additional arguments passed to \code{\link{model_prediction}}.
+#' @param ... Additional arguments passed to the \code{\link{model_prediction}} function.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
 #' forget to load the ggplot2 library using \code{library(ggplot2)}.
