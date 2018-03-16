@@ -11,7 +11,8 @@ Imports:
     dplyr,
     codetools,
     stats,
-    utils
+    utils,
+    boot
 Suggests:
     testthat,
     Hmisc,
