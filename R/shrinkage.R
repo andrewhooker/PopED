@@ -53,7 +53,8 @@ shrinkage <- function(poped.db,
   # fix population parameters
   # add IIV and IOV as fixed effects
   # change to one individual
-  bpop_tmp <-rbind(poped.db$parameters$bpop,zeros(largest_b))
+  extra_bpop <- matrix(0,nrow = largest_b,ncol = 3)
+  bpop_tmp <-rbind(poped.db$parameters$bpop,extra_bpop)
   notfixed_bpop_tmp <- c(rep(0,largest_bpop),rep(1,largest_b))
   poped.db_sh <- create.poped.database(poped.db,
                                        fg_fun=tmp_fg,
@@ -82,14 +83,14 @@ shrinkage <- function(poped.db,
     NumOcc=poped.db$parameters$NumOcc
     if(NumOcc!=0) warning("Shrinkage not computed for occasions\n")
     fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
-    bocc_sim_matrix = zeros(num_sim_ids*NumOcc,length(parameters$docc[,2,drop=F]))
+    bocc_sim_matrix = zeros(num_sim_ids*NumOcc,length(poped.db$parameters$docc[,2,drop=F]))
     if(nrow(fulldocc)!=0) bocc_sim_matrix = mvtnorm::rmvnorm(num_sim_ids*NumOcc,sigma=fulldocc)
     
     #now use these values to compute FIMmap
     if(use_purrr){
       fim_mean <- b_sim_matrix %>% t() %>% data.frame() %>% as.list() %>% 
         purrr::map(function(x){
-          x_tmp <- zeros(largest_b)
+          x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
           x_tmp[,2] <- t(x)
           bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
           poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
@@ -98,7 +99,7 @@ shrinkage <- function(poped.db,
     } else {
       fim_tmp <- 0
       for(i in 1:num_sim_ids){
-        x_tmp <- zeros(largest_b)
+        x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
         x_tmp[,2] <- t(b_sim_matrix[i,])
         bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
         poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
