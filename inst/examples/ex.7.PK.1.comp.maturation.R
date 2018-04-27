@@ -100,6 +100,7 @@ plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T)
 
 ## evaluate initial design
 evaluate_design(poped.db)
+shrinkage(poped.db)
 
 
 # Optimization of sample times and WT

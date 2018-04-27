@@ -113,6 +113,8 @@ poped_db_compiled <- create.poped.database(ff_file="ff_ODE_compiled",
 
 ##  create plot of model without variability 
 plot_model_prediction(poped_db_compiled, facet_scales = "free")
+evaluate_design(poped_db_compiled)
+shrinkage(poped_db_compiled)
 
 #' #####################################
 #' The reduced FIM 
