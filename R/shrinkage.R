@@ -28,13 +28,13 @@
 #'   }
 
 shrinkage <- function(poped.db,
-                      #env=parent.frame(),
                       use_mc = FALSE,
                       num_sim_ids = 1000,
                       use_purrr = FALSE){
   
   # tranform random effects to fixed effects 
   tmp_fg <- poped.db$model$fg_pointer
+  if(is.character(tmp_fg)) tmp_fg <- eval(parse(text=tmp_fg))
   largest_bpop <- find.largest.index(tmp_fg,lab = "bpop")
   largest_b <- find.largest.index(tmp_fg,lab = "b")
   largest_eps <- find.largest.index(poped.db$model$ferror_pointer,lab = "epsi",mat=T,mat.row = F)
@@ -46,7 +46,8 @@ shrinkage <- function(poped.db,
   txt <- capture.output(body(tmp_fg))
   txt <- stringr::str_replace_all(txt,"b\\[(\\d+)",replace_fun)
   txt <- stringr::str_replace_all(txt,"b\\[","bpop\\[")
-  body(tmp_fg) <- parse(text=txt)
+  env <- environment()
+  body(tmp_fg,env=env) <- parse(text=txt)
   #environment(sfg_tmp) <- env
   
   # fix population parameters
