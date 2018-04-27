@@ -16,14 +16,14 @@
 #' @example tests/testthat/examples_fcn_doc/examples_shrinkage.R
 #' @references \enumerate{ 
 #'   \item Combes, F. P., Retout, S.,
-#'   Frey, N., & Mentré, F. (2013). Prediction of shrinkage of individual
+#'   Frey, N., & Mentre, F. (2013). Prediction of shrinkage of individual
 #'   parameters using the bayesian information matrix in non-linear mixed effect
 #'   models with evaluation in pharmacokinetics. Pharmaceutical Research, 30(9),
-#'   2355–67. \url{https://doi.org/10.1007/s11095-013-1079-3}. 
+#'   2355-67. \url{https://doi.org/10.1007/s11095-013-1079-3}. 
 #'   \item Hennig, S., Nyberg, J., Fanta, S., Backman, J.
 #'   T., Hoppu, K., Hooker, A. C., & Karlsson, M. O. (2012). Application of the
 #'   optimal design approach to improve a pretransplant drug dose finding design
-#'   for ciclosporin. Journal of Clinical Pharmacology, 52(3), 347–360.
+#'   for ciclosporin. Journal of Clinical Pharmacology, 52(3), 347-360.
 #'   \url{https://doi.org/10.1177/0091270010397731}. 
 #'   }
 
@@ -47,7 +47,7 @@ shrinkage <- function(poped.db,
   txt <- stringr::str_replace_all(txt,"b\\[(\\d+)",replace_fun)
   txt <- stringr::str_replace_all(txt,"b\\[","bpop\\[")
   env <- environment()
-  body(tmp_fg,env=env) <- parse(text=txt)
+  body(tmp_fg,envir=env) <- parse(text=txt)
   #environment(sfg_tmp) <- env
   
   # fix population parameters
