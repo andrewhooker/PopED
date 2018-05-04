@@ -115,7 +115,7 @@ optimize_n_dist <-
   
   p <- optim(opt_var, opt_fun,...,control=list(fnscale=-1),method = c("BFGS"))
   final_props <- convert_from_lcp(c(p$par,Inf)) # the proportions in each group
-  if(sum(final_props) != 1) stop("something went wrong\n the sum of the optimized proportions are not equal to 1\n") # check that the proportions add up to one
+  if(!all.equal(sum(final_props),1)) stop("something went wrong\n the sum of the optimized proportions are not equal to 1\n") # check that the proportions add up to one
   n_per_group_opt <- final_props*n_tot # the numbers of individuals in each group
   ofv_opt <- p$value # the new OFV value
   #initial_ofv <- evaluate_design(poped.db)$ofv # the original value
