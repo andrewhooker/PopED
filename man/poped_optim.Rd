@@ -92,7 +92,7 @@ D-family design (1) or ED-familty design (0) (with or without parameter uncertai
 
 \item{out_file}{Save output from the optimization to a file.}
 
-\item{parallel}{Should we use parallelize the computation.}
+\item{parallel}{Should we use parallel computations?}
 
 \item{parallel_type}{Which type of parallelization should be used? 
 Can be "snow" or "multicore".  "snow"  works on Linux-like systems & Windows. "multicore" works only on 
@@ -364,5 +364,6 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_2}}, \code{\link{poped_optimize}}
+  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
+  \code{\link{poped_optimize}}
 }
