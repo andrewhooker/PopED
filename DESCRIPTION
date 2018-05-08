@@ -12,7 +12,7 @@ Imports:
     codetools,
     stats,
     utils,
-    magrittr
+    magrittr,
     boot,
     purrr,
     stringr
