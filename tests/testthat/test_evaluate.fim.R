@@ -134,7 +134,7 @@ test_that("group FIM calculations work", {
                                     mina=0.01,
                                     maxa=100)
   
-  group_fim <- extract_group_fim(poped.db)
+  group_fim <- extract_norm_group_fim(poped.db)
   
   expect_equal(det(group_fim[[1]]*poped.db$design$groupsize[1] + group_fim[[2]]*poped.db$design$groupsize[2]),
                det(evaluate.fim(poped.db)))
