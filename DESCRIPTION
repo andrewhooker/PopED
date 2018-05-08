@@ -15,7 +15,8 @@ Imports:
     magrittr,
     boot,
     purrr,
-    stringr
+    stringr,
+    FastImputation
 Suggests:
     testthat,
     Hmisc,
