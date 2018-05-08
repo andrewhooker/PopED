@@ -250,38 +250,39 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
         }
       }
       
-      for(i in 1:length(poped.db$parameters$notfixed_covdocc)){
-        if((poped.db$parameters$notfixed_covdocc[i]==1)){
-          
-          docc_plus=update_offdiag(docc,i,poped.db$settings$hm2)
-          docc_minus=update_offdiag(docc,i,-poped.db$settings$hm2)
-          
-          if((poped.db$settings$bCalculateEBE)){
-            start_bind = t(b_ind)
-            warning('EBE calculation with covariance of occasions is not available in the current version!')
-            b_ind_plus = b_ind#ind_estimates(poped.db$mean_data,bpop,d_plus,sigma,start_bind,(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
-            b_ind_minus = b_ind#ind_estimates(poped.db$mean_data,bpop,d_minus,sigma,start_bind,(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
-          } else {
-            b_ind_plus = b_ind
-            b_ind_minus = b_ind
+      if(!isempty(poped.db$parameters$notfixed_covdocc)){
+        for(i in 1:length(poped.db$parameters$notfixed_covdocc)){
+          if((poped.db$parameters$notfixed_covdocc[i]==1)){
+            
+            docc_plus=update_offdiag(docc,i,poped.db$settings$hm2)
+            docc_minus=update_offdiag(docc,i,-poped.db$settings$hm2)
+            
+            if((poped.db$settings$bCalculateEBE)){
+              start_bind = t(b_ind)
+              warning('EBE calculation with covariance of occasions is not available in the current version!')
+              b_ind_plus = b_ind#ind_estimates(poped.db$mean_data,bpop,d_plus,sigma,start_bind,(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
+              b_ind_minus = b_ind#ind_estimates(poped.db$mean_data,bpop,d_minus,sigma,start_bind,(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
+            } else {
+              b_ind_plus = b_ind
+              b_ind_minus = b_ind
+            }
+            
+            returnArgs <- v(model_switch,xt_ind,x,a,bpop,b_ind_plus,bocc_ind,d,sigma,docc_plus,poped.db) 
+            v_plus <- returnArgs[[1]]
+            poped.db <- returnArgs[[2]]
+            returnArgs <- v(model_switch,xt_ind,x,a,bpop,b_ind_minus,bocc_ind,d,sigma,docc_minus,poped.db) 
+            v_minus <- returnArgs[[1]]
+            poped.db <- returnArgs[[2]]
+            dv=v_plus-v_minus
+            if((!isempty(dv))){
+              ir=dv/(2*poped.db$settings$hm2)
+              ir=as.vector(ir)
+              dv_db_new[,k]=ir
+            }
+            k=k+1
           }
-          
-          returnArgs <- v(model_switch,xt_ind,x,a,bpop,b_ind_plus,bocc_ind,d,sigma,docc_plus,poped.db) 
-          v_plus <- returnArgs[[1]]
-          poped.db <- returnArgs[[2]]
-          returnArgs <- v(model_switch,xt_ind,x,a,bpop,b_ind_minus,bocc_ind,d,sigma,docc_minus,poped.db) 
-          v_minus <- returnArgs[[1]]
-          poped.db <- returnArgs[[2]]
-          dv=v_plus-v_minus
-          if((!isempty(dv))){
-            ir=dv/(2*poped.db$settings$hm2)
-            ir=as.vector(ir)
-            dv_db_new[,k]=ir
-          }
-          k=k+1
         }
       }
-      
       
     }
     for(i in 1:NumSigma){

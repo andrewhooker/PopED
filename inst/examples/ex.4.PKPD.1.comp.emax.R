@@ -73,6 +73,7 @@ plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=
 
 ## evaluate initial design
 evaluate_design(poped.db)
+shrinkage(poped.db)
 
 # Optimization of sample times and doses
 output <- poped_optim(poped.db, opt_xt = T, opt_a = T, parallel = T,method = c("LS"))

@@ -9,7 +9,6 @@
 #' \item{ret}{The FIM for one individual}
 #' \item{poped.db}{A PopED database}
 #' 
-#' @seealso Used by \code{\link{mftot6}}.  
 #' @family FIM
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R

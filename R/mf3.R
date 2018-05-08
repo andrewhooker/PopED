@@ -1,8 +1,6 @@
-#' The reduced  Fisher Information Matrix (FIM) for one individual
+#' The Fisher Information Matrix (FIM) for one individual
 #' 
-#' Compute the reduced  FIM for one individual given specific model(s), parameters, design and methods. 
-#' This computation assumes that there is no correlation in the FIM between the fixed and random effects, 
-#' and set these elements in the FIM to zero.
+#' Compute the FIM for one individual given specific model(s), parameters, design and methods. 
 #' 
 #' @param xt A vector of sample times.  
 #' @param model_switch A vector that is the same size as xt, specifying which model each sample belongs to.
@@ -14,7 +12,6 @@
 #' \item{ret}{The FIM for one individual}
 #' \item{poped.db}{A PopED database}
 #' 
-#' @seealso Used by \code{\link{mftot1}}.  
 #' @family FIM
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
@@ -25,8 +22,7 @@
 ## Author: Andrew Hooker
 
 mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
-  #Calculate the reduced FIM
-  
+
   numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
   numnotfixed_d    = sum(poped.db$parameters$notfixed_d)
   numnotfixed_covd = sum(poped.db$parameters$notfixed_covd)
@@ -86,7 +82,7 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       f1=zeros(n+n*n,n_fixed_eff+n_rand_eff)
       f1[1:n,1:n_fixed_eff] <- m1_tmp
       f1[(n+1):(n+n*n),1:n_fixed_eff] <- m2_tmp
-      f1[(n+1):(n+n*n),(n_fixed_eff+1):(n_fixed_eff+n_rand_eff)] <- m3_tmp
+      if(n_rand_eff!=0) f1[(n+1):(n+n*n),(n_fixed_eff+1):(n_fixed_eff+n_rand_eff)] <- m3_tmp
       
       if(any(v_tmp!=0)){#If there are some non-zero elements to v_tmp
         f2=zeros(n+n*n,n+n*n)
@@ -102,7 +98,7 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       }
     } else {
       v_tmp_inv = inv(v_tmp)
-      dim(m3_tmp) = c(n,n,n_rand_eff)
+      if(n_rand_eff!=0) dim(m3_tmp) = c(n,n,n_rand_eff)
       
       tmp_fim = zeros(n_fixed_eff + n_rand_eff, n_fixed_eff + n_rand_eff)
       tmp_fim[1:n_fixed_eff,1:n_fixed_eff] = 2*t(m1_tmp) %*% v_tmp_inv %*% m1_tmp
@@ -114,18 +110,21 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
             tmp_fim[m,k] = tmp_fim[m,k] + trace_matrix(m2_tmp[,,m]%*%v_tmp_inv%*%m2_tmp[,,k]%*%v_tmp_inv)
           }
         }
-        for(m in 1:n_rand_eff){
-          for(k in 1:n_fixed_eff){
-            num = trace_matrix(m3_tmp[,,m]%*%v_tmp_inv%*%m2_tmp[,,k]%*%v_tmp_inv)
-            tmp_fim[n_fixed_eff + m, k]=num
-            tmp_fim[k, n_fixed_eff + m]=num
+        if(n_rand_eff!=0){
+          for(m in 1:n_rand_eff){
+            for(k in 1:n_fixed_eff){
+              num = trace_matrix(m3_tmp[,,m]%*%v_tmp_inv%*%m2_tmp[,,k]%*%v_tmp_inv)
+              tmp_fim[n_fixed_eff + m, k]=num
+              tmp_fim[k, n_fixed_eff + m]=num
+            }
           }
         }
       }
-      
-      for (m in 1:n_rand_eff) {
-        for (k in 1:n_rand_eff) {
-          tmp_fim[n_fixed_eff + m, n_fixed_eff + k] = trace_matrix(m3_tmp[,,m] %*% v_tmp_inv %*% m3_tmp[,,k] %*% v_tmp_inv)
+      if(n_rand_eff!=0){
+        for (m in 1:n_rand_eff) {
+          for (k in 1:n_rand_eff) {
+            tmp_fim[n_fixed_eff + m, n_fixed_eff + k] = trace_matrix(m3_tmp[,,m] %*% v_tmp_inv %*% m3_tmp[,,k] %*% v_tmp_inv)
+          }
         }
       }
       ret = ret + 1/2*tmp_fim

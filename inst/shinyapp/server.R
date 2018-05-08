@@ -6,10 +6,13 @@ function(input, output, session) {
   
   model_name <- reactive({
     mod_name <- NULL
-    if(input$struct_PK_model!="NULL") mod_name <- paste(input$struct_PK_model,"sd",input$param_PK_model,sep=".")
-    if(input$struct_PD_model!="NULL"){
-      if(input$struct_PK_model=="NULL") mod_name <- paste0(input$struct_PD_model)
-      if(input$struct_PK_model!="NULL") mod_name <- paste(mod_name,input$link_fcn,input$struct_PD_model,sep=".")
+    if(input$pk_mod) mod_name <- paste(input$struct_PK_model,"sd",input$param_PK_model,sep=".")
+    if(input$pd_mod){
+      if(!input$pk_mod){
+        mod_name <- paste0(input$struct_PD_model)
+      } else {
+        mod_name <- paste(mod_name,input$link_fcn,input$struct_PD_model,sep=".")
+      }
     }
     return(mod_name)
   })
@@ -97,31 +100,35 @@ function(input, output, session) {
     if (!is.null(input$hot2)) {
       DF = hot_to_r(input$hot2)
       par_name <- param_names()
-      if(!all(DF$name == par_name)){
-        df <- data.frame(name=par_name,
-                         bsv_model=factor(rep("Exponential",length(par_name)),
-                                          levels = c("Exponential","Additive","Proportional","None"),ordered=TRUE),
+      if(!all(par_name %in% DF$name)){
+        new_par_name <- par_name[!(par_name %in% DF$name)]
+        old_par_name <- par_name[(par_name %in% DF$name)]
+        bsv_model <- rep("Exponential",length(new_par_name))
+        df <- data.frame(name=new_par_name,
+                         bsv_model=factor(bsv_model,
+                                          levels = c("Exponential",
+                                                     "Additive",
+                                                     "Proportional",
+                                                     "None"),
+                                          ordered=TRUE),
                          stringsAsFactors = FALSE)
-        
         df$bsv_model[df$name %in% c("Favail","F")] <- "None"
-        
-        #dplyr::inner_join(df,DF)
-        #DF <- df
+        DF = rbind(dplyr::filter(DF,name %in% old_par_name),df) 
       }
     } else {
-      
       par_name <- param_names()
       bsv_model <- rep("Exponential",length(par_name))
-      
-      
       df <- data.frame(name=par_name,
-                       bsv_model=factor(bsv_model,levels = c("Exponential","Additive","Proportional","None"),ordered=TRUE),
+                       bsv_model=factor(bsv_model,
+                                        levels = c("Exponential",
+                                                   "Additive",
+                                                   "Proportional",
+                                                   "None"),
+                                          ordered=TRUE),
                        stringsAsFactors = FALSE)
-      
       df$bsv_model[df$name %in% c("Favail","F")] <- "None"
       DF = df 
     }
-    
     setHot2(DF)
     rhandsontable(DF) %>%
       hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")

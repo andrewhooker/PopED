@@ -82,7 +82,7 @@
 #' @importFrom utils find
 #' @importFrom utils packageVersion
 #' @importFrom utils stack
-#' @importFrom magrittr %>% 
+#' @importFrom magrittr "%>%" 
 # @importFrom MASS write.matrix
 # @importFrom mvtnorm rmvnorm
 # @import ggplot2

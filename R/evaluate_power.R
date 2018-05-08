@@ -14,22 +14,25 @@
 #'   calc_ofv_and_fim, ...)
 #' @param ... Extra parameters passed to \code{\link{calc_ofv_and_fim}} and
 #'   \code{\link{get_rse}}
+#' @param find_min_n Should the function compute the minimum n needed (given the
+#'   current design) to achieve the desired power?
 #' @return A list of elements evaluating the current design including the power.
-#' @references \enumerate{ \item Retout, S., Comets, E., Samson, A., & Mentré,
+#' @references \enumerate{ \item Retout, S., Comets, E., Samson, A., and Mentre,
 #'   F. (2007). Design in nonlinear mixed effects models: Optimization using the
-#'   Fedorov–Wynn algorithm and power of the Wald test for binary covariates.
-#'   Statistics in Medicine, 26(28), 5162–5179. \url{https://doi.org/10.1002/sim.2910}
-#'   \item Ueckert, S., Hennig, S., Nyberg, J., Karlsson, M. O., & Hooker, A. C.
-#'   (2013). Optimizing disease progression study designs for drug effect
-#'   discrimination. Journal of Pharmacokinetics and Pharmacodynamics, 40(5),
-#'   587–596. \url{https://doi.org/10.1007/s10928-013-9331-3} }
-#'   
+#'   Fedorov-Wynn algorithm and power of the Wald test for binary covariates.
+#'   Statistics in Medicine, 26(28), 5162-5179.
+#'   \url{https://doi.org/10.1002/sim.2910}. \item Ueckert, S., Hennig, S.,
+#'   Nyberg, J., Karlsson, M. O., and Hooker, A. C. (2013). Optimizing disease
+#'   progression study designs for drug effect discrimination. Journal of
+#'   Pharmacokinetics and Pharmacodynamics, 40(5), 587-596.
+#'   \url{https://doi.org/10.1007/s10928-013-9331-3}. }
+#'
 #' @example tests/testthat/examples_fcn_doc/examples_evaluate_power.R
 #'
 #' @family evaluate_design
 #' @export
 
-evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, ...) {
+evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, find_min_n=TRUE,...) {
   # If two-sided then halve the alpha
   if (twoSided == TRUE) alpha = alpha/2
   
@@ -57,9 +60,16 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
   rse = out$rse[which(poped.db$parameters$notfixed_bpop==1)[bpopIdx]] # in percent!!
 
   # Following the paper of Retout et al., 2007 for the Wald-test:
-  powPred = round(100*(1 - pnorm(norm.val-(100/rse)) + pnorm(-norm.val-(100/rse))), digits=1)
-  needRSE = 100/(norm.val-qnorm(1-power/100))
+  powPred = round(100*(1 - stats::pnorm(norm.val-(100/rse)) + stats::pnorm(-norm.val-(100/rse))), digits=1)
+  needRSE = 100/(norm.val-stats::qnorm(1-power/100))
 
   out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
+  
+  # find the smallest n to achieve the wanted power.
+  if(find_min_n){
+    res <- optimize_n(poped.db,bpopIdx=bpopIdx,needRSE=needRSE)
+    out$power$min_N=res$par
+  }
+  
   return(out)
 }

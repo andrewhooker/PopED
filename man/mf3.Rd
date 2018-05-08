@@ -2,7 +2,7 @@
 % Please edit documentation in R/mf3.R
 \name{mf3}
 \alias{mf3}
-\title{The reduced  Fisher Information Matrix (FIM) for one individual}
+\title{The Fisher Information Matrix (FIM) for one individual}
 \usage{
 mf3(model_switch, xt, x, a, bpop, d, sigma, docc, poped.db)
 }
@@ -31,9 +31,7 @@ As a list:
 \item{poped.db}{A PopED database}
 }
 \description{
-Compute the reduced  FIM for one individual given specific model(s), parameters, design and methods. 
-This computation assumes that there is no correlation in the FIM between the fixed and random effects, 
-and set these elements in the FIM to zero.
+Compute the FIM for one individual given specific model(s), parameters, design and methods.
 }
 \examples{
 library(PopED)
@@ -101,8 +99,6 @@ output <- mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
 det(output$ret*32) == det(evaluate.fim(poped.db,fim.calc.type=1))  
 }
 \seealso{
-Used by \code{\link{mftot1}}.
-
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},

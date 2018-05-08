@@ -1096,7 +1096,10 @@ create.poped.database <-
     poped.db$parameters$NumDocc = poped.choose(NumDocc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=T))
     poped.db$parameters$NumOcc = poped.choose(NumOcc,find.largest.index(poped.db$model$fg_pointer,"bocc",mat=T,mat.row=F))
     #poped.db$parameters$ng = poped.choose(ng,length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0))))    
-    poped.db$parameters$ng = length(do.call(poped.db$model$fg_pointer,list(0,0,0,0,0)))    
+    poped.db$parameters$ng = length(do.call(poped.db$model$fg_pointer,
+                                            list(0,0,0,0,
+                                                 zeros(poped.db$parameters$NumDocc,
+                                                       poped.db$parameters$NumOcc))))    
     
     poped.db$parameters$notfixed_docc = poped.choose(notfixed_docc,matrix(1,nrow=1,ncol=poped.db$parameters$NumDocc))
     poped.db$parameters$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$parameters$NumRanEff))

@@ -98,8 +98,6 @@ output <- mf7(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
 det(output$ret*32) == det(evaluate.fim(poped.db,fim.calc.type=6))  
 }
 \seealso{
-Used by \code{\link{mftot6}}.
-
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
   \code{\link{calc_ofv_and_fim}},

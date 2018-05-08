@@ -61,6 +61,7 @@ model_prediction(poped.db)
 
 ## evaluate initial design
 evaluate_design(poped.db)
+shrinkage(poped.db)
 
 ## Evaluate with full FIM
 evaluate_design(poped.db, fim.calc.type=0)
