@@ -165,6 +165,8 @@ create_ofv <- function(poped.db,
     }
   }
   
+  lower_opt <- lower
+  upper_opt <- upper
   if(transform_parameters){
     for(i in 1:length(par)){
       if(par_cat_cont[i]=="cont"){
@@ -172,6 +174,8 @@ create_ofv <- function(poped.db,
                                                            constraints = 
                                                              list(lower=lower[i],
                                                                   upper=upper[i]))
+        lower_opt[i] = -Inf
+        upper_opt[i] = Inf
         
         #     if(is.finite(lower[i]) && is.finite(upper[i])){
         #       par[i] <- (par[i] - lower[i])/(upper[i]-lower[i])
@@ -324,8 +328,12 @@ create_ofv <- function(poped.db,
   }
   
   
-  return(list(fun=ofv_fun,par=par,back_transform_par=back_transform_par, space=list(lower=lower,upper=upper,par_cat_cont=par_cat_cont,
-                                                                                    par_fixed_index=par_fixed_index,par_df_unique=par_df_unique,
-                                                                                    par_df=par_df, par_dim=par_dim)) )
+  return(list(fun=ofv_fun,
+              par=par,
+              back_transform_par=back_transform_par, 
+              space=list(lower=lower_opt,upper=upper_opt,par_cat_cont=par_cat_cont,
+                         par_fixed_index=par_fixed_index,par_df_unique=par_df_unique,
+                         par_df=par_df, par_dim=par_dim,
+                         par_type=par_type)) )
 }
 

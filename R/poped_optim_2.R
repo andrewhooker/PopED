@@ -62,6 +62,7 @@
 # @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
 #' @export
 
+# uses create_ofv
 poped_optim_2 <- function(poped.db,
                           opt_xt=poped.db$settings$optsw[2],
                           opt_a=poped.db$settings$optsw[4],
@@ -89,6 +90,7 @@ poped_optim_2 <- function(poped.db,
                           stop_crit_rel = NULL,
                           ofv_fun = poped.db$settings$ofv_fun,
                           maximize=T,
+                          transform_parameters = T,
                           ...){
   
   #------------ update poped.db with options supplied in function
@@ -165,7 +167,7 @@ poped_optim_2 <- function(poped.db,
                        bLHS=bLHS,
                        use_laplace=use_laplace,
                        ofv_fun = ofv_fun,
-                       transform_parameters = F,
+                       transform_parameters = transform_parameters,
                        ...) 
   par <- my_ofv$par
   ofv_fun <- my_ofv$fun
@@ -178,6 +180,12 @@ poped_optim_2 <- function(poped.db,
   par_df_unique=my_ofv$space[["par_df_unique"]]
   par_df=my_ofv$space[["par_df"]]
   par_dim=my_ofv$space[["par_dim"]]
+  par_type=my_ofv$space[["par_type"]]
+  
+  my_ofv <- create_ofv(poped.db,opt_xt = T, opt_a = T)
+  my_ofv$par
+  my_ofv$back_transform_par(my_ofv$par)
+  my_ofv$fun(my_ofv$par)
   
   
   #------------ optimize
@@ -369,7 +377,7 @@ poped_optim_2 <- function(poped.db,
       cat("*******************************************\n")
       
       # relative difference
-      rel_diff <- (output$ofv - ofv_init)/ofv_init
+      rel_diff <- (output$ofv - ofv_init)/abs(ofv_init)
       abs_diff <- (output$ofv - ofv_init)
       fprintf("Difference in OFV:  %.3g\n",abs_diff)
       fprintf("Relative difference in OFV:  %.3g%%\n",rel_diff*100)
@@ -442,6 +450,9 @@ poped_optim_2 <- function(poped.db,
   } # end of total loop 
   
   if(!(fn=="")) sink()
+  
+  # back transform parameters
+  par <- back_transform_par_fun(par)
   
   # add the results into a poped database 
   # expand results to full size 
