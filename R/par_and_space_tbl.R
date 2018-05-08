@@ -303,24 +303,32 @@ get_par_and_space_optim <- function(df,
   
 }
 
-put_par_optim <- function(tbl_opt,tbl_full) {
+put_par_optim <- function(tbl_opt,tbl_full,ie=T) {
   
   #transformed back to normal scale
   if("lower_orig" %in% names(tbl_opt)){
     tbl_opt <- tbl_opt %>% dplyr::rowwise() %>% 
-      dplyr::mutate(par=dplyr::if_else(transformed==TRUE,
-                                       FastImputation::BoundNormalizedVariable(par,
-                                                                               constraints =
-                                                                                 list(lower=lower_orig,
-                                                                                      upper=upper_orig)),
-                                       par))
+      dplyr::mutate(par=dplyr::if_else(
+        transformed==TRUE,
+        FastImputation::BoundNormalizedVariable(
+          par,
+          constraints =
+            list(lower=lower_orig,
+                 upper=upper_orig)
+        ),
+        par))
   }
   
-  tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
-  
-  tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>% 
-    dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>% 
-    dplyr::select(-par_opt)
+  # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
+  tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
+  tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
+
+  # tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>%
+    # dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>%
+    # dplyr::select(-par_opt)
+  tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type"))
+  tbl_full <- dplyr::mutate(tbl_full,par=dplyr::if_else(is.na(par_opt),par,par_opt))
+  tbl_full <- dplyr::select(tbl_full,-par_opt)
   
   return(tbl_full)
 }
