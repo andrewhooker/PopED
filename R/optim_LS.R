@@ -151,9 +151,9 @@ optim_LS <- function(par,
           
     # handle replicates
     if(length(unique(replicates_index))!=length(par)){
-      par_i_set <- par_i_set[par_i_set!=par[replicates_index==replicates_index[i]]]
+      par_i_set <- par_i_set[!(par_i_set %in% par[replicates_index==replicates_index[i]])]
     }
-
+    
     # create full parameter list
     par_list <- lapply(par_i_set,function(x){ par[i] <- x; par})
 
