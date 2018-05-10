@@ -8,11 +8,11 @@ ofv_optim <- function(par,ps_tbl_opt,ps_tbl_full,poped_db,...){
   ps_tbl_full <- put_par_optim(ps_tbl_opt,ps_tbl_full)
   
   xt <- NULL
-  if(any(ps_tbl_opt$type=="xt")) xt <-  get_xt_from_tbl(ps_tbl_full, add_names = FALSE)
+  if(any(ps_tbl_opt$type=="xt")) xt <-  get_type_from_tbl("xt",ps_tbl_full, add_row_names = FALSE)
   #if(ps_tbl_opt %>% dplyr::filter(type=="xt") %>% nrow()>0) xt <-  get_xt_from_tbl(ps_tbl_full)
   
   a <- NULL
-  if(any(ps_tbl_opt$type=="a")) a <-  get_a_from_tbl(ps_tbl_full)
+  if(any(ps_tbl_opt$type=="a")) a <-  get_type_from_tbl("a",ps_tbl_full, add_row_names = FALSE)
   #if(ps_tbl_opt %>% dplyr::filter(type=="a") %>% nrow()>0) a <- get_a_from_tbl(ps_tbl_full)
   
   #extra_args <- dots(...)

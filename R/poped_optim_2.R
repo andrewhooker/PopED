@@ -182,11 +182,6 @@ poped_optim_2 <- function(poped.db,
   par_dim=my_ofv$space[["par_dim"]]
   par_type=my_ofv$space[["par_type"]]
   
-  my_ofv <- create_ofv(poped.db,opt_xt = T, opt_a = T)
-  my_ofv$par
-  my_ofv$back_transform_par(my_ofv$par)
-  my_ofv$fun(my_ofv$par)
-  
   
   #------------ optimize
   if(!(fn=="")) sink(fn, append=TRUE, split=TRUE)

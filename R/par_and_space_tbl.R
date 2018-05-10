@@ -296,29 +296,40 @@ get_par_and_space_optim <- function(df,
     #       par[i] <- stats::qlogis(par[i])
     #     }
     #
+  } else {
+    df <- df %>% dplyr::mutate(transformed=FALSE,
+                               lower_orig=lower, 
+                               upper_orig=upper)
   }
     
   
+  attr(df,"opt_xt") <- ifelse(opt_xt,TRUE,FALSE)
+  attr(df,"opt_a") <- ifelse(opt_a,TRUE,FALSE)
+  attr(df,"opt_samps") <- ifelse(opt_samps,TRUE,FALSE)
+  attr(df,"opt_inds") <- ifelse(opt_inds,TRUE,FALSE)
   return(df)
   
 }
 
-put_par_optim <- function(tbl_opt,tbl_full,ie=T) {
-  
+put_par_optim <- function(tbl_opt,tbl_full) {
   #transformed back to normal scale
-  if("lower_orig" %in% names(tbl_opt)){
-    tbl_opt <- tbl_opt %>% dplyr::rowwise() %>% 
-      dplyr::mutate(par=dplyr::if_else(
-        transformed==TRUE,
-        FastImputation::BoundNormalizedVariable(
-          par,
-          constraints =
-            list(lower=lower_orig,
-                 upper=upper_orig)
-        ),
-        par))
+  if("transformed" %in% names(tbl_opt)){
+    tbl_opt <- 
+      dplyr::mutate(tbl_opt,
+                    par=
+                      dplyr::if_else(
+                        transformed==TRUE,
+                        FastImputation::BoundNormalizedVariable(
+                          par,
+                          constraints =
+                            list(lower=lower_orig,
+                                 upper=upper_orig)
+                        ),
+                        par
+                      )
+      )
   }
-  
+    
   # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
   tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
   tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
@@ -333,23 +344,39 @@ put_par_optim <- function(tbl_opt,tbl_full,ie=T) {
   return(tbl_full)
 }
 
+# 
+# get_xt_from_tbl <- function(tbl_full,add_names=FALSE){
+#   ret <- tbl_full %>% dplyr::filter(type=="xt") %>% dplyr::select(par,group,name) %>% 
+#     tidyr::spread(key=name,value = par) #%>% 
+#   if(add_names){ 
+#     ret <- ret %>% dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
+#       tibble::column_to_rownames(var="group") %>% data.matrix()  
+#   } else {
+#     ret <- ret %>% dplyr::select(-group)
+#   }
+#   return(ret)
+# }
 
-get_xt_from_tbl <- function(tbl_full,add_names=TRUE){
-  ret <- tbl_full %>% dplyr::filter(type=="xt") %>% dplyr::select(par,group,name) %>% 
-    tidyr::spread(key=name,value = par) #%>% 
-  if(add_names){ 
-    ret <- ret %>% dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
-      tibble::column_to_rownames(var="group") %>% data.matrix()  
+# get_a_from_tbl <- function(tbl_full){
+#   tbl_full %>% dplyr::filter(type=="a") %>% dplyr::select(par,group,name) %>% 
+#     tidyr::spread(key=name,value = par) %>% 
+#     #dplyr::select(-group)
+#     dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
+#     tibble::column_to_rownames(var="group") %>% data.matrix()  
+# }
+
+get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
+  ret <- dplyr::filter(tbl_full,type==!!type_str) 
+  ret <- dplyr::select(ret,par,group,name) 
+  ret <- tidyr::spread(ret,key=name,value = par) 
+  if(add_row_names){ 
+    ret <- dplyr::mutate(ret,group=paste0("grp_",group)) 
+    ret <- data.matrix(tibble::column_to_rownames(as.data.frame(ret),var="group"))
   } else {
-    ret <- ret %>% dplyr::select(-group)
+    ret <- dplyr::select(ret,-group)
   }
   return(ret)
 }
 
-get_a_from_tbl <- function(tbl_full){
-  tbl_full %>% dplyr::filter(type=="a") %>% dplyr::select(par,group,name) %>% 
-    tidyr::spread(key=name,value = par) %>% 
-    #dplyr::select(-group)
-    dplyr::mutate(group=paste0("grp_",group)) %>% as.data.frame() %>% 
-    tibble::column_to_rownames(var="group") %>% data.matrix()  
-}
+
+
