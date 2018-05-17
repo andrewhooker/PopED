@@ -36,6 +36,9 @@ par_and_space_tbl <- function(poped.db) {
   # model_switch column
   df_xt <- tibble::add_column(df_xt,model=t(design$model_switch)[t(sel_mat_xt)])
   
+  # Matrix index
+  df_xt <- tibble::add_column(df_xt,index=which(t(sel_mat_xt)))
+  
   df <- dplyr::bind_rows(df,df_xt)
   
   ############################
@@ -69,6 +72,9 @@ par_and_space_tbl <- function(poped.db) {
     name_mat <- matrix(colnames(design$a),nrow=nrow(design$a),ncol = ncol(design$a),byrow=T)
     df_a <- tibble::add_column(df_a,name=t(name_mat)[t(sel_mat_a)])
   }
+  
+  # Matrix index
+  df_a <- tibble::add_column(df_a,index=which(t(sel_mat_a)))
   
   df <- dplyr::bind_rows(df,df_a)
   
@@ -246,13 +252,17 @@ par_and_space_tbl <- function(poped.db) {
   return(df)
 }
 
-get_par_and_space_optim <- function(df,
-                      opt_xt=FALSE,
-                      opt_a=FALSE,
-                      opt_samps=FALSE,
-                      opt_inds=FALSE,
-                      transform_parameters=F) {
-  
+get_par_and_space_optim <- function(poped.db,
+                                    #df,
+                                    opt_xt=poped.db$settings$optsw[2],
+                                    opt_a=poped.db$settings$optsw[4],
+                                    opt_x=poped.db$settings$optsw[3],
+                                    opt_samps=poped.db$settings$optsw[1],
+                                    opt_inds=poped.db$settings$optsw[5],
+                                    transform_parameters=T,
+                                    cont_cat = "both") 
+{
+    
   #----------- checks
   if(!any(opt_xt,opt_a,opt_samps,opt_inds)){
     stop('No optimization parameter is set.')
@@ -261,12 +271,26 @@ get_par_and_space_optim <- function(df,
   if(opt_samps) stop('Sample number optimization is not yet implemented in the R-version of PopED.')
   if(opt_inds) stop('Optimization  of number of individuals in different groups is not yet implemented in the R-version of PopED.')
   
+  df <- par_and_space_tbl(poped.db)
+  
   # Parameter grouping
+  tmp <- df %>% dplyr::group_by(type,grouping) %>% dplyr::summarize(index=list(unique(index)))
   df <- dplyr::distinct(df,grouping,type,.keep_all=TRUE) 
+  df <- dplyr::select(df,-index) 
+  df <- dplyr::left_join(df,tmp,by=c("grouping","type"))
+  
   
   # removed fixed parameters
   df <- dplyr::filter(df,fixed==FALSE)
-  if(nrow(df)==0) stop("No design parameters have a design space to optimize")
+  
+  # remove cont or cat values
+  if(cont_cat=="cont")   df <- dplyr::filter(df,cont==TRUE)
+  if(cont_cat=="cat")   df <- dplyr::filter(df,cont==FALSE)
+  
+  if(nrow(df)==0){
+    warning("No parameters to optimize")
+    return(df)
+  }
   
   # filter out non-optimized parameters
   filter_var <- c()
@@ -307,6 +331,8 @@ get_par_and_space_optim <- function(df,
   attr(df,"opt_a") <- ifelse(opt_a,TRUE,FALSE)
   attr(df,"opt_samps") <- ifelse(opt_samps,TRUE,FALSE)
   attr(df,"opt_inds") <- ifelse(opt_inds,TRUE,FALSE)
+  attr(df,"transformed") <- ifelse(any(df$transformed),TRUE,FALSE)
+  
   return(df)
   
 }

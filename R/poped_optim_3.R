@@ -125,6 +125,7 @@ poped_optim_3 <- function(poped.db,
   }
   if(!is.null(ofv_fun)){
     poped.db$settings$ofv_calc_type = 0
+    ofv_calc_type = 0
   }
   
   output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
@@ -150,42 +151,6 @@ poped_optim_3 <- function(poped.db,
                  trflag=trace,
                  ...)
   
-  #---------------------- ofv for optimization
-  my_ofv <- create_ofv(poped.db=poped.db,
-                       opt_xt=opt_xt,
-                       opt_a=opt_a,
-                       opt_x=opt_x,
-                       opt_samps=opt_samps,
-                       opt_inds=opt_inds,
-                       fim.calc.type=fim.calc.type,
-                       ofv_calc_type=ofv_calc_type,
-                       approx_type=approx_type,
-                       d_switch=d_switch,
-                       ED_samp_size = ED_samp_size,
-                       bLHS=bLHS,
-                       use_laplace=use_laplace,
-                       ofv_fun = ofv_fun,
-                       transform_parameters = F,
-                       ...) 
-  par <- my_ofv$par
-  ofv_fun <- my_ofv$fun
-  back_transform_par_fun <- my_ofv$back_transform_par
-  lower=my_ofv$space[["lower"]]
-  upper=my_ofv$space[["upper"]]
-  allowed_values=my_ofv$space[["allowed_values"]]
-  par_cat_cont=my_ofv$space[["par_cat_cont"]]
-  par_fixed_index=my_ofv$space[["par_fixed_index"]]
-  par_df_unique=my_ofv$space[["par_df_unique"]]
-  par_df=my_ofv$space[["par_df"]]
-  par_dim=my_ofv$space[["par_dim"]]
-  
-  pst <- par_and_space_tbl(poped.db)
-  
-  browser()
-  
-  (df <- par_and_space_tbl(poped.db))
-  (df_opt <- get_par_and_space_optim(df,opt_xt = T,opt_a=T,transform_parameters = T))
-  ofv_optim(df_opt$par,df_opt,df,poped.db)
   
   #------------ optimize
   if(!(fn=="")) sink(fn, append=TRUE, split=TRUE)
@@ -209,6 +174,15 @@ poped_optim_3 <- function(poped.db,
         cat("Running Adaptive Random Search Optimization\n")
         cat("*******************************************\n")
         
+        # Get parameters and space
+        ps_tbl <- get_par_and_space_optim(poped.db,
+                                          opt_xt=opt_xt,
+                                          opt_a=opt_a,
+                                          opt_x=opt_x,
+                                          opt_samps=opt_samps,
+                                          opt_inds=opt_inds,
+                                          transform_parameters=F)
+        
         # handle control arguments
         con <- list(trace = trace, 
                     parallel=parallel,
@@ -218,11 +192,12 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$ARS))] <- control$ARS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        output <- do.call(optim_ARS,c(list(par=par,
-                                           fn=ofv_fun,
-                                           lower=lower,
-                                           upper=upper,
-                                           allowed_values = allowed_values,
+        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        output <- do.call(optim_ARS,c(list(par=ps_tbl$par,
+                                           fn=tmp_ofv_fun,
+                                           lower=ps_tbl$lower,
+                                           upper=ps_tbl$upper,
+                                           allowed_values = ps_tbl$allowed_values,
                                            maximize=maximize
                                            #par_df_full=par_df
         ),
@@ -230,11 +205,22 @@ poped_optim_3 <- function(poped.db,
         con,
         ...))
         
+        poped.db <- add_to_poped_db(poped.db, ps_tbl, par = output$par)
+
       }
       if(cur_meth=="LS"){
         cat("*******************************************\n")
         cat("Running Line Search Optimization\n")
         cat("*******************************************\n")
+        
+        # Get parameters and space
+        ps_tbl <- get_par_and_space_optim(poped.db,
+                                          opt_xt=opt_xt,
+                                          opt_a=opt_a,
+                                          opt_x=opt_x,
+                                          opt_samps=opt_samps,
+                                          opt_inds=opt_inds,
+                                          transform_parameters=F)
         
         # handle control arguments
         con <- list(trace = trace, 
@@ -245,11 +231,12 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$LS))] <- control$LS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        output <- do.call(optim_LS,c(list(par=par,
-                                          fn=ofv_fun,
-                                          lower=lower,
-                                          upper=upper,
-                                          allowed_values = allowed_values,
+        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        output <- do.call(optim_LS,c(list(par=ps_tbl$par,
+                                          fn=tmp_ofv_fun,
+                                          lower=ps_tbl$lower,
+                                          upper=ps_tbl$upper,
+                                          allowed_values = ps_tbl$allowed_values,
                                           maximize=maximize
                                           #par_df_full=par_df
         ),
@@ -257,15 +244,29 @@ poped_optim_3 <- function(poped.db,
         con,
         ...))
         
+        poped.db <- add_to_poped_db(poped.db, ps_tbl, par = output$par)
       }
       if(cur_meth=="BFGS"){
         
         cat("*******************************************\n")
-        cat("Running L-BFGS-B Optimization\n")
+        cat("Running BFGS Optimization\n")
         cat("*******************************************\n")
         
-        if(all(par_cat_cont=="cat")){
-          cat("\nNo continuous variables to optimize, L-BFGS-B Optimization skipped\n\n")
+        
+        
+        # Get parameters and space
+        ps_tbl <- get_par_and_space_optim(poped.db,
+                                          opt_xt=opt_xt,
+                                          opt_a=opt_a,
+                                          opt_x=opt_x,
+                                          opt_samps=opt_samps,
+                                          opt_inds=opt_inds,
+                                          transform_parameters=T,
+                                          cont_cat = "cont")
+        
+       
+        if(nrow(ps_tbl)==0){
+          cat("\nNo continuous variables to optimize, BFGS Optimization skipped\n\n")
           next
         }
         
@@ -284,20 +285,17 @@ poped_optim_3 <- function(poped.db,
         if(is.null(con[["fnscale"]])) con$fnscale <- fnscale
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        par_full <- par
-        output <- optim(par=par[par_cat_cont=="cont"],
-                        fn=ofv_fun,
+        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        output <- optim(par=ps_tbl$par,
+                        fn=tmp_ofv_fun,
                         gr=NULL,
                         #par_full=par_full,
-                        only_cont=T,
-                        lower=lower[par_cat_cont=="cont"],
-                        upper=upper[par_cat_cont=="cont"],
-                        method = "L-BFGS-B",
+                        # only_cont=T,
+                        method = "BFGS",
                         control=con)
+        
         output$ofv <- output$value
-        par_tmp <- output$par
-        output$par <- par_full
-        output$par[par_cat_cont=="cont"] <- par_tmp
+        poped.db <- add_to_poped_db(poped.db, ps_tbl, par=output$par)
         
         fprintf('\n')
         if(fn!="") fprintf(fn,'\n')
@@ -314,7 +312,18 @@ poped_optim_3 <- function(poped.db,
                call. = FALSE)
         }
         
-        if(all(par_cat_cont=="cat")){
+        # Get parameters and space
+        ps_tbl <- get_par_and_space_optim(poped.db,
+                                          opt_xt=opt_xt,
+                                          opt_a=opt_a,
+                                          opt_x=opt_x,
+                                          opt_samps=opt_samps,
+                                          opt_inds=opt_inds,
+                                          transform_parameters=F,
+                                          cont_cat = "cont")
+        
+        
+        if(nrow(ps_tbl)==0){
           cat("\nNo continuous variables to optimize, GA Optimization skipped\n\n")
           next
         }
@@ -326,45 +335,49 @@ poped_optim_3 <- function(poped.db,
         
         con <- list(parallel=parallel_ga)
         dot_vals <- dots(...)
-        if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
-        
+        if(is.null(dot_vals[["monitor"]])){
+          if(packageVersion("GA")>="3.0.2" && packageVersion("GA")<"3.1.1") con$monitor <- GA::gaMonitor2
+          if(packageVersion("GA")>="3.1.1") con$monitor <- GA::gaMonitor
+        }
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        par_full <- par
-        ofv_fun_2 <- ofv_fun
-        if(!maximize) {
-          ofv_fun_2 <- function(par,only_cont=F,...){
-            -ofv_fun(par,only_cont=F,...) 
-          }
-        }
-        
-        output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
-                                           fitness = ofv_fun_2,
-                                           #par_full=par_full,
-                                           only_cont=T,
-                                           min=lower[par_cat_cont=="cont"],
-                                           max=upper[par_cat_cont=="cont"],
-                                           suggestions=par[par_cat_cont=="cont"]),
-                                      #allowed_values = allowed_values),
-                                      con,
-                                      ...))
-        
+        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        if(!maximize) tmp_ofv_fun <- function(par,...){-ofv_optim_2(par,ps_tbl,poped.db,...)}
+        if(packageVersion("GA")<"3.1.1")
+          output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
+                                             fitness = tmp_ofv_fun,
+                                             #par_full=par_full,
+                                             # only_cont=T,
+                                             min=ps_tbl$lower,
+                                             max=ps_tbl$upper,
+                                             suggestions=ps_tbl$par),
+                                        #allowed_values = allowed_values),
+                                        con,
+                                        ...))
+        if(packageVersion("GA")>="3.1.1")
+          output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
+                                             fitness = tmp_ofv_fun,
+                                             #par_full=par_full,
+                                             # only_cont=T,
+                                             lower=ps_tbl$lower,
+                                             upper=ps_tbl$upper,
+                                             suggestions=ps_tbl$par),
+                                        #allowed_values = allowed_values),
+                                        con,
+                                        ...))
         output$ofv <- output_ga@fitnessValue
         if(!maximize) output$ofv <- -output$ofv
         
         
         output$par <- output_ga@solution
         
-        par_tmp <- output$par
-        output$par <- par_full
-        output$par[par_cat_cont=="cont"] <- par_tmp
+        poped.db <- add_to_poped_db(poped.db, ps_tbl, par=output$par)
         
         fprintf('\n')
         if(fn!="") fprintf(fn,'\n')
       }
-      par <- output$par
     }
     
     if(!loop_methods){
@@ -449,64 +462,6 @@ poped_optim_3 <- function(poped.db,
   } # end of total loop 
   
   if(!(fn=="")) sink()
-  
-  # add the results into a poped database 
-  # expand results to full size 
-  if(length(par_fixed_index)!=0){
-    par_df_2[par_not_fixed_index,"par"] <- par
-    par <- par_df_2$par
-  }
-  if(!is.null(par_df_unique)){
-    par_df_unique$par <- par
-    for(j in par_df_unique$par_grouping){
-      par_df[par_df$par_grouping==j,"par"] <- par_df_unique[par_df_unique$par_grouping==j,"par"]
-    }  
-  } else {
-    par_df$par <- par
-  }  
-  
-  #poped.db$design$ni <- ni
-  #if(opt_xt) poped.db$design$xt[,]=matrix(par_df[par_type=="xt","par"],par_dim$xt)
-  if(opt_xt){
-    xt <- zeros(par_dim$xt)
-    par_xt <- par_df[par_type=="xt","par"]
-    for(i in 1:poped.db$design$m){
-      if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
-        xt[i,1:poped.db$design$ni[i]] <- par_xt[1:poped.db$design$ni[i]]
-        par_xt <- par_xt[-c(1:poped.db$design$ni[i])]
-      }
-    }
-    poped.db$design$xt[,]=xt[,]
-  }
-  
-  if(opt_a) poped.db$design$a[,]=matrix(par_df[par_type=="a","par"],par_dim$a)
-  #   if((!isempty(x))){
-  #     poped.db$design$x[1:size(x,1),1:size(x,2)]=x
-  #     #poped.db$design$x <- x
-  #   }
-  #   if((!isempty(a))){
-  #     poped.db$design$a[1:size(a,1),1:size(a,2)]=a
-  #     #poped.db$design$a <- a
-  #   }
-  
-  #--------- Write results
-  #if((trflag)){
-  #  if(footer_flag){
-  #FIM <- evaluate.fim(poped.db,...)
-  
-  # if(d_switch){
-  #   FIM <- evaluate.fim(poped.db,...)
-  # } else{
-  #   out <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-  #                          ED_samp_size=ED_samp_size,
-  #                          bLHS=bLHS,
-  #                          use_laplace=use_laplace,
-  #                          ofv_calc_type=ofv_calc_type,
-  #                          fim.calc.type=fim.calc.type,
-  #                          ...)
-  #   
-  #   FIM <- out$fim
-  # }
   
   FIM <-calc_ofv_and_fim(poped.db,
                          ofv=output$ofv,
