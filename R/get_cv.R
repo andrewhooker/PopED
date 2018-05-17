@@ -70,14 +70,15 @@ get_cv <- function(param_vars,bpop,d,docc,sigma,poped.db){
 #' @param fim A Fisher Information Matrix (FIM).
 #' @param bpop A vector containing the values of the fixed effects used to compute the \code{fim}. 
 #' @param d A vector containing the values of the diagnonals of the betwen subject variability matrix.
-#' @param use_percent Should RSE be reported as percent or not?
+#' @param use_percent Should RSE be reported as percent? 
 #' @param prior_fim A prior FIM to be added to the \code{fim}. Should be the same size as the \code{fim}.
 #' @param ... Additional arguments passed to \code{\link{inv}}. 
 #' @inheritParams evaluate.fim
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
 #' 
-#' @return A named list of RSE values.
+#' @return A named list of RSE values.  If the estimated parameter is assumed to be zero then for that 
+#'   parameter the standard error is returned.
 #' 
 #' @family evaluate_design
 #' 
@@ -141,7 +142,7 @@ get_rse <- function (fim, poped.db,
   params_rse <- returnArgs[[2]]
   parnam <- get_parnam(poped.db)
   ret <- params_rse[,,drop=T]
-  if(use_percent) ret=ret*100
+  if(use_percent) ret[params!=0]=ret[params!=0]*100
   names(ret) <- parnam
   return(ret)
 }

@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.3.2.9001
+Version: 0.3.2.9003
 Depends:
     R (>= 2.14)
 Imports:
@@ -11,7 +11,11 @@ Imports:
     dplyr,
     codetools,
     stats,
-    utils
+    utils,
+    boot,
+    magrittr,
+    purrr,
+    stringr
 Suggests:
     testthat,
     Hmisc,

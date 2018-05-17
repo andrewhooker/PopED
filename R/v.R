@@ -66,7 +66,7 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db)
         returnArgs <- LinMatrixLH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,size(sigma,1),poped.db) 
         lh <- returnArgs[[1]]
         poped.db <- returnArgs[[2]]
-        interact=lh%*%kron_tmp(d,sigma)%*%t(lh)
+        interact=lh %*% (d %x% sigma) %*% t(lh)
         if (sum(dim(interact))==2){
           ret = ret + interact
         } else {

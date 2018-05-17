@@ -3,13 +3,12 @@
 #' Compute the full FIM for one individual given specific model(s), parameters, design and methods. 
 #' This computation calculates the FIM for each model switch separately.  Correlations between the models parameters are assumed to be zero.
 #' 
-#' @inheritParams mf
+#' @inheritParams mf3
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM for one individual}
 #' \item{poped.db}{A PopED database}
 #' 
-#' @seealso Used by \code{\link{mftot6}}.  
 #' @family FIM
 #' 
 #' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
@@ -21,7 +20,7 @@
 
 mf7 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
   
-  #This calculation of FIM devide the calculation up into one calculation
+  #This calculation of FIM divides the calculation up into one calculation
   #per model switch
   
   numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)

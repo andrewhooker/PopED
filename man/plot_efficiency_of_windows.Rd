@@ -115,11 +115,12 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 # Examine efficiency of sampling windows
 plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
-plot_efficiency_of_windows(poped.db,
-                           xt_plus=c( 0.5,1,2,1,2,3,7,1),
-                           xt_minus=c( 0.1,2,5,4,2,3,6,2))
 
 \dontrun{  
+
+  plot_efficiency_of_windows(poped.db,
+                             xt_plus=c( 0.5,1,2,1,2,3,7,1),
+                             xt_minus=c( 0.1,2,5,4,2,3,6,2))
   
   plot_efficiency_of_windows(poped.db,xt_windows=c( 0.5,1,2,1,2,3,7,1))
   
@@ -138,7 +139,8 @@ plot_efficiency_of_windows(poped.db,
 }
 \seealso{
 Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}}, \code{\link{get_rse}},
+  \code{\link{evaluate_design}},
+  \code{\link{evaluate_power}}, \code{\link{get_rse}},
   \code{\link{model_prediction}},
   \code{\link{plot_model_prediction}}
 

@@ -126,13 +126,13 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
   }
   
   if(is.matrix(fmf) && compute_inv && is.finite(dmf)){
-    param_vars=diag_matlab(inv(fmf))
-    returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
-    params <- returnArgs[[1]]
-    param_cvs <- returnArgs[[2]]
+    #param_vars=diag_matlab(inv(fmf))
+    #returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
+    #params <- returnArgs[[1]]
+    #param_cvs <- returnArgs[[2]]
+    params <- get_unfixed_params(poped.db,get_all_params(poped.db)[[8]])[[8]]
+    param_rse <- get_rse(fmf, poped.db)
     
-    
-      
     #fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',dmf^(1/length(params)))
     #fprintf(fn,'\nEfficiency criterion [usually defined as OFV^(1/npar)]  = %g\n',
     #        ofv_criterion(dmf,length(params),poped.db))
@@ -140,7 +140,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     parnam <- get_parnam(poped.db)
     fprintf(fn,'\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
     if(fn!="") fprintf('\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
-    df <- data.frame("Parameter"=parnam,"Values"=params,"RSE_0"=t(param_cvs*100))
+    df <- data.frame("Parameter"=parnam,"Values"=params,"RSE_0"=param_rse)
     print(df,digits=3, print.gap=3,row.names=F)
     if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     fprintf('\n')

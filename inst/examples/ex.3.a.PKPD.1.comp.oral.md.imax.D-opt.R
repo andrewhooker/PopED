@@ -84,6 +84,7 @@ plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=
 
 ## evaluate initial design
 evaluate_design(poped.db)
+shrinkage(poped.db)
 
 # Optimization 
 output <- poped_optim(poped.db, opt_xt = T, parallel = T)
