@@ -4,7 +4,6 @@ library(rhandsontable)
 
 ui <- function(){
   offset <- 0
-  
   navbarPage(
     title="PopED - Population Experimental Design",
     collapsible = TRUE,

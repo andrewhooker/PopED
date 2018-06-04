@@ -2,6 +2,8 @@ context("Optimization")
 
 test_that("optim_ARS works", {
   
+  if(skip_optim) skip("Optimization skipped")
+  
   ex_string <- ex_to_string("examples_fcn_doc/examples_optim_ARS.R",comment_dontrun=comment_dontrun)
   writeLines(ex_string, "temp.R")
   sink("tmp.txt")
@@ -25,6 +27,8 @@ test_that("optim_ARS works", {
 })
 
 test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work", {
+  
+  if(skip_optim) skip("Optimization skipped")
   
   source("examples_fcn_doc/warfarin_optimize.R")
 

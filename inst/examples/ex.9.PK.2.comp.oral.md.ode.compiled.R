@@ -81,7 +81,7 @@ tic(); (eval <- evaluate_design(poped.db)); toc()
 
 #' To make optimization more reasonable you can use compiled code
 #' 
-#' compile and load the qss_two_target.c code.
+#' compile and load the two_comp_oral_CL.c code.
 #' To set this up see the 
 #' "R Package deSolve, Writing Code in Compiled Languages" 
 #' vingette in the deSolve documentation
