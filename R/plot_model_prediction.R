@@ -40,6 +40,8 @@
 #' @family Simulation
 #' @family Graphics
 #' 
+#' @seealso \code{\link{model_prediction}}
+#' 
 #' @example tests/testthat/examples_fcn_doc/examples_plot_model_prediction.R
 #' 
 #' @export

@@ -180,10 +180,35 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
   return(invisible(time_value)) 
 }
 
-print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized xt values:\n",xt_other=NULL) {
+print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized sample times:\n",xt_other=NULL,
+                      digits=4) {
   cat(head_txt,file=fn)
   for(j in 1:size(xtopt,1)){
     xtopt_i = xtopt[j,1:ni[j]]
+    model_switch_i = model_switch[j,1:ni[j]]
+    if(!is.null(xt_other)) xt_other_i = xt_other[j,1:ni[j]]
+    for(i in unique(as.vector(model_switch_i))){
+      xtopt_i_sort = sort(xtopt_i[model_switch_i==i])
+      if(!is.null(xt_other)) xt_other_i_sort = xt_other_i[order(xtopt_i[model_switch_i==i])]
+      # if(size(xtopt,1)>1) cat(sprintf("Group %g : ", j),file=fn)
+      cat(sprintf("Group %g: ", j),file=fn)
+      if(length(unique(as.vector(model_switch_i)))>1) cat(sprintf("Model %g: ", i),file=fn)
+      if(!is.null(xt_other)) {
+        cat(sprintf(paste0("%",digits+2,".",digits,"g"), xt_other_i_sort),file=fn)
+      } else {
+        cat(sprintf(paste0("%",digits+2,".",digits,"g"), xtopt_i_sort),file=fn)
+        # cat(sprintf("%6.4g", xtopt_i_sort),file=fn)
+      }
+      cat("\n",file=fn)
+    }
+  }
+  invisible()
+}
+
+print_a <- function (aopt,fn="",head_txt="Optimized covariates:\n") {
+  cat(head_txt,file=fn)
+  for(j in 1:size(a,1)){
+    aopt_i = aopt[j,1:ni[j]]
     model_switch_i = model_switch[j,1:ni[j]]
     if(!is.null(xt_other)) xt_other_i = xt_other[j,1:ni[j]]
     for(i in unique(as.vector(model_switch_i))){

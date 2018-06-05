@@ -242,7 +242,10 @@ plot_model_prediction(poped.db.2,facet_scales="free")
 # (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
 tic(); eval_2 <- evaluate_design(poped.db.2); toc()
 
-# now optimization
-output <- poped_optim(poped.db.2,opt_xt = F, opt_a = T, parallel=T, method = c("LS"))
-  
+# now optimization in parallel for unix/mac
+output <- poped_optim(poped.db.2,opt_xt = F, opt_a = T, parallel=T, method = c("LS")) 
+
+# optimization for windows
+# output <- poped_optim(poped.db.2,opt_xt = F, opt_a = T, parallel=T, method = c("LS"), dlls = c('tmdd_qss_one_target'))
+
 plot_model_prediction(output$poped.db,facet_scales="free")
