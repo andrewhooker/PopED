@@ -15,8 +15,7 @@ Imports:
     magrittr,
     boot,
     purrr,
-    stringr,
-    FastImputation
+    stringr
 Suggests:
     testthat,
     Hmisc,
@@ -26,7 +25,8 @@ Suggests:
     shiny,
     rhandsontable,
     knitr,
-    rmarkdown
+    rmarkdown,
+    FastImputation
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
     person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
