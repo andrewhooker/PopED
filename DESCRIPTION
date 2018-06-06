@@ -12,10 +12,11 @@ Imports:
     codetools,
     stats,
     utils,
-    boot,
     magrittr,
+    boot,
     purrr,
-    stringr
+    stringr,
+    FastImputation
 Suggests:
     testthat,
     Hmisc,

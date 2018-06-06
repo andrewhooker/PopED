@@ -215,6 +215,8 @@ plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"))
 
 }
 \seealso{
+\code{\link{model_prediction}}
+
 Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{evaluate_design}},
   \code{\link{evaluate_power}}, \code{\link{get_rse}},

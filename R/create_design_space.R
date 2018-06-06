@@ -438,6 +438,15 @@ create_design_space <- function(
     
     ## for xt_space
     if(!is.null(xt_space)){
+      if(is.null(dim(xt_space))){ # then we have a vector or a list
+        if(is.list(xt_space)){ # then it is a list
+          
+        } else { # assume the vector is the same for all xt's
+          tmp_lst <- list(xt_space)
+          xt_space <- cell(size(xt))
+          xt_space[,] <- tmp_lst
+        }
+      }
       #       if(is.list(x_space)) x_space <- as.matrix(dplyr::rbind_all(lapply(x_space,function(x){data.frame(rbind(unlist(x)))})))
       if(size(xt_space,1)==1 && m!=1) xt_space <- matrix(rep(xt_space,m),ncol=length(xt_space),nrow=m,byrow=T)
       if(size(xt_space,2)==1 && size(xt,2)!=1) xt_space <- matrix(rep(xt_space,size(xt,2)),ncol=size(xt,2),nrow=m,byrow=F)

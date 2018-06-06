@@ -1,6 +1,5 @@
-#
-#' Optimization main module for PopED 
-#'  
+#' Optimization main module for PopED
+#' 
 #' Optimize the objective function. The function works for both discrete and 
 #' continuous optimization variables. If more than one optimization method is 
 #' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
@@ -59,38 +58,40 @@
 #'   
 #' @family Optimize
 #'   
-#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
+# @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+# @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
 #' @export
 
-poped_optim <- function(poped.db,
-                        opt_xt=poped.db$settings$optsw[2],
-                        opt_a=poped.db$settings$optsw[4],
-                        opt_x=poped.db$settings$optsw[3],
-                        opt_samps=poped.db$settings$optsw[1],
-                        opt_inds=poped.db$settings$optsw[5],
-                        method=c("ARS","BFGS","LS"),
-                        control=list(),
-                        trace = TRUE,
-                        fim.calc.type=poped.db$settings$iFIMCalculationType,
-                        ofv_calc_type=poped.db$settings$ofv_calc_type,
-                        approx_type=poped.db$settings$iApproximationMethod,
-                        d_switch=poped.db$settings$d_switch,
-                        ED_samp_size = poped.db$settings$ED_samp_size,
-                        bLHS=poped.db$settings$bLHS,
-                        use_laplace=poped.db$settings$iEDCalculationType,
-                        out_file="",
-                        parallel=F,
-                        parallel_type=NULL,
-                        num_cores = NULL,
-                        loop_methods=ifelse(length(method)>1,TRUE,FALSE),
-                        iter_max = 10,
-                        stop_crit_eff = 1.001,
-                        stop_crit_diff = NULL,
-                        stop_crit_rel = NULL,
-                        ofv_fun = poped.db$settings$ofv_fun,
-                        maximize=T,
-                        ...){
+# uses create_ofv
+poped_optim_2 <- function(poped.db,
+                          opt_xt=poped.db$settings$optsw[2],
+                          opt_a=poped.db$settings$optsw[4],
+                          opt_x=poped.db$settings$optsw[3],
+                          opt_samps=poped.db$settings$optsw[1],
+                          opt_inds=poped.db$settings$optsw[5],
+                          method=c("ARS","BFGS","LS"),
+                          control=list(),
+                          trace = TRUE,
+                          fim.calc.type=poped.db$settings$iFIMCalculationType,
+                          ofv_calc_type=poped.db$settings$ofv_calc_type,
+                          approx_type=poped.db$settings$iApproximationMethod,
+                          d_switch=poped.db$settings$d_switch,
+                          ED_samp_size = poped.db$settings$ED_samp_size,
+                          bLHS=poped.db$settings$bLHS,
+                          use_laplace=poped.db$settings$iEDCalculationType,
+                          out_file="",
+                          parallel=F,
+                          parallel_type=NULL,
+                          num_cores = NULL,
+                          loop_methods=ifelse(length(method)>1,TRUE,FALSE),
+                          iter_max = 10,
+                          stop_crit_eff = 1.001,
+                          stop_crit_diff = NULL,
+                          stop_crit_rel = NULL,
+                          ofv_fun = poped.db$settings$ofv_fun,
+                          maximize=T,
+                          transform_parameters = T,
+                          ...){
   
   #------------ update poped.db with options supplied in function
   called_args <- match.call()
@@ -102,11 +103,15 @@ poped_optim <- function(poped.db,
     }
   }
   
-  #----------- checks
-  if((sum(poped.db$settings$optsw)==0)){
-    stop('No optimization parameter is set.')
-  }
+
   
+  #------------- initialization
+  fmf = 0 #The best FIM so far
+  dmf = 0 #The best ofv of FIM  so far
+  #output <-calc_ofv_and_fim(poped.db,...)
+  
+  #--------------------- Header information
+  ## only for header information
   if(is.null(ofv_fun) || is.function(ofv_fun)){
     ofv_fun_user <- ofv_fun 
   } else {
@@ -124,17 +129,6 @@ poped_optim <- function(poped.db,
     poped.db$settings$ofv_calc_type = 0
   }
   
-  
-  
-  #---------- functions
-  # dots <- function(...) {
-  #   eval(substitute(alist(...)))
-  # }
-  
-  #------------- initialization
-  fmf = 0 #The best FIM so far
-  dmf = 0 #The best ofv of FIM  so far
-  #output <-calc_ofv_and_fim(poped.db,...)
   output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
                             ED_samp_size=ED_samp_size,
                             bLHS=bLHS,
@@ -152,232 +146,42 @@ poped_optim <- function(poped.db,
   
   if(is.nan(dmf_init)) stop("Objective function of initial design is NaN")
   
-  #--------------------- write out info to a file
   fn=blockheader(poped.db,name="optim",e_flag=!d_switch,
                  fmf=fmf_init,dmf=dmf_init,
                  out_file=out_file,
                  trflag=trace,
                  ...)
   
-  # Collect the parameters to optimize
-  par <- c()
-  upper <- c()
-  lower <- c()
-  par_grouping <- c()
-  par_type <- c()
-  par_dim <- list()
-  allowed_values <- NULL
-  build_allowed_values <- FALSE
-  if(!is.null(poped.db$design_space$xt_space) ||
-     !is.null(poped.db$design_space$a_space)) build_allowed_values <- TRUE
-  if(opt_samps) stop('Sample number optimization is not yet implemented in the R-version of PopED.')
-  if(opt_inds) stop('Optimization  of number of individuals in different groups is not yet implemented in the R-version of PopED.')
-  if(opt_xt){ 
-    #par <- c(par,poped.db$design$xt)
-    # upper <- c(upper,poped.db$design_space$maxxt)
-    # lower <- c(lower,poped.db$design_space$minxt)
-    # par_grouping <- c(par_grouping,poped.db$design_space$G_xt)
-    # par_type <- c(par_type,rep("xt",length(poped.db$design$xt)))
-    par_dim$xt <- dim(poped.db$design$xt)
-    if(is.null(poped.db$design_space$xt_space) && build_allowed_values){ 
-      poped.db$design_space$xt_space <- cell(par_dim$xt)
-    }
-    # allowed_values <- c(allowed_values,poped.db$design_space$xt_space)
-    
-    for(i in 1:poped.db$design$m){
-      if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
-        par <- c(par,poped.db$design$xt[i,1:poped.db$design$ni[i]])
-        upper <- c(upper,poped.db$design_space$maxxt[i,1:poped.db$design$ni[i]])
-        lower <- c(lower,poped.db$design_space$minxt[i,1:poped.db$design$ni[i]])
-        par_grouping <- c(par_grouping,poped.db$design_space$G_xt[i,1:poped.db$design$ni[i]])
-        par_type <- c(par_type,rep("xt",length(poped.db$design$xt[i,1:poped.db$design$ni[i]])))
-        allowed_values <- c(allowed_values,poped.db$design_space$xt_space[i,1:poped.db$design$ni[i]])
-      }
-    }
-  }
-  if(opt_a) { 
-    par <- c(par,poped.db$design$a)
-    upper <- c(upper,poped.db$design_space$maxa)
-    lower <- c(lower,poped.db$design_space$mina)
-    if(opt_xt){
-      par_grouping <- c(par_grouping,poped.db$design_space$G_a + max(par_grouping)) 
-    } else {
-      par_grouping <- c(par_grouping,poped.db$design_space$G_a) 
-    }
-    par_type <- c(par_type,rep("a",length(poped.db$design$a)))
-    par_dim$a <- dim(poped.db$design$a)
-    if(is.null(poped.db$design_space$a_space) && build_allowed_values){ 
-      poped.db$design_space$a_space <- cell(par_dim$a)
-    }
-    allowed_values <- c(allowed_values,poped.db$design_space$a_space)
-    
-  }
-  if(opt_x) NULL # par <- c(par,poped.db$design$x)
+  #---------------------- ofv for optimization
+  my_ofv <- create_ofv(poped.db=poped.db,
+                       opt_xt=opt_xt,
+                       opt_a=opt_a,
+                       opt_x=opt_x,
+                       opt_samps=opt_samps,
+                       opt_inds=opt_inds,
+                       fim.calc.type=fim.calc.type,
+                       ofv_calc_type=ofv_calc_type,
+                       approx_type=approx_type,
+                       d_switch=d_switch,
+                       ED_samp_size = ED_samp_size,
+                       bLHS=bLHS,
+                       use_laplace=use_laplace,
+                       ofv_fun = ofv_fun,
+                       transform_parameters = transform_parameters,
+                       ...) 
+  par <- my_ofv$par
+  ofv_fun <- my_ofv$fun
+  back_transform_par_fun <- my_ofv$back_transform_par
+  lower=my_ofv$space[["lower"]]
+  upper=my_ofv$space[["upper"]]
+  allowed_values=my_ofv$space[["allowed_values"]]
+  par_cat_cont=my_ofv$space[["par_cat_cont"]]
+  par_fixed_index=my_ofv$space[["par_fixed_index"]]
+  par_df_unique=my_ofv$space[["par_df_unique"]]
+  par_df=my_ofv$space[["par_df"]]
+  par_dim=my_ofv$space[["par_dim"]]
+  par_type=my_ofv$space[["par_type"]]
   
-  # continuous and discrete parameters
-  npar <- max(c(length(lower),length(upper),length(allowed_values),length(par)))
-  par_cat_cont <- rep("cont",npar)
-  if(!is.null(allowed_values)){
-    for(k in 1:npar){
-      if(!is.na(allowed_values[[k]]) && length(allowed_values[[k]]>0)){
-        par_cat_cont[k] <- "cat"          
-      }
-    }
-  }
-  
-  # Parameter grouping
-  par_df <- data.frame(par,par_grouping,upper,lower,par_type,par_cat_cont)
-  par_df_unique <- NULL
-  #allowed_values_full <- allowed_values 
-  if(!all(!duplicated(par_df$par_grouping))){
-    par_df_unique <- par_df[!duplicated(par_df$par_grouping),]
-    par <- par_df_unique$par
-    lower <- par_df_unique$lower
-    upper <- par_df_unique$upper
-    par_cat_cont <- par_df_unique$par_cat_cont
-    allowed_values <- allowed_values[!duplicated(par_df$par_grouping)]
-  }
-  
-  par_df_2 <- data.frame(par,upper,lower,par_cat_cont)
-  #par_fixed_index <- which(upper==lower)
-  par_fixed_index <- which(upper==lower & par_cat_cont=="cont")
-  for(npar in 1:length(par)){
-    if(par_cat_cont[npar]=="cont") next
-    if(all(par[npar]==allowed_values[[npar]])){
-      par_fixed_index <- c(par_fixed_index,npar)
-    } 
-  }
-  par_fixed_index <- sort(unique(par_fixed_index))
-  par_not_fixed_index <- 1:length(par)
-  par_not_fixed_index <- par_not_fixed_index[!(par_not_fixed_index %in% par_fixed_index)]
-  
-  if(length(par_fixed_index)!=0){
-    par <- par[-c(par_fixed_index)]
-    npar <- length(par)
-    lower <- lower[-c(par_fixed_index)]
-    upper <- upper[-c(par_fixed_index)]
-    par_cat_cont <- par_cat_cont[-c(par_fixed_index)]
-    allowed_values <- allowed_values[-c(par_fixed_index)]
-  }
-  
-  if(length(par)==0){
-    message("No design parameters have a design space to optimize")
-    return(invisible(list( ofv= output$ofv, FIM=fmf, poped.db = poped.db )))
-  } 
-  
-  if(!is.null(allowed_values)){
-    for(k in 1:npar){
-      if(!all(is.na(allowed_values[[k]]))){
-        if(length(upper)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]<=upper[k]]
-        if(length(lower)>0) allowed_values[[k]] <- allowed_values[[k]][allowed_values[[k]]>=lower[k]]
-      }
-    }
-  }
-
-  #------- create optimization function with optimization parameters first
-  ofv_fun <- function(par,only_cont=F,...){
-    
-    if(length(par_fixed_index)!=0){
-      par_df_2[par_not_fixed_index,"par"] <- par
-      par <- par_df_2$par
-    }
-    
-    if(!is.null(par_df_unique)){
-      if(only_cont){ 
-        par_df_unique[par_df_unique$par_cat_cont=="cont","par"] <- par
-      } else {
-        par_df_unique$par <- par
-      }
-      for(j in par_df_unique$par_grouping){
-        par_df[par_df$par_grouping==j,"par"] <- par_df_unique[par_df_unique$par_grouping==j,"par"]
-      }  
-      
-      #par_full[par_cat_cont=="cont"] <- par 
-      par <- par_df$par
-    } else if (only_cont){ 
-      par_df[par_df$par_cat_cont=="cont","par"] <- par
-      par <- par_df$par
-    }
-    xt <- NULL
-    #if(opt_xt) xt <- matrix(par[par_type=="xt"],par_dim$xt)
-    if(opt_xt){
-      xt <- zeros(par_dim$xt)
-      par_xt <- par[par_type=="xt"]
-      for(i in 1:poped.db$design$m){
-        if((poped.db$design$ni[i]!=0 && poped.db$design$groupsize[i]!=0)){
-          xt[i,1:poped.db$design$ni[i]] <- par_xt[1:poped.db$design$ni[i]]
-          par_xt <- par_xt[-c(1:poped.db$design$ni[i])]
-        }
-      }
-    } 
-    
-    a <- NULL
-    if(opt_a) a <- matrix(par[par_type=="a"],par_dim$a)
-    
-    # if(d_switch){
-    #   FIM <- evaluate.fim(poped.db,xt=xt,a=a,...)
-    #   ofv <- ofv_fim(FIM,poped.db,...)
-    # } else{
-    #   output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-    #                             ED_samp_size=ED_samp_size,
-    #                             bLHS=bLHS,
-    #                             use_laplace=use_laplace,
-    #                             ofv_calc_type=ofv_calc_type,
-    #                             fim.calc.type=fim.calc.type,
-    #                             xt=xt,
-    #                             a=a,
-    #                             ...)
-    #   
-    #   FIM <- output$fim
-    #   ofv <- output$ofv
-    # }
-    
-    
-    extra_args <- dots(...)
-    extra_args$evaluate_fim <- FALSE
-    
-    output <- do.call(calc_ofv_and_fim,
-                      c(list(
-                        poped.db,d_switch=d_switch,
-                        ED_samp_size=ED_samp_size,
-                        bLHS=bLHS,
-                        use_laplace=use_laplace,
-                        ofv_calc_type=ofv_calc_type,
-                        fim.calc.type=fim.calc.type,
-                        xt=xt,
-                        a=a,
-                        ofv_fun = ofv_fun_user
-                      ),
-                      extra_args))
-    
-    
-    # output <-calc_ofv_and_fim(poped.db,d_switch=d_switch,
-    #                           ED_samp_size=ED_samp_size,
-    #                           bLHS=bLHS,
-    #                           use_laplace=use_laplace,
-    #                           ofv_calc_type=ofv_calc_type,
-    #                           fim.calc.type=fim.calc.type,
-    #                           xt=xt,
-    #                           a=a,
-    #                           evaluate_fim = F,
-    #                           ...)
-    #FIM <- output$fim
-    ofv <- output$ofv
-    
-    
-    #ofv <- tryCatch(ofv_fim(FIM,poped.db,...), error = function(e) e)
-    if(!is.finite(ofv) && ofv_calc_type==4){
-      #ofv <- -Inf 
-      ofv <- NA
-    } else {
-      #if(!is.finite(ofv)) ofv <- 1e-15
-      if(!is.finite(ofv)) ofv <- NA
-      #if(!is.finite(ofv)) ofv <- -Inf
-    }
-    
-    #cat(ofv,"\n")
-    return(ofv)
-  }
   
   #------------ optimize
   if(!(fn=="")) sink(fn, append=TRUE, split=TRUE)
@@ -531,7 +335,7 @@ poped_optim <- function(poped.db,
             -ofv_fun(par,only_cont=F,...) 
           }
         }
-
+        
         output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                            fitness = ofv_fun_2,
                                            #par_full=par_full,
@@ -575,7 +379,7 @@ poped_optim <- function(poped.db,
       
       # efficiency
       
-        
+      
       eff <- efficiency(ofv_init, output$ofv, poped.db)
       fprintf("Efficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff)
       #cat("Efficiency: \n  ", attr(eff,"description"), sprintf("%.5g",eff), "\n")
@@ -641,6 +445,9 @@ poped_optim <- function(poped.db,
   } # end of total loop 
   
   if(!(fn=="")) sink()
+  
+  # back transform parameters
+  par <- back_transform_par_fun(par)
   
   # add the results into a poped database 
   # expand results to full size 

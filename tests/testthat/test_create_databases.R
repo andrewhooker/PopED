@@ -133,3 +133,22 @@ test_that("create.poped.database works for different inputs", {
   expect_true(!is.null(dimnames(poped.db$design$a)))
   
 })
+
+test_that("Number of variables are counted correctly in fin.largest.index()", {
+  sfg_test <- function(x,a,bpop,b,bocc){
+    parameters=c( V=bpop[1]*exp(b[1]),
+                  KA=bpop[2]*exp(b[2]),
+                  CL_OCC_1=bpop[3]*exp(b[3]+bocc[1,1]+bocc[2,2]),
+                  CL_OCC_2=bpop[3]*exp(b[3]+bocc[1,2]+bocc[2,1] + bocc[1,3]),
+                  Favail=bpop[4],
+                  DOSE=a[1],
+                  TAU=a[2])
+    return( parameters ) 
+  }
+  expect_equal(find.largest.index(sfg_test,"bocc",mat=T,mat.row=T),2)
+  expect_equal(find.largest.index(sfg_test,"bocc",mat=T,mat.row=F),3)
+  expect_equal(find.largest.index("sfg","bpop"),4)
+  expect_equal(find.largest.index("sfg","b"),3)
+  expect_equal(find.largest.index("sfg","x"),0)
+  expect_equal(find.largest.index("sfg","a"),2)
+})
