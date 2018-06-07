@@ -459,7 +459,7 @@ create.poped.database <-
            ## -- Matrix defining the diagnonals of the IIV (same logic as for the fixed efects) --
            # can also just supply the parameter values as a c()
            d=poped.choose(popedInput$parameters$d,NULL),
-           ## -- Matrix defining the covariances of the IIV variances --
+           ## -- vector defining the row major lower triangle of the covariances of the IIV variances --
            # set to zero if not defined
            covd=popedInput$parameters$covd,
            ## -- Matrix defining the variances of the residual variability terms --
