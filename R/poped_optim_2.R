@@ -178,6 +178,7 @@ poped_optim_2 <- function(poped.db,
   allowed_values=my_ofv$space[["allowed_values"]]
   par_cat_cont=my_ofv$space[["par_cat_cont"]]
   par_fixed_index=my_ofv$space[["par_fixed_index"]]
+  par_not_fixed_index=my_ofv$space[["par_not_fixed_index"]]
   par_df_unique=my_ofv$space[["par_df_unique"]]
   par_df=my_ofv$space[["par_df"]]
   par_dim=my_ofv$space[["par_dim"]]
