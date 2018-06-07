@@ -192,7 +192,7 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$ARS))] <- control$ARS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
         output <- do.call(optim_ARS,c(list(par=ps_tbl$par,
                                            fn=tmp_ofv_fun,
                                            lower=ps_tbl$lower,
@@ -231,7 +231,7 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$LS))] <- control$LS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
         output <- do.call(optim_LS,c(list(par=ps_tbl$par,
                                           fn=tmp_ofv_fun,
                                           lower=ps_tbl$lower,
@@ -285,7 +285,7 @@ poped_optim_3 <- function(poped.db,
         if(is.null(con[["fnscale"]])) con$fnscale <- fnscale
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
         output <- optim(par=ps_tbl$par,
                         fn=tmp_ofv_fun,
                         gr=NULL,
@@ -343,8 +343,8 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$GA))] <- control$GA
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim_2(par,ps_tbl,poped.db,...)}
-        if(!maximize) tmp_ofv_fun <- function(par,...){-ofv_optim_2(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
+        if(!maximize) tmp_ofv_fun <- function(par,...){-ofv_optim(par,ps_tbl,poped.db,...)}
         if(packageVersion("GA")<"3.1.1")
           output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                              fitness = tmp_ofv_fun,
