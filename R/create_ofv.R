@@ -334,6 +334,6 @@ create_ofv <- function(poped.db,
               space=list(lower=lower_opt,upper=upper_opt,par_cat_cont=par_cat_cont,
                          par_fixed_index=par_fixed_index,par_df_unique=par_df_unique,
                          par_df=par_df, par_dim=par_dim,
-                         par_type=par_type)) )
+                         par_type=par_type, par_not_fixed_index = par_not_fixed_index)) )
 }
 
