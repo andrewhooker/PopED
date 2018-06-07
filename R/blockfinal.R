@@ -205,27 +205,27 @@ print_xt <- function (xtopt, ni, model_switch,fn="",head_txt="Optimized sample t
   invisible()
 }
 
-print_a <- function (aopt,fn="",head_txt="Optimized covariates:\n") {
-  cat(head_txt,file=fn)
-  for(j in 1:size(a,1)){
-    aopt_i = aopt[j,1:ni[j]]
-    model_switch_i = model_switch[j,1:ni[j]]
-    if(!is.null(xt_other)) xt_other_i = xt_other[j,1:ni[j]]
-    for(i in unique(as.vector(model_switch_i))){
-      xtopt_i_sort = sort(xtopt_i[model_switch_i==i])
-      if(!is.null(xt_other)) xt_other_i_sort = xt_other_i[order(xtopt_i[model_switch_i==i])]
-      if(size(xtopt,1)>1) cat(sprintf("Group %g : ", j),file=fn)
-      if(length(unique(as.vector(model_switch_i)))>1) cat(sprintf("Model %g : ", i),file=fn)
-      if(!is.null(xt_other)) {
-        cat(sprintf("%6.4g", xt_other_i_sort),file=fn)
-      } else {
-        cat(sprintf("%6.4g", xtopt_i_sort),file=fn)
-      }
-      cat("\n",file=fn)
-    }
-  }
-  invisible()
-}
+# print_a <- function (aopt,fn="",head_txt="Optimized covariates:\n") {
+#   cat(head_txt,file=fn)
+#   for(j in 1:size(a,1)){
+#     aopt_i = aopt[j,1:ni[j]]
+#     model_switch_i = model_switch[j,1:ni[j]]
+#     if(!is.null(xt_other)) xt_other_i = xt_other[j,1:ni[j]]
+#     for(i in unique(as.vector(model_switch_i))){
+#       xtopt_i_sort = sort(xtopt_i[model_switch_i==i])
+#       if(!is.null(xt_other)) xt_other_i_sort = xt_other_i[order(xtopt_i[model_switch_i==i])]
+#       if(size(xtopt,1)>1) cat(sprintf("Group %g : ", j),file=fn)
+#       if(length(unique(as.vector(model_switch_i)))>1) cat(sprintf("Model %g : ", i),file=fn)
+#       if(!is.null(xt_other)) {
+#         cat(sprintf("%6.4g", xt_other_i_sort),file=fn)
+#       } else {
+#         cat(sprintf("%6.4g", xtopt_i_sort),file=fn)
+#       }
+#       cat("\n",file=fn)
+#     }
+#   }
+#   invisible()
+# }
 
 get_parnam <- function (poped.db) {
   nbpop = length(poped.db$parameters$notfixed_bpop)
