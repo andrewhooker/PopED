@@ -1,5 +1,6 @@
 par_and_space_tbl <- function(poped.db) {
   df <- NULL
+  allowed_values <- allowed_values_2 <- cont <- lower <- upper <- par <- NULL
   
   design=poped.db$design
   design_space=poped.db$design_space
@@ -263,6 +264,8 @@ get_par_and_space_optim <- function(poped.db,
                                     cont_cat = "both") 
 {
     
+  type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
+  
   #----------- checks
   if(!any(opt_xt,opt_a,opt_samps,opt_inds)){
     stop('No optimization parameter is set.')
@@ -338,6 +341,9 @@ get_par_and_space_optim <- function(poped.db,
 }
 
 put_par_optim <- function(tbl_opt,tbl_full) {
+  
+  transformed <- par <- lower_orig <- upper_orig <- type <- par_opt <- NULL
+  
   #transformed back to normal scale
   if("transformed" %in% names(tbl_opt)){
     tbl_opt <- 
@@ -392,6 +398,7 @@ put_par_optim <- function(tbl_opt,tbl_full) {
 # }
 
 get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
+  type <- par <- group <- name <- NULL
   ret <- dplyr::filter(tbl_full,type==!!type_str) 
   ret <- dplyr::select(ret,par,group,name) 
   ret <- tidyr::spread(ret,key=name,value = par) 
