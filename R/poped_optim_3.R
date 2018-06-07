@@ -20,7 +20,7 @@
 #' @inheritParams calc_ofv_and_fim
 #' @inheritParams optim_LS
 #' @param ... arguments passed to other functions.
-#' @param control Contains control arguments for each method specified.
+#' @param control Contains control arguments specified for each method separately. 
 #' @param method A vector of optimization methods to use in a sequential 
 #'   fashion.  Options are \code{c("ARS","BFGS","LS","GA")}. \code{c("ARS")} is 
 #'   for Adaptive Random Search \code{\link{optim_ARS}}.  \code{c("LS")} is for 
@@ -335,10 +335,10 @@ poped_optim_3 <- function(poped.db,
         
         con <- list(parallel=parallel_ga)
         dot_vals <- dots(...)
-        if(is.null(dot_vals[["monitor"]])){
-          if(packageVersion("GA")>="3.0.2" && packageVersion("GA")<"3.1.1") con$monitor <- GA::gaMonitor2
-          if(packageVersion("GA")>="3.1.1") con$monitor <- GA::gaMonitor
-        }
+        #if(is.null(dot_vals[["monitor"]])){
+          #if(packageVersion("GA")>="3.0.2" && packageVersion("GA")<"3.1.1") con$monitor <- GA::gaMonitor2
+          #if(packageVersion("GA")>="3.1.1") con$monitor <- GA::gaMonitor
+        #}
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
