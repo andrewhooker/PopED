@@ -41,7 +41,7 @@ Line Search \code{\link{optim_LS}}. \code{c("BFGS")} is for Method
 "L-BFGS-B" from \code{\link[stats]{optim}}. \code{c("GA")} is for the 
 genetic algorithm from \code{\link[GA]{ga}}.}
 
-\item{control}{Contains control arguments for each method specified.}
+\item{control}{Contains control arguments specified for each method separately.}
 
 \item{trace}{Should the algorithm output results intermittently.}
 

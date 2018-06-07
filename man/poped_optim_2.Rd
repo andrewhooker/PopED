@@ -129,6 +129,8 @@ e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{maximize}{Should the objective function be maximized or minimized?}
 
+\item{transform_parameters}{Should we transform the parameters before optimization?}
+
 \item{...}{arguments passed to other functions.}
 }
 \description{
