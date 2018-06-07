@@ -18,7 +18,7 @@ ofv_optim <- function(par,ps_tbl_opt,ps_tbl_full,poped_db,...){
   #extra_args <- dots(...)
   #extra_args$evaluate_fim <- FALSE
   
-  output <- calc_ofv_and_fim(poped.db,xt=xt,a=a,evaluate_fim = FALSE,...)
+  output <- calc_ofv_and_fim(poped_db,xt=xt,a=a,evaluate_fim = FALSE,...)
   # output <- do.call(calc_ofv_and_fim,
   #                   c(list(
   #                     poped.db,
