@@ -45,6 +45,7 @@
 #'   the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==FALSE} then -stop_crit_rel is the cut
 #'   off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).
 #' @param maximize Should the objective function be maximized or minimized?
+#' @param transform_parameters Should we transform the parameters before optimization?
 #'   
 #'   
 #'   
