@@ -324,7 +324,7 @@ poped_optim_2 <- function(poped.db,
         
         con <- list(parallel=parallel_ga)
         dot_vals <- dots(...)
-        if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
+        #if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
         
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA
