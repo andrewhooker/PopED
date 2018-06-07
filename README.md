@@ -2,6 +2,7 @@ PopED: Population (and individual) Experimental Design in R
 ======
 
 [![Travis-CI Build Status](https://travis-ci.org/andrewhooker/PopED.svg?branch=master)](https://travis-ci.org/andrewhooker/PopED)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/andrewhooker/PopED?branch=master&svg=true)](https://ci.appveyor.com/project/andrewhooker/PopED)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PopED)](https://CRAN.R-project.org/package=PopED)
 [![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
 

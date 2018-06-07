@@ -10,3 +10,4 @@
 ^docs$
 ^_pkgdown\.yml$
 ^index\.md$
+^appveyor\.yml$
