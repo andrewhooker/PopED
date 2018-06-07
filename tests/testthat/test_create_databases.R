@@ -134,7 +134,7 @@ test_that("create.poped.database works for different inputs", {
   
 })
 
-test_that("Number of variables are counted correctly in fin.largest.index()", {
+test_that("Number of variables are counted correctly in find.largest.index()", {
   sfg_test <- function(x,a,bpop,b,bocc){
     parameters=c( V=bpop[1]*exp(b[1]),
                   KA=bpop[2]*exp(b[2]),
@@ -147,8 +147,8 @@ test_that("Number of variables are counted correctly in fin.largest.index()", {
   }
   expect_equal(find.largest.index(sfg_test,"bocc",mat=T,mat.row=T),2)
   expect_equal(find.largest.index(sfg_test,"bocc",mat=T,mat.row=F),3)
-  expect_equal(find.largest.index("sfg","bpop"),4)
-  expect_equal(find.largest.index("sfg","b"),3)
-  expect_equal(find.largest.index("sfg","x"),0)
-  expect_equal(find.largest.index("sfg","a"),2)
+  expect_equal(find.largest.index(sfg_test,"bpop"),4)
+  expect_equal(find.largest.index(sfg_test,"b"),3)
+  expect_equal(find.largest.index(sfg_test,"x"),0)
+  expect_equal(find.largest.index(sfg_test,"a"),2)
 })
