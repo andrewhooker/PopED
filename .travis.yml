@@ -5,20 +5,19 @@ cache: packages
 #warnings_are_errors: true
 #sudo: required
 
-#r_github_packages:
-#  - jimhester/covr
-
 r:
 #  - oldrel
   - release
   - devel
 
 
-r_github_packages:
-  - cran/survival
+#r_github_packages:
+#  - cran/survival
+#  - jimhester/covr
 
-r_packages:
-  - covr
+#r_packages:
+#  - covr
 
 after_success:
-  - Rscript -e 'library(covr); codecov(type=("all"))'
+  - Rscript -e 'covr::codecov(type=c("all"))'
+  
