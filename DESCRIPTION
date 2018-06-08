@@ -28,7 +28,8 @@ Suggests:
     shiny,
     rhandsontable,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
     person("Marco","Foracchia", role="aut", comment="O-Matrix version"),
