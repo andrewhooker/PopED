@@ -31,10 +31,10 @@ Suggests:
     rmarkdown
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
-    person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
     person("Marco","Foracchia", role="aut", comment="O-Matrix version"),
-    person("Joakim", "Nyberg", role="aut", comment="MATLAB version"),
-    person("Eric","Stroemberg", role="ctb", comment="MATLAB version")
+    person("Eric","Stroemberg", role="ctb", comment="MATLAB version"),
+    person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
+    person("Joakim", "Nyberg", role="aut", comment="MATLAB version")
     )
 Description: Optimal experimental designs for both population and individual
     studies based on nonlinear mixed-effect models. Often this is based on a
