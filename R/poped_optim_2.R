@@ -59,9 +59,10 @@
 #'   
 #' @family Optimize
 #'   
+#' @keywords internal
 # @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 # @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
-#' @export
+# @export
 
 # uses create_ofv
 poped_optim_2 <- function(poped.db,
@@ -91,7 +92,7 @@ poped_optim_2 <- function(poped.db,
                           stop_crit_rel = NULL,
                           ofv_fun = poped.db$settings$ofv_fun,
                           maximize=T,
-                          transform_parameters = T,
+                          transform_parameters = F,
                           ...){
   
   #------------ update poped.db with options supplied in function
