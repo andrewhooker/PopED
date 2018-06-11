@@ -38,17 +38,16 @@ ofv_optim <- function(par,ps_tbl,poped_db,...){
     a <- t(a_tmp)
   }
 
-  #extra_args <- dots(...)
-  #extra_args$evaluate_fim <- FALSE
-  
-  output <- calc_ofv_and_fim(poped_db,xt=xt,a=a,evaluate_fim = FALSE,...)
-  # output <- do.call(calc_ofv_and_fim,
-  #                   c(list(
-  #                     poped.db,
-  #                     xt=xt,
-  #                     a=a
-  #                   ),
-  #                   extra_args))
+  #output <- calc_ofv_and_fim(poped_db,xt=xt,a=a,evaluate_fim = FALSE,...)
+  extra_args <- dots(...)
+  extra_args$evaluate_fim <- FALSE
+  output <- do.call(calc_ofv_and_fim,
+                    c(list(
+                      poped.db,
+                      xt=xt,
+                      a=a
+                    ),
+                    extra_args))
   
   ofv <- output$ofv
   
