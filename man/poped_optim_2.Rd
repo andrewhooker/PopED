@@ -20,7 +20,7 @@ poped_optim_2(poped.db, opt_xt = poped.db$settings$optsw[2],
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE), iter_max = 10,
   stop_crit_eff = 1.001, stop_crit_diff = NULL, stop_crit_rel = NULL,
   ofv_fun = poped.db$settings$ofv_fun, maximize = T,
-  transform_parameters = T, ...)
+  transform_parameters = F, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -164,6 +164,7 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_3}},
+  \code{\link{poped_optim_1}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\keyword{internal}
