@@ -267,7 +267,7 @@ get_par_and_space_optim <- function(poped.db,
   type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
   
   #----------- checks
-  if(!any(opt_xt,opt_a,opt_samps,opt_inds)){
+  if(!any(as.logical(opt_xt),as.logical(opt_a),as.logical(opt_samps),as.logical(opt_inds))){
     stop('No optimization parameter is set.')
   }
   
