@@ -30,15 +30,14 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
                      iter_max = 2)
 
 # minimize the cost function
-out_2 <- poped_optim(poped.db,opt_a =TRUE,
+out_3 <- poped_optim(poped.db,opt_a =TRUE,
                      ofv_fun=crit_fcn,
                      control = list(ARS=list(iter=2),
                                     BFGS=list(maxit=2),
                                     LS=list(line_length=2)),
                      iter_max = 2,
                      maximize = FALSE,
-                     evaluate_fim = FALSE
-                    )
+                     evaluate_fim = FALSE)
 
 
 \dontrun{
@@ -54,7 +53,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
   poped.db.2 <- poped.db
   poped.db.2$design_space$xt_space <- matrix(list(seq(1,120)),1,8)
   output_2 <- poped_optim(poped.db.2,opt_xt=T,parallel = TRUE)
-  
+
   get_rse(output_2$FIM,output_2$poped.db)
   plot_model_prediction(output_2$poped.db)
   
@@ -77,7 +76,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
   ars.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "ARS",
                            control = list(ARS=list(iter=5)))
   
-  # L-BFGS-B gradient search from the stats::optim() function, 
+  # BFGS gradient search from the stats::optim() function, 
   # DOSE and sample time optimization
   bfgs.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "BFGS",
                             control = list(BFGS=list(maxit=5)))
