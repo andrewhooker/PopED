@@ -13,6 +13,10 @@
 
 evaluate_design <- function(poped.db, ...) {
   out <- calc_ofv_and_fim(poped.db,...)
-  out$rse <- get_rse(out$fim,poped.db,...)
+  if(is.null(out$fim)){
+    out$rse <- NULL
+  } else{
+    out$rse <- get_rse(out$fim,poped.db,...)
+  }
   return(out)
 }
