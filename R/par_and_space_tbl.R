@@ -260,8 +260,9 @@ get_par_and_space_optim <- function(poped.db,
                                     opt_x=poped.db$settings$optsw[3],
                                     opt_samps=poped.db$settings$optsw[1],
                                     opt_inds=poped.db$settings$optsw[5],
-                                    transform_parameters=T,
-                                    cont_cat = "both") 
+                                    transform_parameters=TRUE,
+                                    cont_cat = "both",
+                                    warn_when_none=TRUE) 
 {
     
   type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
@@ -291,7 +292,7 @@ get_par_and_space_optim <- function(poped.db,
   if(cont_cat=="cat")   df <- dplyr::filter(df,cont==FALSE)
   
   if(nrow(df)==0){
-    warning("No parameters to optimize")
+    if(warn_when_none) warning("No parameters to optimize")
     return(df)
   }
   
@@ -301,6 +302,11 @@ get_par_and_space_optim <- function(poped.db,
   if(opt_a) filter_var <- c(filter_var,"'a'")
   exp <- parse(text=paste0("type==",filter_var,collapse = " | "))
   df <- dplyr::filter(df,eval(exp))
+  
+  if(nrow(df)==0){
+    if(warn_when_none) warning("No parameters to optimize")
+    return(df)
+  }
   
   if(transform_parameters){
     df <- df %>% dplyr::rowwise() %>% 
