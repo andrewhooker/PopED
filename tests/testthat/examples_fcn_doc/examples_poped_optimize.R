@@ -62,7 +62,6 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
                                 bUseBFGSMinimizer = 1,
                                 bUseLineSearch = 0)
   
-
   ##############
   # E-family Optimization
   ##############

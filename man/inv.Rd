@@ -4,7 +4,8 @@
 \alias{inv}
 \title{Compute the inverse of a matrix}
 \usage{
-inv(mat, method = 1, tol = .Machine$double.eps, pseudo_on_fail = TRUE)
+inv(mat, method = 1, tol = .Machine$double.eps, pseudo_on_fail = TRUE,
+  ...)
 }
 \arguments{
 \item{mat}{A matrix}
@@ -15,6 +16,8 @@ inv(mat, method = 1, tol = .Machine$double.eps, pseudo_on_fail = TRUE)
 \item{tol}{The tolerance at wich we should identify a sigular value as zero (used in pseudoinverse calculation).}
 
 \item{pseudo_on_fail}{If another method fails should the Moore-Penrose generalized inverse (pseudoinverse) be used?}
+
+\item{...}{Not used.}
 }
 \value{
 The inverse matrix
