@@ -106,12 +106,14 @@ poped_optim <- function(poped.db,
   }
 
   dot_vals <- dots(...)
+  #dot_vals <- list(...)
   optim_ver <- dot_vals[["optim_ver"]]
+  dot_vals[["optim_ver"]] <- NULL
   if(is.null(optim_ver)) optim_ver <- 3
   
-  if(optim_ver==1) results <- do.call(poped_optim_1,c(new.arg.list,...))
-  if(optim_ver==2) results <- do.call(poped_optim_2,c(new.arg.list,...))
-  if(optim_ver==3) results <- do.call(poped_optim_3,c(new.arg.list,...))
+  if(optim_ver==1) results <- do.call(poped_optim_1,c(new.arg.list,dot_vals))
+  if(optim_ver==2) results <- do.call(poped_optim_2,c(new.arg.list,dot_vals))
+  if(optim_ver==3) results <- do.call(poped_optim_3,c(new.arg.list,dot_vals))
   
   return(invisible(results)) 
 }
