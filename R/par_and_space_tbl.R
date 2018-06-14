@@ -311,10 +311,11 @@ get_par_and_space_optim <- function(poped.db,
   if(transform_parameters){
     df <- df %>% dplyr::rowwise() %>% 
       dplyr::mutate(par=dplyr::if_else(cont==TRUE,
-                                   FastImputation::NormalizeBoundedVariable(par,
-                                                                            constraints =
-                                                                              list(lower=lower,
-                                                                                   upper=upper)),
+                                   # FastImputation::NormalizeBoundedVariable(par,
+                                   #                                          constraints =
+                                   #                                            list(lower=lower,
+                                   #                                                 upper=upper)),
+                                   unbound_par(par,lower=lower,upper=upper),
                                    par))
     
     df <- df %>% dplyr::mutate(transformed=dplyr::if_else(cont==TRUE,TRUE,FALSE),
@@ -357,12 +358,13 @@ put_par_optim <- function(tbl_opt,tbl_full) {
                     par=
                       dplyr::if_else(
                         transformed==TRUE,
-                        FastImputation::BoundNormalizedVariable(
-                          par,
-                          constraints =
-                            list(lower=lower_orig,
-                                 upper=upper_orig)
-                        ),
+                        # FastImputation::BoundNormalizedVariable(
+                        #   par,
+                        #   constraints =
+                        #     list(lower=lower_orig,
+                        #          upper=upper_orig)
+                        # ),
+                        bound_par(par,lower=lower_orig,upper=upper_orig),
                         par
                       )
       )

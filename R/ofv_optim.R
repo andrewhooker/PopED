@@ -15,7 +15,7 @@ ofv_optim <- function(par,ps_tbl,poped_db,...){
   # transform parameters
   if(attr(ps_tbl,"transformed")==TRUE)
     par[ps_transformed] <-
-    mapply(transform_back,par[ps_transformed],
+    mapply(bound_par,par[ps_transformed],
            ps_lower_orig[ps_transformed],
            ps_upper_orig[ps_transformed])
 

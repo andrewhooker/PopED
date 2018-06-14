@@ -170,10 +170,11 @@ create_ofv <- function(poped.db,
   if(transform_parameters){
     for(i in 1:length(par)){
       if(par_cat_cont[i]=="cont"){
-        par[i] <- FastImputation::NormalizeBoundedVariable(par[i],
-                                                           constraints = 
-                                                             list(lower=lower[i],
-                                                                  upper=upper[i]))
+        # par[i] <- FastImputation::NormalizeBoundedVariable(par[i],
+        #                                                    constraints = 
+        #                                                      list(lower=lower[i],
+        #                                                           upper=upper[i]))
+        par[i] <- unbound_par(par[i],lower=lower[i],upper=upper[i])
         lower_opt[i] = -Inf
         upper_opt[i] = Inf
         
@@ -192,10 +193,11 @@ create_ofv <- function(poped.db,
     if(transform_parameters){
       for(i in 1:length(par)){
         if(par_cat_cont[i]=="cont"){
-          par[i] <- FastImputation::BoundNormalizedVariable(par[i],
-                                                            constraints = 
-                                                              list(lower=lower[i],
-                                                                   upper=upper[i]))
+          # par[i] <- FastImputation::BoundNormalizedVariable(par[i],
+          #                                                   constraints = 
+          #                                                     list(lower=lower[i],
+          #                                                          upper=upper[i]))
+          par[i] <- bound_par(par[i],lower=lower[i],upper=upper[i])
           # if(is.finite(lower[i]) && is.finite(upper[i])){
           #   par[i] <- stats::plogis(par[i])
           #   par[i] <- (par[i] )*(upper[i]-lower[i])+ lower[i]
@@ -312,10 +314,11 @@ create_ofv <- function(poped.db,
     if(transform_parameters){
       for(i in 1:length(par)){
         if(par_cat_cont[i]=="cont"){
-          par[i] <- FastImputation::BoundNormalizedVariable(par[i],
-                                                            constraints = 
-                                                              list(lower=lower[i],
-                                                                   upper=upper[i]))
+          # par[i] <- FastImputation::BoundNormalizedVariable(par[i],
+          #                                                   constraints = 
+          #                                                     list(lower=lower[i],
+          #                                                          upper=upper[i]))
+          par[i] <- bound_par(par[i],lower=lower[i],upper=upper[i])
           # if(is.finite(lower[i]) && is.finite(upper[i])){
           #   par[i] <- stats::plogis(par[i])
           #   par[i] <- (par[i] )*(upper[i]-lower[i])+ lower[i]

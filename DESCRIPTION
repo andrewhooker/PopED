@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.3.2.9004
+Version: 0.3.2.9005
 Depends:
     R (>= 2.14)
 Imports:
@@ -16,7 +16,6 @@ Imports:
     boot,
     purrr,
     stringr,
-    FastImputation,
     tibble,
     tidyr
 Suggests:
