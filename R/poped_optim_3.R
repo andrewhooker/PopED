@@ -193,7 +193,15 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$ARS))] <- control$ARS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,
+                                                   d_switch=d_switch,
+                                                   ED_samp_size=ED_samp_size,
+                                                   bLHS=bLHS,
+                                                   use_laplace=use_laplace,
+                                                   ofv_calc_type=ofv_calc_type,
+                                                   fim.calc.type=fim.calc.type,
+                                                   ofv_fun = ofv_fun_user,
+                                                   ...)}
         output <- do.call(optim_ARS,c(list(par=ps_tbl$par,
                                            fn=tmp_ofv_fun,
                                            lower=ps_tbl$lower,
@@ -232,7 +240,15 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$LS))] <- control$LS
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,
+                                                   d_switch=d_switch,
+                                                   ED_samp_size=ED_samp_size,
+                                                   bLHS=bLHS,
+                                                   use_laplace=use_laplace,
+                                                   ofv_calc_type=ofv_calc_type,
+                                                   fim.calc.type=fim.calc.type,
+                                                   ofv_fun = ofv_fun_user,
+                                                   ...)}
         output <- do.call(optim_LS,c(list(par=ps_tbl$par,
                                           fn=tmp_ofv_fun,
                                           lower=ps_tbl$lower,
@@ -263,7 +279,8 @@ poped_optim_3 <- function(poped.db,
                                           opt_samps=opt_samps,
                                           opt_inds=opt_inds,
                                           transform_parameters=T,
-                                          cont_cat = "cont")
+                                          cont_cat = "cont",
+                                          warn_when_none=F)
         
        
         if(nrow(ps_tbl)==0){
@@ -286,7 +303,15 @@ poped_optim_3 <- function(poped.db,
         if(is.null(con[["fnscale"]])) con$fnscale <- fnscale
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,
+                                                   d_switch=d_switch,
+                                                   ED_samp_size=ED_samp_size,
+                                                   bLHS=bLHS,
+                                                   use_laplace=use_laplace,
+                                                   ofv_calc_type=ofv_calc_type,
+                                                   fim.calc.type=fim.calc.type,
+                                                   ofv_fun = ofv_fun_user,
+                                                   ...)}
         output <- optim(par=ps_tbl$par,
                         fn=tmp_ofv_fun,
                         gr=NULL,
@@ -321,7 +346,8 @@ poped_optim_3 <- function(poped.db,
                                           opt_samps=opt_samps,
                                           opt_inds=opt_inds,
                                           transform_parameters=F,
-                                          cont_cat = "cont")
+                                          cont_cat = "cont",
+                                          warn_when_none=F)
         
         
         if(nrow(ps_tbl)==0){
@@ -344,8 +370,24 @@ poped_optim_3 <- function(poped.db,
         con[(namc <- names(control$GA))] <- control$GA
         #if (length(noNms <- namc[!namc %in% nmsC])) warning("unknown names in control: ", paste(noNms, collapse = ", "))
         
-        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,...)}
-        if(!maximize) tmp_ofv_fun <- function(par,...){-ofv_optim(par,ps_tbl,poped.db,...)}
+        tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,
+                                                   d_switch=d_switch,
+                                                   ED_samp_size=ED_samp_size,
+                                                   bLHS=bLHS,
+                                                   use_laplace=use_laplace,
+                                                   ofv_calc_type=ofv_calc_type,
+                                                   fim.calc.type=fim.calc.type,
+                                                   ofv_fun = ofv_fun_user,
+                                                   ...)}
+        if(!maximize) tmp_ofv_fun <- function(par,...){-ofv_optim(par,ps_tbl,poped.db,
+                                                                  d_switch=d_switch,
+                                                                  ED_samp_size=ED_samp_size,
+                                                                  bLHS=bLHS,
+                                                                  use_laplace=use_laplace,
+                                                                  ofv_calc_type=ofv_calc_type,
+                                                                  fim.calc.type=fim.calc.type,
+                                                                  ofv_fun = ofv_fun_user,
+                                                                  ...)}
         if(packageVersion("GA")<"3.1.1")
           output_ga <- do.call(GA::ga,c(list(type = "real-valued", 
                                              fitness = tmp_ofv_fun,
@@ -476,6 +518,7 @@ poped_optim_3 <- function(poped.db,
                          ofv_fun = ofv_fun_user,
                          ...)[["fim"]]
   
+  if(use_laplace) poped.db$settings$ofv_calc_type <- 1
   time_value <- 
     blockfinal(fn=fn,fmf=FIM,
                dmf=output$ofv,
