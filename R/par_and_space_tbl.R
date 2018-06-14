@@ -347,42 +347,42 @@ get_par_and_space_optim <- function(poped.db,
   
 }
 
-put_par_optim <- function(tbl_opt,tbl_full) {
-  
-  transformed <- par <- lower_orig <- upper_orig <- type <- par_opt <- NULL
-  
-  #transformed back to normal scale
-  if("transformed" %in% names(tbl_opt)){
-    tbl_opt <- 
-      dplyr::mutate(tbl_opt,
-                    par=
-                      dplyr::if_else(
-                        transformed==TRUE,
-                        # FastImputation::BoundNormalizedVariable(
-                        #   par,
-                        #   constraints =
-                        #     list(lower=lower_orig,
-                        #          upper=upper_orig)
-                        # ),
-                        bound_par(par,lower=lower_orig,upper=upper_orig),
-                        par
-                      )
-      )
-  }
-    
-  # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
-  tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
-  tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
-
-  # tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>%
-    # dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>%
-    # dplyr::select(-par_opt)
-  tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type"))
-  tbl_full <- dplyr::mutate(tbl_full,par=dplyr::if_else(is.na(par_opt),par,par_opt))
-  tbl_full <- dplyr::select(tbl_full,-par_opt)
-  
-  return(tbl_full)
-}
+# put_par_optim <- function(tbl_opt,tbl_full) {
+#   
+#   transformed <- par <- lower_orig <- upper_orig <- type <- par_opt <- NULL
+#   
+#   #transformed back to normal scale
+#   if("transformed" %in% names(tbl_opt)){
+#     tbl_opt <- 
+#       dplyr::mutate(tbl_opt,
+#                     par=
+#                       dplyr::if_else(
+#                         transformed==TRUE,
+#                         # FastImputation::BoundNormalizedVariable(
+#                         #   par,
+#                         #   constraints =
+#                         #     list(lower=lower_orig,
+#                         #          upper=upper_orig)
+#                         # ),
+#                         bound_par(par,lower=lower_orig,upper=upper_orig),
+#                         par
+#                       )
+#       )
+#   }
+#     
+#   # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
+#   tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
+#   tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
+# 
+#   # tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>%
+#     # dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>%
+#     # dplyr::select(-par_opt)
+#   tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type"))
+#   tbl_full <- dplyr::mutate(tbl_full,par=dplyr::if_else(is.na(par_opt),par,par_opt))
+#   tbl_full <- dplyr::select(tbl_full,-par_opt)
+#   
+#   return(tbl_full)
+# }
 
 # 
 # get_xt_from_tbl <- function(tbl_full,add_names=FALSE){
@@ -405,19 +405,19 @@ put_par_optim <- function(tbl_opt,tbl_full) {
 #     tibble::column_to_rownames(var="group") %>% data.matrix()  
 # }
 
-get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
-  type <- par <- group <- name <- NULL
-  ret <- dplyr::filter(tbl_full,type==!!type_str) 
-  ret <- dplyr::select(ret,par,group,name) 
-  ret <- tidyr::spread(ret,key=name,value = par) 
-  if(add_row_names){ 
-    ret <- dplyr::mutate(ret,group=paste0("grp_",group)) 
-    ret <- data.matrix(tibble::column_to_rownames(as.data.frame(ret),var="group"))
-  } else {
-    ret <- dplyr::select(ret,-group)
-  }
-  return(ret)
-}
+# get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
+#   type <- par <- group <- name <- NULL
+#   ret <- dplyr::filter(tbl_full,type==!!type_str) 
+#   ret <- dplyr::select(ret,par,group,name) 
+#   ret <- tidyr::spread(ret,key=name,value = par) 
+#   if(add_row_names){ 
+#     ret <- dplyr::mutate(ret,group=paste0("grp_",group)) 
+#     ret <- data.matrix(tibble::column_to_rownames(as.data.frame(ret),var="group"))
+#   } else {
+#     ret <- dplyr::select(ret,-group)
+#   }
+#   return(ret)
+# }
 
 
 
