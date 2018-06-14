@@ -77,7 +77,7 @@ plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 
 
 # Optimization of DOSE and sampling times
-output_D_T <- poped_optim(poped.db.discrete, opt_xt = T, opt_a = T, parallel = T)
+output_D_T <- poped_optim(poped.db, opt_xt = T, opt_a = T, parallel = T)
 
 summary(output_D_T)
 plot_model_prediction(output_D_T$poped.db)

@@ -70,7 +70,7 @@ poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
 
 
 #' plot intial design just PRED
-plot_model_prediction(poped.db)
+plot_model_prediction(poped.db,model_num_points = 500)
 
 #' plot intial design with BSV and RUV in model
 plot_model_prediction(poped.db,IPRED=T,DV=T)
@@ -116,10 +116,10 @@ ff.PK.2.comp.oral.md.ode.compiled <- function(model_switch, xt, parameters, pope
 poped.db.compiled <- create.poped.database(poped.db, ff_fun="ff.PK.2.comp.oral.md.ode.compiled")
 
 ##  create plot of model without variability 
-plot_model_prediction(poped.db.compiled)
+plot_model_prediction(poped.db.compiled,model_num_points = 500)
 
 ##  create plot of model with variability 
-plot_model_prediction(poped.db.compiled,IPRED=T,DV=T)
+plot_model_prediction(poped.db.compiled,IPRED=T,DV=T,model_num_points = 500)
 
 #' how long does one evaluation of the FIM take? 
 tic(); (eval_compiled <- evaluate_design(poped.db.compiled)); toc()
@@ -129,5 +129,5 @@ tic(); (eval_compiled <- evaluate_design(poped.db.compiled)); toc()
 (eval_compiled$ofv-eval$ofv)/eval$ofv
 
 #' making optimization times more resonable
-# output <- poped_optim(poped.db.compiled,opt_xt=T, opt_a=T, parallel=T)
+#output <- poped_optim(poped.db.compiled,opt_xt=T, opt_a=T, parallel=T)
 

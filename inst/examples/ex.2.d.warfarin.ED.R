@@ -52,7 +52,7 @@ poped.db <- create.poped.database(ff_fun=ff,
                                   maxa=100,
                                   ED_samp_size=20)
 
-## ED evaluate.
+## ElnD: E(ln(det(FIM))) evaluate.
 ## result is inaccurate (run several times to see)
 ## increase ED_samp_size for a more accurate calculation
 tic(); output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=20); toc()
@@ -63,7 +63,7 @@ output$E_fim
 output_ls <- poped_optim(poped.db, opt_xt=T, parallel=T, method = "LS", d_switch=F, ED_samp_size=20)
 
 
-## E(det(FIM)) using Laplace approximation 
+## ED: E(det(FIM)) using Laplace approximation 
 ## deterministic calculation, relatively fast
 ## can be more stable for optimization
 tic(); output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE); toc()
