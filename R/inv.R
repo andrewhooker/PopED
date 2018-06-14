@@ -10,12 +10,13 @@
 #'   2 is using \code{solve(mat)} and 3 is the Moore-Penrose generalized inverse (pseudoinverse).
 #' @param tol The tolerance at wich we should identify a sigular value as zero (used in pseudoinverse calculation).
 #' @param pseudo_on_fail If another method fails should the Moore-Penrose generalized inverse (pseudoinverse) be used?
+#' @param ... Not used.
 #'
 #' @return The inverse matrix
 #' @export
 #' @keywords internal
 
-inv<- function(mat, method=1, tol = .Machine$double.eps, pseudo_on_fail = TRUE){
+inv<- function(mat, method=1, tol = .Machine$double.eps, pseudo_on_fail = TRUE,...){
   
   invar <- NULL
   
