@@ -66,7 +66,7 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
   out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
   
   # find the smallest n to achieve the wanted power.
-  if(find_min_n){
+  if(find_min_n & nrow(poped.db$settings$prior_fim)==0){
     res <- optimize_n(poped.db,bpopIdx=bpopIdx,needRSE=needRSE)
     out$power$min_N=res$par
   }
