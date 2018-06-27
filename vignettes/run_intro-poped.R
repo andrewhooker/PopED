@@ -10,3 +10,5 @@ library(rmarkdown)
 ## we run with the production packages only
 .libPaths(grep("home", .libPaths(), value=TRUE, invert=TRUE))
 render("intro-poped.Rmd")
+# output_file = paste0("~/PopED", 
+#                      "/vignettePdf.pdf") )

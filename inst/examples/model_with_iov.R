@@ -1,4 +1,4 @@
-library(PopED)
+#library(PopED)
 
 ##-- Model: One comp first order absorption
 ## -- Analytic solution for both mutiple and single dosing

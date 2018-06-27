@@ -43,6 +43,6 @@
   
   
   shr_out <- shrinkage(poped.db)
-  expect_equivalent(shr_out$shrinkage_var,c(.5035130,.3673427,.4244184),tolerance=1e-5)
+
   
 
