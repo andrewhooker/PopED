@@ -262,10 +262,57 @@ system.file("examples", package="PopED")
 
 Of note, only the code related to the specific "new" feature is here described. The complete R code is in the corresponding R script for each of the examples.
 
+The table below provides a check list of features for each of the available examples.
+
+| Features  | Ex1   | Ex2 |Ex3|Ex4|Ex5|Ex6|Ex7|Ex8|Ex9|Ex10|Ex11|Ex12|Ex13|Ex14|
+|  -----   |  ----   | ----  |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |
+| Library of models   |    |  |||||||||||||
+| User defined models  |    |  |||||||||||||
+| Multi response models  |    |  |||||||||||||
+| Discrete covariates   |    |  |||||||||||||
+| Continuous covariates |    |  |||||||||||||
+| Full cov matrix W |    |  |||||||||||||
+| Full cov matrix Sigma |    |  |||||||||||||
+| Inter-occ variability  |    |  |||||||||||||
+| Handling BLQ data  |    |  |||||||||||||
+| Handling multiple <br> doses for ODEs  |    |  |||||||||||||
+| Different dose <br> regimens per arm  |    |  |||||||||||||
+| Irregular dosing <br> (e.g. dose weekly, <br> later monthly)  |    |  |||||||||||||
+| Irregular dosing <br> (e.g. dose weekly, <br> later monthly)  |    |  |||||||||||||
+| Irregular dosing <br> (e.g. more admin type <br> within one arm)  |    |  |||||||||||||
+| Symbolic <br> differentiation  |    |  |||||||||||||
+| Numeric <br> differentiation  |    |  |||||||||||||
+| Automatic <br> differentiation |    |  |||||||||||||
+| Non-Block FIM  |    |  |||||||||||||
+| Designs differ <br> across responses   |    |  |||||||||||||
+| Bayesian FIM    |    |  |||||||||||||
+| First order <br> approximation (FO)   |    |  |||||||||||||
+| Discrete ( e.g. optimizing among <br> a certain number of <br> discrete times)   |    |  |||||||||||||
+| Evaluation/Optimization <br> of more-group designs<br> (same response)   |    |  |||||||||||||
+| Different optimal<br> sampling times<br> between groups   |    |  |||||||||||||
+| Constraining the <br>optimization to different <br> allowed sampling times<br> for each group   |    |  |||||||||||||
+| Constraining the <br>optimization to different <br> allowed sampling times<br> for each response   |    |  |||||||||||||
+| Keep some sampling time<br> fixed (they will be<br> automatically part of the <br>optimal design protocol)   |    |  |||||||||||||
+| Optimization of subjects <br>per group    |    |  |||||||||||||
+| Simultaneous <br>optimization of dose <br>and sampling times   |    |  |||||||||||||
+| Handling <br>derived outputs   |    |  |||||||||||||
+| Calculate precision <br>of derived parameters   |    |  |||||||||||||
+| Power calculation   |    |  |||||||||||||
+| Include previous FIM   |    |  |||||||||||||
+| Compute shrinkage   |    |  |||||||||||||
+| Fedorov-Wynn ("FW")  |    |  |||||||||||||
+| Simplex ("SIMP")  |    |  |||||||||||||
+| "D-optimality". <br>Determinant of <br>the FIM: det(FIM)  |    |  |||||||||||||
+
+
 ##1.	One compartment first order absorption - analytical solution for both mutiple and single dosing (design evaluation); design evaluation and design optimization of times and/or doses over a continuous or discrete design space
 
 This example is the intro example illustrated in the first part of this document, before the Examples section.
 The corresponding R script is the PopED example "ex.1.a.PK.1.comp.oral.md.intro.R"
+
+Evaluation/Optimization of more-group designs (same response)
+
+Different optimal sampling times between groups
 
 ##2.	PKPD model, multiple arms for different doses and sampling times, using analytical equations 
 
