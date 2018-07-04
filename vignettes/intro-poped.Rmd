@@ -33,9 +33,8 @@ Here we define a one-compartment pharmacokinetic model with linear absorption us
 
 ```{r,eval=TRUE}
 library(Rcpp)
-#library(PopED)
-devtools::load_all("~/PopED")
 library(deSolve)
+library(PopED)
 ```
 
 
@@ -146,6 +145,38 @@ Next, we evaluate the initial design
 evaluate_design(poped.db)
 ```
 We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.
+
+### Evaluate alternative design
+We can also compare if it is better to have more samples per subject or more subjects in the study - keeping the total number of observations fixed (5 samples/subjects * 20 subjects/group = 100 observations).
+We now change the group size to 25 and sample at 4 time points: xt = c(1,6,240,245).
+
+```{r,include = FALSE}
+poped.db.new <- create.poped.database(ff_fun=ff,
+                                  fg_fun=sfg,
+                                  fError_fun=feps,
+                                  bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(V=0.09,KA=0.09,CL=0.25^2), 
+                                  sigma=c(0.04,5e-6),
+                                  notfixed_sigma=c(1,0),
+                                  m=2,
+                                  groupsize=25,
+                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
+                                  maxa=c(DOSE=200,TAU=24),
+                                  mina=c(DOSE=0,TAU=24),
+                                  xt=c( 1,6,240,245),
+                                  minxt=c(0,0,240,240),
+                                  maxxt=c(10,10,248,248),
+                                  bUseGrouped_xt=TRUE)
+```
+```{r}
+evaluate_design(poped.db.new)
+```
+### Comparison of designs
+As you can see the precision on CL (bpop[3]) is better with the alternative design but the other parameters are less well estimated. So which of these designs is better?
+
+We can compare the objective function value (ofv) and see that for this dummy example the alternative design (more subjects per group, less samples per subject) the ofv is higher (=better).
+This value can also be used to optimize sampling times, doses, and other design features.
 
 ### Design optimization
 Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = T` in the `poped_optim` command.].

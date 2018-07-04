@@ -45,7 +45,7 @@ poped.db <- create.poped.database(ff_fun="ff",
                                   fg_fun="sfg",
                                   fError_fun="feps",
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-                                  notfixed_bpop=c(1,1,1,1,1),
+                                  notfixed_bpop=c(1,1,1,0,1),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
                                   sigma=c(0.04,5e-6),
                                   notfixed_sigma=c(0,0),
@@ -73,7 +73,7 @@ poped.db.ped <- create.poped.database(ff_fun="ff",
                                   fg_fun="sfg",
                                   fError_fun="feps",
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-                                  notfixed_bpop=c(1,1,1,1,1),
+                                  notfixed_bpop=c(1,1,1,0,1),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
                                   sigma=c(0.04,5e-6),
                                   notfixed_sigma=c(0,0),
@@ -89,7 +89,7 @@ poped.db.ped <- create.poped.database(ff_fun="ff",
 plot_model_prediction(poped.db.ped, model_num_points = 300)
 
 ## evaluate design of pediatrics only - insufficient
-evaluate_design(poped.db.ped)
+print(outPed <- evaluate_design(poped.db.ped))
 
 ## Add adult prior
 poped.db.all <- create.poped.database(
