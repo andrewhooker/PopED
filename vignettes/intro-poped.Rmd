@@ -1093,13 +1093,13 @@ poped.db <- create.poped.database(ff_fun="ff",
                                   fg_fun="sfg",
                                   fError_fun="feps",
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-                                  notfixed_bpop=c(1,1,1,1,1),
+                                  notfixed_bpop=c(1,1,1,0,1),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
                                   sigma=c(0.04,5e-6),
                                   notfixed_sigma=c(0,0),
                                   m=2,
                                   groupsize=20,
-                                  xt=c( 1,2,8,240,245),
+                                  xt=c( 1,8,10,240,245),
                                   bUseGrouped_xt=1,
                                   a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
                                   x=list(isPediatric = 0)
@@ -1118,15 +1118,24 @@ plot_model_prediction(poped.db, model_num_points = 300)
 outAdult = evaluate_design(poped.db)
 print(outAdult)
 ```
+It is obvious that we cannot estimate the pediatric covariate from adult data only - therefore the error.
+You can also note the zeros in the 4th column and 4th row of the FIM.
+
+We can evaluate the adult design without warning, by setting the pedCL parameter to be fixed (i.e., not estimated)
+```{r}
+evaluate_design(create.poped.database(poped.db, notfixed_bpop=c(1,1,1,0,0)))
+```
+One obtains good estimates for all parameters for adults (<60% RSE for all).
+
 
 ```{r}
 ## Define pediatric model/design
-## One arm, 4 time points only - insufficient on its own
+## One arm, 4 time points only
 poped.db.ped <- create.poped.database(ff_fun="ff",
                                   fg_fun="sfg",
                                   fError_fun="feps",
                                   bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-                                  notfixed_bpop=c(1,1,1,1,1),
+                                  notfixed_bpop=c(1,1,1,0,1),
                                   d=c(V=0.09,KA=0.09,CL=0.25^2), 
                                   sigma=c(0.04,5e-6),
                                   notfixed_sigma=c(0,0),
@@ -1145,9 +1154,7 @@ poped.db.ped <- create.poped.database(ff_fun="ff",
 plot_model_prediction(poped.db.ped, model_num_points = 300)
 
 ## evaluate design of pediatrics only - insufficient
-eval <- evaluate_design(poped.db.ped)
-eval$ofv
-eval$rse
+evaluate_design(create.poped.database(poped.db.ped, notfixed_bpop=c(1,1,1,0,0)))
 ```
 
 ```{r}
@@ -1157,11 +1164,10 @@ poped.db.all <- create.poped.database(
   prior_fim = outAdult$fim
 )
 
-## evaluate design using prior FIM from adults
-eval <- evaluate_design(poped.db.all)
-eval$ofv
-eval$rse
+## Evaluate pediatric design including the prior FIM from adults (i.e., pooling adult and pediatric data)
+evaluate_design(poped.db.all)
 ```
+Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics data only.
 
 ##10.	Design evaluation including uncertainty in the model parameters (robust design)	
 
