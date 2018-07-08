@@ -412,8 +412,6 @@ plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=
 
 ##3.	Two compartment model with oral absorption using ODEs. Multiple dose dosing scheme.
 
-## TODO: Martin please add rcpp code to this example.
-
 The full code for this example is available at the usual PopED examples directory, under the name of "ex.9.PK.2.comp.oral.md.ode.compiled.R". 
 
 Of note, the "deSolve" library needs to be installed for computing the system of differential equations. 
@@ -432,8 +430,27 @@ PK.2.comp.oral.ode <- function(Time, State, Pars){
 }
 ```
 
-Define the initial conditions and the dosing
+Or define it using a compiled ODE with Rcpp (as in example ex.2.c.warfarin.ODE.compiled).
+```{r}
+cppFunction('List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
+            int n = A.size();
+            NumericVector dA(n);
+            
+            double CL = Pars[0];
+            double V1 = Pars[1];
+            double KA = Pars[2];
+            double Q  = Pars[3];
+            double V2 = Pars[4];
 
+            dA[0] = -KA*A[0];
+            dA[1] = KA*A[0] - (CL/V1)*A[1] - Q/V1*A[1] + Q/V2*A[2];
+            dA[2] = Q/V1*A[1] - Q/V2*A[2];
+            return List::create(dA);
+            }')
+```
+
+
+Define the initial conditions and the dosing
 ```{r}
 ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
@@ -444,6 +461,8 @@ ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
                            time = dose_times,
                            value = c(DOSE), method = c("add"))
     times <- sort(c(times_xt,dose_times))
+    
+    # Here "PK.2.comp.oral.ode" is equivalent to the pre-compiled version "two_comp_oral_ode_Rcpp".
     out <- ode(A_ini, times, PK.2.comp.oral.ode, parameters,
            events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
     y = out[, "A2"]/(V1/Favail)
@@ -497,6 +516,47 @@ poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
                                   mina=c(DOSE=0,TAU=8),
                                   discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
 ```
+```{r, echo=F}
+
+ff.PK.2.comp.oral.md.ode.Rcpp <- function(model_switch, xt, parameters, poped.db){
+  with(as.list(parameters),{
+    A_ini <- c(A1=0, A2=0, A3=0)
+    times_xt <- drop(xt)
+    dose_times = seq(from=0,to=max(times_xt),by=TAU)
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(DOSE), method = c("add"))
+    times <- sort(c(times_xt,dose_times))
+    
+    # Here "PK.2.comp.oral.ode" is equivalent to the pre-compiled version "two_comp_oral_ode_Rcpp".
+    out <- ode(A_ini, times, two_comp_oral_ode_Rcpp, parameters,
+           events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
+    y = out[, "A2"]/(V1/Favail)
+    y=y[match(times_xt,out[,"time"])]
+    y=cbind(y)
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+
+poped.db.Rcpp <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp",
+                                  fError_fun="feps.add.prop",
+                                  fg_fun="fg",
+                                  groupsize=20,
+                                  m=1,      #number of groups
+                                  sigma=c(prop=0.1^2,add=0.05^2),
+                                  bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
+                                  d=c(CL=0.15^2,KA=0.25^2),
+                                  notfixed_bpop=c(1,1,1,1,1,0),
+                                  xt=c( 48,50,55,65,70,85,90,120), 
+                                  minxt=0,
+                                  maxxt=144,
+                                  discrete_xt = list(0:144),
+                                  a=c(DOSE=100,TAU=24),
+                                  maxa=c(DOSE=1000,TAU=24),
+                                  mina=c(DOSE=0,TAU=8),
+                                  discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
+```
+
 
 ### Plot intial design (just PRED)
 
@@ -505,20 +565,19 @@ plot_model_prediction(poped.db)
 ```
 
 ### Design evaluation
-
 ```{r}
-#' how long does one evaluation of the FIM take? 
-#tic(); (eval <- evaluate_design(poped.db)); toc()
 eval <- evaluate_design(poped.db)
 eval$ofv
 eval$rse
 ```
 
-TODO: To make optimization more reasonable you can use compiled code...
- 
-
-
-
+```{r}
+#' How long does one evaluation of the FIM take? 
+tic(); eval <- evaluate_design(poped.db); toc()
+#' And with precompiled code?
+tic(); eval <- evaluate_design(poped.db.Rcpp); toc()
+```
+The difference is noticable and gets larger for more complex or lengthy ODE models.
 
 ##4.	Different dose regimens per arm	
 
@@ -712,7 +771,8 @@ eval_2$rse
 ```
 
 ##5.	Model with discrete covariates	
-## TODO --> Martin
+
+See example 9. Inclusion of previous FIM. This has the covariate isPediatric to distinguish adults and pediatrics.
 
 ##6.	Model with continuous covariates
 
@@ -994,6 +1054,7 @@ What do the covariances mean?
 (IIV <- poped.db_with$parameters$param.pt.val$d)
 cov2cor(IIV)
 ```
+Correlation of ca. 0.8 between clearance and volume, as well as between volume and absorption rate.
 
 ###Create plot of model with variability 
 
@@ -1004,7 +1065,7 @@ p2 <- plot_model_prediction(poped.db_with,IPRED=T) +ylim(0,12)
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
-###Evaluate initial design (no full covariance matrix)
+###Evaluate designs (with and without covariance matrix)
 
 ```{r}
 ev1 <- evaluate_design(poped.db)
@@ -1017,7 +1078,7 @@ ev2$ofv
 ev2$rse
 ```
 
-###Evaluate design with full FIM
+###Evaluate the same designs with full FIM (instead of reduced)
 
 ```{r}
 ev1 <- evaluate_design(poped.db, fim.calc.type=0)
@@ -1168,6 +1229,12 @@ poped.db.all <- create.poped.database(
 evaluate_design(poped.db.all)
 ```
 Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics data only.
+
+One can also obtain the power for estimating the covariate.
+```{r}
+evaluate_power(poped.db.all, bpopIdx=5, out=out.all)
+```
+
 
 ##10.	Design evaluation including uncertainty in the model parameters (robust design)	
 
@@ -1352,12 +1419,13 @@ Define design and use function shrinkage().
   shr_out
 ```
 
-##13.	Power Calculation	--> Martin
+##13.	Power Calculation
 
-##14.	Espresso design	--> Martin
+See example 9. Include previous FIM.
 
-##Further examples	
+##Further examples (for later)
 
+14.	Espresso design
 15.	Handling BLQ data	
 16.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
 17.	Constraining the optimization to different allowed sampling times for each group	

@@ -111,5 +111,9 @@ poped.db.all <- create.poped.database(
 )
 
 ## evaluate design using prior FIM from adults
-evaluate_design(poped.db.all)
+(out.all <- evaluate_design(poped.db.all))
 # Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics only.
+
+# One can also obtain the power for estimating the covariate.
+evaluate_power(poped.db.all, bpopIdx=5, out=out.all)
+
