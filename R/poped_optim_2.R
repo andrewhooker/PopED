@@ -45,6 +45,7 @@
 #'   the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==FALSE} then -stop_crit_rel is the cut
 #'   off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).
 #' @param maximize Should the objective function be maximized or minimized?
+#' @param transform_parameters Should we transform the parameters before optimization?
 #'   
 #'   
 #'   
@@ -58,9 +59,10 @@
 #'   
 #' @family Optimize
 #'   
+#' @keywords internal
 # @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 # @example tests/testthat/examples_fcn_doc/examples_poped_optim.R
-#' @export
+# @export
 
 # uses create_ofv
 poped_optim_2 <- function(poped.db,
@@ -90,7 +92,7 @@ poped_optim_2 <- function(poped.db,
                           stop_crit_rel = NULL,
                           ofv_fun = poped.db$settings$ofv_fun,
                           maximize=T,
-                          transform_parameters = T,
+                          transform_parameters = F,
                           ...){
   
   #------------ update poped.db with options supplied in function
@@ -177,6 +179,7 @@ poped_optim_2 <- function(poped.db,
   allowed_values=my_ofv$space[["allowed_values"]]
   par_cat_cont=my_ofv$space[["par_cat_cont"]]
   par_fixed_index=my_ofv$space[["par_fixed_index"]]
+  par_not_fixed_index=my_ofv$space[["par_not_fixed_index"]]
   par_df_unique=my_ofv$space[["par_df_unique"]]
   par_df=my_ofv$space[["par_df"]]
   par_dim=my_ofv$space[["par_dim"]]
@@ -322,7 +325,7 @@ poped_optim_2 <- function(poped.db,
         
         con <- list(parallel=parallel_ga)
         dot_vals <- dots(...)
-        if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
+        #if(is.null(dot_vals[["monitor"]]) && packageVersion("GA")>="3.0.2") con$monitor <- GA::gaMonitor2
         
         nmsC <- names(con)
         con[(namc <- names(control$GA))] <- control$GA

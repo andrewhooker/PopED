@@ -160,8 +160,8 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{RS_opt}}, \code{\link{a_line_search}},
   \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{mfea}}, \code{\link{optim_ARS}},
-  \code{\link{optim_LS}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}},
+  \code{\link{optim_LS}}, \code{\link{poped_optim_1}},
+  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
 \keyword{internal}

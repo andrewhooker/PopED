@@ -7,11 +7,11 @@
 design_summary(poped_db, file = "", ...)
 }
 \arguments{
+\item{poped_db}{An object returned from \code{\link{create.poped.database}} to summarize.}
+
 \item{file}{A file handle to write to.  Default is to the R console.}
 
 \item{...}{Additional arguments. Passed to \code{\link{blockfinal}}.}
-
-\item{object}{An object returned from \code{\link{create.poped.db}} to summarize.}
 }
 \description{
 Display a summary of output from poped_db

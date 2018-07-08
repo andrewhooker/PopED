@@ -83,6 +83,7 @@
 #' @importFrom utils packageVersion
 #' @importFrom utils stack
 #' @importFrom magrittr "%>%" 
+# @importFrom rlang .data
 #' 
 # @importFrom MASS write.matrix
 # @importFrom mvtnorm rmvnorm

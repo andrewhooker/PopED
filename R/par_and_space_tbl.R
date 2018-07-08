@@ -1,5 +1,6 @@
 par_and_space_tbl <- function(poped.db) {
   df <- NULL
+  allowed_values <- allowed_values_2 <- cont <- lower <- upper <- par <- NULL
   
   design=poped.db$design
   design_space=poped.db$design_space
@@ -259,12 +260,15 @@ get_par_and_space_optim <- function(poped.db,
                                     opt_x=poped.db$settings$optsw[3],
                                     opt_samps=poped.db$settings$optsw[1],
                                     opt_inds=poped.db$settings$optsw[5],
-                                    transform_parameters=T,
-                                    cont_cat = "both") 
+                                    transform_parameters=TRUE,
+                                    cont_cat = "both",
+                                    warn_when_none=TRUE) 
 {
     
+  type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
+  
   #----------- checks
-  if(!any(opt_xt,opt_a,opt_samps,opt_inds)){
+  if(!any(as.logical(opt_xt),as.logical(opt_a),as.logical(opt_samps),as.logical(opt_inds))){
     stop('No optimization parameter is set.')
   }
   
@@ -288,7 +292,7 @@ get_par_and_space_optim <- function(poped.db,
   if(cont_cat=="cat")   df <- dplyr::filter(df,cont==FALSE)
   
   if(nrow(df)==0){
-    warning("No parameters to optimize")
+    if(warn_when_none) warning("No parameters to optimize")
     return(df)
   }
   
@@ -299,13 +303,19 @@ get_par_and_space_optim <- function(poped.db,
   exp <- parse(text=paste0("type==",filter_var,collapse = " | "))
   df <- dplyr::filter(df,eval(exp))
   
+  if(nrow(df)==0){
+    if(warn_when_none) warning("No parameters to optimize")
+    return(df)
+  }
+  
   if(transform_parameters){
     df <- df %>% dplyr::rowwise() %>% 
       dplyr::mutate(par=dplyr::if_else(cont==TRUE,
-                                   FastImputation::NormalizeBoundedVariable(par,
-                                                                            constraints =
-                                                                              list(lower=lower,
-                                                                                   upper=upper)),
+                                   # FastImputation::NormalizeBoundedVariable(par,
+                                   #                                          constraints =
+                                   #                                            list(lower=lower,
+                                   #                                                 upper=upper)),
+                                   unbound_par(par,lower=lower,upper=upper),
                                    par))
     
     df <- df %>% dplyr::mutate(transformed=dplyr::if_else(cont==TRUE,TRUE,FALSE),
@@ -337,38 +347,42 @@ get_par_and_space_optim <- function(poped.db,
   
 }
 
-put_par_optim <- function(tbl_opt,tbl_full) {
-  #transformed back to normal scale
-  if("transformed" %in% names(tbl_opt)){
-    tbl_opt <- 
-      dplyr::mutate(tbl_opt,
-                    par=
-                      dplyr::if_else(
-                        transformed==TRUE,
-                        FastImputation::BoundNormalizedVariable(
-                          par,
-                          constraints =
-                            list(lower=lower_orig,
-                                 upper=upper_orig)
-                        ),
-                        par
-                      )
-      )
-  }
-    
-  # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
-  tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
-  tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
-
-  # tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>%
-    # dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>%
-    # dplyr::select(-par_opt)
-  tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type"))
-  tbl_full <- dplyr::mutate(tbl_full,par=dplyr::if_else(is.na(par_opt),par,par_opt))
-  tbl_full <- dplyr::select(tbl_full,-par_opt)
-  
-  return(tbl_full)
-}
+# put_par_optim <- function(tbl_opt,tbl_full) {
+#   
+#   transformed <- par <- lower_orig <- upper_orig <- type <- par_opt <- NULL
+#   
+#   #transformed back to normal scale
+#   if("transformed" %in% names(tbl_opt)){
+#     tbl_opt <- 
+#       dplyr::mutate(tbl_opt,
+#                     par=
+#                       dplyr::if_else(
+#                         transformed==TRUE,
+#                         # FastImputation::BoundNormalizedVariable(
+#                         #   par,
+#                         #   constraints =
+#                         #     list(lower=lower_orig,
+#                         #          upper=upper_orig)
+#                         # ),
+#                         bound_par(par,lower=lower_orig,upper=upper_orig),
+#                         par
+#                       )
+#       )
+#   }
+#     
+#   # tbl_opt_small <- tbl_opt %>% dplyr::select(par,type,grouping) %>% dplyr::rename(par_opt=par)
+#   tbl_opt_small <- dplyr::select(tbl_opt, par,type,grouping) 
+#   tbl_opt_small <-  dplyr::rename(tbl_opt_small, par_opt=par)
+# 
+#   # tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type")) %>%
+#     # dplyr::mutate(par=dplyr::if_else(is.na(par_opt),par,par_opt)) %>%
+#     # dplyr::select(-par_opt)
+#   tbl_full <- dplyr::left_join(tbl_full,tbl_opt_small,by=c("grouping","type"))
+#   tbl_full <- dplyr::mutate(tbl_full,par=dplyr::if_else(is.na(par_opt),par,par_opt))
+#   tbl_full <- dplyr::select(tbl_full,-par_opt)
+#   
+#   return(tbl_full)
+# }
 
 # 
 # get_xt_from_tbl <- function(tbl_full,add_names=FALSE){
@@ -391,18 +405,19 @@ put_par_optim <- function(tbl_opt,tbl_full) {
 #     tibble::column_to_rownames(var="group") %>% data.matrix()  
 # }
 
-get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
-  ret <- dplyr::filter(tbl_full,type==!!type_str) 
-  ret <- dplyr::select(ret,par,group,name) 
-  ret <- tidyr::spread(ret,key=name,value = par) 
-  if(add_row_names){ 
-    ret <- dplyr::mutate(ret,group=paste0("grp_",group)) 
-    ret <- data.matrix(tibble::column_to_rownames(as.data.frame(ret),var="group"))
-  } else {
-    ret <- dplyr::select(ret,-group)
-  }
-  return(ret)
-}
+# get_type_from_tbl <- function(type_str,tbl_full,add_row_names=TRUE){
+#   type <- par <- group <- name <- NULL
+#   ret <- dplyr::filter(tbl_full,type==!!type_str) 
+#   ret <- dplyr::select(ret,par,group,name) 
+#   ret <- tidyr::spread(ret,key=name,value = par) 
+#   if(add_row_names){ 
+#     ret <- dplyr::mutate(ret,group=paste0("grp_",group)) 
+#     ret <- data.matrix(tibble::column_to_rownames(as.data.frame(ret),var="group"))
+#   } else {
+#     ret <- dplyr::select(ret,-group)
+#   }
+#   return(ret)
+# }
 
 
 

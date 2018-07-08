@@ -119,8 +119,8 @@ poped.db.1 <- create.poped.database(ff_fun=tmdd_qss_one_target_model,
 
 plot_model_prediction(poped.db.1,facet_scales="free")
 
-# evaluation time is roughly 40 seconds 
-# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# evaluation time is roughly 18 seconds 
+# (macbook pro,OS X 10.13.5, 3.5 GHz Intel Core i7, 16 GB 2133 MHz LPDDR3)
 # see compiled version below for a faster implementation
 tic(); eval <- evaluate_design(poped.db.1); toc()
 
@@ -181,8 +181,8 @@ poped.db.1.comp <- create.poped.database(poped.db.1,
                                          
 plot_model_prediction(poped.db.1.comp,facet_scales="free")
 
-# evaluation time is roughly 3 seconds 
-# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# evaluation time is roughly 1.2 seconds 
+# same system as mentioned above
 # makes optimization more reasonable
 tic(); eval <- evaluate_design(poped.db.1.comp); toc()
 
@@ -238,8 +238,7 @@ poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
 
 plot_model_prediction(poped.db.2,facet_scales="free")
 
-# evaluation time is roughly 5 seconds 
-# (macbook pro,OS X 10.10, 2.7 GHz Intel Core i7, 16 GB 1600 MHz DDR3)
+# evaluation time is roughly 1.8 seconds 
 tic(); eval_2 <- evaluate_design(poped.db.2); toc()
 
 # now optimization in parallel for unix/mac

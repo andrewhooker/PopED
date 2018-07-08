@@ -251,7 +251,6 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
                                 bUseBFGSMinimizer = 1,
                                 bUseLineSearch = 0)
   
-
   ##############
   # E-family Optimization
   ##############
@@ -309,6 +308,6 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
-  \code{\link{poped_optim}}
+  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
+  \code{\link{poped_optim_3}}, \code{\link{poped_optim}}
 }

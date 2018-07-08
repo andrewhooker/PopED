@@ -5,7 +5,7 @@ add_to_poped_db <- function(
   ps_transformed=ps_tbl$transformed
 ){
   
-  # TODO: matches with ofv_optim_2 should join this code  
+  # TODO: matches with ofv_optim should join this code  
   # variables needed
   xt <- poped_db$design$xt
   a <- poped_db$design$a

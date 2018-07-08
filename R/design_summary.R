@@ -1,6 +1,6 @@
 #' Display a summary of output from poped_db
 #'
-#' @param object An object returned from \code{\link{create.poped.db}} to summarize. 
+#' @param poped_db An object returned from \code{\link{create.poped.database}} to summarize. 
 #' @param file A file handle to write to.  Default is to the R console.
 #' @param ... Additional arguments. Passed to \code{\link{blockfinal}}.
 #'
