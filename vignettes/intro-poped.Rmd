@@ -124,7 +124,7 @@ poped.db <- create.poped.database(ff_fun=ff,
 
 ### Simulation
 First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values:
-```{r, fig.width=6}
+```{r simulate_without_BSV, fig.width=6}
 plot_model_prediction(poped.db, model_num_points = 500)
 ```
 
@@ -185,7 +185,7 @@ output <- poped_optim(poped.db, opt_xt=T)
 ```
 
 
-```{r, fig.width=6}
+```{r simulate_optimal_design, fig.width=6}
 summary(output)
 plot_model_prediction(output$poped.db)
 ```
@@ -195,7 +195,7 @@ We see that there are four distinct sample times for this design.  This means th
 
 ### Examine efficiency of sampling windows
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
-```{r,fig.width=6,fig.height=6,cache=TRUE}
+```{r simulate_efficiency_windows,fig.width=6,fig.height=6,cache=TRUE}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
@@ -211,7 +211,7 @@ output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
 
 ```
 
-```{r,fig.width=6}
+```{r simulate_discrete_optimization,fig.width=6}
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 ```
@@ -246,7 +246,7 @@ output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
                      maximize = F)
 ```
 
-```{r, fig.width=6}
+```{r simulate_cost_optmization, fig.width=6}
 summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)
@@ -391,7 +391,7 @@ poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
 
 Below the model predictions of the typical PK and PD profiles, i.e. Model 1 and Model 2, respectively, for three dose groups, are displayed. The current design, as shown in the "poped.db" object, consists in 3 arms with dose 0,1, and 2 (mg?) per arm; PK times of 0.33,0.66,0.9,5 (hours ?); PD times of 0.1,1,2,5 (hours?).
 
-```{r,fig.width=6,fig.height=6}
+```{r simulate_multi-response_model,fig.width=6,fig.height=6}
 plot_model_prediction(poped.db,IPRED=T,DV=T,facet_scales="free",separate.groups=T) 
 ```
 
@@ -545,7 +545,7 @@ poped.db.Rcpp <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp",
 
 ### Plot intial design (just PRED)
 
-```{r,fig.width=6}
+```{r simulate_ODE_model,fig.width=6}
 plot_model_prediction(poped.db)
 ```
 
@@ -743,7 +743,7 @@ poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
 ```
 
 ### Plot model predisctions
-```{r, fig.width=6}
+```{r simulate_different_dose_regimen, fig.width=6}
 plot_model_prediction(poped.db.2,facet_scales="free")
 ```
 
@@ -945,13 +945,13 @@ poped.db <- create.poped.database(ff_fun=ff,
 
 ###Create plot of model without variability 
 
-```{r,fig.width=6}
+```{r simulate_IOV_without_IIV,fig.width=6}
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
 ###Create plot of model with variability 
 
-```{r,fig.width=6}
+```{r simulate_IOV_with_IIV,fig.width=6}
 plot_model_prediction(poped.db, IPRED=T, DV=T, separate.groups=T, model_num_points = 300)
 ```
 
@@ -1043,7 +1043,7 @@ Correlation of ca. 0.8 between clearance and volume, as well as between volume a
 
 ###Create plot of model with variability 
 
-```{r,fig.width=6}
+```{r simulate_with_cov_matrix,fig.width=6}
 library(ggplot2)
 p1 <- plot_model_prediction(poped.db,IPRED=T)+ylim(0,12)
 p2 <- plot_model_prediction(poped.db_with,IPRED=T) +ylim(0,12)
@@ -1152,7 +1152,7 @@ poped.db <- create.poped.database(ff_fun="ff",
 )
 ```
 
-```{r,fig.width=6}
+```{r simulate_adult,fig.width=6}
 ##  create plot of model without variability
 plot_model_prediction(poped.db, model_num_points = 300)
 
@@ -1195,7 +1195,7 @@ poped.db.ped <- create.poped.database(ff_fun="ff",
 ```
 
 
-```{r,fig.width=6}
+```{r simulate_pediatrics,fig.width=6}
 ##  create plot of model without variability 
 plot_model_prediction(poped.db.ped, model_num_points = 300)
 
