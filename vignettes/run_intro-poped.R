@@ -5,7 +5,6 @@
 # Note: to run this code it is necessary to Set the directory to Source file location (i.e ~/PopED/vignettes)
 rm(list=ls(all=TRUE))
 library(rmarkdown)
-library(Rcpp)
 devtools::load_all("../")
 
 render("intro-poped.Rmd")
