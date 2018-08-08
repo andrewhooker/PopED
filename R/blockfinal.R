@@ -8,7 +8,6 @@
 #' @inheritParams create.poped.database
 #' @inheritParams blockexp
 #' @inheritParams blockheader
-#' @inheritParams RS_opt_gen
 #' @param fmf_init Initial FIM.
 #' @param dmf_init Initial OFV.
 #' @param param_cvs_init The inital design parameter %RSE values.

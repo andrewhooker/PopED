@@ -7,7 +7,6 @@
 #' @inheritParams blockexp
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
-#' @inheritParams RS_opt_gen
 #' @param name The name used for the output file. Combined with \code{name_header} and \code{iter}. 
 #' If \code{""} then output is to the screen.
 #' @param iter The last number in the name printed to the output file, combined with \code{name}.
