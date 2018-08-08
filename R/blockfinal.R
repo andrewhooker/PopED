@@ -11,7 +11,7 @@
 #' @inheritParams RS_opt_gen
 #' @param fmf_init Initial FIM.
 #' @param dmf_init Initial OFV.
-#' @param param_cvs_init The inital design parameter RSE values.
+#' @param param_cvs_init The inital design parameter %RSE values.
 #' 
 #' @family Helper
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
@@ -110,14 +110,16 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     if(fn!="") fprintf('\nOFV = %g\n',dmf)
     
     if(compute_inv){
-      param_vars=diag_matlab(inv(fmf))
-      returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
-      params <- returnArgs[[1]]
-      param_cvs <- returnArgs[[2]]
+      #param_vars=diag_matlab(inv(fmf))
+      #returnArgs <-  get_cv(param_vars,bpop,d,docc,sigma,poped.db) 
+      #params <- returnArgs[[1]]
+      #param_cvs <- returnArgs[[2]]
+      param_cvs <- get_rse(fim=fmf,poped.db,bpop,d,docc,sigma)
     }
     
     output <- get_unfixed_params(poped.db)
-    npar <- length(output$all)
+    params <- output$all
+    npar <- length(params)
     
     if(fn!="" || trflag>1) fprintf(fn,'\nEfficiency criterion [usually defined as det(FIM)^(1/npar)]  = %g\n',
             ofv_criterion(dmf,npar,poped.db))
@@ -152,12 +154,11 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     
     if(is.null(param_cvs_init) && !is.null(fmf_init) && is.matrix(fmf_init) && compute_inv){
       if(is.finite(dmf_init)) {
-        
-      
-      param_vars_init=diag_matlab(inv(fmf_init))
-      returnArgs <-  get_cv(param_vars_init,bpop,d,docc,sigma,poped.db) 
-      params_init <- returnArgs[[1]]
-      param_cvs_init <- returnArgs[[2]]
+      #param_vars_init=diag_matlab(inv(fmf_init))
+      #returnArgs <-  get_cv(param_vars_init,bpop,d,docc,sigma,poped.db) 
+      #params_init <- returnArgs[[1]]
+      #param_cvs_init <- returnArgs[[2]]
+        param_cvs_init <- get_rse(fim=fmf_init,poped.db,bpop,d,docc,sigma)
       }
     }
     
@@ -166,7 +167,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       fprintf(fn,'\nExpected parameter \nrelative standard error (%sRSE):\n','%')
       if(fn!="") fprintf('\nExpected parameter \nrelative standard error (%sRSE):\n','%')
       df <- data.frame("Parameter"=parnam,"Values"=params, #"Variance"=param_vars, 
-                       "RSE_0"=t(param_cvs_init*100),"RSE"=t(param_cvs*100))
+                       "RSE_0"=t(param_cvs_init),"RSE"=t(param_cvs))
       print(df,digits=3, print.gap=3,row.names=F)
       if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     }

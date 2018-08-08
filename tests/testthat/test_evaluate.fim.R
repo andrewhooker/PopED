@@ -4,11 +4,12 @@ test_that("RSE from evaluate.fim", {
   
   source("examples_fcn_doc/examples_evaluate.fim.R")
   
-  expected.reduced <- c(4.7,2.8,13.9,25.6,30.3,25.8,11.2)
-  expected.full <- c(3.6, 2.6,4.8,26.3, 30.9, 26.5, 12.4)
+  expected.reduced <- round(c(4.7,2.8,13.9,25.6,30.3,25.8,11.2))
+  expected.full <- round(c(3.6, 2.6,4.8,26.3, 30.9, 26.6, 12.4))
   comp.red.1 <- get_rse(FIM.1,poped.db)
   comp.red.4 <- get_rse(FIM.4,poped.db,fim.calc.type=4)
   comp.full.0 <- get_rse(FIM.0,poped.db)
+  comp.red.1.notRounded <- get_rse(FIM.1,poped.db, use_percent = FALSE)*100
   comp.red.1.prior <- get_rse(FIM.1.prior, poped.db.prior)
   
   for(i in 1:length(expected.reduced)){
@@ -24,7 +25,7 @@ test_that("RSE from evaluate.fim", {
                                         tolerance = 0.01, scale = expected.reduced[i]))
   }
   
-  expect_true(all.equal(comp.red.1/sqrt(2), comp.red.1.prior))
+  expect_true(all.equal(round(comp.red.1.notRounded/sqrt(2)), comp.red.1.prior))
   
 })
 

@@ -92,8 +92,8 @@ get_rse <- function (fim, poped.db,
                      # d=poped.db$parameters$d[,2,drop=F],
                      docc=poped.db$parameters$docc,
                      sigma=poped.db$parameters$sigma,
-                     use_percent=T,
-                     fim.calc.type=poped.db$settings$iFIMCalculationType,
+                     use_percent=TRUE,
+                     #fim.calc.type=poped.db$settings$iFIMCalculationType,
                      prior_fim = poped.db$settings$prior_fim,
                      ...) {
   
@@ -103,6 +103,10 @@ get_rse <- function (fim, poped.db,
   for(i in names(called_args)[-1]){
     if(length(grep("^poped\\.db\\$",capture.output(default_args[[i]])))==1) {
       #eval(parse(text=paste(capture.output(default_args[[i]]),"<-",called_args[[i]])))
+      if (i %in% c('bpop','d')) {
+        if (eval(parse(text=paste("dim(",i,")[2]>1"))))
+          (eval(parse(text=paste(i, "<-",i,"[,2]"))))
+      }
       eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
     }
   }
@@ -142,7 +146,7 @@ get_rse <- function (fim, poped.db,
   params_rse <- returnArgs[[2]]
   parnam <- get_parnam(poped.db)
   ret <- params_rse[,,drop=T]
-  if(use_percent) ret[params!=0]=ret[params!=0]*100
+  if(use_percent) ret[params!=0]=round(ret[params!=0]*100)
   names(ret) <- parnam
   return(ret)
 }

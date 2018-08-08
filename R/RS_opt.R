@@ -196,10 +196,11 @@ RS_opt <- function(poped.db,
                      opt_inds=F,opt_samps=F,
                      fmf=fmf_init,dmf=dmf_init,
                      bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma)
-    param_vars_init=diag_matlab(inv(fmf))
-    returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
-    params_init <- returnArgs[[1]]
-    param_cvs_init <- returnArgs[[2]]
+    #param_vars_init=diag_matlab(inv(fmf))
+    #returnArgs <-  get_cv(param_vars_init,bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma,poped.db) 
+    #params_init <- returnArgs[[1]]
+    #param_cvs_init <- returnArgs[[2]]
+    param_cvs_init <- get_rse(fmf,poped.db,bpop=bpopdescr,d=ddescr,docc=poped.db$parameters$docc,sigma=poped.db$parameters$sigma)
   }
   
   # if((poped.db$settings$bShowGraphs && trflag)){
