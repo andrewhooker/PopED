@@ -94,7 +94,7 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     if(fn!="") fprintf(fn,'PopED Results \n\n')
   }
   if(fn!="") fprintf(fn,'        ')
-  if(fn!="") fprintf(fn,datestr_poped(poped.db$settings$Engine$Type))
+  if(fn!="") fprintf(fn,as.character(Sys.time()))
   if(fn!="") fprintf(fn,'\n\n')
   
   if(fn!="" || trflag>1) blockexp(fn,poped.db,
