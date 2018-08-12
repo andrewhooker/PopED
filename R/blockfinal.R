@@ -166,7 +166,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
       fprintf(fn,'\nExpected parameter \nrelative standard error (%sRSE):\n','%')
       if(fn!="") fprintf('\nExpected parameter \nrelative standard error (%sRSE):\n','%')
       df <- data.frame("Parameter"=parnam,"Values"=params, #"Variance"=param_vars, 
-                       "RSE_0"=t(param_cvs_init),"RSE"=t(param_cvs))
+                       "RSE_0"=param_cvs_init,"RSE"=param_cvs)
       print(df,digits=3, print.gap=3,row.names=F)
       if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     }
