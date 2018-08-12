@@ -632,7 +632,7 @@ calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,nor
         varopt=varopto
         tavar=avar[i,ct1]
         varopt[i,ct1]=varopto[i,ct1]+tavar*normgvar[i,ct1]
-        varopt[i,ct1]=limit_value(varopt[i,ct1],maxvar[i,ct1],minvar[i,ct1])
+        varopt[i,ct1]=min(maxvar[i,ct1], max(varopt[i,ct1], minvar[i,ct1]))
         returnArgs <-  mftot(model_switch,groupsize,ni,xtopt,xopt,aopt,bpop,d,sigma,docc,poped.db) 
         mf_tmp <- returnArgs[[1]]
         poped.db <- returnArgs[[2]]
@@ -641,7 +641,7 @@ calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,nor
         while(ct2<=10 && ndmf<dmf){
           tavar=tavar/2
           varopt[i,ct1]=varopto[i,ct1]+tavar*normgvar[i,ct1]
-          varopt[i,ct1]=limit_value(varopt[i,ct1],maxvar[i,ct1],minvar[i,ct1])
+          varopt[i,ct1]=min(maxvar[i,ct1], max(varopt[i,ct1], minvar[i,ct1]))
           returnArgs <- mftot(model_switch,groupsize,ni,xtopt,xopt,aopt,bpop,d,sigma,docc,poped.db) 
           mf_tmp <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]
