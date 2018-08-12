@@ -554,7 +554,8 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       if((bUseLineSearch)){
         #------------------------------- LINE SEARCH optimization START HERE
         strLineSearchFile=sprintf('%s_LS_%g%s',poped.db$settings$strOutputFileName,iter,poped.db$settings$strOutputFileExtension)
-        strLineSearchFile = fullfile(poped.db$settings$strOutputFilePath,strLineSearchFile)
+        if (!is.character(poped.db$settings$strOutputFilePath)) poped.db$settings$strOutputFilePath = '.'
+        strLineSearchFile = file.path(poped.db$settings$strOutputFilePath,strLineSearchFile)
         #returnArgs <- a_line_search(strLineSearchFile,FALSE,0,fmf,dmf,poped.db) 
         returnArgs <- a_line_search(poped.db,fn,FALSE,0,fmf,dmf) 
         fmf <- returnArgs[[1]]

@@ -66,7 +66,8 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     tmpfile=paste(tmpfile,".txt",sep="")
     #tmpfile=sprintf('%s_%s.txt',name_header,name)
     #if(!is.null(iter)) tmpfile=sprintf('%s_%s_%g.txt',name_header,name,iter)
-    tmpfile = fullfile(poped.db$settings$strOutputFilePath,tmpfile)
+    if (!is.character(poped.db$settings$strOutputFilePath)) poped.db$settings$strOutputFilePath = '.'
+    tmpfile = file.path(poped.db$settings$strOutputFilePath,tmpfile)
     fn=file(tmpfile,'w')
     if((fn==-1)){
       stop(sprintf('output file could not be opened'))
