@@ -37,11 +37,11 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
   
   if((poped.db$settings$ofv_calc_type==4) ){#Log determinant
     if((!poped.db$design_space$bUseGrouped_xt)){
-      returnArgs <- gradlndetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- gradlndetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }

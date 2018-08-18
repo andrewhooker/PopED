@@ -1,4 +1,4 @@
-graddetmfxt_ext <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
+graddetmfxt_ext <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE){
   
   #------------------- Gradients for optimization module
   #  Looks at the gradient of det(FIM) with respect to time (xt).
@@ -99,7 +99,9 @@ graddetmfxt_ext <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,do
       }
     }
   }
-  gdmf=gdmf*det(mft)
+  if (lndet == FALSE) {
+    gdmf=gdmf*det(mft)
+  }
   return(list( gdmf= gdmf,poped.db=poped.db)) 
 }
 

@@ -1,7 +1,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-graddetmfa <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
+graddetmfa <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE){
 
 n = get_fim_size(poped.db)
 m=size(ni,1)
@@ -101,8 +101,12 @@ poped.db <- returnArgs[[2]]
           }
        }    
     }
-}
-  ret=gdmf*det(mft)
+  }
+  if (lndet == FALSE) {
+    ret=gdmf*det(mft)
+  } else {
+    ret=gdmf
+  }
 return(list( ret= ret,poped.db=poped.db)) 
 }
 

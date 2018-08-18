@@ -1,4 +1,4 @@
-graddetmfa_ext <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
+graddetmfa_ext <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE){
 
 n = get_fim_size(poped.db)
 
@@ -89,8 +89,12 @@ poped.db <- returnArgs[[2]]
             }
         }
     }
+  }
+if (lndet == FALSE) {
+  ret=gdmf*det(mft)
+} else {
+  ret=gdmf
 }
-ret=gdmf*det(mft)
 return(list( ret= ret,poped.db=poped.db)) 
 }
 

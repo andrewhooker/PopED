@@ -1,7 +1,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
+graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE){
   #------------------- Gradients for optimization module
   #  Looks at the gradient of det(FIM) with respect to time (xt).
   #  problems can arise when xt goes negative. So only do forward
@@ -114,6 +114,8 @@ graddetmfxt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,p
       }    
     }
   }
-  gdmf=gdmf*det(mft)
+  if (lndet == FALSE) {
+    gdmf=gdmf*det(mft)
+  }
   return(list( gdmf= gdmf,poped.db=poped.db)) 
 }
