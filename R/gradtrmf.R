@@ -1,11 +1,15 @@
-gradtrmfa <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
+gradtrmf <- function(model_switch,aX,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,gradxt=FALSE){
   #------------------- Gradients for optimization module
-  #  Looks at the gradient of tr(FIM^-1) with respect to time (a).
-  #  problems can arise when a goes negative. So only do forward
+  #  Looks at the gradient of tr(FIM^-1) with respect to time (xt) or covariate (a).
+  #  problems can arise when a or xt goes negative. So only do forward
   #  differencing. 
   
   m=size(ni,1)
-  gdmf=matrix(1,m,size(a,2))
+  if (gradxt == FALSE) {
+    gdmf=matrix(1,m,size(a,2))
+  } else {
+    gdmf=matrix(1,m,size(xt,2))
+  }
   
   iParallelN = (poped.db$settings$parallel$bParallelSG==1) + 1 #1 if no parallel, 2 if parallel
   
@@ -48,23 +52,36 @@ gradtrmfa <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,pope
       if((groupsize[i]==0)){
         gdmf[i,1:ni[i]]=zeros(1,ni(i))
       } else {
-        for(ct1 in 1:size(poped.db$design$a,2)){
-          if((aa[i,ct1]!=0)){
-            a_plus=a
-            a_plus[i,ct1]=a_plus[i,ct1]+poped.db$settings$hgd
+        a0 = a
+        xt0 = xt
+        nCtl = ifelse(gradxt==FALSE, size(poped.db$design$a,2), ni[i])
+        for(ct1 in 1:nCtl){
+          if((aX[i,ct1]!=0)){
+            if (gradxt==FALSE) {
+              a=a0
+              a[i,ct1]=a[i,ct1]+poped.db$settings$hgd
+            } else {
+              xt=xt0
+              xt[i,ct1]=xt[i,ct1]+poped.db$settings$hgd
+            }
             if((!isempty(x))){
               x_i = t(x[i,,drop=F])
             } else {
               x_i =  zeros(0,1)
             }
+            if((!isempty(a))){
+              a_i = t(a[i,,drop=F])
+            } else {
+              a_i =  zeros(0,1)
+            }
             
             if((iParallelN ==1)){
-              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,t(a_plus[i,,drop=F]),bpop,d,sigma,docc,poped.db) 
+              returnArgs <- mf_all(t(model_switch[i,1:ni[i,drop=F],drop=F]),t(xt[i,1:ni[i,drop=F],drop=F]),x_i,a_i,bpop,d,sigma,docc,poped.db) 
               mf_tmp <- returnArgs[[1]]
               poped.db <- returnArgs[[2]]
             } else {
               if((p==1)){
-                designsin = update_designinlist(designsin,1,ni,xt,x,a_plus,-1,i)
+                designsin = update_designinlist(designsin,1,ni,xt,x,a,-1,i)
               } else {
                 mf_tmp = designout[[it]]$FIM
                 it = it+1
@@ -92,3 +109,4 @@ gradtrmfa <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,pope
   }
   return(list( gdmf= gdmf,poped.db=poped.db))
 }
+  
