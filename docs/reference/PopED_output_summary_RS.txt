@@ -1,6 +1,6 @@
 PopED Optimization Results for the Adaptive Random Search Algorithm 
 
-        2016-12-16 16:48:35
+        2018-06-28 12:25:27
 
 ==============================================================================
 Model description : PopED model 
@@ -46,13 +46,13 @@ Numer of samples per group:
 Number of model covariates: 1
 
 Initial Sampling Schedule
-   0.5      1      2      6     24     36     72    120
+Group 1:    0.5      1      2      6     24     36     72    120
 
 Minimum allowed sampling values
- 1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05
+Group 1:  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05  1e-05
 
 Maximum allowed sampling values
-   120    120    120    120    120    120    120    120
+Group 1:    120    120    120    120    120    120    120    120
 
 Covariates  (min, max):
 Group 1: 70 (0, 100)
@@ -131,7 +131,7 @@ RS Results
  OFV(mf) = 57.0828
 
 Optimized Sampling Schedule
-   0.5      1      2      6     24     36     72    120
+Group 1:    0.5      1      2      6     24     36     72    120
 
 Optimized Covariates:
 Group 1: 70
@@ -141,7 +141,7 @@ Group 1: 70
 ===============================================================================
 FINAL RESULTS
 Optimized Sampling Schedule
-   0.5      1      2      6     24     36     72    120
+Group 1:    0.5      1      2      6     24     36     72    120
 
 Optimized Covariates:
 Group 1: 70
@@ -186,4 +186,4 @@ relative standard error (%RSE):
    SIGMA[1,1]     0.01   32.87   32.87
    SIGMA[2,2]     0.25   26.03   26.03
 
-Total running time: 0.093 seconds
+Total running time: 0.205 seconds

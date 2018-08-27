@@ -11,26 +11,41 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
+
+
+<meta property="og:title" content="Trace optimization routines — Dtrace" />
+
+<meta property="og:description" content="A helper function for writing output to the screen and files when optimizing." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -44,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">PopED</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">PopED</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -64,6 +83,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -71,71 +91,120 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Trace optimization routines</h1>
+    
+    <div class="hidden name"><code>Dtrace.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A helper function for writing output to the screen and files when optimizing.</p>
     
+    </div>
 
-    <pre><span class='fu'>Dtrace</span>(<span class='no'>fn</span>, <span class='no'>it</span>, <span class='no'>ni</span>, <span class='no'>xtopt</span>, <span class='no'>xopt</span>, <span class='no'>aopt</span>, <span class='no'>gxt</span>, <span class='no'>ga</span>, <span class='no'>dmf</span>, <span class='no'>diff</span>, <span class='no'>ixt</span>, <span class='no'>ia</span>, <span class='no'>itvector</span>,
+    <pre class="usage"><span class='fu'>Dtrace</span>(<span class='no'>fn</span>, <span class='no'>it</span>, <span class='no'>ni</span>, <span class='no'>xtopt</span>, <span class='no'>xopt</span>, <span class='no'>aopt</span>, <span class='no'>gxt</span>, <span class='no'>ga</span>, <span class='no'>dmf</span>, <span class='no'>diff</span>, <span class='no'>ixt</span>, <span class='no'>ia</span>, <span class='no'>itvector</span>,
   <span class='no'>dmfvector</span>, <span class='no'>poped.db</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
   <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>], <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
   <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
   <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>rsit</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>rsit</span>,
   <span class='kw'>convergence_eps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>convergence_eps</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>fn</dt>
-      <dd>A file to output information to. Can also be the screen if <code>&#39;&#39;</code>.</dd>
-      <dt>it</dt>
-      <dd>the interation number.</dd>
-      <dt>ni</dt>
-      <dd>A vector of the number of samples in each group.</dd>
-      <dt>xtopt</dt>
-      <dd>The matrix defining current best sampling schedule.</dd>
-      <dt>xopt</dt>
-      <dd>The cell structure defining the current best discrete design variables.</dd>
-      <dt>aopt</dt>
-      <dd>The matrix defining the current best continuous design variables.</dd>
-      <dt>gxt</dt>
-      <dd>The matrix defining the current gradient of the xt vector.</dd>
-      <dt>ga</dt>
-      <dd>The matrix defining the current gradient for the continuous design variables.</dd>
-      <dt>dmf</dt>
-      <dd>The current OFV.</dd>
-      <dt>diff</dt>
-      <dd>The difference from the previous iteration.</dd>
-      <dt>ixt</dt>
-      <dd>If xt Gradient Inversion Occured or not.</dd>
-      <dt>ia</dt>
-      <dd>If a Gradient Inversion Occured or not.</dd>
-      <dt>itvector</dt>
-      <dd>The iteration vector.  Not currently used.</dd>
-      <dt>dmfvector</dt>
-      <dd>The dmf vector. Not currently used.</dd>
-      <dt>poped.db</dt>
-      <dd>A PopED database.</dd>
-      <dt>opt_xt</dt>
-      <dd>Should the sample times be optimized?</dd>
-      <dt>opt_a</dt>
-      <dd>Should the continuous design variables be optimized?</dd>
-      <dt>opt_x</dt>
-      <dd>Should the discrete design variables be optimized?</dd>
-      <dt>opt_samps</dt>
-      <dd>Are the nuber of sample times per group being optimized?</dd>
-      <dt>opt_inds</dt>
-      <dd>Are the nuber of individuals per group being optimized?</dd>
-      <dt>rsit</dt>
-      <dd>Number of Random search iterations</dd>
-      <dt>convergence_eps</dt>
-      <dd>Stoachstic Gradient convergence value,
-(difference in OFV for D-optimal, difference in gradient for ED-optimal)</dd>
-    </dl>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>fn</th>
+      <td><p>A file to output information to. Can also be the screen if <code>''</code>.</p></td>
+    </tr>
+    <tr>
+      <th>it</th>
+      <td><p>the interation number.</p></td>
+    </tr>
+    <tr>
+      <th>ni</th>
+      <td><p>A vector of the number of samples in each group.</p></td>
+    </tr>
+    <tr>
+      <th>xtopt</th>
+      <td><p>The matrix defining current best sampling schedule.</p></td>
+    </tr>
+    <tr>
+      <th>xopt</th>
+      <td><p>The cell structure defining the current best discrete design variables.</p></td>
+    </tr>
+    <tr>
+      <th>aopt</th>
+      <td><p>The matrix defining the current best continuous design variables.</p></td>
+    </tr>
+    <tr>
+      <th>gxt</th>
+      <td><p>The matrix defining the current gradient of the xt vector.</p></td>
+    </tr>
+    <tr>
+      <th>ga</th>
+      <td><p>The matrix defining the current gradient for the continuous design variables.</p></td>
+    </tr>
+    <tr>
+      <th>dmf</th>
+      <td><p>The current OFV.</p></td>
+    </tr>
+    <tr>
+      <th>diff</th>
+      <td><p>The difference from the previous iteration.</p></td>
+    </tr>
+    <tr>
+      <th>ixt</th>
+      <td><p>If xt Gradient Inversion Occured or not.</p></td>
+    </tr>
+    <tr>
+      <th>ia</th>
+      <td><p>If a Gradient Inversion Occured or not.</p></td>
+    </tr>
+    <tr>
+      <th>itvector</th>
+      <td><p>The iteration vector.  Not currently used.</p></td>
+    </tr>
+    <tr>
+      <th>dmfvector</th>
+      <td><p>The dmf vector. Not currently used.</p></td>
+    </tr>
+    <tr>
+      <th>poped.db</th>
+      <td><p>A PopED database.</p></td>
+    </tr>
+    <tr>
+      <th>opt_xt</th>
+      <td><p>Should the sample times be optimized?</p></td>
+    </tr>
+    <tr>
+      <th>opt_a</th>
+      <td><p>Should the continuous design variables be optimized?</p></td>
+    </tr>
+    <tr>
+      <th>opt_x</th>
+      <td><p>Should the discrete design variables be optimized?</p></td>
+    </tr>
+    <tr>
+      <th>opt_samps</th>
+      <td><p>Are the nuber of sample times per group being optimized?</p></td>
+    </tr>
+    <tr>
+      <th>opt_inds</th>
+      <td><p>Are the nuber of individuals per group being optimized?</p></td>
+    </tr>
+    <tr>
+      <th>rsit</th>
+      <td><p>Number of Random search iterations</p></td>
+    </tr>
+    <tr>
+      <th>convergence_eps</th>
+      <td><p>Stoachstic Gradient convergence value,
+(difference in OFV for D-optimal, difference in gradient for ED-optimal)</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -321,15 +390,18 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Sebastian Ueckert, Marco Foracchia, Joakim Nyberg.</p>
+  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, Sebastian Ueckert, Joakim Nyberg.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

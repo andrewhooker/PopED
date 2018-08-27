@@ -11,26 +11,43 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
+
+
+<meta property="og:title" content="Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct efect. — ff.PKPD.1.comp.sd.CL.emax" />
+
+<meta property="og:description" content="This is a structural model function that encodes the model described above.
+The function is suitable for input to the create.poped.database function using the
+ ff_file argument." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -44,8 +61,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">PopED</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">PopED</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -64,6 +85,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -71,58 +93,69 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct efect.</h1>
+    
+    <div class="hidden name"><code>ff.PKPD.1.comp.sd.CL.emax.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a structural model function that encodes the model described above.
 The function is suitable for input to the <code><a href='create.poped.database.html'>create.poped.database</a></code> function using the
  <code>ff_file</code> argument.</p>
     
+    </div>
 
-    <pre><span class='fu'>ff.PKPD.1.comp.sd.CL.emax</span>(<span class='no'>model_switch</span>, <span class='no'>xt</span>, <span class='no'>parameters</span>, <span class='no'>poped.db</span>)</pre>
+    <pre class="usage"><span class='fu'>ff.PKPD.1.comp.sd.CL.emax</span>(<span class='no'>model_switch</span>, <span class='no'>xt</span>, <span class='no'>parameters</span>, <span class='no'>poped.db</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>model_switch</dt>
-      <dd>a vector of values, the same size as <code>xt</code>, identifying which model 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>model_switch</th>
+      <td><p>a vector of values, the same size as <code>xt</code>, identifying which model 
 response should be computed for the 
-corresponding xt value.  Used for multiple response models.</dd>
-      <dt>xt</dt>
-      <dd>a vector of independent variable values (often time).</dd>
-      <dt>parameters</dt>
-      <dd>A named list of parameter values.</dd>
-      <dt>poped.db</dt>
-      <dd>a poped database.  This can be used to extract information that may be needed in the model file.</dd>
-    </dl>
+corresponding xt value.  Used for multiple response models.</p></td>
+    </tr>
+    <tr>
+      <th>xt</th>
+      <td><p>a vector of independent variable values (often time).</p></td>
+    </tr>
+    <tr>
+      <th>parameters</th>
+      <td><p>A named list of parameter values.</p></td>
+    </tr>
+    <tr>
+      <th>poped.db</th>
+      <td><p>a poped database.  This can be used to extract information that may be needed in the model file.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list consisting of:
-<ol>
-<li> y the values of the model at the specified points.
-</li>
-<li> poped.db A (potentially modified) poped database.
-</li>
-</ol></p>
+    <p>A list consisting of:</p><ol>
+<li><p>y the values of the model at the specified points.</p></li>
+<li><p>poped.db A (potentially modified) poped database.</p></li>
+</ol>
+
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other models: <code><a href='feps.add.prop.html'>feps.add.prop</a></code>,
+    <div class='dont-index'><p>Other models: <code><a href='feps.add.prop.html'>feps.add.prop</a></code>,
   <code><a href='feps.add.html'>feps.add</a></code>, <code><a href='feps.prop.html'>feps.prop</a></code>,
   <code><a href='ff.PK.1.comp.oral.md.CL.html'>ff.PK.1.comp.oral.md.CL</a></code>,
   <code><a href='ff.PK.1.comp.oral.md.KE.html'>ff.PK.1.comp.oral.md.KE</a></code>,
   <code><a href='ff.PK.1.comp.oral.sd.CL.html'>ff.PK.1.comp.oral.sd.CL</a></code>,
   <code><a href='ff.PK.1.comp.oral.sd.KE.html'>ff.PK.1.comp.oral.sd.KE</a></code>,
   <code><a href='ff.PKPD.1.comp.oral.md.CL.imax.html'>ff.PKPD.1.comp.oral.md.CL.imax</a></code></p>
-    <p>Other structural_models: <code><a href='ff.PK.1.comp.oral.md.CL.html'>ff.PK.1.comp.oral.md.CL</a></code>,
+<p>Other structural_models: <code><a href='ff.PK.1.comp.oral.md.CL.html'>ff.PK.1.comp.oral.md.CL</a></code>,
   <code><a href='ff.PK.1.comp.oral.md.KE.html'>ff.PK.1.comp.oral.md.KE</a></code>,
   <code><a href='ff.PK.1.comp.oral.sd.CL.html'>ff.PK.1.comp.oral.sd.CL</a></code>,
   <code><a href='ff.PK.1.comp.oral.sd.KE.html'>ff.PK.1.comp.oral.sd.KE</a></code>,
-  <code><a href='ff.PKPD.1.comp.oral.md.CL.imax.html'>ff.PKPD.1.comp.oral.md.CL.imax</a></code></p>
+  <code><a href='ff.PKPD.1.comp.oral.md.CL.imax.html'>ff.PKPD.1.comp.oral.md.CL.imax</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -201,38 +234,51 @@ corresponding xt value.  Used for multiple response models.</dd>
 
 
 <span class='co'>##  create plot of model without variability </span>
-<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>,<span class='kw'>facet_scales</span><span class='kw'>=</span><span class='st'>"free"</span>)</div><img src='ff.PKPD.1.comp.sd.CL.emax-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>poped.db</span>,<span class='kw'>facet_scales</span><span class='kw'>=</span><span class='st'>"free"</span>)</div><div class='img'><img src='ff.PKPD.1.comp.sd.CL.emax-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## evaluate initial design</span>
 <span class='no'>FIM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>)
 <span class='no'>FIM</span></div><div class='output co'>#&gt;               [,1]         [,2]      [,3]       [,4]       [,5]         [,6]
-#&gt;  [1,]  13423.83149 -26148.43437 -104.9746  -55.87794   20.58619     0.000000
-#&gt;  [2,] -26148.43437  70314.08831 -137.2793 -103.59890   26.32348     0.000000
-#&gt;  [3,]   -104.97460   -137.27932 1209.7986  516.06655 -116.00915     0.000000
-#&gt;  [4,]    -55.87794   -103.59890  516.0666  449.35861  -62.47406     0.000000
-#&gt;  [5,]     20.58619     26.32348 -116.0092  -62.47406   22.73598     0.000000
-#&gt;  [6,]      0.00000      0.00000    0.0000    0.00000    0.00000 80801.896051
-#&gt;  [7,]      0.00000      0.00000    0.0000    0.00000    0.00000 33813.087593
-#&gt;  [8,]      0.00000      0.00000    0.0000    0.00000    0.00000  -149.076472
-#&gt;  [9,]      0.00000      0.00000    0.0000    0.00000    0.00000   -12.036361
-#&gt; [10,]      0.00000      0.00000    0.0000    0.00000    0.00000    -6.036774
-#&gt; [11,]      0.00000      0.00000    0.0000    0.00000    0.00000  -490.056475
-#&gt; [12,]      0.00000      0.00000    0.0000    0.00000    0.00000  -124.365676
-#&gt;              [,7]        [,8]        [,9]      [,10]        [,11]      [,12]
-#&gt;  [1,]     0.00000     0.00000    0.000000   0.000000     0.000000    0.00000
-#&gt;  [2,]     0.00000     0.00000    0.000000   0.000000     0.000000    0.00000
-#&gt;  [3,]     0.00000     0.00000    0.000000   0.000000     0.000000    0.00000
-#&gt;  [4,]     0.00000     0.00000    0.000000   0.000000     0.000000    0.00000
-#&gt;  [5,]     0.00000     0.00000    0.000000   0.000000     0.000000    0.00000
-#&gt;  [6,] 33813.08763  -149.07647  -12.036362  -6.036774  -490.056480 -124.36567
-#&gt;  [7,] 24805.50195  -298.98117  -29.291533 -12.043738 -1673.201628 -240.18988
-#&gt;  [8,]  -298.98117 12195.30283 2243.466316 112.240359   -16.313945 3053.55567
-#&gt;  [9,]   -29.29153  2243.46632 1714.449506  32.628593    -1.699652 1230.31396
-#&gt; [10,]   -12.04374   112.24036   32.628593   4.333281    -0.657264   65.47791
-#&gt; [11,] -1673.20163   -16.31394   -1.699652  -0.657264  3613.617857  -13.16083
-#&gt; [12,]  -240.18988  3053.55567 1230.313963  65.477910   -13.160827 4657.16918</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; [1] 3.728201e+38</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;     bpop[1]     bpop[2]     bpop[3]     bpop[4]     bpop[5]      D[1,1] 
-#&gt;    3.306524    3.610227    4.575451    6.825531   30.397923   54.423606 
+#&gt;  [1,]  13423.83149 -26148.43438 -104.9746  -55.87794   20.58619 0.000000e+00
+#&gt;  [2,] -26148.43438  70314.08833 -137.2793 -103.59890   26.32348 0.000000e+00
+#&gt;  [3,]   -104.97460   -137.27932 1209.7986  516.06655 -116.00915 0.000000e+00
+#&gt;  [4,]    -55.87794   -103.59890  516.0666  449.35861  -62.47406 0.000000e+00
+#&gt;  [5,]     20.58619     26.32348 -116.0092  -62.47406   22.73598 0.000000e+00
+#&gt;  [6,]      0.00000      0.00000    0.0000    0.00000    0.00000 9.385378e+04
+#&gt;  [7,]      0.00000      0.00000    0.0000    0.00000    0.00000 5.697839e+04
+#&gt;  [8,]      0.00000      0.00000    0.0000    0.00000    0.00000 2.298710e+01
+#&gt;  [9,]      0.00000      0.00000    0.0000    0.00000    0.00000 6.524561e+00
+#&gt; [10,]      0.00000      0.00000    0.0000    0.00000    0.00000 8.880407e-01
+#&gt; [11,]      0.00000      0.00000    0.0000    0.00000    0.00000 1.115568e+03
+#&gt; [12,]      0.00000      0.00000    0.0000    0.00000    0.00000 1.345372e+01
+#&gt;               [,7]         [,8]         [,9]       [,10]        [,11]
+#&gt;  [1,] 0.000000e+00     0.000000    0.0000000   0.0000000    0.0000000
+#&gt;  [2,] 0.000000e+00     0.000000    0.0000000   0.0000000    0.0000000
+#&gt;  [3,] 0.000000e+00     0.000000    0.0000000   0.0000000    0.0000000
+#&gt;  [4,] 0.000000e+00     0.000000    0.0000000   0.0000000    0.0000000
+#&gt;  [5,] 0.000000e+00     0.000000    0.0000000   0.0000000    0.0000000
+#&gt;  [6,] 5.697839e+04    22.987097    6.5245606   0.8880407 1115.5680152
+#&gt;  [7,] 6.592095e+04     6.586597    3.6779636   0.2558559 1176.6041001
+#&gt;  [8,] 6.586597e+00 12197.738218 2243.7358555 112.3394149    4.8902658
+#&gt;  [9,] 3.677964e+00  2243.735855 1714.4795989  32.6395909    0.5891989
+#&gt; [10,] 2.558559e-01   112.339415   32.6395909   4.3373414    0.1964359
+#&gt; [11,] 1.176604e+03     4.890266    0.5891989   0.1964359 3811.1481605
+#&gt; [12,] 4.616968e+00  3055.546022 1230.5356715  65.5594938    3.8335502
+#&gt;             [,12]
+#&gt;  [1,]    0.000000
+#&gt;  [2,]    0.000000
+#&gt;  [3,]    0.000000
+#&gt;  [4,]    0.000000
+#&gt;  [5,]    0.000000
+#&gt;  [6,]   13.453723
+#&gt;  [7,]    4.616968
+#&gt;  [8,] 3055.546022
+#&gt;  [9,] 1230.535671
+#&gt; [10,]   65.559494
+#&gt; [11,]    3.833550
+#&gt; [12,] 4658.810828</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM</span>)</div><div class='output co'>#&gt; [1] 1.421054e+39</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;     bpop[1]     bpop[2]     bpop[3]     bpop[4]     bpop[5]      D[1,1] 
+#&gt;    3.306524    3.610227    4.575451    6.825531   30.397923   47.350220 
 #&gt;      D[2,2]      D[3,3]      D[4,4]      D[5,5]  SIGMA[1,1]  SIGMA[2,2] 
-#&gt;   99.833074  113.036586  291.596910 5861.168062   11.420976   11.706427 </div><div class='input'>
+#&gt;   56.556024  113.036005  291.542904 5854.936456   10.829134   11.705173 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -252,15 +298,18 @@ corresponding xt value.  Used for multiple response models.</dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Sebastian Ueckert, Marco Foracchia, Joakim Nyberg.</p>
+  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, Sebastian Ueckert, Joakim Nyberg.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
