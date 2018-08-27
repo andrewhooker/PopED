@@ -14,8 +14,8 @@
 #' 
 #' @family FIM
 #' 
-#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
-#' @example tests/testthat/examples_fcn_doc/examples_mf3.R
+# @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+# @example tests/testthat/examples_fcn_doc/examples_mf3.R
 # @export
 #' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
