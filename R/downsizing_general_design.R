@@ -15,7 +15,7 @@
 #' @family poped_input
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_downsizing_general_design.R
-#' @export
+# @export
 #' @keywords internal
 #' 
 ## Function translated automatically using 'matlab.to.r()'

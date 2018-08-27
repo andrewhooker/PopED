@@ -18,7 +18,7 @@
 #'     
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_LinMatrixH.R
-#' @export
+# @export
 #' @keywords internal
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
