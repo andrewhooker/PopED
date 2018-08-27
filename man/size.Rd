@@ -34,3 +34,4 @@ Other MATLAB: \code{\link{cell}},
   \code{\link{randperm}}, \code{\link{rand}},
   \code{\link{tic}}, \code{\link{toc}}, \code{\link{zeros}}
 }
+\concept{MATLAB}

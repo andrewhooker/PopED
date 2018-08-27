@@ -4,8 +4,8 @@
 \alias{create_design}
 \title{Create design variables for a full description of a design.}
 \usage{
-create_design(xt, groupsize, m = NULL, x = NULL, a = NULL, ni = NULL,
-  model_switch = NULL)
+create_design(xt, groupsize, m = NULL, x = NULL, a = NULL,
+  ni = NULL, model_switch = NULL)
 }
 \arguments{
 \item{xt}{Matrix defining the  sampling schedule. 
@@ -87,3 +87,4 @@ Other poped_input: \code{\link{convert_variables}},
   \code{\link{downsizing_general_design}},
   \code{\link{poped.choose}}
 }
+\concept{poped_input}

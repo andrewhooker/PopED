@@ -39,3 +39,4 @@ Other MATLAB: \code{\link{cell}},
   \code{\link{size}}, \code{\link{tic}},
   \code{\link{zeros}}
 }
+\concept{MATLAB}

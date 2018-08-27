@@ -107,4 +107,5 @@ Other FIM: \code{\link{LinMatrixLH}},
   \code{\link{mftot}}, \code{\link{ofv_criterion}},
   \code{\link{ofv_fim}}
 }
+\concept{FIM}
 \keyword{internal}

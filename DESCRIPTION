@@ -49,5 +49,5 @@ URL: http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2016 Andrew C. Hooker
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr

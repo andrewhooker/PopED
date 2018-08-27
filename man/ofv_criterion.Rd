@@ -126,3 +126,4 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mf3}}, \code{\link{mf7}},
   \code{\link{mftot}}, \code{\link{ofv_fim}}
 }
+\concept{FIM}

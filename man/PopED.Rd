@@ -5,7 +5,6 @@
 \alias{PopED}
 \alias{poped}
 \alias{PopED-package}
-\alias{PopED-package}
 \title{PopED - \bold{Pop}ulation (and individual) optimal \bold{E}xperimental \bold{D}esign.}
 \description{
 PopED computes optimal experimental designs for both 

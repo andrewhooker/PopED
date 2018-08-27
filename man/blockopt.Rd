@@ -77,4 +77,5 @@ blockopt(fn="",poped.db,opt_method="DO")
 Other Helper: \code{\link{blockexp}},
   \code{\link{blockfinal}}, \code{\link{blockheader}}
 }
+\concept{Helper}
 \keyword{internal}

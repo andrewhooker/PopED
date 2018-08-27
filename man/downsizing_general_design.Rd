@@ -92,4 +92,5 @@ Other poped_input: \code{\link{convert_variables}},
   \code{\link{create_design_space}},
   \code{\link{create_design}}, \code{\link{poped.choose}}
 }
+\concept{poped_input}
 \keyword{internal}

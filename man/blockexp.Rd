@@ -4,8 +4,10 @@
 \alias{blockexp}
 \title{Summarize your experiment for optimization routines}
 \usage{
-blockexp(fn, poped.db, e_flag = FALSE, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[4],
+blockexp(fn, poped.db, e_flag = FALSE,
+  opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[4],
   opt_samps = poped.db$settings$optsw[1],
   opt_inds = poped.db$settings$optsw[5])
 }
@@ -89,4 +91,5 @@ blockexp("",poped.db, opt_xt=TRUE)
 Other Helper: \code{\link{blockfinal}},
   \code{\link{blockheader}}, \code{\link{blockopt}}
 }
+\concept{Helper}
 \keyword{internal}

@@ -45,4 +45,6 @@ Other MATLAB: \code{\link{cell}}, \code{\link{feval}},
 
 Other matrix_manipulation: \code{\link{test_for_zeros}}
 }
+\concept{MATLAB}
+\concept{matrix_manipulation}
 \keyword{internal}

@@ -4,13 +4,13 @@
 \alias{RS_opt}
 \title{Optimize the objective function using an adaptive random search algorithm for D-family designs.}
 \usage{
-RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
-  a = NULL, bpopdescr = NULL, ddescr = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, fmf = 0, dmf = 0,
-  trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
-  cfaxt = poped.db$settings$cfaxt, cfaa = poped.db$settings$cfaa,
-  rsit = poped.db$settings$rsit,
+RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
+  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
+  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL, fmf = 0,
+  dmf = 0, trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], cfaxt = poped.db$settings$cfaxt,
+  cfaa = poped.db$settings$cfaa, rsit = poped.db$settings$rsit,
   rsit_output = poped.db$settings$rsit_output,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   approx_type = poped.db$settings$iApproximationMethod, iter = 1, ...)
@@ -182,3 +182,4 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}

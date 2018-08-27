@@ -4,8 +4,8 @@
 \alias{ed_mftot}
 \title{Evaluate the expectation of the Fisher Information Matrix (FIM) and the expectation of the OFV(FIM).}
 \usage{
-ed_mftot(model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr, ddescr,
-  covd, sigma, docc, poped.db, calc_fim = TRUE)
+ed_mftot(model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr,
+  ddescr, covd, sigma, docc, poped.db, calc_fim = TRUE)
 }
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
@@ -143,4 +143,6 @@ Other E-family: \code{\link{calc_ofv_and_fim}},
   \code{\link{ed_laplace_ofv}},
   \code{\link{evaluate.e.ofv.fim}}
 }
+\concept{E-family}
+\concept{FIM}
 \keyword{internal}

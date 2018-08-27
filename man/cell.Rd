@@ -39,3 +39,4 @@ Other MATLAB: \code{\link{diag_matlab}},
   \code{\link{rand}}, \code{\link{size}},
   \code{\link{tic}}, \code{\link{toc}}, \code{\link{zeros}}
 }
+\concept{MATLAB}
