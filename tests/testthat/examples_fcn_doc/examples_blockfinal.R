@@ -18,6 +18,6 @@ blockfinal(fn="",fmf=FIM,
            opt_xt=TRUE,
            fmf_init=FIM,
            dmf_init=dmf,
-           param_cvs_init=rbind(get_rse(FIM,poped.db,use_percent=FALSE)))
+           param_cvs_init=get_rse(FIM,poped.db))
 
 
