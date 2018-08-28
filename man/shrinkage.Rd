@@ -4,7 +4,8 @@
 \alias{shrinkage}
 \title{Predict shrinkage of empirical Bayes estimates (EBEs) in a population model}
 \usage{
-shrinkage(poped.db, use_mc = FALSE, num_sim_ids = 1000, use_purrr = FALSE)
+shrinkage(poped.db, use_mc = FALSE, num_sim_ids = 1000,
+  use_purrr = FALSE)
 }
 \arguments{
 \item{poped.db}{A PopED database}

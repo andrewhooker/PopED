@@ -13,9 +13,9 @@
 #' \item{bpop}{A matrix of fixed effect parameter values.}
 #' 
 #' @family poped_input
-#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
-#' @example tests/testthat/examples_fcn_doc/examples_downsizing_general_design.R
-#' @export
+# @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
+# @example tests/testthat/examples_fcn_doc/examples_downsizing_general_design.R
+# @export
 #' @keywords internal
 #' 
 ## Function translated automatically using 'matlab.to.r()'

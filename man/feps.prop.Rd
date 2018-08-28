@@ -103,3 +103,5 @@ Other models: \code{\link{feps.add.prop}},
 Other RUV_models: \code{\link{feps.add.prop}},
   \code{\link{feps.add}}
 }
+\concept{RUV_models}
+\concept{models}

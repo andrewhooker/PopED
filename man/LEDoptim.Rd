@@ -4,13 +4,14 @@
 \alias{LEDoptim}
 \title{Optimization function for D-family, E-family and Laplace approximated ED designs}
 \usage{
-LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL, x = NULL,
-  a = NULL, bpopdescr = NULL, ddescr = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, ofv_init = 0, fim_init = 0,
-  trflag = TRUE, header_flag = TRUE, footer_flag = TRUE,
-  opt_xt = poped.db$settings$optsw[2], opt_a = poped.db$settings$optsw[4],
-  opt_x = poped.db$settings$optsw[3], out_file = NULL, d_switch = FALSE,
-  use_laplace = T, laplace.fim = FALSE,
+LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL,
+  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
+  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL,
+  ofv_init = 0, fim_init = 0, trflag = TRUE, header_flag = TRUE,
+  footer_flag = TRUE, opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], out_file = NULL,
+  d_switch = FALSE, use_laplace = T, laplace.fim = FALSE,
   use_RS = poped.db$settings$bUseRandomSearch, ...)
 }
 \arguments{
@@ -206,3 +207,4 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}

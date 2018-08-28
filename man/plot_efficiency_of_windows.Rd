@@ -149,3 +149,6 @@ Other Simulation: \code{\link{model_prediction}},
 
 Other Graphics: \code{\link{plot_model_prediction}}
 }
+\concept{Graphics}
+\concept{Simulation}
+\concept{evaluate_design}

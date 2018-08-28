@@ -1,6 +1,12 @@
 templates:
   params:
-    bootswatch: cerulean
+    #bootswatch: cerulean
+    bootswatch: paper
+
+reference:
+  - title: Input information to PopED
+    contents:
+    - create.poped.database
 
 navbar:
   title: "PopED"

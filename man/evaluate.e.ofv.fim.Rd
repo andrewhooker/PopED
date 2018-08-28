@@ -8,12 +8,13 @@ evaluate.e.ofv.fim(poped.db, fim.calc.type = NULL,
   bpop = poped.db$parameters$bpop, d = poped.db$parameters$d,
   covd = poped.db$parameters$covd, docc = poped.db$parameters$docc,
   sigma = poped.db$parameters$sigma, model_switch = NULL, ni = NULL,
-  xt = NULL, x = NULL, a = NULL, groupsize = poped.db$design$groupsize,
-  deriv.type = NULL, bLHS = poped.db$settings$bLHS,
+  xt = NULL, x = NULL, a = NULL,
+  groupsize = poped.db$design$groupsize, deriv.type = NULL,
+  bLHS = poped.db$settings$bLHS,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   ED_samp_size = poped.db$settings$ED_samp_size,
-  use_laplace = poped.db$settings$iEDCalculationType, laplace.fim = FALSE,
-  ...)
+  use_laplace = poped.db$settings$iEDCalculationType,
+  laplace.fim = FALSE, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -217,3 +218,6 @@ Other E-family: \code{\link{calc_ofv_and_fim}},
 Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
   \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
 }
+\concept{E-family}
+\concept{FIM}
+\concept{evaluate_FIM}

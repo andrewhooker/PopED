@@ -4,8 +4,9 @@
 \alias{calc_ofv_and_grad}
 \title{Compute an objective function and gradient}
 \usage{
-calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni, xtopto,
-  xopto, aopto, bpop, d, sigma, docc_full, poped.db, only_fim = FALSE)
+calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni,
+  xtopto, xopto, aopto, bpop, d, sigma, docc_full, poped.db,
+  only_fim = FALSE)
 }
 \arguments{
 \item{x}{A matrix for the discrete design variables.  Each row is a group.}
@@ -164,4 +165,5 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

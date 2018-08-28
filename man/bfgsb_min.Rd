@@ -133,4 +133,5 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

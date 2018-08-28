@@ -33,4 +33,5 @@ test_for_zeros(cbind(1,2,3,NA,0),1e-5)
 \seealso{
 Other matrix_manipulation: \code{\link{diag_matlab}}
 }
+\concept{matrix_manipulation}
 \keyword{internal}

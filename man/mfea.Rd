@@ -6,9 +6,10 @@
 \usage{
 mfea(poped.db, model_switch, ni, xt, x, a, bpopdescr, ddescr, maxxt, minxt,
   maxa, mina, fmf, dmf, EAStepSize = poped.db$settings$EAStepSize,
-  ourzero = poped.db$settings$ourzero, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
-  trflag = T, ...)
+  ourzero = poped.db$settings$ourzero,
+  opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], trflag = T, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -188,4 +189,5 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

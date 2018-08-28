@@ -4,7 +4,8 @@
 \alias{mftot}
 \title{Evaluate the Fisher Information Matrix (FIM)}
 \usage{
-mftot(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc, poped.db)
+mftot(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
+  poped.db)
 }
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
@@ -115,4 +116,5 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mf3}}, \code{\link{mf7}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
 }
+\concept{FIM}
 \keyword{internal}
