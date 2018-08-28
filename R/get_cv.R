@@ -146,7 +146,7 @@ get_rse <- function (fim, poped.db,
   params_rse <- returnArgs[[2]]
   parnam <- get_parnam(poped.db)
   ret <- params_rse[,,drop=T]
-  if(use_percent) ret[params!=0]=round(ret[params!=0]*100)
+  if(use_percent) ret[params!=0]=ret[params!=0]*100
   names(ret) <- parnam
   return(ret)
 }
