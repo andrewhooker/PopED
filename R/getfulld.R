@@ -1,4 +1,5 @@
 #' Create a full D (between subject variability) matrix given a vector of variances and covariances.
+#' Note, this does not test matching vector lengths.
 #' 
 #' @param variance_vector The vector of the variances.
 #' @param covariance_vector A vector of the covariances. Writen in column major 
@@ -11,22 +12,12 @@
 ## Author: Andrew Hooker
 
 getfulld <- function(variance_vector,covariance_vector=NULL){  
-  if(length(variance_vector)==1) return(as.matrix(variance_vector))
-  if((isempty(covariance_vector) || sum(covariance_vector!=0)==0)){
-    d=diag_matlab(variance_vector)
-  } else {
-    covd = zeros(length(variance_vector),length(variance_vector))
-    k=1
-    for(i in 1:length(variance_vector)){
-      for(j in 1:length(variance_vector)){
-        if((i<j)){
-          covd[i,j]=covariance_vector[k]
-          covd[j,i]=covariance_vector[k]
-          k=k+1
-        }
-      }
-    }
-    d = diag_matlab(variance_vector)+covd
+  if (length(variance_vector) == 1) return(as.matrix(variance_vector))
+  d = diag_matlab(variance_vector)
+  if ((!isempty(covariance_vector) & sum(covariance_vector != 0) > 0)) {
+    d[lower.tri(d)] = covariance_vector
+    d = t(d) # upper.tri has wrong order, so fill lower, transpose this to upper, then fill lower again
+    d[lower.tri(d)] = covariance_vector
   }
   return(d) 
 }

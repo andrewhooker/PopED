@@ -100,7 +100,7 @@ pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,poped.db
     ran=rand(sample_size,nvar)
     # method of Stein
     for(j in 1:nvar){
-      idx=randperm(sample_size)
+      idx=sample(sample_size)
       P=(idx-ran[,j])/sample_size       # probability of the cdf
       returnArgs <- switch(par[j,1]+1,
                            par[j,2],  #point

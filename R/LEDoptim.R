@@ -4,7 +4,7 @@
 #' Right now there is only one optimization algorithm used in this 
 #' function 
 #' \enumerate{
-#' \item Adaptive random search. See \code{\link{RS_opt_gen}}.
+#' \item Adaptive random search. See \code{\link{RS_opt}}.
 #' }
 #' This function takes information from the PopED database supplied as an argument.
 #' The PopED database supplies information about the the model, parameters, design and methods to use.
@@ -12,7 +12,6 @@
 #' if they are supplied then they are used instead of the arguments from the PopED database.
 #' 
 #' @inheritParams RS_opt
-#' @inheritParams RS_opt_gen
 #' @inheritParams create.poped.database
 #' @inheritParams Doptim
 #' @inheritParams calc_ofv_and_fim
@@ -112,7 +111,7 @@ LEDoptim <- function(poped.db,
   
   if((use_RS) ){#If we want to perform random search
     # ----------------- RANDOM SEARCH BEGINS HERE                           
-    rs_output <- RS_opt_gen(poped.db,
+    rs_output <- RS_opt(poped.db,
                             d_switch=d_switch,
                             use_laplace=use_laplace,
                             fmf=fmf,

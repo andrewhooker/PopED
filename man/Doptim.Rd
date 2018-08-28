@@ -238,9 +238,8 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 }
 \seealso{
 Other Optimize: \code{\link{LEDoptim}},
-  \code{\link{RS_opt_gen}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
+  \code{\link{RS_opt}}, \code{\link{a_line_search}},
+  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},

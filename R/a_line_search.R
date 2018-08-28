@@ -174,7 +174,7 @@ a_line_search <- function(poped.db,
         des_num = 1
         
         if((poped.db$design_space$bUseGrouped_xt) ){#If we are running with xt groups
-          k_perm = randperm(max(max(poped.db$design_space$G_xt)))
+          k_perm = sample(max(max(poped.db$design_space$G_xt)))
           for(k in 1:max(max(poped.db$design_space$G_xt))){
             tmp = matrix(1,size(xt,1),size(xt,2))*k_perm[k]
             inters = (poped.db$design_space$G_xt==tmp)
@@ -261,10 +261,10 @@ a_line_search <- function(poped.db,
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else { #If we are running without xt groups
           #-------------line search for xt
-          m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+          m_perm = sample(poped.db$design$m) #Randomize which group to change first
           for(ind in 1:poped.db$design$m){
             # for output to screen during run
-            sn_perm = randperm(ni[m_perm[ind]]) #Randomize which sample to change first
+            sn_perm = sample(ni[m_perm[ind]]) #Randomize which sample to change first
             for(sn in 1:ni[m_perm[ind]]){
               xt=best_xt
               #-----------------------step-size for moving through line search
@@ -387,7 +387,7 @@ a_line_search <- function(poped.db,
         best_x=x
         
         if((poped.db$design_space$bUseGrouped_x) ){#If we are running with x groups
-          k_perm = randperm(max(max(poped.db$design_space$G_x))) #Randomize which group to change first
+          k_perm = sample(max(max(poped.db$design_space$G_x))) #Randomize which group to change first
           for(k in 1:max(max(poped.db$design_space$G_x))){
             tmp = matrix(1,size(x,1),size(x,2))*k_perm[k]
             inters = (poped.db$design_space$G_x==tmp)
@@ -473,11 +473,11 @@ a_line_search <- function(poped.db,
           # for output to screen during run
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else {
-          k_perm = randperm(size(poped.db$design$x,2)) #Randomize which variable to change first
+          k_perm = sample(size(poped.db$design$x,2)) #Randomize which variable to change first
           for(k in 1:size(poped.db$design$x,2) ){#Do the line search for all other design var.
             if((poped.db$settings$line_optx[k_perm[k]]) ){#If this design var should use line search
               #-------------line search for x
-              m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+              m_perm = sample(poped.db$design$m) #Randomize which group to change first
               for(ind in 1:poped.db$design$m){
                 # for output to screen during run
                 x=best_x
@@ -486,7 +486,7 @@ a_line_search <- function(poped.db,
                 discrete_val = poped.db$design_space$discrete_x[[m_perm[ind],k_perm[k]]]
                 if((length(discrete_val)>=1)){
                   fprintf('Searching x%g on individual/group %g\n',k_perm[k],m_perm[ind])
-                  # val_perm = randperm(length(discrete_val))
+                  # val_perm = sample(length(discrete_val))
                   # #Randomize which values to use first, is not
                   # needed beacuse every value are investigated
                   for(ct in 1:length(discrete_val)){
@@ -602,7 +602,7 @@ a_line_search <- function(poped.db,
         
         if((poped.db$design_space$bUseGrouped_a) ){#If we are running with a groups
           
-          k_perm = randperm(max(max(poped.db$design_space$G_a)))
+          k_perm = sample(max(max(poped.db$design_space$G_a)))
           for(k in 1:max(max(poped.db$design_space$G_a))){
             tmp = matrix(1,size(a,1),size(a,2))*k_perm[k]
             inters = (poped.db$design_space$G_a==tmp)
@@ -688,12 +688,12 @@ a_line_search <- function(poped.db,
           # for output to screen during run
           fprintf('    OFV(MF): %g\n',best_detmf)
         } else {
-          k_perm = randperm(size(poped.db$design$a,2)) #Randomize which a variable to change first
+          k_perm = sample(size(poped.db$design$a,2)) #Randomize which a variable to change first
           #print(poped.db$design$a)
           for(k in 1:size(poped.db$design$a,2) ){#Do the line search for all covariates
             if((poped.db$settings$line_opta[k_perm[k]]) ){#If this covariate should use line search
               #-------------line search for a[k]
-              m_perm = randperm(poped.db$design$m) #Randomize which group to change first
+              m_perm = sample(poped.db$design$m) #Randomize which group to change first
               for(ind in 1:poped.db$design$m){
                 # for output to screen during run
                 a = best_a

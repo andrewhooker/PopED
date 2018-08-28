@@ -54,6 +54,21 @@ bfgsb_min <- function(f_name,f_options, x0, l, u, options=list()){
     if(is.null(options$update_fhandle)) options$update_fhandle="print_information"
     
     do.call(options$update_fhandle,list(0, f_k, x_k))
+    
+    ##function projected_gradient_norm for condition in while-loop
+    projected_gradient_norm <- function(l,u,x,g){
+      norm=0
+      for(i in 1:length(x)){
+        if(g[i]<0){
+          gi=max(x[i]-u[i],g[i])
+        } else {
+          gi=min(x[i]-l[i],g[i])
+        }
+        norm=max(norm,abs(gi))
+      }
+      return( norm)
+    }
+    
     iter=1
     ##as long as gradient is bigger than certain value
     while(projected_gradient_norm(l,u,x_k,gf_k)>options$pgtol){
