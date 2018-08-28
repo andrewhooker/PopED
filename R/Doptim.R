@@ -575,7 +575,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
     #--------- Write results
     #     if((trflag)){
     blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,model_switch,
-                 bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
+                 bpopdescr[,2],ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
                  opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,
                  dmf_init=dmf_init,trflag=trflag,...)
     #}

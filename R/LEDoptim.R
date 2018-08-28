@@ -254,7 +254,7 @@ LEDoptim <- function(poped.db,
   #if((trflag)){
   #  if(footer_flag){
   blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xtopt,xopt,aopt,model_switch,
-             bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
+             bpopdescr[,2],ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
              opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,
              fmf_init=fmf_init,dmf_init=dmf_init,out_file=out_file,
              trflag=trflag,
