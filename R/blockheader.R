@@ -138,9 +138,9 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
     #        ofv_criterion(dmf,length(params),poped.db))
     
     parnam <- get_parnam(poped.db)
-    fprintf(fn,'\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
-    if(fn!="") fprintf('\nInitial design expected parameter \nrelative standard error (%sRSE)\n','%')
-    df <- data.frame("Parameter"=parnam,"Values"=params,"RSE_0"=param_rse)
+    fprintf(fn,'\nInitial design\nexpected relative standard error\n(%sRSE, rounded to nearest integer)\n','%')
+    if(fn!="") fprintf('\nInitial design\nexpected relative standard error\n(%sRSE, rounded to nearest integer)\n','%')
+    df <- data.frame("Parameter"=parnam,"Values"=sprintf("%6.3g",params),"RSE_0"=round(param_rse))
     print(df,digits=3, print.gap=3,row.names=F)
     if(fn!="") capture.output(print(df,digits=3, print.gap=3,row.names=F),file=fn)
     fprintf('\n')
