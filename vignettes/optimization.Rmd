@@ -20,11 +20,11 @@ knitr::opts_chunk$set(
 
 set.seed(1234)
 
-if(Sys.info()["user"]=="ancho179"){
-  devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
-} else {
+# if(Sys.info()["user"]=="ancho179"){
+#   devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
+# } else {
   library(PopED)
-}
+# }
   
 ```
 
