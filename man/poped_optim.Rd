@@ -360,9 +360,9 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},

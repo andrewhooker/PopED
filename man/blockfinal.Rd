@@ -61,7 +61,7 @@ can also just supply the diagnonal parameter values (variances) as a \code{c()}.
 
 \item{dmf_init}{Initial OFV.}
 
-\item{param_cvs_init}{The inital design parameter RSE values.}
+\item{param_cvs_init}{The inital design parameter %RSE values.}
 
 \item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
 except for diagnostic purposes.}

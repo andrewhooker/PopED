@@ -116,7 +116,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 
 \item{bUseExchangeAlgorithm}{Use Exchange algorithm (1=TRUE, 0=FALSE)}
 
-\item{iter}{The number of iterations entered into the \code{\link{blockheader}} function.}
+\item{iter}{The number of iterations entered into the \code{blockheader_2} function.}
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
@@ -305,9 +305,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},

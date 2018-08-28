@@ -2,7 +2,8 @@
 % Please edit documentation in R/getfulld.R
 \name{getfulld}
 \alias{getfulld}
-\title{Create a full D (between subject variability) matrix given a vector of variances and covariances.}
+\title{Create a full D (between subject variability) matrix given a vector of variances and covariances.
+Note, this does not test matching vector lengths.}
 \usage{
 getfulld(variance_vector, covariance_vector = NULL)
 }
@@ -17,6 +18,7 @@ The full matrix of variances for the between subject variances
 }
 \description{
 Create a full D (between subject variability) matrix given a vector of variances and covariances.
+Note, this does not test matching vector lengths.
 }
 \examples{
 

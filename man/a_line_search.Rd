@@ -123,9 +123,8 @@ output <- a_line_search(poped.db, opt_xt=TRUE, opt_a=TRUE, ls_step_size=4)
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
