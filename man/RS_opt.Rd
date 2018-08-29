@@ -2,18 +2,22 @@
 % Please edit documentation in R/RS_opt.R
 \name{RS_opt}
 \alias{RS_opt}
-\title{Optimize the objective function using an adaptive random search algorithm for D-family designs.}
+\title{Optimize the objective function using an adaptive random search algorithm for D-family and E-family designs.}
 \usage{
-RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL, x = NULL,
-  a = NULL, bpopdescr = NULL, ddescr = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, fmf = 0, dmf = 0,
-  trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
-  cfaxt = poped.db$settings$cfaxt, cfaa = poped.db$settings$cfaa,
-  rsit = poped.db$settings$rsit,
+RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
+  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
+  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL, fmf = 0,
+  dmf = 0, trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], cfaxt = poped.db$settings$cfaxt,
+  cfaa = poped.db$settings$cfaa, rsit = poped.db$settings$rsit,
   rsit_output = poped.db$settings$rsit_output,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
-  approx_type = poped.db$settings$iApproximationMethod, iter = 1, ...)
+  approx_type = poped.db$settings$iApproximationMethod, iter = NULL,
+  d_switch = poped.db$settings$d_switch,
+  use_laplace = poped.db$settings$iEDCalculationType,
+  laplace.fim = FALSE, header_flag = TRUE, footer_flag = TRUE,
+  out_file = NULL, compute_inv = TRUE, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -87,12 +91,33 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 
 \item{approx_type}{Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.}
 
-\item{iter}{The number of iterations entered into the \code{\link{blockheader}} function.}
+\item{iter}{The number of iterations entered into the \code{blockheader_2} function.}
+
+\item{d_switch}{\itemize{
+\item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
+D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+
+\item{use_laplace}{Should the Laplace method be used in calculating the expectation of the OFV?}
+
+\item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
+the FIM does not need to be computed and, if desired,  this calculation
+is done usng the standard MC integration technique, so can be slow.}
+
+\item{header_flag}{Should the header text be printed out?}
+
+\item{footer_flag}{Should the footer text be printed out?}
+
+\item{out_file}{Which file should the output be directed to?  A string, a file handle using 
+\code{\link{file}} or \code{""} will output to the screen.}
+
+\item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
+except for diagnostic purposes.}
 
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \description{
-Optimize the objective function using an adaptive random search algorithm.
+Optimize the objective function using an adaptive random search algorithm.  
+Optimization can be performed for both D-family and E-family designs.
 The function works for both discrete and continuous optimization variables.
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.
@@ -105,7 +130,8 @@ library(PopED)
 
 ############# START #################
 ## Create PopED database
-## (warfarin model for optimization)
+## (warfarin model for optimization
+##  with parameter uncertainty)
 #####################################
 
 ## Warfarin example from software comparison in:
@@ -113,8 +139,8 @@ library(PopED)
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
 
-## Optimization using an additive + proportional reidual error  
-## to avoid sample times at very low concentrations (time 0 or very late samples).
+## Optimization using an additive + proportional reidual error
+## to avoid sample times at very low concentrations (time 0 or very late samoples).
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -130,25 +156,34 @@ sfg <- function(x,a,bpop,b,bocc){
   return(parameters) 
 }
 
+# Adding 10\% log-normal Uncertainty to fixed effects (not Favail)
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                         bpop_vals,
+                         ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10\% of bpop value
+bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+bpop_vals_ed_ln
+
 ## -- Define initial design  and design space
 poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
                                   fg_fun=sfg,
                                   fError_fun=feps.add.prop,
-                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  bpop=bpop_vals_ed_ln, 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 
                                   sigma=c(0.01,0.25),
                                   groupsize=32,
                                   xt=c( 0.5,1,2,6,24,36,72,120),
-                                  minxt=0.01,
+                                  minxt=0,
                                   maxxt=120,
                                   a=70,
-                                  mina=0.01,
+                                  mina=0,
                                   maxa=100)
 
 ############# END ###################
 ## Create PopED database
-## (warfarin model for optimization)
+## (warfarin model for optimization
+##  with parameter uncertainty)
 #####################################
 
 
@@ -157,10 +192,24 @@ out_1 <- RS_opt(poped.db,opt_xt=1,opt_a=1,rsit=3,fim.calc.type=0)
 
 \dontrun{
   
-  # More iterations
-  rs.output <- RS_opt(poped.db)
+  RS_opt(poped.db)
   
-}  
+  RS_opt(poped.db,opt_xt=TRUE,rsit=100,compute_inv=F)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=20,d_switch=0)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,d_switch=0,use_laplace=T)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,d_switch=0,use_laplace=T,laplace.fim=T)
+  
+  ## Different headers and footers of output
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,out_file="foo.txt")
+  output <- RS_opt(poped.db,opt_xt=TRUE,rsit=100,trflag=FALSE)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,out_file="")
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,header_flag=FALSE)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,footer_flag=FALSE)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,header_flag=FALSE,footer_flag=FALSE)
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,header_flag=FALSE,footer_flag=FALSE,out_file="foo.txt")
+  RS_opt(poped.db,opt_xt=TRUE,rsit=10,header_flag=FALSE,footer_flag=FALSE,out_file="") 
+
+}
 }
 \references{
 \enumerate{
@@ -173,12 +222,12 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{a_line_search}},
+  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}

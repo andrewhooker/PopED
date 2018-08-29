@@ -650,7 +650,7 @@ mfea <- function(poped.db,model_switch,ni,xt,x,a,bpopdescr,ddescr,maxxt,minxt,ma
   #--------- Write results
   #if((trflag)){
   #fprintf(fn,"\n")
-  blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,model_switch,bpopdescr,ddescr,
+  blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,model_switch,bpopdescr[,2],ddescr,
                poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
                opt_xt=opt_xt,opt_a=opt_a,opt_x=opt_x,fmf_init=fmf_init,dmf_init=dmf_init,
                trflag=trflag,

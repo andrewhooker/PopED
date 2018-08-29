@@ -39,10 +39,9 @@ diag(rbind(1,2,3))
 Other MATLAB: \code{\link{cell}}, \code{\link{feval}},
   \code{\link{fileparts}}, \code{\link{isempty}},
   \code{\link{ones}}, \code{\link{randn}},
-  \code{\link{randperm}}, \code{\link{rand}},
-  \code{\link{size}}, \code{\link{tic}}, \code{\link{toc}},
-  \code{\link{zeros}}
-
-Other matrix_manipulation: \code{\link{test_for_zeros}}
+  \code{\link{rand}}, \code{\link{size}},
+  \code{\link{tic}}, \code{\link{toc}}, \code{\link{zeros}}
 }
+\concept{MATLAB}
+\concept{matrix_manipulation}
 \keyword{internal}

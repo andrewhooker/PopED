@@ -309,9 +309,9 @@ create_design_space <- function(
     
     # check for zeros
     if(!is.null(our_zero)){
-      minxt=test_for_zeros(minxt,our_zero)
-      maxxt=test_for_zeros(maxxt,our_zero)
-      xt=test_for_zeros(xt,our_zero)
+      minxt = minxt + our_zero*(minxt == 0)
+      maxxt = maxxt + our_zero*(maxxt == 0)
+      xt = xt + our_zero*(xt == 0)
     }
     
     # check  given max and min

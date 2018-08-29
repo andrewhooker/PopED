@@ -6,9 +6,10 @@
 \usage{
 mfea(poped.db, model_switch, ni, xt, x, a, bpopdescr, ddescr, maxxt, minxt,
   maxa, mina, fmf, dmf, EAStepSize = poped.db$settings$EAStepSize,
-  ourzero = poped.db$settings$ourzero, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
-  trflag = T, ...)
+  ourzero = poped.db$settings$ourzero,
+  opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], trflag = T, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -180,12 +181,13 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{optim_ARS}},
   \code{\link{optim_LS}}, \code{\link{poped_optim_1}},
   \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

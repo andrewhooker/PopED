@@ -33,71 +33,6 @@ As a list:
 \description{
 Compute the FIM for one individual given specific model(s), parameters, design and methods.
 }
-\examples{
-library(PopED)
-
-############# START #################
-## Create PopED database
-## (warfarin example)
-#####################################
-
-## Warfarin example from software comparison in:
-## Nyberg et al., "Methods and software tools for design evaluation 
-##   for population pharmacokinetics-pharmacodynamics studies", 
-##   Br. J. Clin. Pharm., 2014. 
-
-## find the parameters that are needed to define from the structural model
-ff.PK.1.comp.oral.sd.CL
-
-## -- parameter definition function 
-## -- names match parameters in function ff
-sfg <- function(x,a,bpop,b,bocc){
-  parameters=c(CL=bpop[1]*exp(b[1]),
-               V=bpop[2]*exp(b[2]),
-               KA=bpop[3]*exp(b[3]),
-               Favail=bpop[4],
-               DOSE=a[1])
-  return(parameters) 
-}
-
-## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
-                                  fg_fun=sfg,
-                                  fError_fun=feps.prop,
-                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                  notfixed_bpop=c(1,1,1,0),
-                                  d=c(CL=0.07, V=0.02, KA=0.6), 
-                                  sigma=0.01,
-                                  groupsize=32,
-                                  xt=c( 0.5,1,2,6,24,36,72,120),
-                                  minxt=0,
-                                  maxxt=120,
-                                  a=70)
-
-############# END ###################
-## Create PopED database
-## (warfarin example)
-#####################################
-
-
-#for the FO approximation
-ind=1
-
-# no occasion defined in this example, so result is zero
-output <- mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
-   xt=t(poped.db$design$xt[ind,,drop=FALSE]),
-   x=zeros(0,1),
-   a=t(poped.db$design$a[ind,,drop=FALSE]),
-   bpop=poped.db$parameters$bpop[,2,drop=FALSE],
-   d=poped.db$parameters$param.pt.val$d,
-   sigma=poped.db$parameters$sigma,
-   docc=poped.db$parameters$param.pt.val$docc,
-   poped.db)
-
-# in this simple case the full FIM is just the sum of the individual FIMs
-# and all the individual FIMs are the same
-det(output$ret*32) == det(evaluate.fim(poped.db,fim.calc.type=1))  
-}
 \seealso{
 Other FIM: \code{\link{LinMatrixH}},
   \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
@@ -109,4 +44,5 @@ Other FIM: \code{\link{LinMatrixH}},
   \code{\link{mf7}}, \code{\link{mftot}},
   \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
 }
+\concept{FIM}
 \keyword{internal}

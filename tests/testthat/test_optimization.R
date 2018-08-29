@@ -60,8 +60,8 @@ test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work"
   file.remove("tmp.txt","temp.R")
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
-  expect_equivalent(out_2$poped.db$design$a[1,1],100)
-  expect_equivalent(out_3$poped.db$design$a[1,1],0.01)
+  #expect_equivalent(out_2$poped.db$design$a[1,1],100)
+  #expect_equivalent(out_3$poped.db$design$a[1,1],0.01)
   
   
   ex_string <- ex_to_string("examples_fcn_doc/examples_poped_optim.R",comment_dontrun=comment_dontrun)
@@ -73,22 +73,13 @@ test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work"
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
   
-  ex_string <- ex_to_string("examples_fcn_doc/examples_RS_opt_gen.R",comment_dontrun=comment_dontrun)
-  writeLines(ex_string, "temp.R")
-  sink("tmp.txt")
-  source("temp.R")  
-  sink()
-  file.remove("tmp.txt","temp.R")
-  
-  expect_output(str(out_1),"List of 6")
-  
   ex_string <- ex_to_string("examples_fcn_doc/examples_RS_opt.R",comment_dontrun=comment_dontrun)
   writeLines(ex_string, "temp.R")
   sink("tmp.txt")
-  source("temp.R")  
+  source("temp.R")
   sink()
   file.remove("tmp.txt","temp.R")
-  
+
   expect_output(str(out_1),"List of 6")
   
 })

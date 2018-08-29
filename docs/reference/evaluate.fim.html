@@ -11,26 +11,44 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
+
+
+<meta property="og:title" content="Evaluate the Fisher Information Matrix (FIM) — evaluate.fim" />
+
+<meta property="og:description" content="Compute the FIM given the model, parameters, design and methods defined in the 
+PopED database. Some of the arguments coming from the PopED database can be overwritten;  
+by default these arguments are NULL in the 
+function, if they are supplied then they are used instead of the arguments from the PopED database." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -44,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">PopED</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">PopED</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -64,6 +86,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -71,92 +94,113 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Evaluate the Fisher Information Matrix (FIM)</h1>
+    
+    <div class="hidden name"><code>evaluate.fim.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Compute the FIM given the model, parameters, design and methods defined in the 
 PopED database. Some of the arguments coming from the PopED database can be overwritten;  
 by default these arguments are <code>NULL</code> in the 
 function, if they are supplied then they are used instead of the arguments from the PopED database.</p>
     
+    </div>
 
-    <pre><span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>, <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>, <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>poped.db</dt>
-      <dd>A PopED database.</dd>
-      <dt>fim.calc.type</dt>
-      <dd>The method used for calculating the FIM. Potential values:
-<ul>
-<li> 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  See <code><a href='mftot0.html'>mftot0</a></code>.
-</li>
-<li> 1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
-the FIM to zero. See <code><a href='mftot1.html'>mftot1</a></code>.
-</li>
-<li> 2 = weighted models (placeholder).
-</li>
-<li> 3 = Not currently used.
-</li>
-<li> 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>poped.db</th>
+      <td><p>A PopED database.</p></td>
+    </tr>
+    <tr>
+      <th>fim.calc.type</th>
+      <td><p>The method used for calculating the FIM. Potential values:</p><ul>
+<li><p>0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.</p></li>
+<li><p>1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
+the FIM to zero.</p></li>
+<li><p>2 = weighted models (placeholder).</p></li>
+<li><p>3 = Not currently used.</p></li>
+<li><p>4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). See <code><a href='mftot4.html'>mftot4</a></code>.
-</li>
-<li> 5 = Full FIM parameterized with A,B,C matrices &amp; derivative of variance. See <code><a href='mftot5.html'>mftot5</a></code>.
-</li>
-<li> 6 = Calculate one model switch at a time, good for large matrices. See <code><a href='mftot6.html'>mftot6</a></code>.
-</li>
-<li> 7 = Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance See <code><a href='mftot7.html'>mftot7</a></code>.
-</li>
-</ul>
-</dd>
-      <dt>approx.method</dt>
-      <dd>Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI</dd>
-      <dt>FOCE.num</dt>
-      <dd>Number indivduals in each step of FOCE approximation method</dd>
-      <dt>bpop.val</dt>
-      <dd>The fixed effects parameter values.  Supplied as a vector.</dd>
-      <dt>d_full</dt>
-      <dd>A between subject variability matrix (OMEGA in NONMEM).</dd>
-      <dt>docc_full</dt>
-      <dd>A between occasion variability matrix.</dd>
-      <dt>sigma_full</dt>
-      <dd>A residual unexplained variability matrix (SIGMA in NONMEM).</dd>
-      <dt>model_switch</dt>
-      <dd>A matrix that is the same size as xt, specifying which model each sample belongs to.</dd>
-      <dt>ni</dt>
-      <dd>A vector of the number of samples in each group.</dd>
-      <dt>xt</dt>
-      <dd>A matrix of sample times.  Each row is a vector of sample times for a group.</dd>
-      <dt>x</dt>
-      <dd>A matrix for the discrete design variables.  Each row is a group.</dd>
-      <dt>a</dt>
-      <dd>A matrix of covariates.  Each row is a group.</dd>
-      <dt>groupsize</dt>
-      <dd>A vector of the numer of individuals in each group.</dd>
-      <dt>deriv.type</dt>
-      <dd>A number indicating the type of derivative to use:
-<ul>
-<li> 0=Complex difference 
-</li>
-<li> 1=Central difference 
-</li>
-<li> 20=Analytic derivative (placeholder) 
-</li>
-<li> 30=Automatic differentiation (placeholder)
-</li>
-</ul>
-</dd>
-      <dt>...</dt>
-      <dd>Other arguments passed to the function.</dd>
-    </dl>
+(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default).</p></li>
+<li><p>5 = Full FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
+<li><p>6 = Calculate one model switch at a time, good for large matrices.</p></li>
+<li><p>7 = Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>approx.method</th>
+      <td><p>Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI</p></td>
+    </tr>
+    <tr>
+      <th>FOCE.num</th>
+      <td><p>Number indivduals in each step of FOCE approximation method</p></td>
+    </tr>
+    <tr>
+      <th>bpop.val</th>
+      <td><p>The fixed effects parameter values.  Supplied as a vector.</p></td>
+    </tr>
+    <tr>
+      <th>d_full</th>
+      <td><p>A between subject variability matrix (OMEGA in NONMEM).</p></td>
+    </tr>
+    <tr>
+      <th>docc_full</th>
+      <td><p>A between occasion variability matrix.</p></td>
+    </tr>
+    <tr>
+      <th>sigma_full</th>
+      <td><p>A residual unexplained variability matrix (SIGMA in NONMEM).</p></td>
+    </tr>
+    <tr>
+      <th>model_switch</th>
+      <td><p>A matrix that is the same size as xt, specifying which model each sample belongs to.</p></td>
+    </tr>
+    <tr>
+      <th>ni</th>
+      <td><p>A vector of the number of samples in each group.</p></td>
+    </tr>
+    <tr>
+      <th>xt</th>
+      <td><p>A matrix of sample times.  Each row is a vector of sample times for a group.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>A matrix for the discrete design variables.  Each row is a group.</p></td>
+    </tr>
+    <tr>
+      <th>a</th>
+      <td><p>A matrix of covariates.  Each row is a group.</p></td>
+    </tr>
+    <tr>
+      <th>groupsize</th>
+      <td><p>A vector of the numer of individuals in each group.</p></td>
+    </tr>
+    <tr>
+      <th>deriv.type</th>
+      <td><p>A number indicating the type of derivative to use:</p><ul>
+<li><p>0=Complex difference</p></li>
+<li><p>1=Central difference</p></li>
+<li><p>20=Analytic derivative (placeholder)</p></li>
+<li><p>30=Automatic differentiation (placeholder)</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments passed to the function.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -164,27 +208,22 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other FIM: <code><a href='LinMatrixH.html'>LinMatrixH</a></code>,
+    <div class='dont-index'><p>Other FIM: <code><a href='LinMatrixH.html'>LinMatrixH</a></code>,
   <code><a href='LinMatrixLH.html'>LinMatrixLH</a></code>, <code><a href='LinMatrixL_occ.html'>LinMatrixL_occ</a></code>,
   <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
   <code><a href='ed_laplace_ofv.html'>ed_laplace_ofv</a></code>, <code><a href='ed_mftot.html'>ed_mftot</a></code>,
   <code><a href='efficiency.html'>efficiency</a></code>,
   <code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></code>,
   <code><a href='gradf_eps.html'>gradf_eps</a></code>, <code><a href='mf3.html'>mf3</a></code>,
-  <code><a href='mf5.html'>mf5</a></code>, <code><a href='mf6.html'>mf6</a></code>, <code><a href='mf7.html'>mf7</a></code>,
-  <code><a href='mf8.html'>mf8</a></code>, <code><a href='mftot0.html'>mftot0</a></code>,
-  <code><a href='mftot1.html'>mftot1</a></code>, <code><a href='mftot2.html'>mftot2</a></code>,
-  <code><a href='mftot3.html'>mftot3</a></code>, <code><a href='mftot4.html'>mftot4</a></code>,
-  <code><a href='mftot5.html'>mftot5</a></code>, <code><a href='mftot6.html'>mftot6</a></code>,
-  <code><a href='mftot7.html'>mftot7</a></code>, <code><a href='mftot.html'>mftot</a></code>,
-  <code><a href='mf.html'>mf</a></code>, <code><a href='ofv_criterion.html'>ofv_criterion</a></code>,
-  <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
-    <p>Other evaluate_FIM: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
-  <code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
-    <p>Other evaluate_design: <code><a href='evaluate_design.html'>evaluate_design</a></code>,
-  <code><a href='get_rse.html'>get_rse</a></code>, <code><a href='model_prediction.html'>model_prediction</a></code>,
+  <code><a href='mf7.html'>mf7</a></code>, <code><a href='mftot.html'>mftot</a></code>,
+  <code><a href='ofv_criterion.html'>ofv_criterion</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
+<p>Other evaluate_design: <code><a href='evaluate_design.html'>evaluate_design</a></code>,
+  <code><a href='evaluate_power.html'>evaluate_power</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
+  <code><a href='model_prediction.html'>model_prediction</a></code>,
   <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
   <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
+<p>Other evaluate_FIM: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
+  <code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -232,110 +271,25 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
-
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file 'sfg': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, "r", encoding = encoding): cannot open the connection</span></div><div class='input'>
 
 <span class='co'>## evaluate initial design with the reduced FIM</span>
-<span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>)
-<span class='no'>FIM.1</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
-#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
-#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
-#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
-#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
-#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
-#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
-#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
-#&gt;              [,7]
-#&gt; [1,]      0.00000
-#&gt; [2,]      0.00000
-#&gt; [3,]      0.00000
-#&gt; [4,]    521.54030
-#&gt; [5,]  11214.21071
-#&gt; [6,]     71.08764
-#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
-#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
+<span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.1' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.1' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM</span>
-<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)
-<span class='no'>FIM.0</span></div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
-#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
-#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
-#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
-#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
-#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
-#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
-#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
-#&gt;             [,6]         [,7]
-#&gt; [1,]  4.49053810 -54419.72354
-#&gt; [2,] -6.55031322  -1070.93366
-#&gt; [3,] 18.65386273   2955.92423
-#&gt; [4,]  0.02613561    521.54030
-#&gt; [5,]  3.26560786  11214.21071
-#&gt; [6,] 41.81083599     71.08764
-#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
-#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
+<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 0): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.0</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.0' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.0' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM </span>
 <span class='co'>## computing all derivatives with respect to the </span>
 <span class='co'>## standard deviation of the residual unexplained variation </span>
-<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)
-<span class='no'>FIM.4</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
-#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
-#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
-#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
-#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
-#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
-#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
-#&gt; [7,]     0.00000   0.000000  0.000000 1.043081e+02  2242.842141 14.21752779
-#&gt;             [,7]
-#&gt; [1,]     0.00000
-#&gt; [2,]     0.00000
-#&gt; [3,]     0.00000
-#&gt; [4,]   104.30806
-#&gt; [5,]  2242.84214
-#&gt; [6,]    14.21753
-#&gt; [7,] 32247.07803</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; [1] 2.398459e+21</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
-#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327   5.585392 </div><div class='input'>
+<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 4): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.4' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.4' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM with A,B,C matricies</span>
 <span class='co'>## should give same answer as fim.calc.type=0</span>
-<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)
-<span class='no'>FIM.5</span></div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
-#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
-#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
-#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
-#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
-#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
-#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
-#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
-#&gt;             [,6]         [,7]
-#&gt; [1,]  4.49053810 -54419.72354
-#&gt; [2,] -6.55031322  -1070.93366
-#&gt; [3,] 18.65386273   2955.92423
-#&gt; [4,]  0.02613561    521.54030
-#&gt; [5,]  3.26560786  11214.21071
-#&gt; [6,] 41.81083599     71.08764
-#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
-#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
+<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 5): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.5</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.5' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.5' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM with </span>
 <span class='co'>## A,B,C matricies and derivative of variance</span>
 <span class='co'>## should give same answer as fim.calc.type=1 (default)</span>
-<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)
-<span class='no'>FIM.7</span></div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
-#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
-#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
-#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
-#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
-#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
-#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
-#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
-#&gt;              [,7]
-#&gt; [1,]      0.00000
-#&gt; [2,]      0.00000
-#&gt; [3,]      0.00000
-#&gt; [4,]    521.54030
-#&gt; [5,]  11214.21071
-#&gt; [6,]     71.08764
-#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] SIGMA[1,1] 
-#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
-</div></pre>
+<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 7): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.7</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.7' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.7' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
+<span class='co'>## evaluate FIM and rse with prior FIM.1</span>
+<span class='no'>poped.db.prior</span> <span class='kw'>=</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='no'>poped.db</span>, <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.choose(popedInput$settings$poped_version, packageVersion("PopED")): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1.prior</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db.prior</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db.prior): object 'poped.db.prior' not found</span></div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>FIM.1.prior</span>,<span class='no'>FIM.1</span>) <span class='co'># the FIM is only computed from the design in the poped.db</span></div><div class='output co'>#&gt; <span class='error'>Error in all.equal(FIM.1.prior, FIM.1): object 'FIM.1.prior' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>poped.db.prior</span>) <span class='co'># the RSE is computed with the prior information</span></div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db.prior' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -354,15 +308,18 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Sebastian Ueckert, Marco Foracchia, Joakim Nyberg.</p>
+  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, Sebastian Ueckert, Joakim Nyberg.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

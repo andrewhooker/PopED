@@ -4,13 +4,14 @@
 \alias{LEDoptim}
 \title{Optimization function for D-family, E-family and Laplace approximated ED designs}
 \usage{
-LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL, x = NULL,
-  a = NULL, bpopdescr = NULL, ddescr = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, ofv_init = 0, fim_init = 0,
-  trflag = TRUE, header_flag = TRUE, footer_flag = TRUE,
-  opt_xt = poped.db$settings$optsw[2], opt_a = poped.db$settings$optsw[4],
-  opt_x = poped.db$settings$optsw[3], out_file = NULL, d_switch = FALSE,
-  use_laplace = T, laplace.fim = FALSE,
+LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL,
+  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
+  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL,
+  ofv_init = 0, fim_init = 0, trflag = TRUE, header_flag = TRUE,
+  footer_flag = TRUE, opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], out_file = NULL,
+  d_switch = FALSE, use_laplace = T, laplace.fim = FALSE,
   use_RS = poped.db$settings$bUseRandomSearch, ...)
 }
 \arguments{
@@ -86,7 +87,7 @@ Optimize the objective fucntion for D-family, E-family and Laplace approximated 
 Right now there is only one optimization algorithm used in this 
 function 
 \enumerate{
-\item Adaptive random search. See \code{\link{RS_opt_gen}}.
+\item Adaptive random search. See \code{\link{RS_opt}}.
 }
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.
@@ -196,8 +197,7 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{RS_opt_gen}}, \code{\link{RS_opt}},
+Other Optimize: \code{\link{Doptim}}, \code{\link{RS_opt}},
   \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
   \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
@@ -206,3 +206,4 @@ Other Optimize: \code{\link{Doptim}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}

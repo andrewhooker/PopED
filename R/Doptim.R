@@ -554,7 +554,8 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
       if((bUseLineSearch)){
         #------------------------------- LINE SEARCH optimization START HERE
         strLineSearchFile=sprintf('%s_LS_%g%s',poped.db$settings$strOutputFileName,iter,poped.db$settings$strOutputFileExtension)
-        strLineSearchFile = fullfile(poped.db$settings$strOutputFilePath,strLineSearchFile)
+        if (!is.character(poped.db$settings$strOutputFilePath)) poped.db$settings$strOutputFilePath = '.'
+        strLineSearchFile = file.path(poped.db$settings$strOutputFilePath,strLineSearchFile)
         #returnArgs <- a_line_search(strLineSearchFile,FALSE,0,fmf,dmf,poped.db) 
         returnArgs <- a_line_search(poped.db,fn,FALSE,0,fmf,dmf) 
         fmf <- returnArgs[[1]]
@@ -574,7 +575,7 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
     #--------- Write results
     #     if((trflag)){
     blockfinal(fn,fmf,dmf,poped.db$design$groupsize,ni,xt,x,a,model_switch,
-                 bpopdescr,ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
+                 bpopdescr[,2],ddescr,poped.db$parameters$docc,poped.db$parameters$sigma,poped.db,
                  opt_xt=optxt,opt_a=opta,opt_x=optx,fmf_init=fmf_init,
                  dmf_init=dmf_init,trflag=trflag,...)
     #}
@@ -632,7 +633,7 @@ calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,nor
         varopt=varopto
         tavar=avar[i,ct1]
         varopt[i,ct1]=varopto[i,ct1]+tavar*normgvar[i,ct1]
-        varopt[i,ct1]=limit_value(varopt[i,ct1],maxvar[i,ct1],minvar[i,ct1])
+        varopt[i,ct1]=min(maxvar[i,ct1], max(varopt[i,ct1], minvar[i,ct1]))
         returnArgs <-  mftot(model_switch,groupsize,ni,xtopt,xopt,aopt,bpop,d,sigma,docc,poped.db) 
         mf_tmp <- returnArgs[[1]]
         poped.db <- returnArgs[[2]]
@@ -641,7 +642,7 @@ calc_autofocus <- function(m,ni_var,dmf,varopt,varopto,maxvar,minvar,gradvar,nor
         while(ct2<=10 && ndmf<dmf){
           tavar=tavar/2
           varopt[i,ct1]=varopto[i,ct1]+tavar*normgvar[i,ct1]
-          varopt[i,ct1]=limit_value(varopt[i,ct1],maxvar[i,ct1],minvar[i,ct1])
+          varopt[i,ct1]=min(maxvar[i,ct1], max(varopt[i,ct1], minvar[i,ct1]))
           returnArgs <- mftot(model_switch,groupsize,ni,xtopt,xopt,aopt,bpop,d,sigma,docc,poped.db) 
           mf_tmp <- returnArgs[[1]]
           poped.db <- returnArgs[[2]]

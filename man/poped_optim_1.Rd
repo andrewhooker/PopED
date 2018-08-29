@@ -12,10 +12,11 @@ iterations, or until the efficiency of the design after the current series
 (compared to the start of the series) is less than \code{stop_crit_eff}.}
 \usage{
 poped_optim_1(poped.db, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3],
   opt_samps = poped.db$settings$optsw[1],
-  opt_inds = poped.db$settings$optsw[5], method = c("ARS", "BFGS", "LS"),
-  control = list(), trace = TRUE,
+  opt_inds = poped.db$settings$optsw[5], method = c("ARS", "BFGS",
+  "LS"), control = list(), trace = TRUE,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   approx_type = poped.db$settings$iApproximationMethod,
@@ -24,9 +25,10 @@ poped_optim_1(poped.db, opt_xt = poped.db$settings$optsw[2],
   bLHS = poped.db$settings$bLHS,
   use_laplace = poped.db$settings$iEDCalculationType, out_file = "",
   parallel = F, parallel_type = NULL, num_cores = NULL,
-  loop_methods = ifelse(length(method) > 1, TRUE, FALSE), iter_max = 10,
-  stop_crit_eff = 1.001, stop_crit_diff = NULL, stop_crit_rel = NULL,
-  ofv_fun = poped.db$settings$ofv_fun, maximize = T, ...)
+  loop_methods = ifelse(length(method) > 1, TRUE, FALSE),
+  iter_max = 10, stop_crit_eff = 1.001, stop_crit_diff = NULL,
+  stop_crit_rel = NULL, ofv_fun = poped.db$settings$ofv_fun,
+  maximize = T, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -155,12 +157,13 @@ instead of the arguments from the PopED database.
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

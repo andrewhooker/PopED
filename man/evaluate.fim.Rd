@@ -5,9 +5,10 @@
 \title{Evaluate the Fisher Information Matrix (FIM)}
 \usage{
 evaluate.fim(poped.db, fim.calc.type = NULL, approx.method = NULL,
-  FOCE.num = NULL, bpop.val = NULL, d_full = NULL, docc_full = NULL,
-  sigma_full = NULL, model_switch = NULL, ni = NULL, xt = NULL,
-  x = NULL, a = NULL, groupsize = NULL, deriv.type = NULL, ...)
+  FOCE.num = NULL, bpop.val = NULL, d_full = NULL,
+  docc_full = NULL, sigma_full = NULL, model_switch = NULL,
+  ni = NULL, xt = NULL, x = NULL, a = NULL, groupsize = NULL,
+  deriv.type = NULL, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -168,3 +169,6 @@ Other evaluate_design: \code{\link{evaluate_design}},
 Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
   \code{\link{evaluate.e.ofv.fim}}, \code{\link{ofv_fim}}
 }
+\concept{FIM}
+\concept{evaluate_FIM}
+\concept{evaluate_design}

@@ -29,4 +29,5 @@ Other poped_input: \code{\link{convert_variables}},
   \code{\link{create_design}},
   \code{\link{downsizing_general_design}}
 }
+\concept{poped_input}
 \keyword{internal}
