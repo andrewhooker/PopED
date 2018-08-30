@@ -35,7 +35,7 @@
                                     d=c(KA=1, V=0.25,0.1), 
                                     sigma=c(1),
                                     notfixed_sigma = c(0),
-                                    groupsize=500,
+                                    groupsize=1,
                                     xt=c( 1,3,8),
                                     minxt=0,
                                     maxxt=10,
