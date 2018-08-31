@@ -267,27 +267,27 @@ Of note, only the code related to the specific "new" feature is described here i
 
 The table below provides a check list of features for each of the available examples.
 
-| Features  | Ex1   | Ex2 |Ex3|Ex4|Ex5|Ex6|Ex7|Ex8|Ex9|Ex10|Ex11|Ex12|Ex13|Ex14|
-|  -----   |  ----   | ----  |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |
-| Analytical model  |    |  |||||||||||||
-| ODE model and doses  |    |  |||||||||||||
-| Irregular dosing  |    |  |||||||||||||
-| Full cov matrix W |    |  |||||||||||||
-| Inter-occ variability  |    |  |||||||||||||
-| Discrete covariates   |    |  |||||||||||||
-| Continuous covariates |    |  |||||||||||||
-| Multiple arms   |    |  |||||||||||||
-| Multi response models  |    |  |||||||||||||
-| Designs differ <br> across responses   |    |  |||||||||||||
-| Calculate precision <br>of derived parameters   |    |  |||||||||||||
-| Power calculation   |    |  |||||||||||||
-| Include previous FIM   |    |  |||||||||||||
-| Shrinkage/Bayesian FIM    |    |  |||||||||||||
-| Discrete optimization   |    |  |||||||||||||
-| Evaluation/Optimization <br> of more-group designs<br> (same response)   |    |  |||||||||||||
-| Different optimal<br> sampling times<br> between groups   |    |  |||||||||||||
-| Optimization with constraining <br> sampling times   |    |  |||||||||||||
-| Optimization of subjects <br>per group    |    |  |||||||||||||
+| Features  | Ex1   | Ex2 |Ex3|Ex4|Ex5|Ex6|Ex7|Ex8|Ex9|Ex10|Ex11|Ex12|Ex13|Ex14|Ex15|
+|  -----   |  ----   | ----  |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |
+| Analytical model       |X|X|X|X|X|X|X|-|-|-|X|X|X|X|X|
+| ODE model and doses    |X|X|-|-|-|X|-|X|X|X|-|-|-|-|-|
+| Irregular dosing       |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| Full cov matrix W      |-|-|-|-|-|-|-|-|-|-|-|-|-|-|X|
+| Inter-occ variability  |-|-|-|-|-|-|-|-|-|-|-|-|-|X|-|
+| Discrete covariates    |-|-|-|-|-|-|X|-|-|-|X|-|-|-|-|
+| Continuous covariates  |X|X|X|X|-|X|X|X|X|X|X|X|X|X|X|
+| Multiple arms          |X|-|X|X|-|-|X|X|-|-|X|X|-|X|-|
+| Multi response models  |-|-|X|X|-|-|-|X|-|X|-|-|-|-|-|
+| Designs differ <br> across responses         |-|-|-|X|-|-|-|X|-|-|-|-|-|-|-|
+| Calculate precision <br>of derived parameters|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| Power calculation      |-|-|-|-|-|-|-|-|-|-|X|-|-|-|-|
+| Include previous FIM   |-|-|-|-|-|-|-|-|-|-|X|-|-|-|-|
+| Shrinkage/Bayesian FIM |X|X|X|X|-|-|X|-|-|X|-|-|X|-|-|
+| Discrete optimization  |X|X|X|-|-|X|-|X|-|-|-|-|-|X|-|
+| Optimization <br> of more-group designs<br> (same response)   |X|-|X|X|-|-|X|X|-|-|-|-|-|X|-|
+| Different optimal<br> sampling times<br> between groups       |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| Optimization with constraining <br> sampling times            |X|-|X|-|-|-|-|-|-|-|-|-|-|X|-|
+| Optimization of subjects <br>per group                        |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 
 ##1.	Analytical solution with single response but 2 groups/arms; design evaluation and design optimization of times and/or doses over a continuous or discrete design space
 
