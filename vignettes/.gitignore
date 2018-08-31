@@ -6,3 +6,5 @@ optimization_cache
 optimization_files
 optimization.R
 optimization.html
+examples.html
+examples_cache
