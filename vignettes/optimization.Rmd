@@ -1,0 +1,154 @@
+---
+title: "Design optimization with PopED"
+author: "Andrew Hooker"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Design optimization with PopED}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  cache = TRUE,
+  comment = "#>"
+)
+
+set.seed(1234)
+
+# if(Sys.info()["user"]=="ancho179"){
+#   devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
+# } else {
+  library(PopED)
+# }
+  
+```
+
+# Introduction
+The standard function to optimize designs in PopED is `poped_optim`.  This function is quite flexible and allows for optimization of a number of different types of design variables using a number of different optimization algorithms.
+However,
+`poped_optim` may not suit all needs for design optimization.  To that end, PopED has methods implemented to ease the use of other optimization tools. Below,  the types of optimization problems one might want to solve and the algorithms used to solve these problems are presented.
+
+## Define a model
+First we have to define a model, designs and design space.  We choose a simple 1-compartment model with linear elimination and absorption.  The design is one group of individuals with a single oral dose of a drug with 8 sample time points.
+
+
+```{r model_design_ds}
+
+#-- Model: One comp first order absorption
+ff <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+
+# -- parameter definition function 
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_fun=ff,
+                                  fg_fun = sfg,
+                                  fError_fun = feps.add.prop,
+                                  bpop=c(CL=0.15, V=8, KA=1.0), 
+                                  notfixed_bpop=c(1,1,1),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(0.01,0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0,
+                                  maxxt=120,
+                                  a=c(DOSE=70),
+                                  mina=0,
+                                  maxa=100)
+
+#  create plot of model  
+plot_model_prediction(poped.db,IPRED = T, DV = T)
+```
+
+# Design optimization
+We can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = T` in the `poped_optim` command.].  The search for the optimal design is numerically  challenging and it is important to use an optimizer which is robust with respect to the choice of
+the
+```{r optimize,message = FALSE,results='hide'}
+output <- poped_optim(poped.db, opt_xt=T)
+```
+
+```{r, fig.width=6}
+summary(output)
+plot_model_prediction(output$poped.db)
+```
+
+
+We see that there are three distinct sample times for this design (support points) with an uneven distribution of sample times at each support point. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.  
+
+### Examine efficiency of sampling windows
+Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
+```{r,fig.width=6,fig.height=6}
+plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
+```
+
+Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples may be in order here.  To investigate see `?plot_efficiency_of_windows`. 
+
+### Optimize over a discrete design space
+In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the half-hour are allowed.
+
+```{r, message = FALSE,results='hide'}
+poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(seq(0,120,by=0.5)))
+                                          
+output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
+
+```
+
+```{r,fig.width=6}
+summary(output_discrete)
+plot_model_prediction(output_discrete$poped.db)
+```
+
+Here we see that the optimization ran somewhat quicker, but gave a less efficient design.
+
+### Optimize 'Other' design variables
+One could also optimize over dose, to see if a different dose could help in parameter estimation .
+```{r optimize_dose,message = FALSE,results='hide'}
+output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
+```
+
+
+In this case the results are predictable ... higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).
+
+### Cost function to optimize dose
+Optimizing the dose of a study just to have better model parameter estimates may be somewhat implausible. Instead, let's use a cost function to optimize dose based on some sort of target concentration ... perhaps $C_{max}$ of 7 mg/L. 
+
+First we define the criteria we use to optimize the doses, here a least squares minimization.
+```{r}
+crit_fcn <- function(poped.db,...){
+  pred_df <- model_prediction(poped.db,model_num_points = 1000)
+  return((max(pred_df$PRED)-7)^2)
+}
+crit_fcn(output$poped.db)
+```
+
+Now we minimize the cost function 
+```{r cost_optimization, message = FALSE,results='hide',cache=TRUE}
+output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
+                     ofv_fun=crit_fcn,
+                     maximize = F)
+```
+
+```{r, fig.width=6}
+summary(output_cost)
+get_rse(output_cost$FIM, output_cost$poped.db)
+plot_model_prediction(output_cost$poped.db)
+```
+
+

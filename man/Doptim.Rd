@@ -4,8 +4,8 @@
 \alias{Doptim}
 \title{D-family optimization function}
 \usage{
-Doptim(poped.db, ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt, minxt,
-  maxa, mina, fmf = 0, dmf = 0, trflag = TRUE,
+Doptim(poped.db, ni, xt, model_switch, x, a, bpopdescr, ddescr, maxxt,
+  minxt, maxa, mina, fmf = 0, dmf = 0, trflag = TRUE,
   bUseRandomSearch = poped.db$settings$bUseRandomSearch,
   bUseStochasticGradient = poped.db$settings$bUseStochasticGradient,
   bUseBFGSMinimizer = poped.db$settings$bUseBFGSMinimizer,
@@ -238,13 +238,13 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 }
 \seealso{
 Other Optimize: \code{\link{LEDoptim}},
-  \code{\link{RS_opt_gen}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
+  \code{\link{RS_opt}}, \code{\link{a_line_search}},
+  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
   \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

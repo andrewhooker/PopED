@@ -135,12 +135,13 @@ sg.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_ofv_and_grad}},
-  \code{\link{mfea}}, \code{\link{optim_ARS}},
-  \code{\link{optim_LS}}, \code{\link{poped_optim_1}},
-  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
+  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
+  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
+  \code{\link{poped_optim_3}},
   \code{\link{poped_optimize}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
 \keyword{internal}

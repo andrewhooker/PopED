@@ -125,7 +125,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
         if(opt_x) tmp_txt <- paste(tmp_txt,'(%s)',sep=" ")
         if(ct2<size(poped.db$design$x,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")        
         discrete_val = poped.db$design_space$discrete_x[[ct1,ct2]]  
-        fprintf(fn,tmp_txt,poped.db$design$x[ct1,ct2],get_vector_str(discrete_val))
+        fprintf(fn,tmp_txt,poped.db$design$x[ct1,ct2],paste(discrete_val, collapse = ' '))
       }
       fprintf(fn,'\n')
     }

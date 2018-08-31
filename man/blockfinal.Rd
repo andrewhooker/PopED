@@ -4,12 +4,13 @@
 \alias{blockfinal}
 \title{Result function for optimization routines}
 \usage{
-blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d, docc,
-  sigma, poped.db, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
-  fmf_init = NULL, dmf_init = NULL, param_cvs_init = NULL,
-  compute_inv = TRUE, out_file = NULL, trflag = TRUE,
-  footer_flag = TRUE, run_time = NULL, ...)
+blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d,
+  docc, sigma, poped.db, opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3], fmf_init = NULL,
+  dmf_init = NULL, param_cvs_init = NULL, compute_inv = TRUE,
+  out_file = NULL, trflag = TRUE, footer_flag = TRUE,
+  run_time = NULL, ...)
 }
 \arguments{
 \item{fn}{The file handle to write to.}
@@ -60,7 +61,7 @@ can also just supply the diagnonal parameter values (variances) as a \code{c()}.
 
 \item{dmf_init}{Initial OFV.}
 
-\item{param_cvs_init}{The inital design parameter RSE values.}
+\item{param_cvs_init}{The inital design parameter RSE values in percent.}
 
 \item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
 except for diagnostic purposes.}
@@ -148,7 +149,7 @@ blockfinal(fn="",fmf=FIM,
            opt_xt=TRUE,
            fmf_init=FIM,
            dmf_init=dmf,
-           param_cvs_init=rbind(get_rse(FIM,poped.db,use_percent=FALSE)))
+           param_cvs_init=get_rse(FIM,poped.db))
 
 
 }
@@ -156,4 +157,5 @@ blockfinal(fn="",fmf=FIM,
 Other Helper: \code{\link{blockexp}},
   \code{\link{blockheader}}, \code{\link{blockopt}}
 }
+\concept{Helper}
 \keyword{internal}

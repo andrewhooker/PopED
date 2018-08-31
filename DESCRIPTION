@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.3.2.9005
+Version: 0.3.2.9006
 Depends:
     R (>= 2.14)
 Imports:
@@ -40,12 +40,14 @@ Description: Optimal experimental designs for both population and individual
     studies based on nonlinear mixed-effect models. Often this is based on a
     computation of the Fisher Information Matrix. This package was developed
     for pharmacometric problems, and examples and predefined models are available
-    for these types of systems.
+    for these types of systems. The methods are described in Nyberg et al. 
+    (2012) <doi:10.1016/j.cmpb.2012.05.005>, and Foracchia et al. (2004) 
+    <doi:10.1016/S0169-2607(03)00073-7>.
 License: LGPL (>= 3)
 ByteCompile: true
 URL: http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2016 Andrew C. Hooker
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr

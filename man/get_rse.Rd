@@ -6,8 +6,7 @@
 \usage{
 get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
   d = poped.db$parameters$d[, 2], docc = poped.db$parameters$docc,
-  sigma = poped.db$parameters$sigma, use_percent = T,
-  fim.calc.type = poped.db$settings$iFIMCalculationType,
+  sigma = poped.db$parameters$sigma, use_percent = TRUE,
   prior_fim = poped.db$settings$prior_fim, ...)
 }
 \arguments{
@@ -25,21 +24,6 @@ get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
 can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
 
 \item{use_percent}{Should RSE be reported as percent?}
-
-\item{fim.calc.type}{The method used for calculating the FIM. Potential values:
-\itemize{
-\item 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  
-\item 1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
-the FIM to zero. 
-\item 2 = weighted models (placeholder).
-\item 3 = Not currently used.
-\item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
-This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
-\item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
-\item 6 = Calculate one model switch at a time, good for large matrices. 
-\item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
-}}
 
 \item{prior_fim}{A prior FIM to be added to the \code{fim}. Should be the same size as the \code{fim}.}
 
@@ -139,3 +123,4 @@ Other evaluate_design: \code{\link{evaluate.fim}},
   \code{\link{plot_efficiency_of_windows}},
   \code{\link{plot_model_prediction}}
 }
+\concept{evaluate_design}

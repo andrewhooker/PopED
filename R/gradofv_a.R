@@ -45,11 +45,11 @@ gradofv_a <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,pope
   
   if((poped.db$settings$ofv_calc_type==1) ){#determinant
     if((!poped.db$design_space$bUseGrouped_a)){
-      returnArgs <- graddetmfa(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- graddetmfa_ext(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf_ext(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
@@ -59,7 +59,7 @@ gradofv_a <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,pope
   
   if((poped.db$settings$ofv_calc_type==2) ){#A-Optimal Design
     if((!poped.db$design_space$bUseGrouped_a)){
-      returnArgs <-  gradtrmfa(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <-  gradtrmf(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
       #return
@@ -75,11 +75,11 @@ gradofv_a <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,pope
   
   if((poped.db$settings$ofv_calc_type==4) ){#Log determinant
     if((!poped.db$design_space$bUseGrouped_a)){
-      returnArgs <- gradlndetmfa(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- gradlndetmfa_ext(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf_ext(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }

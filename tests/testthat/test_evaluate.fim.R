@@ -5,24 +5,23 @@ test_that("RSE from evaluate.fim", {
   source("examples_fcn_doc/examples_evaluate.fim.R")
   
   expected.reduced <- c(4.7,2.8,13.9,25.6,30.3,25.8,11.2)
-  expected.full <- c(3.6, 2.6,4.8,26.3, 30.9, 26.5, 12.4)
+  expected.full <- c(3.6, 2.6,4.8,26.3, 30.9, 26.6, 12.4)
   comp.red.1 <- get_rse(FIM.1,poped.db)
   comp.red.4 <- get_rse(FIM.4,poped.db,fim.calc.type=4)
   comp.full.0 <- get_rse(FIM.0,poped.db)
   comp.red.1.prior <- get_rse(FIM.1.prior, poped.db.prior)
   
-  for(i in 1:length(expected.reduced)){
-    expect_that(round(comp.red.1[[i]],digits=1), equals(expected.reduced[i], 
-                                        tolerance = 0.01, scale = expected.reduced[i]))
-  }
-  for(i in 1:length(expected.full)){
-    expect_that(round(comp.full.0[[i]],digits=1), equals(expected.full[i], 
-                                         tolerance = 0.01, scale = expected.full[i]))
-  }
-  for(i in 1:(length(expected.reduced)-1)){
-    expect_that(round(comp.red.4[[i]],digits=1), equals(expected.reduced[i], 
-                                        tolerance = 0.01, scale = expected.reduced[i]))
-  }
+  expect_true(all.equal(comp.red.1, expected.reduced,
+                        check.attributes = FALSE, check.names = FALSE,
+                        tolerance = 0.01))
+
+  expect_true(all.equal(comp.full.0, expected.full,
+                        check.attributes = FALSE, check.names = FALSE,
+                        tolerance = 0.01))
+  
+  expect_true(all.equal(head(comp.red.4,-1), head(expected.reduced,-1),
+                        check.attributes = FALSE, check.names = FALSE,
+                        tolerance = 0.01))
   
   expect_true(all.equal(comp.red.1/sqrt(2), comp.red.1.prior))
   
@@ -78,21 +77,54 @@ test_that("internal FIM calculations", {
   
   source("examples_fcn_doc/warfarin_optimize.R")
   
-  source("examples_fcn_doc/examples_mf.R")    
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=0))))
-  mf_result <- output$ret
-  source("examples_fcn_doc/examples_mf3.R")
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=1))))
-  source("examples_fcn_doc/examples_mf5.R")
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=4))))
-  source("examples_fcn_doc/examples_mf6.R")
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=5))))
-  expect_equal(output$ret,mf_result)
-  source("examples_fcn_doc/examples_mf7.R")
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=6))))
-  source("examples_fcn_doc/examples_mf8.R")
-  expect_that(det(output$ret*32), is_identical_to(det(evaluate.fim(poped.db,fim.calc.type=7))))
+  ind=1
   
+  mf3_calc <- function(){
+    mf3(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
+        xt=t(poped.db$design$xt[ind,,drop=FALSE]),
+        x=zeros(0,1),
+        a=t(poped.db$design$a[ind,,drop=FALSE]),
+        bpop=poped.db$parameters$bpop[,2,drop=FALSE],
+        d=poped.db$parameters$param.pt.val$d,
+        sigma=poped.db$parameters$sigma,
+        docc=poped.db$parameters$param.pt.val$docc,
+        poped.db)
+  }
+  
+  # in this simple case the full FIM is just the sum of the individual FIMs
+  # and all the individual FIMs are the same
+  
+  poped.db$settings$iFIMCalculationType = 0
+  output <- mf3_calc()
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=0)))
+  
+  poped.db$settings$iFIMCalculationType = 1
+  output <- mf3_calc()
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=1)))
+  
+  poped.db$settings$iFIMCalculationType = 4
+  output <- mf3_calc()
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=4)))
+  
+  poped.db$settings$iFIMCalculationType = 5
+  output <- mf3_calc()
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=5)))
+  
+  poped.db$settings$iFIMCalculationType = 1
+  output <- mf7(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
+                xt=t(poped.db$design$xt[ind,,drop=FALSE]),
+                x=zeros(0,1),
+                a=t(poped.db$design$a[ind,,drop=FALSE]),
+                bpop=poped.db$parameters$bpop[,2,drop=FALSE],
+                d=poped.db$parameters$param.pt.val$d,
+                sigma=poped.db$parameters$sigma,
+                docc=poped.db$parameters$param.pt.val$docc,
+                poped.db)
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=6)))
+  
+  poped.db$settings$iFIMCalculationType = 7
+  output <- mf3_calc()
+  expect_identical(det(output$ret*32),det(evaluate.fim(poped.db,fim.calc.type=7)))
   
 })
 

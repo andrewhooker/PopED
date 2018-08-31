@@ -8,13 +8,16 @@ calc_ofv_and_fim(poped.db, ofv = 0, fim = 0,
   d_switch = poped.db$settings$d_switch,
   bpopdescr = poped.db$parameters$bpop, ddescr = poped.db$parameters$d,
   bpop = bpopdescr[, 2, drop = F], d = getfulld(ddescr[, 2, drop = F],
-  poped.db$parameters$covd), docc_full = getfulld(poped.db$parameters$docc[,
-  2, drop = F], poped.db$parameters$covdocc),
+  poped.db$parameters$covd),
+  docc_full = getfulld(poped.db$parameters$docc[, 2, drop = F],
+  poped.db$parameters$covdocc),
   model_switch = poped.db$design$model_switch, ni = poped.db$design$ni,
-  xt = poped.db$design$xt, x = poped.db$design$x, a = poped.db$design$a,
+  xt = poped.db$design$xt, x = poped.db$design$x,
+  a = poped.db$design$a,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
-  use_laplace = poped.db$settings$iEDCalculationType, laplace.fim = FALSE,
-  ofv_fun = poped.db$settings$ofv_fun, evaluate_fim = TRUE, ...)
+  use_laplace = poped.db$settings$iEDCalculationType,
+  laplace.fim = FALSE, ofv_fun = poped.db$settings$ofv_fun,
+  evaluate_fim = TRUE, ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -189,3 +192,6 @@ Other E-family: \code{\link{ed_laplace_ofv}},
 Other evaluate_FIM: \code{\link{evaluate.e.ofv.fim}},
   \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
 }
+\concept{E-family}
+\concept{FIM}
+\concept{evaluate_FIM}

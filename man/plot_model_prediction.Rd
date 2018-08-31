@@ -4,16 +4,17 @@
 \alias{plot_model_prediction}
 \title{Plot model predictions}
 \usage{
-plot_model_prediction(poped.db, model_num_points = 100, groupsize_sim = 100,
-  separate.groups = F, sample.times = T, sample.times.IPRED = F,
-  sample.times.DV = F, PRED = T, IPRED = F, IPRED.lines = F,
-  IPRED.lines.pctls = F, alpha.IPRED.lines = 0.1, alpha.IPRED = 0.3,
-  sample.times.size = 4, DV = F, alpha.DV = 0.3, DV.lines = F,
-  DV.points = F, alpha.DV.lines = 0.3, alpha.DV.points = 0.3,
-  sample.times.DV.points = F, sample.times.DV.lines = F,
-  alpha.sample.times.DV.points = 0.3, alpha.sample.times.DV.lines = 0.3,
-  y_lab = "Model Predictions", facet_scales = "fixed",
-  facet_label_names = T, model.names = NULL, ...)
+plot_model_prediction(poped.db, model_num_points = 100,
+  groupsize_sim = 100, separate.groups = F, sample.times = T,
+  sample.times.IPRED = F, sample.times.DV = F, PRED = T, IPRED = F,
+  IPRED.lines = F, IPRED.lines.pctls = F, alpha.IPRED.lines = 0.1,
+  alpha.IPRED = 0.3, sample.times.size = 4, DV = F, alpha.DV = 0.3,
+  DV.lines = F, DV.points = F, alpha.DV.lines = 0.3,
+  alpha.DV.points = 0.3, sample.times.DV.points = F,
+  sample.times.DV.lines = F, alpha.sample.times.DV.points = 0.3,
+  alpha.sample.times.DV.lines = 0.3, y_lab = "Model Predictions",
+  facet_scales = "fixed", facet_label_names = T, model.names = NULL,
+  ...)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -228,3 +229,6 @@ Other Simulation: \code{\link{model_prediction}},
 
 Other Graphics: \code{\link{plot_efficiency_of_windows}}
 }
+\concept{Graphics}
+\concept{Simulation}
+\concept{evaluate_design}

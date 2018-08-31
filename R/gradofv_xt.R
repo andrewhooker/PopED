@@ -9,11 +9,11 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
   
   if((poped.db$settings$ofv_calc_type==1) ){#Determinant Design
     if((!poped.db$design_space$bUseGrouped_xt)){
-      returnArgs <- graddetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,gradxt=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- graddetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,gradxt=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }
@@ -22,7 +22,7 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
   
   if((poped.db$settings$ofv_calc_type==2) ){#Trace of inverse 
     if((!poped.db$design_space$bUseGrouped_xt)){
-      returnArgs <-  gradtrmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <-  gradtrmf(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,gradxt=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
         return(list( ofv_grad= ofv_grad,poped.db =poped.db )) 
@@ -37,11 +37,11 @@ gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,po
   
   if((poped.db$settings$ofv_calc_type==4) ){#Log determinant
     if((!poped.db$design_space$bUseGrouped_xt)){
-      returnArgs <- gradlndetmfxt(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE,gradxt=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     } else {
-      returnArgs <- gradlndetmfxt_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db) 
+      returnArgs <- graddetmf_ext(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=TRUE,gradxt=TRUE) 
       ofv_grad <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }

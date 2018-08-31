@@ -8,16 +8,18 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   x = NULL, a = NULL, bpop = NULL, d = NULL, maxxt = NULL,
   minxt = NULL, maxa = NULL, mina = NULL, fmf = 0, dmf = 0,
   trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
-  opt_a = poped.db$settings$optsw[4], opt_x = poped.db$settings$optsw[3],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3],
   opt_samps = poped.db$settings$optsw[1],
-  opt_inds = poped.db$settings$optsw[5], cfaxt = poped.db$settings$cfaxt,
-  cfaa = poped.db$settings$cfaa, rsit = poped.db$settings$rsit,
+  opt_inds = poped.db$settings$optsw[5],
+  cfaxt = poped.db$settings$cfaxt, cfaa = poped.db$settings$cfaa,
+  rsit = poped.db$settings$rsit,
   rsit_output = poped.db$settings$rsit_output,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   approx_type = poped.db$settings$iApproximationMethod,
-  bUseExchangeAlgorithm = poped.db$settings$bUseExchangeAlgorithm, iter = 1,
-  d_switch = poped.db$settings$d_switch,
+  bUseExchangeAlgorithm = poped.db$settings$bUseExchangeAlgorithm,
+  iter = 1, d_switch = poped.db$settings$d_switch,
   ED_samp_size = poped.db$settings$ED_samp_size,
   bLHS = poped.db$settings$bLHS,
   use_laplace = poped.db$settings$iEDCalculationType, ...)
@@ -114,7 +116,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 
 \item{bUseExchangeAlgorithm}{Use Exchange algorithm (1=TRUE, 0=FALSE)}
 
-\item{iter}{The number of iterations entered into the \code{\link{blockheader}} function.}
+\item{iter}{The number of iterations entered into the \code{blockheader_2} function.}
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
@@ -303,11 +305,12 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 \seealso{
 Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt_gen}},
-  \code{\link{RS_opt}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
+  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
+  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
+  \code{\link{calc_autofocus}},
   \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
   \code{\link{optim_ARS}}, \code{\link{optim_LS}},
   \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
   \code{\link{poped_optim_3}}, \code{\link{poped_optim}}
 }
+\concept{Optimize}
