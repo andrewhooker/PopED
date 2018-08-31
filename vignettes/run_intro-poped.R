@@ -8,3 +8,4 @@ library(rmarkdown)
 devtools::load_all("../")
 
 render("intro-poped.Rmd")
+render("examples.Rmd")
