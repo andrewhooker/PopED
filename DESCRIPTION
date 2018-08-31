@@ -33,6 +33,8 @@ Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
     person("Marco","Foracchia", role="aut", comment="O-Matrix version"),
     person("Eric","Stroemberg", role="ctb", comment="MATLAB version"),
+    person("Martin","Fink", role="ctb", comment="Streamlining code, added functionality, vignettes"),
+    person("Giulia","Lestini", role="ctb", comment="Streamlining code, added functionality, vignettes"),
     person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
     person("Joakim", "Nyberg", role="aut", comment="MATLAB version")
     )
