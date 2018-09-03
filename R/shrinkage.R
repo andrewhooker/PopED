@@ -32,6 +32,10 @@ shrinkage <- function(poped.db,
                       num_sim_ids = 1000,
                       use_purrr = FALSE){
   
+  if (poped.db$design$m > 1) {
+    warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
+  }
+  
   # tranform random effects to fixed effects 
   tmp_fg <- poped.db$model$fg_pointer
   if(is.character(tmp_fg)) tmp_fg <- eval(parse(text=tmp_fg))

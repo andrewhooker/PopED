@@ -57,7 +57,7 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
   # Derive power and RSE needed for the selected parameter(s)
   norm.val = abs(qnorm(alpha, mean=0, sd=1))
   val = poped.db$parameters$param.pt.val$bpop[bpopIdx]
-  rse = out$rse[which(poped.db$parameters$notfixed_bpop==1)[bpopIdx]] # in percent!!
+  rse = out$rse[cumsum(poped.db$parameters$notfixed_bpop==1)[bpopIdx]] # in percent!!
 
   # Following the paper of Retout et al., 2007 for the Wald-test:
   powPred = round(100*(1 - stats::pnorm(norm.val-(100/rse)) + stats::pnorm(-norm.val-(100/rse))), digits=1)
@@ -66,6 +66,7 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
   out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
   
   # find the smallest n to achieve the wanted power.
+  #if(find_min_n & nrow(poped.db$settings$prior_fim)==0){
   if(find_min_n){
     res <- optimize_n(poped.db,bpopIdx=bpopIdx,needRSE=needRSE)
     out$power$min_N=res$par

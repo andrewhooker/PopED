@@ -31,6 +31,11 @@ system.file("examples", package="PopED")
 
 Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution.  In this case the solution is applicable for both multiple and single dosing.  Note that this function is also predefined in PopED as `ff.PK.1.comp.oral.md.CL`.
 
+```{r,include=FALSE}
+library(Rcpp)
+library(deSolve)
+```
+
 ```{r,eval=TRUE}
 library(PopED)
 ```
@@ -55,7 +60,7 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-Next we define the parameters of this function, in this case log-normal distributions around the parameters (not `Favail`).  `DOSE` and `TAU` are defined as a covariates (`a`) so that we can optimize these values later.
+Next we define the parameters of this function, in this case log-normal distributions around the parameters (except for `Favail`).  `DOSE` and `TAU` are defined as covariates (in vector `a`) so that we can optimize their values later.
 ```{r}
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( V=bpop[1]*exp(b[1]),
@@ -85,12 +90,18 @@ We have now defined all aspects of the model.
 
 ## Define an initial design and design space
 
-Now we define the model parameter values, the initial design  and design space for optimization.
+Now we define the model parameter values, the initial design and design space for optimization.
 
-In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  Fixing a parameter means that we assume the parameter will not be estimated.  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
+In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`).  We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable.  
+
+Fixing a parameter means that we assume the parameter will not be estimated (and is know without uncertainty).  In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).
 
 
-For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   Finally, we fix the two groups of subjects to have the sample sample times (`bUseGrouped_xt=TRUE`). 
+For the initial design, we define two groups (`m=2`) of 20 individuals (`groupsize=20`), with doses of 20 mg or 40 mg every 24 hours (`a`).   The initial design has 5 sample times per individual (`xt`). 
+
+For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (`minxt` and `maxxt`).   
+
+Finally, we fix the two groups of subjects to have the same sample times (`bUseGrouped_xt=TRUE`). 
 
 ```{r}
 poped.db <- create.poped.database(ff_fun=ff,
@@ -116,18 +127,18 @@ poped.db <- create.poped.database(ff_fun=ff,
 
 ### Simulation
 First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values:
-```{r, fig.width=6}
+```{r simulate_without_BSV, fig.width=6}
 plot_model_prediction(poped.db, model_num_points = 500)
 ```
 
-Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the `DV=T` argument): 
+Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the `DV=TRUE` argument) but without sampling times: 
 ```{r simulate_with_BSV, fig.width=6}
-plot_model_prediction(poped.db, model_num_points=500, IPRED=T)
+plot_model_prediction(poped.db, model_num_points=500, IPRED=TRUE, sample.times = FALSE)
 ```
 
 We can get these predictions numerically as well:
 ```{r}
-dat <- model_prediction(poped.db,DV=T)
+dat <- model_prediction(poped.db,DV=TRUE)
 head(dat,n=5);tail(dat,n=5)
 ```
 
@@ -138,14 +149,46 @@ evaluate_design(poped.db)
 ```
 We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.
 
+### Evaluate alternative design
+We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).
+
+```{r,include = FALSE}
+poped.db.new <- create.poped.database(ff_fun=ff,
+                                      fg_fun=sfg,
+                                      fError_fun=feps,
+                                      bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
+                                      notfixed_bpop=c(1,1,1,0),
+                                      d=c(V=0.09,KA=0.09,CL=0.25^2), 
+                                      sigma=c(0.04,5e-6),
+                                      notfixed_sigma=c(1,0),
+                                      m=2,
+                                      groupsize=20,
+                                      a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
+                                      maxa=c(DOSE=200,TAU=24),
+                                      mina=c(DOSE=0,TAU=24),
+                                      xt=c( 1,2,245),
+                                      minxt=c(0,0,240),
+                                      maxxt=c(10,10,248),
+                                      bUseGrouped_xt=TRUE)
+```
+
+```{r}
+evaluate_design(poped.db.new)
+```
+### Comparison of designs
+The precision on CL (bpop[3]) is similar with the alternative design but the other parameters are less well estimated. 
+
+It is possible to compare the objective function value (ofv) and see that for this dummy example the alternative design (less samples per subject) the ofv is smaller (=worse).
+This value can also be used to optimize sampling times, doses, and other design features.
+
 ### Design optimization
-Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = T` in the `poped_optim` command.].
+Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = TRUE` in the `poped_optim` command.].
 ```{r optimize,message = FALSE,results='hide',cache=TRUE}
-output <- poped_optim(poped.db, opt_xt=T)
+output <- poped_optim(poped.db, opt_xt=TRUE)
 ```
 
 
-```{r, fig.width=6}
+```{r simulate_optimal_design, fig.width=6}
 summary(output)
 plot_model_prediction(output$poped.db)
 ```
@@ -155,23 +198,23 @@ We see that there are four distinct sample times for this design.  This means th
 
 ### Examine efficiency of sampling windows
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
-```{r,fig.width=6,fig.height=6,cache=TRUE}
+```{r simulate_efficiency_windows,fig.width=6,fig.height=6,cache=FALSE}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
-Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples may be in order here.  To investigate see `?plot_efficiency_of_windows`. 
+Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples might be needed.  To investigate see `?plot_efficiency_of_windows`. 
 
 ### Optimize over a discrete design space
 In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the hour are allowed.
 
 ```{r, message = FALSE,results='hide'}
-poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
+poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(c(0:10,240:248)))
                                           
-output_discrete <- poped_optim(poped.db.discrete, opt_xt=T)
+output_discrete <- poped_optim(poped.db.discrete, opt_xt=TRUE)
 
 ```
 
-```{r,fig.width=6}
+```{r simulate_discrete_optimization,fig.width=6}
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 ```
@@ -181,7 +224,7 @@ Here we see that the optimization ran somewhat quicker, but gave a less efficien
 ### Optimize 'Other' design variables
 One could also optimize over dose, to see if a different dose could help in parameter estimation .
 ```{r optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE}
-output_dose_opt <- poped_optim(output$poped.db, opt_xt=T, opt_a=T)
+output_dose_opt <- poped_optim(output$poped.db, opt_xt=TRUE, opt_a=TRUE)
 ```
 
 
@@ -201,12 +244,12 @@ crit_fcn(output$poped.db)
 
 Now we minimize the cost function 
 ```{r cost_optimization, message = FALSE,results='hide',cache=TRUE}
-output_cost <- poped_optim(poped.db, opt_a =T, opt_xt = F,
-                     ofv_fun=crit_fcn,
-                     maximize = F)
+output_cost <- poped_optim(poped.db, opt_a = TRUE, opt_xt = FALSE,
+                     ofv_fun=crit_fcn, 
+                     maximize = FALSE)
 ```
 
-```{r, fig.width=6}
+```{r simulate_cost_optmization, fig.width=6}
 summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)

@@ -37,6 +37,7 @@ inv<- function(mat, method=1, tol = .Machine$double.eps, pseudo_on_fail = TRUE,.
   
   # Otherwise calculate the Moore-Penrose generalized inverse (pseudoinverse)
   if(method==3 || (pseudo_on_fail && !is.numeric(invvar))){
+    warning("Problems inverting the matrix. Results could be misleading.")
     Xsvd <- svd(mat)
     #if (is.complex(mat)) Xsvd$u <- Conj(Xsvd$u)
     Positive <- Xsvd$d > max(tol * max(dim(mat))*max(Xsvd$d), 0)
