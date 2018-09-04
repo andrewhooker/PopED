@@ -94,7 +94,6 @@ test_that("Power evaluation works", {
   expect_equivalent(evaluate_design(poped.db.all)$ofv,
                     log(det(evaluate_design(poped.db.all)$fim+evaluate.fim(poped.db))))
   
-  evaluate_design(poped_db)
   evaluate_power(poped.db.all, bpop_idx=5, h0 = 1)
 
   
