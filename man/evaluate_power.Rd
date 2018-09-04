@@ -2,32 +2,33 @@
 % Please edit documentation in R/evaluate_power.R
 \name{evaluate_power}
 \alias{evaluate_power}
-\title{Evaluate power of a design for detecting a parameter to be non-zero using the
-linear Wald test.}
+\title{Power of a design to estimate a parameter.}
 \usage{
-evaluate_power(poped.db, bpopIdx = NULL, fim = NULL, out = NULL,
-  alpha = 0.05, power = 80, twoSided = TRUE, find_min_n = TRUE,
-  ...)
+evaluate_power(poped.db, bpop_idx, h0 = 0, alpha = 0.05, power = 0.8,
+  twoSided = TRUE, find_min_n = TRUE, fim = NULL, out = NULL, ...)
 }
 \arguments{
 \item{poped.db}{A poped database}
 
-\item{bpopIdx}{Indices for unfixed parameters for which power should be
-evaluated for being non-zero}
+\item{bpop_idx}{Index for an unfixed population parameter (bpop) for 
+which the power should be
+evaluated for being different than the null hypotesis (h0).}
 
-\item{fim}{Optional to provide FIM from a previous calculation}
+\item{h0}{The null hypothesized value for the parameter.}
 
-\item{out}{Optional to provide output from a previous calculation (e.g.,
-calc_ofv_and_fim, ...)}
+\item{alpha}{Type 1 error.}
 
-\item{alpha}{Type 1 error (default = 0.05)}
+\item{power}{Targeted power.}
 
-\item{power}{Targeted power (default = 80\%)}
-
-\item{twoSided}{Is two-sided test (default = TRUE)}
+\item{twoSided}{Is this a two-sided test.}
 
 \item{find_min_n}{Should the function compute the minimum n needed (given the
 current design) to achieve the desired power?}
+
+\item{fim}{Provide the FIM from a previous calculation}
+
+\item{out}{provide output from a previous calculation (e.g.,
+calc_ofv_and_fim, ...)}
 
 \item{...}{Extra parameters passed to \code{\link{calc_ofv_and_fim}} and
 \code{\link{get_rse}}}
@@ -36,7 +37,9 @@ current design) to achieve the desired power?}
 A list of elements evaluating the current design including the power.
 }
 \description{
-This tunction evaluates the design defined in a poped database.
+Evaluate the power of a design to estimate a parameter value different than
+some assumed value (often the assumed value is zero). The power is calculated 
+using the linear Wald test and the the design is defined in a poped database.
 }
 \examples{
 # Folowing the examples presented in Retout, 2007
@@ -88,7 +91,7 @@ poped.db_2 <- create.poped.database(poped.db,bpop=c(P1=12, P2=8,
 plot_model_prediction(poped.db_2)
 evaluate_design(poped.db_2)
 
-evaluate_power(poped.db_2,bpopIdx = 4)
+evaluate_power(poped.db_2,bpop_idx = 4)
 }
 \references{
 \enumerate{ \item Retout, S., Comets, E., Samson, A., and Mentre,
