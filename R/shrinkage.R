@@ -36,6 +36,8 @@ shrinkage <- function(poped.db,
   #   warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
   # }
   
+  group <- type <- NULL
+  
   # tranform random effects to fixed effects 
   tmp_fg <- poped.db$model$fg_pointer
   if(is.character(tmp_fg)) tmp_fg <- eval(parse(text=tmp_fg))
@@ -164,7 +166,7 @@ shrinkage <- function(poped.db,
   
   #return(list(shrinkage_var=shrink,shrinkage_sd=shrink_sd, rse=rse))
   #return(out_list)
-  out_df <- dplyr::arrange(out_df,desc(type),group)
+  out_df <- dplyr::arrange(out_df,dplyr::desc(type),group)
   
   if(poped.db$design$m > 1){
     weights <- poped.db$design$groupsize/sum(poped.db$design$groupsize)
@@ -172,10 +174,10 @@ shrinkage <- function(poped.db,
     data_tmp[data_tmp==1] <- NA 
     data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
       dplyr::summarise_at(vars(dplyr::starts_with('d[')),
-                          dplyr::funs(weighted.mean(., weights,na.rm = T)))
+                          dplyr::funs(stats::weighted.mean(., weights,na.rm = T)))
     data_tmp$group <- "all_groups"
     out_df <- rbind(out_df,data_tmp)
-    out_df <- dplyr::arrange(out_df,desc(type),group)
+    out_df <- dplyr::arrange(out_df,dplyr::desc(type),group)
   }
   return(out_df)
   

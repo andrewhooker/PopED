@@ -999,7 +999,7 @@ Obviously, the pooled data leads to much higher precision in parameter estimates
 
 One can also obtain the power for estimating the covariate.
 ```{r}
-evaluate_power(poped.db.all, bpopIdx=5, out=out.all)
+evaluate_power(poped.db.all, bpop_idx=5, out=out.all)
 ```
 
 
