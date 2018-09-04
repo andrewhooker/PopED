@@ -1,16 +1,19 @@
-#' Evaluate power of a design for detecting a parameter to be non-zero using the
-#' linear Wald test.
-#'
-#' This tunction evaluates the design defined in a poped database.
+#' Power of a design to estimate a parameter. 
+#' 
+#' Evaluate the power of a design to estimate a parameter value different than
+#' some assumed value (often the assumed value is zero). The power is calculated 
+#' using the linear Wald test and the the design is defined in a poped database.
 #'
 #' @param poped.db A poped database
-#' @param bpopIdx Indices for unfixed parameters for which power should be
-#'   evaluated for being non-zero
-#' @param alpha Type 1 error (default = 0.05)
-#' @param power Targeted power (default = 80\%)
-#' @param twoSided Is two-sided test (default = TRUE)
-#' @param fim Optional to provide FIM from a previous calculation
-#' @param out Optional to provide output from a previous calculation (e.g.,
+#' @param bpop_idx Index for an unfixed population parameter (bpop) for 
+#'   which the power should be
+#'   evaluated for being different than the null hypotesis (h0).
+#' @param alpha Type 1 error.
+#' @param h0 The null hypothesized value for the parameter.
+#' @param power Targeted power.
+#' @param twoSided Is this a two-sided test.
+#' @param fim Provide the FIM from a previous calculation
+#' @param out provide output from a previous calculation (e.g.,
 #'   calc_ofv_and_fim, ...)
 #' @param ... Extra parameters passed to \code{\link{calc_ofv_and_fim}} and
 #'   \code{\link{get_rse}}
@@ -32,14 +35,16 @@
 #' @family evaluate_design
 #' @export
 
-evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.05, power=80, twoSided=TRUE, find_min_n=TRUE,...) {
+evaluate_power <- function(poped.db, bpop_idx, h0=0, alpha=0.05, power=0.80, twoSided=TRUE, 
+                           find_min_n=TRUE,
+                           fim=NULL, out=NULL,...) {
   # If two-sided then halve the alpha
   if (twoSided == TRUE) alpha = alpha/2
   
-  # Check if bpopIdx is given and within the non-fixed parameters
-  if (is.null(bpopIdx)) stop("Population parameter index must be given in bpopIdx")
-  if (!all(bpopIdx %in% which(poped.db$parameters$notfixed_bpop==1))) stop("bpopIdx can only include non-fixed population parameters bpop")
-  if (poped.db$parameters$param.pt.val$bpop[bpopIdx]==0) 
+  # Check if bpop_idx is given and within the non-fixed parameters
+  if (!all(bpop_idx %in% which(poped.db$parameters$notfixed_bpop==1))) 
+    stop("bpop_idx can only include non-fixed population parameters bpop")
+  if (poped.db$parameters$param.pt.val$bpop[bpop_idx]==0) 
     stop("
   Population parameter is assumed to be zero, 
   there is 0% power in identifying this parameter 
@@ -52,23 +57,30 @@ evaluate_power <- function(poped.db, bpopIdx=NULL, fim=NULL, out=NULL, alpha=0.0
     out = list(fim = fim)
   }
   # Add out$rse
-  out$rse <- get_rse(out$fim,poped.db,...)
+  out$rse <- get_rse(out$fim,poped.db,...) # in percent!!
 
   # Derive power and RSE needed for the selected parameter(s)
   norm.val = abs(qnorm(alpha, mean=0, sd=1))
-  val = poped.db$parameters$param.pt.val$bpop[bpopIdx]
-  rse = out$rse[cumsum(poped.db$parameters$notfixed_bpop==1)[bpopIdx]] # in percent!!
-
+  val = poped.db$parameters$param.pt.val$bpop[bpop_idx]
+  rse = out$rse[cumsum(poped.db$parameters$notfixed_bpop==1)[bpop_idx]]/100 
+  se <- rse*val
+  wald_stat <- (h0-val)/se
+  
   # Following the paper of Retout et al., 2007 for the Wald-test:
-  powPred = round(100*(1 - stats::pnorm(norm.val-(100/rse)) + stats::pnorm(-norm.val-(100/rse))), digits=1)
-  needRSE = 100/(norm.val-stats::qnorm(1-power/100))
+  #powPred = round(100*(1 - stats::pnorm(norm.val-(100/rse)) + stats::pnorm(-norm.val-(100/rse))), digits=1)
+  power_pred = 1 - stats::pnorm(wald_stat+norm.val) + stats::pnorm(wald_stat-norm.val)
+  
+  #needRSE = 100/(norm.val-stats::qnorm(1-power/100))
+  need_se = abs(h0-val)/(norm.val-stats::qnorm(1-power))
+  need_rse <- need_se/val
 
-  out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
+  #out$power = data.frame(Value=val, RSE=rse, predPower=powPred, wantPower=power, needRSE=needRSE)
+  out$power = data.frame(Value=val, RSE=rse*100, power_pred=power_pred*100, power_want=power*100, need_rse=need_rse*100)
   
   # find the smallest n to achieve the wanted power.
   #if(find_min_n & nrow(poped.db$settings$prior_fim)==0){
   if(find_min_n){
-    res <- optimize_n(poped.db,bpopIdx=bpopIdx,needRSE=needRSE)
+    res <- optimize_n(poped.db,bpop_idx=bpop_idx,need_rse=need_rse)
     out$power$min_N=res$par
   }
   
