@@ -114,6 +114,6 @@ poped.db.all <- create.poped.database(
 (out.all <- evaluate_design(poped.db.all))
 # Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics only.
 
-# One can also obtain the power for estimating the covariate.
-evaluate_power(poped.db.all, bpopIdx=5, out=out.all,find_min_n = F)
+# One can also obtain the power for estimating the covariate to be different from 1.
+evaluate_power(poped.db.all, bpop_idx=5, h0=1,out=out.all)
 
