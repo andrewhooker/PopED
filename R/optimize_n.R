@@ -131,8 +131,8 @@ optimize_n_dist <-
 
 ## optimize HOW MANY n there should be, based on current design and a single parameter
 optimize_n <- function(poped.db,
-                       bpopIdx,
-                       needRSE,
+                       bpop_idx,
+                       need_rse,
                        allowed_values = seq(poped.db$design$m,
                                             sum(poped.db$design$groupsize)*5,
                                             by=poped.db$design$m),
@@ -145,7 +145,7 @@ optimize_n <- function(poped.db,
 
   ofv_fun <- function(n_tot){
     fim_tmp <- combine_norm_group_fim(norm_group_fim,props*n_tot)
-    ofv <- get_rse(fim_tmp,poped.db)[bpopIdx] - needRSE
+    ofv <- get_rse(fim_tmp,poped.db,use_percent = F)[cumsum(poped.db$parameters$notfixed_bpop==1)[bpop_idx]] - need_rse
     if(ofv>0){
       ofv <- Inf
     } else {
