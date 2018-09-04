@@ -170,8 +170,9 @@ shrinkage <- function(poped.db,
     weights <- poped.db$design$groupsize/sum(poped.db$design$groupsize)
     data_tmp <- out_df 
     data_tmp[data_tmp==1] <- NA 
-    data_tmp <- data_tmp %>% group_by(type) %>% 
-      summarise_at(vars(starts_with('d[')),funs(weighted.mean(., weights,na.rm = T)))
+    data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
+      dplyr::summarise_at(vars(dplyr::starts_with('d[')),
+                          dplyr::funs(weighted.mean(., weights,na.rm = T)))
     data_tmp$group <- "all_groups"
     out_df <- rbind(out_df,data_tmp)
     out_df <- dplyr::arrange(out_df,desc(type),group)
