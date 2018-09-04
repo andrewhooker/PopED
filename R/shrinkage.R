@@ -32,9 +32,9 @@ shrinkage <- function(poped.db,
                       num_sim_ids = 1000,
                       use_purrr = FALSE){
   
-  if (poped.db$design$m > 1) {
-    warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
-  }
+  # if (poped.db$design$m > 1) {
+  #   warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
+  # }
   
   # tranform random effects to fixed effects 
   tmp_fg <- poped.db$model$fg_pointer
@@ -75,57 +75,108 @@ shrinkage <- function(poped.db,
   
   # Compute FIM_map 
   fulld = getfulld(poped.db$parameters$d[,2,drop=F],poped.db$parameters$covd)
-  if(use_mc){
-    # create list of eta values from pop model 
-    if(any(size(fulld)==0)){
-      b_sim_matrix = zeros(num_sim_ids,0)
-    } else {
-      b_sim_matrix = mvtnorm::rmvnorm(num_sim_ids,sigma=fulld)            
+  
+  # get just groupwise values as well
+  db_list <- list()
+  #db_list[["all"]] <- poped.db_sh
+  num_groups <- poped.db_sh$design$m
+  for(i in 1:num_groups){
+    tmp_design <- poped.db_sh$design
+    tmp_design$m <- 1
+    for(nam in names(tmp_design)[names(tmp_design)!="m"]){
+      tmp_design[[nam]] <- tmp_design[[nam]][i,,drop=F]
     }
+
+    tmp_db <- poped.db_sh
+    tmp_db$design <- tmp_design
     
-    # create list of occasion eta values from pop model 
-    NumOcc=poped.db$parameters$NumOcc
-    if(NumOcc!=0) warning("Shrinkage not computed for occasions\n")
-    fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
-    bocc_sim_matrix = zeros(num_sim_ids*NumOcc,length(poped.db$parameters$docc[,2,drop=F]))
-    if(nrow(fulldocc)!=0) bocc_sim_matrix = mvtnorm::rmvnorm(num_sim_ids*NumOcc,sigma=fulldocc)
-    
-    #now use these values to compute FIMmap
-    if(use_purrr){
-      fim_mean <- b_sim_matrix %>% t() %>% data.frame() %>% as.list() %>% 
-        purrr::map(function(x){
-          x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
-          x_tmp[,2] <- t(x)
-          bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
-          poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
-          evaluate.fim(poped.db_sh_tmp)
-        }) %>% simplify2array() %>% apply(1:2, mean)
-    } else {
-      fim_tmp <- 0
-      for(i in 1:num_sim_ids){
-        x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
-        x_tmp[,2] <- t(b_sim_matrix[i,])
-        bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
-        poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
-        fim_tmp <- fim_tmp+evaluate.fim(poped.db_sh_tmp)
-      }
-      fim_mean <- fim_tmp/num_sim_ids
-    }    
-    fim_map <- fim_mean + inv(fulld)
-  } else {
-    fim_map <- evaluate.fim(poped.db_sh)+ inv(fulld)
+    db_list[[paste0("grp_",i)]] <- tmp_db
   }
   
-  rse <- get_rse(fim_map,poped.db = poped.db_sh)
-  names(rse) <- paste0("d[",1:length(rse),"]")
   
-  # shrinkage on variance scale
-  shrink <- diag(inv(fim_map)%*%inv(fulld))
-  names(shrink) <-  names(rse)
-  # shrinkage on SD scale
-  var_n <- (1-shrink)*diag(fulld)
-  shrink_sd <- 1-sqrt(var_n)/sqrt(diag(fulld))
-  names(shrink_sd) <-  names(rse)
+  #browser()
   
-  return(list(shrinkage_var=shrink,shrinkage_sd=shrink_sd, rse=rse))
+  #out_list <- list()
+  out_df <- c()
+  #for(i in 1:1){
+  for(i in 1:length(db_list)){
+    
+    poped.db_sh <- db_list[[i]]
+    
+    if(use_mc){
+      # create list of eta values from pop model 
+      if(any(size(fulld)==0)){
+        b_sim_matrix = zeros(num_sim_ids,0)
+      } else {
+        b_sim_matrix = mvtnorm::rmvnorm(num_sim_ids,sigma=fulld)            
+      }
+      
+      # create list of occasion eta values from pop model 
+      NumOcc=poped.db$parameters$NumOcc
+      if(NumOcc!=0) warning("Shrinkage not computed for occasions\n")
+      fulldocc = getfulld(poped.db$parameters$docc[,2,drop=F],poped.db$parameters$covdocc)
+      bocc_sim_matrix = zeros(num_sim_ids*NumOcc,length(poped.db$parameters$docc[,2,drop=F]))
+      if(nrow(fulldocc)!=0) bocc_sim_matrix = mvtnorm::rmvnorm(num_sim_ids*NumOcc,sigma=fulldocc)
+      
+      #now use these values to compute FIMmap
+      if(use_purrr){
+        fim_mean <- b_sim_matrix %>% t() %>% data.frame() %>% as.list() %>% 
+          purrr::map(function(x){
+            x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
+            x_tmp[,2] <- t(x)
+            bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
+            poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
+            evaluate.fim(poped.db_sh_tmp)
+          }) %>% simplify2array() %>% apply(1:2, mean)
+      } else {
+        fim_tmp <- 0
+        for(i in 1:num_sim_ids){
+          x_tmp <- matrix(0,nrow = largest_b,ncol = 3)
+          x_tmp[,2] <- t(b_sim_matrix[i,])
+          bpop_tmp <-rbind(poped.db$parameters$bpop,x_tmp)
+          poped.db_sh_tmp <- create.poped.database(poped.db_sh, bpop=bpop_tmp)
+          fim_tmp <- fim_tmp+evaluate.fim(poped.db_sh_tmp)
+        }
+        fim_mean <- fim_tmp/num_sim_ids
+      }    
+      fim_map <- fim_mean + inv(fulld)
+    } else {
+      fim_map <- evaluate.fim(poped.db_sh)+ inv(fulld)
+    }
+    
+    rse <- get_rse(fim_map,poped.db = poped.db_sh)
+    names(rse) <- paste0("d[",1:length(rse),"]")
+    
+    # shrinkage on variance scale
+    shrink <- diag(inv(fim_map)%*%inv(fulld))
+    names(shrink) <-  names(rse)
+    # shrinkage on SD scale
+    var_n <- (1-shrink)*diag(fulld)
+    shrink_sd <- 1-sqrt(var_n)/sqrt(diag(fulld))
+    names(shrink_sd) <-  names(rse)
+    
+    out_df_tmp <- tibble::as.tibble(rbind(shrink,shrink_sd,rse))
+    out_df_tmp$type <- c("shrink_var","shrink_sd","se")
+    out_df_tmp$group <- c(names(db_list[i]))
+    out_df <- rbind(out_df,out_df_tmp)
+    #out_list[[names(db_list[i])]] <- list(shrinkage_var=shrink,shrinkage_sd=shrink_sd, rse=rse)
+  }
+  
+  #return(list(shrinkage_var=shrink,shrinkage_sd=shrink_sd, rse=rse))
+  #return(out_list)
+  out_df <- dplyr::arrange(out_df,desc(type),group)
+  
+  if(poped.db$design$m > 1){
+    weights <- poped.db$design$groupsize/sum(poped.db$design$groupsize)
+    data_tmp <- out_df 
+    data_tmp[data_tmp==1] <- NA 
+    data_tmp <- data_tmp %>% group_by(type) %>% 
+      summarise_at(vars(starts_with('d[')),funs(weighted.mean(., weights,na.rm = T)))
+    data_tmp$group <- "all_groups"
+    out_df <- rbind(out_df,data_tmp)
+    out_df <- dplyr::arrange(out_df,desc(type),group)
+  }
+  return(out_df)
+  
+  
 }
