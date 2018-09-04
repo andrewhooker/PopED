@@ -47,4 +47,4 @@ poped.db_2 <- create.poped.database(poped.db,bpop=c(P1=12, P2=8,
 plot_model_prediction(poped.db_2)
 evaluate_design(poped.db_2)
 
-evaluate_power(poped.db_2,bpopIdx = 4)
+evaluate_power(poped.db_2,bpop_idx = 4)
