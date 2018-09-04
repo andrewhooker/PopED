@@ -1,8 +1,11 @@
 library(PopED)
 # This example shows how to include a prior FIM into the design evaluation.
-# We look at PK assessment in pediatrics, where we are mainly interested in assessing if there is a substantial difference of more than 20% in clearance (CL) between children and adults.
+# We look at PK assessment in pediatrics, where we are mainly interested 
+# in assessing if there is a substantial difference of more than 20% in 
+# clearance (CL) between children and adults.
 
-# First we setup the general model, then the designs for adults and pediatrics, and finally we can evaluate the separate designs and the pooled data.
+# First we setup the general model, then the designs for adults and pediatrics, 
+# and finally we can evaluate the separate designs and the pooled data.
 
 ##-- Model: One comp first order absorption
 ## -- Analytic solution for both mutiple and single dosing
@@ -60,7 +63,8 @@ poped.db <- create.poped.database(ff_fun="ff",
                                   a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
                                   x=list(isPediatric = 0)
 )
-# Note, to be able to use the adults FIM to combine with the pediatrics, both have to have the parameter "pedCL" defined and set notfixed_bpop to 1.
+# Note, to be able to use the adults FIM to combine with the pediatrics, 
+# both have to have the parameter "pedCL" defined and set notfixed_bpop to 1.
 
 ## Define pediatric model/design (isPediatric = 1)
 ## One arm, 4 time points only
@@ -89,21 +93,26 @@ plot_model_prediction(poped.db.ped, model_num_points = 300)
 
 
 ## To store FIM from adult design - need FIM from evaluate_design
-print(outAdult <- evaluate_design(poped.db))
-# It is obvious that we cannot estimate the pediatric covariate from adult data only - therefore the error.
+(outAdult <- evaluate_design(poped.db))
+# It is obvious that we cannot estimate the pediatric covariate from adult 
+# data only - therefore the message from the calculation.
 # You can also note the zeros in the 4th column and 4th row of the FIM.
 
-# We can evaluate the adult design without warning, by setting the pedCL parameter to be fixed (i.e., not estimated)
+# We can evaluate the adult design without warning, by setting the pedCL 
+# parameter to be fixed (i.e., not estimated)
 evaluate_design(create.poped.database(poped.db, notfixed_bpop=c(1,1,1,0,0)))
 # One obtains good estimates for all parameters for adults (<60% RSE for all).
 
 ## evaluate design of pediatrics only - insufficient
-# Similarly as before with only pediatrics we cannot estimate the covariate effect, so we fix it.
+# Similarly as before with only pediatrics we cannot estimate the covariate effect, 
+# so we fix it.
 evaluate_design(create.poped.database(poped.db.ped, notfixed_bpop=c(1,1,1,0,0)))
-# Due to having less subjects, less samples per subject, and only one dose level the variability in pediatrics cannot be estimated well.
+# Due to having less subjects, less samples per subject, and only one dose level 
+# the variability in pediatrics cannot be estimated well.
 
 ## Add adult prior
-# Now we combined the two sutdies, where we assume that we only assess a difference between adults and pediatrics in CL.
+# Now we combined the two sutdies, where we assume that we only assess a difference 
+# between adults and pediatrics in CL.
 # We can set the prior FIM to the adult one:
 poped.db.all <- create.poped.database(
   poped.db.ped,
@@ -112,8 +121,9 @@ poped.db.all <- create.poped.database(
 
 ## evaluate design using prior FIM from adults
 (out.all <- evaluate_design(poped.db.all))
-# Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics only.
+# Obviously, the pooled data leads to much higher precision in parameter estimates 
+# compared to the pediatrics only.
 
 # One can also obtain the power for estimating the covariate to be different from 1.
-evaluate_power(poped.db.all, bpop_idx=5, h0=1,out=out.all)
+round(evaluate_power(poped.db.all, bpop_idx=5, h0=1,out=out.all)$power,1)
 
