@@ -11,3 +11,8 @@
 ^_pkgdown\.yml$
 ^index\.md$
 ^appveyor\.yml$
+^vignettes\examples_cache$
+^vignettes\examples_files$
+^vignettes\intro-poped_cache$
+^vignettes\intro-poped_files$
+
