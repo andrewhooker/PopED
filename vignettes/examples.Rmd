@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
     number_sections: true
   
 vignette: >
@@ -23,14 +23,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-In this vignette, further PopED features are described.  Only the code related to  specific "new" features is described here in this vignette. These features (and more) are presented as r-scripts in the "examples" folder in the 
+In this vignette, we try to highlight further PopED features that may be useful.  Only code related to  
+specific "new" features is described here in this vignette. 
+These features (and more) are presented as r-scripts in the "examples" folder in the 
 PopED installation directory located at:
 
 ```{r,eval=FALSE}
 system.file("examples", package="PopED")
 ```
 
-You can view a list of the example files and then open a copy of the file you are interested in using the commands:
+You can view a list of the example files using the commands:
 ```{r,eval=FALSE}
 ex_dir <- system.file("examples", package="PopED")
 list.files(ex_dir)
@@ -68,19 +70,16 @@ The table below provides a check list of features for each of the available exam
 | Optimization with constraining <br> sampling times            |X|-|X|-|-|-|-|-|-|-|-|-|-|X|-|
 | Optimization of subjects <br>per group                        |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 
-#	Analytical solution with single response but 2 groups/arms; design evaluation and design optimization of times and/or doses over a continuous or discrete design space
-  
-  This example is the intro example illustrated in the first part of this document, before the Examples section.
-The corresponding R script is the PopED example `ex.1.a.PK.1.comp.oral.md.intro.R`
 
 #	Analytical solution PKPD model with 2 groups/arms; setup only 
 
 The full code for this example is available in `ex.4.PKPD.1.comp.emax.R`.
 
-### Define the PKPD model
+## Define the PKPD model
 
-Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination, whereas the PD is an ordinary Emax model. The expected output (PK or PD) is given in the vector `model_switch` (see below for details).
+Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination.  The PD is an ordinary Emax model driven by the PK concentrations. The expected output of each measurement (PK or PD) is given in the vector `model_switch` (see below for details).
 ```{r}
+library(PopED)
 f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -121,9 +120,8 @@ f_Err <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 ```
 
+Some of the parameters are assumed to have log-normal distributions in the population.
 ```{r, echo=FALSE}
-## -- parameter definition function
-## ETAs into Parameter Values
 f_etaToParam <- function(x,a,bpop,b,bocc){
   parameters=c( 
     CL=bpop[1]*exp(b[1]),
@@ -137,9 +135,9 @@ f_etaToParam <- function(x,a,bpop,b,bocc){
 }
 ```
 
-### Define design and design space
+## Define design and design space
 
-We specify in the poped.db object the vector `model_switch` in order to assign the sampling times written in the vector `xt` to the PK (=1) or PD (=2) model. 
+We specify in the `poped.db` object the vector `model_switch` in order to assign the sampling times written in the vector `xt` to the PK (=1) or PD (=2) model. 
 
 ```{r}
 poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
@@ -162,29 +160,29 @@ poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
 
 ```
 
-The model predictions below show typical PK and PD profiles for three dose groups. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg, resp.; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days.
+The model predictions below show typical PK and PD profiles for three dose groups. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days.
 
-```{r simulate_multi-response_model,fig.width=6,fig.height=6}
+```{r simulate_multi-response_model}
 plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE,facet_scales="free",
-                      separate.groups=TRUE,model.names=c("PK","PD")) 
+                      separate.groups=TRUE,
+                      model.names=c("PK","PD")) 
 ```
 With `model.names=c("PK","PD")` one can name the outputs in the graph.
 
-##3.	ODE solution of PK model and multiple dose dosing scheme; design evaluation
+#	ODE solution of PK model and multiple dose dosing scheme; design evaluation
 
 The full code for this example is available in `ex.9.PK.2.comp.oral.md.ode.compiled.R`. 
 
-Note, that the `deSolve` library needs to be installed for computing the system of differential equations. And for faster solutions using pre-compiled code also the `Rcpp` library. 
+In this example, the `deSolve` library needs to be installed for computing solutions to a system of differential equations. For faster solutions one can use pre-compiled code using the `Rcpp` library. 
 ```{r,eval=TRUE}
 library(Rcpp)
 library(deSolve)
-library(PopED)
 ```
 
-### Define the ODEs of the two compartment model in R or with Rcpp
+## Define the system using ODEs 
 
+Here we define the two compartment model in R using deSolve notation
 ```{r}
-#' Define the ODE system
 PK.2.comp.oral.ode <- function(Time, State, Pars){
   with(as.list(c(State, Pars)), {    
     dA1 <- -KA*A1 
@@ -195,27 +193,8 @@ PK.2.comp.oral.ode <- function(Time, State, Pars){
 }
 ```
 
-Or define it using a compiled ODE with Rcpp (further examples in `ex.2.c.warfarin.ODE.compiled.R`).
-```{r}
-cppFunction('List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
-            int n = A.size();
-            NumericVector dA(n);
-            
-            double CL = Pars[0];
-            double V1 = Pars[1];
-            double KA = Pars[2];
-            double Q  = Pars[3];
-            double V2 = Pars[4];
-            
-            dA[0] = -KA*A[0];
-            dA[1] = KA*A[0] - (CL/V1)*A[1] - Q/V1*A[1] + Q/V2*A[2];
-            dA[2] = Q/V1*A[1] - Q/V2*A[2];
-            return List::create(dA);
-            }')
-```
 
-
-Define the initial conditions `A_ini` with a named vector `(A1,A2,A3)` and the dosing as a data.frame `eventdat` referring to the named compartment `var = c("A1")`, the specified `dose_times` and `value=DOSE` dose amounts. Note, that also here the covariates `DOSE` and the regimen `TAU` can differ by arm and be optimized (as shown before).
+Now we define the initial conditions of the ODE system `A_ini` with a named vector, in this case all compartments are initialized to zero `c(A1=0,A2=0,A3=0)`. The dosing input is defined as a data.frame `eventdat` referring to the named compartment `var = c("A1")`, the specified `dose_times` and `value=c(DOSE)` dose amounts. Note that the covariates `DOSE` and the regimen `TAU` can differ by arm and be optimized (as shown in `ex.1.a.PK.1.comp.oral.md.intro.R`).  For more information see the help pages for `?deSolve::ode` and `?deSolve::events`. 
 ```{r}
 ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
@@ -239,10 +218,8 @@ ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
 
 ```
 
-
+The parameter definition function should match the parameters used in the above two functions.
 ```{r, echo=FALSE}
-#' parameter definition function 
-#' names match parameters in function ff
 fg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1]),
                 V1=bpop[2],
@@ -258,10 +235,8 @@ fg <- function(x,a,bpop,b,bocc){
 
 ### Define design and design space
 
-Instead of the analytical solution as before, `ff_fun` now points to the function providing the solution of the ODE.
+We now create a PopED database. The `ff_fun` should now point to the function providing the solution of the ODE.
 ```{r}
-#' create poped database
-
 discrete_a <- cell(2,1)
 
 poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
@@ -282,8 +257,36 @@ poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
                                   mina=c(DOSE=0,TAU=8),
                                   discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
 ```
-```{r, echo=FALSE}
 
+## Plot intial design (just PRED)
+
+We plot the initial design
+```{r simulate_ODE_model}
+plot_model_prediction(poped.db)
+```
+
+## Faster computations with Rcpp
+We could also define the system using Rcpp, which will produce compiled code that should run faster (further examples in `ex.2.c.warfarin.ODE.compiled.R`).  First we redefine the ODE system using Rcpp.
+```{r}
+cppFunction('List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
+            int n = A.size();
+            NumericVector dA(n);
+            
+            double CL = Pars[0];
+            double V1 = Pars[1];
+            double KA = Pars[2];
+            double Q  = Pars[3];
+            double V2 = Pars[4];
+            
+            dA[0] = -KA*A[0];
+            dA[1] = KA*A[0] - (CL/V1)*A[1] - Q/V1*A[1] + Q/V2*A[2];
+            dA[2] = Q/V1*A[1] - Q/V2*A[2];
+            return List::create(dA);
+            }')
+```
+
+Next we solve this system of ODEs using deSolve.
+```{r, echo=FALSE}
 ff.PK.2.comp.oral.md.ode.Rcpp <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     A_ini <- c(A1=0, A2=0, A3=0)
@@ -303,51 +306,30 @@ ff.PK.2.comp.oral.md.ode.Rcpp <- function(model_switch, xt, parameters, poped.db
     return(list(y=y,poped.db=poped.db))
   })
 }
+```
 
-poped.db.Rcpp <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp",
-                                       fError_fun="feps.add.prop",
-                                       fg_fun="fg",
-                                       groupsize=20,
-                                       m=1,      #number of groups
-                                       sigma=c(prop=0.1^2,add=0.05^2),
-                                       bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
-                                       d=c(CL=0.15^2,KA=0.25^2),
-                                       notfixed_bpop=c(1,1,1,1,1,0),
-                                       xt=c( 48,50,55,65,70,85,90,120), 
-                                       minxt=0,
-                                       maxxt=144,
-                                       discrete_xt = list(0:144),
-                                       a=c(DOSE=100,TAU=24),
-                                       maxa=c(DOSE=1000,TAU=24),
-                                       mina=c(DOSE=0,TAU=8),
-                                       discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
+Finally we create a poped database to use these functions by updating the previously created database.
+```{r, }
+poped.db.Rcpp <- create.poped.database(poped.db,
+                                       ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp")
 ```
 
 
-### Plot intial design (just PRED)
-
-```{r simulate_ODE_model,fig.width=6}
-plot_model_prediction(poped.db)
-```
-
-### Design evaluation
+## Design evaluation
+We can compare the time for design evaluation with these two methods of describing the same model.
 ```{r}
-#' How long does one evaluation of the FIM take? 
 tic(); eval <- evaluate_design(poped.db); toc()
-#' And with precompiled code?
 tic(); eval <- evaluate_design(poped.db.Rcpp); toc()
 ```
-The difference is noticable and gets larger for more complex and lengthy ODE models.
+The difference is noticeable and gets larger for more complex and lengthy ODE models.
 
-##4.	ODE solution for TMDD model with 2 outputs, arms with either single sc or iv dose, and different number of sampling times per arm
+#	ODE solution for TMDD model with 2 outputs, arms with either single sc or iv dose, and different number of sampling times per arm
 
 The full code for this example is available in `ex.8.tmdd_qss_one_target_compiled.R`.
 
+Compile code using Rcpp for the TMDD model is as follows.
+
 ```{r, echo=FALSE, results="hide"}
-### Compiled code for tmdd model
-
-#We write the model using compiled code according to the Rcpp package.
-
 cppFunction('List tmdd_qss_one_target_model_ode
             (double Time, NumericVector A, NumericVector Pars) {
             int n = A.size();
@@ -382,9 +364,8 @@ cppFunction('List tmdd_qss_one_target_model_ode
             }')
 ```
 
-
+Define the parameters and the distributions of those parameters.
 ```{r,echo=FALSE, results="hide"}
-## Define parameters
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1])  ,
                 V1=bpop[2]*exp(b[2])	,
@@ -404,7 +385,7 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-In the function that derives the ODE solution the discrete covariate `SC_FLAG` is used to give the dose either into `A1` or `A2`, the sc or the iv compartment.
+In the function that defines the dosing and derives the ODE solution, the discrete covariate `SC_FLAG` is used to give the dose either into `A1` or `A2`, the sub-cutaneous or the IV compartment.
 ```{r}
 tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
@@ -445,6 +426,7 @@ tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.
 
 ```
 
+Finally we define the residual unexplained variability model.
 ```{r, echo=FALSE}
 tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
   returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db))
@@ -459,17 +441,10 @@ tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.
 
 ```
 
-### Define the design 
-
-Two different sub-studies are defined, with different sampling times per arm - in terms of total number and values.
-Due to this difference in numbers it is important to specify the number of samples per arm by defining the vector `ni` in the `create.poped.database()` function.
-Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). 
-
+## Define the design 
+Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times^[Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., & Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. https://doi.org/10.1007/s10928-011-9228-y].
+Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`) what each sample time will meansre (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database()` function.
 ```{r}
-#################################################
-# for study 1 + 2 in gibiansky,JPKPD,2012 table 2 
-#################################################
-
 xt <- zeros(6,30)
 study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=TRUE)
 study_2_xt <- matrix(rep(c(0.0417,1,1,7,14,21,28,56,63,70,77,84,91,98,105),4),nrow=2,byrow=TRUE)
@@ -520,31 +495,24 @@ poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
 
 ```
 
-### Plot model predictions
-```{r simulate_different_dose_regimen, fig.width=6}
+## Plot model predictions
+```{r simulate_different_dose_regimen}
 plot_model_prediction(poped.db.2,facet_scales="free")
 ```
 
-### Design evaluation
-
+## Design evaluation
 ```{r}
 eval_2 <- evaluate_design(poped.db.2);
-eval_2$rse
+round(eval_2$rse)
 ```
 
 
 
-##5.	Model with discrete covariates	
+#	Model with continuous covariates
 
-See example 9. Inclusion of previous FIM. This has the covariate `isPediatric` to distinguish adults and pediatrics.
-Alternatively, also `DOSE` and `TAU` in the first example can be considered as discrete covariates but are not per se estimated but rather optimized.
+The R code for this example is available in `ex.12.covariate_distributions.R`.  
 
-##6.	Model with continuous covariates
-
-The R code for this example is available in `ex.12.covariate_distributions.R`.
-
-## Introduction
-Lets assume that we have a model with a covariate included in the model description.  Here we define a one-compartment PK model that uses allometric scaling with weight effect on both clearance and volume of distribution. 
+Let's assume that we have a model with a covariate included in the model description.  Here we define a one-compartment PK model that uses allometric scaling with a weight effect on both clearance and volume of distribution. 
 
 ```{r model}
 mod_1 <- function(model_switch,xt,parameters,poped.db){
@@ -570,23 +538,25 @@ par_1 <- function(x,a,bpop,b,bocc){
 }
 ```
 
-Now we define a design.  In this case one group of individuals, where we define the individuals' typical weight as `a=c(WT=70 kg)`. 
+Now we define a design.  In this case one group of individuals, where we define the individuals' typical weight as 70 kg (`a=c(WT=70)`). 
 ```{r design}
-poped_db <- create.poped.database(ff_fun=mod_1,
-fg_fun=par_1,
-fError_fun=feps.add.prop,
-groupsize=50,
-m=1,
-sigma=c(0.015,0.0015),
-notfixed_sigma = c(1,0),
-bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
-d=c(CL=0.05,V=0.05), 
-xt=c( 1,2,4,6,8,24),
-minxt=0,
-maxxt=24,
-bUseGrouped_xt=1,
-a=c(WT=70)
-)
+poped_db <- 
+  create.poped.database(
+    ff_fun=mod_1,
+    fg_fun=par_1,
+    fError_fun=feps.add.prop,
+    groupsize=50,
+    m=1,
+    sigma=c(0.015,0.0015),
+    notfixed_sigma = c(1,0),
+    bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
+    d=c(CL=0.05,V=0.05), 
+    xt=c( 1,2,4,6,8,24),
+    minxt=0,
+    maxxt=24,
+    bUseGrouped_xt=1,
+    a=c(WT=70)
+  )
 ```
 
 We can create a plot of the model prediction for the typical individual
@@ -605,28 +575,30 @@ It is obvious that the covariate parameters can not be estimated according to th
 
 We can improve the computation by assuming a distribution of the covariate (WT) in the individuals in the study. We set `groupsize=1`, the number of groups to be 50 (`m=50`) and assume that WT is sampled from a normal distribution with mean=70 and sd=10 (`a=as.list(rnorm(50, mean = 70, sd = 10)`).
 ```{r}
-poped_db_2 <- create.poped.database(ff_fun=mod_1,
-fg_fun=par_1,
-fError_fun=feps.add.prop,
-groupsize=1,
-m=50,
-sigma=c(0.015,0.0015),
-notfixed_sigma = c(1,0),
-bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
-d=c(CL=0.05,V=0.05), 
-xt=c(1,2,4,6,8,24),
-minxt=0,
-maxxt=24,
-bUseGrouped_xt=1,
-a=as.list(rnorm(50, mean = 70, sd = 10))
-)
+poped_db_2 <- 
+  create.poped.database(
+    ff_fun=mod_1,
+    fg_fun=par_1,
+    fError_fun=feps.add.prop,
+    groupsize=1,
+    m=50,
+    sigma=c(0.015,0.0015),
+    notfixed_sigma = c(1,0),
+    bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
+    d=c(CL=0.05,V=0.05), 
+    xt=c(1,2,4,6,8,24),
+    minxt=0,
+    maxxt=24,
+    bUseGrouped_xt=1,
+    a=as.list(rnorm(50, mean = 70, sd = 10))
+  )
 
 ```
 
 ```{r}
 ev <- evaluate_design(poped_db_2) 
-ev$ofv
-ev$rse
+round(ev$ofv,1)
+round(ev$rse)
 ```
 
 Here we see that, given this distribution of weights, the covariate effect parameters (bpop[3] and bpop[4]) would be well estimated.
@@ -637,179 +609,220 @@ However, we are only looking at one sample of 50 individuals.  Maybe a better ap
 nsim <- 30
 rse_list <- c()
 for(i in 1:nsim){
-poped_db_tmp <- create.poped.database(ff_fun=mod_1,
-fg_fun=par_1,
-fError_fun=feps.add.prop,
-groupsize=1,
-m=50,
-sigma=c(0.015,0.0015),
-notfixed_sigma = c(1,0),
-bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
-d=c(CL=0.05,V=0.05), 
-xt=c( 1,2,4,6,8,24),
-minxt=0,
-maxxt=24,
-bUseGrouped_xt=1,
-a=as.list(rnorm(50,mean = 70,sd=10)))
-rse_tmp <- evaluate_design(poped_db_tmp)$rse
-rse_list <- rbind(rse_list,rse_tmp)
+  poped_db_tmp <- 
+    create.poped.database(
+      ff_fun=mod_1,
+      fg_fun=par_1,
+      fError_fun=feps.add.prop,
+      groupsize=1,
+      m=50,
+      sigma=c(0.015,0.0015),
+      notfixed_sigma = c(1,0),
+      bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
+      d=c(CL=0.05,V=0.05), 
+      xt=c( 1,2,4,6,8,24),
+      minxt=0,
+      maxxt=24,
+      bUseGrouped_xt=1,
+      a=as.list(rnorm(50,mean = 70,sd=10)))
+  rse_tmp <- evaluate_design(poped_db_tmp)$rse
+  rse_list <- rbind(rse_list,rse_tmp)
 }
 apply(rse_list,2,quantile)
 ```
 Note, that the variance of the RSE of the covariate effect is in this case strongly correlated with the variance of the weight distribution (not shown).
 
-##7.	Model with Inter-Occasion Variability
+#	Model with discrete covariates	
+
+See `ex.11.PK.prior.R`. This has the covariate `isPediatric` to distinguish between adults and pediatrics.
+Alternatively,  `DOSE` and `TAU` in the first example can be considered as discrete covariates but are not per se estimated but rather optimized.
+
+#	Model with Inter-Occasion Variability
 
 The full code for this example is available in `ex.14.PK.IOV.R`.
 
 The IOV is introduced with `bocc[x,y]` in the parameter definition function as a matrix with the first argument `x` indicating the index for the IOV variances defined in `docc` below, and the second argument `y` denoting the occasion.
 This is used in the example to derive to different clearance values, i.e., `CL_OCC_1` and `CL_OCC_2` (think of some drug-drug interaction).
 ```{r}
-## -- parameter definition function
-## -- names match parameters in function ff
 sfg <- function(x,a,bpop,b,bocc){
-parameters=c( V=bpop[1]*exp(b[1]),
-KA=bpop[2]*exp(b[2]),
-CL_OCC_1=bpop[3]*exp(b[3]+bocc[1,1]),
-CL_OCC_2=bpop[3]*exp(b[3]+bocc[1,2]),
-Favail=bpop[4],
-DOSE=a[1],
-TAU=a[2])
-return( parameters ) 
+  parameters=c( CL_OCC_1=bpop[1]*exp(b[1]+bocc[1,1]),
+                CL_OCC_2=bpop[1]*exp(b[1]+bocc[1,2]),
+                V=bpop[2]*exp(b[2]),
+                KA=bpop[3]*exp(b[3]),
+                DOSE=a[1],
+                TAU=a[2])
+  return( parameters ) 
 }
 ```
 
-These parameters can now be used in the model function (analytical or ODE) to define the change in parameters between the occacions (here with the 7th dose).
+These parameters can now be used in the model function to define the change in parameters between the occacions (here with the 7th dose in a one-compartment model with first order absorption).
 ```{r}
-##-- Model: One comp first order absorption
-## -- Analytic solution for both mutiple and single dosing
-ff <- function(model_switch,xt,parameters,poped.db){
-with(as.list(parameters),{
-y=xt
-N = floor(xt/TAU)+1
-CL = (xt*0+1)*CL_OCC_1
-CL[N>6] = CL_OCC_2
-y=(DOSE*Favail/V)*(KA/(KA - CL/V)) *
-(exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) -
-exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))
-return(list( y=y,poped.db=poped.db))
-})
+cppFunction(
+  'List one_comp_oral_ode(double Time, NumericVector A, NumericVector Pars) {
+   int n = A.size();
+   NumericVector dA(n);
+            
+   double CL_OCC_1 = Pars[0];
+   double CL_OCC_2 = Pars[1];
+   double V = Pars[2];
+   double KA = Pars[3];
+   double TAU = Pars[4];
+   double N,CL;
+            
+   N = floor(Time/TAU)+1;
+   CL = CL_OCC_1;
+   if(N>6) CL = CL_OCC_2;
+   
+   dA[0] = -KA*A[0];
+   dA[1] = KA*A[0] - (CL/V)*A[1];
+   return List::create(dA);
+   }'
+)
+
+ff.ode.rcpp <- function(model_switch, xt, parameters, poped.db){
+  with(as.list(parameters),{
+    A_ini <- c(A1=0, A2=0)
+    times_xt <- drop(xt) #xt[,,drop=T] 
+    dose_times = seq(from=0,to=max(times_xt),by=TAU)
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(DOSE), method = c("add"))
+    times <- sort(c(times_xt,dose_times))
+    out <- ode(A_ini, times, one_comp_oral_ode, c(CL_OCC_1,CL_OCC_2,V,KA,TAU), 
+               events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
+    y = out[, "A2"]/(V)
+    y=y[match(times_xt,out[,"time"])]
+    y=cbind(y)
+    return(list(y=y,poped.db=poped.db))
+  })
 }
+
 ```
 
 
 
-The within-subject variability variances (`docc`) are defined in poped.db as 3-column matrix with one row per IOV-parameter, and the middle column giving the variance values.
-
+The within-subject variability variances (`docc`) are defined in the poped database as a 3-column matrix with one row per IOV-parameter, and the middle column giving the variance values.
 ```{r} 
-## -- Define design and design space
-poped.db <- create.poped.database(ff_fun=ff,
-fg_fun=sfg,
-fError_fun=feps.add.prop,
-bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9), 
-notfixed_bpop=c(1,1,1,0),
-d=c(V=0.09,KA=0.09,CL=0.25^2), 
-docc = matrix(c(0,0.09,0),nrow = 1),
-sigma=c(0.04,5e-6),
-notfixed_sigma=c(0,0),
-m=2,
-groupsize=20,
-xt=c( 1,2,8,240,245),
-minxt=c(0,0,0,240,240),
-maxxt=c(10,10,10,248,248),
-bUseGrouped_xt=1,
-a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-maxa=c(DOSE=200,TAU=24),
-mina=c(DOSE=0,TAU=24))
+poped.db <- 
+  create.poped.database(
+    ff_fun=ff.ode.rcpp,
+    fError_fun=feps.add.prop,
+    fg_fun=sfg,
+    bpop=c(CL=3.75,V=72.8,KA=0.25), 
+    d=c(CL=0.25^2,V=0.09,KA=0.09), 
+    sigma=c(0.04,5e-6),
+    notfixed_sigma=c(0,0),
+    docc = matrix(c(0,0.09,0),nrow = 1),
+    m=2,
+    groupsize=20,
+    xt=c( 1,2,8,240,245),
+    minxt=c(0,0,0,240,240),
+    maxxt=c(10,10,10,248,248),
+    bUseGrouped_xt=1,
+    a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
+    maxa=c(DOSE=200,TAU=24),
+    mina=c(DOSE=0,TAU=24)
+  )
 ```
 
-###Create plot of model without variability 
+##Create plot of the population predictions
 
-```{r simulate_IOV_without_IIV,fig.width=6}
+```{r simulate_IOV_without_IIV}
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
-###Create plot of model with variability 
-
-```{r simulate_IOV_with_IIV,fig.width=6}
-plot_model_prediction(poped.db, IPRED=TRUE, DV=TRUE, separate.groups=TRUE, model_num_points = 300)
+##visualize the IOV 
+We can visualize the IOV by looking at an example individual.  We see the PK profile changes at the 7th dose (red line) due to the change in clearance.
+```{r simulate_IOV_with_IIV,}
+library(ggplot2)
+set.seed(123)
+plot_model_prediction(poped.db, PRED=F,IPRED=F, 
+                      separate.groups=T, model_num_points = 300, 
+                      groupsize_sim = 1,
+                      IPRED.lines = T, alpha.IPRED.lines=0.6,
+                      sample.times = F
+                      ) + geom_vline(xintercept = 24*6,color="red")
 ```
 
-###Evaluate initial design
+##Evaluate initial design
 
 ```{r}
 ev <- evaluate_design(poped.db)
-ev$rse
+round(ev$rse)
 ```
 
-##8.	Full omega matrix	
+#	Full omega matrix	
 
 The full code for this example is available in `ex.15.full.covariance.matrix.R`.
 
 ```{r, echo=FALSE, results="hide"}
 ff <- function(model_switch,xt,parameters,poped.db){
-##-- Model: One comp first order absorption
-with(as.list(parameters),{
-y=xt
-y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-return(list(y=y,poped.db=poped.db))
-})
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
 }
 
 sfg <- function(x,a,bpop,b,bocc){
-## -- parameter definition function 
-parameters=c(CL=bpop[1]*exp(b[1]),
-V=bpop[2]*exp(b[2]),
-KA=bpop[3]*exp(b[3]),
-Favail=bpop[4],
-DOSE=a[1])
-return(parameters) 
+  ## -- parameter definition function 
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
 }
 
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
-## -- Residual Error function
-## -- Proportional 
-returnArgs <- ff(model_switch,xt,parameters,poped.db) 
-y <- returnArgs[[1]]
-poped.db <- returnArgs[[2]]
-y = y*(1+epsi[,1])
-
-return(list(y=y,poped.db=poped.db)) 
+  ## -- Residual Error function
+  ## -- Proportional 
+  returnArgs <- ff(model_switch,xt,parameters,poped.db) 
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+  y = y*(1+epsi[,1])
+  
+  return(list(y=y,poped.db=poped.db)) 
 }
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff",
-fg_file="sfg",
-fError_file="feps",
-bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-notfixed_bpop=c(1,1,1,0),
-d=c(CL=0.07, V=0.02, KA=0.6), 
-sigma=0.01,
-groupsize=32,
-xt=c( 0.5,1,2,6,24,36,72,120),
-minxt=0,
-maxxt=120,
-a=70)
+poped.db <- 
+  create.poped.database(
+    ff_file="ff",
+    fg_file="sfg",
+    fError_file="feps",
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=0.01,
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70
+  )
 ```
-
-###Define initial design and design space with covariance 
 
 The `covd` object is used for defining the covariances of the IIV variances (off-diagonal elements of the full variance-covariance matrix).
 
 ```{r}
-poped.db_with <- create.poped.database(ff_file="ff",
-fg_file="sfg",
-fError_file="feps",
-bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-notfixed_bpop=c(1,1,1,0),
-d=c(CL=0.07, V=0.02, KA=0.6), 
-covd = c(.03,.1,.09),
-sigma=0.01,
-groupsize=32,
-xt=c( 0.5,1,2,6,24,36,72,120),
-minxt=0,
-maxxt=120,
-a=70)
+poped.db_with <- 
+  create.poped.database(
+    ff_file="ff",
+    fg_file="sfg",
+    fError_file="feps",
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    covd = c(.03,.1,.09),
+    sigma=0.01,
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70
+  )
 ```
 
 What do the covariances mean?
@@ -820,81 +833,82 @@ cov2cor(IIV)
 ```
 They indicate a correlation of the inter-individual variabilities, here of ca. 0.8 between clearance and volume, as well as between volume and absorption rate.
 
-###Create plot of model with variability 
+##Create plot of the model with variability 
 
-```{r simulate_with_cov_matrix,fig.width=6}
+```{r simulate_with_cov_matrix}
 library(ggplot2)
 p1 <- plot_model_prediction(poped.db,IPRED=TRUE)+ylim(0,12)
 p2 <- plot_model_prediction(poped.db_with,IPRED=TRUE) +ylim(0,12)
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
-###Evaluate designs (with and without covariance matrix)
+##Evaluate designs (with and without covariance matrix)
 
-```{r}
+```{r,}
 ev1 <- evaluate_design(poped.db)
 ev2 <- evaluate_design(poped.db_with)
 ```
 
 ```{r}
-ev1$ofv
-ev1$rse
+round(ev1$ofv,1)
+round(ev1$rse,1)
 
-ev2$ofv
-ev2$rse
+round(ev2$ofv,1)
+round(ev2$rse,1)
 ```
 Note, that the precision of all other parameters is barely affected by including the full covariance matrix. This is likely to be different in practice with much more ill-conditioned numerical problems.
 
-###Evaluate the same designs with full FIM (instead of reduced)
+##Evaluate the same designs with full FIM (instead of reduced)
 
 ```{r}
 ev1 <- evaluate_design(poped.db, fim.calc.type=0)
 ev2 <-evaluate_design(poped.db_with, fim.calc.type=0)
 
-ev1$ofv
-ev1$rse
+round(ev1$ofv,1)
+round(ev1$rse,1)
 
-ev2$ofv
-ev2$rse
+round(ev2$ofv,1)
+round(ev2$rse,1)
 ```
 
-##9.	Include previous FIM
+#	Include a prior FIM, compute power to identify a parameter
 
 In this example you will learn how to incorporate prior knowledge to your current study.
-First the FIM obtained from an experiment in adult is stored. Then this FIM is added to the current experiment in children.
+First the FIM obtained from an experiment in adulta is stored. Then this FIM is added to the current experiment in children.
 The full code for this example is available in `ex.11.PK.prior.R`.
 
 ```{r, echo = FALSE}
 ##-- Model: One comp first order absorption
 ## -- Analytic solution for both mutiple and single dosing
 ff <- function(model_switch,xt,parameters,poped.db){
-with(as.list(parameters),{
-y=xt
-N = floor(xt/TAU)+1
-y=(DOSE*Favail/V)*(KA/(KA - CL/V)) * 
-(exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
-exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
-return(list( y=y,poped.db=poped.db))
-})
+  with(as.list(parameters),{
+    y=xt
+    N = floor(xt/TAU)+1
+    y=(DOSE*Favail/V)*(KA/(KA - CL/V)) * 
+      (exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
+         exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
+    return(list( y=y,poped.db=poped.db))
+  })
 }
 ```
 
 We define here the parameters for one compartment first order absorption model.
-Of note, `isPediatric = x[1]` is the flag to switch between adults and pediatrics, and `bpop[5]=pedCL` is the factor to multiply the adult clearance `bpop[3]` with to obtain the pediatric one.
+Of note, `isPediatric = x[1]` is the flag to switch between adults and pediatrics, and `bpop[5]=pedCL` is the factor to multiply the adult clearance `bpop[3]`  to obtain the pediatric one.
 
 ```{r}
 ## -- parameter definition function 
 ## -- names match parameters in function ff
 ## -- note, covariate on clearance for pediatrics (using isPediatric x[1])
 sfg <- function(x,a,bpop,b,bocc){
-parameters=c( V=bpop[1]*exp(b[1]),
-KA=bpop[2]*exp(b[2]),
-CL=bpop[3]*exp(b[3])*bpop[5]^x[1], # add covariate for pediatrics
-Favail=bpop[4],
-isPediatric = x[1],
-DOSE=a[1],
-TAU=a[2])
-return( parameters ) 
+  parameters=c( 
+    V=bpop[1]*exp(b[1]),
+    KA=bpop[2]*exp(b[2]),
+    CL=bpop[3]*exp(b[3])*bpop[5]^x[1], # add covariate for pediatrics
+    Favail=bpop[4],
+    isPediatric = x[1],
+    DOSE=a[1],
+    TAU=a[2])
+  return( parameters ) 
 }
 ```
 
@@ -902,51 +916,49 @@ return( parameters )
 ## -- Residual unexplained variablity (RUV) function
 ## -- Additive + Proportional  
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
-returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
-y <- returnArgs[[1]]
-poped.db <- returnArgs[[2]]
-
-y = y*(1+epsi[,1])+epsi[,2]
-
-return(list( y= y,poped.db =poped.db )) 
+  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
+  y <- returnArgs[[1]]
+  poped.db <- returnArgs[[2]]
+  
+  y = y*(1+epsi[,1])+epsi[,2]
+  
+  return(list( y= y,poped.db =poped.db )) 
 }
 ```
 
-Define design and design space for adults. As we want to pool the results, we also have to provide here the `pedCL` parameter.
-
+Define design and design space for adults (Two arms, 5 time points, `isPediatric = 0`). As we want to pool the results, we also have to provide here the `pedCL` parameter.
 ```{r}
-## -- Define design and design space for adults (isPediatric = 0)
-## Two arms, 5 time points
-poped.db <- create.poped.database(ff_fun="ff",
-fg_fun="sfg",
-fError_fun="feps",
-bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-notfixed_bpop=c(1,1,1,0,1),
-d=c(V=0.09,KA=0.09,CL=0.25^2), 
-sigma=c(0.04,5e-6),
-notfixed_sigma=c(0,0),
-m=2,
-groupsize=20,
-xt=c( 1,8,10,240,245),
-bUseGrouped_xt=1,
-a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-x=list(isPediatric = 0)
-)
+poped.db <- 
+  create.poped.database(
+    ff_fun="ff",
+    fg_fun="sfg",
+    fError_fun="feps",
+    bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
+    notfixed_bpop=c(1,1,1,0,1),
+    d=c(V=0.09,KA=0.09,CL=0.25^2), 
+    sigma=c(0.04,5e-6),
+    notfixed_sigma=c(0,0),
+    m=2,
+    groupsize=20,
+    xt=c( 1,8,10,240,245),
+    bUseGrouped_xt=1,
+    a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
+    x=list(isPediatric = 0)
+  )
 ```
 
-```{r simulate_adult,fig.width=6}
-##  create plot of model without variability
+Create plot of model without variability
+```{r simulate_adult}
 plot_model_prediction(poped.db, model_num_points = 300)
 
 ```
 
+To store the FIM from the adult design we
+evaluate the initial design
 ```{r}
-## To store FIM from adult design
-## evaluate initial design
-outAdult = evaluate_design(poped.db)
-print(outAdult)
+(outAdult = evaluate_design(poped.db))
 ```
-It is obvious that we cannot estimate the pediatric covariate from adult data only - therefore the warning message.
+It is obvious that we cannot estimate the pediatric covariate from adult data only; hence the warning message.
 You can also note the zeros in the 4th column and 4th row of the FIM indicating that `pedCL` cannot be estimated from the adult data.
 
 We can evaluate the adult design without warning, by setting the `pedCL` parameter to be fixed (i.e., not estimated):
@@ -955,172 +967,178 @@ evaluate_design(create.poped.database(poped.db, notfixed_bpop=c(1,1,1,0,0)))
 ```
 One obtains good estimates for all parameters for adults (<60% RSE for all).
 
-For pediatrics the covariate `isPediatric = 1`.
+For pediatrics the covariate `isPediatric = 1`. We define one arm, 4 time points only
 ```{r}
-## Define pediatric model/design
-## One arm, 4 time points only
-poped.db.ped <- create.poped.database(ff_fun="ff",
-fg_fun="sfg",
-fError_fun="feps",
-bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
-notfixed_bpop=c(1,1,1,0,1),
-d=c(V=0.09,KA=0.09,CL=0.25^2), 
-sigma=c(0.04,5e-6),
-notfixed_sigma=c(0,0),
-m=1,
-groupsize=6,
-xt=c( 1,2,6,240),
-bUseGrouped_xt=1,
-a=list(c(DOSE=40,TAU=24)),
-x=list(isPediatric = 1)
-)
+poped.db.ped <- 
+  create.poped.database(
+    ff_fun="ff",
+    fg_fun="sfg",
+    fError_fun="feps",
+    bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
+    notfixed_bpop=c(1,1,1,0,1),
+    d=c(V=0.09,KA=0.09,CL=0.25^2), 
+    sigma=c(0.04,5e-6),
+    notfixed_sigma=c(0,0),
+    m=1,
+    groupsize=6,
+    xt=c( 1,2,6,240),
+    bUseGrouped_xt=1,
+    a=list(c(DOSE=40,TAU=24)),
+    x=list(isPediatric = 1)
+  )
 ```
 
-
-```{r simulate_pediatrics,fig.width=6}
-##  create plot of model without variability 
+Create plot of the pediatric model without variability 
+```{r simulate_pediatrics}
 plot_model_prediction(poped.db.ped, model_num_points = 300)
-
-## evaluate design of pediatrics only - insufficient
-evaluate_design(create.poped.database(poped.db.ped, notfixed_bpop=c(1,1,1,0,0)))
 ```
 
+Evaluate the design of the pediatrics study alone. 
 ```{r}
-## Add adult prior
+evaluate_design(poped.db.ped)
+
+```
+Clearly the design has problems on its own.
+
+We can add the prior information from the adult study and evaluate that design (i.e., pooling adult and pediatric data).
+```{r}
 poped.db.all <- create.poped.database(
-poped.db.ped,
-prior_fim = outAdult$fim
+  poped.db.ped,
+  prior_fim = outAdult$fim
 )
 
-## Evaluate pediatric design including the prior FIM from adults (i.e., pooling adult and pediatric data)
 (out.all <- evaluate_design(poped.db.all))
 ```
-Obviously, the pooled data leads to much higher precision in parameter estimates compared to the pediatrics data only.
+Clearly, the pooled data leads to much higher precision in parameter estimates compared to either study separately.
 
-One can also obtain the power for estimating the covariate.
+One can also obtain the power for estimating the pediatric difference in clearance (power in estimating bpop[5] as different from 1).
 ```{r}
-evaluate_power(poped.db.all, bpop_idx=5, out=out.all)
+evaluate_power(poped.db.all, bpop_idx=5, h0=1, out=out.all)
 ```
+We see that to clearly distinguish this parameter that one would need 14 children in the pediatric study (for 80% power at $\alpha=0.05$).
 
+# Design evaluation including uncertainty in the model parameters (robust design)	
 
-##10.	Design evaluation including uncertainty in the model parameters (robust design)	
-
-The aim is to evaluate a design incorporating uncertainty around parameter values in the model.
+In this example the aim is to evaluate a design incorporating uncertainty around parameter values in the model.
 The full code for this example is available in `ex.2.d.warfarin.ED.R`.
-This illustration is one of the Warfarin examples from software comparison in: Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014. 
+This illustration is one of the Warfarin examples from software comparison in: Nyberg et al.^["Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014.]. 
 
 ```{r, echo=FALSE, results="hide"}
 sfg <- function(x,a,bpop,b,bocc){
-## -- parameter definition function 
-parameters=c(CL=bpop[1]*exp(b[1]),
-V=bpop[2]*exp(b[2]),
-KA=bpop[3]*exp(b[3]),
-Favail=bpop[4],
-DOSE=a[1])
-return(parameters) 
+  ## -- parameter definition function 
+  parameters=c(
+    CL=bpop[1]*exp(b[1]),
+    V=bpop[2]*exp(b[2]),
+    KA=bpop[3]*exp(b[3]),
+    Favail=bpop[4],
+    DOSE=a[1])
+  return(parameters) 
 }
 
 ff <- function(model_switch,xt,parameters,poped.db){
-##-- Model: One comp first order absorption
-with(as.list(parameters),{
-y=xt
-y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-return(list(y=y,poped.db=poped.db))
-})
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
 }
 ```
 
-### Define the model parameters for use in poped.db
+## Define the model parameters for use in poped.db
 Adding 10% uncertainty to all fixed effects (not Favail)
 
 ```{r}
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
-bpop_vals_ed <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
-bpop_vals,
-ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+bpop_vals_ed <- 
+  cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+        bpop_vals,
+        ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
 bpop_vals_ed["Favail",] <- c(0,1,0)
 bpop_vals_ed
 ```
 
-### Define initial design  and design space
+## Define initial design  and design space
 Now `bpop_vals_ed` is a matrix and not only a vector and we can define the `ED_samp_size=20` either here...
 ```{r}
-poped.db <- create.poped.database(ff_fun=ff,
-fg_fun=sfg,
-fError_fun=feps.add.prop,
-bpop=bpop_vals_ed, 
-notfixed_bpop=c(1,1,1,0),
-d=c(CL=0.07, V=0.02, KA=0.6), 
-sigma=c(0.01,0.25),
-groupsize=32,
-xt=c( 0.5,1,2,6,24,36,72,120),
-minxt=0,
-maxxt=120,
-a=70,
-mina=0,
-maxa=100,
-ED_samp_size=20)
-
+poped.db <- 
+  create.poped.database(
+    ff_fun=ff,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=bpop_vals_ed, 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(0.01,0.25),
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100,
+    ED_samp_size=20)
 ```
 
-### Design evaluation
-Or provide the `ED_samp_size` as a parameter
+## Design evaluation
+Or provide the `ED_samp_size` as a parameter.
 ```{r}
-tic(); output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=20); toc()
-output$E_ofv
-output$E_fim
+tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 ```
 
+We can see that the result, based on MC sampling, is somewhat variable with so few samples.
+```{r}
+tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
+```
+# Design evaluation for a subset of model parameters of interest (Ds optimality)
 
-
-##11. Design evaluation for a subset of model parameters of interest (Ds optimality)
-
-Ds-optimality is the criterion that can be used in case one is interested in estimating a subset "s" of the model parameters as precisely as possible (Atkinson 2007).
-The full code for this example is available at the usual PopED examples directory, under the name of `ex.2.e.warfarin.Ds.R`. This illustration is one of the Warfarin examples from software comparison in: Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014. 
+Ds-optimality is a criterion that can be used if one is interested in estimating a subset "s" of the model parameters as precisely as possible.
+The full code for this example is available in `ex.2.e.warfarin.Ds.R`. 
 
 ### Define initial design and design space
 
 ```{r, echo=FALSE}
 sfg <- function(x,a,bpop,b,bocc){
-## -- parameter definition function 
-parameters=c(CL=bpop[1]*exp(b[1]),
-V=bpop[2]*exp(b[2]),
-KA=bpop[3]*exp(b[3]),
-Favail=bpop[4],
-DOSE=a[1])
-return(parameters) 
+  ## -- parameter definition function 
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
 }
 
 ff <- function(model_switch,xt,parameters,poped.db){
-##-- Model: One comp first order absorption
-with(as.list(parameters),{
-y=xt
-y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-return(list(y=y,poped.db=poped.db))
-})
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
 }
 ```
 
-For Ds optimality we add in the create.poped.database function the `ds_index` to indicate whether a paramter is interesting (=1) or not (=0). Moreover we need to set the `ofv_calc_type` to 6 for computing the Ds optimality criterion, as it is set to 4 by default, i.e. for computing the log of the determiant of FIM. More details are available in the help of R, by running the command `?create.poped.database`.
+For Ds optimality we add the `ds_index` option to the create.poped.database function to indicate whether a paramter is interesting (=1) or not (=0). Moreover, we need to set the `ofv_calc_type` to 6 for computing the Ds optimality criterion, as it is set to 4 by default (for computing the log of the determiant of FIM). More details are available by running the command `?create.poped.database`.
 
 ```{r}
-poped.db <- create.poped.database(ff_fun=ff,
-fg_fun=sfg,
-fError_fun=feps.add.prop,
-bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-notfixed_bpop=c(1,1,1,0),
-d=c(CL=0.07, V=0.02, KA=0.6), 
-sigma=c(0.01,0.25),
-groupsize=32,
-xt=c( 0.5,1,2,6,24,36,72,120),
-minxt=0,
-maxxt=120,
-a=70,
-mina=0,
-maxa=100,
-ds_index=c(0,0,0,1,1,1,1,1), 
-# size is number_of_non_fixed_parameters
-ofv_calc_type=6) # Ds OFV calculation
+poped.db <- 
+  create.poped.database(
+    ff_fun=ff,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(0.01,0.25),
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100,
+    ds_index=c(0,0,0,1,1,1,1,1), # size is number_of_non_fixed_parameters
+    ofv_calc_type=6) # Ds OFV calculation
 ```
 
 ### Design evaluation
@@ -1129,65 +1147,66 @@ ofv_calc_type=6) # Ds OFV calculation
 evaluate_design(poped.db)
 ```
 
-##12.	Shrinkage	
+#	Shrinkage	
 
-The full code for this example is available in "ex.13.shrinkage.R".
+The full code for this example is available in "ex.13.shrinkage.R".  
 
 ```{r, echo=FALSE, results="hide"}
 
-## following example 1.4.2 in PFIM
 sfg <- function(x,a,bpop,b,bocc){
-## -- parameter definition function 
-parameters=c(KA=bpop[1]*exp(b[1]),
-K=bpop[2]*exp(b[2]),
-V=bpop[3]*exp(b[3]),
-DOSE=a[1])
-return(parameters) 
+  ## -- parameter definition function 
+  parameters=c(KA=bpop[1]*exp(b[1]),
+               K=bpop[2]*exp(b[2]),
+               V=bpop[3]*exp(b[3]),
+               DOSE=a[1])
+  return(parameters) 
 }
 
 ff <- function(model_switch,xt,parameters,poped.db){
-##-- Model: One comp first order absorption
-with(as.list(parameters),{
-y<-(DOSE/V*KA/(KA-K)*(exp(-K*xt)-exp(-KA*xt)))
-return(list(y=y,poped.db=poped.db))
-})
+  ##-- Model: One comp first order absorption
+  with(as.list(parameters),{
+    y<-(DOSE/V*KA/(KA-K)*(exp(-K*xt)-exp(-KA*xt)))
+    return(list(y=y,poped.db=poped.db))
+  })
 }
 
 ## -- Residual unexplained variablity (RUV) function
 ## -- Additive + Proportional  
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
-returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
-f <- returnArgs[[1]]
-y = f + (0.5 + 0.15*f)*epsi[,1]
-
-return(list( y= y,poped.db =poped.db )) 
+  returnArgs <- do.call(poped.db$model$ff_pointer,
+                        list(model_switch,xt,parameters,poped.db)) 
+  f <- returnArgs[[1]]
+  y = f + (0.5 + 0.15*f)*epsi[,1]
+  
+  return(list( y= y,poped.db =poped.db )) 
 }
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_fun=ff,
-fg_fun=sfg,
-fError_fun =feps,
-bpop=c(KA=2, K=0.25, V=15), 
-d=c(KA=1, V=0.25,0.1), 
-sigma=c(1),
-notfixed_sigma = c(0),
-groupsize=1,
-xt=c( 1,3,8),
-minxt=0,
-maxxt=10,
-a=100)
+poped.db <- create.poped.database(
+  ff_fun=ff,
+  fg_fun=sfg,
+  fError_fun =feps,
+  bpop=c(KA=2, K=0.25, V=15), 
+  d=c(KA=1, V=0.25,0.1), 
+  sigma=c(1),
+  notfixed_sigma = c(0),
+  groupsize=1,
+  xt=c( 1,3,8),
+  minxt=0,
+  maxxt=10,
+  a=100)
+
+plot_model_prediction(poped.db)
+
 ```
 
-Define design as before but instead of `evaluate_design()` now use the function `shrinkage()`.
+To evaluate the estimation quality of the individual random effects in the model (the b's) we use the function `shrinkage()`.
 
 ```{r} 
 shrinkage(poped.db)
 ```
+The output shows us the expected shrinkage on the variance scale ($shrink_{var}=1-var(b_j)/D(j,j)$) and on the standard deviation scale ($shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))$), as well as the standard errors of the $b_j$ estimates.
 
-##13.	Power Calculation
-
-See example 9. Include previous FIM.
-
-##Further examples (for later)
+##Further examples (to be implemented)
 
 14.	Espresso design
 15.	Handling BLQ data	

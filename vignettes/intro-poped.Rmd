@@ -1,8 +1,12 @@
 ---
 title: "Introduction to PopED"
 author: "Andrew Hooker"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{1. Introduction to PopED}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,25 +23,38 @@ To get started you need to define
 
 There are a number of functions to help you with these tasks.  See `?poped` for more information.  
  
-Below is an example to introduce the package.  There are several other examples, as r-scripts, in the "examples" folder in the 
+Below is an example to introduce the package.  The code in the below example, and several other examples, are available as r-scripts in the "examples" folder in the 
 PopED installation directory located at:
 
 
-```
+```{r,eval=FALSE}
 system.file("examples", package="PopED")
 ```
 
-## Define a model
+You can view a list of the example files using the commands:
+```{r,eval=FALSE}
+ex_dir <- system.file("examples", package="PopED")
+list.files(ex_dir)
+```
+
+You can then open one of the examples (for example, `ex.1.a.PK.1.comp.oral.md.intro.R`, the code found in this vignette) using the following code
+```{r,eval=FALSE}
+file_name <- "ex.1.a.PK.1.comp.oral.md.intro.R"
+ex_file <- system.file("examples",file_name,package="PopED")
+file.copy(ex_file,tempdir(),overwrite = T)
+file.edit(file.path(tempdir(),file_name))
+```
+
+In addition, there is another vignette called "Examples" that explores the new features in each example.
+
+# Define a model
 
 Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution.  In this case the solution is applicable for both multiple and single dosing.  Note that this function is also predefined in PopED as `ff.PK.1.comp.oral.md.CL`.
 
-```{r,include=FALSE}
-library(Rcpp)
-library(deSolve)
-```
 
 ```{r,eval=TRUE}
 library(PopED)
+packageVersion("PopED")
 ```
 
 
@@ -88,7 +105,7 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 
 We have now defined all aspects of the model.
 
-## Define an initial design and design space
+# Define an initial design and design space
 
 Now we define the model parameter values, the initial design and design space for optimization.
 
@@ -123,9 +140,9 @@ poped.db <- create.poped.database(ff_fun=ff,
                                   bUseGrouped_xt=TRUE)
 ```
 
-##  The tasks to perform.
+#  The tasks to perform.
 
-### Simulation
+## Simulation
 First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values:
 ```{r simulate_without_BSV, fig.width=6}
 plot_model_prediction(poped.db, model_num_points = 500)
@@ -142,7 +159,7 @@ dat <- model_prediction(poped.db,DV=TRUE)
 head(dat,n=5);tail(dat,n=5)
 ```
 
-### Design evaluation
+## Design evaluation
 Next, we evaluate the initial design
 ```{r}
 evaluate_design(poped.db)
@@ -152,7 +169,7 @@ We see that the fixed-effect and residual variability parameters are relatively 
 ### Evaluate alternative design
 We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).
 
-```{r,include = FALSE}
+```{r}
 poped.db.new <- create.poped.database(ff_fun=ff,
                                       fg_fun=sfg,
                                       fError_fun=feps,
@@ -175,13 +192,14 @@ poped.db.new <- create.poped.database(ff_fun=ff,
 ```{r}
 evaluate_design(poped.db.new)
 ```
+
 ### Comparison of designs
-The precision on CL (bpop[3]) is similar with the alternative design but the other parameters are less well estimated. 
+The precision on CL (bpop[3]) is similar with the alternative design but the other parameters are less well estimated with the alternative design. 
 
 It is possible to compare the objective function value (ofv) and see that for this dummy example the alternative design (less samples per subject) the ofv is smaller (=worse).
 This value can also be used to optimize sampling times, doses, and other design features.
 
-### Design optimization
+## Design optimization
 Now we can optimize the sample times of the design^[Tip:  to make the optimization run faster use the option `parallel = TRUE` in the `poped_optim` command.].
 ```{r optimize,message = FALSE,results='hide',cache=TRUE}
 output <- poped_optim(poped.db, opt_xt=TRUE)
@@ -202,7 +220,7 @@ Of course, this means that there are multiple samples at some of these time poin
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
-Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples might be needed.  To investigate see `?plot_efficiency_of_windows`. 
+Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drops below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption).  Smaller windows or different windowing on different samples might be needed.  To investigate see `?plot_efficiency_of_windows`. 
 
 ### Optimize over a discrete design space
 In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the hour are allowed.
