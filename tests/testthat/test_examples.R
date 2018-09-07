@@ -36,6 +36,18 @@ test_that("The Examples run", {
   expect_equal(crit_full,crit_reference_full,tolerance=0.01,scale=crit_reference_full)
   for(i in 1:length(rse_full)) expect_equal(rse_full[i],rse_reference_full[i],tolerance=0.05,scale=rse_reference_full[i],check.names=F)
 
+  source(file.path(run_dir,"ex.10.PKPD.HCV.compiled.R"),chdir=T)
+  source(file.path(run_dir,"ex.11.PK.prior.R"),chdir=T)
+  source(file.path(run_dir,"ex.12.covariate.distributions.R"),chdir=T)
+  source(file.path(run_dir,"ex.13.shrinkage.R"),chdir=T)
+  source(file.path(run_dir,"ex.14.PK.IOV.R"),chdir=T)
+  source(file.path(run_dir,"ex.15.full.covariance.matrix.R"),chdir=T)
+  
+  
+  
+  
+  
+  
   #setwd(cur_dir)
   
   
