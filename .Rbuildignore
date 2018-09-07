@@ -15,4 +15,4 @@
 ^vignettes\examples_files$
 ^vignettes\intro-poped_cache$
 ^vignettes\intro-poped_files$
-
+^revdep$
