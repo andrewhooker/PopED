@@ -9,7 +9,7 @@ output:
     number_sections: true
   
 vignette: >
-  %\VignetteIndexEntry{2. Examples}
+  %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -233,7 +233,7 @@ fg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-### Define design and design space
+## Define design and design space
 
 We now create a PopED database. The `ff_fun` should now point to the function providing the solution of the ODE.
 ```{r}
@@ -341,14 +341,14 @@ cppFunction('List tmdd_qss_one_target_model_ode
             double V2 = Pars[3];
             double FAVAIL = Pars[4];
             double KA = Pars[5];
-            double VMAX = Pars[6];
-            double KMSS = Pars[7];
+            // double VMAX = Pars[6];
+            // double KMSS = Pars[7];
             double R0 = Pars[8];
             double KSSS = Pars[9];
             double KDEG = Pars[10];
             double KINT = Pars[11];
-            double DOSE = Pars[12];
-            double SC_FLAG = Pars[13];
+            // double DOSE = Pars[12];
+            // double SC_FLAG = Pars[13];
             
             double RTOT, CTOT, CFREE;
             RTOT = A[3];
@@ -1095,7 +1095,7 @@ tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 Ds-optimality is a criterion that can be used if one is interested in estimating a subset "s" of the model parameters as precisely as possible.
 The full code for this example is available in `ex.2.e.warfarin.Ds.R`. 
 
-### Define initial design and design space
+## Define initial design and design space
 
 ```{r, echo=FALSE}
 sfg <- function(x,a,bpop,b,bocc){
@@ -1141,7 +1141,7 @@ poped.db <-
     ofv_calc_type=6) # Ds OFV calculation
 ```
 
-### Design evaluation
+## Design evaluation
 
 ```{r}
 evaluate_design(poped.db)
@@ -1206,7 +1206,7 @@ shrinkage(poped.db)
 ```
 The output shows us the expected shrinkage on the variance scale ($shrink_{var}=1-var(b_j)/D(j,j)$) and on the standard deviation scale ($shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))$), as well as the standard errors of the $b_j$ estimates.
 
-##Further examples (to be implemented)
+# Further examples (to be implemented)
 
 14.	Espresso design
 15.	Handling BLQ data	
