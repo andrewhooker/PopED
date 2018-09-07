@@ -12,10 +12,10 @@
 #' \item The tasks to perform.  
 #' }
 #' There are a number of functions to help you with these tasks.  The user-level functions  defined below are 
-#' meant to be run with a minimum of arguments (for begininers to advanced users).  Many of the other functions in the package
+#' meant to be run with a minimum of arguments (for beginners to advanced users).  Many of the other functions in the package
 #' (and not listed here) are called by these user-level functions 
 #' and are often not as user 
-#' freindly (developer level or advanced user functions).
+#' friendly (developer level or advanced user functions).
 #' 
 #' Define a structural model: 
 #' \code{\link{ff.PK.1.comp.oral.md.CL}}, 
@@ -25,7 +25,7 @@
 #'  \code{\link{ff.PKPD.1.comp.oral.md.CL.imax}}, 
 #'  \code{\link{ff.PKPD.1.comp.sd.CL.emax}}.
 #' 
-#' Defne a residual unexplained variability model (residual error model): 
+#' Define a residual unexplained variability model (residual error model): 
 #' \code{\link{feps.add.prop}},
 #' \code{\link{feps.add}}, 
 #' \code{\link{feps.prop}}.

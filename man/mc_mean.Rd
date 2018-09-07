@@ -22,7 +22,7 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{doccdescr}{Matrix defining the IOV.

@@ -1,6 +1,6 @@
-#' Modified Federov Exchange Algorithm
+#' Modified Fedorov Exchange Algorithm
 #' 
-#' Optimize the objective function using a modified Federov exchange algorithm.
+#' Optimize the objective function using a modified Fedorov exchange algorithm.
 #' The function works for continuous and discrete optimization variables.
 #' This function takes information from the PopED database supplied as an argument.
 #' The PopED database supplies information about the the model, parameters, design and methods to use.

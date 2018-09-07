@@ -28,7 +28,7 @@ the FIM to zero.
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 \item 6 = Calculate one model switch at a time, good for large matrices. 
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
@@ -44,7 +44,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{covd}{Column major vector defining the covariances of the IIV variances. 
@@ -53,7 +53,7 @@ That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
 
@@ -65,7 +65,7 @@ can also just supply the diagnonal parameter values (variances) as a \code{c()}.
 
 \item{a}{A matrix of covariates.  Each row is a group.}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{deriv.type}{A number indicating the type of derivative to use:
 \itemize{
@@ -94,7 +94,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 the FIM does not need to be computed and, if desired,  this calculation
-is done usng the standard MC integration technique, so can be slow.}
+is done using the standard MC integration technique, so can be slow.}
 
 \item{...}{Other arguments passed to the function.}
 }

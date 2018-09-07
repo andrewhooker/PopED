@@ -10,7 +10,7 @@ ed_mftot(model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr,
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{ni}{A vector of the number of samples in each group.}
 
@@ -27,14 +27,14 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{covd}{Column major vector defining the covariances of the IIV variances. 
 That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 

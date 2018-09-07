@@ -17,9 +17,9 @@ blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d,
 
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{ni}{A vector of the number of samples in each group.}
 
@@ -41,13 +41,13 @@ blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d,
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{poped.db}{A PopED database.}
 
@@ -61,7 +61,7 @@ can also just supply the diagnonal parameter values (variances) as a \code{c()}.
 
 \item{dmf_init}{Initial OFV.}
 
-\item{param_cvs_init}{The inital design parameter RSE values in percent.}
+\item{param_cvs_init}{The initial design parameter RSE values in percent.}
 
 \item{compute_inv}{should the inverse of the FIM be used to compute expected RSE values?  Often not needed
 except for diagnostic purposes.}

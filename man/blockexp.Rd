@@ -16,7 +16,7 @@ blockexp(fn, poped.db, e_flag = FALSE,
 
 \item{poped.db}{A PopED database.}
 
-\item{e_flag}{Shuould output be with uncertainty around parameters?}
+\item{e_flag}{Should output be with uncertainty around parameters?}
 
 \item{opt_xt}{Should the sample times be optimized?}
 
@@ -24,9 +24,9 @@ blockexp(fn, poped.db, e_flag = FALSE,
 
 \item{opt_x}{Should the discrete design variables be optimized?}
 
-\item{opt_samps}{Are the nuber of sample times per group being optimized?}
+\item{opt_samps}{Are the number of sample times per group being optimized?}
 
-\item{opt_inds}{Are the nuber of individuals per group being optimized?}
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 }
 \description{
 Create some output to the screen and a text file that summarizes the initial design and the design space

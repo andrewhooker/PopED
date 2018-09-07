@@ -21,7 +21,7 @@ calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni,
 
 \item{axt}{the axt value}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{ni}{A vector of the number of samples in each group.}
 
@@ -41,11 +41,11 @@ calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni,
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{docc_full}{A between occasion variability matrix.}
 

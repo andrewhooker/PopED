@@ -12,7 +12,7 @@ toc(echo = TRUE, name = ".poped_savedTime")
 \item{name}{The saved name of the time object.}
 }
 \description{
-Funtion to stop a timer.  Start with tic().
+Function to stop a timer.  Start with tic().
 }
 \note{
 This is a modified version of the same function in the matlab R-package.

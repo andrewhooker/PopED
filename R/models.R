@@ -133,7 +133,7 @@ ff.PK.1.comp.oral.sd.CL <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-#' Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct efect.
+#' Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct effect.
 #' 
 #' This is a structural model function that encodes the model described above.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
@@ -171,8 +171,8 @@ ff.PKPD.1.comp.sd.CL.emax <- function(model_switch,xt,parameters,poped.db){
   })
 }
 
-#' Structural model: one-compartment, oral absoprtion, multiple bolus dose, 
-#' parameterized using CL driving an inhibitory IMAX model with a direct efect.
+#' Structural model: one-compartment, oral absorption, multiple bolus dose, 
+#' parameterized using CL driving an inhibitory IMAX model with a direct effect.
 #' 
 #' This is a structural model function that encodes the model described above.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the

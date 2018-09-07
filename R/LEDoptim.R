@@ -1,6 +1,6 @@
 #' Optimization function for D-family, E-family and Laplace approximated ED designs
 #' 
-#' Optimize the objective fucntion for D-family, E-family and Laplace approximated ED designs.  
+#' Optimize the objective function for D-family, E-family and Laplace approximated ED designs.  
 #' Right now there is only one optimization algorithm used in this 
 #' function 
 #' \enumerate{
@@ -16,9 +16,9 @@
 #' @inheritParams Doptim
 #' @inheritParams calc_ofv_and_fim
 #' @param fim_init The initial value of the FIM. If set to zero then it is computed.
-#' @param ofv_init The inital OFV. If set to zero then it is computed.
+#' @param ofv_init The initial OFV. If set to zero then it is computed.
 #' @param trflag Should the optimization be output to the screen and to a file?
-#' @param use_RS should the fucntion use a random search algorithm?
+#' @param use_RS should the function use a random search algorithm?
 #' 
 #' @family Optimize
 #' 

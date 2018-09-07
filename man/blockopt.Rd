@@ -11,7 +11,7 @@ blockopt(fn, poped.db, opt_method = "")
 
 \item{poped.db}{A PopED database.}
 
-\item{opt_method}{If "RS" (random search), "SG" (stochastic gradient) or "DO" (discrete optimization) then specifc output is produced.}
+\item{opt_method}{If "RS" (random search), "SG" (stochastic gradient) or "DO" (discrete optimization) then specific output is produced.}
 }
 \description{
 Create some output to the screen and a text file that summarizes the optimization settings

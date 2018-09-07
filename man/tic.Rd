@@ -12,7 +12,7 @@ tic(gcFirst = FALSE, name = ".poped_savedTime")
 \item{name}{The saved name of the time object.}
 }
 \description{
-Funtion to start a timer.  Stop with toc().
+Function to start a timer.  Stop with toc().
 }
 \note{
 This is a modified version of the same function in the matlab R-package.

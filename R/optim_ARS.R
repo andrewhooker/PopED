@@ -16,10 +16,10 @@
 #' \code{(upper - lower)/(loc_fac*ff*adapt_scale)} where ff starts at 1 and increases by 1 for each adaptation.
 #' @param allowed_values A list containing allowed values for each parameter \code{list(par1=c(2,3,4,5,6),par2=c(5,6,7,8))}. 
 #' A vector containing allowed values for all parameters is also allowed \code{c(2,3,4,5,6)}.
-#' @param iter The number of iterations for the algorithm to perfrom (this is a maximum number, it could be less).
+#' @param iter The number of iterations for the algorithm to perform (this is a maximum number, it could be less).
 #' @param iter_adapt The number of iterations before adapting (shrinking) the parameter search space.
 #' @param max_run The maximum number of iterations to run without a change in the best parameter estimates.
-#' @param trace_iter How many interations between each update to the screen about the result of the search.
+#' @param trace_iter How many iterations between each update to the screen about the result of the search.
 #' @param new_par_max_it The algorithm randomly chooses samples based on the current best set of parameters.  If when drawing 
 #' these samples the new parameter set has already been tested then a new draw is performed. After \code{new_par_max_it} draws, with
 #' no new parameter sets, then the algorithm stops.

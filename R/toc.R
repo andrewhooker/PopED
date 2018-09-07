@@ -1,6 +1,6 @@
 #' Timer function (as in MATLAB)
 #' 
-#' Funtion to stop a timer.  Start with tic().
+#' Function to stop a timer.  Start with tic().
 #' 
 #' @param echo Print time to screen?
 #' @param name The saved name of the time object.

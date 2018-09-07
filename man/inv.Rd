@@ -10,10 +10,10 @@ inv(mat, method = 1, tol = .Machine$double.eps,
 \arguments{
 \item{mat}{A matrix}
 
-\item{method}{Which method to use. 1 is cholesky \code{chol2inv(chol(mat)}, 
+\item{method}{Which method to use. 1 is Cholesky \code{chol2inv(chol(mat)}, 
 2 is using \code{solve(mat)} and 3 is the Moore-Penrose generalized inverse (pseudoinverse).}
 
-\item{tol}{The tolerance at wich we should identify a sigular value as zero (used in pseudoinverse calculation).}
+\item{tol}{The tolerance at which we should identify a singular value as zero (used in pseudoinverse calculation).}
 
 \item{pseudo_on_fail}{If another method fails should the Moore-Penrose generalized inverse (pseudoinverse) be used?}
 

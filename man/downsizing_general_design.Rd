@@ -20,7 +20,7 @@ A list containing:
 }
 \description{
 Function takes a design with potentially empty design 
-variables and resuces the design so that a FIM can be calculated using \code{\link{mftot}}.
+variables and rescues the design so that a FIM can be calculated using \code{\link{mftot}}.
 }
 \seealso{
 Other poped_input: \code{\link{convert_variables}},

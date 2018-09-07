@@ -30,7 +30,7 @@ blockother <- function(fn,poped.db,d_switch=poped.db$settings$d_switch){
   
   fprintf(fn,'Design family: %g
   D-family design (1) or 
-  ED-familty design (0) 
+  ED-family design (0) 
   (with or without parameter uncertainty)\n\n',
           d_switch)
   #   ## -- ED Integral Calculation, 0=Monte-Carlo-Integration, 1=Laplace Approximation, 2=BFGS Laplace Approximation  -- --

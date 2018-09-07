@@ -2,7 +2,7 @@
 % Please edit documentation in R/LinMatrixL_occ.R
 \name{LinMatrixL_occ}
 \alias{LinMatrixL_occ}
-\title{Model linearization with respect to occasion variablity parameters.}
+\title{Model linearization with respect to occasion variability parameters.}
 \usage{
 LinMatrixL_occ(model_switch, xt_ind, x, a, bpop, b_ind, bocc_ind,
   iCurrentOcc, poped.db)
@@ -30,7 +30,7 @@ LinMatrixL_occ(model_switch, xt_ind, x, a, bpop, b_ind, bocc_ind,
 A matrix of size (samples per individual x number of iovs)
 }
 \description{
-The function performs a linearization of the model with respect to the occation  variability parameter..
+The function performs a linearization of the model with respect to the occasion  variability parameter..
 Derivative of model w.r.t. eta_occ, evaluated bocc_ind.
 }
 \examples{

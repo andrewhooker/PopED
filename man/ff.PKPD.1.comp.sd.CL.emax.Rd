@@ -2,7 +2,7 @@
 % Please edit documentation in R/models.R
 \name{ff.PKPD.1.comp.sd.CL.emax}
 \alias{ff.PKPD.1.comp.sd.CL.emax}
-\title{Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct efect.}
+\title{Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct effect.}
 \usage{
 ff.PKPD.1.comp.sd.CL.emax(model_switch, xt, parameters, poped.db)
 }

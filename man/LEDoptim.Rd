@@ -34,7 +34,7 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is 
@@ -49,7 +49,7 @@ all a values are given the same max value}
 \item{mina}{Vector defining the min value for each covariate. If a single value is supplied then
 all a values are given the same max value}
 
-\item{ofv_init}{The inital OFV. If set to zero then it is computed.}
+\item{ofv_init}{The initial OFV. If set to zero then it is computed.}
 
 \item{fim_init}{The initial value of the FIM. If set to zero then it is computed.}
 
@@ -70,20 +70,20 @@ all a values are given the same max value}
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{use_laplace}{Should the Laplace method be used in calculating the expectation of the OFV?}
 
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 the FIM does not need to be computed and, if desired,  this calculation
-is done usng the standard MC integration technique, so can be slow.}
+is done using the standard MC integration technique, so can be slow.}
 
-\item{use_RS}{should the fucntion use a random search algorithm?}
+\item{use_RS}{should the function use a random search algorithm?}
 
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \description{
-Optimize the objective fucntion for D-family, E-family and Laplace approximated ED designs.  
+Optimize the objective function for D-family, E-family and Laplace approximated ED designs.  
 Right now there is only one optimization algorithm used in this 
 function 
 \enumerate{

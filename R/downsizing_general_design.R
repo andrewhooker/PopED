@@ -1,7 +1,7 @@
 #' Downsize a general design to a specific design
 #' 
 #' Function takes a design with potentially empty design 
-#' variables and resuces the design so that a FIM can be calculated using \code{\link{mftot}}.
+#' variables and rescues the design so that a FIM can be calculated using \code{\link{mftot}}.
 #' 
 #' @param poped.db A PopED database 
 #' @return A list containing:

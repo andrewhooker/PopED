@@ -9,7 +9,7 @@
 #' @inheritParams create.poped.database
 #' @inheritParams Dtrace
 #' @param fn The file handle to write to.
-#' @param e_flag Shuould output be with uncertainty around parameters?
+#' @param e_flag Should output be with uncertainty around parameters?
 #' 
 #' 
 #' @family Helper
@@ -64,7 +64,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   fprintf(fn,'Experiment description (design and design space)\n')
   fprintf(fn,'\n')
   
-  tmp_txt <- "Numer of individuals"
+  tmp_txt <- "Number of individuals"
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
   tmp_txt <- paste(tmp_txt,': %g',sep="")
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(%g, %g)',sep=" ")
@@ -73,7 +73,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   
   fprintf(fn,'Number of groups (individuals with same design): %g\n',poped.db$design$m)
   
-  tmp_txt <- "Numer of individuals per group"
+  tmp_txt <- "Number of individuals per group"
   if(opt_inds) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
   tmp_txt <- paste(tmp_txt,':\n',sep="")
   fprintf(fn,tmp_txt)
@@ -84,7 +84,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
   tmp_txt <- paste(tmp_txt,'\n',sep="")
   fprintf(fn,tmp_txt,1:poped.db$design$m,poped.db$design$groupsize,poped.db$design_space$maxgroupsize, poped.db$design_space$maxgroupsize)
   
-  tmp_txt <- "Numer of samples per group"
+  tmp_txt <- "Number of samples per group"
   if(opt_samps) tmp_txt <- paste(tmp_txt,'(min, max)',sep=" ")
   tmp_txt <- paste(tmp_txt,':\n',sep="")
   fprintf(fn,tmp_txt)

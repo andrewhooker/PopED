@@ -1,6 +1,6 @@
 #' Timer function (as in MATLAB)
 #' 
-#' Funtion to start a timer.  Stop with toc().
+#' Function to start a timer.  Stop with toc().
 #' 
 #' @param gcFirst Perform garbage collection?
 #' @param name The saved name of the time object.

@@ -15,7 +15,7 @@ evaluate_design(poped.db, ...)
 A list of elements evaluating the current design.
 }
 \description{
-This tunction evaluates the design defined in a poped database.
+This function evaluates the design defined in a poped database.
 }
 \examples{
 library(PopED)

@@ -12,7 +12,7 @@
 #' @param xt A matrix of sample times.  Each row is a vector of sample times for a group.
 #' @param x A matrix for the discrete design variables.  Each row is a group.
 #' @param a A matrix of covariates.  Each row is a group.
-#' @param groupsize A vector of the numer of individuals in each group.
+#' @param groupsize A vector of the number of individuals in each group.
 #' 
 #' @return As a list:
 #' \item{ret}{The FIM}

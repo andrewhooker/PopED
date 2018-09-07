@@ -12,7 +12,7 @@ evaluate_power(poped.db, bpop_idx, h0 = 0, alpha = 0.05, power = 0.8,
 
 \item{bpop_idx}{Index for an unfixed population parameter (bpop) for 
 which the power should be
-evaluated for being different than the null hypotesis (h0).}
+evaluated for being different than the null hypothesis (h0).}
 
 \item{h0}{The null hypothesized value for the parameter.}
 

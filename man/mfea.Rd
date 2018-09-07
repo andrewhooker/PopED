@@ -2,7 +2,7 @@
 % Please edit documentation in R/mfea.R
 \name{mfea}
 \alias{mfea}
-\title{Modified Federov Exchange Algorithm}
+\title{Modified Fedorov Exchange Algorithm}
 \usage{
 mfea(poped.db, model_switch, ni, xt, x, a, bpopdescr, ddescr, maxxt, minxt,
   maxa, mina, fmf, dmf, EAStepSize = poped.db$settings$EAStepSize,
@@ -31,7 +31,7 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is 
@@ -48,7 +48,7 @@ all a values are given the same max value}
 
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
 \item{EAStepSize}{Exchange Algorithm StepSize}
 
@@ -65,7 +65,7 @@ all a values are given the same max value}
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \description{
-Optimize the objective function using a modified Federov exchange algorithm.
+Optimize the objective function using a modified Fedorov exchange algorithm.
 The function works for continuous and discrete optimization variables.
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.

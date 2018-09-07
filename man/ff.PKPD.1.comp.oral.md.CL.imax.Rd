@@ -2,8 +2,8 @@
 % Please edit documentation in R/models.R
 \name{ff.PKPD.1.comp.oral.md.CL.imax}
 \alias{ff.PKPD.1.comp.oral.md.CL.imax}
-\title{Structural model: one-compartment, oral absoprtion, multiple bolus dose, 
-parameterized using CL driving an inhibitory IMAX model with a direct efect.}
+\title{Structural model: one-compartment, oral absorption, multiple bolus dose, 
+parameterized using CL driving an inhibitory IMAX model with a direct effect.}
 \usage{
 ff.PKPD.1.comp.oral.md.CL.imax(model_switch, xt, parameters, poped.db)
 }

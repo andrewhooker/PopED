@@ -12,9 +12,9 @@
 #' @param PRED Should a PRED line be drawn.
 #' @param IPRED.lines Should IPRED lines be drawn?
 #' @param alpha.IPRED.lines What should the transparency for the IPRED.lines be?
-#' @param alpha.IPRED What should the tranparency of the IPRED CI?
+#' @param alpha.IPRED What should the transparency of the IPRED CI?
 #' @param sample.times.size What should the size of the sample.times be?
-#' @param alpha.DV What should the tranparency of the DV CI?
+#' @param alpha.DV What should the transparency of the DV CI?
 #' @param DV.lines Should DV lines be drawn?
 #' @param DV.points Should DV points be drawn?
 #' @param alpha.DV.lines What should the transparency for the DV.lines be?
@@ -30,7 +30,7 @@
 #' @param groupsize_sim How many individuals per group  should be 
 #'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
 #' @param model.names A vector of names of the response model/s (the length of the 
-#' vector should be equal to the number of respose models). It is Null by default.
+#' vector should be equal to the number of response models). It is Null by default.
 #' @param ... Additional arguments passed to the \code{\link{model_prediction}} function.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 

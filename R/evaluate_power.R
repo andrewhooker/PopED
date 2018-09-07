@@ -7,7 +7,7 @@
 #' @param poped.db A poped database
 #' @param bpop_idx Index for an unfixed population parameter (bpop) for 
 #'   which the power should be
-#'   evaluated for being different than the null hypotesis (h0).
+#'   evaluated for being different than the null hypothesis (h0).
 #' @param alpha Type 1 error.
 #' @param h0 The null hypothesized value for the parameter.
 #' @param power Targeted power.

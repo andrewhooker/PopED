@@ -3,7 +3,7 @@
 #' A helper function for writing output to the screen and files when optimizing.
 #' 
 #' @param fn A file to output information to. Can also be the screen if \code{''}.
-#' @param it the interation number.
+#' @param it the iteration number.
 #' @param xtopt The matrix defining current best sampling schedule.
 #' @param xopt The cell structure defining the current best discrete design variables.
 #' @param aopt The matrix defining the current best continuous design variables.
@@ -11,15 +11,15 @@
 #' @param ga The matrix defining the current gradient for the continuous design variables.
 #' @param dmf The current OFV.
 #' @param diff The difference from the previous iteration.
-#' @param ixt If xt Gradient Inversion Occured or not.
-#' @param ia If a Gradient Inversion Occured or not.
+#' @param ixt If xt Gradient Inversion occurred or not.
+#' @param ia If a Gradient Inversion occurred or not.
 #' @param itvector The iteration vector.  Not currently used.
 #' @param dmfvector The dmf vector. Not currently used.
 #' @inheritParams RS_opt
 #' @inheritParams evaluate.fim 
 #' @inheritParams create.poped.database
-#' @param opt_samps Are the nuber of sample times per group being optimized?
-#' @param opt_inds Are the nuber of individuals per group being optimized?
+#' @param opt_samps Are the number of sample times per group being optimized?
+#' @param opt_inds Are the number of individuals per group being optimized?
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example tests/testthat/examples_fcn_doc/examples_Dtrace.R
 #' @export
@@ -169,7 +169,7 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
       #}
       if((poped.db$settings$optsw[2]==TRUE)){
         if((ixt==TRUE)){
-          fprintf(fn,'xt Gradient Inversion Occured\n')
+          fprintf(fn,'xt Gradient Inversion Occurred\n')
         }
         fprintf(fn,'Normalized gradient: Grad_xt(OFV)/OFV\n')
         # writet(fn,ni,gxt)
@@ -181,7 +181,7 @@ Dtrace <- function(fn,it,ni,xtopt,xopt,aopt,gxt,ga,dmf,diff,ixt,
       }
       if((poped.db$settings$optsw[4]==TRUE)){
         if((ia==TRUE)){
-          fprintf(fn,'a Gradient Inversion Occured\n')
+          fprintf(fn,'a Gradient Inversion Occurred\n')
         }
         fprintf(fn,'Normalized gradient: Grad_a(OFV)/OFV\n')
         write_matrix(fn,ga)

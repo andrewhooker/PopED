@@ -39,7 +39,7 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is 
@@ -56,7 +56,7 @@ all a values are given the same max value}
 
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
 \item{trflag}{Should the optimization be output to the screen and to a file?}
 
@@ -83,7 +83,7 @@ the FIM to zero.
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 \item 6 = Calculate one model switch at a time, good for large matrices. 
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
@@ -95,13 +95,13 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{use_laplace}{Should the Laplace method be used in calculating the expectation of the OFV?}
 
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 the FIM does not need to be computed and, if desired,  this calculation
-is done usng the standard MC integration technique, so can be slow.}
+is done using the standard MC integration technique, so can be slow.}
 
 \item{header_flag}{Should the header text be printed out?}
 

@@ -1,6 +1,6 @@
-#' Model linearization with respect to occasion variablity parameters.
+#' Model linearization with respect to occasion variability parameters.
 #' 
-#' The function performs a linearization of the model with respect to the occation  variability parameter..
+#' The function performs a linearization of the model with respect to the occasion  variability parameter..
 #' Derivative of model w.r.t. eta_occ, evaluated bocc_ind.
 #' 
 #' @inheritParams mftot

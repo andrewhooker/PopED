@@ -13,16 +13,16 @@
 #' @param ff_file  \itemize{
 #' \item \bold{******START OF MODEL DEFINITION OPTIONS**********}
 #' }
-#' A string giving the function name or filname and path of the structural model. 
+#' A string giving the function name or filename and path of the structural model. 
 #' The filename and the function name must be the same if giving a filename. 
 #' e.g. \code{"ff.PK.1.comp.oral.md.KE"}
 #' @param ff_fun Function describing the structural model. e.g. \code{ff.PK.1.comp.oral.md.KE}. 
-#' @param fg_file A string giving the function name or filname and path of the 
+#' @param fg_file A string giving the function name or filename and path of the 
 #' parameter model. 
 #' The filename and the function name must be the same if giving a filename. 
 #' e.g. \code{"parameter.model"}
 #' @param fg_fun Function describing the parameter model. e.g. \code{parameter.model}.
-#' @param fError_file A string giving the function name or filname and path of the 
+#' @param fError_file A string giving the function name or filename and path of the 
 #' residual error model. 
 #' The filename and the function name must be the same if giving a filename. 
 #' e.g. \code{"feps.prop"}.
@@ -40,7 +40,7 @@
 #'  Matrix defining the initial sampling schedule. 
 #'  Each row is a group/individual.
 #'  If only one vector is supplied, e.g. \code{c(1,2,3,4)}, then all groups will 
-#' have the same inital design. 
+#' have the same initial design. 
 #' @param m Number of groups in the study.  Each individual in a group will have the same design. 
 #' @param x A matrix defining the initial discrete values for the model 
 #' Each row is a group/individual.
@@ -51,7 +51,7 @@
 #' same values.
 # @param na The number of covariates in the model.
 #' @param groupsize Vector defining the size of the different groups (num individuals in each group).
-#' If only one numer then the number will be the same in every group.
+#' If only one number then the number will be the same in every group.
 #' @param ni Vector defining the number of samples for each group. 
 #' @param model_switch Matrix defining which response a certain sampling time belongs to.
 #' 
@@ -102,14 +102,14 @@
 #' }
 #' 
 #' @param iApproximationMethod Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI
-#' @param iFOCENumInd Num indivduals in each step of FOCE 
+#' @param iFOCENumInd Num individuals in each step of FOCE 
 #' @param prior_fim The prior FIM (added to calculated FIM) 
-#' @param strAutoCorrelationFile Filname and path, or function name, for the Autocorrelation function, 
+#' @param strAutoCorrelationFile Filename and path, or function name, for the Autocorrelation function, 
 #' empty string means no autocorrelation.
 
 #' @param d_switch  \itemize{
 #' \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-#' D-family design (1) or ED-familty design (0) (with or without parameter uncertainty) 
+#' D-family design (1) or ED-family design (0) (with or without parameter uncertainty) 
 #' @param ofv_calc_type  OFV calculation type for FIM 
 #' \itemize{ 
 #' \item 1 = "D-optimality". Determinant of the FIM: det(FIM)
@@ -127,7 +127,7 @@
 #' @param strEDPenaltyFile Penalty function name or path and filename, empty string means no penalty.  
 #' User defined criterion can be defined this way.
 #' @param ofv_fun User defined function used to compute the objective function. The function must have a poped database object as its first
-#' argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+#' argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 #' e.g. "cost.txt" has a function named "cost" in it.
 
 #' @param iEDCalculationType  \itemize{
@@ -135,14 +135,14 @@
 #' ED Integral Calculation, 0=Monte-Carlo-Integration, 1=Laplace Approximation, 2=BFGS Laplace Approximation  -- --
 #' @param ED_samp_size Sample size for E-family sampling 
 #' @param bLHS How to sample from distributions in E-family calculations. 0=Random Sampling, 1=LatinHyperCube --
-#' @param strUserDistributionFile Filname and path, or function name, for user defined distributions for E-family designs 
+#' @param strUserDistributionFile Filename and path, or function name, for user defined distributions for E-family designs 
 
 #' @param nbpop  \itemize{
 #' \item \bold{******START OF Model parameters  SPECIFICATION OPTIONS**********}}
 #' Number of typical values 
 #' @param NumRanEff Number of IIV parameters. Typically can be computed from other values and not supplied. 
 #' @param NumDocc Number of IOV variance parameters. Typically can be computed from other values and not supplied. 
-#' @param NumOcc Number of occassions. Typically can be computed from other values and not supplied. 
+#' @param NumOcc Number of occasions. Typically can be computed from other values and not supplied. 
 # @param ng The length of the g parameter vector. Typically can be computed from other values and not supplied.
 #' @param bpop Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
 #' \itemize{
@@ -153,12 +153,12 @@
 #' }
 #' Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 #' parameter value is to be used.
-#' @param d Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+#' @param d Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 #' matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
 #' @param covd Column major vector defining the covariances of the IIV variances. 
 #' That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}. 
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
-#' can also just supply the diagnonal parameter values (variances) as a \code{c()}. 
+#' can also just supply the diagonal parameter values (variances) as a \code{c()}. 
 #' @param docc Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop. 
 #' @param covdocc Column major vector defining the covariance of the IOV, as in covd. 
 
@@ -187,12 +187,12 @@
 #' \item \bold{******START OF Labeling and file names  SPECIFICATION OPTIONS**********}}
 #' The current PopED version 
 #' @param modtit The model title 
-#' @param output_file Filname and path of the output file during search 
-#' @param output_function_file Filname suffix of the result function file 
+#' @param output_file Filename and path of the output file during search 
+#' @param output_function_file Filename suffix of the result function file 
 #' @param strIterationFileName Filename and path for storage of current optimal design 
 
 #' @param user_data  \itemize{
-#' \item \bold{******START OF Miscelaneous SPECIFICATION OPTIONS**********}}
+#' \item \bold{******START OF Miscellaneous SPECIFICATION OPTIONS**********}}
 #' User defined data structure that, for example could be used to send in data to the model 
 #' @param ourzero Value to interpret as zero in design 
 #' @param dSeed The seed number used for optimization and sampling -- integer or -1 which creates a random seed \code{as.integer(Sys.time())} or NULL.
@@ -227,7 +227,7 @@
 #' @param intrsit Number of Random search iterations with discrete optimization.
 #' @param intsgit Number of Stochastic Gradient search iterations with discrete optimization 
 #' @param maxrsnullit Iterations until adaptive narrowing in random search
-#' @param convergence_eps Stoachstic Gradient convergence value,
+#' @param convergence_eps Stochastic Gradient convergence value,
 #' (difference in OFV for D-optimal, difference in gradient for ED-optimal)
 #' @param rslxt Random search locality factor for sample times 
 #' @param rsla Random search locality factor for covariates 
@@ -262,8 +262,8 @@
 #' @param strExecuteName Compilation output executable name 
 #' @param iNumProcesses Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) 
 #' @param iNumChunkDesignEvals Number of design evaluations that should be evaluated in each process before getting new work from job manager
-#' @param strMatFileInputPrefix The prefix of the input mat file to communicate with the excutable 
-#' @param Mat_Out_Pre The prefix of the output mat file to communicate with the excutable 
+#' @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
+#' @param Mat_Out_Pre The prefix of the output mat file to communicate with the executable 
 #' @param strExtraRunOptions Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options 
 #' @param dPollResultTime Polling time to check if the parallel execution is finished 
 #' @param strFunctionInputName The file containing the popedInput structure that should be used to evaluate the designs 
@@ -397,7 +397,7 @@ create.poped.database <-
            iFIMCalculationType=poped.choose(popedInput$settings$iFIMCalculationType,1),
            ## -- Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI --
            iApproximationMethod=poped.choose(popedInput$settings$iApproximationMethod,0),
-           ## -- Num indivduals in each step of FOCE --
+           ## -- Num individuals in each step of FOCE --
            iFOCENumInd=poped.choose(popedInput$settings$iFOCENumInd,1000),
            ## -- The prior FIM (added to calculated FIM) --
            prior_fim=poped.choose(popedInput$settings$prior_fim,matrix(0,0,1)),
@@ -408,7 +408,7 @@ create.poped.database <-
            ## ---- Criterion specification
            ## --------------------------
            
-           ## -- D-family design (1) or ED-familty design (0) (with or without parameter uncertainty) --
+           ## -- D-family design (1) or ED-family design (0) (with or without parameter uncertainty) --
            d_switch=poped.choose(popedInput$settings$d_switch,1),
            ## -- OFV calculation type for FIM (1=Determinant of FIM,4=log determinant of FIM,6=determinant of interesting part of FIM (Ds)) --
            ofv_calc_type=poped.choose(popedInput$settings$ofv_calc_type,4),
@@ -456,7 +456,7 @@ create.poped.database <-
            ## The third column defines the variance of the distribution.
            # can also just supply the parameter values as a c()
            bpop=poped.choose(popedInput$parameters$bpop,stop('bpop must be defined')),
-           ## -- Matrix defining the diagnonals of the IIV (same logic as for the fixed efects) --
+           ## -- Matrix defining the diagonals of the IIV (same logic as for the fixed effects) --
            # can also just supply the parameter values as a c()
            d=poped.choose(popedInput$parameters$d,NULL),
            ## -- vector defining the row major lower triangle of the covariances of the IIV variances --
@@ -655,9 +655,9 @@ create.poped.database <-
            iNumProcesses=poped.choose(popedInput$settings$parallel$iNumProcesses,2),
            ## -- Number of design evaluations that should be evaluated in each process before getting new work from job manager --
            iNumChunkDesignEvals=poped.choose(popedInput$settings$parallel$iNumChunkDesignEvals,-2),
-           ## -- The prefix of the input mat file to communicate with the excutable --
+           ## -- The prefix of the input mat file to communicate with the executable --
            strMatFileInputPrefix=poped.choose(popedInput$settings$parallel$strMatFileInputPrefix,'parallel_input'),
-           ## -- The prefix of the output mat file to communicate with the excutable --
+           ## -- The prefix of the output mat file to communicate with the executable --
            Mat_Out_Pre=poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,'parallel_output'),
            ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
            strExtraRunOptions=poped.choose(popedInput$settings$parallel$strExtraRunOptions,''),
@@ -1121,7 +1121,7 @@ create.poped.database <-
       bpop <- bpop_descr
     }    
     
-    if(size(sigma,1)==1 && !is.matrix(sigma)){ # we have just the diagnonal parameter values 
+    if(size(sigma,1)==1 && !is.matrix(sigma)){ # we have just the diagonal parameter values 
       sigma <- diag(sigma,size(sigma,2),size(sigma,2))
     }    
     

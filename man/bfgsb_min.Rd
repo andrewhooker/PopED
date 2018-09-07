@@ -12,7 +12,7 @@ See \code{\link{calc_ofv_and_grad}} as used in \code{\link{Doptim}}.}
 
 \item{f_options}{Options for the f_name argument.}
 
-\item{x0}{the intial values to optimize}
+\item{x0}{the initial values to optimize}
 
 \item{l}{the lower bounds}
 

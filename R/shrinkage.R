@@ -17,7 +17,7 @@
 #' @references \enumerate{ 
 #'   \item Combes, F. P., Retout, S.,
 #'   Frey, N., & Mentre, F. (2013). Prediction of shrinkage of individual
-#'   parameters using the bayesian information matrix in non-linear mixed effect
+#'   parameters using the Bayesian information matrix in non-linear mixed effect
 #'   models with evaluation in pharmacokinetics. Pharmaceutical Research, 30(9),
 #'   2355-67. \url{https://doi.org/10.1007/s11095-013-1079-3}. 
 #'   \item Hennig, S., Nyberg, J., Fanta, S., Backman, J.

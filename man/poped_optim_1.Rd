@@ -39,9 +39,9 @@ poped_optim_1(poped.db, opt_xt = poped.db$settings$optsw[2],
 
 \item{opt_x}{Should the discrete design variables be optimized?}
 
-\item{opt_samps}{Are the nuber of sample times per group being optimized?}
+\item{opt_samps}{Are the number of sample times per group being optimized?}
 
-\item{opt_inds}{Are the nuber of individuals per group being optimized?}
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 
 \item{method}{A vector of optimization methods to use in a sequential 
 fashion.  Options are \code{c("ARS","BFGS","LS","GA")}. \code{c("ARS")} is 
@@ -63,7 +63,7 @@ the FIM to zero.
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 \item 6 = Calculate one model switch at a time, good for large matrices. 
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
@@ -84,7 +84,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{ED_samp_size}{Sample size for E-family sampling}
 
@@ -132,7 +132,7 @@ the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==
 off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{maximize}{Should the objective function be maximized or minimized?}

@@ -45,13 +45,13 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 
 \item{alpha.IPRED.lines}{What should the transparency for the IPRED.lines be?}
 
-\item{alpha.IPRED}{What should the tranparency of the IPRED CI?}
+\item{alpha.IPRED}{What should the transparency of the IPRED CI?}
 
 \item{sample.times.size}{What should the size of the sample.times be?}
 
 \item{DV}{should we simulate observations?}
 
-\item{alpha.DV}{What should the tranparency of the DV CI?}
+\item{alpha.DV}{What should the transparency of the DV CI?}
 
 \item{DV.lines}{Should DV lines be drawn?}
 
@@ -76,7 +76,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 \item{facet_label_names}{TRUE or FALSE}
 
 \item{model.names}{A vector of names of the response model/s (the length of the 
-vector should be equal to the number of respose models). It is Null by default.}
+vector should be equal to the number of response models). It is Null by default.}
 
 \item{...}{Additional arguments passed to the \code{\link{model_prediction}} function.}
 }

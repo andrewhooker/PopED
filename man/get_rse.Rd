@@ -16,12 +16,12 @@ get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
 
 \item{bpop}{A vector containing the values of the fixed effects used to compute the \code{fim}.}
 
-\item{d}{A vector containing the values of the diagnonals of the betwen subject variability matrix.}
+\item{d}{A vector containing the values of the diagonals of the between subject variability matrix.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{use_percent}{Should RSE be reported as percent?}
 

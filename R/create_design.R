@@ -6,7 +6,7 @@
 #' sense if there are inconsistencies.
 #' Returns a list of matricies compatible with PopED.
 #' 
-#' If a value (or a vector/list of values) is supplied that correponds to only one group and the design has
+#' If a value (or a vector/list of values) is supplied that corresponds to only one group and the design has
 #' multiple groups then all groups will have the same value(s). If a matrix is expected then a list of lists can be supplied 
 #' instead, each list corresponding to a group.   
 #' 

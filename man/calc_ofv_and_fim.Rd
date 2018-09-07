@@ -28,7 +28,7 @@ calc_ofv_and_fim(poped.db, ofv = 0, fim = 0,
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{bpopdescr}{Matrix defining the fixed effects, per row (row number =
 parameter_number) we should have: \itemize{ \item column 1 the type of the
@@ -37,7 +37,7 @@ User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 column 2  defines the mean. \item column 3 defines the variance of the
 distribution (or length of uniform distribution). }}
 
-\item{ddescr}{Matrix defining the diagnonals of the IIV (same logic as for
+\item{ddescr}{Matrix defining the diagonals of the IIV (same logic as for
 the \code{bpopdescr}).}
 
 \item{bpop}{Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
@@ -50,7 +50,7 @@ the \code{bpopdescr}).}
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{docc_full}{A between occasion variability matrix.}
@@ -74,7 +74,7 @@ the FIM to zero.
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 \item 6 = Calculate one model switch at a time, good for large matrices. 
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
@@ -84,10 +84,10 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 
 \item{laplace.fim}{Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 the FIM does not need to be computed and, if desired,  this calculation
-is done usng the standard MC integration technique, so can be slow.}
+is done using the standard MC integration technique, so can be slow.}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{evaluate_fim}{Should the FIM be calculated?}

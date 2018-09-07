@@ -10,7 +10,7 @@
 #' @inheritParams blockheader
 #' @param fmf_init Initial FIM.
 #' @param dmf_init Initial OFV.
-#' @param param_cvs_init The inital design parameter RSE values in percent.
+#' @param param_cvs_init The initial design parameter RSE values in percent.
 #' 
 #' @family Helper
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R

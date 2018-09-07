@@ -193,20 +193,20 @@ the Usage section (the defaults to function arguments).}
 \item{ff_file}{\itemize{
 \item \bold{******START OF MODEL DEFINITION OPTIONS**********}
 }
-A string giving the function name or filname and path of the structural model. 
+A string giving the function name or filename and path of the structural model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. \code{"ff.PK.1.comp.oral.md.KE"}}
 
 \item{ff_fun}{Function describing the structural model. e.g. \code{ff.PK.1.comp.oral.md.KE}.}
 
-\item{fg_file}{A string giving the function name or filname and path of the 
+\item{fg_file}{A string giving the function name or filename and path of the 
 parameter model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. \code{"parameter.model"}}
 
 \item{fg_fun}{Function describing the parameter model. e.g. \code{parameter.model}.}
 
-\item{fError_file}{A string giving the function name or filname and path of the 
+\item{fError_file}{A string giving the function name or filename and path of the 
 residual error model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. \code{"feps.prop"}.}
@@ -224,7 +224,7 @@ All elements set to zero => only calculate the FIM with current design}
  Matrix defining the initial sampling schedule. 
  Each row is a group/individual.
  If only one vector is supplied, e.g. \code{c(1,2,3,4)}, then all groups will 
-have the same inital design.}
+have the same initial design.}
 
 \item{m}{Number of groups in the study.  Each individual in a group will have the same design.}
 
@@ -239,7 +239,7 @@ If the number of rows is one and the number of groups > 1 then all groups are as
 same values.}
 
 \item{groupsize}{Vector defining the size of the different groups (num individuals in each group).
-If only one numer then the number will be the same in every group.}
+If only one number then the number will be the same in every group.}
 
 \item{ni}{Vector defining the number of samples for each group.}
 
@@ -314,16 +314,16 @@ Fisher Information Matrix type
 
 \item{iApproximationMethod}{Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI}
 
-\item{iFOCENumInd}{Num indivduals in each step of FOCE}
+\item{iFOCENumInd}{Num individuals in each step of FOCE}
 
 \item{prior_fim}{The prior FIM (added to calculated FIM)}
 
-\item{strAutoCorrelationFile}{Filname and path, or function name, for the Autocorrelation function, 
+\item{strAutoCorrelationFile}{Filename and path, or function name, for the Autocorrelation function, 
 empty string means no autocorrelation.}
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{ofv_calc_type}{OFV calculation type for FIM 
 \itemize{ 
@@ -345,7 +345,7 @@ Default is the fixed effects being important, everything else not important.  Us
 User defined criterion can be defined this way.}
 
 \item{ofv_fun}{User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{iEDCalculationType}{\itemize{
@@ -356,7 +356,7 @@ ED Integral Calculation, 0=Monte-Carlo-Integration, 1=Laplace Approximation, 2=B
 
 \item{bLHS}{How to sample from distributions in E-family calculations. 0=Random Sampling, 1=LatinHyperCube --}
 
-\item{strUserDistributionFile}{Filname and path, or function name, for user defined distributions for E-family designs}
+\item{strUserDistributionFile}{Filename and path, or function name, for user defined distributions for E-family designs}
 
 \item{nbpop}{\itemize{
 \item \bold{******START OF Model parameters  SPECIFICATION OPTIONS**********}}
@@ -366,7 +366,7 @@ Number of typical values}
 
 \item{NumDocc}{Number of IOV variance parameters. Typically can be computed from other values and not supplied.}
 
-\item{NumOcc}{Number of occassions. Typically can be computed from other values and not supplied.}
+\item{NumOcc}{Number of occasions. Typically can be computed from other values and not supplied.}
 
 \item{bpop}{Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
 \itemize{
@@ -378,14 +378,14 @@ Number of typical values}
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{covd}{Column major vector defining the covariances of the IIV variances. 
 That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
@@ -430,14 +430,14 @@ The current PopED version}
 
 \item{modtit}{The model title}
 
-\item{output_file}{Filname and path of the output file during search}
+\item{output_file}{Filename and path of the output file during search}
 
-\item{output_function_file}{Filname suffix of the result function file}
+\item{output_function_file}{Filename suffix of the result function file}
 
 \item{strIterationFileName}{Filename and path for storage of current optimal design}
 
 \item{user_data}{\itemize{
-\item \bold{******START OF Miscelaneous SPECIFICATION OPTIONS**********}}
+\item \bold{******START OF Miscellaneous SPECIFICATION OPTIONS**********}}
 User defined data structure that, for example could be used to send in data to the model}
 
 \item{ourzero}{Value to interpret as zero in design}
@@ -501,7 +501,7 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{maxrsnullit}{Iterations until adaptive narrowing in random search}
 
-\item{convergence_eps}{Stoachstic Gradient convergence value,
+\item{convergence_eps}{Stochastic Gradient convergence value,
 (difference in OFV for D-optimal, difference in gradient for ED-optimal)}
 
 \item{rslxt}{Random search locality factor for sample times}
@@ -559,9 +559,9 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{iNumChunkDesignEvals}{Number of design evaluations that should be evaluated in each process before getting new work from job manager}
 
-\item{strMatFileInputPrefix}{The prefix of the input mat file to communicate with the excutable}
+\item{strMatFileInputPrefix}{The prefix of the input mat file to communicate with the executable}
 
-\item{Mat_Out_Pre}{The prefix of the output mat file to communicate with the excutable}
+\item{Mat_Out_Pre}{The prefix of the output mat file to communicate with the executable}
 
 \item{strExtraRunOptions}{Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options}
 

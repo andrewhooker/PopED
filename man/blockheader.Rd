@@ -24,7 +24,7 @@ If \code{""} then output is to the screen.}
 
 \item{iter}{The last number in the name printed to the output file, combined with \code{name}.}
 
-\item{e_flag}{Shuould output be with uncertainty around parameters?}
+\item{e_flag}{Should output be with uncertainty around parameters?}
 
 \item{opt_xt}{Should the sample times be optimized?}
 
@@ -32,13 +32,13 @@ If \code{""} then output is to the screen.}
 
 \item{opt_x}{Should the discrete design variables be optimized?}
 
-\item{opt_samps}{Are the nuber of sample times per group being optimized?}
+\item{opt_samps}{Are the number of sample times per group being optimized?}
 
-\item{opt_inds}{Are the nuber of individuals per group being optimized?}
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
 \item{bpop}{Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
 \itemize{
@@ -50,13 +50,13 @@ If \code{""} then output is to the screen.}
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{name_header}{The initial portion of the file name.}
 

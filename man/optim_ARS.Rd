@@ -32,7 +32,7 @@ except in cases when  there are no upper or lower limits (e.g. when \code{upper=
 \item{no_bounds_sd}{The standard deviation of the sampling distribution around the current
 position of the parameters when there are no upper or lower limits (e.g. when \code{upper=Inf} or \code{lower=-Inf}).}
 
-\item{iter}{The number of iterations for the algorithm to perfrom (this is a maximum number, it could be less).}
+\item{iter}{The number of iterations for the algorithm to perform (this is a maximum number, it could be less).}
 
 \item{iter_adapt}{The number of iterations before adapting (shrinking) the parameter search space.}
 
@@ -46,7 +46,7 @@ When adapting, the  standard deviation of the sampling distribution is calculate
 
 \item{trace}{Should the algorithm output results intermittently.}
 
-\item{trace_iter}{How many interations between each update to the screen about the result of the search.}
+\item{trace_iter}{How many iterations between each update to the screen about the result of the search.}
 
 \item{new_par_max_it}{The algorithm randomly chooses samples based on the current best set of parameters.  If when drawing 
 these samples the new parameter set has already been tested then a new draw is performed. After \code{new_par_max_it} draws, with

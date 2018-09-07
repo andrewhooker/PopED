@@ -34,7 +34,7 @@ get_cv <- function(param_vars,poped.db){
 #' 
 #' @param fim A Fisher Information Matrix (FIM).
 #' @param bpop A vector containing the values of the fixed effects used to compute the \code{fim}. 
-#' @param d A vector containing the values of the diagnonals of the betwen subject variability matrix.
+#' @param d A vector containing the values of the diagonals of the between subject variability matrix.
 #' @param use_percent Should RSE be reported as percent? 
 #' @param prior_fim A prior FIM to be added to the \code{fim}. Should be the same size as the \code{fim}.
 #' @param ... Additional arguments passed to \code{\link{inv}}. 

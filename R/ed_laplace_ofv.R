@@ -4,7 +4,7 @@
 #' Compute the expectation of the \code{det(FIM)} using the Laplace
 #' approximation to the expectation. Computations are made based on the model,
 #' parameters, distributions of parameter uncertainty, design and methods
-#' defined in the PopED database or as arguments to the funciton.
+#' defined in the PopED database or as arguments to the function.
 #' 
 #' This computation follows the method outlined in Dodds et al, 
 #' "Robust Population Pharmacokinetic Experiment Design" JPP, 2005, equation 16.

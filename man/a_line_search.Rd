@@ -35,9 +35,9 @@ If \code{0} then the OFV is calculated from poped.db.}
 
 \item{opt_x}{Should the discrete design variables be optimized?}
 
-\item{opt_samps}{Are the nuber of sample times per group being optimized?}
+\item{opt_samps}{Are the number of sample times per group being optimized?}
 
-\item{opt_inds}{Are the nuber of individuals per group being optimized?}
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 
 \item{ls_step_size}{Number of grid points in the line search.}
 }
@@ -52,7 +52,7 @@ A list containing:
 \item{poped.db}{A PopED database.}
 }
 \description{
-The function performs a grid search sequatially along 
+The function performs a grid search sequentially along 
 design variables.  The grid is defined by ls_step_size.
 }
 \examples{

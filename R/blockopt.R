@@ -8,7 +8,7 @@
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
 #' @inheritParams blockexp
-#' @param opt_method If "RS" (random search), "SG" (stochastic gradient) or "DO" (discrete optimization) then specifc output is produced.
+#' @param opt_method If "RS" (random search), "SG" (stochastic gradient) or "DO" (discrete optimization) then specific output is produced.
 #' 
 #' @family Helper
 #' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R

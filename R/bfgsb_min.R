@@ -6,7 +6,7 @@
 #' @param f_name A function name (as a text string) that returns an objective function and the gradient of that objective function, in that order. 
 #' See \code{\link{calc_ofv_and_grad}} as used in \code{\link{Doptim}}.
 #' @param f_options Options for the f_name argument.
-#' @param x0 the intial values to optimize
+#' @param x0 the initial values to optimize
 #' @param l the lower bounds
 #' @param u the upper bounds 
 #' @param options a list of additional settings arguments

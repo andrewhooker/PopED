@@ -6,9 +6,9 @@
 #' Function computes the inverse of a matrix.
 #'
 #' @param mat A matrix
-#' @param method Which method to use. 1 is cholesky \code{chol2inv(chol(mat)}, 
+#' @param method Which method to use. 1 is Cholesky \code{chol2inv(chol(mat)}, 
 #'   2 is using \code{solve(mat)} and 3 is the Moore-Penrose generalized inverse (pseudoinverse).
-#' @param tol The tolerance at wich we should identify a sigular value as zero (used in pseudoinverse calculation).
+#' @param tol The tolerance at which we should identify a singular value as zero (used in pseudoinverse calculation).
 #' @param pseudo_on_fail If another method fails should the Moore-Penrose generalized inverse (pseudoinverse) be used?
 #' @param ... Not used.
 #'

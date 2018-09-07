@@ -47,7 +47,7 @@ poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is 
@@ -64,7 +64,7 @@ all a values are given the same max value}
 
 \item{fmf}{The initial value of the FIM. If set to zero then it is computed.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
 \item{trflag}{Should the optimization be output to the screen and to a file?}
 
@@ -74,9 +74,9 @@ all a values are given the same max value}
 
 \item{opt_x}{Should the discrete design variables be optimized?}
 
-\item{opt_samps}{Are the nuber of sample times per group being optimized?}
+\item{opt_samps}{Are the number of sample times per group being optimized?}
 
-\item{opt_inds}{Are the nuber of individuals per group being optimized?}
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 
 \item{cfaxt}{First step factor for sample times}
 
@@ -95,7 +95,7 @@ the FIM to zero.
 \item 3 = Not currently used.
 \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 \item 6 = Calculate one model switch at a time, good for large matrices. 
 \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
@@ -120,7 +120,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
-D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)}
+D-family design (1) or ED-family design (0) (with or without parameter uncertainty)}
 
 \item{ED_samp_size}{Sample size for E-family sampling}
 

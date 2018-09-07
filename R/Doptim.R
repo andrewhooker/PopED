@@ -7,7 +7,7 @@
 #' constraints. \item A line search. See \code{\link{a_line_search}}. } The
 #' optimization algorithms run in series, taking as input the output from the
 #' previous method. The stopping rule used is to test if the line search
-#' algorithm fids a better optimum then its inital value. If so, then the chain
+#' algorithm fids a better optimum then its initial value. If so, then the chain
 #' of algorithms is run again.  If line search is not used then the argument
 #' \code{iter_tot} defines the number of times the chain of algorithms is run. 
 #' This function takes information from the PopED database supplied as an
@@ -25,10 +25,10 @@
 #'   User Defined Distribution, 4 = lognormal and 5 = truncated normal) \item
 #'   column 2  defines the mean. \item column 3 defines the variance of the
 #'   distribution (or length of uniform distribution). }
-#' @param ddescr Matrix defining the diagnonals of the IIV (same logic as for
+#' @param ddescr Matrix defining the diagonals of the IIV (same logic as for
 #'   the \code{bpopdescr}).
 #' @param fmf The initial value of the FIM. If set to zero then it is computed.
-#' @param dmf The inital OFV. If set to zero then it is computed.
+#' @param dmf The initial OFV. If set to zero then it is computed.
 #' @param trflag Should the optimization be output to the screen and to a file?
 #' @param ls_step_size Number of grid points in the line search.
 #' @param iter_tot Number of iterations to use if line search is not used. Must

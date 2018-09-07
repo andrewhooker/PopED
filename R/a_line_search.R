@@ -1,6 +1,6 @@
 #' Optimize using line search
 #' 
-#' The function performs a grid search sequatially along 
+#' The function performs a grid search sequentially along 
 #' design variables.  The grid is defined by ls_step_size.
 #' 
 #' @param out_file The output file to write to.

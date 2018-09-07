@@ -13,7 +13,7 @@ calc_autofocus(m, ni_var, dmf, varopt, varopto, maxvar, minvar, gradvar,
 
 \item{ni_var}{The ni_var.}
 
-\item{dmf}{The inital OFV. If set to zero then it is computed.}
+\item{dmf}{The initial OFV. If set to zero then it is computed.}
 
 \item{varopt}{The varopt.}
 
@@ -31,7 +31,7 @@ calc_autofocus(m, ni_var, dmf, varopt, varopto, maxvar, minvar, gradvar,
 
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{xtopt}{The optimal sampling times matrix.}
 
@@ -51,11 +51,11 @@ calc_autofocus(m, ni_var, dmf, varopt, varopto, maxvar, minvar, gradvar,
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used.}
 
-\item{d}{Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+\item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a \code{c()}.}
+can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{docc}{Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop.}
 

@@ -13,7 +13,7 @@
 #' @param use_laplace Should the Laplace method be used in calculating the expectation of the OFV?  
 #' @param laplace.fim Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 #' the FIM does not need to be computed and, if desired,  this calculation
-#' is done usng the standard MC integration technique, so can be slow. 
+#' is done using the standard MC integration technique, so can be slow. 
 #' @param evaluate_fim Should the FIM be calculated?
 #' 
 #' @return A list containing the FIM and OFV(FIM) or the E(FIM) and E(OFV(FIM)) according  to the function arguments.

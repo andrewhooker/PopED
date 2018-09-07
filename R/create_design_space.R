@@ -1,4 +1,4 @@
-#' Create design variables and a design space for a full decription of an optimization problem.
+#' Create design variables and a design space for a full description of an optimization problem.
 #' 
 #' \code{create_design_space} takes an initial design and arguments for a design space and 
 #' creates a design and design space for design optimization.
@@ -8,7 +8,7 @@
 #' list of list) or matricies.
 #' Returns a list of matricies compatible with PopED.
 #' 
-#' If a value (or a vector or a list of values) is supplied that correponds to only one group and the design has
+#' If a value (or a vector or a list of values) is supplied that corresponds to only one group and the design has
 #' multiple groups then all groups will have the same value(s). If a matrix is expected then a list of lists can be supplied 
 #' instead, each list corresponding to a group.   
 #' 

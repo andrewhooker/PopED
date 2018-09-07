@@ -15,13 +15,13 @@
 #' \item 3 = Not currently used.
 #' \item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 #' This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-#' (NOTE: NONMEM estimates the variance of the resudual unexplained variation by default). 
+#' (NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
 #' \item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
 #' \item 6 = Calculate one model switch at a time, good for large matrices. 
 #' \item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
 #' }
 #' @param approx.method Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI
-#' @param FOCE.num Number indivduals in each step of FOCE approximation method 
+#' @param FOCE.num Number individuals in each step of FOCE approximation method 
 #' @param bpop.val The fixed effects parameter values.  Supplied as a vector.
 #' @param d_full A between subject variability matrix (OMEGA in NONMEM).
 #' @param docc_full A between occasion variability matrix.
@@ -31,7 +31,7 @@
 #' @param xt A matrix of sample times.  Each row is a vector of sample times for a group.
 #' @param x A matrix for the discrete design variables.  Each row is a group.
 #' @param a A matrix of covariates.  Each row is a group.
-#' @param groupsize A vector of the numer of individuals in each group.
+#' @param groupsize A vector of the number of individuals in each group.
 #' @param deriv.type A number indicating the type of derivative to use:
 #' \itemize{
 #' \item 0=Complex difference 

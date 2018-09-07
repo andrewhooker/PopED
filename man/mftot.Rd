@@ -10,7 +10,7 @@ mftot(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
 
-\item{groupsize}{A vector of the numer of individuals in each group.}
+\item{groupsize}{A vector of the number of individuals in each group.}
 
 \item{ni}{A vector of the number of samples in each group.}
 
