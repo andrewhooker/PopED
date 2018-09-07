@@ -24,10 +24,12 @@ Suggests:
     nlme,
     GA,
     deSolve,
+    Rcpp,
     shiny,
     rhandsontable,
     knitr,
     rmarkdown,
+    gridExtra,
     covr
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
