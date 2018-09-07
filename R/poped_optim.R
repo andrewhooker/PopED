@@ -1,18 +1,22 @@
-#
-#' Optimization main module for PopED 
+#' Optimize a design defined in a PopED database
 #'  
-#' Optimize the objective function. The function works for both discrete and 
-#' continuous optimization variables. If more than one optimization method is 
-#' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
-#' then the series of optimization methods will be run for \code{iter_max} 
-#' iterations, or until the efficiency of the design after the current series 
-#' (compared to the start of the series) is less than \code{stop_crit_eff}.
+#' 
+#' Optimize a design defined in a PopED database using the objective function
+#' described in the database (or in the arguments to this function). The 
+#' function works for both discrete and 
+#' continuous optimization variables. 
 #' 
 #' This function takes information from the PopED database supplied as an 
 #' argument. The PopED database supplies information about the the model, 
 #' parameters, design and methods to use. Some of the arguments coming from the 
 #' PopED database can be overwritten; if they are supplied then they are used 
 #' instead of the arguments from the PopED database.
+#' 
+#' If more than one optimization method is 
+#' specified then the methods are run in series.  If \code{loop_methods=TRUE} 
+#' then the series of optimization methods will be run for \code{iter_max} 
+#' iterations, or until the efficiency of the design after the current series 
+#' (compared to the start of the series) is less than \code{stop_crit_eff}.
 #' 
 #' @inheritParams RS_opt
 #' @inheritParams Doptim
