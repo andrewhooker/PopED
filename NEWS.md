@@ -1,19 +1,42 @@
-PopED News/Changelog
+# PopED 0.4.0
 
-PopED 0.3.2.9000
-===========
+* Update speed of FIM calculations (#20, @martin-gmx).
 
+* New and improved vignettes (#30, @giulialestini)!
 
-PopED 0.3.2
-===========
+* Update RSE calculations so that prior FIM is handled correctly (#22, @martin-gmx).
+
+* Simplified code and removed duplicated code (#21, #24 and #32, @martin-gmx).
+
+* Added power evaluation script to test the power of a design to identify a prameter different
+than an assumed value.  The function also calculates the number of individuals needed in a design to have a specific
+power. See `?evaluate_power` for more information (#26, @martin-gmx).
+
+* Major overhaul in optimization methods used in `poped_optim()` so that generic optimization routines like `optim()` can be easily used in optimizing  PopED designs.  
+
+* Updated and added new example scripts in `system.file("examples", package="PopED")` ().  This includes an example describing 
+how to handle covariate distributions in optimal design, an example on how to incorporate IOV,  an example on how to handle shrinkage, an example with a full covariance matrix and an example with a prior FIM (#30, @giulialestini and @martin-gmx).
+
+* New ways of handling inverting matricies, should be faster and work better when the matricies are ill-conditioned. See `?inv` for more information (#19, @martin-gmx).
+
+* Added function to compute expected shrinkage of a design.  See `?shrinkage` for more information.
+
+* Updated functionality of IOV calculations.
+
+* Updates to `optim_ARS()` for when to stop search.
+
+* Extended functionality of `plot.model.prediction()` (#23, @martin-gmx).
+
+* Bug fixing.  See https://github.com/andrewhooker/PopED/commits/master for more information.
+
+# PopED 0.3.2
 
 * Exported the `summary` method for the results of `poped_optim` in the PopED NAMESPACE, so that the method can actually be used!  Just use `summary(output)`.
 
 * Fixed some old bugs that used `return` as a varible in functions, a la MATLAB.
 
 
-PopED 0.3.1
-===========
+# PopED 0.3.1
 
 * Added a vignette to introduce PopED!
 
@@ -40,8 +63,7 @@ PopED 0.3.1
 * Various small changes and bug fixes.
 
 
-PopED 0.3.0
-===========
+# PopED 0.3.0
 
 * Added new optimization methods and tools, see `?poped_optim()`. This function incorporates the new optimization routines `optim_ARS()` and `optim_LS` which are optimized versions of previous optimization algorithms used in PopED. Both can be run with parallelization. `poped_optim()` also incorporates the genetic algorithm from `GA::ga()`, which can also be run with parallelization, and the "L-BFGS-B" method from `stats::optim()`. `poped_optim()` should be more efficient and faster than `poped_optimize()`.
 
@@ -50,8 +72,7 @@ PopED 0.3.0
 * Various small changes and bug fixes.
 
 
-PopED 0.2.0
-===========
+# PopED 0.2.0
 
 * Fixed `plot_efficiency_of_windows()` bug that had wrong headers on each subplot.
 
@@ -61,8 +82,7 @@ PopED 0.2.0
 
 * Added example 10 describing a PKPD design of hepatitis C virus (HCV) kinetics to the `system.file("examples",package="PopED")` directory of the PopED installation.
 
-PopED 0.1.2
-===========
+# PopED 0.1.2
 
 * Updated model_prediction() to allow for creation of NONMEM datasets.  
   Useful for testing of optimized designs via PsN's (http://psn.sf.net) SSE tool, for example.
@@ -92,8 +112,7 @@ PopED 0.1.2
 * Various small bug fixes.
 
 
-PopED 0.1.1
-===========
+# PopED 0.1.1
 
 * Updated package author list
 
@@ -117,8 +136,6 @@ PopED 0.1.1
 * Fixed a bug where get_rse failed when a parameter had a value of 3.
 
 
-PopED 0.1.0
-===========
+# PopED 0.1.0
  
 * PopED has been translated to R from MATLAB and this is the initial release.
-
