@@ -13,6 +13,17 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+set.seed(1234)
+
+knitr::opts_chunk$set(
+  collapse = TRUE
+  , comment = "#>"
+  , fig.width=6
+  , cache = TRUE
+)
+```
+
 PopED computes optimal experimental designs for both population and individual studies based on nonlinear mixed-effect models. Often this is based on a computation of the Fisher Information Matrix (FIM).
 
 To get started you need to define
@@ -55,12 +66,6 @@ Here we define a one-compartment pharmacokinetic model with linear absorption us
 ```{r,eval=TRUE}
 library(PopED)
 packageVersion("PopED")
-```
-
-
-```{r,include = FALSE}
-set.seed(1234)
-knitr::opts_chunk$set(cache = FALSE)
 ```
 
 

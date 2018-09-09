@@ -16,8 +16,10 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse = TRUE
+  , comment = "#>"
+  , fig.width=6
+  , cache = TRUE
 )
 ```
 
@@ -160,14 +162,14 @@ poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
 
 ```
 
-The model predictions below show typical PK and PD profiles for three dose groups. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days.
+The model predictions below show typical PK and PD profiles for three dose groups. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With `model.names=c("PK","PD")` one can name the outputs in the graph.
 
 ```{r simulate_multi-response_model}
 plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE,facet_scales="free",
                       separate.groups=TRUE,
                       model.names=c("PK","PD")) 
 ```
-With `model.names=c("PK","PD")` one can name the outputs in the graph.
+
 
 #	ODE solution of PK model and multiple dose dosing scheme; design evaluation
 
@@ -1021,7 +1023,7 @@ We see that to clearly distinguish this parameter that one would need 14 childre
 
 In this example the aim is to evaluate a design incorporating uncertainty around parameter values in the model.
 The full code for this example is available in `ex.2.d.warfarin.ED.R`.
-This illustration is one of the Warfarin examples from software comparison in: Nyberg et al.^["Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014.]. 
+This illustration is one of the Warfarin examples from software comparison in: Nyberg et al.^[Nyberg, J., Bazzoli, C., Ogungbenro, K., Aliev, A., Leonov, S., Duffull, S., Hooker, A.C. and Mentré, F. (2014). Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies. British Journal of Clinical Pharmacology, 79(1), 1–32. https://doi.org/10.1111/bcp.12352]. 
 
 ```{r, echo=FALSE, results="hide"}
 sfg <- function(x,a,bpop,b,bocc){
@@ -1208,11 +1210,11 @@ The output shows us the expected shrinkage on the variance scale ($shrink_{var}=
 
 # Further examples (to be implemented)
 
-14.	Espresso design
-15.	Handling BLQ data	
-16.	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
-17.	Constraining the optimization to different allowed sampling times for each group	
-18.	Constraining the optimization to different allowed sampling times for each response	
-19.	Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
-20.	Handling derived outputs	
-21.	Symbolic differentiation	
+*	Espresso design
+*	Handling BLQ data	
+*	Irregular dosing more complex: e.g. switching between s.c. and i.v. within one arm.	
+*	Constraining the optimization to different allowed sampling times for each group	
+*	Constraining the optimization to different allowed sampling times for each response	
+* Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
+* Handling derived outputs	
+* Symbolic differentiation	
