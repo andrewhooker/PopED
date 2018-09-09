@@ -52,7 +52,7 @@ This computation calculates the FIM for each model switch separately.  Correlati
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -62,27 +62,43 @@ This computation calculates the FIM for each model switch separately.  Correlati
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -166,77 +182,6 @@ This computation calculates the FIM for each model switch separately.  Correlati
   <code><a href='ofv_criterion.html'>ofv_criterion</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>PopED</span>)
-
-<span class='co'>############# START #################</span>
-<span class='co'>## Create PopED database</span>
-<span class='co'>## (warfarin example)</span>
-<span class='co'>#####################################</span>
-
-<span class='co'>## Warfarin example from software comparison in:</span>
-<span class='co'>## Nyberg et al., "Methods and software tools for design evaluation </span>
-<span class='co'>##   for population pharmacokinetics-pharmacodynamics studies", </span>
-<span class='co'>##   Br. J. Clin. Pharm., 2014. </span>
-
-<span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function(model_switch,xt,parameters,poped.db){
-#&gt;   ##-- Model: One comp first order absorption
-#&gt;   with(as.list(parameters),{
-#&gt;     y=xt
-#&gt;     y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-#&gt;     return(list( y= y,poped.db=poped.db))
-#&gt;   })
-#&gt; }
-#&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
-<span class='co'>## -- parameter definition function </span>
-<span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'>exp</span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'>exp</span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'>exp</span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-  <span class='fu'>return</span>(<span class='no'>parameters</span>)
-}
-
-<span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
-                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>c</span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
-
-<span class='co'>############# END ###################</span>
-<span class='co'>## Create PopED database</span>
-<span class='co'>## (warfarin example)</span>
-<span class='co'>#####################################</span>
-
-
-<span class='co'>#for the FO approximation</span>
-<span class='no'>ind</span><span class='kw'>=</span><span class='fl'>1</span>
-
-<span class='co'># no occasion defined in this example, so result is zero</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>mf7</span>(<span class='kw'>model_switch</span><span class='kw'>=</span><span class='fu'>t</span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>[<span class='no'>ind</span>,,<span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>]),
-   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'>t</span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>xt</span>[<span class='no'>ind</span>,,<span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>]),
-   <span class='kw'>x</span><span class='kw'>=</span><span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>),
-   <span class='kw'>a</span><span class='kw'>=</span><span class='fu'>t</span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>a</span>[<span class='no'>ind</span>,,<span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>]),
-   <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>[,<span class='fl'>2</span>,<span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>],
-   <span class='kw'>d</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>d</span>,
-   <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
-   <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>param.pt.val</span>$<span class='no'>docc</span>,
-   <span class='no'>poped.db</span>)
-
-<span class='co'># in this simple case the full FIM is just the sum of the individual FIMs</span>
-<span class='co'># and all the individual FIMs are the same</span>
-<span class='fu'>det</span>(<span class='no'>output</span>$<span class='no'>ret</span>*<span class='fl'>32</span>) <span class='kw'>==</span> <span class='fu'>det</span>(<span class='fu'><a href='evaluate.fim.html'>evaluate.fim</a></span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>6</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -246,9 +191,7 @@ This computation calculates the FIM for each model switch separately.  Correlati
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

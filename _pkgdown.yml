@@ -1,24 +1,25 @@
 templates:
   params:
     #bootswatch: cerulean
-    bootswatch: paper
+    #bootswatch: paper
+    bootswatch: Flatly
 
-reference:
-  - title: Input information to PopED
-    contents:
-    - create.poped.database
+#reference:
+#  - title: Input information to PopED
+#    contents:
+#    - create.poped.database
 
-navbar:
-  title: "PopED"
-  type: inverse
-  left:
-    - text: "Intro"
-      href: articles/intro-poped.html
-    - text: "Reference"
-      href: reference/index.html
-  right:
-    - icon: fa-github
-      href: https://github.com/andrewhooker/PopED
+#navbar:
+#  title: "PopED"
+#  type: inverse
+#  left:
+#    - text: "Intro"
+#      href: articles/intro-poped.html
+#    - text: "Reference"
+#      href: reference/index.html
+#  right:
+#    - icon: fa-github
+#      href: https://github.com/andrewhooker/PopED
       
 authors:
   Andrew C. Hooker:

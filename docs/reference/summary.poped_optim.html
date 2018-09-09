@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -61,27 +61,43 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -197,17 +213,18 @@
 #&gt; 
 #&gt; Initial OFV = 55.3964
 #&gt; 
-#&gt; Initial design expected parameter 
-#&gt; relative standard error (%RSE)
+#&gt; Initial design
+#&gt; expected relative standard error
+#&gt; (%RSE, rounded to nearest integer)
 #&gt;     Parameter   Values   RSE_0
-#&gt;       bpop[1]     0.15    5.10
-#&gt;       bpop[2]     8.00    3.03
-#&gt;       bpop[3]     1.00   14.26
-#&gt;        D[1,1]     0.07   29.76
-#&gt;        D[2,2]     0.02   36.68
-#&gt;        D[3,3]     0.60   26.75
-#&gt;    SIGMA[1,1]     0.01   32.01
-#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt;       bpop[1]     0.15       5
+#&gt;       bpop[2]        8       3
+#&gt;       bpop[3]        1      14
+#&gt;        D[1,1]     0.07      30
+#&gt;        D[2,2]     0.02      37
+#&gt;        D[3,3]      0.6      27
+#&gt;    SIGMA[1,1]     0.01      32
+#&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
 #&gt; ==============================================================================
 #&gt; Optimization of design parameters
@@ -221,7 +238,7 @@
 #&gt; *******************************************
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.017 seconds.
+#&gt; Elapsed time: 0.015 seconds.
 #&gt; 
 #&gt; Final OFV =  55.39645 
 #&gt; Parameters: 70 
@@ -243,7 +260,7 @@
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 83.2011 to 100 ; OFV = 56.032 
 #&gt; 
-#&gt;    Elapsed time: 0.024 seconds.
+#&gt;    Elapsed time: 0.033 seconds.
 #&gt; 
 #&gt;    Final OFV =  56.03204 
 #&gt;    Parameters: 100 
@@ -274,19 +291,19 @@
 #&gt; Efficiency: 
 #&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
 #&gt; 
-#&gt; Expected parameter 
-#&gt; relative standard error (%RSE):
-#&gt;     Parameter   Values   RSE_0     RSE
-#&gt;       bpop[1]     0.15    5.10    4.93
-#&gt;       bpop[2]     8.00    3.03    2.92
-#&gt;       bpop[3]     1.00   14.26   14.11
-#&gt;        D[1,1]     0.07   29.76   27.85
-#&gt;        D[2,2]     0.02   36.68   34.08
-#&gt;        D[3,3]     0.60   26.75   26.32
-#&gt;    SIGMA[1,1]     0.01   32.01   23.16
-#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; Expected relative standard error
+#&gt; (%RSE, rounded to nearest integer):
+#&gt;     Parameter   Values   RSE_0   RSE
+#&gt;       bpop[1]     0.15       5     5
+#&gt;       bpop[2]        8       3     3
+#&gt;       bpop[3]        1      14    14
+#&gt;        D[1,1]     0.07      30    28
+#&gt;        D[2,2]     0.02      37    34
+#&gt;        D[3,3]      0.6      27    26
+#&gt;    SIGMA[1,1]     0.01      32    23
+#&gt;    SIGMA[2,2]     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.221 seconds</div><div class='input'>
+#&gt; Total running time: 0.211 seconds</div><div class='input'>
 
 <span class='fu'>summary</span>(<span class='no'>out_1</span>)</div><div class='output co'>#&gt; ===============================================================================
 #&gt; FINAL RESULTS
@@ -299,19 +316,19 @@
 #&gt; Efficiency: 
 #&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
 #&gt; 
-#&gt; Expected parameter 
-#&gt; relative standard error (%RSE):
-#&gt;     Parameter   Values   RSE_0     RSE
-#&gt;       bpop[1]     0.15    5.10    4.93
-#&gt;       bpop[2]     8.00    3.03    2.92
-#&gt;       bpop[3]     1.00   14.26   14.11
-#&gt;        D[1,1]     0.07   29.76   27.85
-#&gt;        D[2,2]     0.02   36.68   34.08
-#&gt;        D[3,3]     0.60   26.75   26.32
-#&gt;    SIGMA[1,1]     0.01   32.01   23.16
-#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; Expected relative standard error
+#&gt; (%RSE, rounded to nearest integer):
+#&gt;     Parameter   Values   RSE_0   RSE
+#&gt;       bpop[1]     0.15       5     5
+#&gt;       bpop[2]        8       3     3
+#&gt;       bpop[3]        1      14    14
+#&gt;        D[1,1]     0.07      30    28
+#&gt;        D[2,2]     0.02      37    34
+#&gt;        D[3,3]      0.6      27    26
+#&gt;    SIGMA[1,1]     0.01      32    23
+#&gt;    SIGMA[2,2]     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.221 seconds</div></pre>
+#&gt; Total running time: 0.211 seconds</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

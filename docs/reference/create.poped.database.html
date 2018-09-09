@@ -56,7 +56,7 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -66,27 +66,43 @@ input file or as function arguments. Default arguments are supplied in the Usage
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -116,9 +132,9 @@ input file or as function arguments. Default arguments are supplied in the Usage
     </div>
 
     <pre class="usage"><span class='fu'>create.poped.database</span>(<span class='kw'>popedInput</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>ff_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ff_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>ff_pointer</span>, <span class='kw'>NULL</span>), <span class='kw'>fg_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fg_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>fg_pointer</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>fError_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ff_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>ff_pointer</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>fg_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fg_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>fg_pointer</span>,
+  <span class='kw'>NULL</span>), <span class='kw'>fError_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>fError_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>ferror_pointer</span>, <span class='kw'>NULL</span>),
   <span class='kw'>optsw</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>, <span class='fu'>cbind</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>)),
   <span class='kw'>xt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design</span><span class='kw'>[[</span><span class='st'>"xt"</span>]],
@@ -135,8 +151,10 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='kw'>minni</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>minni</span>, <span class='kw'>NULL</span>),
   <span class='kw'>maxtotni</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>maxtotni</span>, <span class='kw'>NULL</span>),
   <span class='kw'>mintotni</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>mintotni</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>maxgroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>maxgroupsize</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>mingroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>mingroupsize</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>maxgroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>maxgroupsize</span>,
+  <span class='kw'>NULL</span>),
+  <span class='kw'>mingroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>mingroupsize</span>,
+  <span class='kw'>NULL</span>),
   <span class='kw'>maxtotgroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>maxtotgroupsize</span>,
   <span class='kw'>NULL</span>),
   <span class='kw'>mintotgroupsize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>mintotgroupsize</span>,
@@ -149,21 +167,22 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='kw'>discrete_a</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>a_space</span>, <span class='kw'>NULL</span>),
   <span class='kw'>bUseGrouped_xt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>bUseGrouped_xt</span>,
   <span class='fl'>FALSE</span>), <span class='kw'>G_xt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>G_xt</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>bUseGrouped_a</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>bUseGrouped_a</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>G_a</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>G_a</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>bUseGrouped_x</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>bUseGrouped_x</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>G_x</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span><span class='kw'>[[</span><span class='st'>"G_x"</span>]], <span class='kw'>NULL</span>),
+  <span class='kw'>bUseGrouped_a</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>bUseGrouped_a</span>,
+  <span class='fl'>FALSE</span>), <span class='kw'>G_a</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>G_a</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>bUseGrouped_x</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span>$<span class='no'>bUseGrouped_x</span>,
+  <span class='fl'>FALSE</span>), <span class='kw'>G_x</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>design_space</span><span class='kw'>[[</span><span class='st'>"G_x"</span>]], <span class='kw'>NULL</span>),
   <span class='kw'>iFIMCalculationType</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iFIMCalculationType</span>,
   <span class='fl'>1</span>),
   <span class='kw'>iApproximationMethod</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>,
   <span class='fl'>0</span>), <span class='kw'>iFOCENumInd</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iFOCENumInd</span>, <span class='fl'>1000</span>),
-  <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>prior_fim</span>, <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)),
-  <span class='kw'>strAutoCorrelationFile</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>auto_pointer</span>, <span class='st'>""</span>),
-  <span class='kw'>d_switch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>, <span class='fl'>1</span>),
+  <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>prior_fim</span>, <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fl'>0</span>,
+  <span class='fl'>1</span>)),
+  <span class='kw'>strAutoCorrelationFile</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>model</span>$<span class='no'>auto_pointer</span>,
+  <span class='st'>""</span>), <span class='kw'>d_switch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>, <span class='fl'>1</span>),
   <span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ofv_calc_type</span>, <span class='fl'>4</span>),
   <span class='kw'>ds_index</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>ds_index</span>,
-  <span class='kw'>strEDPenaltyFile</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>strEDPenaltyFile</span>, <span class='st'>""</span>),
-  <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>strEDPenaltyFile</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>strEDPenaltyFile</span>,
+  <span class='st'>""</span>), <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>, <span class='kw'>NULL</span>),
   <span class='kw'>iEDCalculationType</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>,
   <span class='fl'>0</span>), <span class='kw'>ED_samp_size</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ED_samp_size</span>, <span class='fl'>45</span>),
   <span class='kw'>bLHS</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bLHS</span>, <span class='fl'>1</span>),
@@ -173,25 +192,28 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='kw'>NumDocc</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>NumDocc</span>,
   <span class='kw'>NumOcc</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>NumOcc</span>,
   <span class='kw'>bpop</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>,
-  <span class='fu'>stop</span>(<span class='st'>"bpop must be defined"</span>)), <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>d</span>,
-  <span class='kw'>NULL</span>), <span class='kw'>covd</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>,
+  <span class='fu'>stop</span>(<span class='st'>"bpop must be defined"</span>)),
+  <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>d</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>covd</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>,
   <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
   <span class='kw'>docc</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>, <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>3</span>)),
-  <span class='kw'>covdocc</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>covdocc</span>, <span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='fl'>1</span>, <span class='fu'>length</span>(<span class='no'>docc</span>[,
-  <span class='fl'>2</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='no'>F</span>]) * (<span class='fu'>length</span>(<span class='no'>docc</span>[, <span class='fl'>2</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='no'>F</span>]) - <span class='fl'>1</span>)/<span class='fl'>2</span>)),
+  <span class='kw'>covdocc</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>covdocc</span>, <span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='fl'>1</span>,
+  <span class='fu'>length</span>(<span class='no'>docc</span>[, <span class='fl'>2</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='no'>F</span>]) * (<span class='fu'>length</span>(<span class='no'>docc</span>[, <span class='fl'>2</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='no'>F</span>]) - <span class='fl'>1</span>)/<span class='fl'>2</span>)),
   <span class='kw'>notfixed_bpop</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_bpop</span>,
   <span class='kw'>notfixed_d</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_d</span>,
   <span class='kw'>notfixed_covd</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_covd</span>,
   <span class='kw'>notfixed_docc</span> <span class='kw'>=</span> <span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_docc</span>,
   <span class='kw'>notfixed_covdocc</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_covdocc</span>,
   <span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='fl'>1</span>, <span class='fu'>length</span>(<span class='no'>covdocc</span>))),
-  <span class='kw'>notfixed_sigma</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_sigma</span>, <span class='fu'>t</span>(<span class='fu'>rep</span>(<span class='fl'>1</span>,
-  <span class='fu'><a href='size.html'>size</a></span>(<span class='no'>sigma</span>, <span class='fl'>2</span>)))),
+  <span class='kw'>notfixed_sigma</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_sigma</span>,
+  <span class='fu'>t</span>(<span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fu'><a href='size.html'>size</a></span>(<span class='no'>sigma</span>, <span class='fl'>2</span>)))),
   <span class='kw'>notfixed_covsigma</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>parameters</span>$<span class='no'>notfixed_covsigma</span>,
   <span class='fu'><a href='zeros.html'>zeros</a></span>(<span class='fl'>1</span>, <span class='fu'>length</span>(<span class='no'>notfixed_sigma</span>) * (<span class='fu'>length</span>(<span class='no'>notfixed_sigma</span>) - <span class='fl'>1</span>)/<span class='fl'>2</span>)),
-  <span class='kw'>bUseRandomSearch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseRandomSearch</span>, <span class='fl'>TRUE</span>),
+  <span class='kw'>bUseRandomSearch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseRandomSearch</span>,
+  <span class='fl'>TRUE</span>),
   <span class='kw'>bUseStochasticGradient</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseStochasticGradient</span>,
-  <span class='fl'>TRUE</span>), <span class='kw'>bUseLineSearch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseLineSearch</span>,
+  <span class='fl'>TRUE</span>),
+  <span class='kw'>bUseLineSearch</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseLineSearch</span>,
   <span class='fl'>TRUE</span>),
   <span class='kw'>bUseExchangeAlgorithm</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseExchangeAlgorithm</span>,
   <span class='fl'>FALSE</span>),
@@ -199,8 +221,9 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='fl'>FALSE</span>), <span class='kw'>EACriteria</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EACriteria</span>, <span class='fl'>1</span>),
   <span class='kw'>strRunFile</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>run_file_pointer</span>, <span class='st'>""</span>),
   <span class='kw'>poped_version</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>poped_version</span>,
-  <span class='fu'>packageVersion</span>(<span class='st'>"PopED"</span>)), <span class='kw'>modtit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>modtit</span>,
-  <span class='st'>"PopED model"</span>), <span class='kw'>output_file</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>output_file</span>,
+  <span class='fu'>packageVersion</span>(<span class='st'>"PopED"</span>)),
+  <span class='kw'>modtit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>modtit</span>, <span class='st'>"PopED model"</span>),
+  <span class='kw'>output_file</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>output_file</span>,
   <span class='fu'>paste</span>(<span class='st'>"PopED_output"</span>, <span class='st'>"_summary"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)),
   <span class='kw'>output_function_file</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>output_function_file</span>,
   <span class='fu'>paste</span>(<span class='st'>"PopED"</span>, <span class='st'>"_output_"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)),
@@ -229,30 +252,36 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='kw'>AbsTol</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>AbsTol</span>, <span class='fl'>1e-06</span>),
   <span class='kw'>RelTol</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>RelTol</span>, <span class='fl'>1e-06</span>),
   <span class='kw'>iDiffSolverMethod</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iDiffSolverMethod</span>,
-  <span class='kw'>NULL</span>), <span class='kw'>bUseMemorySolver</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseMemorySolver</span>,
+  <span class='kw'>NULL</span>),
+  <span class='kw'>bUseMemorySolver</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bUseMemorySolver</span>,
   <span class='fl'>FALSE</span>), <span class='kw'>rsit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span><span class='kw'>[[</span><span class='st'>"rsit"</span>]], <span class='fl'>300</span>),
   <span class='kw'>sgit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span><span class='kw'>[[</span><span class='st'>"sgit"</span>]], <span class='fl'>150</span>),
   <span class='kw'>intrsit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>intrsit</span>, <span class='fl'>250</span>),
   <span class='kw'>intsgit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>intsgit</span>, <span class='fl'>50</span>),
   <span class='kw'>maxrsnullit</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>maxrsnullit</span>, <span class='fl'>50</span>),
-  <span class='kw'>convergence_eps</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>convergence_eps</span>, <span class='fl'>1e-08</span>),
-  <span class='kw'>rslxt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>rslxt</span>, <span class='fl'>10</span>),
+  <span class='kw'>convergence_eps</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>convergence_eps</span>,
+  <span class='fl'>1e-08</span>), <span class='kw'>rslxt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>rslxt</span>, <span class='fl'>10</span>),
   <span class='kw'>rsla</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>rsla</span>, <span class='fl'>10</span>),
   <span class='kw'>cfaxt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>, <span class='fl'>0.001</span>),
   <span class='kw'>cfaa</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>, <span class='fl'>0.001</span>),
-  <span class='kw'>bGreedyGroupOpt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bGreedyGroupOpt</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>EAStepSize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EAStepSize</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>EANumPoints</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EANumPoints</span>, <span class='fl'>FALSE</span>),
+  <span class='kw'>bGreedyGroupOpt</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bGreedyGroupOpt</span>,
+  <span class='fl'>FALSE</span>), <span class='kw'>EAStepSize</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EAStepSize</span>,
+  <span class='fl'>0.01</span>), <span class='kw'>EANumPoints</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EANumPoints</span>,
+  <span class='fl'>FALSE</span>),
   <span class='kw'>EAConvergenceCriteria</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>EAConvergenceCriteria</span>,
-  <span class='fl'>1e-20</span>), <span class='kw'>bEANoReplicates</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bEANoReplicates</span>,
+  <span class='fl'>1e-20</span>),
+  <span class='kw'>bEANoReplicates</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>bEANoReplicates</span>,
   <span class='fl'>FALSE</span>), <span class='kw'>BFGSConvergenceCriteriaMinStep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>BFGSProjectedGradientTol</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSProjectedGradientTol</span>,
-  <span class='fl'>1e-04</span>), <span class='kw'>BFGSTolerancef</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancef</span>,
-  <span class='fl'>0.001</span>), <span class='kw'>BFGSToleranceg</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSToleranceg</span>,
-  <span class='fl'>0.9</span>), <span class='kw'>BFGSTolerancex</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancex</span>,
-  <span class='fl'>0.1</span>), <span class='kw'>ED_diff_it</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ED_diff_it</span>, <span class='fl'>30</span>),
-  <span class='kw'>ED_diff_percent</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ED_diff_percent</span>, <span class='fl'>10</span>),
-  <span class='kw'>line_search_it</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ls_step_size</span>, <span class='fl'>50</span>),
+  <span class='fl'>1e-04</span>),
+  <span class='kw'>BFGSTolerancef</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancef</span>,
+  <span class='fl'>0.001</span>),
+  <span class='kw'>BFGSToleranceg</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSToleranceg</span>, <span class='fl'>0.9</span>),
+  <span class='kw'>BFGSTolerancex</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancex</span>, <span class='fl'>0.1</span>),
+  <span class='kw'>ED_diff_it</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ED_diff_it</span>, <span class='fl'>30</span>),
+  <span class='kw'>ED_diff_percent</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ED_diff_percent</span>,
+  <span class='fl'>10</span>), <span class='kw'>line_search_it</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>ls_step_size</span>,
+  <span class='fl'>50</span>),
   <span class='kw'>Doptim_iter</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>iNumSearchIterationsIfNotLineSearch</span>,
   <span class='fl'>1</span>),
   <span class='kw'>iCompileOption</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>iCompileOption</span>,
@@ -261,7 +290,8 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='fl'>1</span>), <span class='kw'>MCC_Dep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>strExecuteName</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strExecuteName</span>,
   <span class='st'>"calc_fim.exe"</span>),
-  <span class='kw'>iNumProcesses</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>iNumProcesses</span>, <span class='fl'>2</span>),
+  <span class='kw'>iNumProcesses</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>iNumProcesses</span>,
+  <span class='fl'>2</span>),
   <span class='kw'>iNumChunkDesignEvals</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>iNumChunkDesignEvals</span>,
   -<span class='fl'>2</span>),
   <span class='kw'>strMatFileInputPrefix</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strMatFileInputPrefix</span>,
@@ -274,10 +304,13 @@ input file or as function arguments. Default arguments are supplied in the Usage
   <span class='fl'>0.1</span>),
   <span class='kw'>strFunctionInputName</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strFunctionInputName</span>,
   <span class='st'>"function_input"</span>),
-  <span class='kw'>bParallelRS</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelRS</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>bParallelSG</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelSG</span>, <span class='fl'>FALSE</span>),
+  <span class='kw'>bParallelRS</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelRS</span>,
+  <span class='fl'>FALSE</span>),
+  <span class='kw'>bParallelSG</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelSG</span>,
+  <span class='fl'>FALSE</span>),
   <span class='kw'>bParallelMFEA</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelMFEA</span>,
-  <span class='fl'>FALSE</span>), <span class='kw'>bParallelLS</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelLS</span>,
+  <span class='fl'>FALSE</span>),
+  <span class='kw'>bParallelLS</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>bParallelLS</span>,
   <span class='fl'>FALSE</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -292,7 +325,7 @@ the Usage section (the defaults to function arguments).</p></td>
       <th>ff_file</th>
       <td><ul>
 <li><p><b>******START OF MODEL DEFINITION OPTIONS**********</b></p></li>
-</ul><p>A string giving the function name or filname and path of the structural model. 
+</ul><p>A string giving the function name or filename and path of the structural model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. <code>"ff.PK.1.comp.oral.md.KE"</code></p></td>
     </tr>
@@ -302,7 +335,7 @@ e.g. <code>"ff.PK.1.comp.oral.md.KE"</code></p></td>
     </tr>
     <tr>
       <th>fg_file</th>
-      <td><p>A string giving the function name or filname and path of the 
+      <td><p>A string giving the function name or filename and path of the 
 parameter model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. <code>"parameter.model"</code></p></td>
@@ -313,7 +346,7 @@ e.g. <code>"parameter.model"</code></p></td>
     </tr>
     <tr>
       <th>fError_file</th>
-      <td><p>A string giving the function name or filname and path of the 
+      <td><p>A string giving the function name or filename and path of the 
 residual error model. 
 The filename and the function name must be the same if giving a filename. 
 e.g. <code>"feps.prop"</code>.</p></td>
@@ -337,7 +370,7 @@ All elements set to zero =&gt; only calculate the FIM with current design</p></t
 </ul><p>Matrix defining the initial sampling schedule. 
  Each row is a group/individual.
  If only one vector is supplied, e.g. <code>c(1,2,3,4)</code>, then all groups will 
-have the same inital design.</p></td>
+have the same initial design.</p></td>
     </tr>
     <tr>
       <th>m</th>
@@ -362,7 +395,7 @@ same values.</p></td>
     <tr>
       <th>groupsize</th>
       <td><p>Vector defining the size of the different groups (num individuals in each group).
-If only one numer then the number will be the same in every group.</p></td>
+If only one number then the number will be the same in every group.</p></td>
     </tr>
     <tr>
       <th>ni</th>
@@ -488,7 +521,7 @@ all a values are given the same max value</p></td>
     </tr>
     <tr>
       <th>iFOCENumInd</th>
-      <td><p>Num indivduals in each step of FOCE</p></td>
+      <td><p>Num individuals in each step of FOCE</p></td>
     </tr>
     <tr>
       <th>prior_fim</th>
@@ -496,14 +529,14 @@ all a values are given the same max value</p></td>
     </tr>
     <tr>
       <th>strAutoCorrelationFile</th>
-      <td><p>Filname and path, or function name, for the Autocorrelation function, 
+      <td><p>Filename and path, or function name, for the Autocorrelation function, 
 empty string means no autocorrelation.</p></td>
     </tr>
     <tr>
       <th>d_switch</th>
       <td><ul>
 <li><p><b>******START OF CRITERION SPECIFICATION OPTIONS**********</b></p></li>
-</ul><p>D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)</p></td>
+</ul><p>D-family design (1) or ED-family design (0) (with or without parameter uncertainty)</p></td>
     </tr>
     <tr>
       <th>ofv_calc_type</th>
@@ -532,7 +565,7 @@ User defined criterion can be defined this way.</p></td>
     <tr>
       <th>ofv_fun</th>
       <td><p>User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.</p></td>
     </tr>
     <tr>
@@ -551,7 +584,7 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
     </tr>
     <tr>
       <th>strUserDistributionFile</th>
-      <td><p>Filname and path, or function name, for user defined distributions for E-family designs</p></td>
+      <td><p>Filename and path, or function name, for user defined distributions for E-family designs</p></td>
     </tr>
     <tr>
       <th>nbpop</th>
@@ -569,7 +602,7 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
     </tr>
     <tr>
       <th>NumOcc</th>
-      <td><p>Number of occassions. Typically can be computed from other values and not supplied.</p></td>
+      <td><p>Number of occasions. Typically can be computed from other values and not supplied.</p></td>
     </tr>
     <tr>
       <th>bpop</th>
@@ -583,7 +616,7 @@ parameter value is to be used.</p></td>
     </tr>
     <tr>
       <th>d</th>
-      <td><p>Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+      <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a <code>c()</code>.</p></td>
     </tr>
     <tr>
@@ -594,7 +627,7 @@ That is, from your full IIV matrix  <code>covd &lt;-  IIV[lower.tri(IIV)]</code>
     <tr>
       <th>sigma</th>
       <td><p>Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a <code>c()</code>.</p></td>
+can also just supply the diagonal parameter values (variances) as a <code>c()</code>.</p></td>
     </tr>
     <tr>
       <th>docc</th>
@@ -677,11 +710,11 @@ Default is fixed.</p></td>
     </tr>
     <tr>
       <th>output_file</th>
-      <td><p>Filname and path of the output file during search</p></td>
+      <td><p>Filename and path of the output file during search</p></td>
     </tr>
     <tr>
       <th>output_function_file</th>
-      <td><p>Filname suffix of the result function file</p></td>
+      <td><p>Filename suffix of the result function file</p></td>
     </tr>
     <tr>
       <th>strIterationFileName</th>
@@ -690,7 +723,7 @@ Default is fixed.</p></td>
     <tr>
       <th>user_data</th>
       <td><ul>
-<li><p><b>******START OF Miscelaneous SPECIFICATION OPTIONS**********</b></p></li>
+<li><p><b>******START OF Miscellaneous SPECIFICATION OPTIONS**********</b></p></li>
 </ul><p>User defined data structure that, for example could be used to send in data to the model</p></td>
     </tr>
     <tr>
@@ -812,7 +845,7 @@ Default is fixed.</p></td>
     </tr>
     <tr>
       <th>convergence_eps</th>
-      <td><p>Stoachstic Gradient convergence value,
+      <td><p>Stochastic Gradient convergence value,
 (difference in OFV for D-optimal, difference in gradient for ED-optimal)</p></td>
     </tr>
     <tr>
@@ -919,11 +952,11 @@ Default is fixed.</p></td>
     </tr>
     <tr>
       <th>strMatFileInputPrefix</th>
-      <td><p>The prefix of the input mat file to communicate with the excutable</p></td>
+      <td><p>The prefix of the input mat file to communicate with the executable</p></td>
     </tr>
     <tr>
       <th>Mat_Out_Pre</th>
-      <td><p>The prefix of the output mat file to communicate with the excutable</p></td>
+      <td><p>The prefix of the output mat file to communicate with the executable</p></td>
     </tr>
     <tr>
       <th>strExtraRunOptions</th>

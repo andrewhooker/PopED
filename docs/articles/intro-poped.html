@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="container template-article">
-      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -29,27 +29,41 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
      
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -64,7 +78,7 @@
       <h1>Introduction to PopED</h1>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">2018-06-28</h4>
+            <h4 class="date">09 September, 2018</h4>
       
       
       <div class="hidden name"><code>intro-poped.Rmd</code></div>
@@ -81,13 +95,24 @@
 <li>The tasks to perform.</li>
 </ul>
 <p>There are a number of functions to help you with these tasks. See <code><a href="../reference/PopED.html">?poped</a></code> for more information.</p>
-<p>Below is an example to introduce the package. There are several other examples, as r-scripts, in the “examples” folder in the PopED installation directory located at:</p>
-<pre><code>system.file("examples", package="PopED")</code></pre>
-<div id="define-a-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#define-a-model" class="anchor"></a>Define a model</h2>
+<p>Below is an example to introduce the package. The code in the below example, and several other examples, are available as r-scripts in the “examples” folder in the PopED installation directory located at:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.file</span>(<span class="st">"examples"</span>, <span class="dt">package=</span><span class="st">"PopED"</span>)</code></pre></div>
+<p>You can view a list of the example files using the commands:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex_dir &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"examples"</span>, <span class="dt">package=</span><span class="st">"PopED"</span>)
+<span class="kw">list.files</span>(ex_dir)</code></pre></div>
+<p>You can then open one of the examples (for example, <code>ex.1.a.PK.1.comp.oral.md.intro.R</code>, the code found in this vignette) using the following code</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file_name &lt;-<span class="st"> "ex.1.a.PK.1.comp.oral.md.intro.R"</span>
+ex_file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"examples"</span>,file_name,<span class="dt">package=</span><span class="st">"PopED"</span>)
+<span class="kw">file.copy</span>(ex_file,<span class="kw">tempdir</span>(),<span class="dt">overwrite =</span> T)
+<span class="kw">file.edit</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(),file_name))</code></pre></div>
+<p>In addition, there is another vignette called “Examples” that explores the new features in each example.</p>
+<div id="define-a-model" class="section level1">
+<h1 class="hasAnchor">
+<a href="#define-a-model" class="anchor"></a>Define a model</h1>
 <p>Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution. In this case the solution is applicable for both multiple and single dosing. Note that this function is also predefined in PopED as <code>ff.PK.1.comp.oral.md.CL</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PopED)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PopED)
+<span class="kw">packageVersion</span>(<span class="st">"PopED"</span>)
+<span class="co">#&gt; [1] '0.4.0'</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ff &lt;-<span class="st"> </span><span class="cf">function</span>(model_switch,xt,parameters,poped.db){
   <span class="kw">with</span>(<span class="kw">as.list</span>(parameters),{
     N =<span class="st"> </span><span class="kw">floor</span>(xt<span class="op">/</span>TAU)<span class="op">+</span><span class="dv">1</span>
@@ -97,7 +122,7 @@
     <span class="kw">return</span>(<span class="kw">list</span>( <span class="dt">y=</span>y,<span class="dt">poped.db=</span>poped.db))
   })
 }</code></pre></div>
-<p>Next we define the parameters of this function, in this case log-normal distributions around the parameters (not <code>Favail</code>). <code>DOSE</code> and <code>TAU</code> are defined as a covariates (<code>a</code>) so that we can optimize these values later.</p>
+<p>Next we define the parameters of this function, in this case log-normal distributions around the parameters (except for <code>Favail</code>). <code>DOSE</code> and <code>TAU</code> are defined as covariates (in vector <code>a</code>) so that we can optimize their values later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sfg &lt;-<span class="st"> </span><span class="cf">function</span>(x,a,bpop,b,bocc){
   parameters=<span class="kw">c</span>( <span class="dt">V=</span>bpop[<span class="dv">1</span>]<span class="op">*</span><span class="kw">exp</span>(b[<span class="dv">1</span>]),
                 <span class="dt">KA=</span>bpop[<span class="dv">2</span>]<span class="op">*</span><span class="kw">exp</span>(b[<span class="dv">2</span>]),
@@ -118,12 +143,15 @@
 }</code></pre></div>
 <p>We have now defined all aspects of the model.</p>
 </div>
-<div id="define-an-initial-design-and-design-space" class="section level2">
-<h2 class="hasAnchor">
-<a href="#define-an-initial-design-and-design-space" class="anchor"></a>Define an initial design and design space</h2>
+<div id="define-an-initial-design-and-design-space" class="section level1">
+<h1 class="hasAnchor">
+<a href="#define-an-initial-design-and-design-space" class="anchor"></a>Define an initial design and design space</h1>
 <p>Now we define the model parameter values, the initial design and design space for optimization.</p>
-<p>In this example, the parameter values are defined for the fixed effects (<code>bpop</code>), the between-subject variability variances (<code>d</code>) and the residual variability variances (<code>sigma</code>). We also fix the parameter <code>Favail</code> using <code>notfixed_bpop</code>, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated. In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).</p>
-<p>For the initial design, we define two groups (<code>m=2</code>) of 20 individuals (<code>groupsize=20</code>), with doses of 20 mg or 40 mg every 24 hours (<code>a</code>). The initial design has 5 sample times per individual (<code>xt</code>). For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (<code>mina</code> and <code>maxa</code>), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (<code>minxt</code> and <code>maxxt</code>). Finally, we fix the two groups of subjects to have the sample sample times (<code>bUseGrouped_xt=TRUE</code>).</p>
+<p>In this example, the parameter values are defined for the fixed effects (<code>bpop</code>), the between-subject variability variances (<code>d</code>) and the residual variability variances (<code>sigma</code>). We also fix the parameter <code>Favail</code> using <code>notfixed_bpop</code>, since we have only oral dosing and the parameter is not identifiable.</p>
+<p>Fixing a parameter means that we assume the parameter will not be estimated (and is know without uncertainty). In addition, we fix the small additive RUV term, as this term is reflecting the higher error expected at low concentration measurements (limit of quantification measurements) and would typically be calculated from analytical assay methods (for example, the standard deviation of the parameter might be 20% of the limit of quantification).</p>
+<p>For the initial design, we define two groups (<code>m=2</code>) of 20 individuals (<code>groupsize=20</code>), with doses of 20 mg or 40 mg every 24 hours (<code>a</code>). The initial design has 5 sample times per individual (<code>xt</code>).</p>
+<p>For the design space, which can be searched during optimization, we define a potential dose range of between 0 and 200 mg (<code>mina</code> and <code>maxa</code>), and a range of potential sample times between 0 and 10 hours for the first three samples and between 240 and 248 hours for the last two samples (<code>minxt</code> and <code>maxxt</code>).</p>
+<p>Finally, we fix the two groups of subjects to have the same sample times (<code>bUseGrouped_xt=TRUE</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poped.db &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="dt">ff_fun=</span>ff,
                                   <span class="dt">fg_fun=</span>sfg,
                                   <span class="dt">fError_fun=</span>feps,
@@ -142,148 +170,202 @@
                                   <span class="dt">maxxt=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">248</span>,<span class="dv">248</span>),
                                   <span class="dt">bUseGrouped_xt=</span><span class="ot">TRUE</span>)</code></pre></div>
 </div>
-<div id="the-tasks-to-perform-" class="section level2">
+<div id="the-tasks-to-perform-" class="section level1">
+<h1 class="hasAnchor">
+<a href="#the-tasks-to-perform-" class="anchor"></a>The tasks to perform.</h1>
+<div id="simulation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-tasks-to-perform-" class="anchor"></a>The tasks to perform.</h2>
-<div id="simulation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#simulation" class="anchor"></a>Simulation</h3>
+<a href="#simulation" class="anchor"></a>Simulation</h2>
 <p>First it may make sense to check your model and design to make sure you get what you expect when simulating data. Here we plot the model typical values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(poped.db, <span class="dt">model_num_points =</span> <span class="dv">500</span>)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
-<p>Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the <code>DV=T</code> argument):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(poped.db, <span class="dt">model_num_points=</span><span class="dv">500</span>, <span class="dt">IPRED=</span>T)</code></pre></div>
+<p><img src="intro-poped_files/figure-html/simulate_without_BSV-1.png" width="576"></p>
+<p>Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the <code>DV=TRUE</code> argument) but without sampling times:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(poped.db, <span class="dt">model_num_points=</span><span class="dv">500</span>, <span class="dt">IPRED=</span><span class="ot">TRUE</span>, <span class="dt">sample.times =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p><img src="intro-poped_files/figure-html/simulate_with_BSV-1.png" width="576"></p>
 <p>We can get these predictions numerically as well:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_prediction.html">model_prediction</a></span>(poped.db,<span class="dt">DV=</span>T)
-<span class="kw">head</span>(dat,<span class="dt">n=</span><span class="dv">5</span>);<span class="kw">tail</span>(dat,<span class="dt">n=</span><span class="dv">5</span>)</code></pre></div>
-<pre><code>##   ID Time         DV      IPRED       PRED Group Model DOSE TAU
-## 1  1    1 0.04422501 0.05747039 0.05325024     1     1   20  24
-## 2  1    2 0.08522768 0.09828859 0.09204804     1     1   20  24
-## 3  1    8 0.11048943 0.17340393 0.16409609     1     1   20  24
-## 4  1  240 0.17322493 0.22959440 0.12671376     1     1   20  24
-## 5  1  245 0.46941713 0.35619950 0.24980320     1     1   20  24</code></pre>
-<pre><code>##     ID Time        DV     IPRED      PRED Group Model DOSE TAU
-## 196 40    1 0.1500322 0.1613167 0.1065005     2     1   40  24
-## 197 40    2 0.2746268 0.2762786 0.1840961     2     1   40  24
-## 198 40    8 0.4568408 0.4497718 0.3281922     2     1   40  24
-## 199 40  240 0.2097838 0.1769645 0.2534275     2     1   40  24
-## 200 40  245 0.6648005 0.5527004 0.4996064     2     1   40  24</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_prediction.html">model_prediction</a></span>(poped.db,<span class="dt">DV=</span><span class="ot">TRUE</span>)
+<span class="kw">head</span>(dat,<span class="dt">n=</span><span class="dv">5</span>);<span class="kw">tail</span>(dat,<span class="dt">n=</span><span class="dv">5</span>)
+<span class="co">#&gt;   ID Time         DV      IPRED       PRED Group Model DOSE TAU</span>
+<span class="co">#&gt; 1  1    1 0.04422501 0.05747039 0.05325024     1     1   20  24</span>
+<span class="co">#&gt; 2  1    2 0.08522768 0.09828859 0.09204804     1     1   20  24</span>
+<span class="co">#&gt; 3  1    8 0.11048943 0.17340393 0.16409609     1     1   20  24</span>
+<span class="co">#&gt; 4  1  240 0.17322493 0.22959440 0.12671376     1     1   20  24</span>
+<span class="co">#&gt; 5  1  245 0.46941713 0.35619950 0.24980320     1     1   20  24</span>
+<span class="co">#&gt;     ID Time        DV     IPRED      PRED Group Model DOSE TAU</span>
+<span class="co">#&gt; 196 40    1 0.1500322 0.1613167 0.1065005     2     1   40  24</span>
+<span class="co">#&gt; 197 40    2 0.2746268 0.2762786 0.1840961     2     1   40  24</span>
+<span class="co">#&gt; 198 40    8 0.4568408 0.4497718 0.3281922     2     1   40  24</span>
+<span class="co">#&gt; 199 40  240 0.2097838 0.1769645 0.2534275     2     1   40  24</span>
+<span class="co">#&gt; 200 40  245 0.6648005 0.5527004 0.4996064     2     1   40  24</span></code></pre></div>
 </div>
-<div id="design-evaluation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#design-evaluation" class="anchor"></a>Design evaluation</h3>
+<div id="design-evaluation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#design-evaluation" class="anchor"></a>Design evaluation</h2>
 <p>Next, we evaluate the initial design</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db)</code></pre></div>
-<pre><code>## $ofv
-## [1] 39.309
-## 
-## $fim
-##             [,1]        [,2]         [,3]       [,4]       [,5]
-## [1,]  0.05336692   -8.683963  -0.05863412   0.000000   0.000000
-## [2,] -8.68396266 2999.851007 -14.43058560   0.000000   0.000000
-## [3,] -0.05863412  -14.430586  37.15243290   0.000000   0.000000
-## [4,]  0.00000000    0.000000   0.00000000 999.953587 312.240246
-## [5,]  0.00000000    0.000000   0.00000000 312.240246 439.412556
-## [6,]  0.00000000    0.000000   0.00000000   3.202847   2.287838
-## [7,]  0.00000000    0.000000   0.00000000 575.347261 638.581909
-##             [,6]       [,7]
-## [1,]    0.000000     0.0000
-## [2,]    0.000000     0.0000
-## [3,]    0.000000     0.0000
-## [4,]    3.202847   575.3473
-## [5,]    2.287838   638.5819
-## [6,] 3412.005199  1182.3255
-## [7,] 1182.325475 33864.3226
-## 
-## $rse
-##    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] 
-##   8.215338  10.090955   4.400304  39.844763  60.655110  27.562541 
-## SIGMA[1,1] 
-##  13.865357</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db)
+<span class="co">#&gt; $ofv</span>
+<span class="co">#&gt; [1] 39.309</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $fim</span>
+<span class="co">#&gt;             [,1]        [,2]         [,3]       [,4]       [,5]</span>
+<span class="co">#&gt; [1,]  0.05336692   -8.683963  -0.05863412   0.000000   0.000000</span>
+<span class="co">#&gt; [2,] -8.68396266 2999.851007 -14.43058560   0.000000   0.000000</span>
+<span class="co">#&gt; [3,] -0.05863412  -14.430586  37.15243290   0.000000   0.000000</span>
+<span class="co">#&gt; [4,]  0.00000000    0.000000   0.00000000 999.953587 312.240246</span>
+<span class="co">#&gt; [5,]  0.00000000    0.000000   0.00000000 312.240246 439.412556</span>
+<span class="co">#&gt; [6,]  0.00000000    0.000000   0.00000000   3.202847   2.287838</span>
+<span class="co">#&gt; [7,]  0.00000000    0.000000   0.00000000 575.347261 638.581909</span>
+<span class="co">#&gt;             [,6]       [,7]</span>
+<span class="co">#&gt; [1,]    0.000000     0.0000</span>
+<span class="co">#&gt; [2,]    0.000000     0.0000</span>
+<span class="co">#&gt; [3,]    0.000000     0.0000</span>
+<span class="co">#&gt; [4,]    3.202847   575.3473</span>
+<span class="co">#&gt; [5,]    2.287838   638.5819</span>
+<span class="co">#&gt; [6,] 3412.005199  1182.3255</span>
+<span class="co">#&gt; [7,] 1182.325475 33864.3226</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $rse</span>
+<span class="co">#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] </span>
+<span class="co">#&gt;   8.215338  10.090955   4.400304  39.844763  60.655110  27.562541 </span>
+<span class="co">#&gt; SIGMA[1,1] </span>
+<span class="co">#&gt;  13.865357</span></code></pre></div>
 <p>We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.</p>
-</div>
-<div id="design-optimization" class="section level3">
+<div id="evaluate-alternative-design" class="section level3">
 <h3 class="hasAnchor">
-<a href="#design-optimization" class="anchor"></a>Design optimization</h3>
-<p>Now we can optimize the sample times of the design<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db, <span class="dt">opt_xt=</span>T)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output)</code></pre></div>
-<pre><code>## ===============================================================================
-## FINAL RESULTS
-## Optimized Sampling Schedule
-## Group 1: 0.4574     10     10    240  240.9
-## Group 2: 0.4574     10     10    240  240.9
-## 
-## OFV = 40.5277
-## 
-## Efficiency: 
-##   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.1902
-## 
-## Expected parameter 
-## relative standard error (%RSE):
-##     Parameter    Values   RSE_0     RSE
-##       bpop[1]   72.8000    8.22    6.28
-##       bpop[2]    0.2500   10.09    7.74
-##       bpop[3]    3.7500    4.40    4.29
-##        D[1,1]    0.0900   39.84   32.54
-##        D[2,2]    0.0900   60.66   50.44
-##        D[3,3]    0.0625   27.56   26.44
-##    SIGMA[1,1]    0.0400   13.87   14.80
-## 
-## Total running time: 20.509 seconds</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
-<p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
+<a href="#evaluate-alternative-design" class="anchor"></a>Evaluate alternative design</h3>
+<p>We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poped.db.new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="dt">ff_fun=</span>ff,
+                                      <span class="dt">fg_fun=</span>sfg,
+                                      <span class="dt">fError_fun=</span>feps,
+                                      <span class="dt">bpop=</span><span class="kw">c</span>(<span class="dt">V=</span><span class="fl">72.8</span>,<span class="dt">KA=</span><span class="fl">0.25</span>,<span class="dt">CL=</span><span class="fl">3.75</span>,<span class="dt">Favail=</span><span class="fl">0.9</span>), 
+                                      <span class="dt">notfixed_bpop=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),
+                                      <span class="dt">d=</span><span class="kw">c</span>(<span class="dt">V=</span><span class="fl">0.09</span>,<span class="dt">KA=</span><span class="fl">0.09</span>,<span class="dt">CL=</span><span class="fl">0.25</span><span class="op">^</span><span class="dv">2</span>), 
+                                      <span class="dt">sigma=</span><span class="kw">c</span>(<span class="fl">0.04</span>,<span class="fl">5e-6</span>),
+                                      <span class="dt">notfixed_sigma=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>),
+                                      <span class="dt">m=</span><span class="dv">2</span>,
+                                      <span class="dt">groupsize=</span><span class="dv">20</span>,
+                                      <span class="dt">a=</span><span class="kw">list</span>(<span class="kw">c</span>(<span class="dt">DOSE=</span><span class="dv">20</span>,<span class="dt">TAU=</span><span class="dv">24</span>),<span class="kw">c</span>(<span class="dt">DOSE=</span><span class="dv">40</span>, <span class="dt">TAU=</span><span class="dv">24</span>)),
+                                      <span class="dt">maxa=</span><span class="kw">c</span>(<span class="dt">DOSE=</span><span class="dv">200</span>,<span class="dt">TAU=</span><span class="dv">24</span>),
+                                      <span class="dt">mina=</span><span class="kw">c</span>(<span class="dt">DOSE=</span><span class="dv">0</span>,<span class="dt">TAU=</span><span class="dv">24</span>),
+                                      <span class="dt">xt=</span><span class="kw">c</span>( <span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">245</span>),
+                                      <span class="dt">minxt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">240</span>),
+                                      <span class="dt">maxxt=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">248</span>),
+                                      <span class="dt">bUseGrouped_xt=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db.new)
+<span class="co">#&gt; $ofv</span>
+<span class="co">#&gt; [1] 29.66484</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $fim</span>
+<span class="co">#&gt;              [,1]       [,2]         [,3]       [,4]       [,5]</span>
+<span class="co">#&gt; [1,]   0.04243232  -10.51432   0.05782431   0.000000   0.000000</span>
+<span class="co">#&gt; [2,] -10.51432135 2666.25466 -14.66678102   0.000000   0.000000</span>
+<span class="co">#&gt; [3,]   0.05782431  -14.66678  21.59743298   0.000000   0.000000</span>
+<span class="co">#&gt; [4,]   0.00000000    0.00000   0.00000000 632.163776 457.737062</span>
+<span class="co">#&gt; [5,]   0.00000000    0.00000   0.00000000 457.737062 347.115999</span>
+<span class="co">#&gt; [6,]   0.00000000    0.00000   0.00000000   3.115099   2.363458</span>
+<span class="co">#&gt; [7,]   0.00000000    0.00000   0.00000000 348.477101 262.369792</span>
+<span class="co">#&gt;             [,6]       [,7]</span>
+<span class="co">#&gt; [1,]    0.000000     0.0000</span>
+<span class="co">#&gt; [2,]    0.000000     0.0000</span>
+<span class="co">#&gt; [3,]    0.000000     0.0000</span>
+<span class="co">#&gt; [4,]    3.115099   348.4771</span>
+<span class="co">#&gt; [5,]    2.363458   262.3698</span>
+<span class="co">#&gt; [6,] 1153.026981  1979.2314</span>
+<span class="co">#&gt; [7,] 1979.231386 15617.8185</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $rse</span>
+<span class="co">#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] </span>
+<span class="co">#&gt;  44.120338  51.256239   5.748842 207.941540 280.689945  53.350716 </span>
+<span class="co">#&gt; SIGMA[1,1] </span>
+<span class="co">#&gt;  22.795275</span></code></pre></div>
 </div>
+<div id="comparison-of-designs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#comparison-of-designs" class="anchor"></a>Comparison of designs</h3>
+<p>The precision on CL (bpop[3]) is similar with the alternative design but the other parameters are less well estimated with the alternative design.</p>
+<p>It is possible to compare the objective function value (ofv) and see that for this dummy example the alternative design (less samples per subject) the ofv is smaller (=worse). This value can also be used to optimize sampling times, doses, and other design features.</p>
+</div>
+</div>
+<div id="design-optimization" class="section level2">
+<h2 class="hasAnchor">
+<a href="#design-optimization" class="anchor"></a>Design optimization</h2>
+<p>Now we can optimize the sample times of the design<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db, <span class="dt">opt_xt=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output)
+<span class="co">#&gt; ===============================================================================</span>
+<span class="co">#&gt; FINAL RESULTS</span>
+<span class="co">#&gt; Optimized Sampling Schedule</span>
+<span class="co">#&gt; Group 1: 0.4574     10     10    240  240.9</span>
+<span class="co">#&gt; Group 2: 0.4574     10     10    240  240.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; OFV = 40.5277</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Efficiency: </span>
+<span class="co">#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.1902</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Expected relative standard error</span>
+<span class="co">#&gt; (%RSE, rounded to nearest integer):</span>
+<span class="co">#&gt;     Parameter   Values   RSE_0   RSE</span>
+<span class="co">#&gt;       bpop[1]     72.8       8     6</span>
+<span class="co">#&gt;       bpop[2]     0.25      10     8</span>
+<span class="co">#&gt;       bpop[3]     3.75       4     4</span>
+<span class="co">#&gt;        D[1,1]     0.09      40    33</span>
+<span class="co">#&gt;        D[2,2]     0.09      61    50</span>
+<span class="co">#&gt;        D[3,3]   0.0625      28    26</span>
+<span class="co">#&gt;    SIGMA[1,1]     0.04      14    15</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Total running time: 17.731 seconds</span>
+<span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output<span class="op">$</span>poped.db)</code></pre></div>
+<p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="576"></p>
+<p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
 <div id="examine-efficiency-of-sampling-windows" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examine-efficiency-of-sampling-windows" class="anchor"></a>Examine efficiency of sampling windows</h3>
 <p>Of course, this means that there are multiple samples at some of these time points. We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points (<span class="math inline">\(\pm 30\)</span> minutes).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_efficiency_of_windows.html">plot_efficiency_of_windows</a></span>(output<span class="op">$</span>poped.db,<span class="dt">xt_windows=</span><span class="fl">0.5</span>)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
-<p>Here we see the efficiency (<span class="math inline">\((|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}\)</span>) drop below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption). Smaller windows or different windowing on different samples may be in order here. To investigate see <code><a href="../reference/plot_efficiency_of_windows.html">?plot_efficiency_of_windows</a></code>.</p>
+<p><img src="intro-poped_files/figure-html/simulate_efficiency_windows-1.png" width="576"></p>
+<p>Here we see the efficiency (<span class="math inline">\((|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}\)</span>) drops below 80% in some cases, which is mostly caused by an increase in the D[2,2] parameter uncertainty (BSV on absorption). Smaller windows or different windowing on different samples might be needed. To investigate see <code><a href="../reference/plot_efficiency_of_windows.html">?plot_efficiency_of_windows</a></code>.</p>
 </div>
 <div id="optimize-over-a-discrete-design-space" class="section level3">
 <h3 class="hasAnchor">
 <a href="#optimize-over-a-discrete-design-space" class="anchor"></a>Optimize over a discrete design space</h3>
 <p>In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit). We could also limit the search to only “allowed” values, for example, only samples taken on the hour are allowed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poped.db.discrete &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(poped.db,<span class="dt">discrete_xt =</span> <span class="kw">list</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">248</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poped.db.discrete &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(poped.db,<span class="dt">discrete_xt =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">240</span><span class="op">:</span><span class="dv">248</span>)))
                                           
-output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db.discrete, <span class="dt">opt_xt=</span>T)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output_discrete)</code></pre></div>
-<pre><code>## ===============================================================================
-## FINAL RESULTS
-## Optimized Sampling Schedule
-## Group 1:      1     10     10    240    241
-## Group 2:      1     10     10    240    241
-## 
-## OFV = 40.3782
-## 
-## Efficiency: 
-##   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.165
-## 
-## Expected parameter 
-## relative standard error (%RSE):
-##     Parameter    Values   RSE_0     RSE
-##       bpop[1]   72.8000    8.22    6.33
-##       bpop[2]    0.2500   10.09    8.01
-##       bpop[3]    3.7500    4.40    4.30
-##        D[1,1]    0.0900   39.84   32.46
-##        D[2,2]    0.0900   60.66   53.33
-##        D[3,3]    0.0625   27.56   26.52
-##    SIGMA[1,1]    0.0400   13.87   14.68
-## 
-## Total running time: 11.359 seconds</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_discrete<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
+output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db.discrete, <span class="dt">opt_xt=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output_discrete)
+<span class="co">#&gt; ===============================================================================</span>
+<span class="co">#&gt; FINAL RESULTS</span>
+<span class="co">#&gt; Optimized Sampling Schedule</span>
+<span class="co">#&gt; Group 1:      1     10     10    240    241</span>
+<span class="co">#&gt; Group 2:      1     10     10    240    241</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; OFV = 40.3782</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Efficiency: </span>
+<span class="co">#&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.165</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Expected relative standard error</span>
+<span class="co">#&gt; (%RSE, rounded to nearest integer):</span>
+<span class="co">#&gt;     Parameter   Values   RSE_0   RSE</span>
+<span class="co">#&gt;       bpop[1]     72.8       8     6</span>
+<span class="co">#&gt;       bpop[2]     0.25      10     8</span>
+<span class="co">#&gt;       bpop[3]     3.75       4     4</span>
+<span class="co">#&gt;        D[1,1]     0.09      40    32</span>
+<span class="co">#&gt;        D[2,2]     0.09      61    53</span>
+<span class="co">#&gt;        D[3,3]   0.0625      28    27</span>
+<span class="co">#&gt;    SIGMA[1,1]     0.04      14    15</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Total running time: 10.473 seconds</span>
+<span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_discrete<span class="op">$</span>poped.db)</code></pre></div>
+<p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="576"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
 </div>
 <div id="optimize-other-design-variables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#optimize-other-design-variables" class="anchor"></a>Optimize ‘Other’ design variables</h3>
 <p>One could also optimize over dose, to see if a different dose could help in parameter estimation .</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_dose_opt &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(output<span class="op">$</span>poped.db, <span class="dt">opt_xt=</span>T, <span class="dt">opt_a=</span>T)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_dose_opt &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(output<span class="op">$</span>poped.db, <span class="dt">opt_xt=</span><span class="ot">TRUE</span>, <span class="dt">opt_a=</span><span class="ot">TRUE</span>)</code></pre></div>
 <p>In this case the results are predictable … higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).</p>
 </div>
 <div id="cost-function-to-optimize-dose" class="section level3">
@@ -295,50 +377,51 @@ output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../refer
   pred_df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_prediction.html">model_prediction</a></span>(poped.db)
   <span class="kw">sum</span>((pred_df[pred_df[<span class="st">"Time"</span>]<span class="op">==</span><span class="dv">240</span>,<span class="st">"PRED"</span>] <span class="op">-</span><span class="st"> </span><span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.35</span>))<span class="op">^</span><span class="dv">2</span>)
 }
-<span class="kw">crit_fcn</span>(output<span class="op">$</span>poped.db)</code></pre></div>
-<pre><code>## [1] 0.01469712</code></pre>
+<span class="kw">crit_fcn</span>(output<span class="op">$</span>poped.db)
+<span class="co">#&gt; [1] 0.01469712</span></code></pre></div>
 <p>Now we minimize the cost function</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_cost &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db, <span class="dt">opt_a =</span>T, <span class="dt">opt_xt =</span> F,
-                     <span class="dt">ofv_fun=</span>crit_fcn,
-                     <span class="dt">maximize =</span> F)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output_cost)</code></pre></div>
-<pre><code>## ===============================================================================
-## FINAL RESULTS
-## 
-## Optimized Covariates:
-## Group 1: 31.5672 : 24
-## Group 2: 55.2426 : 24
-## 
-## OFV = 2.53454e-14
-## 
-## Efficiency: 
-##   (ofv_final / ofv_init) = 1.7245e-12
-## 
-## Expected parameter 
-## relative standard error (%RSE):
-##     Parameter    Values   RSE_0     RSE
-##       bpop[1]   72.8000    8.22    8.21
-##       bpop[2]    0.2500   10.09   10.07
-##       bpop[3]    3.7500    4.40    4.40
-##        D[1,1]    0.0900   39.84   39.81
-##        D[2,2]    0.0900   60.66   60.48
-##        D[3,3]    0.0625   27.56   27.55
-##    SIGMA[1,1]    0.0400   13.87   13.80
-## 
-## Total running time: 4.274 seconds</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_rse.html">get_rse</a></span>(output_cost<span class="op">$</span>FIM, output_cost<span class="op">$</span>poped.db)</code></pre></div>
-<pre><code>##    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] 
-##   8.207404  10.070674   4.399378  39.808012  60.478363  27.549531 
-## SIGMA[1,1] 
-##  13.800551</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_cost<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/unnamed-chunk-14-1.png" width="576"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_cost &lt;-<span class="st"> </span><span class="kw"><a href="../reference/poped_optim.html">poped_optim</a></span>(poped.db, <span class="dt">opt_a =</span> <span class="ot">TRUE</span>, <span class="dt">opt_xt =</span> <span class="ot">FALSE</span>,
+                     <span class="dt">ofv_fun=</span>crit_fcn, 
+                     <span class="dt">maximize =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(output_cost)
+<span class="co">#&gt; ===============================================================================</span>
+<span class="co">#&gt; FINAL RESULTS</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Optimized Covariates:</span>
+<span class="co">#&gt; Group 1: 31.5672 : 24</span>
+<span class="co">#&gt; Group 2: 55.2426 : 24</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; OFV = 6.59816e-15</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Efficiency: </span>
+<span class="co">#&gt;   (ofv_final / ofv_init) = 4.4894e-13</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Expected relative standard error</span>
+<span class="co">#&gt; (%RSE, rounded to nearest integer):</span>
+<span class="co">#&gt;     Parameter   Values   RSE_0   RSE</span>
+<span class="co">#&gt;       bpop[1]     72.8       8     8</span>
+<span class="co">#&gt;       bpop[2]     0.25      10    10</span>
+<span class="co">#&gt;       bpop[3]     3.75       4     4</span>
+<span class="co">#&gt;        D[1,1]     0.09      40    40</span>
+<span class="co">#&gt;        D[2,2]     0.09      61    60</span>
+<span class="co">#&gt;        D[3,3]   0.0625      28    28</span>
+<span class="co">#&gt;    SIGMA[1,1]     0.04      14    14</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Total running time: 13.652 seconds</span>
+<span class="kw"><a href="../reference/get_rse.html">get_rse</a></span>(output_cost<span class="op">$</span>FIM, output_cost<span class="op">$</span>poped.db)
+<span class="co">#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] </span>
+<span class="co">#&gt;   8.207404  10.070674   4.399378  39.808012  60.478363  27.549531 </span>
+<span class="co">#&gt; SIGMA[1,1] </span>
+<span class="co">#&gt;  13.800551</span>
+<span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_cost<span class="op">$</span>poped.db)</code></pre></div>
+<p><img src="intro-poped_files/figure-html/simulate_cost_optmization-1.png" width="576"></p>
+</div>
 </div>
 </div>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Tip: to make the optimization run faster use the option <code>parallel = T</code> in the <code>poped_optim</code> command.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Tip: to make the optimization run faster use the option <code>parallel = TRUE</code> in the <code>poped_optim</code> command.<a href="#fnref1">↩</a></p></li>
 </ol>
 </div>
   </div>
@@ -350,7 +433,13 @@ output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../refer
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#define-a-model">Define a model</a></li>
       <li><a href="#define-an-initial-design-and-design-space">Define an initial design and design space</a></li>
-      <li><a href="#the-tasks-to-perform-">The tasks to perform.</a></li>
+      <li>
+<a href="#the-tasks-to-perform-">The tasks to perform.</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#simulation">Simulation</a></li>
+      <li><a href="#design-evaluation">Design evaluation</a></li>
+      <li><a href="#design-optimization">Design optimization</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

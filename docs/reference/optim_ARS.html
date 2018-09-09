@@ -53,7 +53,7 @@ and allows for box-constraints and sets of allowed values." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -63,27 +63,43 @@ and allows for box-constraints and sets of allowed values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -155,7 +171,7 @@ position of the parameters when there are no upper or lower limits (e.g. when <c
     </tr>
     <tr>
       <th>iter</th>
-      <td><p>The number of iterations for the algorithm to perfrom (this is a maximum number, it could be less).</p></td>
+      <td><p>The number of iterations for the algorithm to perform (this is a maximum number, it could be less).</p></td>
     </tr>
     <tr>
       <th>iter_adapt</th>
@@ -179,7 +195,7 @@ When adapting, the  standard deviation of the sampling distribution is calculate
     </tr>
     <tr>
       <th>trace_iter</th>
-      <td><p>How many interations between each update to the screen about the result of the search.</p></td>
+      <td><p>How many iterations between each update to the screen about the result of the search.</p></td>
     </tr>
     <tr>
       <th>new_par_max_it</th>
@@ -240,9 +256,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt_gen.html'>RS_opt_gen</a></code>,
-  <code><a href='RS_opt.html'>RS_opt</a></code>, <code><a href='a_line_search.html'>a_line_search</a></code>,
-  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
+  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
+  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
+  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
   <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
   <code><a href='optim_LS.html'>optim_LS</a></code>, <code><a href='poped_optim_1.html'>poped_optim_1</a></code>,
   <code><a href='poped_optim_2.html'>poped_optim_2</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
@@ -255,158 +271,159 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='no'>fw</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fl'>10</span>*<span class='fu'>sin</span>(<span class='fl'>0.3</span>*<span class='no'>x</span>)*<span class='fu'>sin</span>(<span class='fl'>1.3</span>*<span class='no'>x</span>^<span class='fl'>2</span>) + <span class='fl'>0.00001</span>*<span class='no'>x</span>^<span class='fl'>4</span> + <span class='fl'>0.2</span>*<span class='no'>x</span>+<span class='fl'>80</span>
 
 <span class='co'># optimization with fewer function evaluations compared to SANN</span>
-<span class='no'>res1</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>,<span class='kw'>lower</span> <span class='kw'>=</span> -<span class='fl'>50</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; It.   5 | OFV = 125.084
-#&gt; It.  10 | OFV = 99.6937
-#&gt; It.  15 | OFV = 69.027
-#&gt; It.  20 | OFV = 69.027
-#&gt; It.  25 | OFV = 69.027
-#&gt; It.  30 | OFV = 69.027
-#&gt; It.  35 | OFV = 69.027
-#&gt; It.  40 | OFV = 69.027
-#&gt; It.  45 | OFV = 69.027
-#&gt; It.  50 | OFV = 69.027
-#&gt; It.  55 | OFV = 69.027
-#&gt; It.  60 | OFV = 69.027
-#&gt; It.  65 | OFV = 69.027
-#&gt; It.  70 | OFV = 69.027
-#&gt; It.  75 | OFV = 69.027
-#&gt; It.  80 | OFV = 69.027
-#&gt; It.  85 | OFV = 69.027
-#&gt; It.  90 | OFV = 67.543
-#&gt; It.  95 | OFV = 67.543
-#&gt; It. 100 | OFV = 67.543
-#&gt; It. 105 | OFV = 67.543
-#&gt; It. 110 | OFV = 67.543
-#&gt; It. 115 | OFV = 67.543
-#&gt; It. 120 | OFV = 67.543
-#&gt; It. 125 | OFV = 67.543
-#&gt; It. 130 | OFV = 67.543
-#&gt; It. 135 | OFV = 67.543
-#&gt; It. 140 | OFV = 67.543
-#&gt; It. 145 | OFV = 67.543
-#&gt; It. 150 | OFV = 67.543
-#&gt; It. 155 | OFV = 67.543
-#&gt; It. 160 | OFV = 67.543
-#&gt; It. 165 | OFV = 67.543
-#&gt; It. 170 | OFV = 67.543
-#&gt; It. 175 | OFV = 67.543
-#&gt; It. 180 | OFV = 67.543
-#&gt; It. 185 | OFV = 67.543
-#&gt; It. 190 | OFV = 67.543
-#&gt; It. 195 | OFV = 67.543
-#&gt; It. 200 | OFV = 67.543
-#&gt; It. 205 | OFV = 67.543
-#&gt; It. 210 | OFV = 67.543
-#&gt; It. 215 | OFV = 67.543
-#&gt; It. 220 | OFV = 67.543
-#&gt; It. 225 | OFV = 67.543
-#&gt; It. 230 | OFV = 67.543
-#&gt; It. 235 | OFV = 67.543
-#&gt; It. 240 | OFV = 67.543
-#&gt; It. 245 | OFV = 67.543
-#&gt; It. 250 | OFV = 67.543
-#&gt; It. 255 | OFV = 67.543
-#&gt; It. 260 | OFV = 67.543
-#&gt; It. 265 | OFV = 67.543
-#&gt; It. 270 | OFV = 67.543
-#&gt; It. 275 | OFV = 67.543
-#&gt; It. 280 | OFV = 67.543
-#&gt; It. 285 | OFV = 67.543
-#&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
-#&gt; 
-#&gt; Total iterations: 289 
-#&gt; Elapsed time: 0.145 seconds.
-#&gt; 
-#&gt; Final OFV =  67.54299 
-#&gt; Parameters: -15.35007 
-#&gt; </div><div class='input'>
-<span class='co'># often not as good performance when upper and lower bounds are poor</span>
-<span class='no'>res2</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>, <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>Inf</span>,<span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>Inf</span>)</div><div class='output co'>#&gt; It.   5 | OFV = 86.9115
-#&gt; It.  10 | OFV = 74.7515
-#&gt; It.  15 | OFV = 74.7515
-#&gt; It.  20 | OFV = 74.7515
-#&gt; It.  25 | OFV = 74.7515
-#&gt; It.  30 | OFV = 74.7515
-#&gt; It.  35 | OFV = 71.5911
-#&gt; It.  40 | OFV = 71.5911
-#&gt; It.  45 | OFV = 71.5911
-#&gt; It.  50 | OFV = 71.5911
-#&gt; It.  55 | OFV = 71.5911
-#&gt; It.  60 | OFV = 71.5911
-#&gt; It.  65 | OFV = 71.5911
-#&gt; It.  70 | OFV = 70.7047
-#&gt; It.  75 | OFV = 70.7047
-#&gt; It.  80 | OFV = 70.7047
-#&gt; It.  85 | OFV = 70.7047
-#&gt; It.  90 | OFV = 70.7047
-#&gt; It.  95 | OFV = 70.7047
-#&gt; It. 100 | OFV = 70.7047
-#&gt; It. 105 | OFV = 70.7047
-#&gt; It. 110 | OFV = 70.7047
-#&gt; It. 115 | OFV = 70.7047
-#&gt; It. 120 | OFV = 70.7047
-#&gt; It. 125 | OFV = 70.1869
-#&gt; It. 130 | OFV = 70.1869
-#&gt; It. 135 | OFV = 70.1869
-#&gt; It. 140 | OFV = 70.1869
-#&gt; It. 145 | OFV = 70.1869
-#&gt; It. 150 | OFV = 70.1869
-#&gt; It. 155 | OFV = 70.1869
-#&gt; It. 160 | OFV = 70.1869
-#&gt; It. 165 | OFV = 70.1869
-#&gt; It. 170 | OFV = 70.1869
-#&gt; It. 175 | OFV = 70.1869
-#&gt; It. 180 | OFV = 69.2157
-#&gt; It. 185 | OFV = 69.2157
-#&gt; It. 190 | OFV = 69.2157
-#&gt; It. 195 | OFV = 69.2157
-#&gt; It. 200 | OFV = 69.2157
-#&gt; It. 205 | OFV = 69.2157
-#&gt; It. 210 | OFV = 69.2157
-#&gt; It. 215 | OFV = 69.2157
-#&gt; It. 220 | OFV = 69.2157
-#&gt; It. 225 | OFV = 69.2157
-#&gt; It. 230 | OFV = 69.2157
-#&gt; It. 235 | OFV = 69.2157
-#&gt; It. 240 | OFV = 69.2157
-#&gt; It. 245 | OFV = 69.2157
-#&gt; It. 250 | OFV = 69.2157
-#&gt; It. 255 | OFV = 69.2157
-#&gt; It. 260 | OFV = 68.1232
-#&gt; It. 265 | OFV = 67.91
-#&gt; It. 270 | OFV = 67.91
-#&gt; It. 275 | OFV = 67.91
-#&gt; It. 280 | OFV = 67.91
-#&gt; It. 285 | OFV = 67.91
-#&gt; It. 290 | OFV = 67.91
-#&gt; It. 295 | OFV = 67.91
-#&gt; It. 300 | OFV = 67.91
-#&gt; It. 305 | OFV = 67.91
-#&gt; It. 310 | OFV = 67.91
-#&gt; It. 315 | OFV = 67.91
-#&gt; It. 320 | OFV = 67.91
-#&gt; It. 325 | OFV = 67.91
-#&gt; It. 330 | OFV = 67.91
-#&gt; It. 335 | OFV = 67.91
-#&gt; It. 340 | OFV = 67.91
-#&gt; It. 345 | OFV = 67.91
-#&gt; It. 350 | OFV = 67.91
-#&gt; It. 355 | OFV = 67.91
-#&gt; It. 360 | OFV = 67.91
-#&gt; It. 365 | OFV = 67.91
-#&gt; It. 370 | OFV = 67.91
-#&gt; It. 375 | OFV = 67.91
-#&gt; It. 380 | OFV = 67.91
-#&gt; It. 385 | OFV = 67.91
-#&gt; It. 390 | OFV = 67.91
-#&gt; It. 395 | OFV = 67.91
-#&gt; It. 400 | OFV = 67.91
+<span class='no'>res1</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>,<span class='kw'>lower</span> <span class='kw'>=</span> -<span class='fl'>50</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; It.   5 | OFV = 79.8331
+#&gt; It.  10 | OFV = 79.8331
+#&gt; It.  15 | OFV = 75.2475
+#&gt; It.  20 | OFV = 73.2557
+#&gt; It.  25 | OFV = 73.0856
+#&gt; It.  30 | OFV = 73.0856
+#&gt; It.  35 | OFV = 70.9756
+#&gt; It.  40 | OFV = 70.9756
+#&gt; It.  45 | OFV = 70.9756
+#&gt; It.  50 | OFV = 70.9756
+#&gt; It.  55 | OFV = 70.9756
+#&gt; It.  60 | OFV = 70.9756
+#&gt; It.  65 | OFV = 68.4906
+#&gt; It.  70 | OFV = 68.4906
+#&gt; It.  75 | OFV = 68.4906
+#&gt; It.  80 | OFV = 68.4906
+#&gt; It.  85 | OFV = 68.4906
+#&gt; It.  90 | OFV = 68.4906
+#&gt; It.  95 | OFV = 68.4906
+#&gt; It. 100 | OFV = 68.4906
+#&gt; It. 105 | OFV = 68.4906
+#&gt; It. 110 | OFV = 68.4906
+#&gt; It. 115 | OFV = 68.4906
+#&gt; It. 120 | OFV = 68.4906
+#&gt; It. 125 | OFV = 68.4906
+#&gt; It. 130 | OFV = 68.4906
+#&gt; It. 135 | OFV = 68.4906
+#&gt; It. 140 | OFV = 68.4906
+#&gt; It. 145 | OFV = 68.4906
+#&gt; It. 150 | OFV = 68.4906
+#&gt; It. 155 | OFV = 68.4906
+#&gt; It. 160 | OFV = 68.4906
+#&gt; It. 165 | OFV = 68.4906
+#&gt; It. 170 | OFV = 68.4906
+#&gt; It. 175 | OFV = 68.4906
+#&gt; It. 180 | OFV = 68.4906
+#&gt; It. 185 | OFV = 68.4906
+#&gt; It. 190 | OFV = 68.4906
+#&gt; It. 195 | OFV = 68.4906
+#&gt; It. 200 | OFV = 68.4906
+#&gt; It. 205 | OFV = 68.4906
+#&gt; It. 210 | OFV = 68.4906
+#&gt; It. 215 | OFV = 68.4906
+#&gt; It. 220 | OFV = 68.4906
+#&gt; It. 225 | OFV = 68.4906
+#&gt; It. 230 | OFV = 68.4906
+#&gt; It. 235 | OFV = 68.4906
+#&gt; It. 240 | OFV = 68.4906
+#&gt; It. 245 | OFV = 68.4906
+#&gt; It. 250 | OFV = 68.4906
+#&gt; It. 255 | OFV = 68.4906
+#&gt; It. 260 | OFV = 67.5948
+#&gt; It. 265 | OFV = 67.5948
+#&gt; It. 270 | OFV = 67.5948
+#&gt; It. 275 | OFV = 67.5948
+#&gt; It. 280 | OFV = 67.5948
+#&gt; It. 285 | OFV = 67.5948
+#&gt; It. 290 | OFV = 67.5948
+#&gt; It. 295 | OFV = 67.5948
+#&gt; It. 300 | OFV = 67.5948
+#&gt; It. 305 | OFV = 67.5948
+#&gt; It. 310 | OFV = 67.5948
+#&gt; It. 315 | OFV = 67.5948
+#&gt; It. 320 | OFV = 67.5948
+#&gt; It. 325 | OFV = 67.5948
+#&gt; It. 330 | OFV = 67.5948
+#&gt; It. 335 | OFV = 67.5948
+#&gt; It. 340 | OFV = 67.5948
+#&gt; It. 345 | OFV = 67.5948
+#&gt; It. 350 | OFV = 67.5948
+#&gt; It. 355 | OFV = 67.5948
+#&gt; It. 360 | OFV = 67.5948
+#&gt; It. 365 | OFV = 67.5948
+#&gt; It. 370 | OFV = 67.5948
+#&gt; It. 375 | OFV = 67.5948
+#&gt; It. 380 | OFV = 67.5948
+#&gt; It. 385 | OFV = 67.5948
+#&gt; It. 390 | OFV = 67.5948
+#&gt; It. 395 | OFV = 67.5948
+#&gt; It. 400 | OFV = 67.5948
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.16 seconds.
+#&gt; Elapsed time: 0.161 seconds.
 #&gt; 
-#&gt; Final OFV =  67.90997 
-#&gt; Parameters: -16.40973 
+#&gt; Final OFV =  67.59478 
+#&gt; Parameters: -16.26615 
+#&gt; </div><div class='input'>
+<span class='co'># often not as good performance when upper and lower bounds are poor</span>
+<span class='no'>res2</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>, <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>Inf</span>,<span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>Inf</span>)</div><div class='output co'>#&gt; It.   5 | OFV = 156.426
+#&gt; It.  10 | OFV = 73.215
+#&gt; It.  15 | OFV = 73.215
+#&gt; It.  20 | OFV = 73.215
+#&gt; It.  25 | OFV = 73.215
+#&gt; It.  30 | OFV = 69.3465
+#&gt; It.  35 | OFV = 69.3465
+#&gt; It.  40 | OFV = 69.3465
+#&gt; It.  45 | OFV = 69.3465
+#&gt; It.  50 | OFV = 69.3465
+#&gt; It.  55 | OFV = 69.3465
+#&gt; It.  60 | OFV = 69.3465
+#&gt; It.  65 | OFV = 69.3465
+#&gt; It.  70 | OFV = 69.3465
+#&gt; It.  75 | OFV = 69.3465
+#&gt; It.  80 | OFV = 69.3465
+#&gt; It.  85 | OFV = 69.3465
+#&gt; It.  90 | OFV = 69.3465
+#&gt; It.  95 | OFV = 67.7549
+#&gt; It. 100 | OFV = 67.7549
+#&gt; It. 105 | OFV = 67.7549
+#&gt; It. 110 | OFV = 67.7549
+#&gt; It. 115 | OFV = 67.7549
+#&gt; It. 120 | OFV = 67.7549
+#&gt; It. 125 | OFV = 67.7549
+#&gt; It. 130 | OFV = 67.7549
+#&gt; It. 135 | OFV = 67.7549
+#&gt; It. 140 | OFV = 67.7549
+#&gt; It. 145 | OFV = 67.7549
+#&gt; It. 150 | OFV = 67.7549
+#&gt; It. 155 | OFV = 67.7549
+#&gt; It. 160 | OFV = 67.7549
+#&gt; It. 165 | OFV = 67.7549
+#&gt; It. 170 | OFV = 67.7549
+#&gt; It. 175 | OFV = 67.7549
+#&gt; It. 180 | OFV = 67.7549
+#&gt; It. 185 | OFV = 67.7549
+#&gt; It. 190 | OFV = 67.7549
+#&gt; It. 195 | OFV = 67.7549
+#&gt; It. 200 | OFV = 67.7549
+#&gt; It. 205 | OFV = 67.7549
+#&gt; It. 210 | OFV = 67.7549
+#&gt; It. 215 | OFV = 67.7549
+#&gt; It. 220 | OFV = 67.7549
+#&gt; It. 225 | OFV = 67.7549
+#&gt; It. 230 | OFV = 67.7549
+#&gt; It. 235 | OFV = 67.7549
+#&gt; It. 240 | OFV = 67.7549
+#&gt; It. 245 | OFV = 67.7549
+#&gt; It. 250 | OFV = 67.7549
+#&gt; It. 255 | OFV = 67.7549
+#&gt; It. 260 | OFV = 67.7549
+#&gt; It. 265 | OFV = 67.7549
+#&gt; It. 270 | OFV = 67.7549
+#&gt; It. 275 | OFV = 67.7549
+#&gt; It. 280 | OFV = 67.7549
+#&gt; It. 285 | OFV = 67.7549
+#&gt; It. 290 | OFV = 67.7549
+#&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
+#&gt; 
+#&gt; Total iterations: 292 
+#&gt; Elapsed time: 0.08 seconds.
+#&gt; 
+#&gt; Final OFV =  67.75489 
+#&gt; Parameters: -15.03425 
 #&gt; </div><div class='input'>
 # Only integer values allowed
 </div><span class='co'># NOT RUN {</span>
@@ -451,91 +468,91 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'>## 25-dimensional box constrained</span>
 <span class='co'>#optim(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),method = "L-BFGS-B") </span>
 <span class='no'>res_box</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'>rep</span>(<span class='fl'>3</span>, <span class='fl'>25</span>), <span class='no'>flb</span>,<span class='kw'>lower</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>2</span>, <span class='fl'>25</span>), <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>4</span>, <span class='fl'>25</span>))</div><div class='output co'>#&gt; It.   5 | OFV = 3460
-#&gt; It.  10 | OFV = 3379.75
-#&gt; It.  15 | OFV = 2383.35
-#&gt; It.  20 | OFV = 2246.38
-#&gt; It.  25 | OFV = 2194.89
-#&gt; It.  30 | OFV = 2150.03
-#&gt; It.  35 | OFV = 2150.03
-#&gt; It.  40 | OFV = 2150.03
-#&gt; It.  45 | OFV = 2150.03
-#&gt; It.  50 | OFV = 2021.76
-#&gt; It.  55 | OFV = 2021.76
-#&gt; It.  60 | OFV = 2021.76
-#&gt; It.  65 | OFV = 1341.19
-#&gt; It.  70 | OFV = 1341.19
-#&gt; It.  75 | OFV = 1341.19
-#&gt; It.  80 | OFV = 1341.19
-#&gt; It.  85 | OFV = 1341.19
-#&gt; It.  90 | OFV = 1341.19
-#&gt; It.  95 | OFV = 1341.19
-#&gt; It. 100 | OFV = 1341.19
-#&gt; It. 105 | OFV = 1341.19
-#&gt; It. 110 | OFV = 1341.19
-#&gt; It. 115 | OFV = 1320.27
-#&gt; It. 120 | OFV = 1320.27
-#&gt; It. 125 | OFV = 1320.27
-#&gt; It. 130 | OFV = 1320.27
-#&gt; It. 135 | OFV = 1193.59
-#&gt; It. 140 | OFV = 971.399
-#&gt; It. 145 | OFV = 958.066
-#&gt; It. 150 | OFV = 879.646
-#&gt; It. 155 | OFV = 825.278
-#&gt; It. 160 | OFV = 825.278
-#&gt; It. 165 | OFV = 799.285
-#&gt; It. 170 | OFV = 753.549
-#&gt; It. 175 | OFV = 753.549
-#&gt; It. 180 | OFV = 753.549
-#&gt; It. 185 | OFV = 753.549
-#&gt; It. 190 | OFV = 753.549
-#&gt; It. 195 | OFV = 687.228
-#&gt; It. 200 | OFV = 687.228
-#&gt; It. 205 | OFV = 687.228
-#&gt; It. 210 | OFV = 648.052
-#&gt; It. 215 | OFV = 648.052
-#&gt; It. 220 | OFV = 648.052
-#&gt; It. 225 | OFV = 648.052
-#&gt; It. 230 | OFV = 617.499
-#&gt; It. 235 | OFV = 617.499
-#&gt; It. 240 | OFV = 617.499
-#&gt; It. 245 | OFV = 617.499
-#&gt; It. 250 | OFV = 602.132
-#&gt; It. 255 | OFV = 602.132
-#&gt; It. 260 | OFV = 602.132
-#&gt; It. 265 | OFV = 602.132
-#&gt; It. 270 | OFV = 602.132
-#&gt; It. 275 | OFV = 602.132
-#&gt; It. 280 | OFV = 602.132
-#&gt; It. 285 | OFV = 602.132
-#&gt; It. 290 | OFV = 563.161
-#&gt; It. 295 | OFV = 563.161
-#&gt; It. 300 | OFV = 563.161
-#&gt; It. 305 | OFV = 563.161
-#&gt; It. 310 | OFV = 563.161
-#&gt; It. 315 | OFV = 561.495
-#&gt; It. 320 | OFV = 561.495
-#&gt; It. 325 | OFV = 561.495
-#&gt; It. 330 | OFV = 561.495
-#&gt; It. 335 | OFV = 561.495
-#&gt; It. 340 | OFV = 561.495
-#&gt; It. 345 | OFV = 561.495
-#&gt; It. 350 | OFV = 560.851
-#&gt; It. 355 | OFV = 539.052
-#&gt; It. 360 | OFV = 510.115
-#&gt; It. 365 | OFV = 510.115
-#&gt; It. 370 | OFV = 510.115
-#&gt; It. 375 | OFV = 510.115
-#&gt; It. 380 | OFV = 510.115
-#&gt; It. 385 | OFV = 510.115
-#&gt; It. 390 | OFV = 510.115
-#&gt; It. 395 | OFV = 510.115
-#&gt; It. 400 | OFV = 510.115
+#&gt; It.  10 | OFV = 3460
+#&gt; It.  15 | OFV = 3460
+#&gt; It.  20 | OFV = 3460
+#&gt; It.  25 | OFV = 3460
+#&gt; It.  30 | OFV = 3460
+#&gt; It.  35 | OFV = 3460
+#&gt; It.  40 | OFV = 3230.43
+#&gt; It.  45 | OFV = 3230.43
+#&gt; It.  50 | OFV = 2601
+#&gt; It.  55 | OFV = 2585.57
+#&gt; It.  60 | OFV = 2585.57
+#&gt; It.  65 | OFV = 2585.57
+#&gt; It.  70 | OFV = 2336.41
+#&gt; It.  75 | OFV = 2336.41
+#&gt; It.  80 | OFV = 2336.41
+#&gt; It.  85 | OFV = 2336.41
+#&gt; It.  90 | OFV = 2336.41
+#&gt; It.  95 | OFV = 2336.41
+#&gt; It. 100 | OFV = 2252.76
+#&gt; It. 105 | OFV = 2252.76
+#&gt; It. 110 | OFV = 2182.18
+#&gt; It. 115 | OFV = 1822.66
+#&gt; It. 120 | OFV = 1789.38
+#&gt; It. 125 | OFV = 1426.35
+#&gt; It. 130 | OFV = 1426.35
+#&gt; It. 135 | OFV = 1426.35
+#&gt; It. 140 | OFV = 1426.35
+#&gt; It. 145 | OFV = 1426.35
+#&gt; It. 150 | OFV = 1426.35
+#&gt; It. 155 | OFV = 1383.65
+#&gt; It. 160 | OFV = 1383.65
+#&gt; It. 165 | OFV = 1383.65
+#&gt; It. 170 | OFV = 1383.65
+#&gt; It. 175 | OFV = 1338.19
+#&gt; It. 180 | OFV = 1338.19
+#&gt; It. 185 | OFV = 1316.15
+#&gt; It. 190 | OFV = 1316.15
+#&gt; It. 195 | OFV = 1316.15
+#&gt; It. 200 | OFV = 1201.48
+#&gt; It. 205 | OFV = 1201.48
+#&gt; It. 210 | OFV = 1201.48
+#&gt; It. 215 | OFV = 1201.48
+#&gt; It. 220 | OFV = 1201.48
+#&gt; It. 225 | OFV = 1201.48
+#&gt; It. 230 | OFV = 1201.48
+#&gt; It. 235 | OFV = 1201.48
+#&gt; It. 240 | OFV = 1201.48
+#&gt; It. 245 | OFV = 1201.48
+#&gt; It. 250 | OFV = 1201.48
+#&gt; It. 255 | OFV = 1101.74
+#&gt; It. 260 | OFV = 1101.74
+#&gt; It. 265 | OFV = 979.291
+#&gt; It. 270 | OFV = 889.084
+#&gt; It. 275 | OFV = 889.084
+#&gt; It. 280 | OFV = 889.084
+#&gt; It. 285 | OFV = 807.928
+#&gt; It. 290 | OFV = 807.928
+#&gt; It. 295 | OFV = 807.928
+#&gt; It. 300 | OFV = 807.928
+#&gt; It. 305 | OFV = 793.456
+#&gt; It. 310 | OFV = 793.456
+#&gt; It. 315 | OFV = 793.456
+#&gt; It. 320 | OFV = 793.456
+#&gt; It. 325 | OFV = 793.456
+#&gt; It. 330 | OFV = 768.705
+#&gt; It. 335 | OFV = 768.705
+#&gt; It. 340 | OFV = 745.287
+#&gt; It. 345 | OFV = 738.308
+#&gt; It. 350 | OFV = 738.308
+#&gt; It. 355 | OFV = 738.308
+#&gt; It. 360 | OFV = 738.308
+#&gt; It. 365 | OFV = 738.308
+#&gt; It. 370 | OFV = 738.308
+#&gt; It. 375 | OFV = 738.308
+#&gt; It. 380 | OFV = 738.308
+#&gt; It. 385 | OFV = 680.261
+#&gt; It. 390 | OFV = 680.261
+#&gt; It. 395 | OFV = 680.261
+#&gt; It. 400 | OFV = 680.261
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.194 seconds.
+#&gt; Elapsed time: 0.166 seconds.
 #&gt; 
-#&gt; Final OFV =  510.1147 
-#&gt; Parameters: 2 2.339315 2.219267 2.175737 2 2.178748 2 2.072158 2.146731 2 2 2.050553 2.019661 2 2.211953 2.10268 2 2 2 2 2 2 2 2.460606 2.476823 
+#&gt; Final OFV =  680.261 
+#&gt; Parameters: 2.344519 2.032873 2.677441 2 2.355185 2.369762 2.29259 2.031975 2 2 2.04032 2 2.239554 2.110507 2 2.015417 2.07755 2 2 2.211626 2 2.561608 2.195083 2.297083 3.369129 
 #&gt; </div><div class='input'>
 
 <span class='co'>## Combinatorial optimization: Traveling salesman problem</span>
@@ -556,92 +573,92 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 }
 
 <span class='no'>sq</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>eurodistmat</span>), <span class='fl'>1</span>)  <span class='co'># Initial sequence: alphabetic</span>
-<span class='no'>res3</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='no'>sq</span>,<span class='no'>distance</span>,<span class='kw'>generator</span><span class='kw'>=</span><span class='no'>genseq</span>) <span class='co'># Near optimum distance around 12842</span></div><div class='output co'>#&gt; It.   5 | OFV = 26912
-#&gt; It.  10 | OFV = 26912
-#&gt; It.  15 | OFV = 24562
-#&gt; It.  20 | OFV = 23890
-#&gt; It.  25 | OFV = 23890
-#&gt; It.  30 | OFV = 20497
-#&gt; It.  35 | OFV = 20497
-#&gt; It.  40 | OFV = 20497
-#&gt; It.  45 | OFV = 20497
-#&gt; It.  50 | OFV = 20497
-#&gt; It.  55 | OFV = 20143
-#&gt; It.  60 | OFV = 20143
-#&gt; It.  65 | OFV = 20143
-#&gt; It.  70 | OFV = 20143
-#&gt; It.  75 | OFV = 20143
-#&gt; It.  80 | OFV = 18505
-#&gt; It.  85 | OFV = 18505
-#&gt; It.  90 | OFV = 18505
-#&gt; It.  95 | OFV = 18505
-#&gt; It. 100 | OFV = 18313
-#&gt; It. 105 | OFV = 18313
-#&gt; It. 110 | OFV = 18313
-#&gt; It. 115 | OFV = 18313
-#&gt; It. 120 | OFV = 18313
-#&gt; It. 125 | OFV = 18313
-#&gt; It. 130 | OFV = 18313
-#&gt; It. 135 | OFV = 18313
-#&gt; It. 140 | OFV = 18313
-#&gt; It. 145 | OFV = 18313
-#&gt; It. 150 | OFV = 18313
-#&gt; It. 155 | OFV = 18313
-#&gt; It. 160 | OFV = 17860
-#&gt; It. 165 | OFV = 17860
-#&gt; It. 170 | OFV = 17860
-#&gt; It. 175 | OFV = 17860
-#&gt; It. 180 | OFV = 17860
-#&gt; It. 185 | OFV = 17860
-#&gt; It. 190 | OFV = 17860
-#&gt; It. 195 | OFV = 17860
-#&gt; It. 200 | OFV = 17860
-#&gt; It. 205 | OFV = 17860
-#&gt; It. 210 | OFV = 17859
-#&gt; It. 215 | OFV = 17859
-#&gt; It. 220 | OFV = 17859
-#&gt; It. 225 | OFV = 17859
-#&gt; It. 230 | OFV = 17859
-#&gt; It. 235 | OFV = 17859
-#&gt; It. 240 | OFV = 17393
-#&gt; It. 245 | OFV = 17393
-#&gt; It. 250 | OFV = 17393
-#&gt; It. 255 | OFV = 17393
-#&gt; It. 260 | OFV = 17393
-#&gt; It. 265 | OFV = 17393
-#&gt; It. 270 | OFV = 17393
-#&gt; It. 275 | OFV = 17393
-#&gt; It. 280 | OFV = 17393
-#&gt; It. 285 | OFV = 17393
-#&gt; It. 290 | OFV = 17393
-#&gt; It. 295 | OFV = 17393
-#&gt; It. 300 | OFV = 17393
-#&gt; It. 305 | OFV = 17393
-#&gt; It. 310 | OFV = 17393
-#&gt; It. 315 | OFV = 17393
-#&gt; It. 320 | OFV = 17393
-#&gt; It. 325 | OFV = 17393
-#&gt; It. 330 | OFV = 17393
-#&gt; It. 335 | OFV = 17393
-#&gt; It. 340 | OFV = 17393
-#&gt; It. 345 | OFV = 17393
-#&gt; It. 350 | OFV = 17393
-#&gt; It. 355 | OFV = 17393
-#&gt; It. 360 | OFV = 17393
-#&gt; It. 365 | OFV = 17393
-#&gt; It. 370 | OFV = 17393
-#&gt; It. 375 | OFV = 17393
-#&gt; It. 380 | OFV = 17393
-#&gt; It. 385 | OFV = 17393
-#&gt; It. 390 | OFV = 17393
-#&gt; It. 395 | OFV = 17393
-#&gt; It. 400 | OFV = 17393
+<span class='no'>res3</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='no'>sq</span>,<span class='no'>distance</span>,<span class='kw'>generator</span><span class='kw'>=</span><span class='no'>genseq</span>) <span class='co'># Near optimum distance around 12842</span></div><div class='output co'>#&gt; It.   5 | OFV = 28661
+#&gt; It.  10 | OFV = 27314
+#&gt; It.  15 | OFV = 23721
+#&gt; It.  20 | OFV = 22473
+#&gt; It.  25 | OFV = 21851
+#&gt; It.  30 | OFV = 21730
+#&gt; It.  35 | OFV = 21730
+#&gt; It.  40 | OFV = 21730
+#&gt; It.  45 | OFV = 21730
+#&gt; It.  50 | OFV = 21730
+#&gt; It.  55 | OFV = 21730
+#&gt; It.  60 | OFV = 21730
+#&gt; It.  65 | OFV = 21730
+#&gt; It.  70 | OFV = 20426
+#&gt; It.  75 | OFV = 17687
+#&gt; It.  80 | OFV = 17687
+#&gt; It.  85 | OFV = 17403
+#&gt; It.  90 | OFV = 17057
+#&gt; It.  95 | OFV = 17057
+#&gt; It. 100 | OFV = 17057
+#&gt; It. 105 | OFV = 17057
+#&gt; It. 110 | OFV = 16304
+#&gt; It. 115 | OFV = 16304
+#&gt; It. 120 | OFV = 16304
+#&gt; It. 125 | OFV = 16304
+#&gt; It. 130 | OFV = 16304
+#&gt; It. 135 | OFV = 16304
+#&gt; It. 140 | OFV = 16304
+#&gt; It. 145 | OFV = 16304
+#&gt; It. 150 | OFV = 16304
+#&gt; It. 155 | OFV = 16304
+#&gt; It. 160 | OFV = 16304
+#&gt; It. 165 | OFV = 15698
+#&gt; It. 170 | OFV = 15698
+#&gt; It. 175 | OFV = 15698
+#&gt; It. 180 | OFV = 15698
+#&gt; It. 185 | OFV = 15698
+#&gt; It. 190 | OFV = 15698
+#&gt; It. 195 | OFV = 15698
+#&gt; It. 200 | OFV = 15698
+#&gt; It. 205 | OFV = 15698
+#&gt; It. 210 | OFV = 15698
+#&gt; It. 215 | OFV = 15698
+#&gt; It. 220 | OFV = 15698
+#&gt; It. 225 | OFV = 15698
+#&gt; It. 230 | OFV = 15698
+#&gt; It. 235 | OFV = 15698
+#&gt; It. 240 | OFV = 15698
+#&gt; It. 245 | OFV = 15698
+#&gt; It. 250 | OFV = 15698
+#&gt; It. 255 | OFV = 15698
+#&gt; It. 260 | OFV = 15698
+#&gt; It. 265 | OFV = 15698
+#&gt; It. 270 | OFV = 15488
+#&gt; It. 275 | OFV = 15488
+#&gt; It. 280 | OFV = 15488
+#&gt; It. 285 | OFV = 15488
+#&gt; It. 290 | OFV = 15488
+#&gt; It. 295 | OFV = 15488
+#&gt; It. 300 | OFV = 15488
+#&gt; It. 305 | OFV = 15313
+#&gt; It. 310 | OFV = 15313
+#&gt; It. 315 | OFV = 15313
+#&gt; It. 320 | OFV = 15313
+#&gt; It. 325 | OFV = 15313
+#&gt; It. 330 | OFV = 15313
+#&gt; It. 335 | OFV = 15313
+#&gt; It. 340 | OFV = 15313
+#&gt; It. 345 | OFV = 15190
+#&gt; It. 350 | OFV = 15190
+#&gt; It. 355 | OFV = 15190
+#&gt; It. 360 | OFV = 15190
+#&gt; It. 365 | OFV = 15190
+#&gt; It. 370 | OFV = 15190
+#&gt; It. 375 | OFV = 15190
+#&gt; It. 380 | OFV = 15190
+#&gt; It. 385 | OFV = 15190
+#&gt; It. 390 | OFV = 15190
+#&gt; It. 395 | OFV = 15190
+#&gt; It. 400 | OFV = 15190
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.232 seconds.
+#&gt; Elapsed time: 0.186 seconds.
 #&gt; 
-#&gt; Final OFV =  17393 
-#&gt; Parameters: 1 19 3 4 5 12 9 14 18 11 7 20 13 2 15 8 16 17 10 6 21 1 
+#&gt; Final OFV =  15190 
+#&gt; Parameters: 1 19 3 11 6 10 20 7 4 5 14 12 9 2 15 13 18 8 16 17 21 1 
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
   <span class='co'># plot of initial sequence</span>
@@ -691,68 +708,55 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'># }</span><div class='input'>
 <span class='co'># one-dimensional function</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>)  (<span class='no'>x</span>^<span class='fl'>2</span>+<span class='no'>x</span>)*<span class='fu'>cos</span>(<span class='no'>x</span>) <span class='co'># -10 &lt; x &lt; 10</span>
-<span class='no'>res_max</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>0</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>10</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>maximize</span><span class='kw'>=</span><span class='fl'>TRUE</span>) <span class='co'># sometimes to local maxima</span></div><div class='output co'>#&gt; It.   5 | OFV = 0.27775
-#&gt; It.  10 | OFV = 23.8508
-#&gt; It.  15 | OFV = 23.8508
-#&gt; It.  20 | OFV = 33.5313
-#&gt; It.  25 | OFV = 34.8367
-#&gt; It.  30 | OFV = 34.8367
-#&gt; It.  35 | OFV = 34.8367
-#&gt; It.  40 | OFV = 34.8367
-#&gt; It.  45 | OFV = 34.8367
-#&gt; It.  50 | OFV = 34.8367
-#&gt; It.  55 | OFV = 34.8367
-#&gt; It.  60 | OFV = 34.8367
-#&gt; It.  65 | OFV = 34.8367
-#&gt; It.  70 | OFV = 34.8367
-#&gt; It.  75 | OFV = 34.8367
-#&gt; It.  80 | OFV = 35.1073
-#&gt; It.  85 | OFV = 35.1073
-#&gt; It.  90 | OFV = 35.1073
-#&gt; It.  95 | OFV = 35.1073
-#&gt; It. 100 | OFV = 35.1073
-#&gt; It. 105 | OFV = 35.1073
-#&gt; It. 110 | OFV = 35.1073
-#&gt; It. 115 | OFV = 35.1073
-#&gt; It. 120 | OFV = 35.1073
-#&gt; It. 125 | OFV = 35.1073
-#&gt; It. 130 | OFV = 35.1073
-#&gt; It. 135 | OFV = 35.1073
-#&gt; It. 140 | OFV = 35.1073
-#&gt; It. 145 | OFV = 35.1073
-#&gt; It. 150 | OFV = 35.1073
-#&gt; It. 155 | OFV = 35.1073
-#&gt; It. 160 | OFV = 35.1073
-#&gt; It. 165 | OFV = 35.1073
-#&gt; It. 170 | OFV = 35.1073
-#&gt; It. 175 | OFV = 35.1073
-#&gt; It. 180 | OFV = 35.1073
-#&gt; It. 185 | OFV = 35.1073
-#&gt; It. 190 | OFV = 35.1073
-#&gt; It. 195 | OFV = 35.1073
-#&gt; It. 200 | OFV = 35.1073
-#&gt; It. 205 | OFV = 35.1073
-#&gt; It. 210 | OFV = 35.1073
-#&gt; It. 215 | OFV = 35.1073
-#&gt; It. 220 | OFV = 35.1073
-#&gt; It. 225 | OFV = 35.1073
-#&gt; It. 230 | OFV = 35.1073
-#&gt; It. 235 | OFV = 35.1073
-#&gt; It. 240 | OFV = 35.1073
-#&gt; It. 245 | OFV = 35.1073
-#&gt; It. 250 | OFV = 35.1073
-#&gt; It. 255 | OFV = 35.1073
-#&gt; It. 260 | OFV = 35.1073
-#&gt; It. 265 | OFV = 35.1073
-#&gt; It. 270 | OFV = 35.1073
-#&gt; It. 275 | OFV = 35.1073
+<span class='no'>res_max</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>0</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>10</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>maximize</span><span class='kw'>=</span><span class='fl'>TRUE</span>) <span class='co'># sometimes to local maxima</span></div><div class='output co'>#&gt; It.   5 | OFV = 1.08069
+#&gt; It.  10 | OFV = 35.2469
+#&gt; It.  15 | OFV = 47.6481
+#&gt; It.  20 | OFV = 47.6481
+#&gt; It.  25 | OFV = 47.6481
+#&gt; It.  30 | OFV = 47.6481
+#&gt; It.  35 | OFV = 47.6481
+#&gt; It.  40 | OFV = 47.6481
+#&gt; It.  45 | OFV = 47.6481
+#&gt; It.  50 | OFV = 47.6481
+#&gt; It.  55 | OFV = 47.6481
+#&gt; It.  60 | OFV = 47.6481
+#&gt; It.  65 | OFV = 47.6481
+#&gt; It.  70 | OFV = 47.6481
+#&gt; It.  75 | OFV = 47.6481
+#&gt; It.  80 | OFV = 47.6481
+#&gt; It.  85 | OFV = 47.6481
+#&gt; It.  90 | OFV = 47.6481
+#&gt; It.  95 | OFV = 47.6481
+#&gt; It. 100 | OFV = 47.6481
+#&gt; It. 105 | OFV = 47.6481
+#&gt; It. 110 | OFV = 47.6481
+#&gt; It. 115 | OFV = 47.6481
+#&gt; It. 120 | OFV = 47.6481
+#&gt; It. 125 | OFV = 47.6481
+#&gt; It. 130 | OFV = 47.6481
+#&gt; It. 135 | OFV = 47.6481
+#&gt; It. 140 | OFV = 47.6481
+#&gt; It. 145 | OFV = 47.6481
+#&gt; It. 150 | OFV = 47.6481
+#&gt; It. 155 | OFV = 47.6481
+#&gt; It. 160 | OFV = 47.6481
+#&gt; It. 165 | OFV = 47.6481
+#&gt; It. 170 | OFV = 47.6481
+#&gt; It. 175 | OFV = 47.6481
+#&gt; It. 180 | OFV = 47.6481
+#&gt; It. 185 | OFV = 47.6481
+#&gt; It. 190 | OFV = 47.6481
+#&gt; It. 195 | OFV = 47.6481
+#&gt; It. 200 | OFV = 47.6481
+#&gt; It. 205 | OFV = 47.6481
+#&gt; It. 210 | OFV = 47.6481
 #&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #&gt; 
-#&gt; Total iterations: 276 
-#&gt; Elapsed time: 0.108 seconds.
+#&gt; Total iterations: 212 
+#&gt; Elapsed time: 0.062 seconds.
 #&gt; 
-#&gt; Final OFV =  35.10733 
-#&gt; Parameters: -6.627403 
+#&gt; Final OFV =  47.64806 
+#&gt; Parameters: 6.606732 
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
   <span class='no'>res_min</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>0</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>10</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>10</span>) <span class='co'># sometimes to local minima</span>

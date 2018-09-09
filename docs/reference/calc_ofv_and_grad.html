@@ -53,7 +53,7 @@ method for nonlinear minimization with box constraints implemented in bfgsb_min.
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -63,27 +63,43 @@ method for nonlinear minimization with box constraints implemented in bfgsb_min.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -109,8 +125,9 @@ method for nonlinear minimization with box constraints implemented in <code><a h
     
     </div>
 
-    <pre class="usage"><span class='fu'>calc_ofv_and_grad</span>(<span class='no'>x</span>, <span class='no'>optxt</span>, <span class='no'>opta</span>, <span class='no'>model_switch</span>, <span class='no'>aa</span>, <span class='no'>axt</span>, <span class='no'>groupsize</span>, <span class='no'>ni</span>, <span class='no'>xtopto</span>,
-  <span class='no'>xopto</span>, <span class='no'>aopto</span>, <span class='no'>bpop</span>, <span class='no'>d</span>, <span class='no'>sigma</span>, <span class='no'>docc_full</span>, <span class='no'>poped.db</span>, <span class='kw'>only_fim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>calc_ofv_and_grad</span>(<span class='no'>x</span>, <span class='no'>optxt</span>, <span class='no'>opta</span>, <span class='no'>model_switch</span>, <span class='no'>aa</span>, <span class='no'>axt</span>, <span class='no'>groupsize</span>, <span class='no'>ni</span>,
+  <span class='no'>xtopto</span>, <span class='no'>xopto</span>, <span class='no'>aopto</span>, <span class='no'>bpop</span>, <span class='no'>d</span>, <span class='no'>sigma</span>, <span class='no'>docc_full</span>, <span class='no'>poped.db</span>,
+  <span class='kw'>only_fim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +158,7 @@ method for nonlinear minimization with box constraints implemented in <code><a h
     </tr>
     <tr>
       <th>groupsize</th>
-      <td><p>A vector of the numer of individuals in each group.</p></td>
+      <td><p>A vector of the number of individuals in each group.</p></td>
     </tr>
     <tr>
       <th>ni</th>
@@ -171,13 +188,13 @@ parameter value is to be used.</p></td>
     </tr>
     <tr>
       <th>d</th>
-      <td><p>Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+      <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a <code>c()</code>.</p></td>
     </tr>
     <tr>
       <th>sigma</th>
       <td><p>Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a <code>c()</code>.</p></td>
+can also just supply the diagonal parameter values (variances) as a <code>c()</code>.</p></td>
     </tr>
     <tr>
       <th>docc_full</th>
@@ -203,12 +220,12 @@ can also just supply the diagnonal parameter values (variances) as a <code>c()</
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt_gen.html'>RS_opt_gen</a></code>,
-  <code><a href='RS_opt.html'>RS_opt</a></code>, <code><a href='a_line_search.html'>a_line_search</a></code>,
-  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
-  <code><a href='mfea.html'>mfea</a></code>, <code><a href='optim_ARS.html'>optim_ARS</a></code>,
-  <code><a href='optim_LS.html'>optim_LS</a></code>, <code><a href='poped_optim_1.html'>poped_optim_1</a></code>,
-  <code><a href='poped_optim_2.html'>poped_optim_2</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
+  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
+  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
+  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>, <code><a href='mfea.html'>mfea</a></code>,
+  <code><a href='optim_ARS.html'>optim_ARS</a></code>, <code><a href='optim_LS.html'>optim_LS</a></code>,
+  <code><a href='poped_optim_1.html'>poped_optim_1</a></code>, <code><a href='poped_optim_2.html'>poped_optim_2</a></code>,
+  <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
   <code><a href='poped_optimize.html'>poped_optimize</a></code>, <code><a href='poped_optim.html'>poped_optim</a></code></p></div>
     
 

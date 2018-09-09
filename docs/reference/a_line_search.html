@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Optimize using line search — a_line_search" />
 
-<meta property="og:description" content="The function performs a grid search sequatially along 
+<meta property="og:description" content="The function performs a grid search sequentially along 
 design variables.  The grid is defined by ls_step_size." />
 <meta name="twitter:card" content="summary" />
 
@@ -52,7 +52,7 @@ design variables.  The grid is defined by ls_step_size." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -62,27 +62,43 @@ design variables.  The grid is defined by ls_step_size." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -102,14 +118,16 @@ design variables.  The grid is defined by ls_step_size." />
 
     <div class="ref-description">
     
-    <p>The function performs a grid search sequatially along 
+    <p>The function performs a grid search sequentially along 
 design variables.  The grid is defined by ls_step_size.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>a_line_search</span>(<span class='no'>poped.db</span>, <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>bED</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diff</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>fmf_initial</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>dmf_initial</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>], <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
+  <span class='kw'>fmf_initial</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>dmf_initial</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
+  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
   <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
   <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>],
   <span class='kw'>ls_step_size</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ls_step_size</span>)</pre>
@@ -158,11 +176,11 @@ If <code>0</code> then the OFV is calculated from poped.db.</p></td>
     </tr>
     <tr>
       <th>opt_samps</th>
-      <td><p>Are the nuber of sample times per group being optimized?</p></td>
+      <td><p>Are the number of sample times per group being optimized?</p></td>
     </tr>
     <tr>
       <th>opt_inds</th>
-      <td><p>Are the nuber of individuals per group being optimized?</p></td>
+      <td><p>Are the number of individuals per group being optimized?</p></td>
     </tr>
     <tr>
       <th>ls_step_size</th>
@@ -185,9 +203,8 @@ If <code>0</code> then the OFV is calculated from poped.db.</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt_gen.html'>RS_opt_gen</a></code>,
-  <code><a href='RS_opt.html'>RS_opt</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
-  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
+  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
+  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
   <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
   <code><a href='optim_ARS.html'>optim_ARS</a></code>, <code><a href='optim_LS.html'>optim_LS</a></code>,
   <code><a href='poped_optim_1.html'>poped_optim_1</a></code>, <code><a href='poped_optim_2.html'>poped_optim_2</a></code>,
@@ -263,43 +280,43 @@ If <code>0</code> then the OFV is calculated from poped.db.</p></td>
 #&gt;      OFV(MF) changed from 55.3964 to 55.512 
 #&gt; group 1 -- xt[7] changed from  90.0025 to  120
 #&gt;      OFV(MF) changed from 55.512 to 55.5449 
+#&gt; Searching xt2 on group 1
+#&gt; group 1 -- xt[2] changed from  1 to  0.01
+#&gt;      OFV(MF) changed from 55.5449 to 55.779 
+#&gt; group 1 -- xt[2] changed from  0.01 to  90.0025
+#&gt;      OFV(MF) changed from 55.779 to 55.8799 
+#&gt; group 1 -- xt[2] changed from  90.0025 to  120
+#&gt;      OFV(MF) changed from 55.8799 to 55.9016 
 #&gt; Searching xt5 on group 1
-#&gt; group 1 -- xt[5] changed from  24 to  0.01
-#&gt;      OFV(MF) changed from 55.5449 to 55.5464 
-#&gt; group 1 -- xt[5] changed from  0.01 to  90.0025
-#&gt;      OFV(MF) changed from 55.5464 to 55.6612 
-#&gt; group 1 -- xt[5] changed from  90.0025 to  120
-#&gt;      OFV(MF) changed from 55.6612 to 55.6755 
+#&gt; Searching xt1 on group 1
+#&gt; Searching xt8 on group 1
+#&gt; Searching xt3 on group 1
 #&gt; Searching xt6 on group 1
 #&gt; group 1 -- xt[6] changed from  36 to  30.0075
-#&gt;      OFV(MF) changed from 55.6755 to 55.7488 
-#&gt; Searching xt1 on group 1
-#&gt; group 1 -- xt[1] changed from  0.5 to  30.0075
-#&gt;      OFV(MF) changed from 55.7488 to 55.857 
+#&gt;      OFV(MF) changed from 55.9016 to 55.9504 
+#&gt; group 1 -- xt[6] changed from  30.0075 to  90.0025
+#&gt;      OFV(MF) changed from 55.9504 to 55.9617 
 #&gt; Searching xt4 on group 1
-#&gt; Searching xt3 on group 1
-#&gt; Searching xt2 on group 1
-#&gt; Searching xt8 on group 1
-#&gt;     OFV(MF): 55.857
+#&gt;     OFV(MF): 55.9617
 #&gt; 
-#&gt; Best value for OFV(MF) = 55.857
+#&gt; Best value for OFV(MF) = 55.9617
 #&gt; 
 #&gt; Best value for xt:
-#&gt; Group 1:      1      2      6  30.01  30.01    120    120    120
+#&gt; Group 1:    0.5      2      6     24     90    120    120    120
 #&gt; 
 #&gt; Searching a1 on individual/group 1
 #&gt; group 1 -- a[1] changed from  70 to  75.0025
-#&gt;      OFV(MF) changed from 55.857 to 56.0566 
+#&gt;      OFV(MF) changed from 55.9617 to 56.1549 
 #&gt; group 1 -- a[1] changed from  75.0025 to  100
-#&gt;      OFV(MF) changed from 56.0566 to 56.6925 
-#&gt;     OFV(MF): 56.6925
-#&gt; Best value for OFV(MF) = 56.6925
+#&gt;      OFV(MF) changed from 56.1549 to 56.7447 
+#&gt;     OFV(MF): 56.7447
+#&gt; Best value for OFV(MF) = 56.7447
 #&gt; 
 #&gt; Best value for a: 
 #&gt; Group 1: 100
 #&gt; 
 #&gt; 
-#&gt; Line search run time: 0.417 seconds
+#&gt; Line search run time: 0.414 seconds
 #&gt; ***************************
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>

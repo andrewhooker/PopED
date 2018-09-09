@@ -52,7 +52,7 @@ individual predictions and data predictions." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -62,27 +62,43 @@ individual predictions and data predictions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,16 +123,17 @@ individual predictions and data predictions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>plot_model_prediction</span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>groupsize_sim</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>separate.groups</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>sample.times.IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>sample.times.DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>PRED</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>IPRED.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>IPRED.lines.pctls</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.IPRED.lines</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>alpha.IPRED</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>sample.times.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>alpha.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>sample.times.DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times.DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>alpha.sample.times.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>alpha.sample.times.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Model Predictions"</span>, <span class='kw'>facet_scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
-  <span class='kw'>facet_label_names</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>model.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_model_prediction</span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>groupsize_sim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>separate.groups</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>sample.times.IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times.DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>PRED</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>IPRED.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>IPRED.lines.pctls</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.IPRED.lines</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
+  <span class='kw'>alpha.IPRED</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>sample.times.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>alpha.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>sample.times.DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>sample.times.DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.sample.times.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>alpha.sample.times.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Model Predictions"</span>,
+  <span class='kw'>facet_scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>facet_label_names</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>model.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,7 +192,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?</p></td>
     </tr>
     <tr>
       <th>alpha.IPRED</th>
-      <td><p>What should the tranparency of the IPRED CI?</p></td>
+      <td><p>What should the transparency of the IPRED CI?</p></td>
     </tr>
     <tr>
       <th>sample.times.size</th>
@@ -187,7 +204,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?</p></td>
     </tr>
     <tr>
       <th>alpha.DV</th>
-      <td><p>What should the tranparency of the DV CI?</p></td>
+      <td><p>What should the transparency of the DV CI?</p></td>
     </tr>
     <tr>
       <th>DV.lines</th>
@@ -236,7 +253,7 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?</p></td>
     <tr>
       <th>model.names</th>
       <td><p>A vector of names of the response model/s (the length of the 
-vector should be equal to the number of respose models). It is Null by default.</p></td>
+vector should be equal to the number of response models). It is Null by default.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Modified Federov Exchange Algorithm — mfea • PopED</title>
+<title>Modified Fedorov Exchange Algorithm — mfea • PopED</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Modified Federov Exchange Algorithm — mfea" />
+<meta property="og:title" content="Modified Fedorov Exchange Algorithm — mfea" />
 
-<meta property="og:description" content="Optimize the objective function using a modified Federov exchange algorithm.
+<meta property="og:description" content="Optimize the objective function using a modified Fedorov exchange algorithm.
 The function works for continuous and discrete optimization variables.
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.
@@ -56,7 +56,7 @@ if they are supplied then they are used instead of the arguments from the PopED 
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -66,27 +66,43 @@ if they are supplied then they are used instead of the arguments from the PopED 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -99,14 +115,14 @@ if they are supplied then they are used instead of the arguments from the PopED 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Modified Federov Exchange Algorithm</h1>
+    <h1>Modified Fedorov Exchange Algorithm</h1>
     
     <div class="hidden name"><code>mfea.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Optimize the objective function using a modified Federov exchange algorithm.
+    <p>Optimize the objective function using a modified Fedorov exchange algorithm.
 The function works for continuous and discrete optimization variables.
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.
@@ -117,9 +133,10 @@ if they are supplied then they are used instead of the arguments from the PopED 
 
     <pre class="usage"><span class='fu'>mfea</span>(<span class='no'>poped.db</span>, <span class='no'>model_switch</span>, <span class='no'>ni</span>, <span class='no'>xt</span>, <span class='no'>x</span>, <span class='no'>a</span>, <span class='no'>bpopdescr</span>, <span class='no'>ddescr</span>, <span class='no'>maxxt</span>, <span class='no'>minxt</span>,
   <span class='no'>maxa</span>, <span class='no'>mina</span>, <span class='no'>fmf</span>, <span class='no'>dmf</span>, <span class='kw'>EAStepSize</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>EAStepSize</span>,
-  <span class='kw'>ourzero</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ourzero</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>], <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
-  <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>ourzero</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ourzero</span>,
+  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
+  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>], <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,7 +179,7 @@ distribution (or length of uniform distribution).</p></li>
     </tr>
     <tr>
       <th>ddescr</th>
-      <td><p>Matrix defining the diagnonals of the IIV (same logic as for
+      <td><p>Matrix defining the diagonals of the IIV (same logic as for
 the <code>bpopdescr</code>).</p></td>
     </tr>
     <tr>
@@ -191,7 +208,7 @@ all a values are given the same max value</p></td>
     </tr>
     <tr>
       <th>dmf</th>
-      <td><p>The inital OFV. If set to zero then it is computed.</p></td>
+      <td><p>The initial OFV. If set to zero then it is computed.</p></td>
     </tr>
     <tr>
       <th>EAStepSize</th>
@@ -234,9 +251,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt_gen.html'>RS_opt_gen</a></code>,
-  <code><a href='RS_opt.html'>RS_opt</a></code>, <code><a href='a_line_search.html'>a_line_search</a></code>,
-  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
+  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
+  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
+  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
   <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='optim_ARS.html'>optim_ARS</a></code>,
   <code><a href='optim_LS.html'>optim_LS</a></code>, <code><a href='poped_optim_1.html'>poped_optim_1</a></code>,
   <code><a href='poped_optim_2.html'>poped_optim_2</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
@@ -316,17 +333,18 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; 
 #&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1016.94
 #&gt; 
-#&gt; Initial design expected parameter 
-#&gt; relative standard error (%RSE)
+#&gt; Initial design
+#&gt; expected relative standard error
+#&gt; (%RSE, rounded to nearest integer)
 #&gt;     Parameter   Values   RSE_0
-#&gt;       bpop[1]     0.15    5.10
-#&gt;       bpop[2]     8.00    3.03
-#&gt;       bpop[3]     1.00   14.26
-#&gt;        D[1,1]     0.07   29.76
-#&gt;        D[2,2]     0.02   36.68
-#&gt;        D[3,3]     0.60   26.75
-#&gt;    SIGMA[1,1]     0.01   32.01
-#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt;       bpop[1]     0.15       5
+#&gt;       bpop[2]        8       3
+#&gt;       bpop[3]        1      14
+#&gt;        D[1,1]     0.07      30
+#&gt;        D[2,2]     0.02      37
+#&gt;        D[3,3]      0.6      27
+#&gt;    SIGMA[1,1]     0.01      32
+#&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
 #&gt; MFEA - It. : 1
 #&gt; Exchanged covariate 1 in group/ind 1 from 70 to 100
@@ -344,19 +362,19 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; Efficiency: 
 #&gt;   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
 #&gt; 
-#&gt; Expected parameter 
-#&gt; relative standard error (%RSE):
-#&gt;     Parameter   Values   RSE_0     RSE
-#&gt;       bpop[1]     0.15    5.10    4.93
-#&gt;       bpop[2]     8.00    3.03    2.92
-#&gt;       bpop[3]     1.00   14.26   14.11
-#&gt;        D[1,1]     0.07   29.76   27.85
-#&gt;        D[2,2]     0.02   36.68   34.08
-#&gt;        D[3,3]     0.60   26.75   26.32
-#&gt;    SIGMA[1,1]     0.01   32.01   23.16
-#&gt;    SIGMA[2,2]     0.25   25.64   30.21
+#&gt; Expected relative standard error
+#&gt; (%RSE, rounded to nearest integer):
+#&gt;     Parameter   Values   RSE_0   RSE
+#&gt;       bpop[1]     0.15       5     5
+#&gt;       bpop[2]        8       3     3
+#&gt;       bpop[3]        1      14    14
+#&gt;        D[1,1]     0.07       0     0
+#&gt;        D[2,2]     0.02      37    34
+#&gt;        D[3,3]      0.6       0     0
+#&gt;    SIGMA[1,1]     0.01      32    23
+#&gt;    SIGMA[2,2]     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.041 seconds</div><div class='input'>
+#&gt; Total running time: 0.04 seconds</div><div class='input'>
 
 </div><span class='co'># NOT RUN {</span>
 

@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -61,27 +61,43 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,11 +123,12 @@
 
     <pre class="usage"><span class='fu'>blockheader</span>(<span class='no'>poped.db</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Default"</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>e_flag</span> <span class='kw'>=</span> !(<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>),
-  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>], <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
+  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
   <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
   <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
-  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>fmf</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>dmf</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>bpop</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>d</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>fmf</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>dmf</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>bpop</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>name_header</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>strOutputFileName</span>,
   <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>strOutputFilePath</span>, <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>compute_inv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>header_flag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
@@ -134,7 +151,7 @@ If <code>""</code> then output is to the screen.</p></td>
     </tr>
     <tr>
       <th>e_flag</th>
-      <td><p>Shuould output be with uncertainty around parameters?</p></td>
+      <td><p>Should output be with uncertainty around parameters?</p></td>
     </tr>
     <tr>
       <th>opt_xt</th>
@@ -150,11 +167,11 @@ If <code>""</code> then output is to the screen.</p></td>
     </tr>
     <tr>
       <th>opt_samps</th>
-      <td><p>Are the nuber of sample times per group being optimized?</p></td>
+      <td><p>Are the number of sample times per group being optimized?</p></td>
     </tr>
     <tr>
       <th>opt_inds</th>
-      <td><p>Are the nuber of individuals per group being optimized?</p></td>
+      <td><p>Are the number of individuals per group being optimized?</p></td>
     </tr>
     <tr>
       <th>fmf</th>
@@ -162,7 +179,7 @@ If <code>""</code> then output is to the screen.</p></td>
     </tr>
     <tr>
       <th>dmf</th>
-      <td><p>The inital OFV. If set to zero then it is computed.</p></td>
+      <td><p>The initial OFV. If set to zero then it is computed.</p></td>
     </tr>
     <tr>
       <th>bpop</th>
@@ -176,7 +193,7 @@ parameter value is to be used.</p></td>
     </tr>
     <tr>
       <th>d</th>
-      <td><p>Matrix defining the diagnonals of the IIV (same logic as for the fixed efects 
+      <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a <code>c()</code>.</p></td>
     </tr>
     <tr>
@@ -186,7 +203,7 @@ matrix bpop to define uncertainty). One can also just supply the parameter value
     <tr>
       <th>sigma</th>
       <td><p>Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a <code>c()</code>.</p></td>
+can also just supply the diagonal parameter values (variances) as a <code>c()</code>.</p></td>
     </tr>
     <tr>
       <th>name_header</th>
@@ -316,17 +333,18 @@ except for diagnostic purposes.</p></td>
 #&gt; 
 #&gt; Initial OFV = 1.14386e+24
 #&gt; 
-#&gt; Initial design expected parameter 
-#&gt; relative standard error (%RSE)
+#&gt; Initial design
+#&gt; expected relative standard error
+#&gt; (%RSE, rounded to nearest integer)
 #&gt;     Parameter   Values   RSE_0
-#&gt;       bpop[1]     0.15    5.10
-#&gt;       bpop[2]     8.00    3.03
-#&gt;       bpop[3]     1.00   14.26
-#&gt;        D[1,1]     0.07   29.76
-#&gt;        D[2,2]     0.02   36.68
-#&gt;        D[3,3]     0.60   26.75
-#&gt;    SIGMA[1,1]     0.01   32.01
-#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt;       bpop[1]     0.15       5
+#&gt;       bpop[2]        8       3
+#&gt;       bpop[3]        1      14
+#&gt;        D[1,1]     0.07      30
+#&gt;        D[2,2]     0.02      37
+#&gt;        D[3,3]      0.6      27
+#&gt;    SIGMA[1,1]     0.01      32
+#&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
 #&gt; ==============================================================================
 #&gt; Optimization of design parameters
@@ -351,17 +369,18 @@ except for diagnostic purposes.</p></td>
 #&gt; 
 #&gt; Initial OFV = 1.14386e+24
 #&gt; 
-#&gt; Initial design expected parameter 
-#&gt; relative standard error (%RSE)
+#&gt; Initial design
+#&gt; expected relative standard error
+#&gt; (%RSE, rounded to nearest integer)
 #&gt;     Parameter   Values   RSE_0
-#&gt;       bpop[1]     0.15    5.10
-#&gt;       bpop[2]     8.00    3.03
-#&gt;       bpop[3]     1.00   14.26
-#&gt;        D[1,1]     0.07   29.76
-#&gt;        D[2,2]     0.02   36.68
-#&gt;        D[3,3]     0.60   26.75
-#&gt;    SIGMA[1,1]     0.01   32.01
-#&gt;    SIGMA[2,2]     0.25   25.64
+#&gt;       bpop[1]     0.15       5
+#&gt;       bpop[2]        8       3
+#&gt;       bpop[3]        1      14
+#&gt;        D[1,1]     0.07      30
+#&gt;        D[2,2]     0.02      37
+#&gt;        D[3,3]      0.6      27
+#&gt;    SIGMA[1,1]     0.01      32
+#&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
 #&gt; ==============================================================================
 #&gt; Optimization of design parameters

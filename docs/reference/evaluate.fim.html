@@ -54,7 +54,7 @@ function, if they are supplied then they are used instead of the arguments from 
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -64,27 +64,43 @@ function, if they are supplied then they are used instead of the arguments from 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -112,9 +128,10 @@ function, if they are supplied then they are used instead of the arguments from 
     </div>
 
     <pre class="usage"><span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>, <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,7 +150,7 @@ the FIM to zero.</p></li>
 <li><p>3 = Not currently used.</p></li>
 <li><p>4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default).</p></li>
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default).</p></li>
 <li><p>5 = Full FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
 <li><p>6 = Calculate one model switch at a time, good for large matrices.</p></li>
 <li><p>7 = Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
@@ -145,7 +162,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
     </tr>
     <tr>
       <th>FOCE.num</th>
-      <td><p>Number indivduals in each step of FOCE approximation method</p></td>
+      <td><p>Number individuals in each step of FOCE approximation method</p></td>
     </tr>
     <tr>
       <th>bpop.val</th>
@@ -185,7 +202,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
     </tr>
     <tr>
       <th>groupsize</th>
-      <td><p>A vector of the numer of individuals in each group.</p></td>
+      <td><p>A vector of the number of individuals in each group.</p></td>
     </tr>
     <tr>
       <th>deriv.type</th>
@@ -276,18 +293,18 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 <span class='co'>## evaluate initial design with the reduced FIM</span>
 <span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.1' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.1' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM</span>
-<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 0): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.0</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.0' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.0' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
+<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 0): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.0</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.0' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.0' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM </span>
 <span class='co'>## computing all derivatives with respect to the </span>
 <span class='co'>## standard deviation of the residual unexplained variation </span>
-<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 4): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.4' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.4' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
+<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 4): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.4' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.4' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM with A,B,C matricies</span>
 <span class='co'>## should give same answer as fim.calc.type=0</span>
-<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 5): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.5</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.5' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.5' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
+<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 5): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.5</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.5' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.5' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM with </span>
 <span class='co'>## A,B,C matricies and derivative of variance</span>
 <span class='co'>## should give same answer as fim.calc.type=1 (default)</span>
-<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 7): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.7</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.7' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.7' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iFIMCalculationType &lt;- fim.calc.type: object 'poped.db' not found</span></div><div class='input'>
+<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 7): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.7</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.7' not found</span></div><div class='input'><span class='fu'>det</span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.7' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
 <span class='co'>## evaluate FIM and rse with prior FIM.1</span>
 <span class='no'>poped.db.prior</span> <span class='kw'>=</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='no'>poped.db</span>, <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.choose(popedInput$settings$poped_version, packageVersion("PopED")): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1.prior</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db.prior</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db.prior): object 'poped.db.prior' not found</span></div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>FIM.1.prior</span>,<span class='no'>FIM.1</span>) <span class='co'># the FIM is only computed from the design in the poped.db</span></div><div class='output co'>#&gt; <span class='error'>Error in all.equal(FIM.1.prior, FIM.1): object 'FIM.1.prior' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>poped.db.prior</span>) <span class='co'># the RSE is computed with the prior information</span></div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db.prior' not found</span></div></pre>
   </div>

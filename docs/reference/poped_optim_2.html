@@ -56,7 +56,7 @@ iterations, or until the efficiency of the design after the current series
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -66,27 +66,43 @@ iterations, or until the efficiency of the design after the current series
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -116,10 +132,11 @@ iterations, or until the efficiency of the design after the current series
     </div>
 
     <pre class="usage"><span class='fu'>poped_optim_2</span>(<span class='no'>poped.db</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>], <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
+  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
+  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
   <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
-  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>, <span class='st'>"LS"</span>),
-  <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>,
+  <span class='st'>"LS"</span>), <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iFIMCalculationType</span>,
   <span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_calc_type</span>,
   <span class='kw'>approx_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>,
@@ -128,10 +145,10 @@ iterations, or until the efficiency of the design after the current series
   <span class='kw'>bLHS</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>bLHS</span>,
   <span class='kw'>use_laplace</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>, <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>loop_methods</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>length</span>(<span class='no'>method</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>stop_crit_eff</span> <span class='kw'>=</span> <span class='fl'>1.001</span>, <span class='kw'>stop_crit_diff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stop_crit_rel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>, <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>transform_parameters</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>loop_methods</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>length</span>(<span class='no'>method</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
+  <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>stop_crit_eff</span> <span class='kw'>=</span> <span class='fl'>1.001</span>, <span class='kw'>stop_crit_diff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stop_crit_rel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>,
+  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>transform_parameters</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,11 +171,11 @@ iterations, or until the efficiency of the design after the current series
     </tr>
     <tr>
       <th>opt_samps</th>
-      <td><p>Are the nuber of sample times per group being optimized?</p></td>
+      <td><p>Are the number of sample times per group being optimized?</p></td>
     </tr>
     <tr>
       <th>opt_inds</th>
-      <td><p>Are the nuber of individuals per group being optimized?</p></td>
+      <td><p>Are the number of individuals per group being optimized?</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -187,7 +204,7 @@ the FIM to zero.</p></li>
 <li><p>3 = Not currently used.</p></li>
 <li><p>4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
 This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
-(NOTE: NONMEM estimates the variance of the resudual unexplained variation by default).</p></li>
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default).</p></li>
 <li><p>5 = Full FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
 <li><p>6 = Calculate one model switch at a time, good for large matrices.</p></li>
 <li><p>7 = Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance.</p></li>
@@ -213,7 +230,7 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)</p></li>
       <th>d_switch</th>
       <td><ul>
 <li><p><b>******START OF CRITERION SPECIFICATION OPTIONS**********</b></p></li>
-</ul><p>D-family design (1) or ED-familty design (0) (with or without parameter uncertainty)</p></td>
+</ul><p>D-family design (1) or ED-family design (0) (with or without parameter uncertainty)</p></td>
     </tr>
     <tr>
       <th>ED_samp_size</th>
@@ -287,7 +304,7 @@ off and the relative difference in criterion value must be greater than or equal
     <tr>
       <th>ofv_fun</th>
       <td><p>User defined function used to compute the objective function. The function must have a poped database object as its first
-argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the funciton defined in the file has the same name as the file.
+argument and have "..." in its argument list.  Can be referenced as a function or as a file name where the function defined in the file has the same name as the file.
 e.g. "cost.txt" has a function named "cost" in it.</p></td>
     </tr>
     <tr>
@@ -328,9 +345,9 @@ instead of the arguments from the PopED database.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt_gen.html'>RS_opt_gen</a></code>,
-  <code><a href='RS_opt.html'>RS_opt</a></code>, <code><a href='a_line_search.html'>a_line_search</a></code>,
-  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
+  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
+  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
+  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
   <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
   <code><a href='optim_ARS.html'>optim_ARS</a></code>, <code><a href='optim_LS.html'>optim_LS</a></code>,
   <code><a href='poped_optim_1.html'>poped_optim_1</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,

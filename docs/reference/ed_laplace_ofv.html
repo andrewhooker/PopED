@@ -37,7 +37,7 @@ using the Laplace approximation. — ed_laplace_ofv" />
 <meta property="og:description" content="Compute the expectation of the det(FIM) using the Laplace
 approximation to the expectation. Computations are made based on the model,
 parameters, distributions of parameter uncertainty, design and methods
-defined in the PopED database or as arguments to the funciton." />
+defined in the PopED database or as arguments to the function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -56,7 +56,7 @@ defined in the PopED database or as arguments to the funciton." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -66,27 +66,43 @@ defined in the PopED database or as arguments to the funciton." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -110,14 +126,14 @@ using the Laplace approximation.</h1>
     <p>Compute the expectation of the <code>det(FIM)</code> using the Laplace
 approximation to the expectation. Computations are made based on the model,
 parameters, distributions of parameter uncertainty, design and methods
-defined in the PopED database or as arguments to the funciton.</p>
+defined in the PopED database or as arguments to the function.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ed_laplace_ofv</span>(<span class='no'>model_switch</span>, <span class='no'>groupsize</span>, <span class='no'>ni</span>, <span class='no'>xtopto</span>, <span class='no'>xopto</span>, <span class='no'>aopto</span>, <span class='no'>bpopdescr</span>,
-  <span class='no'>ddescr</span>, <span class='no'>covd</span>, <span class='no'>sigma</span>, <span class='no'>docc</span>, <span class='no'>poped.db</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>return_gradient</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>optxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>], <span class='kw'>opta</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>())</pre>
+    <pre class="usage"><span class='fu'>ed_laplace_ofv</span>(<span class='no'>model_switch</span>, <span class='no'>groupsize</span>, <span class='no'>ni</span>, <span class='no'>xtopto</span>, <span class='no'>xopto</span>, <span class='no'>aopto</span>,
+  <span class='no'>bpopdescr</span>, <span class='no'>ddescr</span>, <span class='no'>covd</span>, <span class='no'>sigma</span>, <span class='no'>docc</span>, <span class='no'>poped.db</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>return_gradient</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>optxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+  <span class='kw'>opta</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>], <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,7 +144,7 @@ defined in the PopED database or as arguments to the funciton.</p>
     </tr>
     <tr>
       <th>groupsize</th>
-      <td><p>A vector of the numer of individuals in each group.</p></td>
+      <td><p>A vector of the number of individuals in each group.</p></td>
     </tr>
     <tr>
       <th>ni</th>
@@ -160,7 +176,7 @@ distribution (or length of uniform distribution).</p></li>
     </tr>
     <tr>
       <th>ddescr</th>
-      <td><p>Matrix defining the diagnonals of the IIV (same logic as for
+      <td><p>Matrix defining the diagonals of the IIV (same logic as for
 the <code>bpopdescr</code>).</p></td>
     </tr>
     <tr>
@@ -171,7 +187,7 @@ That is, from your full IIV matrix  <code>covd &lt;-  IIV[lower.tri(IIV)]</code>
     <tr>
       <th>sigma</th>
       <td><p>Matrix defining the variances can covariances of the residual variability terms of the model.
-can also just supply the diagnonal parameter values (variances) as a <code>c()</code>.</p></td>
+can also just supply the diagonal parameter values (variances) as a <code>c()</code>.</p></td>
     </tr>
     <tr>
       <th>docc</th>
@@ -293,7 +309,7 @@ to compute the hessian.</p></td>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.002 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 
 

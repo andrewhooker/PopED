@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Evaluate power of a design for detecting a parameter to be non-zero using the
-linear Wald test. — evaluate_power • PopED</title>
+<title>Power of a design to estimate a parameter. — evaluate_power • PopED</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -31,10 +30,11 @@ linear Wald test. — evaluate_power • PopED</title>
 
 
 
-<meta property="og:title" content="Evaluate power of a design for detecting a parameter to be non-zero using the
-linear Wald test. — evaluate_power" />
+<meta property="og:title" content="Power of a design to estimate a parameter. — evaluate_power" />
 
-<meta property="og:description" content="This tunction evaluates the design defined in a poped database." />
+<meta property="og:description" content="Evaluate the power of a design to estimate a parameter value different than
+some assumed value (often the assumed value is zero). The power is calculated 
+using the linear Wald test and the the design is defined in a poped database." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -53,7 +53,7 @@ linear Wald test. — evaluate_power" />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -63,27 +63,43 @@ linear Wald test. — evaluate_power" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2.9005</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/intro-poped.html">Introduction to PopED</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -96,20 +112,21 @@ linear Wald test. — evaluate_power" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Evaluate power of a design for detecting a parameter to be non-zero using the
-linear Wald test.</h1>
+    <h1>Power of a design to estimate a parameter.</h1>
     
     <div class="hidden name"><code>evaluate_power.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This tunction evaluates the design defined in a poped database.</p>
+    <p>Evaluate the power of a design to estimate a parameter value different than
+some assumed value (often the assumed value is zero). The power is calculated 
+using the linear Wald test and the the design is defined in a poped database.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>evaluate_power</span>(<span class='no'>poped.db</span>, <span class='kw'>bpopIdx</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>power</span> <span class='kw'>=</span> <span class='fl'>80</span>, <span class='kw'>twoSided</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>find_min_n</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>evaluate_power</span>(<span class='no'>poped.db</span>, <span class='no'>bpop_idx</span>, <span class='kw'>h0</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>power</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>twoSided</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>find_min_n</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>fim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -119,35 +136,40 @@ linear Wald test.</h1>
       <td><p>A poped database</p></td>
     </tr>
     <tr>
-      <th>bpopIdx</th>
-      <td><p>Indices for unfixed parameters for which power should be
-evaluated for being non-zero</p></td>
+      <th>bpop_idx</th>
+      <td><p>Index for an unfixed population parameter (bpop) for 
+which the power should be
+evaluated for being different than the null hypothesis (h0).</p></td>
     </tr>
     <tr>
-      <th>fim</th>
-      <td><p>Optional to provide FIM from a previous calculation</p></td>
-    </tr>
-    <tr>
-      <th>out</th>
-      <td><p>Optional to provide output from a previous calculation (e.g.,
-calc_ofv_and_fim, ...)</p></td>
+      <th>h0</th>
+      <td><p>The null hypothesized value for the parameter.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>Type 1 error (default = 0.05)</p></td>
+      <td><p>Type 1 error.</p></td>
     </tr>
     <tr>
       <th>power</th>
-      <td><p>Targeted power (default = 80%)</p></td>
+      <td><p>Targeted power.</p></td>
     </tr>
     <tr>
       <th>twoSided</th>
-      <td><p>Is two-sided test (default = TRUE)</p></td>
+      <td><p>Is this a two-sided test.</p></td>
     </tr>
     <tr>
       <th>find_min_n</th>
       <td><p>Should the function compute the minimum n needed (given the
 current design) to achieve the desired power?</p></td>
+    </tr>
+    <tr>
+      <th>fim</th>
+      <td><p>Provide the FIM from a previous calculation</p></td>
+    </tr>
+    <tr>
+      <th>out</th>
+      <td><p>provide output from a previous calculation (e.g.,
+calc_ofv_and_fim, ...)</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -294,7 +316,7 @@ current design) to achieve the desired power?</p></td>
 #&gt;     D[3,3]     D[4,4] SIGMA[1,1] 
 #&gt; 10.2946079 10.3325269  7.0480558 
 #&gt; </div><div class='input'>
-<span class='fu'>evaluate_power</span>(<span class='no'>poped.db_2</span>,<span class='kw'>bpopIdx</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; $ofv
+<span class='fu'>evaluate_power</span>(<span class='no'>poped.db_2</span>,<span class='kw'>bpop_idx</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; $ofv
 #&gt; [1] 74.54742
 #&gt; 
 #&gt; $fim
@@ -328,8 +350,8 @@ current design) to achieve the desired power?</p></td>
 #&gt; 10.2946079 10.3325269  7.0480558 
 #&gt; 
 #&gt; $power
-#&gt;         Value      RSE predPower wantPower  needRSE min_N
-#&gt; bpop[4] 0.262 29.99483      91.5        80 35.69408   142
+#&gt;         Value      RSE power_pred power_want need_rse min_N
+#&gt; bpop[4] 0.262 29.99483   91.52704         80 35.69408   142
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
