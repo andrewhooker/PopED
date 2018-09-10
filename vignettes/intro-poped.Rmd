@@ -7,6 +7,8 @@ output:
     toc: true
     toc_depth: 3
     number_sections: true
+    fig_width: 6
+    #fig_height: 5
 vignette: >
   %\VignetteIndexEntry{Introduction to PopED}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,7 +21,7 @@ set.seed(1234)
 knitr::opts_chunk$set(
   collapse = TRUE
   , comment = "#>"
-  , fig.width=6
+  #, fig.width=6
   , cache = TRUE
 )
 ```
@@ -149,12 +151,12 @@ poped.db <- create.poped.database(ff_fun=ff,
 
 ## Simulation
 First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values:
-```{r simulate_without_BSV, fig.width=6}
+```{r simulate_without_BSV}
 plot_model_prediction(poped.db, model_num_points = 500)
 ```
 
 Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the `DV=TRUE` argument) but without sampling times: 
-```{r simulate_with_BSV, fig.width=6}
+```{r simulate_with_BSV}
 plot_model_prediction(poped.db, model_num_points=500, IPRED=TRUE, sample.times = FALSE)
 ```
 
@@ -211,7 +213,7 @@ output <- poped_optim(poped.db, opt_xt=TRUE)
 ```
 
 
-```{r simulate_optimal_design, fig.width=6}
+```{r simulate_optimal_design}
 summary(output)
 plot_model_prediction(output$poped.db)
 ```
@@ -221,7 +223,7 @@ We see that there are four distinct sample times for this design.  This means th
 
 ### Examine efficiency of sampling windows
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
-```{r simulate_efficiency_windows,fig.width=6,fig.height=6,cache=FALSE}
+```{r simulate_efficiency_windows,fig.width=6,fig.height=6}
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
@@ -237,7 +239,7 @@ output_discrete <- poped_optim(poped.db.discrete, opt_xt=TRUE)
 
 ```
 
-```{r simulate_discrete_optimization,fig.width=6}
+```{r simulate_discrete_optimization}
 summary(output_discrete)
 plot_model_prediction(output_discrete$poped.db)
 ```
@@ -246,7 +248,7 @@ Here we see that the optimization ran somewhat quicker, but gave a less efficien
 
 ### Optimize 'Other' design variables
 One could also optimize over dose, to see if a different dose could help in parameter estimation .
-```{r optimize_dose,message = FALSE,results='hide', eval=FALSE,cache=TRUE}
+```{r optimize_dose,message = FALSE,results='hide', eval=FALSE}
 output_dose_opt <- poped_optim(output$poped.db, opt_xt=TRUE, opt_a=TRUE)
 ```
 
@@ -272,7 +274,7 @@ output_cost <- poped_optim(poped.db, opt_a = TRUE, opt_xt = FALSE,
                      maximize = FALSE)
 ```
 
-```{r simulate_cost_optmization, fig.width=6}
+```{r simulate_cost_optmization}
 summary(output_cost)
 get_rse(output_cost$FIM, output_cost$poped.db)
 plot_model_prediction(output_cost$poped.db)

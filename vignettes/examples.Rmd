@@ -7,7 +7,8 @@ output:
     toc: true
     toc_depth: 3
     number_sections: true
-  
+    fig_width: 6
+    #fig_height: 5
 vignette: >
   %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +19,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE
   , comment = "#>"
-  , fig.width=6
+  #, fig.width=6
   , cache = TRUE
 )
 ```
