@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.4.0
+Version: 0.4.0.9000
 Depends:
     R (>= 2.14)
 Imports:
@@ -32,7 +32,10 @@ Suggests:
     gridExtra,
     covr
 Authors@R: c(
-    person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", role=c("aut","cre","trl","cph")),
+    person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", 
+      role=c("aut","cre","trl","cph"),
+      comment=c(ORCID = "0000-0002-2676-5912")
+    ),
     person("Marco","Foracchia", role="aut", comment="O-Matrix version"),
     person("Eric","Stroemberg", role="ctb", comment="MATLAB version"),
     person("Martin","Fink", role="ctb", comment="Streamlining code, added functionality, vignettes"),
