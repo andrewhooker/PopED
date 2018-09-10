@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
   collapse = TRUE
   , comment = "#>"
   #, fig.width=6
-  , cache = TRUE
+  #, cache = TRUE
 )
 ```
 
