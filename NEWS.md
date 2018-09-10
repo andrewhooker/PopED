@@ -1,25 +1,25 @@
 # PopED 0.4.0
 
-* Update speed of FIM calculations (#20, @martin-gmx).
-
 * New and improved vignettes (#30, @giulialestini)!
-
-* Update RSE calculations so that prior FIM is handled correctly (#22, @martin-gmx).
-
-* Simplified code and removed duplicated code (#21, #24 and #32, @martin-gmx).
 
 * Added power evaluation script to test the power of a design to identify a prameter different
 than an assumed value.  The function also calculates the number of individuals needed in a design to have a specific
 power. See `?evaluate_power` for more information (#26, @martin-gmx).
 
-* Major overhaul in optimization methods used in `poped_optim()` so that generic optimization routines like `optim()` can be easily used in optimizing  PopED designs.  
+* Added function to compute expected shrinkage of a design.  See `?shrinkage` for more information.
 
 * Updated and added new example scripts in `system.file("examples", package="PopED")` ().  This includes an example describing 
 how to handle covariate distributions in optimal design, an example on how to incorporate IOV,  an example on how to handle shrinkage, an example with a full covariance matrix and an example with a prior FIM (#30, @giulialestini and @martin-gmx).
 
-* New ways of handling inverting matricies, should be faster and work better when the matricies are ill-conditioned. See `?inv` for more information (#19, @martin-gmx).
+* Major overhaul in optimization methods used in `poped_optim()` so that generic optimization routines like `optim()` can be easily used in optimizing  PopED designs.  
 
-* Added function to compute expected shrinkage of a design.  See `?shrinkage` for more information.
+* Update speed of FIM calculations (#20, @martin-gmx).
+
+* Update RSE calculations so that prior FIM is handled correctly (#22, @martin-gmx).
+
+* Simplified code and removed duplicated code (#21, #24 and #32, @martin-gmx).
+
+* New ways of handling inverting matricies, should be faster and work better when the matricies are ill-conditioned. See `?inv` for more information (#19, @martin-gmx).
 
 * Updated functionality of IOV calculations.
 
