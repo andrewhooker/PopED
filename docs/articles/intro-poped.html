@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
       </span>
     </div>
 
@@ -40,6 +40,9 @@
     <span class="fa fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/intro-poped.html">Intro</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -60,10 +63,18 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/andrewhooker/PopED">
+    <span class="fa fa-github"></span>
+     
+    Source
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -78,7 +89,7 @@
       <h1>Introduction to PopED</h1>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">09 September, 2018</h4>
+            <h4 class="date">10 September, 2018</h4>
       
       
       <div class="hidden name"><code>intro-poped.Rmd</code></div>
@@ -178,10 +189,10 @@ ex_file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span 
 <a href="#simulation" class="anchor"></a>Simulation</h2>
 <p>First it may make sense to check your model and design to make sure you get what you expect when simulating data. Here we plot the model typical values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(poped.db, <span class="dt">model_num_points =</span> <span class="dv">500</span>)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/simulate_without_BSV-1.png" width="576"></p>
+<p><img src="intro-poped_files/figure-html/simulate_without_BSV-1.png" width="700"></p>
 <p>Next, we plot the model typical values prediction intervals taking into account the between-subject variability (you can even investigate the effects of the residual, unexplained, variability with the <code>DV=TRUE</code> argument) but without sampling times:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(poped.db, <span class="dt">model_num_points=</span><span class="dv">500</span>, <span class="dt">IPRED=</span><span class="ot">TRUE</span>, <span class="dt">sample.times =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/simulate_with_BSV-1.png" width="576"></p>
+<p><img src="intro-poped_files/figure-html/simulate_with_BSV-1.png" width="700"></p>
 <p>We can get these predictions numerically as well:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/model_prediction.html">model_prediction</a></span>(poped.db,<span class="dt">DV=</span><span class="ot">TRUE</span>)
 <span class="kw">head</span>(dat,<span class="dt">n=</span><span class="dv">5</span>);<span class="kw">tail</span>(dat,<span class="dt">n=</span><span class="dv">5</span>)
@@ -314,9 +325,9 @@ ex_file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span 
 <span class="co">#&gt;        D[3,3]   0.0625      28    26</span>
 <span class="co">#&gt;    SIGMA[1,1]     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 17.731 seconds</span>
+<span class="co">#&gt; Total running time: 17.656 seconds</span>
 <span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="576"></p>
+<p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="700"></p>
 <p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
 <div id="examine-efficiency-of-sampling-windows" class="section level3">
 <h3 class="hasAnchor">
@@ -356,9 +367,9 @@ output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../refer
 <span class="co">#&gt;        D[3,3]   0.0625      28    27</span>
 <span class="co">#&gt;    SIGMA[1,1]     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 10.473 seconds</span>
+<span class="co">#&gt; Total running time: 16.545 seconds</span>
 <span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_discrete<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="576"></p>
+<p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="700"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
 </div>
 <div id="optimize-other-design-variables" class="section level3">
@@ -407,14 +418,14 @@ output_discrete &lt;-<span class="st"> </span><span class="kw"><a href="../refer
 <span class="co">#&gt;        D[3,3]   0.0625      28    28</span>
 <span class="co">#&gt;    SIGMA[1,1]     0.04      14    14</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 13.652 seconds</span>
+<span class="co">#&gt; Total running time: 13.661 seconds</span>
 <span class="kw"><a href="../reference/get_rse.html">get_rse</a></span>(output_cost<span class="op">$</span>FIM, output_cost<span class="op">$</span>poped.db)
 <span class="co">#&gt;    bpop[1]    bpop[2]    bpop[3]     D[1,1]     D[2,2]     D[3,3] </span>
 <span class="co">#&gt;   8.207404  10.070674   4.399378  39.808012  60.478363  27.549531 </span>
 <span class="co">#&gt; SIGMA[1,1] </span>
 <span class="co">#&gt;  13.800551</span>
 <span class="kw"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(output_cost<span class="op">$</span>poped.db)</code></pre></div>
-<p><img src="intro-poped_files/figure-html/simulate_cost_optmization-1.png" width="576"></p>
+<p><img src="intro-poped_files/figure-html/simulate_cost_optmization-1.png" width="700"></p>
 </div>
 </div>
 </div>

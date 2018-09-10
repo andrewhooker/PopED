@@ -9,9 +9,44 @@ templates:
 #    contents:
 #    - create.poped.database
 
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    intro:
+      text: Intro
+      href: articles/intro-poped.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: Introduction to PopED
+        href: articles/intro-poped.html
+      - text: Examples
+        href: articles/examples.html
+    news:
+      text: News
+      href: news/index.html
+    github:
+      icon: fa-github
+      text: Source
+      href: https://github.com/andrewhooker/PopED
+      
 #navbar:
 #  title: "PopED"
-#  type: inverse
+#  #type: inverse
 #  left:
 #    - text: "Intro"
 #      href: articles/intro-poped.html

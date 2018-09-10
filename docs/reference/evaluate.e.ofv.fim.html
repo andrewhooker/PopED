@@ -64,7 +64,7 @@ function, if they are supplied then they are used instead of the arguments from 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
       </span>
     </div>
 
@@ -75,6 +75,9 @@ function, if they are supplied then they are used instead of the arguments from 
     <span class="fa fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/intro-poped.html">Intro</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -95,12 +98,18 @@ function, if they are supplied then they are used instead of the arguments from 
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/andrewhooker/PopED">
+    <span class="fa fa-github"></span>
+     
+    Source
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -361,7 +370,7 @@ is done using the standard MC integration technique, so can be slow.</p></td>
 <span class='co'>## ED evaluate using Laplace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
 <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 1.04 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.302806e+24</div><div class='input'>
+<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 1.101 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.302806e+24</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
   <span class='co'>## ED expected value with more precision. </span>
   <span class='co'>## Compare time and value to Laplace approximation.</span>
