@@ -2,7 +2,7 @@
 % Please edit documentation in R/optim_ARS.R
 \name{optim_ARS}
 \alias{optim_ARS}
-\title{Optimization Using Adaptive Random Search.}
+\title{Optimize a function using adaptive random search.}
 \usage{
 optim_ARS(par, fn, lower = NULL, upper = NULL, allowed_values = NULL,
   loc_fac = 4, no_bounds_sd = par, iter = 400, iter_adapt = 50,

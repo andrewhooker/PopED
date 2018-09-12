@@ -2,7 +2,7 @@
 % Please edit documentation in R/optim_LS.R
 \name{optim_LS}
 \alias{optim_LS}
-\title{Optimization Using a Line Search Algorithm.}
+\title{Optimize a function using a line search algorithm.}
 \usage{
 optim_LS(par, fn, lower = NULL, upper = NULL, allowed_values = NULL,
   line_length = 50, trace = TRUE, maximize = F, parallel = F,

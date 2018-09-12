@@ -2,7 +2,7 @@
 % Please edit documentation in R/poped_optimize.R
 \name{poped_optimize}
 \alias{poped_optimize}
-\title{Optimization main module for PopED}
+\title{Retired optimization module for PopED}
 \usage{
 poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
   x = NULL, a = NULL, bpop = NULL, d = NULL, maxxt = NULL,
@@ -131,7 +131,11 @@ D-family design (1) or ED-family design (0) (with or without parameter uncertain
 \item{...}{arguments passed to other functions. See \code{\link{Doptim}}.}
 }
 \description{
-Optimize the objective function.
+This function is an older version of \code{\link{poped_optim}}.  Please use \code{\link{poped_optim}}
+unless you have a specific reason to use this function instead.
+}
+\details{
+This function optimized the objective function.
 The function works for both discrete and continuous optimization variables.
 This function takes information from the PopED database supplied as an argument.
 The PopED database supplies information about the the model, parameters, design and methods to use.

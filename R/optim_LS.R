@@ -1,4 +1,4 @@
-#' Optimization Using a Line Search Algorithm. 
+#' Optimize a function using a line search algorithm. 
 #' 
 #' \code{optim_LS} performs sequential grid search optimization of an arbitrary function with respect 
 #' to each of the parameters to be optimized over. 

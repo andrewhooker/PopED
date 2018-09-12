@@ -1,4 +1,4 @@
-#' Optimization Using Adaptive Random Search. 
+#' Optimize a function using adaptive random search. 
 #' 
 #' Optimize an objective function using an adaptive random search algorithm.  
 #' The function works for both discrete and continuous optimization parameters 

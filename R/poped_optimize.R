@@ -1,6 +1,9 @@
-#' Optimization main module for PopED
+#' Retired optimization module for PopED
 #' 
-#' Optimize the objective function.
+#' This function is an older version of \code{\link{poped_optim}}.  Please use \code{\link{poped_optim}}
+#' unless you have a specific reason to use this function instead.  
+#' 
+#' This function optimized the objective function.
 #' The function works for both discrete and continuous optimization variables.
 #' This function takes information from the PopED database supplied as an argument.
 #' The PopED database supplies information about the the model, parameters, design and methods to use.
