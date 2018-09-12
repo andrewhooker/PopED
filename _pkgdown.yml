@@ -4,58 +4,89 @@ templates:
     #bootswatch: paper
     bootswatch: Flatly
 
-#reference:
-#  - title: Input information to PopED
-#    contents:
-#    - create.poped.database
+reference:
+  - title: General information
+    contents:
+      - PopED 
+  - title: Predefined structural models
+    contents:
+      - starts_with("ff.")
+  - title: Predefined residual error models 
+    desc: >
+      Define a residual unexplained variability (RUV) model.
+    contents:
+      - starts_with("feps.")
+  - title: Create an initial study design and design space
+    desc: >
+      Create an initial study design, and design space, if optimizing.
+      Input the design and model information into a format that PopED understands.
+    contents:
+      - create.poped.database
+      - create_design
+      - create_design_space
+  - title: Simulate from the model and design
+    contents:
+      - plot_model_prediction
+      - model_prediction
+  - title: Evaluate or summarize the design(s)
+    contents:
+      - starts_with("evaluate")
+      - shrinkage
+      - calc_ofv_and_fim
+      - ofv_fim
+      - ofv_criterion
+      - get_rse
+      - plot_efficiency_of_windows
+      - efficiency
+      - design_summary
+  - title: Optimize a design
+    desc: >
+      Optimize a design given a model, design and design space.
+    contents:
+      - poped_optim
+      - summary.poped_optim
+      - optim_ARS
+      - optim_LS
+      - LEDoptim
+      - RS_opt
+      - a_line_search
+      - poped_optimize
+  - title: Miscellaneous
+    contents:
+      - cell
+      - mc_mean
+      - median_hilow_poped
+      - ones
+      - pargen
+      - poped_gui
+      - size
+      - start_parallel
+      - tic
+      - toc
+      - zeros
 
+ 
 navbar:
-  structure:
-    left:
-    - home
-    - intro
-    - reference
-    - articles
-    - tutorials
-    - news
-    right: github
-  components:
-    home:
-      icon: fa-home fa-lg
+  title: "PopED"
+  #type: inverse
+  left:
+    - icon: fa-home fa-lg
       href: index.html
-    intro:
-      text: Intro
+    - text: Introduction
       href: articles/intro-poped.html
-    reference:
-      text: Reference
+    - text: Examples
+      href: articles/examples.html
+    - text: Functions
       href: reference/index.html
-    articles:
-      text: Articles
-      menu:
-      - text: Introduction to PopED
-        href: articles/intro-poped.html
-      - text: Examples
-        href: articles/examples.html
-    news:
-      text: News
+    - text: News 
       href: news/index.html
-    github:
-      icon: fa-github
+  right:
+    - icon: fa-github
       text: Source
       href: https://github.com/andrewhooker/PopED
-      
-#navbar:
-#  title: "PopED"
-#  #type: inverse
-#  left:
-#    - text: "Intro"
-#      href: articles/intro-poped.html
-#    - text: "Reference"
-#      href: reference/index.html
-#  right:
-#    - icon: fa-github
-#      href: https://github.com/andrewhooker/PopED
-      
+
 authors:
   Andrew C. Hooker:
-    href: http://katalog.uu.se/empinfo/?languageId=1&id=N4-631 
+    href: http://katalog.uu.se/profile/?id=N4-631 
+  Sebastian Ueckert:
+    href: http://katalog.uu.se/profile/?id=N9-467

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimization main module for PopED — poped_optimize • PopED</title>
+<title>Retired optimization module for PopED — poped_optimize • PopED</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,14 +30,10 @@
 
 
 
-<meta property="og:title" content="Optimization main module for PopED — poped_optimize" />
+<meta property="og:title" content="Retired optimization module for PopED — poped_optimize" />
 
-<meta property="og:description" content="Optimize the objective function.
-The function works for both discrete and continuous optimization variables.
-This function takes information from the PopED database supplied as an argument.
-The PopED database supplies information about the the model, parameters, design and methods to use.
-Some of the arguments coming from the PopED database can be overwritten;  
-if they are supplied then they are used instead of the arguments from the PopED database." />
+<meta property="og:description" content="This function is an older version of poped_optim.  Please use poped_optim
+unless you have a specific reason to use this function instead." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -79,25 +75,13 @@ if they are supplied then they are used instead of the arguments from the PopED 
   </a>
 </li>
 <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../articles/intro-poped.html">Introduction</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/examples.html">Examples</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/examples.html">Examples</a>
-    </li>
-    <li>
-      <a href="../articles/intro-poped.html">Introduction to PopED</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Functions</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -124,19 +108,15 @@ if they are supplied then they are used instead of the arguments from the PopED 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimization main module for PopED</h1>
-    
+    <h1>Retired optimization module for PopED</h1>
+    <small class="dont-index">Source: <a href='https://github.com/andrewhooker/PopED/blob/master/R/poped_optimize.R'><code>R/poped_optimize.R</code></a></small>
     <div class="hidden name"><code>poped_optimize.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Optimize the objective function.
-The function works for both discrete and continuous optimization variables.
-This function takes information from the PopED database supplied as an argument.
-The PopED database supplies information about the the model, parameters, design and methods to use.
-Some of the arguments coming from the PopED database can be overwritten;  
-if they are supplied then they are used instead of the arguments from the PopED database.</p>
+    <p>This function is an older version of <code><a href='poped_optim.html'>poped_optim</a></code>.  Please use <code><a href='poped_optim.html'>poped_optim</a></code>
+unless you have a specific reason to use this function instead.</p>
     
     </div>
 
@@ -334,6 +314,15 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)</p></li>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function optimized the objective function.
+The function works for both discrete and continuous optimization variables.
+This function takes information from the PopED database supplied as an argument.
+The PopED database supplies information about the the model, parameters, design and methods to use.
+Some of the arguments coming from the PopED database can be overwritten;  
+if they are supplied then they are used instead of the arguments from the PopED database.</p>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <ol>
@@ -447,11 +436,11 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
 #&gt; RS - It. : 2   OFV : 55.3964
-#&gt; Run time for random search: 0.021 seconds
+#&gt; Run time for random search: 0.016 seconds
 #&gt; 
 #&gt; SG - It. : 1  OFV : 55.45   Diff. :     1
 #&gt; SG - It. : 2  OFV : 55.61   Diff. : 0.002799
-#&gt; Stochastic gradient run time: 0.716 seconds
+#&gt; Stochastic gradient run time: 0.708 seconds
 #&gt; 
 #&gt; Searching xt5 on group 1
 #&gt; Searching xt7 on group 1
@@ -464,7 +453,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     OFV(MF): 55.8146
 #&gt; Searching a1 on individual/group 1
 #&gt;     OFV(MF): 56.5866
-#&gt; Line search run time: 0.261 seconds
+#&gt; Line search run time: 0.252 seconds
 #&gt; 
 #&gt; ===============================================================================
 #&gt; FINAL RESULTS
@@ -492,7 +481,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;    SIGMA[1,1]     0.01      32    25
 #&gt;    SIGMA[2,2]     0.25      26    16
 #&gt; 
-#&gt; Total running time: 1.488 seconds</div><div class='input'>
+#&gt; Total running time: 1.445 seconds</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 
   <span class='co'># RS+SG+LS optimization of sample times </span>
@@ -589,6 +578,8 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
@@ -601,7 +592,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, Sebastian Ueckert, Joakim Nyberg.</p>
+  <p>Developed by <a href='http://katalog.uu.se/profile/?id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, <a href='http://katalog.uu.se/profile/?id=N9-467'>Sebastian Ueckert</a>, Joakim Nyberg.</p>
 </div>
 
 <div class="pkgdown">

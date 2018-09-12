@@ -71,25 +71,13 @@
   </a>
 </li>
 <li>
-  <a href="../articles/intro-poped.html">Intro</a>
+  <a href="../articles/intro-poped.html">Introduction</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/examples.html">Examples</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/examples.html">Examples</a>
-    </li>
-    <li>
-      <a href="../articles/intro-poped.html">Introduction to PopED</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Functions</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -117,7 +105,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      
+      <small>Source: <a href='https://github.com/andrewhooker/PopED/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="poped-0-4-0-9000" class="section level1">
@@ -130,18 +118,18 @@
 <a href="#poped-0-4-0" class="anchor"></a>PopED 0.4.0<small> 2018-09-10 </small>
 </h1>
 <ul>
-<li><p>New and improved vignettes (#30, <a href='http://github.com/giulialestini'>@giulialestini</a>)!</p></li>
-<li><p>Added power evaluation script to test the power of a design to identify a prameter different than an assumed value. The function also calculates the number of individuals needed in a design to have a specific power. See <code><a href="../reference/evaluate_power.html">?evaluate_power</a></code> for more information (#26, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>New and improved vignettes (<a href='https://github.com/andrewhooker/PopED/issues/30'>#30</a>, <a href='http://github.com/giulialestini'>@giulialestini</a>)!</p></li>
+<li><p>Added power evaluation script to test the power of a design to identify a prameter different than an assumed value. The function also calculates the number of individuals needed in a design to have a specific power. See <code><a href="../reference/evaluate_power.html">?evaluate_power</a></code> for more information (<a href='https://github.com/andrewhooker/PopED/issues/26'>#26</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
 <li><p>Added function to compute expected shrinkage of a design. See <code><a href="../reference/shrinkage.html">?shrinkage</a></code> for more information.</p></li>
-<li><p>Updated and added new example scripts in <code>system.file("examples", package="PopED")</code> (). This includes an example describing how to handle covariate distributions in optimal design, an example on how to incorporate IOV, an example on how to handle shrinkage, an example with a full covariance matrix and an example with a prior FIM (#30, <a href='http://github.com/giulialestini'>@giulialestini</a> and <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>Updated and added new example scripts in <code>system.file("examples", package="PopED")</code> (). This includes an example describing how to handle covariate distributions in optimal design, an example on how to incorporate IOV, an example on how to handle shrinkage, an example with a full covariance matrix and an example with a prior FIM (<a href='https://github.com/andrewhooker/PopED/issues/30'>#30</a>, <a href='http://github.com/giulialestini'>@giulialestini</a> and <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
 <li><p>Major overhaul in optimization methods used in <code><a href="../reference/poped_optim.html">poped_optim()</a></code> so that generic optimization routines like <code>optim()</code> can be easily used in optimizing PopED designs.</p></li>
-<li><p>Update speed of FIM calculations (#20, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
-<li><p>Update RSE calculations so that prior FIM is handled correctly (#22, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
-<li><p>Simplified code and removed duplicated code (#21, #24 and #32, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
-<li><p>New ways of handling inverting matricies, should be faster and work better when the matricies are ill-conditioned. See <code><a href="../reference/inv.html">?inv</a></code> for more information (#19, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>Update speed of FIM calculations (<a href='https://github.com/andrewhooker/PopED/issues/20'>#20</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>Update RSE calculations so that prior FIM is handled correctly (<a href='https://github.com/andrewhooker/PopED/issues/22'>#22</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>Simplified code and removed duplicated code (<a href='https://github.com/andrewhooker/PopED/issues/21'>#21</a>, <a href='https://github.com/andrewhooker/PopED/issues/24'>#24</a> and <a href='https://github.com/andrewhooker/PopED/issues/32'>#32</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>New ways of handling inverting matricies, should be faster and work better when the matricies are ill-conditioned. See <code><a href="../reference/inv.html">?inv</a></code> for more information (<a href='https://github.com/andrewhooker/PopED/issues/19'>#19</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
 <li><p>Updated functionality of IOV calculations.</p></li>
 <li><p>Updates to <code><a href="../reference/optim_ARS.html">optim_ARS()</a></code> for when to stop search.</p></li>
-<li><p>Extended functionality of <code>plot.model.prediction()</code> (#23, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
+<li><p>Extended functionality of <code>plot.model.prediction()</code> (<a href='https://github.com/andrewhooker/PopED/issues/23'>#23</a>, <a href='http://github.com/martin'>@martin</a>-gmx).</p></li>
 <li><p>Bug fixing. See <a href="https://github.com/andrewhooker/PopED/commits/master" class="uri">https://github.com/andrewhooker/PopED/commits/master</a> for more information.</p></li>
 </ul>
 </div>
@@ -258,7 +246,7 @@ Useful for testing of optimized designs via PsN’s (<a href="http://psn.sf.net"
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/empinfo/?languageId=1&id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, Sebastian Ueckert, Joakim Nyberg.</p>
+  <p>Developed by <a href='http://katalog.uu.se/profile/?id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, <a href='http://katalog.uu.se/profile/?id=N9-467'>Sebastian Ueckert</a>, Joakim Nyberg.</p>
 </div>
 
 <div class="pkgdown">
