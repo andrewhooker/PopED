@@ -1,7 +1,6 @@
-#' Creates a matrix of zeros.
+#' Create a matrix of zeros.
 #' 
-#' Function creates a matrix of zeros of size (dim1 x dim2). Written to match MATLAB's \code{zeros} function.
-#' 
+#' Create a matrix of zeros of size (dim1 x dim2). 
 #' 
 #' @param dim1 The dimension of the matrix (if square) or the number of rows.   
 #' @param dim2 The number of columns 
@@ -13,18 +12,6 @@
 ## Author: Andrew Hooker
 
 zeros <- function(dim1,dim2=NULL){
-  if(is.null(dim2)){
-    if(length(dim1)==2){
-      tmp <- dim1
-      dim1 <- tmp[1]
-      dim2 <- tmp[2]
-    } else if(length(dim1)==1){
-      dim2 <- dim1
-    } else {
-      stop("first argument can only have one or two values")
-    }
-  }
-  
-  mat <- matrix(0,dim1,dim2)
+  mat <- ones(dim1=dim1,dim2=dim2)*0
   return(mat)
 }
