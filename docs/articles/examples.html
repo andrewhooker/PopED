@@ -640,9 +640,9 @@ poped.db &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cr
 <a href="#design-evaluation" class="anchor"></a>Design evaluation</h2>
 <p>We can compare the time for design evaluation with these two methods of describing the same model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/tic.html">tic</a></span>(); eval &lt;-<span class="st"> </span><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db); <span class="kw"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 3.138 seconds.</span>
+<span class="co">#&gt; Elapsed time: 3.397 seconds.</span>
 <span class="kw"><a href="../reference/tic.html">tic</a></span>(); eval &lt;-<span class="st"> </span><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db.Rcpp); <span class="kw"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 1.123 seconds.</span></code></pre></div>
+<span class="co">#&gt; Elapsed time: 1.198 seconds.</span></code></pre></div>
 <p>The difference is noticeable and gets larger for more complex and lengthy ODE models.</p>
 </div>
 </div>
@@ -852,10 +852,10 @@ par_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">fun
   )</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ev &lt;-<span class="st"> </span><span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped_db_<span class="dv">2</span>) 
 <span class="kw">round</span>(ev<span class="op">$</span>ofv,<span class="dv">1</span>)
-<span class="co">#&gt; [1] 42</span>
+<span class="co">#&gt; [1] 41.8</span>
 <span class="kw">round</span>(ev<span class="op">$</span>rse)
 <span class="co">#&gt;    bpop[1]    bpop[2]    bpop[3]    bpop[4]     D[1,1]     D[2,2] </span>
-<span class="co">#&gt;          3          3         30         23         21         22 </span>
+<span class="co">#&gt;          3          3         32         25         21         22 </span>
 <span class="co">#&gt; SIGMA[1,1] </span>
 <span class="co">#&gt;         10</span></code></pre></div>
 <p>Here we see that, given this distribution of weights, the covariate effect parameters (bpop[3] and bpop[4]) would be well estimated.</p>
@@ -1374,7 +1374,7 @@ bpop_vals_ed
 <span class="co">#&gt;   5.009423   2.974270  14.046395  29.761798  36.689605  26.751934 </span>
 <span class="co">#&gt; SIGMA[1,1] SIGMA[2,2] </span>
 <span class="co">#&gt;  31.352041  25.261525</span>
-<span class="co">#&gt; Elapsed time: 0.139 seconds.</span></code></pre></div>
+<span class="co">#&gt; Elapsed time: 0.16 seconds.</span></code></pre></div>
 <p>We can see that the result, based on MC sampling, is somewhat variable with so few samples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/tic.html">tic</a></span>();<span class="kw"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(poped.db,<span class="dt">d_switch=</span><span class="ot">FALSE</span>,<span class="dt">ED_samp_size=</span><span class="dv">20</span>); <span class="kw"><a href="../reference/toc.html">toc</a></span>()
 <span class="co">#&gt; $ofv</span>
@@ -1405,7 +1405,7 @@ bpop_vals_ed
 <span class="co">#&gt;   5.023172   2.979086  14.040869  29.778573  36.717642  26.754250 </span>
 <span class="co">#&gt; SIGMA[1,1] SIGMA[2,2] </span>
 <span class="co">#&gt;  31.487815  25.277769</span>
-<span class="co">#&gt; Elapsed time: 0.135 seconds.</span></code></pre></div>
+<span class="co">#&gt; Elapsed time: 0.155 seconds.</span></code></pre></div>
 </div>
 </div>
 <div id="design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality" class="section level1">
