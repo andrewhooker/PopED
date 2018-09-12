@@ -52,9 +52,9 @@ Description: Optimal experimental designs for both population and individual
     <doi:10.1016/S0169-2607(03)00073-7>.
 License: LGPL (>= 3)
 ByteCompile: true
-URL: http://poped.sourceforge.net
+URL: https://github.com/andrewhooker/PopED, https://andrewhooker.github.io/PopED, http://poped.sourceforge.net
 BugReports: https://github.com/andrewhooker/PopED/issues
-Copyright: 2014-2016 Andrew C. Hooker
+Copyright: 2014-2018 Andrew C. Hooker
 LazyData: true
 RoxygenNote: 6.1.0
 VignetteBuilder: knitr
