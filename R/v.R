@@ -8,7 +8,7 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db)
   
   bUseFullSigmaCorrelation = FALSE
   
-  if((poped.db$settings$m2_switch[1]==0 || poped.db$settings$m2_switch[1]==1 || poped.db$settings$m2_switch[1]==30)){
+  if((poped.db$settings$m2_switch[1]==0 || poped.db$settings$m2_switch[1]==1)){
     returnArgs <- LinMatrixL(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
     l <- returnArgs[[1]]
     poped.db <- returnArgs[[2]]
@@ -77,9 +77,6 @@ v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db)
       
       if((bUseAutoCorrelation) ){#Add autocorrelation
         autocorr = feval(poped.db$model$auto_pointer,h,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,l,locc,interact,poped.db)
-        if((poped.db$settings$m2_switch[1]==30)){
-          stop(sprintf('User definied variance structure could not be used with automatic differentiation'))
-        }
         if((isempty(ret))){
           ret = autocorr
         } else {

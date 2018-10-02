@@ -72,14 +72,7 @@ poped.db <- returnArgs[[2]]
 #             }
 #         }
     } else {
-        if((poped.db$settings$m2_switch[1]==30) ){#Automatic differentiation (INTLab), only works with "normal" variance
-          stop("Automatic differentiation not implemented in PopED for R")
-#              returnArgs <-  m2_ad_wrapper(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 
-# dv_dbeta <- returnArgs[[1]]
-# poped.db <- returnArgs[[2]]
-        } else {
-         stop(sprintf('Unknown derivative option for m2'))
-        }
+      stop(sprintf('Unknown derivative option for m2'))
     }
 }
 return(list( dv_dbeta= dv_dbeta,poped.db=poped.db)) 

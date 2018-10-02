@@ -107,17 +107,8 @@ gradf_eps <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,num_eps,poped.
         dfeps_de0[,i]=Im(ferror_plus)/poped.db$settings$hle
       }
     } else {
-      if((poped.db$settings$hle_switch==30) ){#Automatic differentiation (INTLab)
-        stop("Automatic differentiation not yet implemented in PopED for R")
-        #             e_init = gradientinit(e0)
-        #              returnArgs <- feval(poped.db$model$ferror_pointer,model_switch,xt_ind,fg0,e_init,poped.db) 
-        # ferror_val <- returnArgs[[1]]
-        # poped.db <- returnArgs[[2]]
-        #             dfeps_de0 = ferror_val$dx
-      } else {
-        if((poped.db$settings$hle_switch!=20)){
-          stop(sprintf('Unknown derivative option for gradf_eps'))
-        }
+      if((poped.db$settings$hle_switch!=20)){
+        stop(sprintf('Unknown derivative option for gradf_eps'))
       }
     }
   }

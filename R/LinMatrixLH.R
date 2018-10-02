@@ -38,32 +38,6 @@ LinMatrixLH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,NumEPS,poped
     return(list( y= y,poped.db=poped.db)) 
   }
   
-  if((poped.db$settings$hle_switch==30) ){#Automatic differentiation (INTLab)
-    stop("Automatic differentiation not yet implemented in R version of PopED")
-    #     e0=zeros(1,NumEPS)
-    #     init_vec = matrix(c(t(b_ind), e0),nrow=1,byrow=T)
-    #     deriv_vec = hessianinit(init_vec)
-    #      returnArgs <-  new_ferror_file(model_switch,deriv_vec,xt_ind,x,a,bpop,bocc_ind,poped.db) 
-    # deriv <- returnArgs[[1]]
-    # poped.db <- returnArgs[[2]]
-    #     cellDeriv = cell(1,poped.db$parameters$NumRanEff)
-    #      for(i in 1:poped.db$parameters$NumRanEff){
-    #         tmp=zeros(size(xt_ind,1),NumEPS)
-    #         for(j in 1:size(xt_ind,1) ){#for each sample
-    #             val = deriv(j)$hx
-    #             tmp(j,)=val(poped.db$parameters$NumRanEff+1:poped.db$parameters$NumRanEff+NumEPS,i)
-    #         }
-    #         cellDeriv[[i]] = tmp
-    #      }
-    #     
-    #      for(i in 1:poped.db$parameters$NumRanEff){
-    #         tmp = cellDeriv[[i]]
-    #         y[,(i-1)*NumEPS+1:i*NumEPS]=tmp(,1:NumEPS)
-    #      }
-    #     #return
-    #     return(list( y= y,poped.db=poped.db)) 
-  }
-  
   if((poped.db$settings$hle_switch==20)){
     stop(sprintf('Analytic derivative with interaction is not yet available!'))
   }

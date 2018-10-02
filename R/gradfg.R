@@ -34,14 +34,7 @@ b_plus[i] = complex(real=b_plus[i],imaginary=poped.db$settings$hlg)
           stop("Automatic computation of analytic derivatives not currently implemented in PopED for R")
           #dfg_db0 = analytic_dfg_db1(x,a,bpop,b_ind)
         } else {
-            if((poped.db$settings$gradfg_switch[1] == 30) ){#Calculate using automatic differentiation (INTLab)
-              stop("Automatic differentiation not currently implemented in PopED for R")
-              #                 b_init = gradientinit(b_ind)
-#                 val = feval(poped.db$model$fg_pointer,x,a,bpop,b_init,bocc_ind)
-#                 dfg_db0 = val$dx
-            } else {
-                stop(sprintf('Unknown derivative option for gradfg'))
-            }
+          stop(sprintf('Unknown derivative option for gradfg'))
         }
     }
 }

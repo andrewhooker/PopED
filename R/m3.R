@@ -22,119 +22,7 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
                     sum(poped.db$parameters$notfixed_sigma)+
                     sum(poped.db$parameters$notfixed_covsigma))
   
-  if((poped.db$settings$m2_switch[1] == 30) ){#Automatic differentiation of M3 dosen't work with ud variance term
-    returnArgs <- LinMatrixL(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
-    l <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    returnArgs <- LinMatrixH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
-    h <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    returnArgs <- LinMatrixLH(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,size(sigma,1),poped.db) 
-    lh <- returnArgs[[1]]
-    poped.db <- returnArgs[[2]]
-    locc=cell(1,poped.db$parameters$NumOcc)
-    for(i in 1:poped.db$parameters$NumOcc){
-      if(poped.db$parameters$NumOcc==0) next
-      returnArgs <- LinMatrixL_occ(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,i,poped.db) 
-      locc[[i]] <- returnArgs[[1]]
-      poped.db <- returnArgs[[2]]
-    }
-    j=1
-    #Differentiate the variance w.r.t iiv
-    for(i in 1:poped.db$parameters$NumRanEff){
-      if((poped.db$parameters$notfixed_d[i]==1)){
-        dv_db_new[,j]=as.vector(l[,i,drop=F]*t(l[,i,drop=F])+diag_matlab(diag_matlab(lh[,(i-1)*NumSigma+1:i*NumSigma,drop=F]*sigma*t(lh[,(i-1)*NumSigma+1:i*NumSigma,drop=F])))) #Last term is interaction
-        j=j+1
-      }
-    }
-    
-    if((sum(poped.db$parameters$notfixed_covd)!=0)){
-      covIdx = which(lower.tri(d))
-      covRow = nrow(d)
-      if (length(covIdx) != length(poped.db$parameters$notfixed_covd)){
-        stop(sprintf('Wrong length of notfixed_covd, PopED is stoping!'))
-      }
-      for (i in which(poped.db$parameters$notfixed_covd == 1) ){
-          m <- (covIdx[i]-1) %% covRow + 1
-          n <- ceiling(covIdx[i] / covRow)
-          lh1 = diag_matlab(diag_matlab(lh[,(m-1)*NumSigma+1:m*NumSigma,drop=F]*sigma*t(lh[,(n-1)*NumSigma+1:n*NumSigma,drop=F]))) #Interaction term
-          lh2 = diag_matlab(diag_matlab(lh[,(n-1)*NumSigma+1:n*NumSigma,drop=F]*sigma*t(lh[,(m-1)*NumSigma+1:m*NumSigma,drop=F]))) #Interaction term
-          dv_db_new[,j]=as.vector(l[,m,drop=F]*t(l[,n,drop=F])+l[,n,drop=F]*t(l[,m,drop=F])+lh1+lh2)
-          j=j+1
-      }
-    }
-    
-    #Differentiate the variance w.r.t occasion_variability
-    for(i in 1:NumDocc){
-      if((poped.db$parameters$notfixed_docc[i]==1)){
-        tmp = zeros(size(xt_ind,1),size(xt_ind,1))
-        for(k in 1:poped.db$parameters$NumOcc){
-          tmp = tmp+locc[[k]][,i,drop=F]*t(locc[[k]][,i,drop=F])
-        }
-        dv_db_new[,j]=as.vector(tmp)
-        j=j+1
-      }
-    }
-    
-    #Differentiate the variance w$r.t. occasion covariances
-    if((sum(poped.db$parameters$notfixed_covdocc)!=0)      ){
-      covIdx = which(lower.tri(docc))
-      covRow = nrow(docc)
-      if (length(covIdx) != length(poped.db$parameters$notfixed_covdocc)){
-        stop(sprintf('Wrong length of notfixed_covdocc, PopED is stoping!'))
-      }
-      for (i in which(poped.db$parameters$notfixed_covdocc == 1) ){
-        m <- (covIdx[i]-1) %% covRow + 1
-        n <- ceiling(covIdx[i] / covRow)
-        tmp = zeros(size(xt_ind,1),size(xt_ind,1))
-        for(k in 1:poped.db$parameters$NumOcc){
-          tmp = tmp+locc[[k]][,m,drop=F]*t(locc[[k]][,n,drop=F])+locc[[k]][,n,drop=F]*t(locc[[k]][,m,drop=F])
-        }
-        dv_db_new[,j]=as.vector(tmp)
-        j=j+1
-      }
-    }
-    
-    #Differentiate the variance w$r.t. sigma
-    for(i in 1:NumSigma){
-      if((poped.db$parameters$notfixed_sigma[i]==1)){
-        tmp_lh = zeros(size(xt_ind,1),poped.db$parameters$NumRanEff)
-        for(k in 1:poped.db$parameters$NumRanEff ){#Only use the Random Eff interacting with sigma_i
-          tmp_lh[,k] = lh[,i+(k-1)*NumSigma,drop=F]
-        }
-        if((bUseVarSigmaDerivative) ){#Derivative w$r.t. sigma as variance
-          dv_db_new[,j]= as.vector(diag_matlab(diag_matlab(h(,i)*t(h(,i))))+diag_matlab(diag_matlab(tmp_lh*d*t(tmp_lh))))
-        } else { #Derivarite w$r.t. sigma as stdev
-          dv_db_new[,j]= as.vector(2*sqrt(sigma[i,i])*diag_matlab(diag_matlab(h(,i)*t(h(,i))))+2*sqrt(sigma[i,i])*diag_matlab(diag_matlab(tmp_lh*d*t(tmp_lh))))
-        }
-        j=j+1
-      }
-    }
-    
-    if((sum(poped.db$parameters$notfixed_covsigma)!=0)){
-      covIdx = which(lower.tri(sigma))
-      covRow = nrow(sigma)
-      if (length(covIdx) != length(poped.db$parameters$notfixed_covsigma)){
-        stop(sprintf('Wrong length of notfixed_covsigma, PopED is stoping!'))
-      }
-      for (i in which(poped.db$parameters$notfixed_covsigma == 1) ){
-        m <- (covIdx[i]-1) %% covRow + 1
-        n <- ceiling(covIdx[i] / covRow)
-        tmp_lh_m = zeros(size(xt_ind,1),poped.db$parameters$NumRanEff)
-        tmp_lh_n = zeros(size(xt_ind,1),poped.db$parameters$NumRanEff)
-        
-        for(k in 1:poped.db$parameters$NumRanEff ){#Only use the Random Eff interacting with sigma_m or sigma_n
-          tmp_lh_m[,k] = lh[,m+(k-1)*NumSigma,drop=F]
-          tmp_lh_n[,k] = lh[,n+(k-1)*NumSigma,drop=F]
-        }
-        dv_db_new[,j]=as.vector(diag_matlab(diag_matlab(h(,m)*t(h(,n))))+diag_matlab(diag_matlab(h(,n)*t(h(,m))))+diag_matlab(diag_matlab(tmp_lh_m*d*t(tmp_lh_n)))+diag_matlab(diag_matlab(tmp_lh_n*d*t(tmp_lh_m))))
-        j=j+1
-      }
-    }
-    
-    ret=dv_db_new
-    
-  } else { #If complex or central differentiation
+  #If complex or central differentiation
     k=1
     if(!isempty(d)){
       for(i in 1:poped.db$parameters$NumRanEff){
@@ -363,6 +251,5 @@ m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarS
     }
     
     ret = dv_db_new
-  }
   return(list( ret= ret,poped.db=poped.db)) 
 }

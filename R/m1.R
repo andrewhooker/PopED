@@ -176,59 +176,7 @@ m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,poped.db){
           }
         }
       } else {
-        if((poped.db$settings$m1_switch[1] == 30) ){#Automatic differentiation using INTLab
-          if((poped.db$settings$Engine$Type==2) ){#FreeMat
-            stop(sprintf('Automatic differentiation is not available in PopED with FreeMat'))
-          }
-          if((poped.db$settings$iApproximationMethod==0 || poped.db$settings$iApproximationMethod==3 || (isempty(b_ind) && isempty(bocc_ind))) ){#FO, FOI
-            stop("Automatic differentiation not currently implemented in PopED for R")
-            #                   bpop_init = gradientinit(bpop)
-            #                     fg_init=feval(poped.db$model$fg_pointer,x,a,bpop_init,b_ind,bocc_ind)
-            #                      returnArgs <-  feval(poped.db$model$ferror_pointer,model_switch,xt_ind,fg_init,epsi0,poped.db) 
-            # val <- returnArgs[[1]]
-            # poped.db <- returnArgs[[2]]
-            #                     df_dbeta = val$dx
-            #                     for(i in poped.db$parameters$nbpop:-1:1){
-            #                         if((poped.db$parameters$notfixed_bpop[i]==0)){
-            #                             df_dbeta[,i]=matrix(0,0,0)
-            #                         }
-            #                     }
-          } else { #FOCE, FOCEI
-            stop("Automatic differentiation not currently implemented in PopED for R")
-            #bpop_init = gradientinit(bpop)
-            #             fg_init=feval(poped.db$model$fg_pointer,x,a,bpop_init,b_ind,bocc_ind)
-            #             returnArgs <-  feval(poped.db$model$ferror_pointer,model_switch,xt_ind,fg_init,epsi0,poped.db) 
-            #             val <- returnArgs[[1]]
-            #             poped.db <- returnArgs[[2]]
-            #             returnArgs <-  dLinMatrixL_dbpop[model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db] 
-            #             cellDeriv <- returnArgs[[1]]
-            #             L <- returnArgs[[2]]
-            #             poped.db <- returnArgs[[3]]
-            #             returnArgs <-  dLinMatrixL_occ_dbpop[model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db] 
-            #             cellDerivOcc <- returnArgs[[1]]
-            #             L_occ <- returnArgs[[2]]
-            #             poped.db <- returnArgs[[3]]
-            #             o = 1
-            #             for(k in 1:poped.db$parameters$nbpop){
-            #               if((poped.db$parameters$notfixed_bpop[k]==1)){
-            #                 if((isempty(cellDeriv)) ){#Add linmatrix
-            #                   l_tmp = zeros(size(xt_ind,1),1)
-            #                 } else {
-            #                   l_tmp = cellDeriv[[k]]*b_ind
-            #                 }
-            #                 occ_add = zeros(size(xt_ind,1),1)
-            #                 for(m in 1:poped.db$parameters$NumOcc ){#Add occcasion
-            #                   occ_add=occ_add+cellDerivOcc[[m,k]]*(bocc_ind(,m))
-            #                 }
-            #                 df_dbeta[,o] = val$dx(,k) - (l_tmp+occ_add)
-            #                 o=o+1
-            #               }
-            #             }
-          }
-          
-        } else {
-          stop(sprintf('Unknown derivative option for m1'))
-        }
+        stop(sprintf('Unknown derivative option for m1'))
       }
     }
   }

@@ -46,16 +46,7 @@ gradff <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
           dff_dg0[k,] = eval(sprintf('analytic_dff_dg%d(model_switch,xt_ind[k],fg0)',model_switch[k]))
         }
       } else {
-        if((poped.db$settings$gradff_switch[1] == 30) ){#Calculate using automatic differentiation (INTLab)
-          stop("Automatic differentiation not currently implemented in PopED for R")
-          #                 fg_init = gradientinit(fg0)
-          #                  returnArgs <-  feval(poped.db$model$ferror_pointer,model_switch,xt_ind,fg_init,epsi0,poped.db) 
-          # val <- returnArgs[[1]]
-          # poped.db <- returnArgs[[2]]
-          #                 dff_dg0 = val$dx
-        } else {
-          stop(sprintf('Unknown derivative option for gradff'))
-        }
+        stop(sprintf('Unknown derivative option for gradff'))
       }
     }
   }

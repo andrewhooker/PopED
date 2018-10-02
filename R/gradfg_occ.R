@@ -31,14 +31,7 @@ if((poped.db$settings$gradfg_switch[1] == 1)){
             stop("Automatic calculation of analytic derivatives not currently implemented in PopED for R")
             #dfg_db0 = analytic_dfg_db1(x,a,bpop,b_ind)
         } else {
-            if((poped.db$settings$gradfg_switch[1] == 30) ){#Automatic differentiation (INTLab)
-              stop("Automatic differentiation not currently implemented in PopED for R")
-#                 bocc_init = gradientinit(bocc_ind)
-#                 val = poped.db$model$fg_pointer(x,a,bpop,b_ind,bocc_init)
-#                 dfg_db0 = val$dx(,(currentOcc-1)*poped.db$parameters$NumDocc+1:currentOcc*poped.db$parameters$NumDocc)
-            } else {
-                stop(sprintf('Unknown derivative option for gradfg_occ'))
-            }
+          stop(sprintf('Unknown derivative option for gradfg_occ'))
         }
     }
 }
