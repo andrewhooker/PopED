@@ -26,18 +26,13 @@ LinMatrixLH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,NumEPS,poped
   #
   # derivative of model w$r.t. sigma then eta, eval at e=0 and eta
   #
-  
-  
   y = zeros(size(xt_ind,1),poped.db$parameters$NumRanEff*NumEPS)
   if((poped.db$settings$iApproximationMethod==0 || poped.db$settings$iApproximationMethod==1) ){#No interaction
-    #return
     return(list( y= y,poped.db=poped.db)) 
   }
   if((poped.db$parameters$NumRanEff==0)){
-    #return
     return(list( y= y,poped.db=poped.db)) 
   }
-  
   if((poped.db$settings$hle_switch==20)){
     stop(sprintf('Analytic derivative with interaction is not yet available!'))
   }
