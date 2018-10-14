@@ -1,12 +1,15 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-grad_all <- function(func,select_par,nRow,...,currentOcc=NA,noPopED=FALSE){
+grad_all <- function(func,select_par,nRow,...,subset=NULL,currentOcc=NULL,noPopED=FALSE){
   arg_list = list(...)
   def0 = arg_list[[select_par]]
-  if (is.na(currentOcc)) {
-    idx  = seq_along(def0)
-    idx0 = idx
+  if (is.null(currentOcc)) {
+    idx = idx0 = seq_along(def0)
+    if (!is.null(subset)) {
+      idx0 = as.vector(cumsum(subset)*subset)
+      idx = seq(max(idx0))
+    }
   } else {
     idx  = seq(size(def0,1))
     idx0 = zeros(size(def0))
