@@ -1,7 +1,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-grad_all <- function(func,select_par,nRow,...,subset=NULL,currentOcc=NULL,noPopED=FALSE){
+grad_all <- function(func,select_par,nRow,...,subset=NULL,currentOcc=NULL,noPopED=FALSE,offdiag=FALSE){
   arg_list = list(...)
   def0 = arg_list[[select_par]]
   if (is.null(currentOcc)) {
@@ -9,6 +9,14 @@ grad_all <- function(func,select_par,nRow,...,subset=NULL,currentOcc=NULL,noPopE
     if (!is.null(subset)) {
       idx0 = as.vector(cumsum(subset)*subset)
       idx = seq(max(idx0))
+    }
+    if (is.matrix(def0) & select_par>6 & offdiag==FALSE) {
+      idx0 = diag(idx0)
+    }
+    if (is.matrix(def0) & select_par>6 & offdiag==TRUE) {
+      tmp = 0*def0
+      tmp[lower.tri(tmp)] = idx0
+      idx0 = tmp + t(tmp)
     }
   } else {
     idx  = seq(size(def0,1))

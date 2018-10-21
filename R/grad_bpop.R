@@ -1,12 +1,12 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-grad_bpop <- function(func,select_par,nout,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db,subset=poped.db$parameters$notfixed_bpop){
+grad_bpop <- function(func,select_par,nout,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db,subset=poped.db$parameters$notfixed_bpop, offdiag = FALSE){
   #----------Model linearization with respect to pop parameters
   #
   # use helper function to check for/include EBEs
   #
-  dx_dbpop = grad_all(func,select_par,nout,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db,subset=subset,noPopED = FALSE)
+  dx_dbpop = grad_all(func,select_par,nout,model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db,subset=subset,noPopED = FALSE,offdiag=offdiag)
   
   return(dx_dbpop=dx_dbpop) 
 }
