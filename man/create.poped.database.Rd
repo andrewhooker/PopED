@@ -114,6 +114,7 @@ create.poped.database(popedInput = list(), ff_file = NULL,
   hle_switch = poped.choose(popedInput$settings$hle_switch, 1),
   gradff_switch = poped.choose(popedInput$settings$gradff_switch, 1),
   gradfg_switch = poped.choose(popedInput$settings$gradfg_switch, 1),
+  grad_all_switch = poped.choose(popedInput$settings$grad_all_switch, 1),
   rsit_output = poped.choose(popedInput$settings$rsit_output, 5),
   sgit_output = poped.choose(popedInput$settings$sgit_output, 1),
   hm1 = poped.choose(popedInput$settings[["hm1"]], 1e-05),
@@ -466,6 +467,9 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{gradfg_switch}{Method used to calculate the gradient of the parameter vector g
 (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation)}
+
+\item{grad_all_switch}{Method used to calculate all the gradients
+(0=Complex difference, 1=Central difference)}
 
 \item{rsit_output}{Number of iterations in random search between screen output}
 
