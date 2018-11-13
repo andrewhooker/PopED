@@ -37,7 +37,7 @@ helper_LinMatrix <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma
   }
   
   if((poped.db$settings$bCalculateEBE)){
-    b_ind = ind_estimates(poped.db$mean_data,bpop,d,poped.db$parameters$sigma,t(b_ind),(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
+    b_ind = ind_estimates(poped.db$mean_data,bpop,d,sigma,t(b_ind),(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
   }
   
   g_p=feval(poped.db$model$fg_pointer,x,a,bpop,b_ind,bocc_ind)

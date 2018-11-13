@@ -56,7 +56,7 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
     }
     
     if(n_fixed_eff!=0){
-      returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,poped.db)
+      returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,poped.db)
       m1_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
     }

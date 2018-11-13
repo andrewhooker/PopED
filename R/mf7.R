@@ -51,7 +51,7 @@ mf7 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
       
       if((!isempty(xt_new))){
         f1=zeros(n+n*n,numnotfixed_bpop+numnotfixed_d+numnotfixed_covd+numnotfixed_docc+numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma)
-        returnArgs <- m1(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,poped.db) 
+        returnArgs <- m1(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,poped.db) 
         f1[1:n,1:numnotfixed_bpop] <- returnArgs[[1]]
         poped.db <- returnArgs[[2]]
         returnArgs <- m2(model_switch_new,xt_new,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 

@@ -1,7 +1,7 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,poped.db){
+m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,poped.db){
   #
   # function computes the derivative of the
   # linerarized model function w$r.t. bpop
