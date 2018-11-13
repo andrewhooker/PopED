@@ -210,6 +210,8 @@
 #' (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) 
 #' @param gradfg_switch Method used to calculate the gradient of the parameter vector g
 #' (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) 
+#' @param grad_all_switch Method used to calculate all the gradients
+#' (0=Complex difference, 1=Central difference) 
 #' @param rsit_output Number of iterations in random search between screen output 
 #' @param sgit_output Number of iterations in stochastic gradient search between screen output 
 #' @param hm1 Step length of derivative of linearized model w.r.t. typical values 
@@ -559,6 +561,9 @@ create.poped.database <-
            ## -- Method used to calculate the gradient of the parameter vector g
            ## (0=Complex difference, 1=Central difference, 20=Analytic derivative, 30=Automatic differentiation) --
            gradfg_switch=poped.choose(popedInput$settings$gradfg_switch,1),
+           ## -- Method used to calculate all the gradients
+           ## (0=Complex difference, 1=Central difference) --
+           grad_all_switch=poped.choose(popedInput$settings$grad_all_switch,1),
            ## -- Number of iterations in random search between screen output --
            rsit_output=poped.choose(popedInput$settings$rsit_output,5),          
            ## -- Number of iterations in stochastic gradient search between screen output --
@@ -1229,6 +1234,7 @@ create.poped.database <-
     poped.db$settings$hle_switch = hle_switch
     poped.db$settings$gradff_switch=gradff_switch
     poped.db$settings$gradfg_switch = gradfg_switch
+    poped.db$settings$grad_all_switch=grad_all_switch
     
     poped.db$settings$prior_fim = prior_fim
     
