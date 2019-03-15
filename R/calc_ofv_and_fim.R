@@ -82,8 +82,10 @@ calc_ofv_and_fim <- function (poped.db,
             if(!is.null(eval(parse(text=paste(i))))) eval(parse(text=paste(capture.output(default_args[[i]]),"<-",i)))
           }
         }
-        dmf <- do.call(ofv_fun,list(poped.db,...))
+        out_tmp <- do.call(ofv_fun,list(poped.db,...))
+        dmf <- out_tmp[[1]]
         fmf <- NULL
+        if(length(out_tmp)>1) fmf <- out_tmp[[2]]
       }
     } else { # e-family
       if(is.null(ofv_fun)){
