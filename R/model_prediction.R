@@ -180,13 +180,15 @@ model_prediction <- function(poped.db=NULL,
             maxv = model_maxxt[j]
           }                #xt = t(seq(minv,maxv,length.out=model_num_points[i]))
           
-          xt_i= c(xt_i,seq(minv,maxv,length.out=model_num_points[j]))
+          tmp_num_pts <- model_num_points[j]
+          if(length(model_num_points)<j) tmp_num_pts <- model_num_points[1]
+          xt_i= c(xt_i,seq(minv,maxv,length.out=tmp_num_pts))
           
           #model.pred <- rbind(xt)
           #model.pred <- data.frame(Time=xt)
           #model.pred <- c(model.pred,foo=xt)
           #browser()
-          model_switch_i = c(model_switch_i,j*matrix(1,1,model_num_points[j]))
+          model_switch_i = c(model_switch_i,j*matrix(1,1,tmp_num_pts))
         }
         if(include_sample_times){
           xt_i_extra = xt[groups_to_use[i],1:ni[groups_to_use[i]]]
