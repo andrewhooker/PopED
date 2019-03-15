@@ -1115,6 +1115,7 @@ create.poped.database <-
       d_descr[,2] <- d
       d_descr[,1] <- 0 # point values
       d_descr[,3] <- 0 # variance
+      rownames(d_descr) <- names(d)
       d <- d_descr
     }
     
@@ -1123,11 +1124,14 @@ create.poped.database <-
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
       bpop_descr[,3] <- 0 # variance
+      rownames(bpop_descr) <- names(bpop)
       bpop <- bpop_descr
     }    
     
     if(size(sigma,1)==1 && !is.matrix(sigma)){ # we have just the diagonal parameter values 
-      sigma <- diag(sigma,size(sigma,2),size(sigma,2))
+      sigma_tmp <- diag(sigma,size(sigma,2),size(sigma,2))
+      rownames(sigma_tmp) <- names(sigma)
+      sigma <- sigma_tmp
     }    
     
     covd = poped.choose(covd,zeros(1,poped.db$parameters$NumRanEff)*(poped.db$parameters$NumRanEff-1)/2)

@@ -18,5 +18,9 @@ evaluate_design <- function(poped.db, ...) {
   } else{
     out$rse <- get_rse(out$fim,poped.db,...)
   }
+  if(!is.null(names(out$rse))){
+    rownames(out$fim) <- names(out$rse)
+    colnames(out$fim) <- names(out$rse)
+  }
   return(out)
 }

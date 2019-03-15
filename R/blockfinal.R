@@ -244,6 +244,11 @@ get_parnam <- function (poped.db) {
                     "D.occ_cov"=poped.db$parameters$notfixed_covdocc,
                     "SIGMA"=poped.db$parameters$notfixed_sigma,
                     "SIGMA_cov"=poped.db$parameters$notfixed_covsigma)
+  
+  bpop_names <- rownames(poped.db$parameters$bpop)
+  d_names <- rownames(poped.db$parameters$d)
+  sig_names <- rownames(poped.db$parameters$sigma)
+  
   parnam <- c()
   for(i in 1:size(not_fixed,2)){
     if(length(not_fixed[[i]])==0) next
@@ -257,11 +262,34 @@ get_parnam <- function (poped.db) {
       #       }
       #     }
       if(not_fixed[[i]][j]==1){ 
-        if(names(not_fixed[i])=="bpop") parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep=""))  
-        if(any(names(not_fixed[i])==c("D","SIGMA","D.occ"))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
+        if(names(not_fixed[i])=="bpop"){
+          if(!is.null(bpop_names) & bpop_names[j]!="") {
+            parnam <- c(parnam,bpop_names[j])
+          } else {
+            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep=""))    
+          }
+        } 
+        if(any(names(not_fixed[i])==c("D"))){
+          if(!is.null(d_names) & d_names[j]!="") {
+            parnam <- c(parnam,paste0("om_",d_names[j]))
+          } else {
+            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
+          }
+        }
+        if(any(names(not_fixed[i])==c("SIGMA"))){
+          if(!is.null(sig_names) & sig_names[j]!="") {
+            parnam <- c(parnam,paste0("sig_",sig_names[j]))
+          } else {
+            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
+          }
+        }
+        
+        if(any(names(not_fixed[i])==c("D.occ"))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         if(length(grep("_cov",names(not_fixed[i])))!=0) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep="")) 
       }
     }
   }
+ 
+  
   return(parnam)
 }
