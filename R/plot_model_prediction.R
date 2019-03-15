@@ -81,6 +81,7 @@ plot_model_prediction <- function(poped.db,
                                   facet_scales="fixed", # could be "free", "fixed", "free_x" or "free_y"
                                   facet_label_names = T, 
                                   model.names=NULL,
+                                  DV.mean.sd=FALSE,
                                   ...){
   
   df <-  model_prediction(poped.db,
@@ -106,9 +107,10 @@ plot_model_prediction <- function(poped.db,
     levels(df.2$Model) <- model.names
   }
   
-  if(IPRED || IPRED.lines || DV || IPRED.lines.pctls || sample.times.DV || sample.times.DV.points || sample.times.DV.lines){
+  if(IPRED || IPRED.lines || DV || IPRED.lines.pctls || sample.times.DV || sample.times.DV.points || sample.times.DV.lines 
+     || DV.mean.sd){
     dv_val <- FALSE
-    if(DV || sample.times.DV || sample.times.DV.points || sample.times.DV.lines) dv_val <- TRUE
+    if(DV || sample.times.DV || sample.times.DV.points || sample.times.DV.lines || DV.mean.sd) dv_val <- TRUE
     poped.db_tmp <- poped.db
     poped.db_tmp$design$groupsize <- poped.db$design$groupsize*0+groupsize_sim
     df.ipred <-  model_prediction(poped.db_tmp,
@@ -218,6 +220,23 @@ plot_model_prediction <- function(poped.db,
                    linetype="dotted")
       
   }
+  
+  if(DV.mean.sd){ 
+    p <- p + 
+      stat_summary(data=df.ipred,
+                   aes(x=Time,y=IPRED),
+                   geom="line",
+                   fun.y=function(y){mean(y)},
+                   linetype="solid")+
+      stat_summary(data=df.ipred,
+                   aes(x=Time,y=IPRED),
+                   geom="ribbon",
+                   fun.ymax=function(y){mean(y)+sd(y)},
+                   fun.ymin=function(y){mean(y)-sd(y)},
+                   alpha=0.3)
+
+  }
+  
   if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow_poped",alpha=alpha.DV)
   if(PRED) p <- p + geom_line()
   if(sample.times) p <- p+geom_point(data=df.2,size=sample.times.size)#,aes(x=Time,y=DV,group=Group))#,color=Group))
