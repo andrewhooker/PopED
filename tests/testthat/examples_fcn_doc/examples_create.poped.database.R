@@ -35,8 +35,4 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 
 
 ## evaluate initial design
-FIM <- evaluate.fim(poped.db) 
-FIM
-det(FIM)
-get_rse(FIM,poped.db)
-
+evaluate_design(poped.db)
