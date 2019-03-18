@@ -2,6 +2,9 @@
 
 * Updated the website at https://andrewhooker.github.io/PopED 
 
+* Named parameters are now passed to all calculations so that the FIM and RSE output is more 
+readable with parameter names instead of default names.
+
 # PopED 0.4.0
 
 * New and improved vignettes (#30, @giulialestini)!
