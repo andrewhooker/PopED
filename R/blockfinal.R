@@ -263,25 +263,34 @@ get_parnam <- function (poped.db) {
       #     }
       if(not_fixed[[i]][j]==1){ 
         if(names(not_fixed[i])=="bpop"){
-          if(!is.null(bpop_names) & bpop_names[j]!="") {
-            parnam <- c(parnam,bpop_names[j])
-          } else {
-            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep=""))    
-          }
+          default_name <- TRUE
+          if(!is.null(bpop_names)){
+            if(bpop_names[j]!="") {
+              default_name <- FALSE
+              parnam <- c(parnam,bpop_names[j])
+            }
+          } 
+          if(default_name)  parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep=""))    
         } 
         if(any(names(not_fixed[i])==c("D"))){
-          if(!is.null(d_names) & d_names[j]!="") {
-            parnam <- c(parnam,paste0("om_",d_names[j]))
-          } else {
-            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
-          }
+          default_name <- TRUE
+          if(!is.null(d_names)){
+            if(d_names[j]!="") {
+              default_name <- FALSE
+              parnam <- c(parnam,paste0("om_",d_names[j]))
+            }
+          } 
+          if(default_name) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         }
         if(any(names(not_fixed[i])==c("SIGMA"))){
-          if(!is.null(sig_names) & sig_names[j]!="") {
-            parnam <- c(parnam,paste0("sig_",sig_names[j]))
-          } else {
-            parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
-          }
+          default_name <- TRUE
+          if(!is.null(sig_names)){
+            if(sig_names[j]!="") {
+              default_name <- FALSE
+              parnam <- c(parnam,paste0("sig_",sig_names[j]))
+            }
+          } 
+          if(default_name) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         }
         
         if(any(names(not_fixed[i])==c("D.occ"))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
