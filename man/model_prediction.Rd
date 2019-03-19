@@ -18,7 +18,7 @@ model_prediction(poped.db = NULL, design = list(xt =
   filename = NULL, models_to_use = "all", model_num_points = NULL,
   model_minxt = NULL, model_maxxt = NULL, include_sample_times = T,
   groups_to_use = "all", include_a = TRUE, include_x = TRUE,
-  manipulation = NULL)
+  manipulation = NULL, PI = FALSE, PI_conf_level = 0.95)
 }
 \arguments{
 \item{poped.db}{A PopED database created by \code{\link{create.poped.database}}.}
@@ -68,6 +68,11 @@ evaluated using the code \code{for(i in 1:length(manipulation)){df <- within(df,
 Can be used to transform 
 or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
 so transformations in colums having to do with input to model predictions  will not affect the predictions.}
+
+\item{PI}{Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
+the model variance and a normality assumption of that variance.}
+
+\item{PI_alpha}{The alpha level (type I error) for the confidence interval computed.}
 }
 \value{
 A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 

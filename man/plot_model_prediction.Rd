@@ -14,6 +14,7 @@ plot_model_prediction(poped.db, model_num_points = 100,
   sample.times.DV.lines = F, alpha.sample.times.DV.points = 0.3,
   alpha.sample.times.DV.lines = 0.3, y_lab = "Model Predictions",
   facet_scales = "fixed", facet_label_names = T, model.names = NULL,
+  DV.mean.sd = FALSE, PI = FALSE, PI_alpha = 0.3, PI_fill = "blue",
   ...)
 }
 \arguments{
@@ -78,6 +79,13 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 \item{model.names}{A vector of names of the response model/s (the length of the 
 vector should be equal to the number of response models). It is Null by default.}
 
+\item{PI}{Plot prediction intervals for the expected data given the model.
+Predictions are based on first-order approximations to 
+the model variance and a normality assumption of that variance.  As such these computations are 
+more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.}
+
+\item{PI_alpha}{The alpha level (type I error) for the confidence interval computed.}
+
 \item{...}{Additional arguments passed to the \code{\link{model_prediction}} function.}
 }
 \value{
@@ -127,8 +135,13 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 ##  create plot of model without variability 
 plot_model_prediction(poped.db)
 
-##  create plot of model with variability 
+##  create plot of model with variability by simulating from OMEGA and SIGMA
 plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
+
+##  create plot of model with variability by computing the expected variance (using an FO approximation) 
+##  and then computing a prediction interval based on an assumption of normality
+##  computation is faster but less accurate compared to using DV=TRUE (and groupsize_sim = 500)
+plot_model_prediction(poped.db,PI=T)
 
 ##-- Model: One comp first order absorption + inhibitory imax
 ## -- works for both mutiple and single dosing  
@@ -212,6 +225,11 @@ poped.db <-
 
 ##  create plot of model and design 
 plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"))
+
+##  create plot of model with variability by computing the expected variance (using an FO approximation) 
+##  and then computing a prediction interval based on an assumption of normality
+##  computation is faster but less accurate compared to using DV=TRUE (and groupsize_sim = 500)
+plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"),PI=T,separate.groups = T)
 
 
 }

@@ -69,14 +69,14 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 
-                                  sigma=c(0.01,0.25),
+                                  sigma=c(prop=0.01,add=0.25),
                                   groupsize=32,
                                   xt=c( 0.5,1,2,6,24,36,72,120),
                                   minxt=0.01,
                                   maxxt=120,
-                                  a=70,
-                                  mina=0.01,
-                                  maxa=100)
+                                  a=c(DOSE=70),
+                                  mina=c(DOSE=0.01),
+                                  maxa=c(DOSE=100))
 
 ############# END ###################
 ## Create PopED database
