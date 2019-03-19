@@ -142,9 +142,12 @@ plot_model_prediction(poped.db)
 ##  create plot of model with variability by simulating from OMEGA and SIGMA
 plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
 
-##  create plot of model with variability by computing the expected variance (using an FO approximation) 
-##  and then computing a prediction interval based on an assumption of normality
-##  computation is faster but less accurate compared to using DV=TRUE (and groupsize_sim = 500)
+##  create plot of model with variability by 
+##  computing the expected variance (using an FO approximation) 
+##  and then computing a prediction interval 
+##  based on an assumption of normality
+##  computation is faster but less accurate 
+##  compared to using DV=TRUE (and groupsize_sim = 500)
 plot_model_prediction(poped.db,PI=TRUE)
 
 ##-- Model: One comp first order absorption + inhibitory imax
