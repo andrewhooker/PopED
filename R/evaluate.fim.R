@@ -104,7 +104,7 @@ evaluate.fim <- function(poped.db,
     poped.db$settings$gradfg_switch=deriv.type
   }
 
-  output = mftot(model_switch,groupsize,ni,xt,x,a,bpop.val,d_full,sigma_full,docc_full,poped.db)
+  output = mftot(model_switch,groupsize,ni,xt,x,a,bpop.val,d_full,sigma_full,docc_full,poped.db,...)
   FIM <- output$ret
   
   return(FIM)
