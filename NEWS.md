@@ -5,6 +5,11 @@
 * Named parameters are now passed to all calculations so that the FIM and RSE output is more 
 readable with parameter names instead of default names.
 
+* Added the ability to predict and plot model prediction intervals by computing the expected variance 
+(using an FO approximation) and then computing a prediction interval based on an assumption of normality.
+See `?model_prediciton` and `?plot_model_prediction`. The computation is faster but less accurate compared 
+to using `DV=TRUE` (and `groupsize_sim = 500`) in the two functions.
+
 # PopED 0.4.0
 
 * New and improved vignettes (#30, @giulialestini)!
