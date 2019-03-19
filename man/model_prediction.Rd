@@ -72,7 +72,7 @@ so transformations in colums having to do with input to model predictions  will 
 \item{PI}{Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
 the model variance and a normality assumption of that variance.}
 
-\item{PI_alpha}{The alpha level (type I error) for the confidence interval computed.}
+\item{PI_conf_level}{The confidence level for the prediction interval computed.}
 }
 \value{
 A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 

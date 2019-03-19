@@ -79,12 +79,16 @@ simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?}
 \item{model.names}{A vector of names of the response model/s (the length of the 
 vector should be equal to the number of response models). It is Null by default.}
 
+\item{DV.mean.sd}{Plot the mean and standard deviation of simulated observations.}
+
 \item{PI}{Plot prediction intervals for the expected data given the model.
 Predictions are based on first-order approximations to 
 the model variance and a normality assumption of that variance.  As such these computations are 
 more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.}
 
-\item{PI_alpha}{The alpha level (type I error) for the confidence interval computed.}
+\item{PI_alpha}{The transparency of the PI.}
+
+\item{PI_fill}{The color of the PI.}
 
 \item{...}{Additional arguments passed to the \code{\link{model_prediction}} function.}
 }
@@ -141,7 +145,7 @@ plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE)
 ##  create plot of model with variability by computing the expected variance (using an FO approximation) 
 ##  and then computing a prediction interval based on an assumption of normality
 ##  computation is faster but less accurate compared to using DV=TRUE (and groupsize_sim = 500)
-plot_model_prediction(poped.db,PI=T)
+plot_model_prediction(poped.db,PI=TRUE)
 
 ##-- Model: One comp first order absorption + inhibitory imax
 ## -- works for both mutiple and single dosing  
@@ -200,36 +204,44 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 
 poped.db <- 
-  create.poped.database(ff_fun="ff",
-                        fError_fun="feps",
-                        fg_fun="sfg",
-                        groupsize=20,
-                        m=3,
-                        bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,
-                               E0=1120,IMAX=0.807,IC50=0.0993),  
-                        notfixed_bpop=c(1,1,1,0,1,1,1),
-                        d=c(V=0.09,KA=0.09,CL=0.25^2,E0=0.09), 
-                        sigma=c(0.04,5e-6,0.09,100),
-                        notfixed_sigma=c(0,0,0,0),
-                        xt=c( 1,2,8,240,240,1,2,8,240,240),
-                        minxt=c(0,0,0,240,240,0,0,0,240,240),
-                        maxxt=c(10,10,10,248,248,10,10,10,248,248),
-                        discrete_xt = list(0:248),
-                        G_xt=c(1,2,3,4,5,1,2,3,4,5),
-                        bUseGrouped_xt=1,
-                        model_switch=c(1,1,1,1,1,2,2,2,2,2),
-                        a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24),c(DOSE=0, TAU=24)),
-                        maxa=c(DOSE=200,TAU=40),
-                        mina=c(DOSE=0,TAU=2),
-                        ourzero=0)
+  create.poped.database(
+    ff_fun="ff",
+    fError_fun="feps",
+    fg_fun="sfg",
+    groupsize=20,
+    m=3,
+    bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,
+           E0=1120,IMAX=0.807,IC50=0.0993),  
+    notfixed_bpop=c(1,1,1,0,1,1,1),
+    d=c(V=0.09,KA=0.09,CL=0.25^2,E0=0.09), 
+    sigma=c(0.04,5e-6,0.09,100),
+    notfixed_sigma=c(0,0,0,0),
+    xt=c( 1,2,8,240,240,1,2,8,240,240),
+    minxt=c(0,0,0,240,240,0,0,0,240,240),
+    maxxt=c(10,10,10,248,248,10,10,10,248,248),
+    discrete_xt = list(0:248),
+    G_xt=c(1,2,3,4,5,1,2,3,4,5),
+    bUseGrouped_xt=1,
+    model_switch=c(1,1,1,1,1,2,2,2,2,2),
+    a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24),c(DOSE=0, TAU=24)),
+    maxa=c(DOSE=200,TAU=40),
+    mina=c(DOSE=0,TAU=2),
+    ourzero=0)
 
 ##  create plot of model and design 
-plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"))
+plot_model_prediction(poped.db,facet_scales="free",
+                      model.names = c("PK","PD"))
 
-##  create plot of model with variability by computing the expected variance (using an FO approximation) 
-##  and then computing a prediction interval based on an assumption of normality
-##  computation is faster but less accurate compared to using DV=TRUE (and groupsize_sim = 500)
-plot_model_prediction(poped.db,facet_scales="free",model.names = c("PK","PD"),PI=T,separate.groups = T)
+##  create plot of model with variability by  
+##  computing the expected variance (using an FO approximation) 
+##  and then computing a prediction interval 
+##  based on an assumption of normality
+##  computation is faster but less accurate 
+##  compared to using DV=TRUE (and groupsize_sim = 500)
+plot_model_prediction(poped.db,facet_scales="free",
+                      model.names = c("PK","PD"),
+                      PI=TRUE,
+                      separate.groups = TRUE)
 
 
 }

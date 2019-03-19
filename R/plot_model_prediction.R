@@ -35,6 +35,9 @@
 #' Predictions are based on first-order approximations to 
 #' the model variance and a normality assumption of that variance.  As such these computations are 
 #' more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.
+#' @param PI_fill The color of the PI.
+#' @param PI_alpha The transparency of the PI.
+#' @param DV.mean.sd Plot the mean and standard deviation of simulated observations. 
 #' @param ... Additional arguments passed to the \code{\link{model_prediction}} function.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
@@ -90,7 +93,7 @@ plot_model_prediction <- function(poped.db,
                                   PI_alpha=0.3,
                                   PI_fill="blue",
                                   ...){
-  
+  PI_u <- PI_l <- NULL
   df <-  model_prediction(poped.db,
                           #models_to_use,
                           model_num_points=model_num_points,
@@ -240,8 +243,8 @@ plot_model_prediction <- function(poped.db,
       stat_summary(data=df.ipred,
                    aes(x=Time,y=IPRED),
                    geom="ribbon",
-                   fun.ymax=function(y){mean(y)+sd(y)},
-                   fun.ymin=function(y){mean(y)-sd(y)},
+                   fun.ymax=function(y){mean(y)+stats::sd(y)},
+                   fun.ymin=function(y){mean(y)-stats::sd(y)},
                    alpha=0.3)
 
   }

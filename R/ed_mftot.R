@@ -26,7 +26,7 @@
 ## Author: Andrew Hooker
 
 ed_mftot <- function(model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,
-                     calc_fim=TRUE){
+                     calc_fim=TRUE,...){
   #+++++++++++++++++++++++ ED OFV(MF) VALUE
   s=0
   s1=0

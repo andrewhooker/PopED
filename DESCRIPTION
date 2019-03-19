@@ -17,7 +17,8 @@ Imports:
     purrr,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    gtools
 Suggests:
     testthat,
     Hmisc,

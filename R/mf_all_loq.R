@@ -102,13 +102,13 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       
       if(verbose){
         bloq_obs_tmp <- bloq_obs_master 
+        model <- xt <- NULL
         for(j in 1:nrow(bloq_obs)){
           bloq_obs_tmp[bloq_obs_master==2] <- bloq_obs[j,] 
           df_p <- tibble::tibble(model=c(model_switch_i),xt=c(xt_i),pred=c(pred),BLQ=bloq_obs_tmp)
           df_p <- df_p %>% dplyr::arrange(model,xt)
           # print(df_p)
-          cat("Group ", i, 
-              "\nTime: ",sprintf("%1.f",df_p$xt),
+          cat("Time: ",sprintf("%1.f",df_p$xt),
               "\nBLQ: ",sprintf("%1.f",df_p$BLQ), 
               "\np_initial: ", sprintf("%8.4g",p_bloq_comb_full[j]),
               " p_final: ",sprintf("%8.4g",p_bloq_comb[j]),
