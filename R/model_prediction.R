@@ -33,7 +33,10 @@
 #' evaluated using the code \code{for(i in 1:length(manipulation)){df <- within(df,{eval(manipulation[[i]])})}}. 
 #' Can be used to transform 
 #' or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
-#' so transformations in colums having to do with input to model predictions  will not affect the predictions.     
+#' so transformations in colums having to do with input to model predictions  will not affect the predictions.   
+#' @param PI Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
+#' the model variance and a normality assumption of that variance.
+#' @param PI_alpha The alpha level (type I error) for the confidence interval computed.   
 #' 
 #' @return A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 
 #' based on the input design.
@@ -80,7 +83,9 @@ model_prediction <- function(poped.db=NULL,
                              groups_to_use="all",
                              include_a = TRUE,
                              include_x = TRUE,
-                             manipulation=NULL) 
+                             manipulation=NULL,
+                             PI = FALSE,
+                             PI_conf_level = 0.95) 
 {
   
   if(is.null(predictions)){
@@ -205,14 +210,40 @@ model_prediction <- function(poped.db=NULL,
           model_switch_i <- model_switch_i[tmp.order]
         }
       }
+      
+      
+      
       pred <- NA
+      group.df <- data.frame(Time=xt_i,PRED=pred,Group=groups_to_use[i],Model=model_switch_i)
+      
       if(predictions){
-        g0 = feval(model$fg_pointer,x_i,a_i,parameters$bpop[,2,drop=F],zeros(1,d_size),zeros(docc_size,NumOcc))
+        bpop_val <- parameters$bpop[,2,drop=F]
+        b_ind = zeros(1,d_size)
+        bocc_ind = zeros(docc_size,NumOcc)
+        g0 = feval(model$fg_pointer,x_i,a_i,bpop_val,b_ind,bocc_ind)
         
         pred <- feval(model$ff_pointer,model_switch_i,xt_i,g0,poped.db)
         pred <- drop(pred[[1]])
+        group.df["PRED"] <- pred
+
+        if(PI){
+          sigma_full = parameters$sigma
+          d_full = getfulld(parameters$d[,2],parameters$covd)
+          docc_full = getfulld(parameters$docc[,2,drop=F],parameters$covdocc)
+                    
+          cov <- v(as.matrix(model_switch_i),as.matrix(xt_i),
+                   t(x_i),t(a_i),bpop_val,t(b_ind),bocc_ind,d_full,
+                   sigma_full,docc_full,poped.db)[[1]]
+          
+          PI_alpha <- 1-PI_conf_level
+          z_val <- qnorm(1-PI_alpha/2)
+          se_val <- sqrt(diag(cov))
+          PI_u <- pred + z_val*se_val 
+          PI_l <- pred - z_val*se_val 
+          group.df <- data.frame(group.df,PI_l=PI_l,PI_u=PI_u)
+        }      
       }    
-      group.df <- data.frame(Time=xt_i,PRED=pred,Group=groups_to_use[i],Model=model_switch_i)
+      
       #     group.df <- data.frame(Time=xt_i,PRED=drop(pred[[1]]),Group=groups_to_use[i],
       #                            ##paste("Group",i,sep="_"),
       #                            Model=model_switch_i)

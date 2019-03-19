@@ -43,8 +43,56 @@ test_that("model_prediction works", {
   dosing_2 <- list(list(AMT=1000,RATE=NA,Time=0.5),list(AMT=3000,RATE=NA,Time=0.5),list(AMT=6000,RATE=NA,Time=0.5))
   
   expect_error(model_prediction(design=design_3,DV=T,dosing=dosing_2))
+
+  sfg <- function(x,a,bpop,b,bocc){
+    parameters=c(CL=bpop[1]*exp(b[1]),
+                 V=bpop[2]*exp(b[2]),
+                 KA=bpop[3]*exp(b[3]),
+                 Favail=bpop[4],
+                 DOSE=a[1])
+    return(parameters) 
+  }
   
+  ## -- Define initial design  and design space
+  poped.db.2 <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                    fg_fun=sfg,
+                                    fError_fun=feps.add.prop,
+                                    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                    notfixed_bpop=c(1,1,1,0),
+                                    d=c(CL=0.07, V=0.02, KA=0.6), 
+                                    sigma=c(prop=0.01,add=1),
+                                    groupsize=32,
+                                    xt=c( 0.5,1,2,6,24,36,72,120),
+                                    minxt=0,
+                                    maxxt=120,
+                                    a=70)
+  plot_model_prediction(poped.db.2,PI=T,DV=T)#,groupsize_sim = 500)
+  df_20 <- model_prediction(poped.db.2,PI=TRUE)
+  expect_true(all(c("PI_l","PI_u") %in% names(df_20)))
   
+  sfg.3 <- function(x,a,bpop,b,bocc){
+    parameters=c(CL=bpop[1]*exp(b[1]),
+                 V=bpop[2]*exp(b[2]),
+                 KA=bpop[3]*exp(b[3]),
+                 Favail=bpop[4],
+                 DOSE=a[1],
+                 TAU=a[2])
+    return(parameters) 
+  }
+  poped.db.3 <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                      fg_fun=sfg.3,
+                                      fError_fun=feps.add.prop,
+                                      bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                      notfixed_bpop=c(1,1,1,0),
+                                      d=c(CL=0.07, V=0.02, KA=0.6), 
+                                      sigma=c(prop=0.01,add=1),
+                                      groupsize=32,
+                                      xt=c( 0.5,1,2,6,24,36,72,120),
+                                      minxt=0,
+                                      maxxt=120,
+                                      a=c(DOSE=70,TAU=200))
+  plot_model_prediction(poped.db.3,PI=T,DV=T)#,groupsize_sim = 500)
+
 })
 
 test_that("plot_model_prediction works", {

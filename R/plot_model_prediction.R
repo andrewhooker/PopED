@@ -31,6 +31,10 @@
 #'   simulated when DV=TRUE or IPRED=TRUE to create prediction intervals?
 #' @param model.names A vector of names of the response model/s (the length of the 
 #' vector should be equal to the number of response models). It is Null by default.
+#' @param PI Plot prediction intervals for the expected data given the model.  
+#' Predictions are based on first-order approximations to 
+#' the model variance and a normality assumption of that variance.  As such these computations are 
+#' more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.
 #' @param ... Additional arguments passed to the \code{\link{model_prediction}} function.
 #' 
 #' @return A \link[ggplot2]{ggplot} object.  If you would like to further edit this plot don't 
@@ -82,6 +86,9 @@ plot_model_prediction <- function(poped.db,
                                   facet_label_names = T, 
                                   model.names=NULL,
                                   DV.mean.sd=FALSE,
+                                  PI=FALSE,
+                                  PI_alpha=0.3,
+                                  PI_fill="blue",
                                   ...){
   
   df <-  model_prediction(poped.db,
@@ -90,6 +97,7 @@ plot_model_prediction <- function(poped.db,
                           ##model_minxt,
                           ##model_maxxt,
                           ##groups_to_plot,
+                          PI=PI,
                           ...)
   if(!is.null(model.names)){
     levels(df$Model) <- model.names
@@ -101,6 +109,7 @@ plot_model_prediction <- function(poped.db,
                               ##model_num_points=NULL,
                               ##model_minxt,model_maxxt,
                               ##groups_to_plot,
+                              PI=PI,
                               ...)
   }
   if(!is.null(model.names)){
@@ -236,6 +245,8 @@ plot_model_prediction <- function(poped.db,
                    alpha=0.3)
 
   }
+  
+  if(PI) p <- p + geom_ribbon(data = df, aes(x=Time,ymin=PI_l,ymax=PI_u),alpha=PI_alpha,fill=PI_fill )
   
   if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow_poped",alpha=alpha.DV)
   if(PRED) p <- p + geom_line()
