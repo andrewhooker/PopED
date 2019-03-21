@@ -210,6 +210,8 @@ optim_ARS <- function(par,
       res <- mapply(c,parallel::mclapply(it_seq,gen_par_ofv,par_opt,mc.cores=attr(parallel, "cores")))
     } else if(parallel && (attr(parallel,"type")=="snow")){
       res <- mapply(c,parallel::parLapply(attr(parallel, "cluster"),it_seq,gen_par_ofv,par_opt))
+      # library(doParallel)
+      # foreach::foreach(i=it_seq) %dopar% gen_par_ofv(i,par_opt)
     } else {
       res <- mapply(c,lapply(it_seq,gen_par_ofv,par_opt))  
     }

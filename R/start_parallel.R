@@ -29,6 +29,7 @@ start_parallel <- function(parallel=TRUE,
                            parallel_type=NULL,
                            seed=NULL,
                            dlls=NULL,
+                           #cpp_files=NULL,
                            ...)
 {
   # Start parallel computing for poped package
@@ -75,6 +76,15 @@ start_parallel <- function(parallel=TRUE,
                                 x=paste0(i,.Platform$dynlib.ext))
         }
       }
+      
+      # if(!is.null(cpp_files)){
+      #   for(i in cpp_files){
+      #     parallel::clusterCall(cl, 
+      #                           sourceCpp,
+      #                           file=i)
+      #   }
+      # }
+      #doParallel::registerDoParallel(cl, cores = numCores)
       
     } else if(parallel_type == "multicore") { 
       if(!is.null(seed)){
