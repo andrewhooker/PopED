@@ -115,7 +115,7 @@ optim_LS <- function(par,
   par_type <- rep("cont",length(par))
   if(!is.null(allowed_values)){
     for(k in 1:length(par)){
-      if(!is.na(allowed_values[[k]]) && length(allowed_values[[k]]>0)){
+      if(!all(is.na(allowed_values[[k]])) && length(allowed_values[[k]]>0)){
         par_type[k] <- "cat"          
       }
     }
