@@ -112,7 +112,7 @@ optim_ARS <- function(par,
   par_type <- rep("cont",npar)
   if(!is.null(allowed_values)){
     for(k in 1:npar){
-      if(!is.na(allowed_values[[k]]) && length(allowed_values[[k]]>0)){
+      if(!all(is.na(allowed_values[[k]])) && length(allowed_values[[k]]>0)){
         par_type[k] <- "cat"          
       }
     }

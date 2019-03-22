@@ -108,7 +108,7 @@ create_ofv <- function(poped.db,
   par_cat_cont <- rep("cont",npar)
   if(!is.null(allowed_values)){
     for(k in 1:npar){
-      if(!is.na(allowed_values[[k]]) && length(allowed_values[[k]]>0)){
+      if(!all(is.na(allowed_values[[k]])) && length(allowed_values[[k]]>0)){
         par_cat_cont[k] <- "cat"          
       }
     }
