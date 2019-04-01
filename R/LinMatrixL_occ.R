@@ -18,18 +18,18 @@
 ## Author: Andrew Hooker
 
 LinMatrixL_occ <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,iCurrentOcc,poped.db){
-#
-# size: (samples per individual x number of iovs)
-#
-if((poped.db$parameters$NumOcc==0)){
-	y=0
-} else {
-     returnArgs <- gradff(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
-grad_ff_tmp <- returnArgs[[1]]
-poped.db <- returnArgs[[2]]
+  #
+  # size: (samples per individual x number of iovs)
+  #
+  if((poped.db$parameters$NumOcc==0)){
+    y=0
+  } else {
+    returnArgs <- gradff(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db) 
+    grad_ff_tmp <- returnArgs[[1]]
+    poped.db <- returnArgs[[2]]
     y=grad_ff_tmp%*%gradfg_occ(x,a,bpop,b_ind,bocc_ind,iCurrentOcc,poped.db)
-}
-return(list( y= y,poped.db=poped.db)) 
+  }
+  return(list( y= y,poped.db=poped.db)) 
 }
 
 
