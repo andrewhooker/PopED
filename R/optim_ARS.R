@@ -266,6 +266,12 @@ optim_ARS <- function(par,
       nullit=1
     }
     
+    if(trace && start_it==1){
+      cat(sprintf("Initial OFV = %g",res2[["ofv",1]]))
+      if(trace==2 | trace==3) cat(" | par = ",res2[["par",1]])
+      cat("\n")
+    } 
+    
     if((trace && any((it_seq %% trace_iter)==0))){
       if(length(it_seq)==1){ 
         cat(sprintf(paste0("It. %",wd_iter,"i"),start_it))
@@ -276,7 +282,7 @@ optim_ARS <- function(par,
       if(trace==2) cat(" | opt. par. = ",par_opt)
       #cat(" | runs = ",runs)
       #cat(" | nullit = ",nullit)
-      if(trace==3) cat(" | par tried = ",par)
+      if(trace==3) cat(" | best par tried = ",par)
       cat("\n")
     }
     
