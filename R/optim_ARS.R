@@ -101,12 +101,6 @@ optim_ARS <- function(par,
   dpar[is.infinite(dpar)] <- no_bounds_sd
   if(!is.null(seed)) set.seed(seed)
   
-  if(parallel){
-    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,...) 
-    on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
-  }  
-  iter_chunk = NULL
-  if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1
   
   # continuous and discrete parameters
   par_type <- rep("cont",npar)
@@ -198,6 +192,13 @@ optim_ARS <- function(par,
     }
     return(list(ofv=ofv,par=par,need_new_par=need_new_par))
   } # end function
+  
+  if(parallel){
+    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,...) 
+    on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
+  }  
+  iter_chunk = NULL
+  if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1
   
   for(it in 1:ceiling(iter/iter_chunk)){
     start_it <- (it-1)*iter_chunk+1
