@@ -45,7 +45,7 @@ start_parallel <- function(parallel=TRUE,
   if(parallel){ 
     if(parallel_type == "snow"){ 
       # snow functionality on Unix-like systems & Windows
-      cl <- parallel::makeCluster(num_cores, ...)
+      cl <- parallel::makeCluster(num_cores, ...)# ...)#type = "PSOCK")#
       attr(parallel, "cluster") <- cl
       
       # export parent environment
@@ -57,8 +57,8 @@ start_parallel <- function(parallel=TRUE,
                               envir = parent.frame() )
       
       # export global environment (workspace)
-      parallel::clusterExport(cl, 
-                              varlist = ls(envir = globalenv(), 
+      parallel::clusterExport(cl,
+                              varlist = ls(envir = globalenv(),
                                            all.names = TRUE),
                               envir = globalenv())
       
