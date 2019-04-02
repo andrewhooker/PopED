@@ -4,6 +4,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
                        loq_method=1,#poped.db$settings$loq_method,
                        loq_PI_conf_level = 0.95,#poped.db$settings$loq_PI_conf_level,
                        loq_prob_limit = 0.001,#poped.db$settings$loq_prob_limit,
+                       uloq = NULL,
                        ...){
 
   verbose=FALSE
@@ -146,7 +147,18 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       loq_full[model_switch_i==k] <- loq[k]
     }
     
+    if(!is.null(uloq)){
+      uloq_full <- rep(0,length(pred))
+      for(k in 1:length(uloq)){
+        uloq_full[model_switch_i==k] <- uloq[k]
+      }
+    }
+    
     bloq_obs <- pred<loq_full
+    if(!is.null(uloq)){
+      uloq_obs <- pred>uloq_full
+      bloq_obs <- bloq_obs | uloq_obs
+    } 
     fim <- 0
     if(any(bloq_obs==0)){
       fim <- mf_all(model_switch_i[bloq_obs==0,1,drop=F],
