@@ -13,8 +13,8 @@ test_that("pargen works", {
   mean.diff.ln <- (colMeans(pars.ln) - bpop_vals_ed_ln[,2])/bpop_vals_ed_ln[,2]*100
   var.diff.ln <- (diag(var(pars.ln)) - bpop_vals_ed_ln[,3])/bpop_vals_ed_ln[,3]*100
   
-  expect_that(all(mean.diff.ln<20),is_true())
-  expect_that(all(var.diff.ln[1:3]<50),is_true())
+  expect_true(all(mean.diff.ln<20))
+  expect_true(all(var.diff.ln[1:3]<50))
   
   set.seed(1234)
   pars.ln.1 <- pargen(par=bpop_vals_ed_ln,
@@ -35,7 +35,7 @@ test_that("pargen works", {
   expect_true(all(pars.ln.1==pars.ln.2))
   
   p.vals <- apply(pars.ln[,1:3],2,function(x) shapiro.test(log(x))[["p.value"]])
-  expect_that(all(p.vals > 0.05), is_true())
+  expect_true(all(p.vals > 0.05))
   
   # Adding 10% Uncertainty to fixed effects normal-distribution (not Favail)
   # with normal distributions
@@ -46,11 +46,11 @@ test_that("pargen works", {
   mean.diff.n <- (colMeans(pars.n) - bpop_vals_ed_n[,2])/bpop_vals_ed_n[,2]*100
   var.diff.n <- (diag(var(pars.n)) - bpop_vals_ed_n[,3])/bpop_vals_ed_n[,3]*100
   
-  expect_that(all(mean.diff.n<20),is_true())
-  expect_that(all(var.diff.n[1:3]<50),is_true())
+  expect_true(all(mean.diff.n<20))
+  expect_true(all(var.diff.n[1:3]<50))
   
   p.vals <- apply(pars.n[,1:3],2,function(x) shapiro.test(x)[["p.value"]])
-  expect_that(all(p.vals > 0.05), is_true())
+  expect_true(all(p.vals > 0.05), is_true())
   
   # Adding 10% Uncertainty to fixed effects uniform-distribution (not Favail)
   mean.diff.u <- (colMeans(pars.u) - bpop_vals_ed_u[,2])/bpop_vals_ed_u[,2]*100
@@ -59,15 +59,15 @@ test_that("pargen works", {
     range.diff.u[i] <- (diff(range(pars.u[,i])) - bpop_vals_ed_u[i,3])/bpop_vals_ed_u[i,3]*100
   }
   
-  expect_that(all(mean.diff.u<20),is_true())
-  expect_that(all(range.diff.u[1:3]<50),is_true())
+  expect_true(all(mean.diff.u<20))
+  expect_true(all(range.diff.u[1:3]<50))
 
   # Adding user defined distributions
   mean.diff.ud <- (colMeans(pars.ud) - bpop_vals_ed_ud[,2])/bpop_vals_ed_ud[,2]*100
   sd.diff.ud <- (sqrt(diag(var(pars.ud))) - bpop_vals_ed_ud[,3])/bpop_vals_ed_ud[,3]*100
   
-  expect_that(all(mean.diff.ud<20),is_true())
-  expect_that(all(sd.diff.ud[1:3]<50),is_true())
+  expect_true(all(mean.diff.ud<20))
+  expect_true(all(sd.diff.ud[1:3]<50))
   
     
 })
