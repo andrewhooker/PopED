@@ -520,13 +520,3 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
 }
 
 
-tryCatch.W.E <- function(expr){
-  W <- NULL
-  w.handler <- function(w){ # warning handler
-    W <<- w
-    invokeRestart("muffleWarning")
-  }
-  list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
-                                   warning = w.handler),
-       warning = W)
-}

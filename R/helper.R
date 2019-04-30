@@ -72,3 +72,41 @@ transform_back_par <- function(
              ps_upper_orig[ps_transformed])
   return(par)
 }
+
+
+##' Catch *and* save both errors and warnings, and in the case of
+##' a warning, also keep the computed result.
+##'
+##' @title tryCatch both warnings (with value) and errors
+##' @param expr an \R expression to evaluate
+##' @return a list with 'value' and 'warning', where
+##'   'value' may be an error caught.
+##' @author Martin Maechler;
+##' Copyright (C) 2010-2012  The R Core Team
+tryCatch.W.E <- function(expr){
+  W <- NULL
+  w.handler <- function(w){ # warning handler
+    W <<- w
+    invokeRestart("muffleWarning")
+  }
+  list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+                                   warning = w.handler),
+       warning = W)
+}
+
+
+get_fim_size <- function(poped.db) {
+  numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
+  numnotfixed_d    = sum(poped.db$parameters$notfixed_d)
+  numnotfixed_covd = sum(poped.db$parameters$notfixed_covd)
+  numnotfixed_docc  = sum(poped.db$parameters$notfixed_docc)
+  numnotfixed_covdocc  = sum(poped.db$parameters$notfixed_covdocc)
+  numnotfixed_sigma  = sum(poped.db$parameters$notfixed_sigma)
+  numnotfixed_covsigma  = sum(poped.db$parameters$notfixed_covsigma)
+  
+  n_fixed_eff <- numnotfixed_bpop
+  n_rand_eff <- numnotfixed_d+numnotfixed_covd+numnotfixed_docc+
+    numnotfixed_covdocc+numnotfixed_sigma+numnotfixed_covsigma
+  fim_size <- n_fixed_eff+n_rand_eff
+  return(fim_size)
+}
