@@ -60,6 +60,7 @@ get_rse <- function (fim, poped.db,
                      use_percent=TRUE,
                      #fim.calc.type=poped.db$settings$iFIMCalculationType,
                      prior_fim = poped.db$settings$prior_fim,
+                     #pseudo_on_fail = FALSE,
                      ...) {
   
   ## update poped.db with options supplied in function
@@ -113,5 +114,13 @@ get_rse <- function (fim, poped.db,
   ret <- params_rse[,,drop=T]
   if(use_percent) ret[params!=0]=ret[params!=0]*100
   names(ret) <- parnam
+  if(any(ret==0)){
+    zero_ret <- names(ret[ret==0])
+    mess <- paste0("  The following parameters are not estimable:\n  ",
+                   paste0(zero_ret,collapse = ", "),
+                   "\n  Is the design adequate to estimate all parameters?")
+    warning(mess, call. = FALSE)
+    ret[ret==0] <- NA
+  }
   return(ret)
 }
