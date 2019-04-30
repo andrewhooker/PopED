@@ -158,6 +158,8 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
         #params_init <- returnArgs[[1]]
         #param_cvs_init <- returnArgs[[2]]
         param_cvs_init <- get_rse(fim=fmf_init,poped.db,bpop,diag(d),docc,sigma)
+      } else {
+        param_cvs_init <- suppressMessages(suppressWarnings(get_rse(fim=fmf_init,poped.db,bpop,diag(d),docc,sigma)))
       }
     }
     
