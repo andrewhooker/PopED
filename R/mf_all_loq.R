@@ -16,6 +16,8 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   pred <- feval(poped.db$model$ff_pointer,model_switch_i,xt_i,g0,poped.db)
   pred <- drop(pred[[1]])
   
+  fim_size <- get_fim_size(poped.db)
+  
   if(loq_method==1){ # D6 method
     
     # COV calculations based on FO
@@ -73,11 +75,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       bloq_comb_u <- zeros(size(bloq_obs))
       bloq_comb_u[bloq_obs==1] <- loq_pot_blq[bloq_obs==1]
       bloq_comb_u[bloq_obs==0] <- Inf
-      
-      
-      
-      
-      
+    
       # compute all probabilities
       pred_pot_blq <- pred[bloq_obs_master==2]
       cov_pot_blq <- cov[bloq_obs_master==2,bloq_obs_master==2]
@@ -118,7 +116,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       }
       
       # compute FIM for each case and combine
-      fim <- 0
+      fim <- zeros(fim_size)
       bloq_obs_tmp <- bloq_obs_master 
       for(j in 1:nrow(bloq_obs)){
         #j=2
@@ -133,7 +131,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       }
     } else {
       bloq_obs <- bloq_obs_master
-      fim <- 0
+      fim <- zeros(fim_size)
       if(any(bloq_obs==0)){
         fim <- mf_all(model_switch_i[bloq_obs==0,1,drop=F],
                       xt_i[bloq_obs==0,1,drop=F],
@@ -159,12 +157,13 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       uloq_obs <- pred>uloq_full
       bloq_obs <- bloq_obs | uloq_obs
     } 
-    fim <- 0
+    fim <- zeros(fim_size)
     if(any(bloq_obs==0)){
       fim <- mf_all(model_switch_i[bloq_obs==0,1,drop=F],
                     xt_i[bloq_obs==0,1,drop=F],
                     x_i,a_i,bpop_val,d_full,sigma_full,docc_full,poped.db)$ret
     }
   }
+  
   return(list(fim=fim,poped.db=poped.db)) 
 }
