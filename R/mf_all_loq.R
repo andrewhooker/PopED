@@ -1,13 +1,18 @@
 mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,docc_full,
                        poped.db,
-                       loq, # vector of length number of models
+                       loq = -Inf, # vector of length number of models
                        loq_method=1,#poped.db$settings$loq_method,
                        loq_PI_conf_level = 0.95,#poped.db$settings$loq_PI_conf_level,
                        loq_prob_limit = 0.001,#poped.db$settings$loq_prob_limit,
-                       uloq = NULL,
+                       loq_start_time = NULL,
+                       uloq = Inf,
+                       uloq_method=1,
+                       uloq_start_time = NULL,
+                       verbose=FALSE,
                        ...){
 
-  verbose=FALSE
+  
+  # TODO: add to poped.db
   
   # PRED calculations based on FO
   b_ind = poped.db$parameters$b_global[,1,drop=F]*0
@@ -18,7 +23,21 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   
   fim_size <- get_fim_size(poped.db)
   
-  if(loq_method==1){ # D6 method
+  loq_full <- rep(0,length(pred))
+  uloq_full <- rep(0,length(pred))
+  for(k in 1:length(pred)){
+    loq_full[model_switch_i==k] <- loq[k]
+    uloq_full[model_switch_i==k] <- uloq[k]
+  }
+  if(!is.null(loq_start_time)) loq_full[xt_i<loq_start_time] <- -Inf
+  if(!is.null(uloq_start_time)) uloq_full[xt_i<uloq_start_time] <- Inf
+  
+  # D2 method
+  if(uloq_method==2) uloq_obs_master <- pred>uloq_full
+  if(loq_method==2) bloq_obs_master <- pred<loq_full
+  
+  # D6 method
+  if(loq_method==1 | uloq_method==1){ 
     
     # COV calculations based on FO
     cov <- v(model_switch_i,xt_i,
@@ -38,129 +57,168 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
     #   dplyr::mutate(overlap=dplyr::if_else(ci_u>loq & ci_l<loq,1,0)) %>% 
     #   dplyr::mutate(bloq_obs=dplyr::if_else(below==1 & overlap==0,1,dplyr::if_else(overlap==1,2,0)))
     
-    loq_full <- rep(0,length(pred))
-    for(k in 1:length(loq)){
-      loq_full[model_switch_i==k] <- loq[k]
-    }
-    
-    above <- rep(0,length(pred))
-    above[ci_l>loq_full] <- 1
-    
-    below <- 0*above
-    below[ci_u<loq_full] <- 1
-    
-    overlap <- 0*above
-    overlap[ci_u>loq_full&ci_l<loq_full] <- 1
-    
-    bloq_obs_master <- 0*above + 2
-    bloq_obs_master[below==1 & overlap==0] <- 1
-    bloq_obs_master[above==1 & overlap==0] <- 0
-    
-    
-    #bloq_obs_master <- df$bloq_obs
-    #bloq_obs_master <- bloq_obs_master*0+2
-    
-    
-    # number of potential bloq_obs
-    n_pot_blq <- sum(bloq_obs_master==2)
-    
-    if(n_pot_blq>0){
+    if(loq_method==1){
+      above <- below <- overlap <- loq_full*0
       
-      # combination of potential bloq_obs with datapoints above LOQ
-      bloq_obs <- gtools::permutations(2,n_pot_blq,v=c(0,1),repeats.allowed=TRUE)
-      loq_pot_blq <- matrix(rep(loq_full[bloq_obs_master==2],nrow(bloq_obs)),byrow=T)
-      bloq_comb_l <- zeros(size(bloq_obs))
-      bloq_comb_l[bloq_obs==1] <- -Inf
-      bloq_comb_l[bloq_obs==0] <- loq_pot_blq[bloq_obs==0]
-      bloq_comb_u <- zeros(size(bloq_obs))
-      bloq_comb_u[bloq_obs==1] <- loq_pot_blq[bloq_obs==1]
-      bloq_comb_u[bloq_obs==0] <- Inf
-    
-      # compute all probabilities
-      pred_pot_blq <- pred[bloq_obs_master==2]
-      cov_pot_blq <- cov[bloq_obs_master==2,bloq_obs_master==2]
-      p_bloq_comb <- rep(0,nrow(bloq_obs))
-      p_bloq_comb_full <- rep(0,nrow(bloq_obs)) # for diagnostics
-      for(j in 1:nrow(bloq_obs)){
-        p_bloq_comb_tmp <- 
-          mvtnorm::pmvnorm(bloq_comb_l[j,],
-                           bloq_comb_u[j,], 
-                           mean=pred_pot_blq, 
-                           sigma=cov_pot_blq)
-        #p_bloq_comb_tmp <- mnormt::sadmvn(bloq_comb_l[j,],bloq_comb_u[j,], pred, cov)
-        
-        p_bloq_comb_full[j] <- p_bloq_comb_tmp # for diagnostics
-        
-        # filter out low probability values
-        if(p_bloq_comb_tmp < loq_prob_limit) p_bloq_comb_tmp <- 0
-        p_bloq_comb[j] <- p_bloq_comb_tmp
-      }
+      above[ci_l>loq_full] <- 1
+      below[ci_u<loq_full] <- 1
+      overlap[ci_u>loq_full&ci_l<loq_full] <- 1
       
-      # rescale probabilities
-      p_bloq_comb <- p_bloq_comb/sum(p_bloq_comb)
+      bloq_obs_master <- 0*above + 2
+      bloq_obs_master[below==1 & overlap==0] <- 1
+      bloq_obs_master[above==1 & overlap==0] <- 0
+    }
+
+    if(uloq_method==1){
+      above_u <- below_u <- overlap_u <- uloq_full*0
+      above_u[ci_l>uloq_full] <- 1
+      below_u[ci_u<uloq_full] <- 1
+      overlap_u[ci_u>uloq_full&ci_l<uloq_full] <- 1
       
-      if(verbose){
-        bloq_obs_tmp <- bloq_obs_master 
-        model <- xt <- NULL
-        for(j in 1:nrow(bloq_obs)){
-          bloq_obs_tmp[bloq_obs_master==2] <- bloq_obs[j,] 
-          df_p <- tibble::tibble(model=c(model_switch_i),xt=c(xt_i),pred=c(pred),BLQ=bloq_obs_tmp)
-          df_p <- df_p %>% dplyr::arrange(model,xt)
-          # print(df_p)
-          cat("Time: ",sprintf("%1.f",df_p$xt),
-              "\nBLQ: ",sprintf("%1.f",df_p$BLQ), 
-              "\np_initial: ", sprintf("%8.4g",p_bloq_comb_full[j]),
-              " p_final: ",sprintf("%8.4g",p_bloq_comb[j]),
-              "\n\n")
-        }
-      }
-      
-      # compute FIM for each case and combine
-      fim <- zeros(fim_size)
-      bloq_obs_tmp <- bloq_obs_master 
-      for(j in 1:nrow(bloq_obs)){
-        #j=2
-        bloq_obs_tmp[bloq_obs_master==2] <- bloq_obs[j,] 
-        if(any(bloq_obs_tmp==0) & p_bloq_comb[j]!=0){
-          fim_tmp <- mf_all(model_switch_i[bloq_obs_tmp==0,1,drop=F],
-                            xt_i[bloq_obs_tmp==0,1,drop=F],
-                            x_i,a_i,bpop_val,d_full,sigma_full,docc_full,poped.db)$ret
-          fim <- fim + p_bloq_comb[j]*fim_tmp
-        }
-        
-      }
-    } else {
-      bloq_obs <- bloq_obs_master
-      fim <- zeros(fim_size)
-      if(any(bloq_obs==0)){
-        fim <- mf_all(model_switch_i[bloq_obs==0,1,drop=F],
-                      xt_i[bloq_obs==0,1,drop=F],
-                      x_i,a_i,bpop_val,d_full,sigma_full,docc_full,poped.db)$ret
-      }
-    }
-  }
-  if(loq_method==2){ #D2 method
-    loq_full <- rep(0,length(pred))
-    for(k in 1:length(loq)){
-      loq_full[model_switch_i==k] <- loq[k]
-    }
-    
-    if(!is.null(uloq)){
-      uloq_full <- rep(0,length(pred))
-      for(k in 1:length(uloq)){
-        uloq_full[model_switch_i==k] <- uloq[k]
-      }
-    }
-    
-    bloq_obs <- pred<loq_full
-    if(!is.null(uloq)){
-      uloq_obs <- pred>uloq_full
-      bloq_obs <- bloq_obs | uloq_obs
+      uloq_obs_master <- 0*above_u + 2
+      uloq_obs_master[below_u==1 & overlap_u==0] <- 0
+      uloq_obs_master[above_u==1 & overlap_u==0] <- 1
     } 
+  }
+  
+  #bloq_obs_master <- df$bloq_obs
+  #bloq_obs_master <- bloq_obs_master*0+2
+  
+  loq_obs_master <- bloq_obs_master
+  loq_obs_master[uloq_obs_master==1] <- 1
+  loq_obs_master[uloq_obs_master==2 & bloq_obs_master!=1] <- 2
+  
+  # number of potential loq_obs
+  n_pot_loq <- sum(loq_obs_master==2)
+  
+  if(n_pot_loq>0){ # D6 Method
+    
+    # combination of potential obs with datapoints above LOQ or below ULOQ
+    loq_obs_init <- gtools::permutations(2,n_pot_loq,v=c(0,1),repeats.allowed=TRUE)
+    
+    # map for type of observation
+    # 0 = normal observations
+    # 1 = BLOQ
+    # 2 = ULOQ
+    # 3 = Could be either BLOQ or ULOQ (and need expanding)
+    loq_obs_map <- loq_obs_master[loq_obs_master==2]*0 + 1
+    uloq_obs_map <- uloq_obs_master[loq_obs_master==2]
+    bloq_obs_map <- bloq_obs_master[loq_obs_master==2]
+    loq_obs_map[uloq_obs_map==2 & bloq_obs_map!=2] <- 2 
+    loq_obs_map[uloq_obs_map==2 & bloq_obs_map==2] <- 3 
+    
+    loq_obs_short <- matrix(loq_obs_map,ncol=length(loq_obs_map),nrow=nrow(loq_obs_init),byrow=T)
+    loq_obs_short[loq_obs_init==0] <- 0
+    
+    
+    # expand rows that could be BLOQ or ULOQ 
+    exp_rows <- apply(loq_obs_short==3,1,any)
+    loq_obs <- loq_obs_short[!exp_rows,,drop=F]
+    if(any(exp_rows)){
+      loq_obs_tmp <- loq_obs_short[exp_rows,]
+      
+      # expand rows
+      for(i in 1:nrow(loq_obs_tmp)){
+        #i <- 1
+        obs_tmp <- loq_obs_tmp[i,]
+        perm_tmp <- gtools::permutations(2,sum(obs_tmp==3),v=c(1,2),repeats.allowed=TRUE)
+        
+        obs_tmp_exp <- matrix(obs_tmp,ncol=length(obs_tmp),nrow=nrow(perm_tmp),byrow=T)
+        obs_tmp_exp[obs_tmp_exp==3] <- perm_tmp[,]
+        loq_obs <- rbind(loq_obs,obs_tmp_exp)
+      }
+    }
+    # make sure that mapped values are all accounted for 
+    if(any(loq_obs==3)) stop("Combinations not fully expanded")
+    
+    # cat(loq_obs,"\n")
+    # cat(loq_obs_master,"\n")
+    # if(sum(loq_obs_master==2)==1) browser()
+    lloq_mat <- matrix(rep(loq_full[loq_obs_master==2],nrow(loq_obs)),nrow=nrow(loq_obs),byrow=T)
+    uloq_mat <- matrix(rep(uloq_full[loq_obs_master==2],nrow(loq_obs)),nrow=nrow(loq_obs),byrow=T)
+    
+    
+    loq_comb_l <- loq_obs*NA
+    loq_comb_u <- loq_obs*NA
+    
+    # BLOQ
+    loq_comb_l[loq_obs==1] <- -Inf
+    loq_comb_u[loq_obs==1] <- lloq_mat[loq_obs==1]
+    
+    # ULOQ
+    loq_comb_l[loq_obs==2] <- uloq_mat[loq_obs==2]
+    loq_comb_u[loq_obs==2] <- Inf
+    
+    # normal observations
+    loq_comb_l[loq_obs==0] <- lloq_mat[loq_obs==0]
+    loq_comb_u[loq_obs==0] <- uloq_mat[loq_obs==0]
+    
+    # compute all probabilities
+    pred_pot_loq <- pred[loq_obs_master==2]
+    cov_pot_loq <- cov[loq_obs_master==2,loq_obs_master==2]
+    p_loq_comb <- rep(0,nrow(loq_obs))
+    p_loq_comb_full <- rep(0,nrow(loq_obs)) # for diagnostics
+    for(j in 1:nrow(loq_obs)){
+      p_loq_comb_tmp <- 
+        mvtnorm::pmvnorm(loq_comb_l[j,],
+                         loq_comb_u[j,], 
+                         mean=pred_pot_loq, 
+                         sigma=cov_pot_loq)
+      #p_bloq_comb_tmp <- mnormt::sadmvn(bloq_comb_l[j,],bloq_comb_u[j,], pred, cov)
+      
+      # filter out low probability values
+      p_loq_comb_full[j] <- p_loq_comb_tmp # save initial probs for diagnostics
+      if(p_loq_comb_tmp < loq_prob_limit) p_loq_comb_tmp <- 0
+      p_loq_comb[j] <- p_loq_comb_tmp
+    }
+    
+    # sum of probabilities
+    tot_p <- sum(p_loq_comb_full)
+    max_diff <- PI_alpha/2*length(loq_obs_master==2) # max p missed if all points are truncated with PI 
+    if(tot_p > 1.01 | tot_p < (1-max_diff)) stop("Sum of initial probabilities: ", sprintf("%6.5g",tot_p),"\n",
+                                                 "Probabilities do not add up to one!")
+    
+    # rescale probabilities
+    p_loq_comb <- p_loq_comb/sum(p_loq_comb)
+    
+    if(verbose){
+      loq_obs_tmp <- loq_obs_master 
+      model <- xt <- NULL
+      for(j in 1:nrow(loq_obs)){
+        loq_obs_tmp[loq_obs_master==2] <- loq_obs[j,] 
+        df_p <- tibble::tibble(model=c(model_switch_i),xt=c(xt_i),pred=c(pred),LOQ=loq_obs_tmp)
+        df_p <- df_p %>% dplyr::arrange(model,xt)
+        #print(df_p)
+        cat("Time: ",sprintf("%1.f",df_p$xt),
+            "\nLOQ: ",sprintf("%1.f",df_p$LOQ), 
+            "\np_initial: ", sprintf("%8.4g",p_loq_comb_full[j]),
+            " p_final: ",sprintf("%8.4g",p_loq_comb[j]),
+            "\n\n")
+      }
+      cat("sum of initial probabilities: ", sprintf("%6.5g",tot_p),"\n")
+      cat("sum of final probabilities: ", sprintf("%6.5g",sum(p_loq_comb)),"\n")
+      cat("\n")
+    }
+    
+    # compute FIM for each case and combine
     fim <- zeros(fim_size)
-    if(any(bloq_obs==0)){
-      fim <- mf_all(model_switch_i[bloq_obs==0,1,drop=F],
-                    xt_i[bloq_obs==0,1,drop=F],
+    loq_obs_tmp <- loq_obs_master 
+    for(j in 1:nrow(loq_obs)){
+      #j=2
+      loq_obs_tmp[loq_obs_master==2] <- loq_obs[j,] 
+      if(any(loq_obs_tmp==0) & p_loq_comb[j]!=0){
+        fim_tmp <- mf_all(model_switch_i[loq_obs_tmp==0,1,drop=F],
+                          xt_i[loq_obs_tmp==0,1,drop=F],
+                          x_i,a_i,bpop_val,d_full,sigma_full,docc_full,poped.db)$ret
+        fim <- fim + p_loq_comb[j]*fim_tmp
+      }
+      
+    }
+  } else { # D2 method for BLOQ
+    fim <- zeros(fim_size)
+    if(any(loq_obs_master==0)){
+      fim <- mf_all(model_switch_i[loq_obs_master==0,1,drop=F],
+                    xt_i[loq_obs_master==0,1,drop=F],
                     x_i,a_i,bpop_val,d_full,sigma_full,docc_full,poped.db)$ret
     }
   }
