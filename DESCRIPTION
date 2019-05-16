@@ -41,7 +41,7 @@ Authors@R: c(
     person("Eric","Stroemberg", role="ctb", comment="MATLAB version"),
     person("Martin","Fink", role="ctb", comment="Streamlining code, added functionality, vignettes"),
     person("Giulia","Lestini", role="ctb", comment="Streamlining code, added functionality, vignettes"),
-    person("Sebastian","Ueckert", role="aut", comment="MATLAB version"),
+    person("Sebastian","Ueckert", role="aut", comment=c("MATLAB version",ORCID="0000-0002-3712-0255")),
     person("Joakim", "Nyberg", role="aut", comment="MATLAB version")
     )
 Description: Optimal experimental designs for both population and individual
