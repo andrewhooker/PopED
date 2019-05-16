@@ -16,3 +16,4 @@
 ^vignettes/intro-poped_cache$
 ^vignettes/intro-poped_files$
 ^revdep$
+^README\.Rmd$
