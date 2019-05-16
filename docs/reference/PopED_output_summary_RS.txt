@@ -1,6 +1,6 @@
 PopED Optimization Results for the Adaptive Random Search Algorithm 
 
-        2018-09-12 13:02:24
+        2019-04-23 13:18:02
 
 ==============================================================================
 Model description : PopED model 
@@ -68,12 +68,12 @@ Initial design
 expected relative standard error
 (%RSE, rounded to nearest integer)
     Parameter   Values   RSE_0
-      bpop[1]     0.15       5
-      bpop[2]        8       3
-      bpop[3]        1       7
-       D[1,1]     0.07      30
-       D[2,2]     0.02      37
-       D[3,3]      0.6      28
+           CL     0.15       5
+            V        8       3
+           KA        1       7
+        om_CL     0.07      30
+         om_V     0.02      37
+        om_KA      0.6      28
    SIGMA[1,1]     0.01      33
    SIGMA[2,2]     0.25      26
 
@@ -178,13 +178,13 @@ Efficiency:
 Expected relative standard error
 (%RSE, rounded to nearest integer):
     Parameter   Values   RSE_0   RSE
-      bpop[1]     0.15       5     5
-      bpop[2]        8       3     3
-      bpop[3]        1       7     7
-       D[1,1]     0.07       0     0
-       D[2,2]     0.02      37    37
-       D[3,3]      0.6       0     0
+           CL     0.15       5     5
+            V        8       3     3
+           KA        1       7     7
+        om_CL     0.07       0     0
+         om_V     0.02      37    37
+        om_KA      0.6       0     0
    SIGMA[1,1]     0.01      33    33
    SIGMA[2,2]     0.25      26    26
 
-Total running time: 0.402 seconds
+Total running time: 0.176 seconds

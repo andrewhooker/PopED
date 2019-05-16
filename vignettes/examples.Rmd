@@ -13,6 +13,8 @@ vignette: >
   %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: true
 ---
 
 ```{r setup, include = FALSE}
@@ -26,7 +28,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-In this vignette, we try to highlight further PopED features that may be useful.  Only code related to  
+In this vignette, we try to further highlight  PopED features that may be useful.  Only code related to  
 specific "new" features is described here in this vignette. 
 These features (and more) are presented as r-scripts in the "examples" folder in the 
 PopED installation directory located at:
@@ -728,13 +730,13 @@ poped.db <-
   )
 ```
 
-##Create plot of the population predictions
+## Create plot of the population predictions
 
 ```{r simulate_IOV_without_IIV}
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
-##visualize the IOV 
+## visualize the IOV 
 We can visualize the IOV by looking at an example individual.  We see the PK profile changes at the 7th dose (red line) due to the change in clearance.
 ```{r simulate_IOV_with_IIV,}
 library(ggplot2)
@@ -747,7 +749,7 @@ plot_model_prediction(poped.db, PRED=F,IPRED=F,
                       ) + geom_vline(xintercept = 24*6,color="red")
 ```
 
-##Evaluate initial design
+## Evaluate initial design
 
 ```{r}
 ev <- evaluate_design(poped.db)
@@ -836,7 +838,7 @@ cov2cor(IIV)
 ```
 They indicate a correlation of the inter-individual variabilities, here of ca. 0.8 between clearance and volume, as well as between volume and absorption rate.
 
-##Create plot of the model with variability 
+## Create plot of the model with variability 
 
 ```{r simulate_with_cov_matrix}
 library(ggplot2)
@@ -845,7 +847,7 @@ p2 <- plot_model_prediction(poped.db_with,IPRED=TRUE) +ylim(0,12)
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
-##Evaluate designs (with and without covariance matrix)
+## Evaluate designs (with and without covariance matrix)
 
 ```{r,}
 ev1 <- evaluate_design(poped.db)
@@ -861,7 +863,7 @@ round(ev2$rse,1)
 ```
 Note, that the precision of all other parameters is barely affected by including the full covariance matrix. This is likely to be different in practice with much more ill-conditioned numerical problems.
 
-##Evaluate the same designs with full FIM (instead of reduced)
+## Evaluate the same designs with full FIM (instead of reduced)
 
 ```{r}
 ev1 <- evaluate_design(poped.db, fim.calc.type=0)
