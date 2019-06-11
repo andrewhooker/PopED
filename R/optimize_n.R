@@ -159,3 +159,30 @@ optimize_n <- function(poped.db,
 
 }
 
+## optimize HOW MANY n there should be to achive efficiency=1 compared to a reference ofv
+optimize_n_eff <- function(poped.db,
+                           ofv_ref,
+                           norm_group_fim = NULL,  
+                           ...){
+  
+  n_per_group = poped.db$design$groupsize
+  n_tot <- sum(n_per_group)
+  props = c(n_per_group/n_tot)
+  if(is.null(norm_group_fim)) norm_group_fim <- extract_norm_group_fim(poped.db,...)
+  
+  
+  ofv_fun <- function(n_tot){
+    fim_tmp <- combine_norm_group_fim(norm_group_fim,props*n_tot)
+    ofv_tmp <- ofv_fim(fim_tmp,poped.db)
+    eff <- efficiency(ofv_ref, 
+                      ofv_tmp,  
+                      poped.db)
+    ofv <- (eff - 1)^2
+    #if(ofv<0) ofv <- Inf
+    return(ofv)
+  }
+  result <- optim(n_tot,ofv_fun,lower = 0,upper = sum(poped.db$design$groupsize)*10,method = "L-BFGS-B")
+  
+  return(result$par)
+}
+
