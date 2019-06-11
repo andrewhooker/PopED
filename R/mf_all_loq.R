@@ -23,14 +23,30 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   
   fim_size <- get_fim_size(poped.db)
   
-  loq_full <- rep(0,length(pred))
-  uloq_full <- rep(0,length(pred))
-  for(k in 1:length(pred)){
-    loq_full[model_switch_i==k] <- loq[k]
-    uloq_full[model_switch_i==k] <- uloq[k]
+  n_mod <- unique(c(model_switch_i))
+  
+  loq_full <- rep(NA,length(pred))
+  uloq_full <- rep(NA,length(pred))
+  
+  if(length(loq)==1) loq_full <- rep(loq,length(pred))
+  if(length(uloq)==1) uloq_full <- rep(uloq,length(pred))
+  
+  if(length(loq) == n_mod){
+    for(k in unique(c(model_switch_i))){
+      loq_full[model_switch_i==k] <- loq[k]
+    }
   }
+  
+  if(length(uloq) == n_mod){
+    for(k in unique(c(model_switch_i))){
+      uloq_full[model_switch_i==k] <- uloq[k]
+    }
+  }
+  
   if(!is.null(loq_start_time)) loq_full[xt_i<loq_start_time] <- -Inf
   if(!is.null(uloq_start_time)) uloq_full[xt_i<uloq_start_time] <- Inf
+  
+  if(any(is.na(loq_full)) | any(is.na(uloq_full))) stop("loq or uloq not specified properly") 
   
   # D2 method
   if(uloq_method==2) uloq_obs_master <- pred>uloq_full
