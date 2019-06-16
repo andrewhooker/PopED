@@ -157,7 +157,11 @@ shrinkage <- function(poped.db,
     shrink_sd <- 1-sqrt(var_n)/sqrt(diag(fulld))
     names(shrink_sd) <-  names(rse)
     
-    out_df_tmp <- tibble::as.tibble(rbind(shrink,shrink_sd,rse))
+    if(packageVersion("tibble") < "2.1.1"){
+      out_df_tmp <- tibble::as.tibble(rbind(shrink,shrink_sd,rse))
+    } else {
+      out_df_tmp <- tibble::as_tibble(rbind(shrink,shrink_sd,rse))
+    }
     out_df_tmp$type <- c("shrink_var","shrink_sd","se")
     out_df_tmp$group <- c(names(db_list[i]))
     out_df <- rbind(out_df,out_df_tmp)
@@ -172,9 +176,15 @@ shrinkage <- function(poped.db,
     weights <- poped.db$design$groupsize/sum(poped.db$design$groupsize)
     data_tmp <- out_df 
     data_tmp[data_tmp==1] <- NA 
-    data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
-      dplyr::summarise_at(dplyr::vars(dplyr::starts_with('d[')),
-                          dplyr::funs(stats::weighted.mean(., weights,na.rm = T)))
+    if(packageVersion("dplyr") < "0.8.0"){
+      data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
+        dplyr::summarise_at(dplyr::vars(dplyr::starts_with('d[')),
+                            dplyr::funs(stats::weighted.mean(., weights,na.rm = T)))
+    } else {
+      data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
+        dplyr::summarise_at(dplyr::vars(dplyr::starts_with('d[')),
+                            list(~ stats::weighted.mean(., weights,na.rm = T)))
+    }
     data_tmp$group <- "all_groups"
     out_df <- rbind(out_df,data_tmp)
     out_df <- dplyr::arrange(out_df,dplyr::desc(type),group)
