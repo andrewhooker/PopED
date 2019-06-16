@@ -9,6 +9,7 @@
 ^\.travis\.yml$
 ^docs$
 ^_pkgdown\.yml$
+^pkgdown$
 ^index\.md$
 ^appveyor\.yml$
 ^vignettes/examples_cache$
