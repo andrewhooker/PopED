@@ -15,21 +15,25 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,14 +41,14 @@
 
 
 
-<meta property="og:title" content="Model predictions — model_prediction" />
 
+<meta property="og:title" content="Model predictions — model_prediction" />
 <meta property="og:description" content="Function generates a data frame of model predictions for the typical value in the population,
 individual predictions and data predictions.  The function can also be used to generate datasets
 without predictions using the design specified in the arguments." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,6 +60,7 @@ without predictions using the design specified in the arguments." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -82,7 +87,7 @@ without predictions using the design specified in the arguments." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -93,17 +98,16 @@ without predictions using the design specified in the arguments." />
   <a href="../articles/examples.html">Examples</a>
 </li>
 <li>
-  <a href="../reference/index.html">Functions</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fa fa-github"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -115,6 +119,7 @@ without predictions using the design specified in the arguments." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -126,20 +131,18 @@ without predictions using the design specified in the arguments." />
     </div>
 
     <div class="ref-description">
-    
     <p>Function generates a data frame of model predictions for the typical value in the population,
 individual predictions and data predictions.  The function can also be used to generate datasets
 without predictions using the design specified in the arguments.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>model_prediction</span>(<span class='kw'>poped.db</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>xt</span> <span class='kw'>=</span>
+    <pre class="usage"><span class='fu'>model_prediction</span>(<span class='kw'>poped.db</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>xt</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>design</span><span class='kw'>[[</span><span class='st'>"xt"</span>]], <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>, <span class='kw'>m</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>design</span><span class='kw'>[[</span><span class='st'>"m"</span>]], <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>design</span><span class='kw'>[[</span><span class='st'>"x"</span>]], <span class='kw'>a</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>design</span><span class='kw'>[[</span><span class='st'>"a"</span>]], <span class='kw'>ni</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>ni</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span>
-  <span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>), <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>fg_pointer</span> <span class='kw'>=</span>
+  <span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>), <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>fg_pointer</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>model</span>$<span class='no'>fg_pointer</span>, <span class='kw'>ff_pointer</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>model</span>$<span class='no'>ff_pointer</span>,
-  <span class='kw'>ferror_pointer</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>model</span>$<span class='no'>ferror_pointer</span>), <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>docc</span>
+  <span class='kw'>ferror_pointer</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>model</span>$<span class='no'>ferror_pointer</span>), <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>docc</span>
   <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>d</span>, <span class='kw'>bpop</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>, <span class='kw'>covd</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>, <span class='kw'>covdocc</span> <span class='kw'>=</span>
   <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>covdocc</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>),
@@ -148,7 +151,7 @@ without predictions using the design specified in the arguments.</p>
   <span class='kw'>model_minxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_maxxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>include_sample_times</span> <span class='kw'>=</span> <span class='no'>T</span>,
   <span class='kw'>groups_to_use</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>include_a</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_x</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>manipulation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>PI</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>PI_conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -218,7 +221,7 @@ A vector the same length as the number of models</p></td>
     <tr>
       <th>groups_to_use</th>
       <td><p>Which groups should we include in the output data frame?Allowed values are <code>"all"</code> or 
-a vector of numbers indicating the groups to include, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c(1,3,6)</a></code>.</p></td>
+a vector of numbers indicating the groups to include, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(1,3,6)</a></code>.</p></td>
     </tr>
     <tr>
       <th>include_a</th>
@@ -230,7 +233,7 @@ a vector of numbers indicating the groups to include, e.g. <code><a href='https:
     </tr>
     <tr>
       <th>manipulation</th>
-      <td><p>A list of one or more <code><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></code> arguments.  Each expression is 
+      <td><p>A list of one or more <code><a href='https://rdrr.io/r/base/expression.html'>expression</a></code> arguments.  Each expression is 
 evaluated using the code <code>for(i in 1:length(manipulation)){df &lt;- within(df,{eval(manipulation[[i]])})}</code>. 
 Can be used to transform 
 or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
@@ -246,12 +249,11 @@ the model variance and a normality assumption of that variance.</p></td>
       <td><p>The confidence level for the prediction interval computed.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 
 based on the input design.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other evaluate_design: <code><a href='evaluate.fim.html'>evaluate.fim</a></code>,
@@ -261,7 +263,6 @@ based on the input design.</p>
   <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
 <p>Other Simulation: <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
   <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Warfarin example from software comparison in:</span>
@@ -269,50 +270,51 @@ based on the input design.</p>
 <span class='co'>##   for population pharmacokinetics-pharmacodynamics studies", </span>
 <span class='co'>##   Br. J. Clin. Pharm., 2014. </span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>PopED</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.md.CL</span></div><div class='output co'>#&gt; function(model_switch,xt,parameters,poped.db){
-#&gt;   ##-- Model: One comp first order absorption
-#&gt;   ## -- Analytic solution for both mutiple and single dosing
-#&gt;   with(as.list(parameters),{
-#&gt;     y=xt
-#&gt;     N = floor(xt/TAU)+1
-#&gt;     y=(DOSE*Favail/V)*(KA/(KA - CL/V)) * 
-#&gt;       (exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
-#&gt;          exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
-#&gt;     return(list( y=y,poped.db=poped.db))
-#&gt;   })
+<span class='no'>ff.PK.1.comp.oral.md.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+#&gt; {
+#&gt;     with(as.list(parameters), {
+#&gt;         y = xt
+#&gt;         N = floor(xt/TAU) + 1
+#&gt;         y = (DOSE * Favail/V) * (KA/(KA - CL/V)) * (exp(-CL/V * 
+#&gt;             (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - 
+#&gt;             exp(-CL/V * TAU)) - exp(-KA * (xt - (N - 1) * TAU)) * 
+#&gt;             (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))
+#&gt;         return(list(y = y, poped.db = poped.db))
+#&gt;     })
 #&gt; }
+#&gt; &lt;bytecode: 0x7fbd49aa46e8&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
 <span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
+  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
+               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
+               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
                <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
                <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='no'>parameters</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
 }
 
 <span class='co'>## -- Define initial design  and design space</span>
 <span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
                                   <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
                                   <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
+                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
+                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
+                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
                                   <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>,
                                   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                   <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                   <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
                                   <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)
 
 <span class='co'>## data frame with model predictions</span>
 <span class='no'>df_1</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    Time      PRED Group Model a_i
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    Time      PRED Group Model a_i
 #&gt; 1   0.5 3.4254357     1     1  70
 #&gt; 2   1.0 5.4711041     1     1  70
 #&gt; 3   2.0 7.3821834     1     1  70
@@ -323,53 +325,53 @@ based on the input design.</p>
 #&gt; 8 120.0 0.9398657     1     1  70</div><div class='input'>
 <span class='co'>##  data frame with variability </span>
 <span class='no'>df_2</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_2</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time        DV     IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5 5.3075163 5.5813120 3.4254357     1     1  70
-#&gt; 2   1   1.0 6.6673026 7.3238858 5.4711041     1     1  70
-#&gt; 3   1   2.0 8.6396172 7.9497052 7.3821834     1     1  70
-#&gt; 4   1   6.0 5.7374177 7.4858665 7.9462805     1     1  70
-#&gt; 5   1  24.0 4.3256944 5.4339252 5.6858561     1     1  70
-#&gt; 6   1  36.0 3.5682002 4.3889536 4.5402483     1     1  70
-#&gt; 7   1  72.0 2.2905774 2.3126131 2.3116966     1     1  70
-#&gt; 8   1 120.0 1.0650734 0.9842203 0.9398657     1     1  70
-#&gt; 9   2   0.5 1.9451670 2.2092364 3.4254357     1     1  70
-#&gt; 10  2   1.0 3.9616179 3.9210763 5.4711041     1     1  70
-#&gt; 11  2   2.0 6.6098135 6.2536746 7.3821834     1     1  70
-#&gt; 12  2   6.0 8.6785470 8.8471859 7.9462805     1     1  70
-#&gt; 13  2  24.0 5.6428639 5.9202824 5.6858561     1     1  70
-#&gt; 14  2  36.0 4.7486289 4.3250997 4.5402483     1     1  70
-#&gt; 15  2  72.0 1.7935781 1.6862861 2.3116966     1     1  70
-#&gt; 16  2 120.0 0.5150462 0.4802987 0.9398657     1     1  70
-#&gt; 17  3   0.5 3.4082991 3.7227737 3.4254357     1     1  70
-#&gt; 18  3   1.0 6.8485602 5.9224128 5.4711041     1     1  70
-#&gt; 19  3   2.0 8.7239520 7.9386649 7.3821834     1     1  70
-#&gt; 20  3   6.0 7.7414582 8.4057937 7.9462805     1     1  70</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_2</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time         DV    IPRED      PRED Group Model a_i
+#&gt; 1   1   0.5  2.3800236 2.352885 3.4254357     1     1  70
+#&gt; 2   1   1.0  4.2029869 4.167358 5.4711041     1     1  70
+#&gt; 3   1   2.0  6.0250484 6.628460 7.3821834     1     1  70
+#&gt; 4   1   6.0 10.6003247 9.428073 7.9462805     1     1  70
+#&gt; 5   1  24.0  7.3829039 7.111946 5.6858561     1     1  70
+#&gt; 6   1  36.0  5.1180355 5.665993 4.5402483     1     1  70
+#&gt; 7   1  72.0  2.6919875 2.865000 2.3116966     1     1  70
+#&gt; 8   1 120.0  1.1947993 1.154134 0.9398657     1     1  70
+#&gt; 9   2   0.5  2.5705709 2.416020 3.4254357     1     1  70
+#&gt; 10  2   1.0  4.7509404 4.166896 5.4711041     1     1  70
+#&gt; 11  2   2.0  5.7171194 6.334689 7.3821834     1     1  70
+#&gt; 12  2   6.0  7.6625930 8.183819 7.9462805     1     1  70
+#&gt; 13  2  24.0  6.5161958 6.013418 5.6858561     1     1  70
+#&gt; 14  2  36.0  4.9060740 4.806975 4.5402483     1     1  70
+#&gt; 15  2  72.0  2.4332146 2.455401 2.3116966     1     1  70
+#&gt; 16  2 120.0  0.9933456 1.002590 0.9398657     1     1  70
+#&gt; 17  3   0.5  5.4419156 5.831451 3.4254357     1     1  70
+#&gt; 18  3   1.0  8.0770953 8.064518 5.4711041     1     1  70
+#&gt; 19  3   2.0 10.1800510 9.125600 7.3821834     1     1  70
+#&gt; 20  3   6.0  8.6966384 8.472325 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## data frame with variability (only IPRED, no DV)</span>
 <span class='no'>df_3</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>IPRED</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_3</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time    IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5 3.437765 3.4254357     1     1  70
-#&gt; 2   1   1.0 5.493462 5.4711041     1     1  70
-#&gt; 3   1   2.0 7.427995 7.3821834     1     1  70
-#&gt; 4   1   6.0 8.130091 7.9462805     1     1  70
-#&gt; 5   1  24.0 6.362061 5.6858561     1     1  70
-#&gt; 6   1  36.0 5.393177 4.5402483     1     1  70
-#&gt; 7   1  72.0 3.285378 2.3116966     1     1  70
-#&gt; 8   1 120.0 1.696575 0.9398657     1     1  70
-#&gt; 9   2   0.5 3.183347 3.4254357     1     1  70
-#&gt; 10  2   1.0 5.134923 5.4711041     1     1  70
-#&gt; 11  2   2.0 7.036657 7.3821834     1     1  70
-#&gt; 12  2   6.0 7.806134 7.9462805     1     1  70
-#&gt; 13  2  24.0 6.033903 5.6858561     1     1  70
-#&gt; 14  2  36.0 5.070064 4.5402483     1     1  70
-#&gt; 15  2  72.0 3.007867 2.3116966     1     1  70
-#&gt; 16  2 120.0 1.499405 0.9398657     1     1  70
-#&gt; 17  3   0.5 4.718798 3.4254357     1     1  70
-#&gt; 18  3   1.0 6.847428 5.4711041     1     1  70
-#&gt; 19  3   2.0 8.186062 7.3821834     1     1  70
-#&gt; 20  3   6.0 8.082171 7.9462805     1     1  70</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_3</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time    IPRED      PRED Group Model a_i
+#&gt; 1   1   0.5 1.331747 3.4254357     1     1  70
+#&gt; 2   1   1.0 2.425106 5.4711041     1     1  70
+#&gt; 3   1   2.0 4.053278 7.3821834     1     1  70
+#&gt; 4   1   6.0 6.564106 7.9462805     1     1  70
+#&gt; 5   1  24.0 5.606070 5.6858561     1     1  70
+#&gt; 6   1  36.0 4.652204 4.5402483     1     1  70
+#&gt; 7   1  72.0 2.657258 2.3116966     1     1  70
+#&gt; 8   1 120.0 1.259309 0.9398657     1     1  70
+#&gt; 9   2   0.5 5.041980 3.4254357     1     1  70
+#&gt; 10  2   1.0 7.300742 5.4711041     1     1  70
+#&gt; 11  2   2.0 8.723086 7.3821834     1     1  70
+#&gt; 12  2   6.0 8.731333 7.9462805     1     1  70
+#&gt; 13  2  24.0 7.192552 5.6858561     1     1  70
+#&gt; 14  2  36.0 6.320159 4.5402483     1     1  70
+#&gt; 15  2  72.0 4.288082 2.3116966     1     1  70
+#&gt; 16  2 120.0 2.556484 0.9398657     1     1  70
+#&gt; 17  3   0.5 1.373968 3.4254357     1     1  70
+#&gt; 18  3   1.0 2.497014 5.4711041     1     1  70
+#&gt; 19  3   2.0 4.156027 7.3821834     1     1  70
+#&gt; 20  3   6.0 6.602481 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## data frame with model predictions, no continuous design variables in data frame</span>
 <span class='no'>df_4</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db</span>,<span class='kw'>include_a</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_4</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    Time      PRED Group Model
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_4</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    Time      PRED Group Model
 #&gt; 1   0.5 3.4254357     1     1
 #&gt; 2   1.0 5.4711041     1     1
 #&gt; 3   2.0 7.3821834     1     1
@@ -382,57 +384,57 @@ based on the input design.</p>
 <span class='no'>poped.db.2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
                                     <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
                                     <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
-                                    <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                    <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                    <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
+                                    <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
+                                    <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
+                                    <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
                                     <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                    <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='fl'>3</span>,<span class='fl'>3</span>),
+                                    <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fl'>3</span>,<span class='fl'>3</span>),
                                     <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>2</span>,
-                                    <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+                                    <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
                                     <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
                                     <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                    <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='fl'>70</span>,<span class='fl'>50</span>))
+                                    <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fl'>70</span>,<span class='fl'>50</span>))
 
 <span class='no'>df_5</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='no'>poped.db.2</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_5</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time        DV     IPRED      PRED Group Model a_i
-#&gt; 1   1   0.5 1.8331990 1.8455962 3.4254357     1     1  70
-#&gt; 2   1   1.0 3.5697823 3.3162374 5.4711041     1     1  70
-#&gt; 3   1   2.0 5.7195262 5.4065590 7.3821834     1     1  70
-#&gt; 4   1   6.0 9.2109865 8.1015300 7.9462805     1     1  70
-#&gt; 5   1  24.0 5.5375574 5.7500569 5.6858561     1     1  70
-#&gt; 6   1  36.0 4.2171418 4.2941755 4.5402483     1     1  70
-#&gt; 7   1  72.0 1.6946593 1.7881952 2.3116966     1     1  70
-#&gt; 8   1 120.0 0.5373593 0.5560683 0.9398657     1     1  70
-#&gt; 9   2   0.5 5.7689305 5.1113915 3.4254357     1     1  70
-#&gt; 10  2   1.0 8.0332051 7.3875399 5.4711041     1     1  70
-#&gt; 11  2   2.0 9.1882135 8.7706682 7.3821834     1     1  70
-#&gt; 12  2   6.0 8.0288064 8.4605879 7.9462805     1     1  70
-#&gt; 13  2  24.0 5.0784604 5.8562700 5.6858561     1     1  70
-#&gt; 14  2  36.0 4.6114078 4.5822138 4.5402483     1     1  70
-#&gt; 15  2  72.0 2.2211442 2.1950183 2.3116966     1     1  70
-#&gt; 16  2 120.0 0.7074730 0.8227260 0.9398657     1     1  70
-#&gt; 17  3   0.5 2.5615166 2.8142424 3.4254357     1     1  70
-#&gt; 18  3   1.0 3.7338431 4.7558816 5.4711041     1     1  70
-#&gt; 19  3   2.0 6.9830006 6.9812960 7.3821834     1     1  70
-#&gt; 20  3   6.0 7.4664811 8.2939169 7.9462805     1     1  70</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_5</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time        DV     IPRED      PRED Group Model a_i
+#&gt; 1   1   0.5 1.8824573 2.6986425 3.4254357     1     1  70
+#&gt; 2   1   1.0 4.4606407 4.5224462 5.4711041     1     1  70
+#&gt; 3   1   2.0 6.1021726 6.5605583 7.3821834     1     1  70
+#&gt; 4   1   6.0 8.0079320 7.7839864 7.9462805     1     1  70
+#&gt; 5   1  24.0 5.9242971 5.5574735 5.6858561     1     1  70
+#&gt; 6   1  36.0 4.1273096 4.4035807 4.5402483     1     1  70
+#&gt; 7   1  72.0 2.2569618 2.1907440 2.3116966     1     1  70
+#&gt; 8   1 120.0 0.7775830 0.8635865 0.9398657     1     1  70
+#&gt; 9   2   0.5 1.3147314 1.2950745 3.4254357     1     1  70
+#&gt; 10  2   1.0 2.3422395 2.3370827 5.4711041     1     1  70
+#&gt; 11  2   2.0 3.9529858 3.8424651 7.3821834     1     1  70
+#&gt; 12  2   6.0 6.6757835 5.9423279 7.9462805     1     1  70
+#&gt; 13  2  24.0 6.2962206 4.7862925 5.6858561     1     1  70
+#&gt; 14  2  36.0 3.9901656 3.8830024 4.5402483     1     1  70
+#&gt; 15  2  72.0 1.9881554 2.0728924 2.3116966     1     1  70
+#&gt; 16  2 120.0 0.8062582 0.8976806 0.9398657     1     1  70
+#&gt; 17  3   0.5 2.6556066 2.6104406 3.4254357     1     1  70
+#&gt; 18  3   1.0 4.9511436 4.5376033 5.4711041     1     1  70
+#&gt; 19  3   2.0 5.9386580 6.9882512 7.3821834     1     1  70
+#&gt; 20  3   6.0 9.0706361 9.2475260 7.9462805     1     1  70</div><div class='input'>
 <span class='co'>## without a poped database, just describing the design</span>
 <span class='co'>## Useful for creating datasets for use in other software (like NONMEM)</span>
-<span class='no'>design_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+<span class='no'>design_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
   <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>2</span>,
   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>3</span>)
 
-<span class='no'>design_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+<span class='no'>design_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
   <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>2</span>,
   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>3</span>,
-  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>))
+  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>))
 
-<span class='no'>design_3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+<span class='no'>design_3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
   <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>2</span>,
   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>3</span>,
-  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>),<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>45</span>,<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>60</span>)))
+  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>),<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>45</span>,<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>60</span>)))
 
 (<span class='no'>df_6</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_1</span>))</div><div class='output co'>#&gt;     Time PRED Group Model
 #&gt; 1    0.5   NA     1     1
@@ -533,64 +535,64 @@ based on the input design.</p>
 #&gt; 48  6 120.0 NA    NA   NA     2     1 60  45</div><div class='input'>
 <span class='co'># generate random deviations in WT for each individual</span>
 <span class='no'>df_10</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_3</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                          <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></span>({<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>ID</span>))
-                              <span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.1</span>);<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>}))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
-#&gt; 1   1   0.5 NA    NA   NA     1     1 56.47079  50
-#&gt; 2   1   1.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 3   1   2.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 4   1   6.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 5   1  24.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 6   1  36.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 7   1  72.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 8   1 120.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 9   2   0.5 NA    NA   NA     1     1 75.74606  50
-#&gt; 10  2   1.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 11  2   2.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 12  2   6.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 13  2  24.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 14  2  36.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 15  2  72.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 16  2 120.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 17  3   0.5 NA    NA   NA     1     1 66.54311  50
-#&gt; 18  3   1.0 NA    NA   NA     1     1 66.54311  50
-#&gt; 19  3   2.0 NA    NA   NA     1     1 66.54311  50
-#&gt; 20  3   6.0 NA    NA   NA     1     1 66.54311  50</div><div class='input'>
+                          <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>({<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>ID</span>))
+                              <span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.1</span>);<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>}))
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
+#&gt; 1   1   0.5 NA    NA   NA     1     1 69.30103  50
+#&gt; 2   1   1.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 3   1   2.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 4   1   6.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 5   1  24.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 6   1  36.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 7   1  72.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 8   1 120.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 9   2   0.5 NA    NA   NA     1     1 70.32465  50
+#&gt; 10  2   1.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 11  2   2.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 12  2   6.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 13  2  24.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 14  2  36.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 15  2  72.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 16  2 120.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 17  3   0.5 NA    NA   NA     1     1 77.19992  50
+#&gt; 18  3   1.0 NA    NA   NA     1     1 77.19992  50
+#&gt; 19  3   2.0 NA    NA   NA     1     1 77.19992  50
+#&gt; 20  3   6.0 NA    NA   NA     1     1 77.19992  50</div><div class='input'>
 <span class='co'># generate random deviations in WT and AGE for each individual</span>
 <span class='no'>df_11</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_3</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                          <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-                            <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></span>(<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>ID</span>))
-                              <span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.1</span>)),
-                            <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></span>(<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>ID</span>))
-                              <span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.2</span>)),
-                            <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></span>(<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>)
+                          <span class='kw'>manipulation</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+                            <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>ID</span>))
+                              <span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>WT</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.1</span>)),
+                            <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='kw'>for</span>(<span class='no'>id</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>ID</span>))
+                              <span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>],<span class='no'>AGE</span>[<span class='no'>ID</span><span class='kw'>==</span><span class='no'>id</span>]*<span class='fl'>0.2</span>)),
+                            <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>)
                           ))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
-#&gt; 1   1   0.5 NA    NA   NA     1     1 56.47079  50
-#&gt; 2   1   1.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 3   1   2.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 4   1   6.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 5   1  24.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 6   1  36.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 7   1  72.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 8   1 120.0 NA    NA   NA     1     1 56.47079  50
-#&gt; 9   2   0.5 NA    NA   NA     1     1 75.74606  50
-#&gt; 10  2   1.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 11  2   2.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 12  2   6.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 13  2  24.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 14  2  36.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 15  2  72.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 16  2 120.0 NA    NA   NA     1     1 75.74606  50
-#&gt; 17  3   0.5 NA    NA   NA     1     1 66.54311  50
-#&gt; 18  3   1.0 NA    NA   NA     1     1 66.54311  50
-#&gt; 19  3   2.0 NA    NA   NA     1     1 66.54311  50
-#&gt; 20  3   6.0 NA    NA   NA     1     1 66.54311  50</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df_10</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED Group Model       WT AGE
+#&gt; 1   1   0.5 NA    NA   NA     1     1 69.30103  50
+#&gt; 2   1   1.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 3   1   2.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 4   1   6.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 5   1  24.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 6   1  36.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 7   1  72.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 8   1 120.0 NA    NA   NA     1     1 69.30103  50
+#&gt; 9   2   0.5 NA    NA   NA     1     1 70.32465  50
+#&gt; 10  2   1.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 11  2   2.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 12  2   6.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 13  2  24.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 14  2  36.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 15  2  72.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 16  2 120.0 NA    NA   NA     1     1 70.32465  50
+#&gt; 17  3   0.5 NA    NA   NA     1     1 77.19992  50
+#&gt; 18  3   1.0 NA    NA   NA     1     1 77.19992  50
+#&gt; 19  3   2.0 NA    NA   NA     1     1 77.19992  50
+#&gt; 20  3   6.0 NA    NA   NA     1     1 77.19992  50</div><div class='input'>
 <span class='co'>## create dosing rows </span>
-<span class='no'>dosing_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>),<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>3000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
-<span class='no'>dosing_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
-<span class='no'>dosing_3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
-<span class='no'>dosing_4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1000</span>,<span class='fl'>20</span>),<span class='kw'>Time</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>10</span>))) <span class='co'># multiple dosing</span>
+<span class='no'>dosing_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>),<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>3000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
+<span class='no'>dosing_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>RATE</span><span class='kw'>=</span><span class='fl'>NA</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
+<span class='no'>dosing_3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fl'>1000</span>,<span class='kw'>Time</span><span class='kw'>=</span><span class='fl'>0.5</span>))
+<span class='no'>dosing_4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>AMT</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1000</span>,<span class='fl'>20</span>),<span class='kw'>Time</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>10</span>))) <span class='co'># multiple dosing</span>
 
 
 (<span class='no'>df_12</span> <span class='kw'>&lt;-</span> <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_3</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>dosing</span><span class='kw'>=</span><span class='no'>dosing_1</span>))</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED  AMT RATE Group Model WT AGE
@@ -1041,12 +1043,12 @@ based on the input design.</p>
 #&gt; 112  6  97.77778 NA    NA   NA   NA     2     1 60  45
 #&gt; 113  6 108.88889 NA    NA   NA   NA     2     1 60  45
 #&gt; 114  6 120.00000 NA    NA   NA   NA     2     1 60  45</div><div class='input'>
-<span class='no'>design_4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-  <span class='kw'>model_switch</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>),
+<span class='no'>design_4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
+  <span class='kw'>model_switch</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>),
   <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>2</span>,
   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>3</span>,
-  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>),<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>45</span>,<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>60</span>)))
+  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>70</span>,<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>50</span>),<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>AGE</span><span class='kw'>=</span><span class='fl'>45</span>,<span class='kw'>WT</span><span class='kw'>=</span><span class='fl'>60</span>)))
 
 <span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_4</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>dosing</span><span class='kw'>=</span><span class='no'>dosing_4</span>)</div><div class='output co'>#&gt;    ID  Time DV IPRED PRED  AMT Group Model WT AGE
 #&gt; 1   1   0.5 NA    NA   NA 1000     1     1 70  50
@@ -1446,7 +1448,7 @@ based on the input design.</p>
 #&gt; 178  6 100.0 NA    NA   NA   NA     2     1 60  45
 #&gt; 179  6 100.0 NA    NA   NA   NA     2     2 60  45
 #&gt; 180  6 120.0 NA    NA   NA   NA     2     2 60  45</div><div class='input'><span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_4</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>dosing</span><span class='kw'>=</span><span class='no'>dosing_4</span>,<span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                 <span class='kw'>model_minxt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20</span>,<span class='fl'>20</span>),<span class='kw'>model_maxxt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>100</span>))</div><div class='output co'>#&gt;     ID      Time DV IPRED PRED  AMT Group Model WT AGE
+                 <span class='kw'>model_minxt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>,<span class='fl'>20</span>),<span class='kw'>model_maxxt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>100</span>))</div><div class='output co'>#&gt;     ID      Time DV IPRED PRED  AMT Group Model WT AGE
 #&gt; 1    1   0.50000 NA    NA   NA 1000     1     1 70  50
 #&gt; 2    1   0.50000 NA    NA   NA   NA     1     1 70  50
 #&gt; 3    1   1.00000 NA    NA   NA   NA     1     1 70  50
@@ -1626,8 +1628,8 @@ based on the input design.</p>
 #&gt; 177  6  91.11111 NA    NA   NA   NA     2     2 60  45
 #&gt; 178  6 100.00000 NA    NA   NA   NA     2     1 60  45
 #&gt; 179  6 100.00000 NA    NA   NA   NA     2     2 60  45
-#&gt; 180  6 120.00000 NA    NA   NA   NA     2     2 60  45</div><div class='input'><span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_4</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>dosing</span><span class='kw'>=</span><span class='no'>dosing_4</span>,<span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>10</span>),
-                 <span class='kw'>model_minxt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20</span>,<span class='fl'>20</span>),<span class='kw'>model_maxxt</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>100</span>))</div><div class='output co'>#&gt;     ID      Time DV IPRED PRED  AMT Group Model WT AGE
+#&gt; 180  6 120.00000 NA    NA   NA   NA     2     2 60  45</div><div class='input'><span class='fu'>model_prediction</span>(<span class='kw'>design</span><span class='kw'>=</span><span class='no'>design_4</span>,<span class='kw'>DV</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>dosing</span><span class='kw'>=</span><span class='no'>dosing_4</span>,<span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>10</span>),
+                 <span class='kw'>model_minxt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>,<span class='fl'>20</span>),<span class='kw'>model_maxxt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>100</span>))</div><div class='output co'>#&gt;     ID      Time DV IPRED PRED  AMT Group Model WT AGE
 #&gt; 1    1   0.50000 NA    NA   NA 1000     1     1 70  50
 #&gt; 2    1   0.50000 NA    NA   NA   NA     1     1 70  50
 #&gt; 3    1   1.00000 NA    NA   NA   NA     1     1 70  50
@@ -1814,30 +1816,31 @@ based on the input design.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='http://katalog.uu.se/profile/?id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, <a href='http://katalog.uu.se/profile/?id=N9-467'>Sebastian Ueckert</a>, Joakim Nyberg.</p>
+  <p>Developed by <a href='https://katalog.uu.se/profile/?id=N4-631'>Andrew C. Hooker</a>, Marco Foracchia, <a href='https://katalog.uu.se/profile/?id=N9-467'>Sebastian Ueckert</a>, <a href='https://scholar.google.se/citations?user=4CgHwr0AAAAJ&hl=en'>Joakim Nyberg</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

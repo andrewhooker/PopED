@@ -4,6 +4,9 @@ templates:
     #bootswatch: paper
     bootswatch: Flatly
 
+#development:
+#  mode: auto
+  
 reference:
   - title: General information
     contents:
@@ -65,25 +68,55 @@ reference:
       - toc
       - zeros
 
- 
 navbar:
-  title: "PopED"
-  #type: inverse
-  left:
-    - icon: fa-home fa-lg
+  structure:
+    left:
+    - home
+    - intro
+    - articles
+    - reference
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fas fa-home fa-lg
       href: index.html
-    - text: Introduction
-      href: articles/intro-poped.html
-    - text: Examples
-      href: articles/examples.html
-    - text: Functions
+    reference:
+      text: Reference
       href: reference/index.html
-    - text: News 
+    intro:
+      text: Introduction
+      href: articles/intro-poped.html
+    articles:
+      text: Examples
+      href: articles/examples.html
+    news:
+      text: Changelog
       href: news/index.html
-  right:
-    - icon: fa-github
+    github:
+      icon: fab fa-github fa-lg
       text: Source
       href: https://github.com/andrewhooker/PopED
+ 
+#navbar:
+#  title: "PopED"
+  #type: inverse
+#  left:
+#    - icon: fa-home fa-lg
+#      href: index.html
+#    - text: Introduction
+#      href: articles/intro-poped.html
+#    - text: Examples
+#      href: articles/examples.html
+#    - text: Functions
+#      href: reference/index.html
+#    - text: News 
+#      href: news/index.html
+#  right:
+#    - icon: fa-github
+#      text: Source
+#      href: https://github.com/andrewhooker/PopED
 
 authors:
   Andrew C. Hooker:

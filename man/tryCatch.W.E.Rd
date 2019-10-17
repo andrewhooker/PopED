@@ -18,6 +18,6 @@ Catch *and* save both errors and warnings, and in the case of
 a warning, also keep the computed result.
 }
 \author{
-Martin Maechler;
-Copyright (C) 2010-2012  The R Core Team
+Martin Maechler, The R Core Team
 }
+\keyword{internal}

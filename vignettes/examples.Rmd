@@ -4,41 +4,42 @@ author: "Giulia Lestini, Martin Fink and Andrew Hooker"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_vignette:
+  # rmarkdown::html_document:
+  #   toc: true
+  #   toc_depth: 3
+  #   number_sections: true
+    fig_width: 7
+    fig_height: 5
+  #bookdown::html_document2:
     toc: true
-    toc_depth: 3
+    # toc_depth: 3
+    # toc_float:
+    #   collapsed: false
+    #   smooth_scroll: true
     number_sections: true
-    fig_width: 6
-    #fig_height: 5
 vignette: >
   %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-pkgdown:
-  as_is: true
+#pkgdown:
+#  as_is: true
 ---
 
 ```{r setup, include = FALSE}
+if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
+
 knitr::opts_chunk$set(
   collapse = TRUE
   , comment = "#>"
   #, fig.width=6
-  #, cache = TRUE
+  , cache = TRUE
 )
 ```
 
 # Introduction
 
-In this vignette, we try to further highlight  PopED features that may be useful.  Only code related to  
-specific "new" features is described here in this vignette. 
-These features (and more) are presented as r-scripts in the "examples" folder in the 
-PopED installation directory located at:
-
-```{r,eval=FALSE}
-system.file("examples", package="PopED")
-```
-
-You can view a list of the example files using the commands:
-```{r,eval=FALSE}
+In this vignette, we try to  highlight PopED features that may be useful.  Only code related to specific features we would like to highlight is described here in this vignette. These features (and more) are presented as r-scripts in the "examples" folder in the PopED installation directory. You can view a list of these example files using the commands:
+```{r,eval=TRUE}
 ex_dir <- system.file("examples", package="PopED")
 list.files(ex_dir)
 ```
@@ -51,12 +52,12 @@ file.copy(ex_file,tempdir(),overwrite = T)
 file.edit(file.path(tempdir(),file_name))
 ```
 
-The table below provides a check list of features for each of the available examples.
+The table below provides a check list of features for each of the 15 available examples.
 
 | Features  | Ex1   | Ex2 |Ex3|Ex4|Ex5|Ex6|Ex7|Ex8|Ex9|Ex10|Ex11|Ex12|Ex13|Ex14|Ex15|
 |  -----   |  ----   | ----  |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |---- |
-| Analytical model       |X|X|X|X|X|X|X|-|-|-|X|X|X|X|X|
-| ODE model and doses    |X|X|-|-|-|X|-|X|X|X|-|-|-|-|-|
+| Analytic model       |X|X|X|X|X|X|X|-|-|-|X|X|X|X|X|
+| ODE model    |X|X|-|-|-|X|-|X|X|X|-|-|-|-|-|
 | Irregular dosing       |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 | Full cov matrix W      |-|-|-|-|-|-|-|-|-|-|-|-|-|-|X|
 | Inter-occ variability  |-|-|-|-|-|-|-|-|-|-|-|-|-|X|-|
@@ -70,17 +71,15 @@ The table below provides a check list of features for each of the available exam
 | Include previous FIM   |-|-|-|-|-|-|-|-|-|-|X|-|-|-|-|
 | Shrinkage/Bayesian FIM |X|X|X|X|-|-|X|-|-|X|-|-|X|-|-|
 | Discrete optimization  |X|X|X|-|-|X|-|X|-|-|-|-|-|X|-|
-| Optimization <br> of more-group designs<br> (same response)   |X|-|X|X|-|-|X|X|-|-|-|-|-|X|-|
+| Optimization <br> of multi-group designs<br> (same response)   |X|-|X|X|-|-|X|X|-|-|-|-|-|X|-|
 | Different optimal<br> sampling times<br> between groups       |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 | Optimization with constraining <br> sampling times            |X|-|X|-|-|-|-|-|-|-|-|-|-|X|-|
 | Optimization of subjects <br>per group                        |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 
 
-#	Analytical solution PKPD model with 2 groups/arms; setup only 
+#	Analytic solution of PKPD model, multiple study arms 
 
 The full code for this example is available in `ex.4.PKPD.1.comp.emax.R`.
-
-## Define the PKPD model
 
 Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination.  The PD is an ordinary Emax model driven by the PK concentrations. The expected output of each measurement (PK or PD) is given in the vector `model_switch` (see below for details).
 ```{r}
@@ -125,7 +124,6 @@ f_Err <- function(model_switch,xt,parameters,epsi,poped.db){
 }
 ```
 
-Some of the parameters are assumed to have log-normal distributions in the population.
 ```{r, echo=FALSE}
 f_etaToParam <- function(x,a,bpop,b,bocc){
   parameters=c( 
@@ -140,41 +138,45 @@ f_etaToParam <- function(x,a,bpop,b,bocc){
 }
 ```
 
-## Define design and design space
-
-We specify in the `poped.db` object the vector `model_switch` in order to assign the sampling times written in the vector `xt` to the PK (=1) or PD (=2) model. 
-
+In the `poped.db` object the vector we specify  `model_switch` in order to assign the sampling times defined in the vector `xt` to the PK (=1) or PD (=2) model. 
 ```{r}
-poped.db <- create.poped.database(ff_fun=f_pkpdmodel,
-                                  fError_fun=f_Err,
-                                  fg_fun=f_etaToParam,
-                                  sigma=diag(c(0.15,0.015)),
-                                  bpop=c(CL=0.5,V=0.2,E0=1,EMAX=1,EC50=1),  
-                                  d=c(CL=0.09,V=0.09,E0=0.04,EC50=0.09), 
-                                  groupsize=20,
-                                  m=3,
-                                  xt=c( 0.33,0.66,0.9,5,0.1,1,2,5),
-                                  minxt=0,
-                                  maxxt=5,
-                                  bUseGrouped_xt=1,
-                                  model_switch=c(1,1,1,1,2,2,2,2),
-                                  a=list(c(DOSE=0),c(DOSE=1),c(DOSE=2)),
-                                  maxa=c(DOSE=10),
-                                  mina=c(DOSE=0))
+poped.db <- create.poped.database(
+  
+  # Model
+  ff_fun=f_pkpdmodel,
+  fError_fun=f_Err,
+  fg_fun=f_etaToParam,
+  sigma=diag(c(0.15,0.015)),
+  bpop=c(CL=0.5,V=0.2,E0=1,EMAX=1,EC50=1),  
+  d=c(CL=0.09,V=0.09,E0=0.04,EC50=0.09), 
+  
+  # Design
+  groupsize=20,
+  m=3,
+  xt = c(0.33,0.66,0.9,5,0.1,1,2,5),
+  model_switch=c(1,1,1,1,2,2,2,2),
+  a=list(c(DOSE=0),c(DOSE=1),c(DOSE=2)),
 
-
+  # Design space
+  minxt=0,
+  maxxt=5,
+  bUseGrouped_xt=1,
+  maxa=c(DOSE=10),
+  mina=c(DOSE=0))
 ```
 
-The model predictions below show typical PK and PD profiles for three dose groups. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With `model.names=c("PK","PD")` one can name the outputs in the graph.
+The model predictions below show typical PK and PD profiles for three dose groups and the expected 95% prediction interval of the data taking into account the BSV and RUV. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With `model.names=c("PK","PD")` one can name the outputs in the graph.
 
 ```{r simulate_multi-response_model}
-plot_model_prediction(poped.db,IPRED=TRUE,DV=TRUE,facet_scales="free",
-                      separate.groups=TRUE,
-                      model.names=c("PK","PD")) 
+plot_model_prediction(
+  poped.db,IPRED=TRUE,DV=TRUE,
+  facet_scales="free",
+  separate.groups=TRUE,
+  model.names=c("PK","PD")) 
 ```
 
 
-#	ODE solution of PK model and multiple dose dosing scheme; design evaluation
+#	ODE solution of PK model, multiple dosing
 
 The full code for this example is available in `ex.9.PK.2.comp.oral.md.ode.compiled.R`. 
 
@@ -183,8 +185,6 @@ In this example, the `deSolve` library needs to be installed for computing solut
 library(Rcpp)
 library(deSolve)
 ```
-
-## Define the system using ODEs 
 
 Here we define the two compartment model in R using deSolve notation
 ```{r}
@@ -198,23 +198,31 @@ PK.2.comp.oral.ode <- function(Time, State, Pars){
 }
 ```
 
-
-Now we define the initial conditions of the ODE system `A_ini` with a named vector, in this case all compartments are initialized to zero `c(A1=0,A2=0,A3=0)`. The dosing input is defined as a data.frame `eventdat` referring to the named compartment `var = c("A1")`, the specified `dose_times` and `value=c(DOSE)` dose amounts. Note that the covariates `DOSE` and the regimen `TAU` can differ by arm and be optimized (as shown in `ex.1.a.PK.1.comp.oral.md.intro.R`).  For more information see the help pages for `?deSolve::ode` and `?deSolve::events`. 
+Now we define the initial conditions of the ODE system `A_ini` with a named vector, in this case all compartments are initialized to zero `c(A1=0,A2=0,A3=0)`. The dosing input is defined as a data.frame `dose_dat` referring to the named compartment `var = c("A1")`, the specified `dose_times` and `value=c(DOSE*Favail)` dose amounts. Note that the covariates `DOSE` and the regimen `TAU` can differ by arm and be optimized (as shown in `ex.1.a.PK.1.comp.oral.md.intro.R`).  For more information see the help pages for `?deSolve::ode` and `?deSolve::events`. 
 ```{r}
 ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
-    A_ini <- c(A1=0, A2=0, A3=0)
-    times_xt <- drop(xt)
-    dose_times = seq(from=0,to=max(times_xt),by=TAU)
-    eventdat <- data.frame(var = c("A1"), 
-                           time = dose_times,
-                           value = c(DOSE), method = c("add"))
-    times <- sort(c(times_xt,dose_times))
     
-    # Here "PK.2.comp.oral.ode" is equivalent to the pre-compiled version "two_comp_oral_ode_Rcpp".
+    # initial conditions of ODE system
+    A_ini <- c(A1=0, A2=0, A3=0)
+
+    #Set up time points to get ODE solutions
+    times_xt <- drop(xt) # sample times
+    times_start <- c(0) # add extra time for start of study
+    times_dose = seq(from=0,to=max(times_xt),by=TAU) # dose times
+    times <- unique(sort(c(times_start,times_xt,times_dose))) # combine it all
+    
+    # Dosing
+    dose_dat <- data.frame(
+      var = c("A1"), 
+      time = times_dose,
+      value = c(DOSE*Favail), 
+      method = c("add")
+    )
+    
     out <- ode(A_ini, times, PK.2.comp.oral.ode, parameters,
-               events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
-    y = out[, "A2"]/(V1/Favail)
+               events = list(data = dose_dat))#atol=1e-13,rtol=1e-13)
+    y = out[, "A2"]/V1
     y=y[match(times_xt,out[,"time"])]
     y=cbind(y)
     return(list(y=y,poped.db=poped.db))
@@ -223,7 +231,6 @@ ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
 
 ```
 
-The parameter definition function should match the parameters used in the above two functions.
 ```{r, echo=FALSE}
 fg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1]),
@@ -238,101 +245,113 @@ fg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-## Define design and design space
+When creating a PopED database. `ff_fun` should  point to the function providing the solution to the ODE. Further, the names in the parameter definition (`fg`) function should match the parameters used in the above two functions.
 
-We now create a PopED database. The `ff_fun` should now point to the function providing the solution of the ODE.
 ```{r}
-discrete_a <- cell(2,1)
-
-poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
-                                  fError_fun="feps.add.prop",
-                                  fg_fun="fg",
-                                  groupsize=20,
-                                  m=1,      #number of groups
-                                  sigma=c(prop=0.1^2,add=0.05^2),
-                                  bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
-                                  d=c(CL=0.15^2,KA=0.25^2),
-                                  notfixed_bpop=c(1,1,1,1,1,0),
-                                  xt=c( 48,50,55,65,70,85,90,120), 
-                                  minxt=0,
-                                  maxxt=144,
-                                  discrete_xt = list(0:144),
-                                  a=c(DOSE=100,TAU=24),
-                                  maxa=c(DOSE=1000,TAU=24),
-                                  mina=c(DOSE=0,TAU=8),
-                                  discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
+poped.db <- create.poped.database(
+  
+  # Model
+  ff_fun="ff.PK.2.comp.oral.md.ode",
+  fError_fun="feps.add.prop",
+  fg_fun="fg",
+  sigma=c(prop=0.1^2,add=0.05^2),
+  bpop=c(CL=10,V1=100,KA=1,Q= 3.0, V2= 40.0, Favail=1),
+  d=c(CL=0.15^2,KA=0.25^2),
+  notfixed_bpop=c(1,1,1,1,1,0),
+  
+  # Design
+  groupsize=20,
+  m=1,      #number of groups
+  xt=c( 48,50,55,65,70,85,90,120),
+  
+  # Design space 
+  minxt=0,
+  maxxt=144,
+  discrete_xt = list(0:144),
+  a=c(DOSE=100,TAU=24),
+  discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
 ```
 
-## Plot intial design (just PRED)
-
-We plot the initial design
+We plot the population prediction of the model for the initial design
 ```{r simulate_ODE_model}
-plot_model_prediction(poped.db)
+plot_model_prediction(poped.db,model_num_points = 500)
 ```
 
-## Faster computations with Rcpp
-We could also define the system using Rcpp, which will produce compiled code that should run faster (further examples in `ex.2.c.warfarin.ODE.compiled.R`).  First we redefine the ODE system using Rcpp.
+**Faster computations with Rcpp:**  We could also define the system using Rcpp, which will produce compiled code that should run faster (further examples in `ex.2.c.warfarin.ODE.compiled.R`).  First we redefine the ODE system using Rcpp. 
+
 ```{r}
-cppFunction('List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
-            int n = A.size();
-            NumericVector dA(n);
+cppFunction(
+  'List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
+     int n = A.size();
+     NumericVector dA(n);
             
-            double CL = Pars[0];
-            double V1 = Pars[1];
-            double KA = Pars[2];
-            double Q  = Pars[3];
-            double V2 = Pars[4];
+     double CL = Pars[0];
+     double V1 = Pars[1];
+     double KA = Pars[2];
+     double Q  = Pars[3];
+     double V2 = Pars[4];
             
-            dA[0] = -KA*A[0];
-            dA[1] = KA*A[0] - (CL/V1)*A[1] - Q/V1*A[1] + Q/V2*A[2];
-            dA[2] = Q/V1*A[1] - Q/V2*A[2];
-            return List::create(dA);
-            }')
+     dA[0] = -KA*A[0];
+     dA[1] = KA*A[0] - (CL/V1)*A[1] - Q/V1*A[1] + Q/V2*A[2];
+     dA[2] = Q/V1*A[1] - Q/V2*A[2];
+     return List::create(dA);
+  }')
 ```
 
-Next we solve this system of ODEs using deSolve.
-```{r, echo=FALSE}
+
+Next we add the compiled function (`two_comp_oral_ode_Rcpp`) in the ODE solver.
+```{r}
 ff.PK.2.comp.oral.md.ode.Rcpp <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
-    A_ini <- c(A1=0, A2=0, A3=0)
-    times_xt <- drop(xt)
-    dose_times = seq(from=0,to=max(times_xt),by=TAU)
-    eventdat <- data.frame(var = c("A1"), 
-                           time = dose_times,
-                           value = c(DOSE), method = c("add"))
-    times <- sort(c(times_xt,dose_times))
     
-    # Here "PK.2.comp.oral.ode" is equivalent to the pre-compiled version "two_comp_oral_ode_Rcpp".
+    # initial conditions of ODE system
+    A_ini <- c(A1=0, A2=0, A3=0)
+
+    #Set up time points to get ODE solutions
+    times_xt <- drop(xt) # sample times
+    times_start <- c(0) # add extra time for start of study
+    times_dose = seq(from=0,to=max(times_xt),by=TAU) # dose times
+    times <- unique(sort(c(times_start,times_xt,times_dose))) # combine it all
+    
+    # Dosing
+    dose_dat <- data.frame(
+      var = c("A1"), 
+      time = times_dose,
+      value = c(DOSE*Favail), 
+      method = c("add")
+    )
+    
+    # Here "two_comp_oral_ode_Rcpp" is equivalent 
+    # to the non-compiled version "PK.2.comp.oral.ode".
     out <- ode(A_ini, times, two_comp_oral_ode_Rcpp, parameters,
-               events = list(data = eventdat))#atol=1e-13,rtol=1e-13)
-    y = out[, "A2"]/(V1/Favail)
+               events = list(data = dose_dat))#atol=1e-13,rtol=1e-13)
+    y = out[, "A2"]/V1
     y=y[match(times_xt,out[,"time"])]
     y=cbind(y)
     return(list(y=y,poped.db=poped.db))
   })
 }
+
 ```
 
 Finally we create a poped database to use these functions by updating the previously created database.
 ```{r, }
-poped.db.Rcpp <- create.poped.database(poped.db,
-                                       ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp")
+poped.db.Rcpp <- create.poped.database(
+  poped.db,
+  ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp")
 ```
 
-
-## Design evaluation
 We can compare the time for design evaluation with these two methods of describing the same model.
 ```{r}
 tic(); eval <- evaluate_design(poped.db); toc()
 tic(); eval <- evaluate_design(poped.db.Rcpp); toc()
 ```
-The difference is noticeable and gets larger for more complex and lengthy ODE models.
 
-#	ODE solution for TMDD model with 2 outputs, arms with either single sc or iv dose, and different number of sampling times per arm
+The difference is noticeable and gets larger for more complex ODE models.
 
-The full code for this example is available in `ex.8.tmdd_qss_one_target_compiled.R`.
+#	ODE solution of TMDD model with 2 outputs, Multiple arms, different dose routes, different number of sample times per arm
 
-Compile code using Rcpp for the TMDD model is as follows.
+The full code for this example is available in `ex.8.tmdd_qss_one_target_compiled.R`.  
 
 ```{r, echo=FALSE, results="hide"}
 cppFunction('List tmdd_qss_one_target_model_ode
@@ -369,7 +388,6 @@ cppFunction('List tmdd_qss_one_target_model_ode
             }')
 ```
 
-Define the parameters and the distributions of those parameters.
 ```{r,echo=FALSE, results="hide"}
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1])  ,
@@ -431,7 +449,8 @@ tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.
 
 ```
 
-Finally we define the residual unexplained variability model.
+<!-- Finally we define the residual unexplained variability model. -->
+
 ```{r, echo=FALSE}
 tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.db){
   returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db))
@@ -446,9 +465,9 @@ tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.
 
 ```
 
-## Define the design 
 Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times^[Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., & Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. https://doi.org/10.1007/s10928-011-9228-y].
-Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`) what each sample time will meansre (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database()` function.
+Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`), what each sample time will measure (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database()` function.
+
 ```{r}
 xt <- zeros(6,30)
 study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=TRUE)
@@ -471,46 +490,56 @@ G_xt[5:6,] <- study_2_G_xt
 
 These can then be plugged into the normal `poped.db` setup.
 ```{r}
-poped.db.2 <- create.poped.database(ff_fun=tmdd_qss_one_target_model_compiled,
-                                    fError_fun=tmdd_qss_one_target_model_ruv,
-                                    fg_fun=sfg,
-                                    groupsize=rbind(6,6,6,6,100,100),
-                                    m=6,      #number of groups
-                                    sigma=c(0.04,0.0225),
-                                    bpop=c(CL=0.3,V1=3,Q=0.2,V2=3,FAVAIL=0.7,KA=0.5,VMAX=0,
-                                           KMSS=0,R0=0.1,KSSS=0.015,KDEG=10,KINT=0.05),
-                                    d=c(CL=0.09,V1=0.09,Q=0.04,V2=0.04,FAVAIL=0.04,
-                                        KA=0.16,VMAX=0,KMSS=0,R0=0.09,KSSS=0.09,KDEG=0.04,
-                                        KINT=0.04),
-                                    notfixed_bpop=c( 1,1,1,1,1,1,0,0,1,1,1,1),
-                                    notfixed_d=c( 1,1,1,1,1,1,0,0,1,1,1,1),
-                                    xt=xt,
-                                    model_switch=model_switch,
-                                    ni=rbind(26,26,26,26,30,30),
-                                    bUseGrouped_xt=1,
-                                    G_xt=G_xt,
-                                    a=list(c(DOSE=100, SC_FLAG=0),
-                                           c(DOSE=300, SC_FLAG=0),
-                                           c(DOSE=600, SC_FLAG=0),
-                                           c(DOSE=1000, SC_FLAG=1),
-                                           c(DOSE=600, SC_FLAG=0),
-                                           c(DOSE=1000, SC_FLAG=1)),
-                                    discrete_a = list(DOSE=seq(100,1000,by=100),
-                                                      SC_FLAG=c(0,1)))
+poped.db.2 <- create.poped.database(
+  
+  # Model
+  ff_fun=tmdd_qss_one_target_model_compiled,
+  fError_fun=tmdd_qss_one_target_model_ruv,
+  fg_fun=sfg,
+  sigma=c(rtot_add=0.04,cfree_add=0.0225),
+  bpop=c(CL=0.3,V1=3,Q=0.2,V2=3,FAVAIL=0.7,KA=0.5,VMAX=0,
+         KMSS=0,R0=0.1,KSSS=0.015,KDEG=10,KINT=0.05),
+  d=c(CL=0.09,V1=0.09,Q=0.04,V2=0.04,FAVAIL=0.04,
+      KA=0.16,VMAX=0,KMSS=0,R0=0.09,KSSS=0.09,KDEG=0.04,
+      KINT=0.04),
+  notfixed_bpop=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+  notfixed_d=c( 1,1,1,1,1,1,0,0,1,1,1,1),
+  
+  # Design
+  groupsize=rbind(6,6,6,6,100,100),
+  m=6,      #number of groups
+  xt=xt,
+  model_switch=model_switch,
+  ni=rbind(26,26,26,26,30,30),
+  a=list(c(DOSE=100, SC_FLAG=0),
+         c(DOSE=300, SC_FLAG=0),
+         c(DOSE=600, SC_FLAG=0),
+         c(DOSE=1000, SC_FLAG=1),
+         c(DOSE=600, SC_FLAG=0),
+         c(DOSE=1000, SC_FLAG=1)),
+  
+  # Design space
+  bUseGrouped_xt=1,
+  G_xt=G_xt,
+  discrete_a = list(DOSE=seq(100,1000,by=100),
+                    SC_FLAG=c(0,1)))
 
 ```
 
-## Plot model predictions
+Now we can plot population predictions for each group and evaluate the design.
 ```{r simulate_different_dose_regimen}
 plot_model_prediction(poped.db.2,facet_scales="free")
 ```
 
-## Design evaluation
-```{r}
-eval_2 <- evaluate_design(poped.db.2);
+```{r,results='hide'}
+eval_2 <- evaluate_design(poped.db.2)
 round(eval_2$rse)
 ```
 
+```{r,echo=FALSE}
+knitr::kable(round(eval_2$rse),col.names = c("RSE in %")) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
+```
 
 
 #	Model with continuous covariates
@@ -552,7 +581,7 @@ poped_db <-
     fError_fun=feps.add.prop,
     groupsize=50,
     m=1,
-    sigma=c(0.015,0.0015),
+    sigma=c(prop=0.015,add=0.0015),
     notfixed_sigma = c(1,0),
     bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
     d=c(CL=0.05,V=0.05), 
@@ -574,11 +603,9 @@ And evaluate the initial design
 evaluate_design(poped_db)
 ```
 
-It is obvious that the covariate parameters can not be estimated according to this design calculation (RSE of bpop[3]=0 and bpop[4]=0).  Why is that? Well, the calculation being done is assuming that every individual in the group has the same covariate (to speed up the calculation).  This is clearly a poor prediction in this case!
+It is obvious that the covariate parameters can not be estimated according to this design calculation (RSE of WT_CL and WT_V are `NA`).  Why is that? Well, the calculation being done is assuming that every individual in the group has the same covariate (to speed up the calculation).  This is clearly a poor assumption in this case!
 
-## Distribution of covariates
-
-We can improve the computation by assuming a distribution of the covariate (WT) in the individuals in the study. We set `groupsize=1`, the number of groups to be 50 (`m=50`) and assume that WT is sampled from a normal distribution with mean=70 and sd=10 (`a=as.list(rnorm(50, mean = 70, sd = 10)`).
+**Distribution of covariates:** We can improve the computation by assuming a distribution of the covariate (WT) in the individuals in the study. We set `groupsize=1`, the number of groups to be 50 (`m=50`) and assume that WT is sampled from a normal distribution with mean=70 and sd=10 (`a=as.list(rnorm(50, mean = 70, sd = 10)`).
 ```{r}
 poped_db_2 <- 
   create.poped.database(
@@ -587,8 +614,8 @@ poped_db_2 <-
     fError_fun=feps.add.prop,
     groupsize=1,
     m=50,
-    sigma=c(0.015,0.0015),
-    notfixed_sigma = c(1,0),
+    sigma=c(prop=0.015,add=0.0015),
+    notfixed_sigma = c(prop=1,add=0),
     bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
     d=c(CL=0.05,V=0.05), 
     xt=c(1,2,4,6,8,24),
@@ -603,14 +630,24 @@ poped_db_2 <-
 ```{r}
 ev <- evaluate_design(poped_db_2) 
 round(ev$ofv,1)
+```
+
+
+```{r,results='hide'}
 round(ev$rse)
 ```
 
-Here we see that, given this distribution of weights, the covariate effect parameters (bpop[3] and bpop[4]) would be well estimated.
+```{r,echo=FALSE}
+knitr::kable(round(ev$rse),col.names = c("RSE in %")) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
+```
+
+
+Here we see that, given this distribution of weights, the covariate effect parameters (`WT_CL` and `WT_V`) would be well estimated.
 
 However, we are only looking at one sample of 50 individuals.  Maybe a better approach is to look at the distribution of RSEs over a number of experiments given the expected weight distribution. 
 
-```{r, cache=TRUE}
+```{r, cache=TRUE,results='hide'}
 nsim <- 30
 rse_list <- c()
 for(i in 1:nsim){
@@ -621,7 +658,7 @@ for(i in 1:nsim){
       fError_fun=feps.add.prop,
       groupsize=1,
       m=50,
-      sigma=c(0.015,0.0015),
+      sigma=c(prop=0.015,add=0.0015),
       notfixed_sigma = c(1,0),
       bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
       d=c(CL=0.05,V=0.05), 
@@ -633,21 +670,25 @@ for(i in 1:nsim){
   rse_tmp <- evaluate_design(poped_db_tmp)$rse
   rse_list <- rbind(rse_list,rse_tmp)
 }
-apply(rse_list,2,quantile)
+(rse_quant <- apply(rse_list,2,quantile))
 ```
+
+```{r,echo=FALSE}
+knitr::kable(as.data.frame(rse_quant),digits = 2)#,col.names = c("RSE in %")) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
+```
+
 Note, that the variance of the RSE of the covariate effect is in this case strongly correlated with the variance of the weight distribution (not shown).
 
 #	Model with discrete covariates	
 
-See `ex.11.PK.prior.R`. This has the covariate `isPediatric` to distinguish between adults and pediatrics.
-Alternatively,  `DOSE` and `TAU` in the first example can be considered as discrete covariates but are not per se estimated but rather optimized.
+See `ex.11.PK.prior.R`. This has the covariate `isPediatric` to distinguish between adults and pediatrics.  Alternatively,  `DOSE` and `TAU` in the first example can be considered as discrete covariates.
 
-#	Model with Inter-Occasion Variability
+#	Model with Inter-Occasion Variability (IOV)
 
 The full code for this example is available in `ex.14.PK.IOV.R`.
 
-The IOV is introduced with `bocc[x,y]` in the parameter definition function as a matrix with the first argument `x` indicating the index for the IOV variances defined in `docc` below, and the second argument `y` denoting the occasion.
-This is used in the example to derive to different clearance values, i.e., `CL_OCC_1` and `CL_OCC_2` (think of some drug-drug interaction).
+The IOV is introduced with `bocc[x,y]` in the parameter definition function as a matrix with the first argument `x` indicating the index for the IOV variances, and the second argument `y` denoting the occasion. This is used in the example to derive to different clearance values, i.e., `CL_OCC_1` and `CL_OCC_2`.
 ```{r}
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL_OCC_1=bpop[1]*exp(b[1]+bocc[1,1]),
@@ -660,7 +701,7 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-These parameters can now be used in the model function to define the change in parameters between the occacions (here with the 7th dose in a one-compartment model with first order absorption).
+These parameters can now be used in the model function to define the change in parameters between the occacions (here the change occurs with the 7th dose in a one-compartment model with first order absorption).
 ```{r}
 cppFunction(
   'List one_comp_oral_ode(double Time, NumericVector A, NumericVector Pars) {
@@ -704,8 +745,6 @@ ff.ode.rcpp <- function(model_switch, xt, parameters, poped.db){
 
 ```
 
-
-
 The within-subject variability variances (`docc`) are defined in the poped database as a 3-column matrix with one row per IOV-parameter, and the middle column giving the variance values.
 ```{r} 
 poped.db <- 
@@ -715,7 +754,7 @@ poped.db <-
     fg_fun=sfg,
     bpop=c(CL=3.75,V=72.8,KA=0.25), 
     d=c(CL=0.25^2,V=0.09,KA=0.09), 
-    sigma=c(0.04,5e-6),
+    sigma=c(prop=0.04,add=5e-6),
     notfixed_sigma=c(0,0),
     docc = matrix(c(0,0.09,0),nrow = 1),
     m=2,
@@ -730,30 +769,32 @@ poped.db <-
   )
 ```
 
-## Create plot of the population predictions
-
-```{r simulate_IOV_without_IIV}
-plot_model_prediction(poped.db, model_num_points = 300)
-```
-
-## visualize the IOV 
 We can visualize the IOV by looking at an example individual.  We see the PK profile changes at the 7th dose (red line) due to the change in clearance.
-```{r simulate_IOV_with_IIV,}
+```{r simulate_IOV_with_IIV}
 library(ggplot2)
 set.seed(123)
-plot_model_prediction(poped.db, PRED=F,IPRED=F, 
-                      separate.groups=T, model_num_points = 300, 
-                      groupsize_sim = 1,
-                      IPRED.lines = T, alpha.IPRED.lines=0.6,
-                      sample.times = F
-                      ) + geom_vline(xintercept = 24*6,color="red")
+plot_model_prediction(
+  poped.db, 
+  PRED=F,IPRED=F, 
+  separate.groups=T, 
+  model_num_points = 300, 
+  groupsize_sim = 1,
+  IPRED.lines = T, 
+  alpha.IPRED.lines=0.6,
+  sample.times = F
+) + geom_vline(xintercept = 24*6,color="red")
 ```
 
-## Evaluate initial design
+We can also see that the design is relatively poor for estimating the IOV parameter:
 
-```{r}
+```{r,results='hide'}
 ev <- evaluate_design(poped.db)
 round(ev$rse)
+```
+
+```{r,echo=FALSE}
+knitr::kable(round(ev$rse),col.names = c("RSE in %")) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
 ```
 
 #	Full omega matrix	
@@ -800,7 +841,7 @@ poped.db <-
     bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
     notfixed_bpop=c(1,1,1,0),
     d=c(CL=0.07, V=0.02, KA=0.6), 
-    sigma=0.01,
+    sigma=c(prop=0.01),
     groupsize=32,
     xt=c( 0.5,1,2,6,24,36,72,120),
     minxt=0,
@@ -809,7 +850,7 @@ poped.db <-
   )
 ```
 
-The `covd` object is used for defining the covariances of the IIV variances (off-diagonal elements of the full variance-covariance matrix).
+The `covd` object is used for defining the covariances of the between subject variances (off-diagonal elements of the full variance-covariance matrix for the between subject variability).
 
 ```{r}
 poped.db_with <- 
@@ -838,16 +879,15 @@ cov2cor(IIV)
 ```
 They indicate a correlation of the inter-individual variabilities, here of ca. 0.8 between clearance and volume, as well as between volume and absorption rate.
 
-## Create plot of the model with variability 
-
+We can clearly see a difference in the variance of the model predictions. 
 ```{r simulate_with_cov_matrix}
 library(ggplot2)
-p1 <- plot_model_prediction(poped.db,IPRED=TRUE)+ylim(0,12)
-p2 <- plot_model_prediction(poped.db_with,IPRED=TRUE) +ylim(0,12)
+p1 <- plot_model_prediction(poped.db, PI=TRUE)+ylim(0,12)
+p2 <- plot_model_prediction(poped.db_with,PI=TRUE) +ylim(0,12)
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
-## Evaluate designs (with and without covariance matrix)
+Evaluating the designs with and without the covariances:
 
 ```{r,}
 ev1 <- evaluate_design(poped.db)
@@ -1221,3 +1261,5 @@ The output shows us the expected shrinkage on the variance scale ($shrink_{var}=
 * Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
 * Handling derived outputs	
 * Symbolic differentiation	
+
+
