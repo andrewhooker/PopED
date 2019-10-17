@@ -35,7 +35,7 @@
 #' Predictions are based on first-order approximations to 
 #' the model variance and a normality assumption of that variance.  As such these computations are 
 #' more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.
-#' @param PI_fill The color of the PI.
+# @param PI_fill The color of the PI.
 #' @param PI_alpha The transparency of the PI.
 #' @param DV.mean.sd Plot the mean and standard deviation of simulated observations. 
 #' @param ... Additional arguments passed to the \code{\link{model_prediction}} function.
@@ -91,7 +91,7 @@ plot_model_prediction <- function(poped.db,
                                   DV.mean.sd=FALSE,
                                   PI=FALSE,
                                   PI_alpha=0.3,
-                                  PI_fill="blue",
+                                  #PI_fill="blue",
                                   ...){
   PI_u <- PI_l <- NULL
   df <-  model_prediction(poped.db,
@@ -249,7 +249,7 @@ plot_model_prediction <- function(poped.db,
 
   }
   
-  if(PI) p <- p + geom_ribbon(data = df, aes(x=Time,ymin=PI_l,ymax=PI_u),alpha=PI_alpha,fill=PI_fill )
+  if(PI) p <- p + geom_ribbon(data = df, aes(x=Time,ymin=PI_l,ymax=PI_u,color=NULL),alpha=PI_alpha)
   
   if(DV) p <- p + stat_summary(data=df.ipred,aes(x=Time,y=DV,color=NULL),geom="ribbon",fun.data="median_hilow_poped",alpha=alpha.DV)
   if(PRED) p <- p + geom_line()
