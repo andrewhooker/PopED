@@ -294,6 +294,9 @@ get_parnam <- function (poped.db) {
           } 
           if(default_name) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         }
+        if(any(names(not_fixed[i])==c("D_cov"))){
+          parnam <- c("D",paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
+        }
         
         if(any(names(not_fixed[i])==c("D.occ"))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         if(length(grep("_cov",names(not_fixed[i])))!=0) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep="")) 
