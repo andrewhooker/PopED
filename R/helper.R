@@ -81,8 +81,8 @@ transform_back_par <- function(
 ##' @param expr an \R expression to evaluate
 ##' @return a list with 'value' and 'warning', where
 ##'   'value' may be an error caught.
-##' @author Martin Maechler;
-##' Copyright (C) 2010-2012  The R Core Team
+##' @author Martin Maechler, The R Core Team
+##' @keywords internal
 tryCatch.W.E <- function(expr){
   W <- NULL
   w.handler <- function(w){ # warning handler
