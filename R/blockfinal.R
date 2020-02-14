@@ -279,7 +279,7 @@ get_parnam <- function (poped.db) {
           if(!is.null(d_names)){
             if(d_names[j]!="") {
               default_name <- FALSE
-              parnam <- c(parnam,paste0("om_",d_names[j]))
+              parnam <- c(parnam,paste0("d_",d_names[j]))
             }
           } 
           if(default_name) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
@@ -295,11 +295,12 @@ get_parnam <- function (poped.db) {
           if(default_name) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
         }
         if(any(names(not_fixed[i])==c("D_cov"))){
-          parnam <- c("D",paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
+          mat_ind <- which(lower.tri(poped.db$parameters$param.pt.val$d, diag = FALSE), arr.ind=T)[j,]
+          parnam <- c(parnam,paste("D","[",mat_ind[1],",",mat_ind[2],"]",sep=""))
         }
         
         if(any(names(not_fixed[i])==c("D.occ"))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,",",j,"]",sep=""))
-        if(length(grep("_cov",names(not_fixed[i])))!=0) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep="")) 
+        if((length(grep("_cov",names(not_fixed[i])))!=0) && (!any(names(not_fixed[i])==c("D_cov")))) parnam <- c(parnam,paste(names(not_fixed[i]),"[",j,"]",sep="")) 
       }
     }
   }
