@@ -13,10 +13,10 @@ output:
   #bookdown::html_document2:
     toc: true
     # toc_depth: 3
-    # toc_float:
-    #   collapsed: false
-    #   smooth_scroll: true
-    number_sections: true
+  #  toc_float:
+   #   collapsed: false
+  #    smooth_scroll: true  
+   # number_sections: true
 vignette: >
   %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -33,6 +33,8 @@ knitr::opts_chunk$set(
   , comment = "#>"
   #, fig.width=6
   , cache = TRUE
+  , fig.align = "center"
+  , out.width = "80%"
 )
 ```
 
@@ -603,7 +605,7 @@ And evaluate the initial design
 evaluate_design(poped_db)
 ```
 
-It is obvious that the covariate parameters can not be estimated according to this design calculation (RSE of WT_CL and WT_V are `NA`).  Why is that? Well, the calculation being done is assuming that every individual in the group has the same covariate (to speed up the calculation).  This is clearly a poor assumption in this case!
+From the output produced we see that the covariate parameters can not be estimated according to this design calculation (RSE of WT_CL and WT_V are `NA`).  Why is that? Well, the calculation being done is assuming that every individual in the group has the same covariate (to speed up the calculation).  This is clearly a poor assumption in this case!
 
 **Distribution of covariates:** We can improve the computation by assuming a distribution of the covariate (WT) in the individuals in the study. We set `groupsize=1`, the number of groups to be 50 (`m=50`) and assume that WT is sampled from a normal distribution with mean=70 and sd=10 (`a=as.list(rnorm(50, mean = 70, sd = 10)`).
 ```{r}
@@ -862,7 +864,7 @@ poped.db_with <-
     notfixed_bpop=c(1,1,1,0),
     d=c(CL=0.07, V=0.02, KA=0.6), 
     covd = c(.03,.1,.09),
-    sigma=0.01,
+    sigma=c(prop=0.01),
     groupsize=32,
     xt=c( 0.5,1,2,6,24,36,72,120),
     minxt=0,
@@ -882,45 +884,65 @@ They indicate a correlation of the inter-individual variabilities, here of ca. 0
 We can clearly see a difference in the variance of the model predictions. 
 ```{r simulate_with_cov_matrix}
 library(ggplot2)
-p1 <- plot_model_prediction(poped.db, PI=TRUE)+ylim(0,12)
-p2 <- plot_model_prediction(poped.db_with,PI=TRUE) +ylim(0,12)
-gridExtra::grid.arrange(p1, p2, nrow = 1)
+p1 <- plot_model_prediction(poped.db, PI=TRUE)+ylim(-0.5,12) 
+p2 <- plot_model_prediction(poped.db_with,PI=TRUE) +ylim(-0.5,12)
+gridExtra::grid.arrange(p1+ ggtitle("No covariance in BSV"), p2+ ggtitle("Covariance in BSV"), nrow = 1)
 ```
 
 Evaluating the designs with and without the covariances:
 
-```{r,}
+```{r}
 ev1 <- evaluate_design(poped.db)
 ev2 <- evaluate_design(poped.db_with)
 ```
 
-```{r}
-round(ev1$ofv,1)
-round(ev1$rse,1)
-
-round(ev2$ofv,1)
-round(ev2$rse,1)
+```{r,results="hide"}
+round(ev1$rse)
+round(ev2$rse)
 ```
-Note, that the precision of all other parameters is barely affected by including the full covariance matrix. This is likely to be different in practice with much more ill-conditioned numerical problems.
 
-## Evaluate the same designs with full FIM (instead of reduced)
+```{r,echo=FALSE,message=FALSE}
+tb1 <- tibble::tibble(" "=names(ev1$rse),
+         "Diagonal BSV"=ev1$rse)
 
-```{r}
+tb2 <- tibble::tibble(" "=names(ev2$rse),
+         "Covariance in BSV"=ev2$rse)
+
+tb_final <- dplyr::right_join(tb1,tb2)
+
+knitr::kable(tb_final,digits = 0) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
+```
+
+Note, that the precision of all other parameters is barely affected by including the full covariance matrix. This is likely to be different in practice with more ill-conditioned numerical problems.
+
+**Evaluate the same designs with full FIM (instead of reduced)**
+
+```{r,results='hide'}
 ev1 <- evaluate_design(poped.db, fim.calc.type=0)
 ev2 <-evaluate_design(poped.db_with, fim.calc.type=0)
 
-round(ev1$ofv,1)
 round(ev1$rse,1)
-
-round(ev2$ofv,1)
 round(ev2$rse,1)
+```
+
+```{r,echo=FALSE,message=FALSE}
+tb1 <- tibble::tibble(" "=names(ev1$rse),
+         "Diagonal BSV"=ev1$rse)
+
+tb2 <- tibble::tibble(" "=names(ev2$rse),
+         "Covariance in BSV"=ev2$rse)
+
+tb_final <- dplyr::right_join(tb1,tb2)
+
+knitr::kable(tb_final,digits = 0) #%>%  
+  #kableExtra::kable_styling("striped",full_width = FALSE) 
 ```
 
 #	Include a prior FIM, compute power to identify a parameter
 
-In this example you will learn how to incorporate prior knowledge to your current study.
-First the FIM obtained from an experiment in adulta is stored. Then this FIM is added to the current experiment in children.
-The full code for this example is available in `ex.11.PK.prior.R`.
+In this example we incorporate prior knowledge into a current study design calculation.
+First the expected FIM obtained from an experiment in adults is computed. Then this FIM is added to the current experiment in children. One could also use the observed FIM when using estimation software to fit one realization of a design (from the $COVARIANCE step in NONMEM for example). The full code for this example is available in `ex.11.PK.prior.R`.
 
 ```{r, echo = FALSE}
 ##-- Model: One comp first order absorption
