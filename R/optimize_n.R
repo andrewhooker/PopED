@@ -113,7 +113,12 @@ optimize_n_dist <-
   #if(length(opt_var)==1){method = c("BFGS")} else {method = c("Nelder-Mead")}
   #if(length(opt_var)==1){method = c("BFGS")} else {method = c("BFGS")}
   
-  p <- optim(opt_var, opt_fun,...,control=list(fnscale=-1),method = c("BFGS"))
+  # rescale function
+  init_fun_val <- opt_fun(opt_var)
+  fnscale_val <- -1
+  if(init_fun_val<1e-6) fnscale_val <- -init_fun_val
+  
+  p <- optim(opt_var, opt_fun,...,control=list(fnscale=fnscale_val,trace=1),method = c("BFGS"))
   final_props <- convert_from_lcp(c(p$par,Inf)) # the proportions in each group
   if(!all.equal(sum(final_props),1)) stop("something went wrong\n the sum of the optimized proportions are not equal to 1\n") # check that the proportions add up to one
   n_per_group_opt <- final_props*n_tot # the numbers of individuals in each group
