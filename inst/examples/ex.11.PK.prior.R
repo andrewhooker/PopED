@@ -26,9 +26,9 @@ ff <- function(model_switch,xt,parameters,poped.db){
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( V=bpop[1]*exp(b[1]),
                 KA=bpop[2]*exp(b[2]),
-                CL=bpop[3]*exp(b[3])*bpop[5]^x[1], # add covariate for pediatrics
+                CL=bpop[3]*exp(b[3])*bpop[5]^a[3], # add covariate for pediatrics
                 Favail=bpop[4],
-                isPediatric = x[1],
+                isPediatric = a[3],
                 DOSE=a[1],
                 TAU=a[2])
   return( parameters ) 
@@ -60,9 +60,9 @@ poped.db <- create.poped.database(ff_fun="ff",
                                   groupsize=20,
                                   xt=c( 1,8,10,240,245),
                                   bUseGrouped_xt=1,
-                                  a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-                                  x=list(isPediatric = 0)
-)
+                                  a=list(c(DOSE=20,TAU=24,isPediatric = 0),
+                                         c(DOSE=40, TAU=24,isPediatric = 0)))
+
 # Note, to be able to use the adults FIM to combine with the pediatrics, 
 # both have to have the parameter "pedCL" defined and set notfixed_bpop to 1.
 
@@ -80,17 +80,13 @@ poped.db.ped <- create.poped.database(ff_fun="ff",
                                   groupsize=6,
                                   xt=c( 1,2,6,240),
                                   bUseGrouped_xt=1,
-                                  a=list(c(DOSE=40,TAU=24)),
-                                  x=list(isPediatric = 1)
-)
-
+                                  a=list(c(DOSE=40,TAU=24,isPediatric = 1)))
 
 ##  Create plot of model of adult data without variability
 plot_model_prediction(poped.db, model_num_points = 300)
 
 ##  Create plot of model of pediatric (single dose level) data without variability
 plot_model_prediction(poped.db.ped, model_num_points = 300)
-
 
 ## To store FIM from adult design - need FIM from evaluate_design
 (outAdult <- evaluate_design(poped.db))
