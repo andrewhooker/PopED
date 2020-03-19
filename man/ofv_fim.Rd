@@ -4,8 +4,13 @@
 \alias{ofv_fim}
 \title{Evaluate a criterion of the Fisher Information Matrix (FIM)}
 \usage{
-ofv_fim(fmf, poped.db, ofv_calc_type = poped.db$settings$ofv_calc_type,
-  ds_index = poped.db$parameters$ds_index, ...)
+ofv_fim(
+  fmf,
+  poped.db,
+  ofv_calc_type = poped.db$settings$ofv_calc_type,
+  ds_index = poped.db$parameters$ds_index,
+  ...
+)
 }
 \arguments{
 \item{fmf}{The FIM}
@@ -105,19 +110,26 @@ ofv_fim(FIM,poped.db,ofv_calc_type=7) # 1/sum(get_rse(FIM,poped.db,use_percent=F
 
 }
 \seealso{
-Other FIM: \code{\link{LinMatrixH}},
-  \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
-  \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{efficiency}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{mftot}}, \code{\link{ofv_criterion}}
+Other FIM: 
+\code{\link{LinMatrixH}()},
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{efficiency}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{mftot}()},
+\code{\link{ofv_criterion}()}
 
-Other evaluate_FIM: \code{\link{calc_ofv_and_fim}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}
+Other evaluate_FIM: 
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()}
 }
 \concept{FIM}
 \concept{evaluate_FIM}

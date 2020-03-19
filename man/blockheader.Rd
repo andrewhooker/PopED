@@ -4,17 +4,30 @@
 \alias{blockheader}
 \title{Header function for optimization routines}
 \usage{
-blockheader(poped.db, name = "Default", iter = NULL,
+blockheader(
+  poped.db,
+  name = "Default",
+  iter = NULL,
   e_flag = !(poped.db$settings$d_switch),
   opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
   opt_x = poped.db$settings$optsw[3],
   opt_samps = poped.db$settings$optsw[1],
-  opt_inds = poped.db$settings$optsw[5], fmf = 0, dmf = 0,
-  bpop = NULL, d = NULL, docc = NULL, sigma = NULL,
+  opt_inds = poped.db$settings$optsw[5],
+  fmf = 0,
+  dmf = 0,
+  bpop = NULL,
+  d = NULL,
+  docc = NULL,
+  sigma = NULL,
   name_header = poped.db$settings$strOutputFileName,
-  file_path = poped.db$settings$strOutputFilePath, out_file = NULL,
-  compute_inv = TRUE, trflag = TRUE, header_flag = TRUE, ...)
+  file_path = poped.db$settings$strOutputFilePath,
+  out_file = NULL,
+  compute_inv = TRUE,
+  trflag = TRUE,
+  header_flag = TRUE,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -190,8 +203,10 @@ blockheader(poped.db.1,name="",trflag=2,opt_xt=TRUE)
 
 }
 \seealso{
-Other Helper: \code{\link{blockexp}},
-  \code{\link{blockfinal}}, \code{\link{blockopt}}
+Other Helper: 
+\code{\link{blockexp}()},
+\code{\link{blockfinal}()},
+\code{\link{blockopt}()}
 }
 \concept{Helper}
 \keyword{internal}

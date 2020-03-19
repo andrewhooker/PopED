@@ -4,9 +4,14 @@
 \alias{efficiency}
 \title{Compute efficiency.}
 \usage{
-efficiency(ofv_init, ofv_final, poped_db, npar = get_fim_size(poped_db),
+efficiency(
+  ofv_init,
+  ofv_final,
+  poped_db,
+  npar = get_fim_size(poped_db),
   ofv_calc_type = poped_db$settings$ofv_calc_type,
-  ds_index = poped_db$parameters$ds_index)
+  ds_index = poped_db$parameters$ds_index
+)
 }
 \arguments{
 \item{ofv_init}{An initial objective function}
@@ -42,14 +47,20 @@ The attribute "description" tells you how the calculation was made
 Efficiency calculation between two designs.
 }
 \seealso{
-Other FIM: \code{\link{LinMatrixH}},
-  \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
-  \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{mftot}}, \code{\link{ofv_criterion}},
-  \code{\link{ofv_fim}}
+Other FIM: 
+\code{\link{LinMatrixH}()},
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{mftot}()},
+\code{\link{ofv_criterion}()},
+\code{\link{ofv_fim}()}
 }
 \concept{FIM}

@@ -74,8 +74,10 @@ blockopt(fn="",poped.db,opt_method="RS")
 blockopt(fn="",poped.db,opt_method="DO")
 }
 \seealso{
-Other Helper: \code{\link{blockexp}},
-  \code{\link{blockfinal}}, \code{\link{blockheader}}
+Other Helper: 
+\code{\link{blockexp}()},
+\code{\link{blockfinal}()},
+\code{\link{blockheader}()}
 }
 \concept{Helper}
 \keyword{internal}

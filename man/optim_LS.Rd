@@ -4,11 +4,24 @@
 \alias{optim_LS}
 \title{Optimize a function using a line search algorithm.}
 \usage{
-optim_LS(par, fn, lower = NULL, upper = NULL, allowed_values = NULL,
-  line_length = 50, trace = TRUE, maximize = F, parallel = F,
-  parallel_type = NULL, num_cores = NULL, seed = round(runif(1, 0,
-  1e+07)), replicates_index = seq(1, length(par)), ofv_initial = NULL,
-  closed_bounds = TRUE, ...)
+optim_LS(
+  par,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  allowed_values = NULL,
+  line_length = 50,
+  trace = TRUE,
+  maximize = F,
+  parallel = F,
+  parallel_type = NULL,
+  num_cores = NULL,
+  seed = round(runif(1, 0, 1e+07)),
+  replicates_index = seq(1, length(par)),
+  ofv_initial = NULL,
+  closed_bounds = TRUE,
+  ...
+)
 }
 \arguments{
 \item{par}{A vector of initial values for the parameters to be optimized over.}
@@ -198,13 +211,20 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{poped_optim_1}},
-  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}

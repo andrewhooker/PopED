@@ -4,18 +4,40 @@
 \alias{plot_model_prediction}
 \title{Plot model predictions}
 \usage{
-plot_model_prediction(poped.db, model_num_points = 100,
-  groupsize_sim = 100, separate.groups = F, sample.times = T,
-  sample.times.IPRED = F, sample.times.DV = F, PRED = T, IPRED = F,
-  IPRED.lines = F, IPRED.lines.pctls = F, alpha.IPRED.lines = 0.1,
-  alpha.IPRED = 0.3, sample.times.size = 4, DV = F, alpha.DV = 0.3,
-  DV.lines = F, DV.points = F, alpha.DV.lines = 0.3,
-  alpha.DV.points = 0.3, sample.times.DV.points = F,
-  sample.times.DV.lines = F, alpha.sample.times.DV.points = 0.3,
-  alpha.sample.times.DV.lines = 0.3, y_lab = "Model Predictions",
-  facet_scales = "fixed", facet_label_names = T, model.names = NULL,
-  DV.mean.sd = FALSE, PI = FALSE, PI_alpha = 0.3, PI_fill = "blue",
-  ...)
+plot_model_prediction(
+  poped.db,
+  model_num_points = 100,
+  groupsize_sim = 100,
+  separate.groups = F,
+  sample.times = T,
+  sample.times.IPRED = F,
+  sample.times.DV = F,
+  PRED = T,
+  IPRED = F,
+  IPRED.lines = F,
+  IPRED.lines.pctls = F,
+  alpha.IPRED.lines = 0.1,
+  alpha.IPRED = 0.3,
+  sample.times.size = 4,
+  DV = F,
+  alpha.DV = 0.3,
+  DV.lines = F,
+  DV.points = F,
+  alpha.DV.lines = 0.3,
+  alpha.DV.points = 0.3,
+  sample.times.DV.points = F,
+  sample.times.DV.lines = F,
+  alpha.sample.times.DV.points = 0.3,
+  alpha.sample.times.DV.lines = 0.3,
+  y_lab = "Model Predictions",
+  facet_scales = "fixed",
+  facet_label_names = T,
+  model.names = NULL,
+  DV.mean.sd = FALSE,
+  PI = FALSE,
+  PI_alpha = 0.3,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -87,8 +109,6 @@ the model variance and a normality assumption of that variance.  As such these c
 more approximate than using \code{DV=T} and \code{groupsize_sim = some large number}.}
 
 \item{PI_alpha}{The transparency of the PI.}
-
-\item{PI_fill}{The color of the PI.}
 
 \item{...}{Additional arguments passed to the \code{\link{model_prediction}} function.}
 }
@@ -251,16 +271,20 @@ plot_model_prediction(poped.db,facet_scales="free",
 \seealso{
 \code{\link{model_prediction}}
 
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}},
-  \code{\link{evaluate_power}}, \code{\link{get_rse}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}}
+Other evaluate_design: 
+\code{\link{evaluate.fim}()},
+\code{\link{evaluate_design}()},
+\code{\link{evaluate_power}()},
+\code{\link{get_rse}()},
+\code{\link{model_prediction}()},
+\code{\link{plot_efficiency_of_windows}()}
 
-Other Simulation: \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}}
+Other Simulation: 
+\code{\link{model_prediction}()},
+\code{\link{plot_efficiency_of_windows}()}
 
-Other Graphics: \code{\link{plot_efficiency_of_windows}}
+Other Graphics: 
+\code{\link{plot_efficiency_of_windows}()}
 }
 \concept{Graphics}
 \concept{Simulation}

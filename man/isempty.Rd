@@ -25,12 +25,18 @@ isempty(c(1,2,3))
 
 }
 \seealso{
-Other MATLAB: \code{\link{cell}},
-  \code{\link{diag_matlab}}, \code{\link{feval}},
-  \code{\link{fileparts}}, \code{\link{ones}},
-  \code{\link{randn}}, \code{\link{rand}},
-  \code{\link{size}}, \code{\link{tic}}, \code{\link{toc}},
-  \code{\link{zeros}}
+Other MATLAB: 
+\code{\link{cell}()},
+\code{\link{diag_matlab}()},
+\code{\link{feval}()},
+\code{\link{fileparts}()},
+\code{\link{ones}()},
+\code{\link{randn}()},
+\code{\link{rand}()},
+\code{\link{size}()},
+\code{\link{tic}()},
+\code{\link{toc}()},
+\code{\link{zeros}()}
 }
 \concept{MATLAB}
 \keyword{internal}

@@ -4,15 +4,34 @@
 \alias{LEDoptim}
 \title{Optimization function for D-family, E-family and Laplace approximated ED designs}
 \usage{
-LEDoptim(poped.db, model_switch = NULL, ni = NULL, xt = NULL,
-  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
-  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL,
-  ofv_init = 0, fim_init = 0, trflag = TRUE, header_flag = TRUE,
-  footer_flag = TRUE, opt_xt = poped.db$settings$optsw[2],
+LEDoptim(
+  poped.db,
+  model_switch = NULL,
+  ni = NULL,
+  xt = NULL,
+  x = NULL,
+  a = NULL,
+  bpopdescr = NULL,
+  ddescr = NULL,
+  maxxt = NULL,
+  minxt = NULL,
+  maxa = NULL,
+  mina = NULL,
+  ofv_init = 0,
+  fim_init = 0,
+  trflag = TRUE,
+  header_flag = TRUE,
+  footer_flag = TRUE,
+  opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
-  opt_x = poped.db$settings$optsw[3], out_file = NULL,
-  d_switch = FALSE, use_laplace = T, laplace.fim = FALSE,
-  use_RS = poped.db$settings$bUseRandomSearch, ...)
+  opt_x = poped.db$settings$optsw[3],
+  out_file = NULL,
+  d_switch = FALSE,
+  use_laplace = T,
+  laplace.fim = FALSE,
+  use_RS = poped.db$settings$bUseRandomSearch,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -197,13 +216,20 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}

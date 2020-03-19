@@ -4,20 +4,41 @@
 \alias{RS_opt}
 \title{Optimize the objective function using an adaptive random search algorithm for D-family and E-family designs.}
 \usage{
-RS_opt(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
-  x = NULL, a = NULL, bpopdescr = NULL, ddescr = NULL,
-  maxxt = NULL, minxt = NULL, maxa = NULL, mina = NULL, fmf = 0,
-  dmf = 0, trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
+RS_opt(
+  poped.db,
+  ni = NULL,
+  xt = NULL,
+  model_switch = NULL,
+  x = NULL,
+  a = NULL,
+  bpopdescr = NULL,
+  ddescr = NULL,
+  maxxt = NULL,
+  minxt = NULL,
+  maxa = NULL,
+  mina = NULL,
+  fmf = 0,
+  dmf = 0,
+  trflag = TRUE,
+  opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
-  opt_x = poped.db$settings$optsw[3], cfaxt = poped.db$settings$cfaxt,
-  cfaa = poped.db$settings$cfaa, rsit = poped.db$settings$rsit,
+  opt_x = poped.db$settings$optsw[3],
+  cfaxt = poped.db$settings$cfaxt,
+  cfaa = poped.db$settings$cfaa,
+  rsit = poped.db$settings$rsit,
   rsit_output = poped.db$settings$rsit_output,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
-  approx_type = poped.db$settings$iApproximationMethod, iter = NULL,
+  approx_type = poped.db$settings$iApproximationMethod,
+  iter = NULL,
   d_switch = poped.db$settings$d_switch,
   use_laplace = poped.db$settings$iEDCalculationType,
-  laplace.fim = FALSE, header_flag = TRUE, footer_flag = TRUE,
-  out_file = NULL, compute_inv = TRUE, ...)
+  laplace.fim = FALSE,
+  header_flag = TRUE,
+  footer_flag = TRUE,
+  out_file = NULL,
+  compute_inv = TRUE,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -221,13 +242,20 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{a_line_search}},
-  \code{\link{bfgsb_min}}, \code{\link{calc_autofocus}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}

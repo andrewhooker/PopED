@@ -4,9 +4,25 @@
 \alias{calc_ofv_and_grad}
 \title{Compute an objective function and gradient}
 \usage{
-calc_ofv_and_grad(x, optxt, opta, model_switch, aa, axt, groupsize, ni,
-  xtopto, xopto, aopto, bpop, d, sigma, docc_full, poped.db,
-  only_fim = FALSE)
+calc_ofv_and_grad(
+  x,
+  optxt,
+  opta,
+  model_switch,
+  aa,
+  axt,
+  groupsize,
+  ni,
+  xtopto,
+  xopto,
+  aopto,
+  bpop,
+  d,
+  sigma,
+  docc_full,
+  poped.db,
+  only_fim = FALSE
+)
 }
 \arguments{
 \item{x}{A matrix for the discrete design variables.  Each row is a group.}
@@ -156,14 +172,21 @@ calc_ofv_and_grad(x=c(poped.db$design$xt,poped.db$design$a),
 
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}
 \keyword{internal}

@@ -4,8 +4,7 @@
 \alias{inv}
 \title{Compute the inverse of a matrix}
 \usage{
-inv(mat, method = 1, tol = .Machine$double.eps,
-  pseudo_on_fail = TRUE, ...)
+inv(mat, method = 1, tol = .Machine$double.eps, pseudo_on_fail = TRUE, ...)
 }
 \arguments{
 \item{mat}{A matrix}

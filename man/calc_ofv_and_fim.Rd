@@ -4,20 +4,29 @@
 \alias{calc_ofv_and_fim}
 \title{Calculate the Fisher Information Matrix (FIM) and the OFV(FIM) for either point values or parameters or distributions.}
 \usage{
-calc_ofv_and_fim(poped.db, ofv = 0, fim = 0,
+calc_ofv_and_fim(
+  poped.db,
+  ofv = 0,
+  fim = 0,
   d_switch = poped.db$settings$d_switch,
-  bpopdescr = poped.db$parameters$bpop, ddescr = poped.db$parameters$d,
-  bpop = bpopdescr[, 2, drop = F], d = getfulld(ddescr[, 2, drop = F],
-  poped.db$parameters$covd),
+  bpopdescr = poped.db$parameters$bpop,
+  ddescr = poped.db$parameters$d,
+  bpop = bpopdescr[, 2, drop = F],
+  d = getfulld(ddescr[, 2, drop = F], poped.db$parameters$covd),
   docc_full = getfulld(poped.db$parameters$docc[, 2, drop = F],
-  poped.db$parameters$covdocc),
-  model_switch = poped.db$design$model_switch, ni = poped.db$design$ni,
-  xt = poped.db$design$xt, x = poped.db$design$x,
+    poped.db$parameters$covdocc),
+  model_switch = poped.db$design$model_switch,
+  ni = poped.db$design$ni,
+  xt = poped.db$design$xt,
+  x = poped.db$design$x,
   a = poped.db$design$a,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   use_laplace = poped.db$settings$iEDCalculationType,
-  laplace.fim = FALSE, ofv_fun = poped.db$settings$ofv_fun,
-  evaluate_fim = TRUE, ...)
+  laplace.fim = FALSE,
+  ofv_fun = poped.db$settings$ofv_fun,
+  evaluate_fim = TRUE,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -176,21 +185,31 @@ calc_ofv_and_fim(poped.db)
 }
 }
 \seealso{
-Other FIM: \code{\link{LinMatrixH}},
-  \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
-  \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{efficiency}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{mftot}}, \code{\link{ofv_criterion}},
-  \code{\link{ofv_fim}}
+Other FIM: 
+\code{\link{LinMatrixH}()},
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{efficiency}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{mftot}()},
+\code{\link{ofv_criterion}()},
+\code{\link{ofv_fim}()}
 
-Other E-family: \code{\link{ed_laplace_ofv}},
-  \code{\link{ed_mftot}}, \code{\link{evaluate.e.ofv.fim}}
+Other E-family: 
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{evaluate.e.ofv.fim}()}
 
-Other evaluate_FIM: \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{ofv_fim}}
+Other evaluate_FIM: 
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{ofv_fim}()}
 }
 \concept{E-family}
 \concept{FIM}

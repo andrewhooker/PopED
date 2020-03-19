@@ -4,13 +4,30 @@
 \alias{Dtrace}
 \title{Trace optimization routines}
 \usage{
-Dtrace(fn, it, ni, xtopt, xopt, aopt, gxt, ga, dmf, diff, ixt, ia,
-  itvector, dmfvector, poped.db, opt_xt = poped.db$settings$optsw[2],
+Dtrace(
+  fn,
+  it,
+  ni,
+  xtopt,
+  xopt,
+  aopt,
+  gxt,
+  ga,
+  dmf,
+  diff,
+  ixt,
+  ia,
+  itvector,
+  dmfvector,
+  poped.db,
+  opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
   opt_x = poped.db$settings$optsw[3],
   opt_samps = poped.db$settings$optsw[1],
-  opt_inds = poped.db$settings$optsw[5], rsit = poped.db$settings$rsit,
-  convergence_eps = poped.db$settings$convergence_eps)
+  opt_inds = poped.db$settings$optsw[5],
+  rsit = poped.db$settings$rsit,
+  convergence_eps = poped.db$settings$convergence_eps
+)
 }
 \arguments{
 \item{fn}{A file to output information to. Can also be the screen if \code{''}.}

@@ -4,9 +4,29 @@
 \alias{calc_autofocus}
 \title{Compute the autofocus portion of the stochastic gradient routine}
 \usage{
-calc_autofocus(m, ni_var, dmf, varopt, varopto, maxvar, minvar, gradvar,
-  normgvar, avar, model_switch, groupsize, xtopt, xopt, aopt, ni, bpop, d,
-  sigma, docc, poped.db)
+calc_autofocus(
+  m,
+  ni_var,
+  dmf,
+  varopt,
+  varopto,
+  maxvar,
+  minvar,
+  gradvar,
+  normgvar,
+  avar,
+  model_switch,
+  groupsize,
+  xtopt,
+  xopt,
+  aopt,
+  ni,
+  bpop,
+  d,
+  sigma,
+  docc,
+  poped.db
+)
 }
 \arguments{
 \item{m}{Number of groups in the study.  Each individual in a group will have the same design.}
@@ -134,14 +154,21 @@ sg.output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}
 \keyword{internal}

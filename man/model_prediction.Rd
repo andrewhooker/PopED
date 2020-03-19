@@ -4,21 +4,33 @@
 \alias{model_prediction}
 \title{Model predictions}
 \usage{
-model_prediction(poped.db = NULL, design = list(xt =
-  poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m =
-  poped.db$design[["m"]], x = poped.db$design[["x"]], a =
-  poped.db$design[["a"]], ni = poped.db$design$ni, model_switch =
-  poped.db$design$model_switch), model = list(fg_pointer =
-  poped.db$model$fg_pointer, ff_pointer = poped.db$model$ff_pointer,
-  ferror_pointer = poped.db$model$ferror_pointer), parameters = list(docc
-  = poped.db$parameters$docc, d = poped.db$parameters$d, bpop =
-  poped.db$parameters$bpop, covd = poped.db$parameters$covd, covdocc =
-  poped.db$parameters$covdocc, sigma = poped.db$parameters$sigma),
-  IPRED = FALSE, DV = FALSE, dosing = NULL, predictions = NULL,
-  filename = NULL, models_to_use = "all", model_num_points = NULL,
-  model_minxt = NULL, model_maxxt = NULL, include_sample_times = T,
-  groups_to_use = "all", include_a = TRUE, include_x = TRUE,
-  manipulation = NULL, PI = FALSE, PI_conf_level = 0.95)
+model_prediction(
+  poped.db = NULL,
+  design = list(xt = poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m =
+    poped.db$design[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni =
+    poped.db$design$ni, model_switch = poped.db$design$model_switch),
+  model = list(fg_pointer = poped.db$model$fg_pointer, ff_pointer =
+    poped.db$model$ff_pointer, ferror_pointer = poped.db$model$ferror_pointer),
+  parameters = list(docc = poped.db$parameters$docc, d = poped.db$parameters$d, bpop =
+    poped.db$parameters$bpop, covd = poped.db$parameters$covd, covdocc =
+    poped.db$parameters$covdocc, sigma = poped.db$parameters$sigma),
+  IPRED = FALSE,
+  DV = FALSE,
+  dosing = NULL,
+  predictions = NULL,
+  filename = NULL,
+  models_to_use = "all",
+  model_num_points = NULL,
+  model_minxt = NULL,
+  model_maxxt = NULL,
+  include_sample_times = T,
+  groups_to_use = "all",
+  include_a = TRUE,
+  include_x = TRUE,
+  manipulation = NULL,
+  PI = FALSE,
+  PI_conf_level = 0.95
+)
 }
 \arguments{
 \item{poped.db}{A PopED database created by \code{\link{create.poped.database}}.}
@@ -229,14 +241,17 @@ model_prediction(design=design_4,DV=TRUE,dosing=dosing_4,model_num_points = c(10
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}},
-  \code{\link{evaluate_power}}, \code{\link{get_rse}},
-  \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
+Other evaluate_design: 
+\code{\link{evaluate.fim}()},
+\code{\link{evaluate_design}()},
+\code{\link{evaluate_power}()},
+\code{\link{get_rse}()},
+\code{\link{plot_efficiency_of_windows}()},
+\code{\link{plot_model_prediction}()}
 
-Other Simulation: \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
+Other Simulation: 
+\code{\link{plot_efficiency_of_windows}()},
+\code{\link{plot_model_prediction}()}
 }
 \concept{Simulation}
 \concept{evaluate_design}

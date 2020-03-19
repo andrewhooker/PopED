@@ -4,10 +4,17 @@
 \alias{get_rse}
 \title{Compute the expected parameter relative standard errors}
 \usage{
-get_rse(fim, poped.db, bpop = poped.db$parameters$bpop[, 2],
-  d = poped.db$parameters$d[, 2], docc = poped.db$parameters$docc,
-  sigma = poped.db$parameters$sigma, use_percent = TRUE,
-  prior_fim = poped.db$settings$prior_fim, ...)
+get_rse(
+  fim,
+  poped.db,
+  bpop = poped.db$parameters$bpop[, 2],
+  d = poped.db$parameters$d[, 2],
+  docc = poped.db$parameters$docc,
+  sigma = poped.db$parameters$sigma,
+  use_percent = TRUE,
+  prior_fim = poped.db$settings$prior_fim,
+  ...
+)
 }
 \arguments{
 \item{fim}{A Fisher Information Matrix (FIM).}
@@ -116,11 +123,12 @@ all.equal(FIM.1.prior,FIM.1) # the FIM is only computed from the design in the p
 get_rse(FIM.1.prior,poped.db.prior) # the RSE is computed with the prior information
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}},
-  \code{\link{evaluate_power}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
+Other evaluate_design: 
+\code{\link{evaluate.fim}()},
+\code{\link{evaluate_design}()},
+\code{\link{evaluate_power}()},
+\code{\link{model_prediction}()},
+\code{\link{plot_efficiency_of_windows}()},
+\code{\link{plot_model_prediction}()}
 }
 \concept{evaluate_design}

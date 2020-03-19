@@ -40,6 +40,17 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 
 
 ## optimize on where the individuals should be
+#' Title Optimize the proportion of individuals in the design groups
+#'
+#' @param poped.db 
+#' @param The group proportions of individuals to start the optimization from 
+#' @param ... Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}
+#'
+#' @return Optimal proportions
+#' @export
+#'
+#' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R
+#' 
 optimize_n_dist <- 
   function(poped.db,
            props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),

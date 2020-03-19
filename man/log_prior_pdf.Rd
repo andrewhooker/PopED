@@ -4,8 +4,13 @@
 \alias{log_prior_pdf}
 \title{Compute the natural log of the PDF for the parameters in an E-family design}
 \usage{
-log_prior_pdf(alpha, bpopdescr, ddescr, return_gradient = F,
-  return_hessian = F)
+log_prior_pdf(
+  alpha,
+  bpopdescr,
+  ddescr,
+  return_gradient = F,
+  return_hessian = F
+)
 }
 \arguments{
 \item{alpha}{A parameter vector.}

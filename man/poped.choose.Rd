@@ -23,11 +23,12 @@ poped.choose("foo",66)
 poped.choose(NULL,"hello")
 }
 \seealso{
-Other poped_input: \code{\link{convert_variables}},
-  \code{\link{create.poped.database}},
-  \code{\link{create_design_space}},
-  \code{\link{create_design}},
-  \code{\link{downsizing_general_design}}
+Other poped_input: 
+\code{\link{convert_variables}()},
+\code{\link{create.poped.database}()},
+\code{\link{create_design_space}()},
+\code{\link{create_design}()},
+\code{\link{downsizing_general_design}()}
 }
 \concept{poped_input}
 \keyword{internal}

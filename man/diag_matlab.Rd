@@ -36,11 +36,18 @@ diag(rbind(1,2,3))
 
 }
 \seealso{
-Other MATLAB: \code{\link{cell}}, \code{\link{feval}},
-  \code{\link{fileparts}}, \code{\link{isempty}},
-  \code{\link{ones}}, \code{\link{randn}},
-  \code{\link{rand}}, \code{\link{size}},
-  \code{\link{tic}}, \code{\link{toc}}, \code{\link{zeros}}
+Other MATLAB: 
+\code{\link{cell}()},
+\code{\link{feval}()},
+\code{\link{fileparts}()},
+\code{\link{isempty}()},
+\code{\link{ones}()},
+\code{\link{randn}()},
+\code{\link{rand}()},
+\code{\link{size}()},
+\code{\link{tic}()},
+\code{\link{toc}()},
+\code{\link{zeros}()}
 }
 \concept{MATLAB}
 \concept{matrix_manipulation}

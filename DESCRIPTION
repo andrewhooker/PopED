@@ -58,5 +58,5 @@ BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2018 Andrew C. Hooker
 LazyData: true
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

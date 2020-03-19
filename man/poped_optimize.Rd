@@ -4,25 +4,42 @@
 \alias{poped_optimize}
 \title{Retired optimization module for PopED}
 \usage{
-poped_optimize(poped.db, ni = NULL, xt = NULL, model_switch = NULL,
-  x = NULL, a = NULL, bpop = NULL, d = NULL, maxxt = NULL,
-  minxt = NULL, maxa = NULL, mina = NULL, fmf = 0, dmf = 0,
-  trflag = TRUE, opt_xt = poped.db$settings$optsw[2],
+poped_optimize(
+  poped.db,
+  ni = NULL,
+  xt = NULL,
+  model_switch = NULL,
+  x = NULL,
+  a = NULL,
+  bpop = NULL,
+  d = NULL,
+  maxxt = NULL,
+  minxt = NULL,
+  maxa = NULL,
+  mina = NULL,
+  fmf = 0,
+  dmf = 0,
+  trflag = TRUE,
+  opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
   opt_x = poped.db$settings$optsw[3],
   opt_samps = poped.db$settings$optsw[1],
   opt_inds = poped.db$settings$optsw[5],
-  cfaxt = poped.db$settings$cfaxt, cfaa = poped.db$settings$cfaa,
+  cfaxt = poped.db$settings$cfaxt,
+  cfaa = poped.db$settings$cfaa,
   rsit = poped.db$settings$rsit,
   rsit_output = poped.db$settings$rsit_output,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   approx_type = poped.db$settings$iApproximationMethod,
   bUseExchangeAlgorithm = poped.db$settings$bUseExchangeAlgorithm,
-  iter = 1, d_switch = poped.db$settings$d_switch,
+  iter = 1,
+  d_switch = poped.db$settings$d_switch,
   ED_samp_size = poped.db$settings$ED_samp_size,
   bLHS = poped.db$settings$bLHS,
-  use_laplace = poped.db$settings$iEDCalculationType, ...)
+  use_laplace = poped.db$settings$iEDCalculationType,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A PopED database.}
@@ -308,13 +325,20 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_ARS}}, \code{\link{optim_LS}},
-  \code{\link{poped_optim_1}}, \code{\link{poped_optim_2}},
-  \code{\link{poped_optim_3}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_ARS}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}

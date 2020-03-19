@@ -4,8 +4,14 @@
 \alias{start_parallel}
 \title{Start parallel computational processes}
 \usage{
-start_parallel(parallel = TRUE, num_cores = NULL,
-  parallel_type = NULL, seed = NULL, dlls = NULL, ...)
+start_parallel(
+  parallel = TRUE,
+  num_cores = NULL,
+  parallel_type = NULL,
+  seed = NULL,
+  dlls = NULL,
+  ...
+)
 }
 \arguments{
 \item{parallel}{Should the parallel functionality start up?}

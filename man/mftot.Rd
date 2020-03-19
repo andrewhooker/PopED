@@ -4,8 +4,20 @@
 \alias{mftot}
 \title{Evaluate the Fisher Information Matrix (FIM)}
 \usage{
-mftot(model_switch, groupsize, ni, xt, x, a, bpop, d, sigma, docc,
-  poped.db, ...)
+mftot(
+  model_switch,
+  groupsize,
+  ni,
+  xt,
+  x,
+  a,
+  bpop,
+  d,
+  sigma,
+  docc,
+  poped.db,
+  ...
+)
 }
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
@@ -106,15 +118,21 @@ mftot(model_switch=poped.db$design$model_switch,
 \seealso{
 For an easier function to use, please see \code{\link{evaluate.fim}}.
 
-Other FIM: \code{\link{LinMatrixH}},
-  \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
-  \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{efficiency}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{ofv_criterion}}, \code{\link{ofv_fim}}
+Other FIM: 
+\code{\link{LinMatrixH}()},
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{efficiency}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{ofv_criterion}()},
+\code{\link{ofv_fim}()}
 }
 \concept{FIM}
 \keyword{internal}

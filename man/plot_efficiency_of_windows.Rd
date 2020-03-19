@@ -4,11 +4,20 @@
 \alias{plot_efficiency_of_windows}
 \title{Plot the efficiency of windows}
 \usage{
-plot_efficiency_of_windows(poped.db, xt_windows = NULL,
-  xt_plus = xt_windows, xt_minus = xt_windows, iNumSimulations = 100,
-  y_eff = TRUE, y_rse = TRUE,
-  ofv_calc_type = poped.db$settings$ofv_calc_type, mean_line = TRUE,
-  mean_color = "red", deviate_by_id = FALSE, ...)
+plot_efficiency_of_windows(
+  poped.db,
+  xt_windows = NULL,
+  xt_plus = xt_windows,
+  xt_minus = xt_windows,
+  iNumSimulations = 100,
+  y_eff = TRUE,
+  y_rse = TRUE,
+  ofv_calc_type = poped.db$settings$ofv_calc_type,
+  mean_line = TRUE,
+  mean_color = "red",
+  deviate_by_id = FALSE,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A poped database}
@@ -136,16 +145,20 @@ plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}},
-  \code{\link{evaluate_power}}, \code{\link{get_rse}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_model_prediction}}
+Other evaluate_design: 
+\code{\link{evaluate.fim}()},
+\code{\link{evaluate_design}()},
+\code{\link{evaluate_power}()},
+\code{\link{get_rse}()},
+\code{\link{model_prediction}()},
+\code{\link{plot_model_prediction}()}
 
-Other Simulation: \code{\link{model_prediction}},
-  \code{\link{plot_model_prediction}}
+Other Simulation: 
+\code{\link{model_prediction}()},
+\code{\link{plot_model_prediction}()}
 
-Other Graphics: \code{\link{plot_model_prediction}}
+Other Graphics: 
+\code{\link{plot_model_prediction}()}
 }
 \concept{Graphics}
 \concept{Simulation}

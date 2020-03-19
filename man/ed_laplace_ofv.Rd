@@ -5,10 +5,25 @@
 \title{Evaluate the expectation of determinant the Fisher Information Matrix (FIM)
 using the Laplace approximation.}
 \usage{
-ed_laplace_ofv(model_switch, groupsize, ni, xtopto, xopto, aopto,
-  bpopdescr, ddescr, covd, sigma, docc, poped.db, method = 1,
-  return_gradient = FALSE, optxt = poped.db$settings$optsw[2],
-  opta = poped.db$settings$optsw[4], x = c())
+ed_laplace_ofv(
+  model_switch,
+  groupsize,
+  ni,
+  xtopto,
+  xopto,
+  aopto,
+  bpopdescr,
+  ddescr,
+  covd,
+  sigma,
+  docc,
+  poped.db,
+  method = 1,
+  return_gradient = FALSE,
+  optxt = poped.db$settings$optsw[2],
+  opta = poped.db$settings$optsw[4],
+  x = c()
+)
 }
 \arguments{
 \item{model_switch}{A matrix that is the same size as xt, specifying which model each sample belongs to.}
@@ -216,18 +231,26 @@ output$E_ofv
 
 }
 \seealso{
-Other FIM: \code{\link{LinMatrixH}},
-  \code{\link{LinMatrixLH}}, \code{\link{LinMatrixL_occ}},
-  \code{\link{calc_ofv_and_fim}}, \code{\link{ed_mftot}},
-  \code{\link{efficiency}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{mftot}}, \code{\link{ofv_criterion}},
-  \code{\link{ofv_fim}}
+Other FIM: 
+\code{\link{LinMatrixH}()},
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_mftot}()},
+\code{\link{efficiency}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{mftot}()},
+\code{\link{ofv_criterion}()},
+\code{\link{ofv_fim}()}
 
-Other E-family: \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_mftot}}, \code{\link{evaluate.e.ofv.fim}}
+Other E-family: 
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_mftot}()},
+\code{\link{evaluate.e.ofv.fim}()}
 }
 \concept{E-family}
 \concept{FIM}

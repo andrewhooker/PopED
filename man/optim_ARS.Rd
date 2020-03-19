@@ -4,12 +4,30 @@
 \alias{optim_ARS}
 \title{Optimize a function using adaptive random search.}
 \usage{
-optim_ARS(par, fn, lower = NULL, upper = NULL, allowed_values = NULL,
-  loc_fac = 4, no_bounds_sd = par, iter = 400, iter_adapt = 50,
-  adapt_scale = 1, max_run = 200, trace = TRUE, trace_iter = 5,
-  new_par_max_it = 200, maximize = F, parallel = F,
-  parallel_type = NULL, num_cores = NULL, seed = round(runif(1, 0,
-  1e+07)), allow_replicates = TRUE, generator = NULL, ...)
+optim_ARS(
+  par,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  allowed_values = NULL,
+  loc_fac = 4,
+  no_bounds_sd = par,
+  iter = 400,
+  iter_adapt = 50,
+  adapt_scale = 1,
+  max_run = 200,
+  trace = TRUE,
+  trace_iter = 5,
+  new_par_max_it = 200,
+  maximize = F,
+  parallel = F,
+  parallel_type = NULL,
+  num_cores = NULL,
+  seed = round(runif(1, 0, 1e+07)),
+  allow_replicates = TRUE,
+  generator = NULL,
+  ...
+)
 }
 \arguments{
 \item{par}{A vector of initial values for the parameters to be optimized over.}
@@ -167,7 +185,7 @@ res3 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 1
   tspinit <- loc[sq,]
   
   plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
-       main = paste("Initial sequence of traveling salesman problem\\n",
+       main = paste("Initial sequence of traveling salesman problem\n",
                     "Distance =",distance(sq)), axes = FALSE)
   arrows(tspinit[s,1], tspinit[s,2], tspinit[s+1,1], tspinit[s+1,2],
          angle = 10, col = "green")
@@ -176,7 +194,7 @@ res3 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 1
   # plot of final sequence from optim_ARS
   tspres <- loc[res3$par,]
   plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
-       main = paste("optim_ARS() 'solving' traveling salesman problem\\n",
+       main = paste("optim_ARS() 'solving' traveling salesman problem\n",
                     "Distance =",distance(c(1,res3$par,1))),axes = FALSE)
   arrows(tspres[s,1], tspres[s,2], tspres[s+1,1], tspres[s+1,2],
          angle = 10, col = "red")
@@ -190,7 +208,7 @@ res3 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 1
   
   tspres <- loc[res4$par,]
   plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
-       main = paste("optim() 'solving' traveling salesman problem\\n",
+       main = paste("optim() 'solving' traveling salesman problem\n",
                     "Distance =",distance(res4$par)),axes = FALSE)
   arrows(tspres[s,1], tspres[s,2], tspres[s+1,1], tspres[s+1,2],
          angle = 10, col = "red")
@@ -273,13 +291,20 @@ Computer Methods and Programs in Biomedicine, 108, 2012.
 }
 }
 \seealso{
-Other Optimize: \code{\link{Doptim}},
-  \code{\link{LEDoptim}}, \code{\link{RS_opt}},
-  \code{\link{a_line_search}}, \code{\link{bfgsb_min}},
-  \code{\link{calc_autofocus}},
-  \code{\link{calc_ofv_and_grad}}, \code{\link{mfea}},
-  \code{\link{optim_LS}}, \code{\link{poped_optim_1}},
-  \code{\link{poped_optim_2}}, \code{\link{poped_optim_3}},
-  \code{\link{poped_optimize}}, \code{\link{poped_optim}}
+Other Optimize: 
+\code{\link{Doptim}()},
+\code{\link{LEDoptim}()},
+\code{\link{RS_opt}()},
+\code{\link{a_line_search}()},
+\code{\link{bfgsb_min}()},
+\code{\link{calc_autofocus}()},
+\code{\link{calc_ofv_and_grad}()},
+\code{\link{mfea}()},
+\code{\link{optim_LS}()},
+\code{\link{poped_optim_1}()},
+\code{\link{poped_optim_2}()},
+\code{\link{poped_optim_3}()},
+\code{\link{poped_optimize}()},
+\code{\link{poped_optim}()}
 }
 \concept{Optimize}

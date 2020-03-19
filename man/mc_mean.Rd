@@ -4,11 +4,17 @@
 \alias{mc_mean}
 \title{Compute the monte-carlo mean of a function}
 \usage{
-mc_mean(ofv_fcn, poped.db, bpopdescr = poped.db$parameters$bpop,
-  ddescr = poped.db$parameters$d, doccdescr = poped.db$parameters$d,
+mc_mean(
+  ofv_fcn,
+  poped.db,
+  bpopdescr = poped.db$parameters$bpop,
+  ddescr = poped.db$parameters$d,
+  doccdescr = poped.db$parameters$d,
   user_distribution_pointer = poped.db$model$user_distribution_pointer,
   ED_samp_size = poped.db$settings$ED_samp_size,
-  bLHS = poped.db$settings$bLHS, ...)
+  bLHS = poped.db$settings$bLHS,
+  ...
+)
 }
 \arguments{
 \item{ofv_fcn}{A function with poped.db as the first input}

@@ -31,16 +31,21 @@ The function performs a linearization of the model with respect to the residual 
 Derivative of model w.r.t. eps evaluated at eps=0
 }
 \seealso{
-Other FIM: \code{\link{LinMatrixLH}},
-  \code{\link{LinMatrixL_occ}},
-  \code{\link{calc_ofv_and_fim}},
-  \code{\link{ed_laplace_ofv}}, \code{\link{ed_mftot}},
-  \code{\link{efficiency}},
-  \code{\link{evaluate.e.ofv.fim}},
-  \code{\link{evaluate.fim}}, \code{\link{gradf_eps}},
-  \code{\link{mf3}}, \code{\link{mf7}},
-  \code{\link{mftot}}, \code{\link{ofv_criterion}},
-  \code{\link{ofv_fim}}
+Other FIM: 
+\code{\link{LinMatrixLH}()},
+\code{\link{LinMatrixL_occ}()},
+\code{\link{calc_ofv_and_fim}()},
+\code{\link{ed_laplace_ofv}()},
+\code{\link{ed_mftot}()},
+\code{\link{efficiency}()},
+\code{\link{evaluate.e.ofv.fim}()},
+\code{\link{evaluate.fim}()},
+\code{\link{gradf_eps}()},
+\code{\link{mf3}()},
+\code{\link{mf7}()},
+\code{\link{mftot}()},
+\code{\link{ofv_criterion}()},
+\code{\link{ofv_fim}()}
 }
 \concept{FIM}
 \keyword{internal}

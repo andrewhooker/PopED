@@ -4,13 +4,34 @@
 \alias{blockfinal}
 \title{Result function for optimization routines}
 \usage{
-blockfinal(fn, fmf, dmf, groupsize, ni, xt, x, a, model_switch, bpop, d,
-  docc, sigma, poped.db, opt_xt = poped.db$settings$optsw[2],
+blockfinal(
+  fn,
+  fmf,
+  dmf,
+  groupsize,
+  ni,
+  xt,
+  x,
+  a,
+  model_switch,
+  bpop,
+  d,
+  docc,
+  sigma,
+  poped.db,
+  opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
-  opt_x = poped.db$settings$optsw[3], fmf_init = NULL,
-  dmf_init = NULL, param_cvs_init = NULL, compute_inv = TRUE,
-  out_file = NULL, trflag = TRUE, footer_flag = TRUE,
-  run_time = NULL, ...)
+  opt_x = poped.db$settings$optsw[3],
+  fmf_init = NULL,
+  dmf_init = NULL,
+  param_cvs_init = NULL,
+  compute_inv = TRUE,
+  out_file = NULL,
+  trflag = TRUE,
+  footer_flag = TRUE,
+  run_time = NULL,
+  ...
+)
 }
 \arguments{
 \item{fn}{The file handle to write to.}
@@ -154,8 +175,10 @@ blockfinal(fn="",fmf=FIM,
 
 }
 \seealso{
-Other Helper: \code{\link{blockexp}},
-  \code{\link{blockheader}}, \code{\link{blockopt}}
+Other Helper: 
+\code{\link{blockexp}()},
+\code{\link{blockheader}()},
+\code{\link{blockopt}()}
 }
 \concept{Helper}
 \keyword{internal}

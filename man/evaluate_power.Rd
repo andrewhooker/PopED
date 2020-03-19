@@ -4,8 +4,18 @@
 \alias{evaluate_power}
 \title{Power of a design to estimate a parameter.}
 \usage{
-evaluate_power(poped.db, bpop_idx, h0 = 0, alpha = 0.05, power = 0.8,
-  twoSided = TRUE, find_min_n = TRUE, fim = NULL, out = NULL, ...)
+evaluate_power(
+  poped.db,
+  bpop_idx,
+  h0 = 0,
+  alpha = 0.05,
+  power = 0.8,
+  twoSided = TRUE,
+  find_min_n = TRUE,
+  fim = NULL,
+  out = NULL,
+  ...
+)
 }
 \arguments{
 \item{poped.db}{A poped database}
@@ -105,10 +115,12 @@ evaluate_power(poped.db_2,bpop_idx = 4)
   \url{https://doi.org/10.1007/s10928-013-9331-3}. }
 }
 \seealso{
-Other evaluate_design: \code{\link{evaluate.fim}},
-  \code{\link{evaluate_design}}, \code{\link{get_rse}},
-  \code{\link{model_prediction}},
-  \code{\link{plot_efficiency_of_windows}},
-  \code{\link{plot_model_prediction}}
+Other evaluate_design: 
+\code{\link{evaluate.fim}()},
+\code{\link{evaluate_design}()},
+\code{\link{get_rse}()},
+\code{\link{model_prediction}()},
+\code{\link{plot_efficiency_of_windows}()},
+\code{\link{plot_model_prediction}()}
 }
 \concept{evaluate_design}

@@ -53,7 +53,7 @@ Evaluate the design using the FIM:
 \code{\link{get_rse}}.
 
 Optimize the design (evaluate afterwards using the above functions): 
-\code{\link{poped_optim}},
+\code{\link{poped_optim}}, 
 
 See the "Examples" section below for a short introduction to using the above functions. 
 There are several other examples, as r-scripts, in the "examples" folder in the 
