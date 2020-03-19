@@ -222,10 +222,13 @@ model_prediction <- function(poped.db=NULL,
         bocc_ind = zeros(docc_size,NumOcc)
         g0 = feval(model$fg_pointer,x_i,a_i,bpop_val,b_ind,bocc_ind)
         
-        pred <- feval(model$ff_pointer,model_switch_i,xt_i,g0,poped.db)
-        pred <- drop(pred[[1]])
-        group.df["PRED"] <- pred
-
+        pred_list <- feval(model$ff_pointer,model_switch_i,xt_i,g0,poped.db)
+        pred_list <- pred_list[sapply(pred_list, is.numeric)] 
+        names(pred_list)[1] <- "PRED"
+        group.df$PRED <- NULL
+        group.df <- cbind(group.df,data.frame(pred_list))
+        
+        pred <- drop(pred_list[[1]])
         if(PI){
           sigma_full = parameters$sigma
           d_full = getfulld(parameters$d[,2],parameters$covd)
