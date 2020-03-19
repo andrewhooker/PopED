@@ -56,8 +56,9 @@ supplied then all xt values are given the same maximum value.}
 supplied then all xt values are given the same minimum value}
 
 \item{xt_space}{Cell array \code{\link{cell}} defining the discrete variables allowed for each xt value.
- Can also be a list of values \code{list(1:10)} (same values allowed for all xt), or a list of lists 
-\code{list(1:10, 2:23, 4:6)} (one for each value in xt).}
+ Can also be a vector of values \code{c(1:10)} (same values allowed for all xt), or a list of lists 
+\code{list(1:10, 2:23, 4:6)} (one for each value in xt in row major order or just for one row in xt, 
+and all other rows will be duplicated).}
 
 \item{maxa}{Vector defining the maximum value for each covariate. IF a single value is supplied then
 all a values are given the same maximum value}
