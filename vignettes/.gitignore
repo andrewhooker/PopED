@@ -1,13 +1,4 @@
-intro-poped_cache
-intro-poped.html
-intro-poped.R
-intro-poped_files
-optimization_cache
-optimization_files
-optimization.R
-optimization.html
-examples.html
-examples_cache
-examples.R
-examples_files
-test.Rmd
+*.html
+*.R
+*_cache
+*_files

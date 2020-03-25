@@ -26,7 +26,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
+if(Sys.getenv("LOGNAME")=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
 
 knitr::opts_chunk$set(
   collapse = TRUE
@@ -49,6 +49,7 @@ list.files(ex_dir)
 You can then open one of the examples (for example, `ex.1.a.PK.1.comp.oral.md.intro.R`) using the following code
 ```{r,eval=FALSE}
 file_name <- "ex.1.a.PK.1.comp.oral.md.intro.R"
+
 ex_file <- system.file("examples",file_name,package="PopED")
 file.copy(ex_file,tempdir(),overwrite = T)
 file.edit(file.path(tempdir(),file_name))
@@ -944,62 +945,29 @@ knitr::kable(tb_final,digits = 0) #%>%
 In this example we incorporate prior knowledge into a current study design calculation.
 First the expected FIM obtained from an experiment in adults is computed. Then this FIM is added to the current experiment in children. One could also use the observed FIM when using estimation software to fit one realization of a design (from the $COVARIANCE step in NONMEM for example). The full code for this example is available in `ex.11.PK.prior.R`.
 
-```{r, echo = FALSE}
-##-- Model: One comp first order absorption
-## -- Analytic solution for both mutiple and single dosing
-ff <- function(model_switch,xt,parameters,poped.db){
-  with(as.list(parameters),{
-    y=xt
-    N = floor(xt/TAU)+1
-    y=(DOSE*Favail/V)*(KA/(KA - CL/V)) * 
-      (exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
-         exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
-    return(list( y=y,poped.db=poped.db))
-  })
-}
-```
-
-We define here the parameters for one compartment first order absorption model.
-Of note, `isPediatric = x[1]` is the flag to switch between adults and pediatrics, and `bpop[5]=pedCL` is the factor to multiply the adult clearance `bpop[3]`  to obtain the pediatric one.
+Note that we define  the parameters for a one-compartment first-order absorption model using a covariate called `isPediatric` to switch between adult and pediatric models, and `bpop[5]=pedCL` is the factor to multiply the adult clearance `bpop[3]`  to obtain the pediatric one.
 
 ```{r}
-## -- parameter definition function 
-## -- names match parameters in function ff
-## -- note, covariate on clearance for pediatrics (using isPediatric x[1])
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( 
     V=bpop[1]*exp(b[1]),
     KA=bpop[2]*exp(b[2]),
-    CL=bpop[3]*exp(b[3])*bpop[5]^x[1], # add covariate for pediatrics
+    CL=bpop[3]*exp(b[3])*bpop[5]^a[3], # add covariate for pediatrics
     Favail=bpop[4],
-    isPediatric = x[1],
+    isPediatric = a[3],
     DOSE=a[1],
     TAU=a[2])
   return( parameters ) 
 }
 ```
 
-```{r, echo=FALSE, results="hide"}
-## -- Residual unexplained variablity (RUV) function
-## -- Additive + Proportional  
-feps <- function(model_switch,xt,parameters,epsi,poped.db){
-  returnArgs <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db)) 
-  y <- returnArgs[[1]]
-  poped.db <- returnArgs[[2]]
-  
-  y = y*(1+epsi[,1])+epsi[,2]
-  
-  return(list( y= y,poped.db =poped.db )) 
-}
-```
-
-Define design and design space for adults (Two arms, 5 time points, `isPediatric = 0`). As we want to pool the results, we also have to provide here the `pedCL` parameter.
+The design and design space for adults is defined below (Two arms, 5 sample time points per arm, doses of 20 and 40 mg, `isPediatric = 0`). As we want to pool the results (i.e. add the FIMs together), we also have to provide  the `pedCL` parameter so that both the adult and childrems FIM have the same dimensions.
 ```{r}
 poped.db <- 
   create.poped.database(
-    ff_fun="ff",
-    fg_fun="sfg",
-    fError_fun="feps",
+    ff_fun=ff.PK.1.comp.oral.md.CL,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
     bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
     notfixed_bpop=c(1,1,1,0,1),
     d=c(V=0.09,KA=0.09,CL=0.25^2), 
@@ -1009,8 +977,8 @@ poped.db <-
     groupsize=20,
     xt=c( 1,8,10,240,245),
     bUseGrouped_xt=1,
-    a=list(c(DOSE=20,TAU=24),c(DOSE=40, TAU=24)),
-    x=list(isPediatric = 0)
+    a=list(c(DOSE=20,TAU=24,isPediatric = 0),
+           c(DOSE=40, TAU=24,isPediatric = 0))
   )
 ```
 
@@ -1021,7 +989,7 @@ plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
 To store the FIM from the adult design we
-evaluate the initial design
+evaluate this design
 ```{r}
 (outAdult = evaluate_design(poped.db))
 ```
@@ -1034,13 +1002,13 @@ evaluate_design(create.poped.database(poped.db, notfixed_bpop=c(1,1,1,0,0)))
 ```
 One obtains good estimates for all parameters for adults (<60% RSE for all).
 
-For pediatrics the covariate `isPediatric = 1`. We define one arm, 4 time points only
+For pediatrics the covariate `isPediatric = 1`. We define one arm, 4 sample-time points. 
 ```{r}
 poped.db.ped <- 
   create.poped.database(
-    ff_fun="ff",
-    fg_fun="sfg",
-    fError_fun="feps",
+    ff_fun=ff.PK.1.comp.oral.md.CL,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
     bpop=c(V=72.8,KA=0.25,CL=3.75,Favail=0.9,pedCL=0.8), 
     notfixed_bpop=c(1,1,1,0,1),
     d=c(V=0.09,KA=0.09,CL=0.25^2), 
@@ -1050,12 +1018,11 @@ poped.db.ped <-
     groupsize=6,
     xt=c( 1,2,6,240),
     bUseGrouped_xt=1,
-    a=list(c(DOSE=40,TAU=24)),
-    x=list(isPediatric = 1)
+    a=list(c(DOSE=40,TAU=24,isPediatric = 1))
   )
 ```
 
-Create plot of the pediatric model without variability 
+We can create a plot of the pediatric model without variability 
 ```{r simulate_pediatrics}
 plot_model_prediction(poped.db.ped, model_num_points = 300)
 ```
@@ -1076,13 +1043,13 @@ poped.db.all <- create.poped.database(
 
 (out.all <- evaluate_design(poped.db.all))
 ```
-Clearly, the pooled data leads to much higher precision in parameter estimates compared to either study separately.
+The pooled data leads to much higher precision in parameter estimates compared to either study separately.
 
 One can also obtain the power for estimating the pediatric difference in clearance (power in estimating bpop[5] as different from 1).
 ```{r}
 evaluate_power(poped.db.all, bpop_idx=5, h0=1, out=out.all)
 ```
-We see that to clearly distinguish this parameter that one would need 14 children in the pediatric study (for 80% power at $\alpha=0.05$).
+We see that to clearly distinguish this parameter  one would need 14 children in the pediatric study (for 80% power at $\alpha=0.05$).
 
 # Design evaluation including uncertainty in the model parameters (robust design)	
 
@@ -1112,9 +1079,14 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-## Define the model parameters for use in poped.db
-Adding 10% uncertainty to all fixed effects (not Favail)
+We define the fixed effects in the model and add a 10% uncertainty to all but Favail.  To do this we use a  
+Matrix defining the fixed effects, per row (row number = parameter_number) we should have:
 
+* column 1 the type of the distribution for E-family designs (0 = Fixed, 1 = Normal, 2 = Uniform, 3 = User Defined Distribution, 4 = lognormal and 5 = truncated normal)
+* column 2  defines the mean.
+* column 3 defines the variance of the distribution (or length of uniform distribution).
+
+Here we define a log-normal distribution  
 ```{r}
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
 bpop_vals_ed <- 
@@ -1125,8 +1097,7 @@ bpop_vals_ed["Favail",] <- c(0,1,0)
 bpop_vals_ed
 ```
 
-## Define initial design  and design space
-Now `bpop_vals_ed` is a matrix and not only a vector and we can define the `ED_samp_size=20` either here...
+With this model and parameter set we define the initial design and design space. Specifically note the `bpop=bpop_vals_ed` and the `ED_samp_size=20` arguments.  `ED_samp_size=20` indicates the number of samples used in evaluating the E-family objective functions.
 ```{r}
 poped.db <- 
   create.poped.database(
@@ -1147,8 +1118,7 @@ poped.db <-
     ED_samp_size=20)
 ```
 
-## Design evaluation
-Or provide the `ED_samp_size` as a parameter.
+You can also provide `ED_samp_size` argument to the design evaluation or optimization arguments:
 ```{r}
 tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 ```
@@ -1157,12 +1127,12 @@ We can see that the result, based on MC sampling, is somewhat variable with so f
 ```{r}
 tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 ```
+
+
 # Design evaluation for a subset of model parameters of interest (Ds optimality)
 
 Ds-optimality is a criterion that can be used if one is interested in estimating a subset "s" of the model parameters as precisely as possible.
-The full code for this example is available in `ex.2.e.warfarin.Ds.R`. 
-
-## Define initial design and design space
+The full code for this example is available in `ex.2.e.warfarin.Ds.R`. First we define initial design and design space:
 
 ```{r, echo=FALSE}
 sfg <- function(x,a,bpop,b,bocc){
@@ -1185,7 +1155,7 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-For Ds optimality we add the `ds_index` option to the create.poped.database function to indicate whether a paramter is interesting (=1) or not (=0). Moreover, we need to set the `ofv_calc_type` to 6 for computing the Ds optimality criterion, as it is set to 4 by default (for computing the log of the determiant of FIM). More details are available by running the command `?create.poped.database`.
+For Ds optimality we add the `ds_index` option to the `create.poped.database` function to indicate whether a paramter is interesting (=0) or not (=1). Moreover, we set the `ofv_calc_type=6` for computing the Ds optimality criterion (it is set to 4 by default, for computing the log of the determiant of the FIM). More details are available by running the command `?create.poped.database`.
 
 ```{r}
 poped.db <- 
@@ -1208,7 +1178,7 @@ poped.db <-
     ofv_calc_type=6) # Ds OFV calculation
 ```
 
-## Design evaluation
+Design evaluation:
 
 ```{r}
 evaluate_design(poped.db)
