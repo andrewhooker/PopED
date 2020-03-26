@@ -6,9 +6,9 @@
 \usage{
 model_prediction(
   poped.db = NULL,
-  design = list(xt = poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m =
-    poped.db$design[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni =
-    poped.db$design$ni, model_switch = poped.db$design$model_switch),
+  design = list(xt = poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m
+    = poped.db$design[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni
+    = poped.db$design$ni, model_switch = poped.db$design$model_switch),
   model = list(fg_pointer = poped.db$model$fg_pointer, ff_pointer =
     poped.db$model$ff_pointer, ferror_pointer = poped.db$model$ferror_pointer),
   parameters = list(docc = poped.db$parameters$docc, d = poped.db$parameters$d, bpop =

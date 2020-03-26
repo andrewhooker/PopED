@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -48,7 +52,6 @@ PopED database. Some of the arguments coming from the PopED database can be over
 by default these arguments are NULL in the 
 function, if they are supplied then they are used instead of the arguments from the PopED database." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -66,7 +69,7 @@ function, if they are supplied then they are used instead of the arguments from 
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -138,11 +141,24 @@ by default these arguments are <code>NULL</code> in the
 function, if they are supplied then they are used instead of the arguments from the PopED database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>, <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>evaluate.fim</span>(
+  <span class='no'>poped.db</span>,
+  <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -235,22 +251,32 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
     <p>The FIM.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other FIM: <code><a href='LinMatrixH.html'>LinMatrixH</a></code>,
-  <code><a href='LinMatrixLH.html'>LinMatrixLH</a></code>, <code><a href='LinMatrixL_occ.html'>LinMatrixL_occ</a></code>,
-  <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
-  <code><a href='ed_laplace_ofv.html'>ed_laplace_ofv</a></code>, <code><a href='ed_mftot.html'>ed_mftot</a></code>,
-  <code><a href='efficiency.html'>efficiency</a></code>,
-  <code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></code>,
-  <code><a href='gradf_eps.html'>gradf_eps</a></code>, <code><a href='mf3.html'>mf3</a></code>,
-  <code><a href='mf7.html'>mf7</a></code>, <code><a href='mftot.html'>mftot</a></code>,
-  <code><a href='ofv_criterion.html'>ofv_criterion</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p>
-<p>Other evaluate_design: <code><a href='evaluate_design.html'>evaluate_design</a></code>,
-  <code><a href='evaluate_power.html'>evaluate_power</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
-  <code><a href='model_prediction.html'>model_prediction</a></code>,
-  <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
-  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p>
-<p>Other evaluate_FIM: <code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a></code>,
-  <code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></code>, <code><a href='ofv_fim.html'>ofv_fim</a></code></p></div>
+    <div class='dont-index'><p>Other FIM: 
+<code><a href='LinMatrixH.html'>LinMatrixH</a>()</code>,
+<code><a href='LinMatrixLH.html'>LinMatrixLH</a>()</code>,
+<code><a href='LinMatrixL_occ.html'>LinMatrixL_occ</a>()</code>,
+<code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a>()</code>,
+<code><a href='ed_laplace_ofv.html'>ed_laplace_ofv</a>()</code>,
+<code><a href='ed_mftot.html'>ed_mftot</a>()</code>,
+<code><a href='efficiency.html'>efficiency</a>()</code>,
+<code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a>()</code>,
+<code><a href='gradf_eps.html'>gradf_eps</a>()</code>,
+<code><a href='mf3.html'>mf3</a>()</code>,
+<code><a href='mf7.html'>mf7</a>()</code>,
+<code><a href='mftot.html'>mftot</a>()</code>,
+<code><a href='ofv_criterion.html'>ofv_criterion</a>()</code>,
+<code><a href='ofv_fim.html'>ofv_fim</a>()</code></p>
+<p>Other evaluate_design: 
+<code><a href='evaluate_design.html'>evaluate_design</a>()</code>,
+<code><a href='evaluate_power.html'>evaluate_power</a>()</code>,
+<code><a href='get_rse.html'>get_rse</a>()</code>,
+<code><a href='model_prediction.html'>model_prediction</a>()</code>,
+<code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a>()</code>,
+<code><a href='plot_model_prediction.html'>plot_model_prediction</a>()</code></p>
+<p>Other evaluate_FIM: 
+<code><a href='calc_ofv_and_fim.html'>calc_ofv_and_fim</a>()</code>,
+<code><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a>()</code>,
+<code><a href='ofv_fim.html'>ofv_fim</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Warfarin example from software comparison in:</span>
@@ -273,7 +299,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fbd49aa46e8&gt;
+#&gt; &lt;bytecode: 0x7fef1205e668&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -318,15 +344,10 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 <span class='co'>## evaluate FIM and rse with prior FIM.1</span>
 <span class='no'>poped.db.prior</span> <span class='kw'>=</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='no'>poped.db</span>, <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.choose(popedInput$settings$poped_version, packageVersion("PopED")): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1.prior</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db.prior</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db.prior): object 'poped.db.prior' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>FIM.1</span>) <span class='co'># the FIM is only computed from the design in the poped.db</span></div><div class='output co'>#&gt; <span class='error'>Error in all.equal(FIM.1.prior, FIM.1): object 'FIM.1.prior' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>poped.db.prior</span>) <span class='co'># the RSE is computed with the prior information</span></div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db.prior' not found</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -337,7 +358,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

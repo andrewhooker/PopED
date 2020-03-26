@@ -1,6 +1,6 @@
 PopED Optimization Results for the Adaptive Random Search Algorithm 
 
-        2019-09-13 14:34:43
+        2020-03-26 17:48:40
 
 ==============================================================================
 Model description : PopED model 
@@ -71,9 +71,9 @@ expected relative standard error
            CL     0.15       5
             V        8       3
            KA        1       7
-        om_CL     0.07      30
-         om_V     0.02      37
-        om_KA      0.6      28
+         d_CL     0.07      30
+          d_V     0.02      37
+         d_KA      0.6      28
    SIGMA[1,1]     0.01      33
    SIGMA[2,2]     0.25      26
 
@@ -181,10 +181,10 @@ Expected relative standard error
            CL     0.15       5     5
             V        8       3     3
            KA        1       7     7
-        om_CL     0.07       0     0
-         om_V     0.02      37    37
-        om_KA      0.6       0     0
+         d_CL     0.07       0     0
+          d_V     0.02      37    37
+         d_KA      0.6       0     0
    SIGMA[1,1]     0.01      33    33
    SIGMA[2,2]     0.25      26    26
 
-Total running time: 0.049 seconds
+Total running time: 0.05 seconds

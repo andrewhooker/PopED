@@ -42,11 +42,14 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 ## optimize on where the individuals should be
 #' Title Optimize the proportion of individuals in the design groups
 #'
-#' @param poped.db 
-#' @param The group proportions of individuals to start the optimization from 
+#' @param poped.db A PopED database. 
+#' @param props The proportions of individuals in each group 
+#'              (relative to the total number of individuals) to start the optimization from. 
 #' @param ... Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}
 #'
-#' @return Optimal proportions
+#' @return A list of the optimal proportions, the optimal number of individuals in each group,
+#' and the initial and final objective function values.
+#'  
 #' @export
 #'
 #' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R

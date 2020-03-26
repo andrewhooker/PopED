@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="Function plots model predictions for the typical value in the population,
 individual predictions and data predictions." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ individual predictions and data predictions." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -134,18 +137,40 @@ individual predictions and data predictions." />
 individual predictions and data predictions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_model_prediction</span>(<span class='no'>poped.db</span>, <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>groupsize_sim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>separate.groups</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>sample.times.IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>sample.times.DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>PRED</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>IPRED.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>IPRED.lines.pctls</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.IPRED.lines</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>alpha.IPRED</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>sample.times.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>DV</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>alpha.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>sample.times.DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>sample.times.DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>alpha.sample.times.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>alpha.sample.times.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Model Predictions"</span>,
-  <span class='kw'>facet_scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>facet_label_names</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>model.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>DV.mean.sd</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>PI</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>PI_alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>PI_fill</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_model_prediction</span>(
+  <span class='no'>poped.db</span>,
+  <span class='kw'>model_num_points</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>groupsize_sim</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>separate.groups</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>sample.times</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>sample.times.IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>sample.times.DV</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>PRED</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>IPRED</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>IPRED.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>IPRED.lines.pctls</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>alpha.IPRED.lines</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
+  <span class='kw'>alpha.IPRED</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>sample.times.size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>DV</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>alpha.DV</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>alpha.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>alpha.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>sample.times.DV.points</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>sample.times.DV.lines</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>alpha.sample.times.DV.points</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>alpha.sample.times.DV.lines</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Model Predictions"</span>,
+  <span class='kw'>facet_scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
+  <span class='kw'>facet_label_names</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>model.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>DV.mean.sd</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>PI</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>PI_alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,10 +308,6 @@ more approximate than using <code>DV=T</code> and <code>groupsize_sim = some lar
       <td><p>The transparency of the PI.</p></td>
     </tr>
     <tr>
-      <th>PI_fill</th>
-      <td><p>The color of the PI.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Additional arguments passed to the <code><a href='model_prediction.html'>model_prediction</a></code> function.</p></td>
     </tr>
@@ -295,18 +316,22 @@ more approximate than using <code>DV=T</code> and <code>groupsize_sim = some lar
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a> object.  If you would like to further edit this plot don't 
-forget to load the ggplot2 library using <code><a href='https://rdrr.io/r/base/library.html'>library(ggplot2)</a></code>.</p>
+forget to load the ggplot2 library using <code><a href='https://ggplot2.tidyverse.org/reference'>library(ggplot2)</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='model_prediction.html'>model_prediction</a></code></p>
-<p>Other evaluate_design: <code><a href='evaluate.fim.html'>evaluate.fim</a></code>,
-  <code><a href='evaluate_design.html'>evaluate_design</a></code>,
-  <code><a href='evaluate_power.html'>evaluate_power</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
-  <code><a href='model_prediction.html'>model_prediction</a></code>,
-  <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code></p>
-<p>Other Simulation: <code><a href='model_prediction.html'>model_prediction</a></code>,
-  <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code></p>
-<p>Other Graphics: <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code></p></div>
+<p>Other evaluate_design: 
+<code><a href='evaluate.fim.html'>evaluate.fim</a>()</code>,
+<code><a href='evaluate_design.html'>evaluate_design</a>()</code>,
+<code><a href='evaluate_power.html'>evaluate_power</a>()</code>,
+<code><a href='get_rse.html'>get_rse</a>()</code>,
+<code><a href='model_prediction.html'>model_prediction</a>()</code>,
+<code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a>()</code></p>
+<p>Other Simulation: 
+<code><a href='model_prediction.html'>model_prediction</a>()</code>,
+<code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a>()</code></p>
+<p>Other Graphics: 
+<code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Warfarin example from software comparison in:</span>
@@ -329,7 +354,7 @@ forget to load the ggplot2 library using <code><a href='https://rdrr.io/r/base/l
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fbd49aa46e8&gt;
+#&gt; &lt;bytecode: 0x7fef1205e668&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -462,15 +487,10 @@ forget to load the ggplot2 library using <code><a href='https://rdrr.io/r/base/l
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -481,7 +501,7 @@ forget to load the ggplot2 library using <code><a href='https://rdrr.io/r/base/l
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

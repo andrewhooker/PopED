@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -52,7 +56,6 @@ Some of the arguments coming from the PopED database can be overwritten;
 by default these arguments are NULL in the 
 function, if they are supplied then they are used instead of the arguments from the PopED database." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -70,7 +73,7 @@ function, if they are supplied then they are used instead of the arguments from 
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -146,20 +149,41 @@ by default these arguments are <code>NULL</code> in the
 function, if they are supplied then they are used instead of the arguments from the PopED database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>, <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bpopdescr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ddescr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maxxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>minxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maxa</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mina</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fmf</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>dmf</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+    <pre class="usage"><span class='fu'>RS_opt</span>(
+  <span class='no'>poped.db</span>,
+  <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bpopdescr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ddescr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>minxt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxa</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mina</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fmf</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>dmf</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
   <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>], <span class='kw'>cfaxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>,
-  <span class='kw'>cfaa</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>, <span class='kw'>rsit</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>rsit</span>,
+  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
+  <span class='kw'>cfaxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>,
+  <span class='kw'>cfaa</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>,
+  <span class='kw'>rsit</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>rsit</span>,
   <span class='kw'>rsit_output</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>rsit_output</span>,
   <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iFIMCalculationType</span>,
-  <span class='kw'>approx_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>approx_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>,
+  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>d_switch</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>,
   <span class='kw'>use_laplace</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>,
-  <span class='kw'>laplace.fim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>header_flag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>footer_flag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compute_inv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>laplace.fim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>header_flag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>footer_flag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>compute_inv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -342,14 +366,21 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='a_line_search.html'>a_line_search</a></code>,
-  <code><a href='bfgsb_min.html'>bfgsb_min</a></code>, <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
-  <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
-  <code><a href='optim_ARS.html'>optim_ARS</a></code>, <code><a href='optim_LS.html'>optim_LS</a></code>,
-  <code><a href='poped_optim_1.html'>poped_optim_1</a></code>, <code><a href='poped_optim_2.html'>poped_optim_2</a></code>,
-  <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
-  <code><a href='poped_optimize.html'>poped_optimize</a></code>, <code><a href='poped_optim.html'>poped_optim</a></code></p></div>
+    <div class='dont-index'><p>Other Optimize: 
+<code><a href='Doptim.html'>Doptim</a>()</code>,
+<code><a href='LEDoptim.html'>LEDoptim</a>()</code>,
+<code><a href='a_line_search.html'>a_line_search</a>()</code>,
+<code><a href='bfgsb_min.html'>bfgsb_min</a>()</code>,
+<code><a href='calc_autofocus.html'>calc_autofocus</a>()</code>,
+<code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a>()</code>,
+<code><a href='mfea.html'>mfea</a>()</code>,
+<code><a href='optim_ARS.html'>optim_ARS</a>()</code>,
+<code><a href='optim_LS.html'>optim_LS</a>()</code>,
+<code><a href='poped_optim_1.html'>poped_optim_1</a>()</code>,
+<code><a href='poped_optim_2.html'>poped_optim_2</a>()</code>,
+<code><a href='poped_optim_3.html'>poped_optim_3</a>()</code>,
+<code><a href='poped_optimize.html'>poped_optimize</a>()</code>,
+<code><a href='poped_optim.html'>poped_optim</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
@@ -378,7 +409,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fbd45d54040&gt;
+#&gt; &lt;bytecode: 0x7fef0c09faa8&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -440,9 +471,9 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;            CL     0.15       5
 #&gt;             V        8       3
 #&gt;            KA        1       7
-#&gt;         om_CL     0.07      30
-#&gt;          om_V     0.02      37
-#&gt;         om_KA      0.6      28
+#&gt;          d_CL     0.07      30
+#&gt;           d_V     0.02      37
+#&gt;          d_KA      0.6      28
 #&gt;    SIGMA[1,1]     0.01      33
 #&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
@@ -467,13 +498,13 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;            CL     0.15       5     5
 #&gt;             V        8       3     3
 #&gt;            KA        1       7     7
-#&gt;         om_CL     0.07       0     0
-#&gt;          om_V     0.02      37    37
-#&gt;         om_KA      0.6       0     0
+#&gt;          d_CL     0.07       0     0
+#&gt;           d_V     0.02      37    37
+#&gt;          d_KA      0.6       0     0
 #&gt;    SIGMA[1,1]     0.01      33    33
 #&gt;    SIGMA[2,2]     0.25      26    26
 #&gt; 
-#&gt; Total running time: 0.049 seconds</div><div class='input'>
+#&gt; Total running time: 0.05 seconds</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>)
@@ -495,15 +526,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -514,7 +540,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

@@ -11,14 +11,16 @@ optimize_n_dist(
 )
 }
 \arguments{
-\item{poped.db}{}
+\item{poped.db}{A PopED database.}
+
+\item{props}{The proportions of individuals in each group 
+(relative to the total number of individuals) to start the optimization from.}
 
 \item{...}{Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}}
-
-\item{The}{group proportions of individuals to start the optimization from}
 }
 \value{
-Optimal proportions
+A list of the optimal proportions, the optimal number of individuals in each group,
+and the initial and final objective function values.
 }
 \description{
 Title Optimize the proportion of individuals in the design groups

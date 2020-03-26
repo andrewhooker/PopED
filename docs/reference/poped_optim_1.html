@@ -24,23 +24,27 @@ iterations, or until the efficiency of the design after the current series
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -63,7 +67,6 @@ parameters, design and methods to use. Some of the arguments coming from the
 PopED database can be overwritten; if they are supplied then they are used 
 instead of the arguments from the PopED database." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -81,7 +84,7 @@ instead of the arguments from the PopED database." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -161,24 +164,36 @@ PopED database can be overwritten; if they are supplied then they are used
 instead of the arguments from the PopED database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>poped_optim_1</span>(<span class='no'>poped.db</span>, <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
+    <pre class="usage"><span class='fu'>poped_optim_1</span>(
+  <span class='no'>poped.db</span>,
+  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
   <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
   <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
   <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
-  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>,
-  <span class='st'>"LS"</span>), <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>],
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>, <span class='st'>"LS"</span>),
+  <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iFIMCalculationType</span>,
   <span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_calc_type</span>,
   <span class='kw'>approx_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>,
   <span class='kw'>d_switch</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>,
   <span class='kw'>ED_samp_size</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ED_samp_size</span>,
   <span class='kw'>bLHS</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>bLHS</span>,
-  <span class='kw'>use_laplace</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>, <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_laplace</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>,
+  <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>loop_methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>method</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>stop_crit_eff</span> <span class='kw'>=</span> <span class='fl'>1.001</span>, <span class='kw'>stop_crit_diff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stop_crit_rel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>,
-  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>stop_crit_eff</span> <span class='kw'>=</span> <span class='fl'>1.001</span>,
+  <span class='kw'>stop_crit_diff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stop_crit_rel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>,
+  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,7 +229,7 @@ fashion.  Options are <code><a href='https://rdrr.io/r/base/c.html'>c("ARS","BFG
 for Adaptive Random Search <code><a href='optim_ARS.html'>optim_ARS</a></code>.  <code><a href='https://rdrr.io/r/base/c.html'>c("LS")</a></code> is for 
 Line Search <code><a href='optim_LS.html'>optim_LS</a></code>. <code><a href='https://rdrr.io/r/base/c.html'>c("BFGS")</a></code> is for Method 
 "L-BFGS-B" from <code><a href='https://rdrr.io/r/stats/optim.html'>optim</a></code>. <code><a href='https://rdrr.io/r/base/c.html'>c("GA")</a></code> is for the 
-genetic algorithm from <code><a href='https://github.com/luca-scr/GA/reference/ga.html'>ga</a></code>.</p></td>
+genetic algorithm from <code>ga</code>.</p></td>
     </tr>
     <tr>
       <th>control</th>
@@ -363,24 +378,27 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
-  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
-  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
-  <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
-  <code><a href='optim_ARS.html'>optim_ARS</a></code>, <code><a href='optim_LS.html'>optim_LS</a></code>,
-  <code><a href='poped_optim_2.html'>poped_optim_2</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
-  <code><a href='poped_optimize.html'>poped_optimize</a></code>, <code><a href='poped_optim.html'>poped_optim</a></code></p></div>
+    <div class='dont-index'><p>Other Optimize: 
+<code><a href='Doptim.html'>Doptim</a>()</code>,
+<code><a href='LEDoptim.html'>LEDoptim</a>()</code>,
+<code><a href='RS_opt.html'>RS_opt</a>()</code>,
+<code><a href='a_line_search.html'>a_line_search</a>()</code>,
+<code><a href='bfgsb_min.html'>bfgsb_min</a>()</code>,
+<code><a href='calc_autofocus.html'>calc_autofocus</a>()</code>,
+<code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a>()</code>,
+<code><a href='mfea.html'>mfea</a>()</code>,
+<code><a href='optim_ARS.html'>optim_ARS</a>()</code>,
+<code><a href='optim_LS.html'>optim_LS</a>()</code>,
+<code><a href='poped_optim_2.html'>poped_optim_2</a>()</code>,
+<code><a href='poped_optim_3.html'>poped_optim_3</a>()</code>,
+<code><a href='poped_optimize.html'>poped_optimize</a>()</code>,
+<code><a href='poped_optim.html'>poped_optim</a>()</code></p></div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -391,7 +409,7 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

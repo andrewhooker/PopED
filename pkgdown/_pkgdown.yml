@@ -50,6 +50,7 @@ reference:
       - summary.poped_optim
       - optim_ARS
       - optim_LS
+      - optimize_n_dist
       - LEDoptim
       - RS_opt
       - a_line_search

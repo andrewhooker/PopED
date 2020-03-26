@@ -46,9 +46,6 @@ fg <- function(x,a,bpop,b,bocc){
 
 
 #' create poped database
-
-discrete_a <- cell(2,1)
-
 poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
                                   fError_fun="feps.add.prop",
                                   fg_fun="fg",
@@ -66,7 +63,6 @@ poped.db <- create.poped.database(ff_fun="ff.PK.2.comp.oral.md.ode",
                                   maxa=c(DOSE=1000,TAU=24),
                                   mina=c(DOSE=0,TAU=8),
                                   discrete_a = list(DOSE=seq(0,1000,by=100),TAU=8:24))
-
 
 
 #' plot intial design just PRED

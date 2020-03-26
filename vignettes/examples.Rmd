@@ -35,6 +35,7 @@ knitr::opts_chunk$set(
   , cache = TRUE
   , fig.align = "center"
   , out.width = "80%"
+  , autodep=TRUE
 )
 ```
 
@@ -168,11 +169,11 @@ poped.db <- create.poped.database(
   mina=c(DOSE=0))
 ```
 
-The model predictions below show typical PK and PD profiles for three dose groups and the expected 95% prediction interval of the data taking into account the BSV and RUV. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With `model.names=c("PK","PD")` one can name the outputs in the graph.
+The model predictions below show typical PK and PD profiles for three dose groups and the expected 95% prediction interval of the data. The initial design, as shown in the `poped.db` object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With `model.names=c("PK","PD")` one can name the outputs in the graph.
 
 ```{r simulate_multi-response_model}
 plot_model_prediction(
-  poped.db,IPRED=TRUE,DV=TRUE,
+  poped.db,PI=TRUE,
   facet_scales="free",
   separate.groups=TRUE,
   model.names=c("PK","PD")) 
@@ -183,9 +184,8 @@ plot_model_prediction(
 
 The full code for this example is available in `ex.9.PK.2.comp.oral.md.ode.compiled.R`. 
 
-In this example, the `deSolve` library needs to be installed for computing solutions to a system of differential equations. For faster solutions one can use pre-compiled code using the `Rcpp` library. 
+In this example, the `deSolve` library needs to be installed for computing solutions to a system of differential equations. For faster solutions one can use pre-compiled code using the `Rcpp` library (see below). 
 ```{r,eval=TRUE}
-library(Rcpp)
 library(deSolve)
 ```
 
@@ -283,6 +283,7 @@ plot_model_prediction(poped.db,model_num_points = 500)
 **Faster computations with Rcpp:**  We could also define the system using Rcpp, which will produce compiled code that should run faster (further examples in `ex.2.c.warfarin.ODE.compiled.R`).  First we redefine the ODE system using Rcpp. 
 
 ```{r}
+library(Rcpp)
 cppFunction(
   'List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
      int n = A.size();
@@ -469,7 +470,7 @@ tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.
 ```
 
 Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times^[Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., & Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. https://doi.org/10.1007/s10928-011-9228-y].
-Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`), what each sample time will measure (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database()` function.
+Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`), what each sample time will measure (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database` function.
 
 ```{r}
 xt <- zeros(6,30)
@@ -536,12 +537,12 @@ plot_model_prediction(poped.db.2,facet_scales="free")
 
 ```{r,results='hide'}
 eval_2 <- evaluate_design(poped.db.2)
-round(eval_2$rse)
+round(eval_2$rse) # in percent
 ```
 
 ```{r,echo=FALSE}
 knitr::kable(round(eval_2$rse),col.names = c("RSE in %")) #%>%  
-  #kableExtra::kable_styling("striped",full_width = FALSE) 
+  #kableExtra::kable_styling("striped",full_width = F) 
 ```
 
 

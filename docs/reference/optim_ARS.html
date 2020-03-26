@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,7 +51,6 @@
 The function works for both discrete and continuous optimization parameters 
 and allows for box-constraints and sets of allowed values." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@ and allows for box-constraints and sets of allowed values." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -136,12 +139,30 @@ The function works for both discrete and continuous optimization parameters
 and allows for box-constraints and sets of allowed values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>optim_ARS</span>(<span class='no'>par</span>, <span class='no'>fn</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>allowed_values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>loc_fac</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>no_bounds_sd</span> <span class='kw'>=</span> <span class='no'>par</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>iter_adapt</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>adapt_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_run</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>trace_iter</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>new_par_max_it</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>,
-  <span class='fl'>1e+07</span>)), <span class='kw'>allow_replicates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>generator</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>optim_ARS</span>(
+  <span class='no'>par</span>,
+  <span class='no'>fn</span>,
+  <span class='kw'>lower</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>upper</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>allowed_values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>loc_fac</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>no_bounds_sd</span> <span class='kw'>=</span> <span class='no'>par</span>,
+  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>,
+  <span class='kw'>iter_adapt</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>adapt_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_run</span> <span class='kw'>=</span> <span class='fl'>200</span>,
+  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>trace_iter</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>new_par_max_it</span> <span class='kw'>=</span> <span class='fl'>200</span>,
+  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1e+07</span>)),
+  <span class='kw'>allow_replicates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>generator</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -267,14 +288,21 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Optimize: <code><a href='Doptim.html'>Doptim</a></code>,
-  <code><a href='LEDoptim.html'>LEDoptim</a></code>, <code><a href='RS_opt.html'>RS_opt</a></code>,
-  <code><a href='a_line_search.html'>a_line_search</a></code>, <code><a href='bfgsb_min.html'>bfgsb_min</a></code>,
-  <code><a href='calc_autofocus.html'>calc_autofocus</a></code>,
-  <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code>, <code><a href='mfea.html'>mfea</a></code>,
-  <code><a href='optim_LS.html'>optim_LS</a></code>, <code><a href='poped_optim_1.html'>poped_optim_1</a></code>,
-  <code><a href='poped_optim_2.html'>poped_optim_2</a></code>, <code><a href='poped_optim_3.html'>poped_optim_3</a></code>,
-  <code><a href='poped_optimize.html'>poped_optimize</a></code>, <code><a href='poped_optim.html'>poped_optim</a></code></p></div>
+    <div class='dont-index'><p>Other Optimize: 
+<code><a href='Doptim.html'>Doptim</a>()</code>,
+<code><a href='LEDoptim.html'>LEDoptim</a>()</code>,
+<code><a href='RS_opt.html'>RS_opt</a>()</code>,
+<code><a href='a_line_search.html'>a_line_search</a>()</code>,
+<code><a href='bfgsb_min.html'>bfgsb_min</a>()</code>,
+<code><a href='calc_autofocus.html'>calc_autofocus</a>()</code>,
+<code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a>()</code>,
+<code><a href='mfea.html'>mfea</a>()</code>,
+<code><a href='optim_LS.html'>optim_LS</a>()</code>,
+<code><a href='poped_optim_1.html'>poped_optim_1</a>()</code>,
+<code><a href='poped_optim_2.html'>poped_optim_2</a>()</code>,
+<code><a href='poped_optim_3.html'>poped_optim_3</a>()</code>,
+<code><a href='poped_optimize.html'>poped_optimize</a>()</code>,
+<code><a href='poped_optim.html'>poped_optim</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -365,7 +393,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 67.5762
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.177 seconds.
+#&gt; Elapsed time: 0.17 seconds.
 #&gt; 
 #&gt; Final OFV =  67.57618 
 #&gt; Parameters: -15.35198 
@@ -453,7 +481,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #&gt; 
 #&gt; Total iterations: 392 
-#&gt; Elapsed time: 0.14 seconds.
+#&gt; Elapsed time: 0.133 seconds.
 #&gt; 
 #&gt; Final OFV =  67.6696 
 #&gt; Parameters: -15.97183 
@@ -586,7 +614,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 503.399
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.163 seconds.
+#&gt; Elapsed time: 0.162 seconds.
 #&gt; 
 #&gt; Final OFV =  503.399 
 #&gt; Parameters: 2.130566 2 2 2.059427 2 2 2.167358 2 2 2.142739 2 2 2.030765 2.254329 2 2 2.56842 2.045564 2.276299 2 2 2 2 2 3.690364 
@@ -693,7 +721,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 15264
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.262 seconds.
+#&gt; Elapsed time: 0.274 seconds.
 #&gt; 
 #&gt; Final OFV =  15264 
 #&gt; Parameters: 1 19 8 5 4 3 18 2 14 9 12 15 13 16 17 6 11 7 20 10 21 1 
@@ -831,7 +859,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 47.7055
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.205 seconds.
+#&gt; Elapsed time: 0.178 seconds.
 #&gt; 
 #&gt; Final OFV =  47.7055 
 #&gt; Parameters: 6.562641 
@@ -889,15 +917,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
                     <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>5.12</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>5.12</span>,<span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>,<span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='st'>"snow"</span>)
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -908,7 +931,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

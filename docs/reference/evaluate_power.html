@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,7 +51,6 @@
 some assumed value (often the assumed value is zero). The power is calculated 
 using the linear Wald test and the the design is defined in a poped database." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@ using the linear Wald test and the the design is defined in a poped database." /
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -136,8 +139,18 @@ some assumed value (often the assumed value is zero). The power is calculated
 using the linear Wald test and the the design is defined in a poped database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>evaluate_power</span>(<span class='no'>poped.db</span>, <span class='no'>bpop_idx</span>, <span class='kw'>h0</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>power</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>twoSided</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>find_min_n</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>fim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>evaluate_power</span>(
+  <span class='no'>poped.db</span>,
+  <span class='no'>bpop_idx</span>,
+  <span class='kw'>h0</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>power</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>twoSided</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>find_min_n</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>fim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,11 +223,13 @@ calc_ofv_and_fim, ...)</p></td>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other evaluate_design: <code><a href='evaluate.fim.html'>evaluate.fim</a></code>,
-  <code><a href='evaluate_design.html'>evaluate_design</a></code>, <code><a href='get_rse.html'>get_rse</a></code>,
-  <code><a href='model_prediction.html'>model_prediction</a></code>,
-  <code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></code>,
-  <code><a href='plot_model_prediction.html'>plot_model_prediction</a></code></p></div>
+    <div class='dont-index'><p>Other evaluate_design: 
+<code><a href='evaluate.fim.html'>evaluate.fim</a>()</code>,
+<code><a href='evaluate_design.html'>evaluate_design</a>()</code>,
+<code><a href='get_rse.html'>get_rse</a>()</code>,
+<code><a href='model_prediction.html'>model_prediction</a>()</code>,
+<code><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a>()</code>,
+<code><a href='plot_model_prediction.html'>plot_model_prediction</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Folowing the examples presented in Retout, 2007</span>
@@ -261,33 +276,33 @@ calc_ofv_and_fim, ...)</p></td>
 #&gt; [1] 74.52441
 #&gt; 
 #&gt; $fim
-#&gt;                    P1         P2       lam1       beta       lam2        om_P1
+#&gt;                    P1         P2       lam1       beta       lam2         d_P1
 #&gt; P1         611.712173 -12.723468 -24.210864 -12.105432  -5.109809 0.000000e+00
 #&gt; P2         -12.723468 580.838635 -16.202945  -8.101473 -39.342222 0.000000e+00
 #&gt; lam1       -24.210864 -16.202945 648.887537 324.443769  -6.742703 0.000000e+00
 #&gt; beta       -12.105432  -8.101473 324.443769 324.443769  -3.371351 0.000000e+00
 #&gt; lam2        -5.109809 -39.342222  -6.742703  -3.371351 643.716238 0.000000e+00
-#&gt; om_P1        0.000000   0.000000   0.000000   0.000000   0.000000 9.354418e+02
-#&gt; om_P2        0.000000   0.000000   0.000000   0.000000   0.000000 4.051226e-01
-#&gt; om_lam1      0.000000   0.000000   0.000000   0.000000   0.000000 1.465796e+00
-#&gt; om_lam2      0.000000   0.000000   0.000000   0.000000   0.000000 6.533665e-02
+#&gt; d_P1         0.000000   0.000000   0.000000   0.000000   0.000000 9.354418e+02
+#&gt; d_P2         0.000000   0.000000   0.000000   0.000000   0.000000 4.051226e-01
+#&gt; d_lam1       0.000000   0.000000   0.000000   0.000000   0.000000 1.465796e+00
+#&gt; d_lam2       0.000000   0.000000   0.000000   0.000000   0.000000 6.533665e-02
 #&gt; SIGMA[1,1]   0.000000   0.000000   0.000000   0.000000   0.000000 5.831126e+03
-#&gt;                   om_P2      om_lam1      om_lam2   SIGMA[1,1]
+#&gt;                    d_P2       d_lam1       d_lam2   SIGMA[1,1]
 #&gt; P1            0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; P2            0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; lam1          0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; beta          0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; lam2          0.0000000    0.0000000 0.000000e+00        0.000
-#&gt; om_P1         0.4051226    1.4657963 6.533665e-02     5831.126
-#&gt; om_P2       843.4338997    0.6563403 3.869526e+00     8499.377
-#&gt; om_lam1       0.6563403 1052.6375905 1.136601e-01     1889.172
-#&gt; om_lam2       3.8695261    0.1136601 1.035926e+03     2335.057
+#&gt; d_P1          0.4051226    1.4657963 6.533665e-02     5831.126
+#&gt; d_P2        843.4338997    0.6563403 3.869526e+00     8499.377
+#&gt; d_lam1        0.6563403 1052.6375905 1.136601e-01     1889.172
+#&gt; d_lam2        3.8695261    0.1136601 1.035926e+03     2335.057
 #&gt; SIGMA[1,1] 8499.3770635 1889.1721996 2.335057e+03 11411954.974
 #&gt; 
 #&gt; $rse
-#&gt;          P1          P2        lam1        beta        lam2       om_P1 
+#&gt;          P1          P2        lam1        beta        lam2        d_P1 
 #&gt;  0.33728477  0.52006496  7.93579642  0.07851367  1.31669814 10.91610610 
-#&gt;       om_P2     om_lam1     om_lam2  SIGMA[1,1] 
+#&gt;        d_P2      d_lam1      d_lam2  SIGMA[1,1] 
 #&gt; 11.52111962 10.27552547 10.35895352  7.04673895 
 #&gt; </div><div class='input'>
 <span class='no'>poped.db_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='no'>poped.db</span>,<span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>P1</span><span class='kw'>=</span><span class='fl'>12</span>, <span class='kw'>P2</span><span class='kw'>=</span><span class='fl'>8</span>,
@@ -297,33 +312,33 @@ calc_ofv_and_fim, ...)</p></td>
 #&gt; [1] 74.54742
 #&gt; 
 #&gt; $fim
-#&gt;                    P1         P2      lam1       beta       lam2        om_P1
+#&gt;                    P1         P2      lam1       beta       lam2         d_P1
 #&gt; P1         606.082950 -12.698834 -26.35693 -14.251496  -5.275302 0.000000e+00
 #&gt; P2         -12.698834 590.575894 -15.71391  -7.612439 -35.363104 0.000000e+00
 #&gt; lam1       -26.356928 -15.713911 647.69637 323.252599  -6.706090 0.000000e+00
 #&gt; beta       -14.251496  -7.612439 323.25260 323.252599  -3.334739 0.000000e+00
 #&gt; lam2        -5.275302 -35.363104  -6.70609  -3.334739 645.343252 0.000000e+00
-#&gt; om_P1        0.000000   0.000000   0.00000   0.000000   0.000000 9.184102e+02
-#&gt; om_P2        0.000000   0.000000   0.00000   0.000000   0.000000 4.034200e-01
-#&gt; om_lam1      0.000000   0.000000   0.00000   0.000000   0.000000 1.748309e+00
-#&gt; om_lam2      0.000000   0.000000   0.00000   0.000000   0.000000 6.967871e-02
+#&gt; d_P1         0.000000   0.000000   0.00000   0.000000   0.000000 9.184102e+02
+#&gt; d_P2         0.000000   0.000000   0.00000   0.000000   0.000000 4.034200e-01
+#&gt; d_lam1       0.000000   0.000000   0.00000   0.000000   0.000000 1.748309e+00
+#&gt; d_lam2       0.000000   0.000000   0.00000   0.000000   0.000000 6.967871e-02
 #&gt; SIGMA[1,1]   0.000000   0.000000   0.00000   0.000000   0.000000 6.355107e+03
-#&gt;                   om_P2      om_lam1      om_lam2   SIGMA[1,1]
+#&gt;                    d_P2       d_lam1       d_lam2   SIGMA[1,1]
 #&gt; P1            0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; P2            0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; lam1          0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; beta          0.0000000    0.0000000 0.000000e+00        0.000
 #&gt; lam2          0.0000000    0.0000000 0.000000e+00        0.000
-#&gt; om_P1         0.4034200    1.7483086 6.967871e-02     6355.107
-#&gt; om_P2       872.1867153    0.6179178 3.165957e+00     7662.897
-#&gt; om_lam1       0.6179178 1048.7800081 1.124325e-01     2004.872
-#&gt; om_lam2       3.1659572    0.1124325 1.041176e+03     2204.565
+#&gt; d_P1          0.4034200    1.7483086 6.967871e-02     6355.107
+#&gt; d_P2        872.1867153    0.6179178 3.165957e+00     7662.897
+#&gt; d_lam1        0.6179178 1048.7800081 1.124325e-01     2004.872
+#&gt; d_lam2        3.1659572    0.1124325 1.041176e+03     2204.565
 #&gt; SIGMA[1,1] 7662.8965834 2004.8718636 2.204565e+03 11396937.363
 #&gt; 
 #&gt; $rse
-#&gt;         P1         P2       lam1       beta       lam2      om_P1      om_P2 
+#&gt;         P1         P2       lam1       beta       lam2       d_P1       d_P2 
 #&gt;  0.3388993  0.5155216  7.9357907 29.9948348  1.3144681 11.0205784 11.3204964 
-#&gt;    om_lam1    om_lam2 SIGMA[1,1] 
+#&gt;     d_lam1     d_lam2 SIGMA[1,1] 
 #&gt; 10.2946079 10.3325269  7.0480558 
 #&gt; </div><div class='input'>
 <span class='fu'>evaluate_power</span>(<span class='no'>poped.db_2</span>,<span class='kw'>bpop_idx</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; $ofv
@@ -354,9 +369,9 @@ calc_ofv_and_fim, ...)</p></td>
 #&gt; [10,] 7662.8965834 2004.8718636 2.204565e+03 11396937.363
 #&gt; 
 #&gt; $rse
-#&gt;         P1         P2       lam1       beta       lam2      om_P1      om_P2 
+#&gt;         P1         P2       lam1       beta       lam2       d_P1       d_P2 
 #&gt;  0.3388993  0.5155216  7.9357907 29.9948348  1.3144681 11.0205784 11.3204964 
-#&gt;    om_lam1    om_lam2 SIGMA[1,1] 
+#&gt;     d_lam1     d_lam2 SIGMA[1,1] 
 #&gt; 10.2946079 10.3325269  7.0480558 
 #&gt; 
 #&gt; $power
@@ -364,16 +379,10 @@ calc_ofv_and_fim, ...)</p></td>
 #&gt; beta 0.262 29.99483   91.52704         80 35.69408       142
 #&gt; </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -384,7 +393,7 @@ calc_ofv_and_fim, ...)</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
