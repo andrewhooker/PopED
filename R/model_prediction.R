@@ -223,12 +223,18 @@ model_prediction <- function(poped.db=NULL,
         g0 = feval(model$fg_pointer,x_i,a_i,bpop_val,b_ind,bocc_ind)
         
         pred_list <- feval(model$ff_pointer,model_switch_i,xt_i,g0,poped.db)
-        pred_list <- pred_list[sapply(pred_list, is.numeric)] 
-        names(pred_list)[1] <- "PRED"
-        group.df$PRED <- NULL
-        group.df <- cbind(group.df,data.frame(pred_list))
-        
+        pred_list$poped.db <- NULL
         pred <- drop(pred_list[[1]])
+        group.df["PRED"] <- pred
+        
+        # TODO: add this to both IPRED and DV and chnage extra columns names to replct where
+        #       prediction comes from.
+        if(length(pred_list)>1){
+          # pred_list <- pred_list[sapply(pred_list, is.numeric)] 
+          extra_df <- data.frame(pred_list[-1])
+          group.df <- cbind(group.df,extra_df)
+        } 
+        
         if(PI){
           sigma_full = parameters$sigma
           d_full = getfulld(parameters$d[,2],parameters$covd)
