@@ -53,8 +53,20 @@
 <li>
   <a href="../articles/intro-poped.html">Introduction</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/examples.html">Examples</a>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,7 +99,7 @@
       <h1 data-toc-skip>Introduction to PopED</h1>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">26 March, 2020</h4>
+            <h4 class="date">27 March, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/intro-poped.Rmd"><code>vignettes/intro-poped.Rmd</code></a></small>
       <div class="hidden name"><code>intro-poped.Rmd</code></div>
@@ -241,7 +253,9 @@
 <span class="co">#&gt;         V        KA        CL       d_V      d_KA      d_CL  sig_prop </span>
 <span class="co">#&gt;  8.215338 10.090955  4.400304 39.844763 60.655110 27.562541 13.865357</span></pre></body></html></div>
 <p>We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.</p>
-<p><strong>Evaluate alternative design</strong></p>
+<div id="evaluate-alternative-design" class="section level2">
+<h2 class="hasAnchor">
+<a href="#evaluate-alternative-design" class="anchor"></a>Evaluate alternative design</h2>
 <p>We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">poped.db.new</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
   <span class="co"># Model</span>
@@ -291,7 +305,10 @@
 <span class="co">#&gt; $rse</span>
 <span class="co">#&gt;          V         KA         CL        d_V       d_KA       d_CL   sig_prop </span>
 <span class="co">#&gt;  44.120338  51.256239   5.748842 207.941540 280.689945  53.350716  22.795275</span></pre></body></html></div>
-<p><strong>Comparison of designs</strong></p>
+</div>
+<div id="comparison-of-designs" class="section level2">
+<h2 class="hasAnchor">
+<a href="#comparison-of-designs" class="anchor"></a>Comparison of designs</h2>
 <p>The precision on CL is similar with the alternative design but the other parameters are less well estimated.</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r">(<span class="no">design_eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">design_1</span><span class="kw">=</span><span class="no">ds1</span>$<span class="no">rse</span>,<span class="kw">design_2</span><span class="kw">=</span><span class="no">ds2</span>$<span class="no">rse</span>)))</pre></body></html></div>
 <table class="table">
@@ -344,6 +361,7 @@
 <span class="co">#&gt; attr(,"description")</span>
 <span class="co">#&gt; [1] "(exp(ofv_final) / exp(ofv_init))^(1/n_parameters)"</span></pre></body></html></div>
 </div>
+</div>
 <div id="design-optimization" class="section level1">
 <h1 class="hasAnchor">
 <a href="#design-optimization" class="anchor"></a>Design optimization</h1>
@@ -376,12 +394,17 @@
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output</span>$<span class="no">poped.db</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="700"></p>
 <p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
-<p><strong>Examine efficiency of sampling windows</strong></p>
+<div id="examine-efficiency-of-sampling-windows" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examine-efficiency-of-sampling-windows" class="anchor"></a>Examine efficiency of sampling windows</h2>
 <p>Of course, this means that there are multiple samples at some of these time points. We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points (<span class="math inline">\(\pm 30\)</span> minutes).</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_efficiency_of_windows.html">plot_efficiency_of_windows</a></span>(<span class="no">output</span>$<span class="no">poped.db</span>,<span class="kw">xt_windows</span><span class="kw">=</span><span class="fl">0.5</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_efficiency_windows-1.png" width="576"></p>
 <p>Here we see the efficiency (<span class="math inline">\((|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}\)</span>) drops below 80% in some cases, which is mostly caused by an increase in the parameter uncertainty of the BSV parameter on absorption (om_KA). Smaller windows or different windowing on different samples might be needed. To investigate see <code><a href="../reference/plot_efficiency_of_windows.html">?plot_efficiency_of_windows</a></code>.</p>
-<p><strong>Optimize over a discrete design space</strong></p>
+</div>
+<div id="optimize-over-a-discrete-design-space" class="section level2">
+<h2 class="hasAnchor">
+<a href="#optimize-over-a-discrete-design-space" class="anchor"></a>Optimize over a discrete design space</h2>
 <p>In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit). We could also limit the search to only “allowed” values, for example, only samples taken on the hour are allowed.</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">poped.db.discrete</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped.db</span>,<span class="kw">discrete_xt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>:<span class="fl">10</span>,<span class="fl">240</span>:<span class="fl">248</span>)))
 
@@ -413,11 +436,17 @@
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output_discrete</span>$<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="700"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
-<p><strong>Optimize ‘Other’ design variables</strong></p>
+</div>
+<div id="optimize-other-design-variables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#optimize-other-design-variables" class="anchor"></a>Optimize ‘Other’ design variables</h2>
 <p>One could also optimize over dose, to see if a different dose could help in parameter estimation .</p>
 <div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">output_dose_opt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span>(<span class="no">output</span>$<span class="no">poped.db</span>, <span class="kw">opt_xt</span><span class="kw">=</span><span class="fl">TRUE</span>, <span class="kw">opt_a</span><span class="kw">=</span><span class="fl">TRUE</span>)</pre></body></html></div>
 <p>In this case the results are predictable … higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).</p>
-<p><strong>Cost function to optimize dose</strong></p>
+</div>
+<div id="cost-function-to-optimize-dose" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cost-function-to-optimize-dose" class="anchor"></a>Cost function to optimize dose</h2>
 <p>Optimizing the dose of a study just to have better model parameter estimates may be somewhat implausible. Instead, let’s use a cost function to optimize dose based on some sort of target concentration … perhaps typical population trough concentrations of 0.2 and 0.35 for the two groups of patients at 240 hours.</p>
 <p>First we define the criteria we use to optimize the doses, here a least squares minimization.</p>
 <div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">crit_fcn</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">poped.db</span>,<span class="no">...</span>){
@@ -460,6 +489,7 @@
 <span class="co">#&gt;  8.207404 10.070674  4.399378 39.808012 60.478363 27.549531 13.800551</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output_cost</span>$<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_cost_optmization-1.png" width="700"></p>
+</div>
 </div>
 <div class="footnotes">
 <hr>

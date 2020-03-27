@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   examples: examples.html
   intro-poped: intro-poped.html
-last_built: 2020-03-26T16:48Z
+  model_def_other_pkgs: model_def_other_pkgs.html
+last_built: 2020-03-27T16:30Z
 

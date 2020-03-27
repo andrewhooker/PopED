@@ -1,0 +1,620 @@
+---
+title: "Defining models for PopED using R based PKPD simulators"
+author: "Andrew Hooker, Ron Keizer and Vijay Ivaturi"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    number_sections: true
+    #fig_width: 6
+    #fig_height: 5
+#bibliography: ["blq.bib"]
+#biblio-style: "apalike"
+link-citations: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+set.seed(1234)
+
+if(Sys.info()["user"]=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
+
+devtools::install_github("InsightRX/PKPDsim",force = F)
+
+devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
+
+library(knitr)
+
+knitr::opts_chunk$set(
+  collapse = TRUE
+  , comment = "#>"
+  #, fig.width=6
+  , cache = TRUE
+  #,results="hold"
+)
+
+library("kableExtra")
+```
+
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\boldsymbol{#1}}
+
+# Introduction
+
+This is a simple example on how to couple PopED with external R based PKPD simulation tools.  Typically, these tools might be R packages that can simulate from  hierarchical, ordinary differential equation (ODE) based models.  In this document you will see how to couple PopED to  models, defined with ODEs, implemented using:
+
+* deSolve (with native R ODE models)
+* deSolve (with compliled C ODE models)
+* deSolve (with compliled C++ ODE models using Rcpp)
+* PKPDsim
+* mrgsolve
+* RxODE
+
+
+```{r packages}
+library(PopED)
+library(PKPDsim)
+library(mrgsolve)
+library(deSolve)
+library(Rcpp)
+library(RxODE)
+```
+
+For the future we will also show how to use
+
+* PKPDmodels
+* dMod
+
+# The model
+
+In this example we will use  a one-compartment  linear  absorption model
+
+![](model_def_other_pkgs_1-comp-lin-abs.png) 
+
+<!-- (see Figure \@ref(fig:1-comp-lin-abs)).  -->
+
+<!-- ```{r 1-comp-lin-abs, echo=FALSE, fig.cap="Graphical representation of a one-compartment model with linear absorption."} -->
+<!-- knitr::include_graphics("model_def_other_pkgs_1-comp-lin-abs.png") -->
+<!-- ``` -->
+
+
+This model can be described with the following set of ODEs:
+
+$$
+  \begin{split}
+  \frac{dA_{0}}{dt} &=  - k_{a} \cdot A_{0}\\
+  \frac{dA_{1}}{dt} &=-(CL/V_1)\cdot A_1 + k_{a} \cdot A_{0} \\
+  f(t) &= A_1/V_1
+  \end{split}
+  (\#eq:ode)
+$$
+
+All compartment amounts are assumed to be zero at time zero ($\vect{A}[t=0]=0$). Inputs to the system 
+come in tablet form and are added to the amount in $A_{0}$ according to 
+
+$$
+  \text{Input}(t,D,t_D) =
+  \begin{cases}
+   D, &\text{if} \quad t = t_D \\
+   0, &\text{otherwise} 
+  \end{cases}
+  (\#eq:input)
+$$ 
+
+Parameter values are defined as:
+
+$$
+  \begin{split}
+    k_a &= \theta_1 \cdot e^{\eta_1} \\
+    CL &= \theta_2 \cdot e^{\eta_2} \\
+    V_1 &= \theta_3 \cdot e^{\eta_3}  \\
+  \end{split}
+  (\#eq:par)
+$$
+where elements of the between subject variability (BSV),  $\eta_{j}$, vary accross individuals and come from normal distributions with means of zero and variances of $\omega^2_{j}$.
+
+The residual unexplained variability  (RUV) model has a  proportional and additive component
+
+$$
+  y = A_1/V_1 \cdot (1+\varepsilon_1) + \varepsilon_2
+  (\#eq:ruv)
+$$
+
+elements of  $\vect{\varepsilon}_{j}$ vary accross observations and come from 
+normal distributions with means of zero and variances of $\sigma^2_{j}$.
+
+Parameter values are shown in Table  \@ref(tab:values).  
+```{r values,echo=FALSE}
+kable(
+  tibble::tibble(
+    "Parameter"=c("$k_a$","CL","$V_1$"
+                  ,"$\\omega^2_{k_a}$"
+                  ,"$\\omega^2_{CL}$","$\\omega^2_{V_1}$",
+                  "$\\sigma^2_{prop}$","$\\sigma^2_{add}$"
+    ),
+    "Value"=c(0.25,3.75,72.8,
+              0.09,0.0625,0.09,0.04,0.0025)),
+  booktabs = TRUE,
+  caption = 'Model parameter values.',
+  escape = FALSE
+) %>%  kable_styling("striped",full_width = F) 
+
+```
+
+
+
+# Model implementation
+
+Below we implement this model using a number of different methods.  For the ODE solvers, if possible, we set the tuning parameters to be the same values (`atol`, `rtol`, etc.).
+
+## Analytic solution
+First we implement an analytic solution to the model in a function that could be used in `PopED`. 
+```{r structural_model_poped}
+ff <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+    N = floor(xt/TAU)+1
+    y=(DOSE/V)*(KA/(KA - CL/V)) * 
+      (exp(-CL/V * (xt - (N - 1) * TAU)) * (1 - exp(-N * CL/V * TAU))/(1 - exp(-CL/V * TAU)) - 
+         exp(-KA * (xt - (N - 1) * TAU)) * (1 - exp(-N * KA * TAU))/(1 - exp(-KA * TAU)))  
+    return(list( y=y,poped.db=poped.db))
+  })
+}
+```
+
+## ODE solution using deSolve
+Model using ODEs defined in deSolve 
+```{r ode_desolve}
+PK_1_comp_oral_ode <- function(Time, State, Pars){
+  with(as.list(c(State, Pars)), {    
+    dA1 <- -KA*A1
+    dA2 <- KA*A1 - (CL/V)*A2
+    return(list(c(dA1, dA2)))
+  })
+}
+```
+
+```{r}
+ff_ode_desolve <- function(model_switch, xt, parameters, poped.db){
+  with(as.list(parameters),{
+    A_ini <- c(A1=0, A2=0)
+    
+    #Set up time points for the ODE
+    times_xt <- drop(xt)
+    times <- c(0,times_xt) ## add extra time for start of integration
+    dose_times = seq(from=0,to=max(times_xt),by=TAU)
+    times <- c(times,dose_times)
+    times <- sort(times) 
+    times <- unique(times) # remove duplicates
+    
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(DOSE), method = c("add"))
+    
+    out <- ode(A_ini, times, PK_1_comp_oral_ode, parameters, 
+               events = list(data = eventdat),
+               atol=1e-8, rtol=1e-8,maxsteps=5000)
+    
+    # grab timepoint values
+    out = out[match(times_xt,out[,"time"]),]
+    
+    y = out[,"A2"]/V
+    
+    y=cbind(y) # must be a column matrix 
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+```
+
+## ODE solution using deSolve and compiled C code
+Model using ODEs defined in deSolve with compiled code
+```{r}
+cat(readChar(system.file("examples/one_comp_oral_CL.c", package="PopED"), 1e5))
+```
+
+```{r}
+file.copy(system.file("examples/one_comp_oral_CL.c", package="PopED"),"./one_comp_oral_CL.c")
+system("R CMD SHLIB one_comp_oral_CL.c")
+dyn.load(paste("one_comp_oral_CL", .Platform$dynlib.ext, sep = ""))
+```
+
+```{r}
+ff_ode_desolve_c <- function(model_switch, xt, parameters, poped.db){
+  with(as.list(parameters),{
+    A_ini <- c(A1=0, A2=0)
+    
+    #Set up time points for the ODE
+    times_xt <- drop(xt)
+    times <- c(0,times_xt) ## add extra time for start of integration
+    dose_times = seq(from=0,to=max(times_xt),by=TAU)
+    times <- c(times,dose_times)
+    times <- sort(times) 
+    times <- unique(times) # remove duplicates
+    
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(DOSE), method = c("add"))
+    
+    out <- ode(A_ini, times, func = "derivs", 
+               parms = c(CL,V,KA), 
+               dllname = "one_comp_oral_CL",
+               initfunc = "initmod", nout = 1, 
+               outnames = "Sum",
+               events = list(data = eventdat),
+               atol=1e-8, rtol=1e-8,maxsteps=5000)
+
+    # grab timepoint values
+    out = out[match(times_xt,out[,"time"]),]
+    
+    y = out[, "A2"]/V
+    
+    y=cbind(y) # must be a column matrix 
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+
+```
+
+## ODE solution using deSolve and compiled C++ code (via  Rcpp)
+Here we define the ODE system using inline C++ code via Rcpp
+
+```{r}
+cppFunction('List one_comp_oral_rcpp(double Time, NumericVector A, NumericVector Pars) {
+int n = A.size();
+NumericVector dA(n);
+
+double CL = Pars[0];
+double V = Pars[1];
+double KA = Pars[2];
+
+dA[0] = -KA*A[0];
+dA[1] = KA*A[0] - (CL/V)*A[1];
+return List::create(dA);
+}')
+```
+
+
+```{r}
+ff_ode_desolve_rcpp <- function(model_switch, xt, p, poped.db){
+    A_ini <- c(A1=0, A2=0)
+    
+    #Set up time points for the ODE
+    times_xt <- drop(xt)
+    times <- c(0,times_xt) ## add extra time for start of integration
+    dose_times = seq(from=0,to=max(times_xt),by=p[["TAU"]])
+    times <- c(times,dose_times)
+    times <- sort(times) 
+    times <- unique(times) # remove duplicates
+    
+    eventdat <- data.frame(var = c("A1"), 
+                           time = dose_times,
+                           value = c(p[["DOSE"]]), method = c("add"))
+    
+    out <- ode(A_ini, times, 
+               one_comp_oral_rcpp, 
+               c(CL=p[["CL"]],V=p[["V"]], KA=p[["KA"]]), 
+               events = list(data = eventdat),
+               atol=1e-8, rtol=1e-8,maxsteps=5000)
+    
+    
+    # grab timepoint values for central comp
+    y = out[match(times_xt,out[,"time"]),"A2",drop=F]/p[["V"]]
+    
+    return(list(y=y,poped.db=poped.db))
+}
+```
+
+
+
+## ODE solution using PKPDsim
+
+The same model written as a set of ODEs using PKPDsim:
+
+```{r}
+pk1cmtoral <- PKPDsim::new_ode_model("pk_1cmt_oral") # take from library
+ff_ode_pkpdsim <- function(model_switch, xt, p, poped.db){
+    #Set up time points for the ODE
+    times_xt <- drop(xt)  
+    dose_times <- seq(from=0,to=max(times_xt),by=p[["TAU"]])
+    times <- sort(unique(c(0,times_xt,dose_times)))
+
+    N = length(dose_times)
+    regimen = PKPDsim::new_regimen(amt=p[["DOSE"]],n=N,interval=p[["TAU"]])
+    design <- PKPDsim::sim(
+      ode = pk1cmtoral, 
+      parameters = c(CL=p[["CL"]],V=p[["V"]],KA=p[["KA"]]), 
+      regimen = regimen,
+      only_obs = TRUE,
+      t_obs = times,
+      checks = FALSE,
+      return_design = TRUE)
+    tmp <- PKPDsim::sim_core(sim_object = design, ode = pk1cmtoral)
+    y <- tmp$y
+    m_tmp <- match(round(times_xt,digits = 6),tmp[,"t"])
+    if(any(is.na(m_tmp))){
+      stop("can't find time points in solution\n", 
+           "try changing the digits argument in the match function")
+    } 
+    
+    y <- y[m_tmp]
+    return(list(y = y, poped.db = poped.db))
+}
+```
+
+
+
+## ODE solution using mrgsolve
+
+The same model written as a set of ODEs using mrgsolve:
+```{r mrgcode}
+code <- '
+$PARAM CL=3.75, V=72.8, KA=0.25
+$CMT DEPOT CENT
+$ODE
+dxdt_DEPOT = -KA*DEPOT;
+dxdt_CENT = KA*DEPOT - (CL/V)*CENT;
+$TABLE double CP  = CENT/V;
+$CAPTURE CP
+'
+```
+
+Compile and load the model with `mcode`
+```{r}
+moda <- mcode("optim", code, atol=1e-8, rtol=1e-8,maxsteps=5000)
+```
+
+
+```{r}
+ff_ode_mrg <- function(model_switch, xt, p, poped.db){
+  times_xt <- drop(xt)  
+  dose_times <- seq(from=0,to=max(times_xt),by=p[["TAU"]])
+  time <- sort(unique(c(0,times_xt,dose_times)))
+  is.dose <- time %in% dose_times
+  
+  data <- 
+    tibble::tibble(ID = 1,
+                      time = time,
+                      amt = ifelse(is.dose,p[["DOSE"]], 0), 
+                      cmt = ifelse(is.dose, 1, 0), 
+                      evid = cmt,
+                      CL = p[["CL"]], V = p[["V"]], KA = p[["KA"]])
+  
+  out <- mrgsim_q(moda, data=data)
+  
+  y <-  out$CP
+  
+  y <- y[match(times_xt,out$time)]
+  
+  return(list(y=matrix(y,ncol=1),poped.db=poped.db))
+  
+}
+```
+
+## ODE solution using RxODE
+
+The  model written for RxODE:
+```{r rxode}
+ode_rx <- "
+d/dt(DEPOT) = -KA*DEPOT;
+d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
+CP=CENT/V;
+"
+```
+
+Compile and load the model with `RxODE`
+```{r}
+modrx <- RxODE(model = ode_rx, modName = 'modrx')
+```
+
+
+```{r}
+ff_ode_rx <- function(model_switch, xt, p, poped.db){
+  
+  times_xt <- drop(xt)  
+  times <- sort(unique(c(0,times_xt)))
+
+  ev <- eventTable() 
+  ev$add.dosing(
+    dose = p[["DOSE"]],
+    dosing.interval = p[["TAU"]],
+    nbr.doses = floor(max(times)/p[["TAU"]])+1, 
+    dosing.to = 1,
+    start.time = 0
+  )
+  ev$add.sampling(times)
+  Params <- c(CL = p[["CL"]], V = p[["V"]], KA = p[["KA"]]) 
+  
+  out <- modrx$solve(Params, ev,atol=1e-8,rtol=1e-8)
+  
+  y = out[match(times_xt,out[,"time"]),"CP",drop=F]
+  
+  return(list(y=y,poped.db=poped.db))
+  
+}
+```
+
+## Common model elements
+
+Other functions are used to define BSV and RUV.
+
+```{r}
+
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c( 
+    KA=bpop[1]*exp(b[1]),
+    CL=bpop[2]*exp(b[2]),
+    V=bpop[3]*exp(b[3]),
+    DOSE=a[1],
+    TAU=a[2])
+  return( parameters ) 
+}
+
+feps <- function(model_switch,xt,parameters,epsi,poped.db){
+  y <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db))[[1]]
+  y = y*(1+epsi[,1])+epsi[,2]
+  return(list(y=y,poped.db=poped.db)) 
+}
+```
+
+# Create PopED databases
+Next we define the model to use, the parameters of those models, the intial design design and design space for any design calculation.  Here we create a number of databases that correspond to different model implementations.
+
+The initial design is a 2 group design, with doses of 20 mg or 40 mg every 24 hours.  Each group has the same sampling schedule, with 3 samples in the first day of the study and 2 on the 10th day of the study.  
+
+```{r}
+poped_db_analytic <- create.poped.database(ff_fun =ff,
+                                  fg_fun =sfg,
+                                  fError_fun=feps,
+                                  bpop=c(KA=0.25,CL=3.75,V=72.8), 
+                                  d=c(KA=0.09,CL=0.25^2,V=0.09), 
+                                  sigma=c(prop=0.04,add=0.0025),
+                                  m=2,
+                                  groupsize=20,
+                                  xt=c( 1,2,8,240,245),
+                                  minxt=c(0,0,0,240,240),
+                                  maxxt=c(10,10,10,248,248),
+                                  bUseGrouped_xt=1,
+                                  a=cbind(DOSE=c(20,40),TAU=c(24,24)),
+                                  maxa=c(DOSE=200,TAU=24),
+                                  mina=c(DOSE=0,TAU=24))
+
+
+poped_db_ode_desolve <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_desolve)
+poped_db_ode_desolve_c <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_desolve_c)
+poped_db_ode_desolve_rcpp <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_desolve_rcpp)
+poped_db_ode_pkpdsim <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_pkpdsim)
+poped_db_ode_mrg <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_mrg)
+poped_db_ode_rx <- create.poped.database(poped_db_analytic,ff_fun = ff_ode_rx)
+```
+
+
+
+# Model predictions
+
+So are there difference in the model predictions between the different implementations?
+
+Here is a visual representation of the model predictions for this study design, based on the analytic solution:
+```{r}
+plot_model_prediction(poped_db_analytic,model_num_points = 500,PI=T,separate.groups = T) 
+```
+
+We can compare the different predictions in this plot accross model implementations.  Here we see that the accuracy of the different methods are within machine precision (or very small).
+```{r}
+pred_std <- model_prediction(poped_db_analytic,model_num_points = 500,include_sample_times = TRUE,PI = TRUE)
+
+pred_ode_desolve <- model_prediction(poped_db_ode_desolve,
+                                     model_num_points = 500,
+                                     include_sample_times = TRUE,
+                                     PI = TRUE)
+all.equal(pred_std,pred_ode_desolve)
+
+pred_ode_desolve_c <- model_prediction(poped_db_ode_desolve_c,
+                                       model_num_points = 500,
+                                       include_sample_times = TRUE,
+                                       PI = TRUE)
+all.equal(pred_std,pred_ode_desolve_c)
+
+pred_ode_desolve_rcpp <- model_prediction(poped_db_ode_desolve_rcpp,
+                                          model_num_points = 500,
+                                          include_sample_times = TRUE,
+                                          PI = TRUE)
+all.equal(pred_std,pred_ode_desolve_rcpp)
+
+pred_ode_pkpdsim <- model_prediction(poped_db_ode_pkpdsim,
+                                     model_num_points = 500,
+                                     include_sample_times = TRUE,
+                                     PI = TRUE)
+all.equal(pred_std,pred_ode_pkpdsim)
+
+pred_ode_mrg <- model_prediction(poped_db_ode_mrg,
+                                 model_num_points = 500,
+                                 include_sample_times = TRUE,
+                                 PI = TRUE)
+all.equal(pred_std,pred_ode_mrg)
+
+pred_ode_rx <- model_prediction(poped_db_ode_rx,
+                                 model_num_points = 500,
+                                 include_sample_times = TRUE,
+                                 PI = TRUE)
+all.equal(pred_std,pred_ode_rx)
+
+```
+
+# Evaluate the design
+
+Here we compare the computation of the Fisher Information Matrix (FIM). By comparing the $ln(det(FIM))$ (the lnD-objective function value, or ofv). 
+
+```{r}
+(eval_std <- evaluate_design(poped_db_analytic))
+```
+
+
+All the computations give very similar results:
+```{r}
+eval_ode_desolve <- evaluate_design(poped_db_ode_desolve) 
+all.equal(eval_std$ofv,eval_ode_desolve$ofv)
+
+eval_ode_desolve_c <- evaluate_design(poped_db_ode_desolve_c) 
+all.equal(eval_std$ofv,eval_ode_desolve_c$ofv)
+
+eval_ode_desolve_rccp <- evaluate_design(poped_db_ode_desolve_rcpp) 
+all.equal(eval_std$ofv,eval_ode_desolve_rccp$ofv)
+
+eval_ode_pkpdsim <- evaluate_design(poped_db_ode_pkpdsim) 
+all.equal(eval_std$ofv,eval_ode_pkpdsim$ofv)
+
+eval_ode_mrg <- evaluate_design(poped_db_ode_mrg) 
+all.equal(eval_std$ofv,eval_ode_mrg$ofv)
+```
+
+
+# Speed of FIM computation
+
+We can compare the speed of the computations.  Analytic solutions are fast, as expected, in this case more than 20 times faster than any of the ODE methods. mrgsolve is the fastest of the ODE solvers in this example. Note that, in previous work (http://pkpdsim.ronkeizer.com/speed.html), much of the speed difference between mrgsolve, RxODE and PKPDsim has been found to be due to the overhead from pre- and post-processing of the simulation from ODE systems.  Other ways of handling the pre- and post-processing may speed up these computations.
+
+```{r timing, eval=FALSE}
+library(microbenchmark)
+compare <- microbenchmark(
+  evaluate_design(poped_db_analytic),
+  evaluate_design(poped_db_ode_desolve),
+  evaluate_design(poped_db_ode_desolve_c),
+  evaluate_design(poped_db_ode_desolve_rcpp),
+  evaluate_design(poped_db_ode_pkpdsim),
+  evaluate_design(poped_db_ode_mrg),
+  evaluate_design(poped_db_ode_rx),
+  times = 100L)
+```
+
+```{r, eval=FALSE}
+library(ggplot2)
+autoplot(compare)
+```
+
+![](model_def_other_pkgs_speed.png)
+
+```{r,echo=FALSE,results="hide", eval=FALSE}
+compare.db <- print(compare)
+```
+
+```{r,echo=FALSE, eval=FALSE}
+kable(
+  compare.db,
+  booktabs = TRUE,
+  caption = 'Speed of design evaluation computations in milliseconds.'
+  #,escape = FALSE
+) %>%  kable_styling("striped",full_width = F) 
+```
+
+# Version information {-}
+
+```{r session, cache.rebuild=TRUE}
+sessionInfo()
+```
+
+<!-- `r if (knitr::is_html_output()) '# References {-}'` -->

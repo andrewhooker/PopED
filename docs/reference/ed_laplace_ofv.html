@@ -100,8 +100,20 @@ defined in the PopED database or as arguments to the function." />
 <li>
   <a href="../articles/intro-poped.html">Introduction</a>
 </li>
-<li>
-  <a href="../articles/examples.html">Examples</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -301,7 +313,7 @@ to compute the hessian.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fef0c09faa8&gt;
+#&gt; &lt;bytecode: 0x7ffbb9461e08&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -345,7 +357,7 @@ to compute the hessian.</p></td>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.002 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
 

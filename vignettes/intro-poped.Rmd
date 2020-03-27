@@ -181,7 +181,7 @@ Next, we evaluate the initial design
 ```
 We see that the fixed-effect and residual variability parameters are relatively well estimated with this design, but the between-subject variability parameters are less well estimated.
 
-**Evaluate alternative design**
+## Evaluate alternative design
 
 We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).
 
@@ -215,7 +215,7 @@ poped.db.new <- create.poped.database(
 (ds2 <- evaluate_design(poped.db.new))
 ```
 
-**Comparison of designs**
+## Comparison of designs
 
 The precision on CL is similar with the alternative design but the other parameters are less well estimated.
 
@@ -251,7 +251,7 @@ plot_model_prediction(output$poped.db)
 We see that there are four distinct sample times for this design.  This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.  
 
 
-**Examine efficiency of sampling windows**
+## Examine efficiency of sampling windows
 
 Of course, this means that there are multiple samples at some of these time points.  We can explore a more practical design by looking at the loss of efficiency if we spread out sample times in a uniform distribution around these optimal points ($\pm 30$ minutes).  
 ```{r simulate_efficiency_windows,fig.width=6,fig.height=6}
@@ -260,7 +260,7 @@ plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 
 Here we see the efficiency ($(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}$) drops below 80% in some cases, which is mostly caused by an increase in the parameter uncertainty of the BSV parameter on absorption (om_KA).  Smaller windows or different windowing on different samples might be needed.  To investigate see `?plot_efficiency_of_windows`. 
 
-**Optimize over a discrete design space**
+## Optimize over a discrete design space
 
 In the previous example we optimized over a continuous design space (sample times could be optimized to be any value between a lower and an upper limit).  We could also limit the search to only "allowed" values, for example, only samples taken on the hour are allowed.
 
@@ -278,7 +278,7 @@ plot_model_prediction(output_discrete$poped.db, model_num_points = 300)
 
 Here we see that the optimization ran somewhat quicker, but gave a less efficient design.
 
-**Optimize 'Other' design variables**
+## Optimize 'Other' design variables
 
 One could also optimize over dose, to see if a different dose could help in parameter estimation .
 ```{r optimize_dose,message = FALSE,results='hide', eval=FALSE}
@@ -288,7 +288,7 @@ output_dose_opt <- poped_optim(output$poped.db, opt_xt=TRUE, opt_a=TRUE)
 
 In this case the results are predictable ... higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).
 
-**Cost function to optimize dose**
+## Cost function to optimize dose
 
 Optimizing the dose of a study just to have better model parameter estimates may be somewhat implausible. Instead, let's use a cost function to optimize dose based on some sort of target concentration ... perhaps typical population trough concentrations of 0.2 and 0.35 for the two groups of patients at 240 hours. 
 

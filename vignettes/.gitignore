@@ -2,3 +2,6 @@
 *.R
 *_cache
 *_files
+*.c
+*.o
+*.so

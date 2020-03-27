@@ -98,8 +98,20 @@ continuous optimization variables." />
 <li>
   <a href="../articles/intro-poped.html">Introduction</a>
 </li>
-<li>
-  <a href="../articles/examples.html">Examples</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -409,7 +421,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fef0c09faa8&gt;
+#&gt; &lt;bytecode: 0x7ffbb9461e08&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -510,7 +522,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 100 to 100 ; OFV = 56.032 
 #&gt; 
-#&gt;    Elapsed time: 0.024 seconds.
+#&gt;    Elapsed time: 0.026 seconds.
 #&gt; 
 #&gt;    Final OFV =  56.03204 
 #&gt;    Parameters: 100 
@@ -553,7 +565,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.178 seconds</div><div class='input'>
+#&gt; Total running time: 0.181 seconds</div><div class='input'>
 <span class='co'># cost function</span>
 <span class='co'># PRED at 120 hours</span>
 <span class='no'>crit_fcn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>poped.db</span>,<span class='no'>...</span>){
@@ -620,7 +632,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 75.5698 to 100 ; OFV = 1.34267 
 #&gt; 
-#&gt;    Elapsed time: 0.01 seconds.
+#&gt;    Elapsed time: 0.009 seconds.
 #&gt; 
 #&gt;    Final OFV =  1.342665 
 #&gt;    Parameters: 100 
@@ -713,7 +725,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.215 seconds</div><div class='input'>
+#&gt; Total running time: 0.204 seconds</div><div class='input'>
 <span class='co'># minimize the cost function</span>
 <span class='no'>out_3</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
                      <span class='kw'>ofv_fun</span><span class='kw'>=</span><span class='no'>crit_fcn</span>,
@@ -739,7 +751,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 0.939866
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.006 seconds.
+#&gt; Elapsed time: 0.005 seconds.
 #&gt; 
 #&gt; Final OFV =  0.7854542 
 #&gt; Parameters: 58.49963 
@@ -761,7 +773,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 50.435 to 0.01 ; OFV = 0.000134267 
 #&gt; 
-#&gt;    Elapsed time: 0.012 seconds.
+#&gt;    Elapsed time: 0.018 seconds.
 #&gt; 
 #&gt;    Final OFV =  0.0001342665 
 #&gt;    Parameters: 0.01 
@@ -789,7 +801,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 0.000134267
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.011 seconds.
+#&gt; Elapsed time: 0.009 seconds.
 #&gt; 
 #&gt; Final OFV =  0.0001342665 
 #&gt; Parameters: 0.01 
@@ -811,7 +823,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 0.01 to 0.01 ; OFV = 0.000134267 
 #&gt; 
-#&gt;    Elapsed time: 0.023 seconds.
+#&gt;    Elapsed time: 0.017 seconds.
 #&gt; 
 #&gt;    Final OFV =  0.0001342665 
 #&gt;    Parameters: 0.01 
@@ -842,7 +854,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Efficiency: 
 #&gt;   (ofv_final / ofv_init) = 0.00014286
 #&gt; 
-#&gt; Total running time: 0.307 seconds</div><div class='input'>
+#&gt; Total running time: 0.26 seconds</div><div class='input'>
 
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 

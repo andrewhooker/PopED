@@ -90,8 +90,12 @@ navbar:
       text: Introduction
       href: articles/intro-poped.html
     articles:
-      text: Examples
-      href: articles/examples.html
+      text: Articles
+      menu:
+      - text: Examples
+        href: articles/examples.html
+      - text: Defining models for PopED using R based PKPD simulators
+        href: articles/model_def_other_pkgs.html
     news:
       text: Changelog
       href: news/index.html
