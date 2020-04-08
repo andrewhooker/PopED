@@ -30,19 +30,19 @@ par_1 <- function(x,a,bpop,b,bocc){
 #Now we define a design.  In this case one group of individuals, where we define the individuals' typical weight as 70 kg. 
 
 poped_db <- create.poped.database(ff_fun=mod_1,
-fg_fun=par_1,
-fError_fun=feps.add.prop,
-groupsize=50,
-m=1,
-sigma=c(0.015,0.0015),
-notfixed_sigma = c(1,0),
-bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
-d=c(CL=0.05,V=0.05), 
-xt=c( 1,2,4,6,8,24),
-minxt=0,
-maxxt=24,
-bUseGrouped_xt=1,
-a=c(WT=70)
+                                  fg_fun=par_1,
+                                  fError_fun=feps.add.prop,
+                                  groupsize=50,
+                                  m=1,
+                                  sigma=c(0.015,0.0015),
+                                  notfixed_sigma = c(1,0),
+                                  bpop=c(CL=3.8,V=20,WT_CL=0.75,WT_V=1), 
+                                  d=c(CL=0.05,V=0.05), 
+                                  xt=c( 1,2,4,6,8,24),
+                                  minxt=0,
+                                  maxxt=24,
+                                  bUseGrouped_xt=1,
+                                  a=c(WT=70)
 )
 
 
