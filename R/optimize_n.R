@@ -195,7 +195,7 @@ optimize_n_eff <- function(poped.db,
     ofv_tmp <- ofv_fim(fim_tmp,poped.db)
     eff <- efficiency(ofv_ref, 
                       ofv_tmp,  
-                      poped.db)
+                      poped.db,...)
     ofv <- (eff - 1)^2
     #if(ofv<0) ofv <- Inf
     return(ofv)

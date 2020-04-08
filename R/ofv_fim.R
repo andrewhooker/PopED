@@ -33,7 +33,9 @@
 
 ofv_fim <- function(fmf,poped.db,
                     ofv_calc_type = poped.db$settings$ofv_calc_type,
-                    ds_index=poped.db$parameters$ds_index,...){
+                    ds_index=poped.db$parameters$ds_index,
+                    use_log = TRUE,
+                    ...){
   
   #Input: the FIM
   #Return the single value that should be maximized
@@ -81,7 +83,11 @@ ofv_fim <- function(fmf,poped.db,
     tmp = fmf
     tmp <- tmp[c(col(ds_index)[ds_index==1]),,drop=F]
     tmp <- tmp[,c(col(ds_index)[ds_index==1]),drop=F]
-    ofv_value = det(fmf)/det(tmp)
+    if(use_log){
+      ofv_value = log(det(fmf))-log(det(tmp))
+    } else {
+      ofv_value = det(fmf)/det(tmp)  
+    }
   }
   if((ofv_calc_type==7) ){#sum of CV
     if((sum(sum(fmf))!=0 && !is.nan(sum(sum(fmf))))){

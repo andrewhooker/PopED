@@ -131,7 +131,7 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
     # }
     
     if(!is.null(dmf_init)){
-      eff <- efficiency(dmf_init, dmf, poped.db)
+      eff <- efficiency(dmf_init, dmf, poped.db,...)
       fprintf(fn,"\nEfficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff,both=TRUE)
     }
     # fprintf(fn,'\nEfficiency (Final/Initial): %0.5g\n',

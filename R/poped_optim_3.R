@@ -438,7 +438,7 @@ poped_optim_3 <- function(poped.db,
       # efficiency
       
       
-      eff <- efficiency(ofv_init, output$ofv, poped.db)
+      eff <- efficiency(ofv_init, output$ofv, poped.db,...)
       fprintf("Efficiency: \n  (%s) = %.5g\n",attr(eff,"description"),eff)
       #cat("Efficiency: \n  ", attr(eff,"description"), sprintf("%.5g",eff), "\n")
       #if(eff<=stop_crit_eff) stop_crit <- TRUE
