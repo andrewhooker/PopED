@@ -15,6 +15,9 @@
 #' @param dlls If the computations require compiled code (DLL's) and you are
 #'   using the "snow" method then you need to specify the name of the DLL's without 
 #'   the extension as a text vector \code{c("this_file","that_file")}. 
+#' @param mrgsolve_model If the computations require a mrgsolve model and you 
+#' are using the "snow" method" then you need to specify the name of the model 
+#' object created by \code{mread} or \code{mcode}
 #' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
 #'   
 #' @inheritParams optim_LS
@@ -29,6 +32,7 @@ start_parallel <- function(parallel=TRUE,
                            parallel_type=NULL,
                            seed=NULL,
                            dlls=NULL,
+                           mrgsolve_model=NULL,
                            #cpp_files=NULL,
                            ...)
 {
@@ -76,7 +80,10 @@ start_parallel <- function(parallel=TRUE,
                                 x=paste0(i,.Platform$dynlib.ext))
         }
       }
-      
+      # load mrgsolve models in workers using loadso
+      if (!is.null(mrgsolve_model)) {
+        parallel::clusterCall(cl, loadso, x=mrgsolve_model)
+      }
       # if(!is.null(cpp_files)){
       #   for(i in cpp_files){
       #     parallel::clusterCall(cl, 
