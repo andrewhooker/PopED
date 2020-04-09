@@ -59,12 +59,16 @@ mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
       returnArgs <- m1(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,poped.db)
       m1_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
+    } else {
+      m1_tmp <- 0
     }
     if(n_rand_eff!=0){
       bUseVarSigmaDerivative = poped.db$settings$iFIMCalculationType != 4
       returnArgs <- m3(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarSigmaDerivative,poped.db)
       m3_tmp <- returnArgs[[1]]
       poped.db <- returnArgs[[2]]
+    } else {
+      m3_tmp <- 0
     }
     if(n_fixed_eff!=0 & n_rand_eff!=0 & poped.db$settings$iFIMCalculationType %in% c(0,5,6)){
       returnArgs <- m2(model_switch,xt,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) 

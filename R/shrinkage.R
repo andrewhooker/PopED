@@ -61,7 +61,7 @@ shrinkage <- function(poped.db,
   # change to one individual
   extra_bpop <- matrix(0,nrow = largest_b,ncol = 3)
   bpop_tmp <-rbind(poped.db$parameters$bpop,extra_bpop)
-  notfixed_bpop_tmp <- c(rep(0,largest_bpop),rep(1,largest_b))
+  notfixed_bpop_tmp <- c(rep(0,largest_bpop),poped.db$parameters$notfixed_d)
   poped.db_sh <- create.poped.database(poped.db,
                                        fg_fun=tmp_fg,
                                        bpop=bpop_tmp, 
@@ -76,7 +76,7 @@ shrinkage <- function(poped.db,
                                        mintotgroupsize = 1)
   
   # Compute FIM_map 
-  fulld = getfulld(poped.db$parameters$d[,2,drop=F],poped.db$parameters$covd)
+  fulld = getfulld(poped.db$parameters$d[poped.db$parameters$notfixed_d,2,drop=F],poped.db$parameters$covd)
   
   # get just groupwise values as well
   db_list <- list()
