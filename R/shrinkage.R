@@ -59,9 +59,15 @@ shrinkage <- function(poped.db,
   # fix population parameters
   # add IIV and IOV as fixed effects
   # change to one individual
+  # TODO: need to add iov
   extra_bpop <- matrix(0,nrow = largest_b,ncol = 3)
   bpop_tmp <-rbind(poped.db$parameters$bpop,extra_bpop)
-  notfixed_bpop_tmp <- c(rep(0,largest_bpop),poped.db$parameters$notfixed_d)
+  notfixed_d <- poped.db$parameters$notfixed_d
+  non_zero_d <- poped.db$parameters$d[,2]!=0
+  
+  notfixed_d_new <- notfixed_d | non_zero_d
+  
+  notfixed_bpop_tmp <- c(rep(0,largest_bpop),notfixed_d_new)
   poped.db_sh <- create.poped.database(poped.db,
                                        fg_fun=tmp_fg,
                                        bpop=bpop_tmp, 
@@ -76,7 +82,7 @@ shrinkage <- function(poped.db,
                                        mintotgroupsize = 1)
   
   # Compute FIM_map 
-  fulld = getfulld(poped.db$parameters$d[poped.db$parameters$notfixed_d,2,drop=F],poped.db$parameters$covd)
+  fulld = getfulld(poped.db$parameters$d[notfixed_d_new,2,drop=F],poped.db$parameters$covd)
   
   # get just groupwise values as well
   db_list <- list()
@@ -147,7 +153,12 @@ shrinkage <- function(poped.db,
     }
     
     rse <- get_rse(fim_map,poped.db = poped.db_sh)
-    names(rse) <- paste0("d[",1:length(rse),"]")
+    poped_db_tmp <- poped.db
+    poped_db_tmp$parameters$notfixed_d <- notfixed_d_new
+    parnam <- get_parnam(poped_db_tmp)
+    names(rse) <- parnam[grepl("^(D\\[|d\\_)",parnam)]
+    
+    #names(rse) <- paste0("d[",1:length(rse),"]")
     
     # shrinkage on variance scale
     shrink <- diag(inv(fim_map)%*%inv(fulld))
