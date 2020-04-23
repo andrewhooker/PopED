@@ -10,6 +10,7 @@ start_parallel(
   parallel_type = NULL,
   seed = NULL,
   dlls = NULL,
+  mrgsolve_model = NULL,
   ...
 )
 }
@@ -29,6 +30,10 @@ for you depending on your operating system.}
 \item{dlls}{If the computations require compiled code (DLL's) and you are
 using the "snow" method then you need to specify the name of the DLL's without 
 the extension as a text vector \code{c("this_file","that_file")}.}
+
+\item{mrgsolve_model}{If the computations require a mrgsolve model and you 
+are using the "snow" method" then you need to specify the name of the model 
+object created by \code{mread} or \code{mcode}}
 
 \item{...}{Arguments passed to \code{\link[parallel]{makeCluster}}}
 }

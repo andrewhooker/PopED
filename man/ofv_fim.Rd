@@ -9,6 +9,7 @@ ofv_fim(
   poped.db,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   ds_index = poped.db$parameters$ds_index,
+  use_log = TRUE,
   ...
 )
 }
