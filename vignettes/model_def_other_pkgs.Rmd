@@ -399,42 +399,27 @@ ff_ode_mrg <- function(model_switch, xt, p, poped.db){
 ## ODE solution using RxODE
 
 The  model written for RxODE:
-```{r rxode}
-ode_rx <- "
-d/dt(DEPOT) = -KA*DEPOT;
-d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
-CP=CENT/V;
-"
-```
-
-Compile and load the model with `RxODE`
 ```{r}
-modrx <- RxODE(model = ode_rx, modName = 'modrx')
+modrx <- RxODE({
+  d/dt(DEPOT) = -KA*DEPOT;
+  d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
+  CP=CENT/V;
+})
 ```
 
 
 ```{r}
 ff_ode_rx <- function(model_switch, xt, p, poped.db){
+  times_xt <- drop(xt)
+  et(0,amt=p[["DOSE"]], ii=p[["TAU"]], until=max(times_xt)) %>%
+    et(times_xt) -> data
   
-  times_xt <- drop(xt)  
-  times <- sort(unique(c(0,times_xt)))
-
-  ev <- eventTable() 
-  ev$add.dosing(
-    dose = p[["DOSE"]],
-    dosing.interval = p[["TAU"]],
-    nbr.doses = floor(max(times)/p[["TAU"]])+1, 
-    dosing.to = 1,
-    start.time = 0
-  )
-  ev$add.sampling(times)
-  Params <- c(CL = p[["CL"]], V = p[["V"]], KA = p[["KA"]]) 
+  out <- rxSolve(modrx, p, data, atol=1e-8, rtol=1e-8,maxsteps=5000,
+                 returnType="data.frame")
   
-  out <- modrx$solve(Params, ev,atol=1e-8,rtol=1e-8)
+  y <-  out$CP[match(times_xt,out$time)]
   
-  y = out[match(times_xt,out[,"time"]),"CP",drop=F]
-  
-  return(list(y=y,poped.db=poped.db))
+  return(list(y=matrix(y,ncol=1),poped.db=poped.db))
   
 }
 ```
@@ -614,7 +599,7 @@ kable(
 # Version information {-}
 
 ```{r session, cache.rebuild=TRUE}
-sessionInfo()
+devtools::session_info()
 ```
 
 <!-- `r if (knitr::is_html_output()) '# References {-}'` -->
