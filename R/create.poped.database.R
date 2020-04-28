@@ -152,9 +152,12 @@
 #' \item column 3 defines the variance of the distribution (or length of uniform distribution).
 #' }
 #' Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
-#' parameter value is to be used.
+#' parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'bpop' then the order will be worked out automatically.
 #' @param d Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 #' matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
+#' The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'd' then the order will be worked out automatically.
 #' @param covd Column major vector defining the covariances of the IIV variances. 
 #' That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}. 
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
@@ -164,8 +167,12 @@
 
 #' @param notfixed_bpop  \itemize{
 #' \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
-#' Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed) 
-#' @param notfixed_d Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed) 
+#' Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
+#' The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'notfixed_bpop' then the order will be worked out automatically.
+#' @param notfixed_d Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
+#' The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'notfixed_d' then the order will be worked out automatically. 
 #' @param notfixed_covd Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed)
 #' @param notfixed_docc Vector defining if an IOV variance is fixed or not (1=not fixed, 0=fixed)  
 #' @param notfixed_covdocc Vector row major order for lower triangular matrix defining if a covariance IOV is fixed or not (1=not fixed, 0=fixed) 
@@ -1110,8 +1117,28 @@ create.poped.database <-
     poped.db$parameters$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$parameters$NumRanEff))
     poped.db$parameters$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=poped.db$parameters$nbpop))
     
+    # reorder named values
+    fg_names <- names(do.call(poped.db$model$fg_pointer,list(1,1,1,1,1)))
+    var_tmp <- poped.db$parameters$notfixed_bpop
+    if(all(names(var_tmp) %in% fg_names)){
+      var_tmp <- var_tmp[fg_names[fg_names %in% names(var_tmp)]]
+      poped.db$parameters$notfixed_bpop <- var_tmp
+    }
+    
+    var_tmp <- poped.db$parameters$notfixed_d
+    if(all(names(var_tmp) %in% fg_names)){
+      var_tmp <- var_tmp[fg_names[fg_names %in% names(var_tmp)]]
+      poped.db$parameters$notfixed_d <- var_tmp
+    }
+    
     if(size(d,1)==1 && size(d,2)==poped.db$parameters$NumRanEff){ # we have just the parameter values not the uncertainty
       d_descr <- zeros(poped.db$parameters$NumRanEff,3)
+      
+      # reorder named values
+      if(all(names(d) %in% fg_names)){
+        d <- d[fg_names[fg_names %in% names(d)]]
+      }
+      
       d_descr[,2] <- d
       d_descr[,1] <- 0 # point values
       d_descr[,3] <- 0 # variance
@@ -1121,6 +1148,12 @@ create.poped.database <-
     
     if(size(bpop,1)==1 && size(bpop,2)==poped.db$parameters$nbpop){ # we have just the parameter values not the uncertainty
       bpop_descr <- zeros(poped.db$parameters$nbpop,3)
+      
+      # reorder named values
+      if(all(names(bpop) %in% fg_names)){
+        bpop <- bpop[fg_names[fg_names %in% names(bpop)]]
+      }
+      
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
       bpop_descr[,3] <- 0 # variance
