@@ -180,10 +180,9 @@ test_that("Named vectors are ordered correctly", {
                         design_def)
   )
   
-  plot_model_prediction(poped_db)
-  plot_model_prediction(poped_db,PI=T)
+  #plot_model_prediction(poped_db)
+  #plot_model_prediction(poped_db,PI=T)
   
-  library(testthat)
   expect_equal(
     poped_db$parameters$bpop[,2],
     c(CL=0.15,Favail=1,KA=1,V=8)
@@ -199,4 +198,45 @@ test_that("Named vectors are ordered correctly", {
     c(CL=1,Favail=0,KA=1,V=1)
   )
   
+  
+  sfg <- function(x,a,bpop,b,bocc){
+    parameters=c(CL=bpop[1]*exp(b[1]),
+                 V=bpop[2]*exp(b[2]),
+                 KA=bpop[3]*exp(b[3]),
+                 Favail=bpop[4],
+                 DOSE=a[1])
+    return(parameters) 
+  }
+  
+  poped_db_1 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                      fg_file="sfg",
+                                      fError_file="feps.prop",
+                                      bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                      # notfixed_bpop=c(1,1,1,0),
+                                      notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
+                                      d=c(CL=0.07, V=0.02, KA=0.6), 
+                                      sigma=0.01,
+                                      groupsize=32,
+                                      xt=c( 0.5,1,2,6,24,36,72,120),
+                                      minxt=0,
+                                      maxxt=120,
+                                      a=70)
+  
+  poped_db_2 <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
+                                      fg_file="sfg",
+                                      fError_file="feps.prop",
+                                      bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                      notfixed_bpop=c(1,1,1,0),
+                                      #notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
+                                      d=c(CL=0.07, V=0.02, KA=0.6), 
+                                      sigma=0.01,
+                                      groupsize=32,
+                                      xt=c( 0.5,1,2,6,24,36,72,120),
+                                      minxt=0,
+                                      maxxt=120,
+                                      a=70)
+  
+  FIM.1 <- evaluate.fim(poped_db_1) 
+  FIM.2 <- evaluate.fim(poped_db_2) 
+  expect_equal(det(FIM.1),det(FIM.2))
 })
