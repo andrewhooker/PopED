@@ -1119,25 +1119,31 @@ create.poped.database <-
     
     # reorder named values
     fg_names <- names(do.call(poped.db$model$fg_pointer,list(1,1,1,1,1)))
-    var_tmp <- poped.db$parameters$notfixed_bpop
-    if(all(names(var_tmp) %in% fg_names)){
-      var_tmp <- var_tmp[fg_names[fg_names %in% names(var_tmp)]]
-      poped.db$parameters$notfixed_bpop <- var_tmp
+
+    reorder_vec <- function(your_vec,name_order){
+      if(!is.null(names(your_vec))){
+        if(all(names(your_vec) %in% name_order)){
+          your_vec <- your_vec[name_order[name_order %in% names(your_vec)]]
+        }  
+      }
+      return(your_vec)
     }
     
-    var_tmp <- poped.db$parameters$notfixed_d
-    if(all(names(var_tmp) %in% fg_names)){
-      var_tmp <- var_tmp[fg_names[fg_names %in% names(var_tmp)]]
-      poped.db$parameters$notfixed_d <- var_tmp
-    }
+    poped.db$parameters$notfixed_bpop <- 
+      reorder_vec(poped.db$parameters$notfixed_bpop,
+                  fg_names)
+                           
+    poped.db$parameters$notfixed_d <- 
+      reorder_vec(poped.db$parameters$notfixed_d,
+                  fg_names)
+    
     
     if(size(d,1)==1 && size(d,2)==poped.db$parameters$NumRanEff){ # we have just the parameter values not the uncertainty
       d_descr <- zeros(poped.db$parameters$NumRanEff,3)
       
       # reorder named values
-      if(all(names(d) %in% fg_names)){
-        d <- d[fg_names[fg_names %in% names(d)]]
-      }
+      d <- reorder_vec(d,fg_names)
+      
       
       d_descr[,2] <- d
       d_descr[,1] <- 0 # point values
@@ -1150,9 +1156,7 @@ create.poped.database <-
       bpop_descr <- zeros(poped.db$parameters$nbpop,3)
       
       # reorder named values
-      if(all(names(bpop) %in% fg_names)){
-        bpop <- bpop[fg_names[fg_names %in% names(bpop)]]
-      }
+      bpop <- reorder_vec(bpop,fg_names)
       
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
