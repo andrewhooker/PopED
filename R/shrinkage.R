@@ -189,11 +189,11 @@ shrinkage <- function(poped.db,
     data_tmp[data_tmp==1] <- NA 
     if(packageVersion("dplyr") < "0.8.0"){
       data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
-        dplyr::summarise_at(dplyr::vars(dplyr::starts_with('d[')),
+        dplyr::summarise_at(dplyr::vars(dplyr::starts_with(c('d[','d_'))),
                             dplyr::funs(stats::weighted.mean(., weights,na.rm = T)))
     } else {
       data_tmp <- data_tmp %>% dplyr::group_by(type) %>% 
-        dplyr::summarise_at(dplyr::vars(dplyr::starts_with('d[')),
+        dplyr::summarise_at(dplyr::vars(dplyr::starts_with(c('d[','d_'))),
                             list(~ stats::weighted.mean(., weights,na.rm = T)))
     }
     data_tmp$group <- "all_groups"
