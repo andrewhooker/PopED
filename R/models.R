@@ -93,6 +93,10 @@ ff.PK.1.comp.oral.md.CL <- function(model_switch,xt,parameters,poped.db){
 #' @example tests/testthat/examples_fcn_doc/examples_ff.PK.1.comp.oral.sd.KE.R
 #' 
 #' @export
+
+## TODO: change the parameterization to be a function option
+## TODO: only use md and then turn off if single dose
+
 ff.PK.1.comp.oral.sd.KE <- function(model_switch,xt,parameters,poped.db){
   ##-- Model: One comp first order absorption
   with(as.list(parameters),{
