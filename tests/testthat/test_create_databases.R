@@ -152,3 +152,51 @@ test_that("Number of variables are counted correctly in find.largest.index()", {
   expect_equal(find.largest.index(sfg_test,"x"),0)
   expect_equal(find.largest.index(sfg_test,"a"),2)
 })
+
+test_that("Named vectors are ordered correctly", {
+  model_def <- list(
+    ff_fun="ff.PK.1.comp.oral.sd.CL",
+    fg_fun=build_sfg(model="ff.PK.1.comp.oral.sd.CL"),
+    fError_fun="feps.prop")
+  
+  par_def <- list(
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(prop=0.01))
+  
+  
+  design_def <- list(groupsize=32,
+                     xt=c( 0.5,1,2,6,24,36,72,120),
+                     minxt=0,
+                     maxxt=120,
+                     a=70,
+                     mina=0,
+                     maxa=100)
+  
+  poped_db <- do.call(create.poped.database,
+                      c(model_def,
+                        par_def,
+                        design_def)
+  )
+  
+  plot_model_prediction(poped_db)
+  plot_model_prediction(poped_db,PI=T)
+  
+  library(testthat)
+  expect_equal(
+    poped_db$parameters$bpop[,2],
+    c(CL=0.15,Favail=1,KA=1,V=8)
+  )
+  
+  expect_equal(
+    poped_db$parameters$d[,2],
+    c(CL=0.07,KA=0.6,V=0.02)
+  )
+  
+  expect_equal(
+    poped_db$parameters$notfixed_bpop,
+    c(CL=1,Favail=0,KA=1,V=1)
+  )
+  
+})
