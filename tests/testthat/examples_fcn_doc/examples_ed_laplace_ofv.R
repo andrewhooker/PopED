@@ -49,18 +49,14 @@ poped.db.n <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 
 
 ## ED evaluate using LaPlace approximation 
-tic()
-output <- evaluate.e.ofv.fim(poped.db.n,use_laplace=TRUE)
-toc()
+tic(); output <- evaluate.e.ofv.fim(poped.db.n,use_laplace=TRUE); toc()
 output$E_ofv
 
 \dontrun{
   
   
   ## ED value using MC integration (roughly)
-  tic()
-  e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500,ofv_calc_type = 1)
-  toc()
+  tic();e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500,ofv_calc_type = 1);toc()
   e_ofv_mc_n$E_ofv
   
   
