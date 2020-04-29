@@ -7,10 +7,10 @@ ui <- function(){
   navbarPage(
     title="PopED - Population Experimental Design",
     collapsible = TRUE,
-    tabPanel("Model Definition",fluidPage(
+    tabPanel("Model Definition", fluidPage(
       fluidRow(
         column(
-          9, offset = offset,
+          9, offset = offset, #align ="center",
           #title = "Model Definition",
           #titlePanel("Model Definition"),
           h1("Structural Model"),
@@ -19,7 +19,7 @@ ui <- function(){
       ),
       fluidRow(
         column(
-          3, offset = offset,
+          3, offset = offset, 
           checkboxInput("pk_mod", label = "PK model", value = TRUE),  
           #h4("PK Model"),
           conditionalPanel(
@@ -45,7 +45,7 @@ ui <- function(){
         ),
         #br(),
         
-        column(3, offset = 0,
+        column(3, offset = 0, 
                #h4("PD Model"),
                checkboxInput("pd_mod", label = "PD model", value = FALSE),
                conditionalPanel(
@@ -72,20 +72,20 @@ ui <- function(){
         )
       ),
       fluidRow(
-        column(9, offset = offset,
+        column(9, offset = offset, 
                h1("Between Subject Variability Model"),
                helpText("Define the between subject variability (BSV) for the PK and/or PD model.")
         )
       ),
       fluidRow(
-        column(3, offset = offset,
+        column(3, offset = offset, 
                rHandsontableOutput("hot2")
         )
       ),
       
       #uiOutput("parameter_vales"),
       fluidRow(
-        column(9, offset = offset,
+        column(9, offset = offset, 
                h1("Residual Unexplained Variability Model"),
                helpText("Define the residual unexplained variability (RUV) for the PK and/or PD model.")
         )
@@ -104,13 +104,12 @@ ui <- function(){
                     ))
       ),
       conditionalPanel(
-        condition = "input.struct_PD_model != 'NULL'",
-        
+        condition = "input.pd_mod == true",        
         ## TODO: add more structural models, create function like in PKPDmodels or with PKPDsim
         ## allow for different parameterizations as in PKPDsim (list to change values in equations)
         ## print out equation so that users can sse what they are using
         
-        selectInput("ruv_pd_model", "PK RUV model",
+        selectInput("ruv_pd_model", "PD RUV model",
                     list(
                       "Additive + Proportional" = "feps.add.prop",
                       "Proportional" = "feps.prop",
@@ -152,12 +151,13 @@ ui <- function(){
       
       
     )),
+    
     tabPanel("Parameter Definition",
              #uiOutput("parameter_vales"),
              #radioButtons("useType", "Use Data Types", c("TRUE", "FALSE")),
              
              fluidRow(
-               column(9, offset = offset,
+               column(9, offset = offset, 
                       h1("Parameter definition"),
                       helpText("Define the parameter values for the PK and/or PD model.")
                )
@@ -177,7 +177,7 @@ ui <- function(){
              h5("Fixed RUV parameters"),
              rHandsontableOutput("hot7"),
              
-             #rHandsontableOutput("hot"),
+             rHandsontableOutput("hot"),
              #helpText(paste0("value is ")),
              #h3("Residual Unexplained Variability Model"),
              # conditionalPanel(
@@ -194,21 +194,24 @@ ui <- function(){
              br()
     ),
     tabPanel("Design Definition",
-             textInput("num_groups", "Nunber of design groups", "1"),
-             uiOutput("group_designs"),
-             uiOutput("test"),
-             rHandsontableOutput("hot8"),
-             
+             #textInput("num_groups", "Nunber of design groups", "1"),
+             #uiOutput("group_designs"),
+             #uiOutput("test"),
+             h5("Dosing"),
+             rHandsontableOutput("hot_dose_table"),
+             h5("Sampling"),
+             rHandsontableOutput("hot_sample_table"),
+             #tableOutput('table_tmp'),
              hr(),
-             #actionButton("new_group","Add a new group"),
-             ##  create plot of model 
-             ## plot_model_prediction(poped.db,IPRED=T,DV=T)
-             
+             #actionButton("update_design","Update design"),
+             ##  create plot of model
+            # plot_model_prediction(poped.db,IPRED=T,DV=T),
+
              #     checkboxInput("IPRED", "Show IPRED", FALSE),
-             #     
+             #
              #     checkboxInput("DV", "Show DV", FALSE),
              #     checkboxInput("separate.groups", "Separate Groups", FALSE)
-             
+
              ## identifiers
              br()
     ),
@@ -223,8 +226,9 @@ ui <- function(){
     #     ),
     
     tabPanel("Plot model/design", 
+             actionButton("update_plot","Create plot"),
              plotOutput("modelPlot"),
-             #submitButton("Update View"),
+             submitButton("Update View"),
              checkboxInput("IPRED", "Show IPRED", FALSE),
              checkboxInput("DV", "Show DV", FALSE),
              checkboxInput("separate.groups", "Separate Groups", FALSE),
@@ -238,7 +242,7 @@ ui <- function(){
     ),
     footer = list(
       fluidRow(
-        column(6, offset = offset,
+        column(12, offset = offset, align="center",
                hr(),
                img(src = "poped_splash.png", height = 72, width = 72),
                a(paste("PopED for R (", packageVersion("PopED"),")",sep=""), 
