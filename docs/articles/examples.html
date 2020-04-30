@@ -93,13 +93,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="examples_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Examples</h1>
                         <h4 class="author">Giulia Lestini, Martin Fink and Andrew Hooker</h4>
             
-            <h4 class="date">23 April, 2020</h4>
+            <h4 class="date">30 April, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/examples.Rmd"><code>vignettes/examples.Rmd</code></a></small>
       <div class="hidden name"><code>examples.Rmd</code></div>
@@ -112,7 +112,7 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>In this vignette, we try to highlight PopED features that may be useful. Only code related to specific features we would like to highlight is described here in this vignette. These features (and more) are presented as r-scripts in the “examples” folder in the PopED installation directory. You can view a list of these example files using the commands:</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ex_dir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples"</span>, <span class="kw">package</span><span class="kw">=</span><span class="st">"PopED"</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">ex_dir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples"</span>, <span class="kw">package</span><span class="kw">=</span><span class="st">"PopED"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="no">ex_dir</span>)
 <span class="co">#&gt;  [1] "ex.1.a.PK.1.comp.oral.md.intro.R"          </span>
 <span class="co">#&gt;  [2] "ex.1.b.PK.1.comp.oral.md.re-parameterize.R"</span>
@@ -137,11 +137,19 @@
 <span class="co">#&gt; [21] "ex.8.tmdd_qss_one_target_compiled.R"       </span>
 <span class="co">#&gt; [22] "ex.9.PK.2.comp.oral.md.ode.compiled.R"     </span>
 <span class="co">#&gt; [23] "HCV_ode.c"                                 </span>
-<span class="co">#&gt; [24] "one_comp_oral_CL.c"                        </span>
-<span class="co">#&gt; [25] "tmdd_qss_one_target.c"                     </span>
-<span class="co">#&gt; [26] "two_comp_oral_CL.c"</span></pre></body></html></div>
+<span class="co">#&gt; [24] "HCV_ode.o"                                 </span>
+<span class="co">#&gt; [25] "HCV_ode.so"                                </span>
+<span class="co">#&gt; [26] "one_comp_oral_CL.c"                        </span>
+<span class="co">#&gt; [27] "one_comp_oral_CL.o"                        </span>
+<span class="co">#&gt; [28] "one_comp_oral_CL.so"                       </span>
+<span class="co">#&gt; [29] "tmdd_qss_one_target.c"                     </span>
+<span class="co">#&gt; [30] "tmdd_qss_one_target.o"                     </span>
+<span class="co">#&gt; [31] "tmdd_qss_one_target.so"                    </span>
+<span class="co">#&gt; [32] "two_comp_oral_CL.c"                        </span>
+<span class="co">#&gt; [33] "two_comp_oral_CL.o"                        </span>
+<span class="co">#&gt; [34] "two_comp_oral_CL.so"</span></pre></body></html></div>
 <p>You can then open one of the examples (for example, <code>ex.1.a.PK.1.comp.oral.md.intro.R</code>) using the following code</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">file_name</span> <span class="kw">&lt;-</span> <span class="st">"ex.1.a.PK.1.comp.oral.md.intro.R"</span>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">file_name</span> <span class="kw">&lt;-</span> <span class="st">"ex.1.a.PK.1.comp.oral.md.intro.R"</span>
 
 <span class="no">ex_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples"</span>,<span class="no">file_name</span>,<span class="kw">package</span><span class="kw">=</span><span class="st">"PopED"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span>(<span class="no">ex_file</span>,<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(),<span class="kw">overwrite</span> <span class="kw">=</span> <span class="no">T</span>)
@@ -517,7 +525,7 @@
 <a href="#analytic-solution-of-pkpd-model-multiple-study-arms" class="anchor"></a>Analytic solution of PKPD model, multiple study arms</h1>
 <p>The full code for this example is available in <code>ex.4.PKPD.1.comp.emax.R</code>.</p>
 <p>Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination. The PD is an ordinary Emax model driven by the PK concentrations. The expected output of each measurement (PK or PD) is given in the vector <code>model_switch</code> (see below for details).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PopED</span>)
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PopED</span>)
 <span class="no">f_pkpdmodel</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
     <span class="no">y</span><span class="kw">=</span><span class="no">xt</span>
@@ -536,7 +544,7 @@
   })
 }</pre></body></html></div>
 <p>The error model also has to accommodate both response models.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="co">## -- Residual Error function</span>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co">## -- Residual Error function</span>
 <span class="co">## -- Proportional PK + additive PD</span>
 <span class="no">f_Err</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">epsi</span>,<span class="no">poped.db</span>){
   <span class="no">returnArgs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">poped.db</span>$<span class="no">model</span>$<span class="no">ff_pointer</span>,<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>))
@@ -554,7 +562,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>( <span class="kw">y</span><span class="kw">=</span> <span class="no">y</span>,<span class="kw">poped.db</span> <span class="kw">=</span><span class="no">poped.db</span> ))
 }</pre></body></html></div>
 <p>In the <code>poped.db</code> object the vector we specify <code>model_switch</code> in order to assign the sampling times defined in the vector <code>xt</code> to the PK (=1) or PD (=2) model.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
 
   <span class="co"># Model</span>
   <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">f_pkpdmodel</span>,
@@ -578,7 +586,7 @@
   <span class="kw">maxa</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">10</span>),
   <span class="kw">mina</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">0</span>))</pre></body></html></div>
 <p>The model predictions below show typical PK and PD profiles for three dose groups and the expected 95% prediction interval of the data. The initial design, as shown in the <code>poped.db</code> object, consists of 3 arms with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and 5 hours/days; PD sampling times are 0.1, 1, 2, and 5 hours/days. With <code>model.names=c("PK","PD")</code> one can name the outputs in the graph.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(
   <span class="no">poped.db</span>,<span class="kw">PI</span><span class="kw">=</span><span class="fl">TRUE</span>,
   <span class="kw">facet_scales</span><span class="kw">=</span><span class="st">"free"</span>,
   <span class="kw">separate.groups</span><span class="kw">=</span><span class="fl">TRUE</span>,
@@ -590,9 +598,9 @@
 <a href="#ode-solution-of-pk-model-multiple-dosing" class="anchor"></a>ODE solution of PK model, multiple dosing</h1>
 <p>The full code for this example is available in <code>ex.9.PK.2.comp.oral.md.ode.compiled.R</code>.</p>
 <p>In this example, the <code>deSolve</code> library needs to be installed for computing solutions to a system of differential equations. For faster solutions one can use pre-compiled code using the <code>Rcpp</code> library (see below).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">deSolve</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">deSolve</span>)</pre></body></html></div>
 <p>Here we define the two compartment model in R using deSolve notation</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">PK.2.comp.oral.ode</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">Time</span>, <span class="no">State</span>, <span class="no">Pars</span>){
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">PK.2.comp.oral.ode</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">Time</span>, <span class="no">State</span>, <span class="no">Pars</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">State</span>, <span class="no">Pars</span>)), {
     <span class="no">dA1</span> <span class="kw">&lt;-</span> -<span class="no">KA</span>*<span class="no">A1</span>
     <span class="no">dA2</span> <span class="kw">&lt;-</span> <span class="no">KA</span>*<span class="no">A1</span> + <span class="no">A3</span>* <span class="no">Q</span>/<span class="no">V2</span> -<span class="no">A2</span>*(<span class="no">CL</span>/<span class="no">V1</span>+<span class="no">Q</span>/<span class="no">V1</span>)
@@ -601,7 +609,7 @@
   })
 }</pre></body></html></div>
 <p>Now we define the initial conditions of the ODE system <code>A_ini</code> with a named vector, in this case all compartments are initialized to zero <code><a href="https://rdrr.io/r/base/c.html">c(A1=0,A2=0,A3=0)</a></code>. The dosing input is defined as a data.frame <code>dose_dat</code> referring to the named compartment <code>var = c("A1")</code>, the specified <code>dose_times</code> and <code>value=c(DOSE*Favail)</code> dose amounts. Note that the covariates <code>DOSE</code> and the regimen <code>TAU</code> can differ by arm and be optimized (as shown in <code>ex.1.a.PK.1.comp.oral.md.intro.R</code>). For more information see the help pages for <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html">?deSolve::ode</a></code> and <code><a href="https://rdrr.io/pkg/deSolve/man/events.html">?deSolve::events</a></code>.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ff.PK.2.comp.oral.md.ode</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">ff.PK.2.comp.oral.md.ode</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
 
     <span class="co"># initial conditions of ODE system</span>
@@ -630,7 +638,7 @@
   })
 }</pre></body></html></div>
 <p>When creating a PopED database. <code>ff_fun</code> should point to the function providing the solution to the ODE. Further, the names in the parameter definition (<code>fg</code>) function should match the parameters used in the above two functions.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
 
   <span class="co"># Model</span>
   <span class="kw">ff_fun</span><span class="kw">=</span><span class="st">"ff.PK.2.comp.oral.md.ode"</span>,
@@ -653,10 +661,10 @@
   <span class="kw">a</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">100</span>,<span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>),
   <span class="kw">discrete_a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>,<span class="fl">1000</span>,<span class="kw">by</span><span class="kw">=</span><span class="fl">100</span>),<span class="kw">TAU</span><span class="kw">=</span><span class="fl">8</span>:<span class="fl">24</span>))</pre></body></html></div>
 <p>We plot the population prediction of the model for the initial design</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db</span>,<span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db</span>,<span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_ODE_model-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p><strong>Faster computations with Rcpp:</strong> We could also define the system using Rcpp, which will produce compiled code that should run faster (further examples in <code>ex.2.c.warfarin.ODE.compiled.R</code>). First we redefine the ODE system using Rcpp.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcpp</span>)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcpp</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(
   <span class="st">'List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
      int n = A.size();
@@ -674,7 +682,7 @@
      return List::create(dA);
   }'</span>)</pre></body></html></div>
 <p>Next we add the compiled function (<code>two_comp_oral_ode_Rcpp</code>) in the ODE solver.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ff.PK.2.comp.oral.md.ode.Rcpp</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">ff.PK.2.comp.oral.md.ode.Rcpp</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
 
     <span class="co"># initial conditions of ODE system</span>
@@ -705,14 +713,14 @@
   })
 }</pre></body></html></div>
 <p>Finally we create a poped database to use these functions by updating the previously created database.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db.Rcpp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">poped.db.Rcpp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
   <span class="no">poped.db</span>,
   <span class="kw">ff_fun</span><span class="kw">=</span><span class="st">"ff.PK.2.comp.oral.md.ode.Rcpp"</span>)</pre></body></html></div>
 <p>We can compare the time for design evaluation with these two methods of describing the same model.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>(); <span class="no">eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 2.407 seconds.</span>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>(); <span class="no">eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
+<span class="co">#&gt; Elapsed time: 2.892 seconds.</span>
 <span class="fu"><a href="../reference/tic.html">tic</a></span>(); <span class="no">eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.Rcpp</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 1.091 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 1.539 seconds.</span></pre></body></html></div>
 <p>The difference is noticeable and gets larger for more complex ODE models.</p>
 </div>
 <div id="ode-solution-of-tmdd-model-with-2-outputs-multiple-arms-different-dose-routes-different-number-of-sample-times-per-arm" class="section level1">
@@ -720,7 +728,7 @@
 <a href="#ode-solution-of-tmdd-model-with-2-outputs-multiple-arms-different-dose-routes-different-number-of-sample-times-per-arm" class="anchor"></a>ODE solution of TMDD model with 2 outputs, Multiple arms, different dose routes, different number of sample times per arm</h1>
 <p>The full code for this example is available in <code>ex.8.tmdd_qss_one_target_compiled.R</code>.</p>
 <p>In the function that defines the dosing and derives the ODE solution, the discrete covariate <code>SC_FLAG</code> is used to give the dose either into <code>A1</code> or <code>A2</code>, the sub-cutaneous or the IV compartment.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">tmdd_qss_one_target_model_compiled</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">tmdd_qss_one_target_model_compiled</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
     <span class="no">y</span><span class="kw">=</span><span class="no">xt</span>
 
@@ -757,8 +765,8 @@
   })
 }</pre></body></html></div>
 <!-- Finally we define the residual unexplained variability model. -->
-<p>Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Due to this difference in numbers and the relatively complicated study design we define the sample times (<code>xt</code>), what each sample time will measure (<code>model_switch</code>) and which samples should be taken at the same study time (<code>G_xt</code>) as matricies. Here three variables <code>xt</code>, <code>model_switch</code>, and <code>G_xt</code> are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., <code><a href="https://rdrr.io/r/base/Extremes.html">max(ni)</a></code>). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector <code>ni</code> in the <code>create.poped.database</code> function.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/zeros.html">zeros</a></span>(<span class="fl">6</span>,<span class="fl">30</span>)
+<p>Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Due to this difference in numbers and the relatively complicated study design we define the sample times (<code>xt</code>), what each sample time will measure (<code>model_switch</code>) and which samples should be taken at the same study time (<code>G_xt</code>) as matricies. Here three variables <code>xt</code>, <code>model_switch</code>, and <code>G_xt</code> are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., <code><a href="https://rdrr.io/r/base/Extremes.html">max(ni)</a></code>). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector <code>ni</code> in the <code>create.poped.database</code> function.</p>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/zeros.html">zeros</a></span>(<span class="fl">6</span>,<span class="fl">30</span>)
 <span class="no">study_1_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.0417</span>,<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">7</span>,<span class="fl">14</span>,<span class="fl">21</span>,<span class="fl">28</span>,<span class="fl">35</span>,<span class="fl">42</span>,<span class="fl">49</span>,<span class="fl">56</span>),<span class="fl">8</span>),<span class="kw">nrow</span><span class="kw">=</span><span class="fl">4</span>,<span class="kw">byrow</span><span class="kw">=</span><span class="fl">TRUE</span>)
 <span class="no">study_2_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.0417</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">7</span>,<span class="fl">14</span>,<span class="fl">21</span>,<span class="fl">28</span>,<span class="fl">56</span>,<span class="fl">63</span>,<span class="fl">70</span>,<span class="fl">77</span>,<span class="fl">84</span>,<span class="fl">91</span>,<span class="fl">98</span>,<span class="fl">105</span>),<span class="fl">4</span>),<span class="kw">nrow</span><span class="kw">=</span><span class="fl">2</span>,<span class="kw">byrow</span><span class="kw">=</span><span class="fl">TRUE</span>)
 <span class="no">xt</span>[<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">1</span>:<span class="fl">26</span>] <span class="kw">&lt;-</span> <span class="no">study_1_xt</span>
@@ -776,7 +784,7 @@
 <span class="no">G_xt</span>[<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">1</span>:<span class="fl">26</span>] <span class="kw">&lt;-</span> <span class="no">study_1_G_xt</span>
 <span class="no">G_xt</span>[<span class="fl">5</span>:<span class="fl">6</span>,] <span class="kw">&lt;-</span> <span class="no">study_2_G_xt</span></pre></body></html></div>
 <p>These can then be plugged into the normal <code>poped.db</code> setup.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db.2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">poped.db.2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
 
   <span class="co"># Model</span>
   <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">tmdd_qss_one_target_model_compiled</span>,
@@ -810,9 +818,9 @@
   <span class="kw">discrete_a</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">100</span>,<span class="fl">1000</span>,<span class="kw">by</span><span class="kw">=</span><span class="fl">100</span>),
                     <span class="kw">SC_FLAG</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">1</span>)))</pre></body></html></div>
 <p>Now we can plot population predictions for each group and evaluate the design.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db.2</span>,<span class="kw">facet_scales</span><span class="kw">=</span><span class="st">"free"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db.2</span>,<span class="kw">facet_scales</span><span class="kw">=</span><span class="st">"free"</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_different_dose_regimen-1.png" width="80%" style="display: block; margin: auto;"></p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">eval_2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.2</span>)
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">eval_2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.2</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">eval_2</span>$<span class="no">rse</span>) <span class="co"># in percent</span></pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
@@ -916,7 +924,7 @@
 <a href="#model-with-continuous-covariates" class="anchor"></a>Model with continuous covariates</h1>
 <p>The R code for this example is available in <code>ex.12.covariate_distributions.R</code>.</p>
 <p>Let’s assume that we have a model with a covariate included in the model description. Here we define a one-compartment PK model that uses allometric scaling with a weight effect on both clearance and volume of distribution.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">mod_1</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">mod_1</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
     <span class="no">y</span><span class="kw">=</span><span class="no">xt</span>
 
@@ -938,7 +946,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>( <span class="no">parameters</span> )
 }</pre></body></html></div>
 <p>Now we define a design. In this case one group of individuals, where we define the individuals’ typical weight as 70 kg (<code>a=c(WT=70)</code>).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped_db</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">poped_db</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">mod_1</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">par_1</span>,
@@ -956,10 +964,10 @@
     <span class="kw">a</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">WT</span><span class="kw">=</span><span class="fl">70</span>)
   )</pre></body></html></div>
 <p>We can create a plot of the model prediction for the typical individual</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/unnamed-chunk-24-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>And evaluate the initial design</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>)
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>)
 <span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span>
 <span class="co">#&gt; Warning:   The following parameters are not estimable:</span>
 <span class="co">#&gt;   WT_CL, WT_V</span>
@@ -982,7 +990,7 @@
 <span class="co">#&gt;  3.247502  3.317107        NA        NA 21.026264 21.950179 10.061292</span></pre></body></html></div>
 <p>From the output produced we see that the covariate parameters can not be estimated according to this design calculation (RSE of WT_CL and WT_V are <code>NA</code>). Why is that? Well, the calculation being done is assuming that every individual in the group has the same covariate (to speed up the calculation). This is clearly a poor assumption in this case!</p>
 <p><strong>Distribution of covariates:</strong> We can improve the computation by assuming a distribution of the covariate (WT) in the individuals in the study. We set <code>groupsize=1</code>, the number of groups to be 50 (<code>m=50</code>) and assume that WT is sampled from a normal distribution with mean=70 and sd=10 (<code>a=as.list(rnorm(50, mean = 70, sd = 10)</code>).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped_db_2</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">poped_db_2</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">mod_1</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">par_1</span>,
@@ -999,10 +1007,10 @@
     <span class="kw">bUseGrouped_xt</span><span class="kw">=</span><span class="fl">1</span>,
     <span class="kw">a</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">50</span>, <span class="kw">mean</span> <span class="kw">=</span> <span class="fl">70</span>, <span class="kw">sd</span> <span class="kw">=</span> <span class="fl">10</span>))
   )</pre></body></html></div>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ev</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_2</span>)
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">ev</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_2</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">ofv</span>,<span class="fl">1</span>)
-<span class="co">#&gt; [1] 41.9</span></pre></body></html></div>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">rse</span>)</pre></body></html></div>
+<span class="co">#&gt; [1] 42.1</span></pre></body></html></div>
+<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">rse</span>)</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -1019,11 +1027,11 @@
 </tr>
 <tr class="odd">
 <td>WT_CL</td>
-<td align="right">31</td>
+<td align="right">30</td>
 </tr>
 <tr class="even">
 <td>WT_V</td>
-<td align="right">24</td>
+<td align="right">23</td>
 </tr>
 <tr class="odd">
 <td>d_CL</td>
@@ -1041,7 +1049,7 @@
 </table>
 <p>Here we see that, given this distribution of weights, the covariate effect parameters (<code>WT_CL</code> and <code>WT_V</code>) would be well estimated.</p>
 <p>However, we are only looking at one sample of 50 individuals. Maybe a better approach is to look at the distribution of RSEs over a number of experiments given the expected weight distribution.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">nsim</span> <span class="kw">&lt;-</span> <span class="fl">30</span>
+<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">nsim</span> <span class="kw">&lt;-</span> <span class="fl">30</span>
 <span class="no">rse_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>()
 <span class="kw">for</span>(<span class="no">i</span> <span class="kw">in</span> <span class="fl">1</span>:<span class="no">nsim</span>){
   <span class="no">poped_db_tmp</span> <span class="kw">&lt;-</span>
@@ -1080,8 +1088,8 @@
 <td>0%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">24.30</td>
-<td align="right">18.62</td>
+<td align="right">23.90</td>
+<td align="right">18.32</td>
 <td align="right">21.02</td>
 <td align="right">21.95</td>
 <td align="right">10.06</td>
@@ -1090,8 +1098,8 @@
 <td>25%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">27.34</td>
-<td align="right">20.95</td>
+<td align="right">27.39</td>
+<td align="right">20.99</td>
 <td align="right">21.03</td>
 <td align="right">21.95</td>
 <td align="right">10.07</td>
@@ -1100,30 +1108,30 @@
 <td>50%</td>
 <td align="right">3.26</td>
 <td align="right">3.33</td>
-<td align="right">29.38</td>
-<td align="right">22.52</td>
+<td align="right">29.79</td>
+<td align="right">22.83</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="even">
 <td>75%</td>
-<td align="right">3.28</td>
-<td align="right">3.36</td>
-<td align="right">31.13</td>
-<td align="right">23.86</td>
+<td align="right">3.30</td>
+<td align="right">3.37</td>
+<td align="right">31.80</td>
+<td align="right">24.36</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="odd">
 <td>100%</td>
-<td align="right">3.57</td>
-<td align="right">3.64</td>
-<td align="right">37.13</td>
-<td align="right">28.45</td>
+<td align="right">3.36</td>
+<td align="right">3.44</td>
+<td align="right">37.61</td>
+<td align="right">28.82</td>
 <td align="right">21.03</td>
-<td align="right">21.97</td>
+<td align="right">21.96</td>
 <td align="right">10.08</td>
 </tr>
 </tbody>
@@ -1140,7 +1148,7 @@
 <a href="#model-with-inter-occasion-variability-iov" class="anchor"></a>Model with Inter-Occasion Variability (IOV)</h1>
 <p>The full code for this example is available in <code>ex.14.PK.IOV.R</code>.</p>
 <p>The IOV is introduced with <code>bocc[x,y]</code> in the parameter definition function as a matrix with the first argument <code>x</code> indicating the index for the IOV variances, and the second argument <code>y</code> denoting the occasion. This is used in the example to derive to different clearance values, i.e., <code>CL_OCC_1</code> and <code>CL_OCC_2</code>.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
+<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
   <span class="no">parameters</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="kw">CL_OCC_1</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">1</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">1</span>]+<span class="no">bocc</span>[<span class="fl">1</span>,<span class="fl">1</span>]),
                 <span class="kw">CL_OCC_2</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">1</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">1</span>]+<span class="no">bocc</span>[<span class="fl">1</span>,<span class="fl">2</span>]),
                 <span class="kw">V</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">2</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">2</span>]),
@@ -1150,7 +1158,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>( <span class="no">parameters</span> )
 }</pre></body></html></div>
 <p>These parameters can now be used in the model function to define the change in parameters between the occacions (here the change occurs with the 7th dose in a one-compartment model with first order absorption).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(
+<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(
   <span class="st">'List one_comp_oral_ode(double Time, NumericVector A, NumericVector Pars) {
    int n = A.size();
    NumericVector dA(n);
@@ -1190,7 +1198,7 @@
   })
 }</pre></body></html></div>
 <p>The within-subject variability variances (<code>docc</code>) are defined in the poped database as a 3-column matrix with one row per IOV-parameter, and the middle column giving the variance values.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff.ode.rcpp</span>,
     <span class="kw">fError_fun</span><span class="kw">=</span><span class="no">feps.add.prop</span>,
@@ -1211,7 +1219,7 @@
     <span class="kw">mina</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>)
   )</pre></body></html></div>
 <p>We can visualize the IOV by looking at an example individual. We see the PK profile changes at the 7th dose (red line) due to the change in clearance.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(
   <span class="no">poped.db</span>,
@@ -1225,7 +1233,7 @@
 ) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span>(<span class="kw">xintercept</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">6</span>,<span class="kw">color</span><span class="kw">=</span><span class="st">"red"</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_IOV_with_IIV-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>We can also see that the design is relatively poor for estimating the IOV parameter:</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ev</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
+<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="no">ev</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">rse</span>)</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
@@ -1269,7 +1277,7 @@
 <a href="#full-omega-matrix" class="anchor"></a>Full omega matrix</h1>
 <p>The full code for this example is available in <code>ex.15.full.covariance.matrix.R</code>.</p>
 <p>The <code>covd</code> object is used for defining the covariances of the between subject variances (off-diagonal elements of the full variance-covariance matrix for the between subject variability).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db_with</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">poped.db_with</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_file</span><span class="kw">=</span><span class="st">"ff"</span>,
     <span class="kw">fg_file</span><span class="kw">=</span><span class="st">"sfg"</span>,
@@ -1286,7 +1294,7 @@
     <span class="kw">a</span><span class="kw">=</span><span class="fl">70</span>
   )</pre></body></html></div>
 <p>What do the covariances mean?</p>
-<div class="sourceCode"><html><body><pre class="r">(<span class="no">IIV</span> <span class="kw">&lt;-</span> <span class="no">poped.db_with</span>$<span class="no">parameters</span>$<span class="no">param.pt.val</span>$<span class="no">d</span>)
+<div class="sourceCode" id="cb35"><html><body><pre class="r">(<span class="no">IIV</span> <span class="kw">&lt;-</span> <span class="no">poped.db_with</span>$<span class="no">parameters</span>$<span class="no">param.pt.val</span>$<span class="no">d</span>)
 <span class="co">#&gt;      [,1] [,2] [,3]</span>
 <span class="co">#&gt; [1,] 0.07 0.03 0.10</span>
 <span class="co">#&gt; [2,] 0.03 0.02 0.09</span>
@@ -1298,15 +1306,15 @@
 <span class="co">#&gt; [3,] 0.4879500 0.8215838 1.0000000</span></pre></body></html></div>
 <p>They indicate a correlation of the inter-individual variabilities, here of ca. 0.8 between clearance and volume, as well as between volume and absorption rate.</p>
 <p>We can clearly see a difference in the variance of the model predictions.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 <span class="no">p1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db</span>, <span class="kw">PI</span><span class="kw">=</span><span class="fl">TRUE</span>)+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span>(-<span class="fl">0.5</span>,<span class="fl">12</span>)
 <span class="no">p2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db_with</span>,<span class="kw">PI</span><span class="kw">=</span><span class="fl">TRUE</span>) +<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span>(-<span class="fl">0.5</span>,<span class="fl">12</span>)
 <span class="kw pkg">gridExtra</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span>(<span class="no">p1</span>+ <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"No covariance in BSV"</span>), <span class="no">p2</span>+ <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Covariance in BSV"</span>), <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">1</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_with_cov_matrix-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Evaluating the designs with and without the covariances:</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ev1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
+<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">ev1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
 <span class="no">ev2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db_with</span>)</pre></body></html></div>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev1</span>$<span class="no">rse</span>)
+<div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev1</span>$<span class="no">rse</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev2</span>$<span class="no">rse</span>)</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
@@ -1369,7 +1377,7 @@
 </table>
 <p>Note, that the precision of all other parameters is barely affected by including the full covariance matrix. This is likely to be different in practice with more ill-conditioned numerical problems.</p>
 <p><strong>Evaluate the same designs with full FIM (instead of reduced)</strong></p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">ev1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>, <span class="kw">fim.calc.type</span><span class="kw">=</span><span class="fl">0</span>)
+<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">ev1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>, <span class="kw">fim.calc.type</span><span class="kw">=</span><span class="fl">0</span>)
 <span class="no">ev2</span> <span class="kw">&lt;-</span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db_with</span>, <span class="kw">fim.calc.type</span><span class="kw">=</span><span class="fl">0</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev1</span>$<span class="no">rse</span>,<span class="fl">1</span>)
@@ -1439,7 +1447,7 @@
 <a href="#include-a-prior-fim-compute-power-to-identify-a-parameter" class="anchor"></a>Include a prior FIM, compute power to identify a parameter</h1>
 <p>In this example we incorporate prior knowledge into a current study design calculation. First the expected FIM obtained from an experiment in adults is computed. Then this FIM is added to the current experiment in children. One could also use the observed FIM when using estimation software to fit one realization of a design (from the $COVARIANCE step in NONMEM for example). The full code for this example is available in <code>ex.11.PK.prior.R</code>.</p>
 <p>Note that we define the parameters for a one-compartment first-order absorption model using a covariate called <code>isPediatric</code> to switch between adult and pediatric models, and <code>bpop[5]=pedCL</code> is the factor to multiply the adult clearance <code>bpop[3]</code> to obtain the pediatric one.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
+<div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
   <span class="no">parameters</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
     <span class="kw">V</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">1</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">1</span>]),
     <span class="kw">KA</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">2</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">2</span>]),
@@ -1451,7 +1459,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>( <span class="no">parameters</span> )
 }</pre></body></html></div>
 <p>The design and design space for adults is defined below (Two arms, 5 sample time points per arm, doses of 20 and 40 mg, <code>isPediatric = 0</code>). As we want to pool the results (i.e. add the FIMs together), we also have to provide the <code>pedCL</code> parameter so that both the adult and childrems FIM have the same dimensions.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff.PK.1.comp.oral.md.CL</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
@@ -1469,10 +1477,10 @@
            <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">40</span>, <span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>,<span class="kw">isPediatric</span> <span class="kw">=</span> <span class="fl">0</span>))
   )</pre></body></html></div>
 <p>Create plot of model without variability</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_adult-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>To store the FIM from the adult design we evaluate this design</p>
-<div class="sourceCode"><html><body><pre class="r">(<span class="no">outAdult</span> <span class="kw">=</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>))
+<div class="sourceCode" id="cb43"><html><body><pre class="r">(<span class="no">outAdult</span> <span class="kw">=</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>))
 <span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span>
 <span class="co">#&gt; Warning:   The following parameters are not estimable:</span>
 <span class="co">#&gt;   pedCL</span>
@@ -1503,7 +1511,7 @@
 <span class="co">#&gt;  6.634931  8.587203  4.354792        NA 33.243601 55.689432 27.133255</span></pre></body></html></div>
 <p>It is obvious that we cannot estimate the pediatric covariate from adult data only; hence the warning message. You can also note the zeros in the 4th column and 4th row of the FIM indicating that <code>pedCL</code> cannot be estimated from the adult data.</p>
 <p>We can evaluate the adult design without warning, by setting the <code>pedCL</code> parameter to be fixed (i.e., not estimated):</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped.db</span>, <span class="kw">notfixed_bpop</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>)))
+<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped.db</span>, <span class="kw">notfixed_bpop</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>)))
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] 29.70233</span>
 <span class="co">#&gt; </span>
@@ -1521,7 +1529,7 @@
 <span class="co">#&gt;  6.634931  8.587203  4.354792 33.243601 55.689432 27.133255</span></pre></body></html></div>
 <p>One obtains good estimates for all parameters for adults (&lt;60% RSE for all).</p>
 <p>For pediatrics the covariate <code>isPediatric = 1</code>. We define one arm, 4 sample-time points.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db.ped</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="no">poped.db.ped</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff.PK.1.comp.oral.md.CL</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
@@ -1538,10 +1546,10 @@
     <span class="kw">a</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">40</span>,<span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>,<span class="kw">isPediatric</span> <span class="kw">=</span> <span class="fl">1</span>))
   )</pre></body></html></div>
 <p>We can create a plot of the pediatric model without variability</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db.ped</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb46"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped.db.ped</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="examples_files/figure-html/simulate_pediatrics-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Evaluate the design of the pediatrics study alone.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.ped</span>)
+<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.ped</span>)
 <span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span>
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] -Inf</span>
@@ -1571,7 +1579,7 @@
 <span class="co">#&gt;  77.2918849</span></pre></body></html></div>
 <p>Clearly the design has problems on its own.</p>
 <p>We can add the prior information from the adult study and evaluate that design (i.e., pooling adult and pediatric data).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db.all</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
+<div class="sourceCode" id="cb48"><html><body><pre class="r"><span class="no">poped.db.all</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
   <span class="no">poped.db.ped</span>,
   <span class="kw">prior_fim</span> <span class="kw">=</span> <span class="no">outAdult</span>$<span class="no">fim</span>
 )
@@ -1603,7 +1611,7 @@
 <span class="co">#&gt;  6.381388  8.222819  4.354761 12.591940 31.808871 52.858399 25.601551</span></pre></body></html></div>
 <p>The pooled data leads to much higher precision in parameter estimates compared to either study separately.</p>
 <p>One can also obtain the power for estimating the pediatric difference in clearance (power in estimating bpop[5] as different from 1).</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_power.html">evaluate_power</a></span>(<span class="no">poped.db.all</span>, <span class="kw">bpop_idx</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">h0</span><span class="kw">=</span><span class="fl">1</span>, <span class="kw">out</span><span class="kw">=</span><span class="no">out.all</span>)
+<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_power.html">evaluate_power</a></span>(<span class="no">poped.db.all</span>, <span class="kw">bpop_idx</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">h0</span><span class="kw">=</span><span class="fl">1</span>, <span class="kw">out</span><span class="kw">=</span><span class="no">out.all</span>)
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] 34.96368</span>
 <span class="co">#&gt; </span>
@@ -1637,7 +1645,7 @@
 <div id="design-evaluation-including-uncertainty-in-the-model-parameters-robust-design" class="section level1">
 <h1 class="hasAnchor">
 <a href="#design-evaluation-including-uncertainty-in-the-model-parameters-robust-design" class="anchor"></a>Design evaluation including uncertainty in the model parameters (robust design)</h1>
-<p>In this example the aim is to evaluate a design incorporating uncertainty around parameter values in the model. The full code for this example is available in <code>ex.2.d.warfarin.ED.R</code>. This illustration is one of the Warfarin examples from software comparison in: Nyberg et al.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>In this example the aim is to evaluate a design incorporating uncertainty around parameter values in the model. The full code for this example is available in <code>ex.2.d.warfarin.ED.R</code>. This illustration is one of the Warfarin examples from software comparison in: Nyberg et al.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
 <p>We define the fixed effects in the model and add a 10% uncertainty to all but Favail. To do this we use a<br>
 Matrix defining the fixed effects, per row (row number = parameter_number) we should have:</p>
 <ul>
@@ -1646,7 +1654,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <li>column 3 defines the variance of the distribution (or length of uniform distribution).</li>
 </ul>
 <p>Here we define a log-normal distribution</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">bpop_vals</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.15</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">8</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">1.0</span>, <span class="kw">Favail</span><span class="kw">=</span><span class="fl">1</span>)
+<div class="sourceCode" id="cb50"><html><body><pre class="r"><span class="no">bpop_vals</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.15</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">8</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">1.0</span>, <span class="kw">Favail</span><span class="kw">=</span><span class="fl">1</span>)
 <span class="no">bpop_vals_ed</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu"><a href="../reference/ones.html">ones</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">bpop_vals</span>),<span class="fl">1</span>)*<span class="fl">4</span>, <span class="co"># log-normal distribution</span>
         <span class="no">bpop_vals</span>,
@@ -1659,7 +1667,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <span class="co">#&gt; KA     4      1.00 0.010000</span>
 <span class="co">#&gt; Favail 0      1.00 0.000000</span></pre></body></html></div>
 <p>With this model and parameter set we define the initial design and design space. Specifically note the <code>bpop=bpop_vals_ed</code> and the <code>ED_samp_size=20</code> arguments. <code>ED_samp_size=20</code> indicates the number of samples used in evaluating the E-family objective functions.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
@@ -1677,7 +1685,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
     <span class="kw">maxa</span><span class="kw">=</span><span class="fl">100</span>,
     <span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>)</pre></body></html></div>
 <p>You can also provide <code>ED_samp_size</code> argument to the design evaluation or optimization arguments:</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>();<span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,<span class="kw">d_switch</span><span class="kw">=</span><span class="fl">FALSE</span>,<span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
+<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>();<span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,<span class="kw">d_switch</span><span class="kw">=</span><span class="fl">FALSE</span>,<span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] 55.41311</span>
 <span class="co">#&gt; </span>
@@ -1706,9 +1714,9 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <span class="co">#&gt;   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 </span>
 <span class="co">#&gt; SIGMA[2,2] </span>
 <span class="co">#&gt;  25.341368</span>
-<span class="co">#&gt; Elapsed time: 0.13 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 0.225 seconds.</span></pre></body></html></div>
 <p>We can see that the result, based on MC sampling, is somewhat variable with so few samples.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>();<span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,<span class="kw">d_switch</span><span class="kw">=</span><span class="fl">FALSE</span>,<span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
+<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>();<span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,<span class="kw">d_switch</span><span class="kw">=</span><span class="fl">FALSE</span>,<span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] 55.42045</span>
 <span class="co">#&gt; </span>
@@ -1737,14 +1745,14 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <span class="co">#&gt;   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 </span>
 <span class="co">#&gt; SIGMA[2,2] </span>
 <span class="co">#&gt;  25.311870</span>
-<span class="co">#&gt; Elapsed time: 0.119 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 0.199 seconds.</span></pre></body></html></div>
 </div>
 <div id="design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality" class="section level1">
 <h1 class="hasAnchor">
 <a href="#design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality" class="anchor"></a>Design evaluation for a subset of model parameters of interest (Ds optimality)</h1>
 <p>Ds-optimality is a criterion that can be used if one is interested in estimating a subset “s” of the model parameters as precisely as possible. The full code for this example is available in <code>ex.2.e.warfarin.Ds.R</code>. First we define initial design and design space:</p>
 <p>For Ds optimality we add the <code>ds_index</code> option to the <code>create.poped.database</code> function to indicate whether a paramter is interesting (=0) or not (=1). Moreover, we set the <code>ofv_calc_type=6</code> for computing the Ds optimality criterion (it is set to 4 by default, for computing the log of the determiant of the FIM). More details are available by running the command <code><a href="../reference/create.poped.database.html">?create.poped.database</a></code>.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
+<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">poped.db</span> <span class="kw">&lt;-</span>
   <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
     <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff</span>,
     <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
@@ -1763,9 +1771,9 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
     <span class="kw">ds_index</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>), <span class="co"># size is number_of_non_fixed_parameters</span>
     <span class="kw">ofv_calc_type</span><span class="kw">=</span><span class="fl">6</span>) <span class="co"># Ds OFV calculation</span></pre></body></html></div>
 <p>Design evaluation:</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
+<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
 <span class="co">#&gt; $ofv</span>
-<span class="co">#&gt; [1] 16.49204</span>
+<span class="co">#&gt; [1] 14534520</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $fim</span>
 <span class="co">#&gt;                     CL         V        KA         d_CL          d_V</span>
@@ -1799,13 +1807,13 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <p>The full code for this example is available in “ex.13.shrinkage.R”.</p>
 <p><img src="examples_files/figure-html/unnamed-chunk-61-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>To evaluate the estimation quality of the individual random effects in the model (the b’s) we use the function <code><a href="../reference/shrinkage.html">shrinkage()</a></code>.</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="../reference/shrinkage.html">shrinkage</a></span>(<span class="no">poped.db</span>)
+<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="fu"><a href="../reference/shrinkage.html">shrinkage</a></span>(<span class="no">poped.db</span>)
 <span class="co">#&gt; # A tibble: 3 x 5</span>
-<span class="co">#&gt;    d_KA   d_V `D[3,3]` type       group</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;</span>
-<span class="co">#&gt; 1 0.504 0.367    0.424 shrink_var grp_1</span>
-<span class="co">#&gt; 2 0.295 0.205    0.241 shrink_sd  grp_1</span>
-<span class="co">#&gt; 3 0.710 0.303    0.206 se         grp_1</span></pre></body></html></div>
+<span class="co">#&gt;   `d[1]` `d[2]` `d[3]` type       group</span>
+<span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.504  0.367  0.424 shrink_var grp_1</span>
+<span class="co">#&gt; 2  0.295  0.205  0.241 shrink_sd  grp_1</span>
+<span class="co">#&gt; 3  0.710  0.303  0.206 se         grp_1</span></pre></body></html></div>
 <p>The output shows us the expected shrinkage on the variance scale (<span class="math inline">\(shrink_{var}=1-var(b_j)/D(j,j)\)</span>) and on the standard deviation scale (<span class="math inline">\(shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))\)</span>), as well as the standard errors of the <span class="math inline">\(b_j\)</span> estimates.</p>
 </div>
 <div id="further-examples-to-be-implemented" class="section level1">
@@ -1829,8 +1837,8 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., &amp; Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. <a href="https://doi.org/10.1007/s10928-011-9228-y" class="uri">https://doi.org/10.1007/s10928-011-9228-y</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Nyberg, J., Bazzoli, C., Ogungbenro, K., Aliev, A., Leonov, S., Duffull, S., Hooker, A.C. and Mentré, F. (2014). Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies. British Journal of Clinical Pharmacology, 79(1), 1–32. <a href="https://doi.org/10.1111/bcp.12352" class="uri">https://doi.org/10.1111/bcp.12352</a><a href="#fnref2">↩</a></p></li>
+<li id="fn1"><p>Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., &amp; Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. <a href="https://doi.org/10.1007/s10928-011-9228-y" class="uri">https://doi.org/10.1007/s10928-011-9228-y</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Nyberg, J., Bazzoli, C., Ogungbenro, K., Aliev, A., Leonov, S., Duffull, S., Hooker, A.C. and Mentré, F. (2014). Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies. British Journal of Clinical Pharmacology, 79(1), 1–32. <a href="https://doi.org/10.1111/bcp.12352" class="uri">https://doi.org/10.1111/bcp.12352</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>

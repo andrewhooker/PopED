@@ -1,9 +1,9 @@
-pandoc: 1.19.2.1
+pandoc: 2.9.2
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   examples: examples.html
   intro-poped: intro-poped.html
   model_def_other_pkgs: model_def_other_pkgs.html
-last_built: 2020-04-24T04:57Z
+last_built: 2020-04-30T08:28Z
 
