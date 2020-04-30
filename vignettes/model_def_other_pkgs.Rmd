@@ -26,7 +26,7 @@ if(Sys.info()["user"]=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS
 
 devtools::install_github("InsightRX/PKPDsim",force = F)
 
-devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
+# devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
 
 library(knitr)
 
@@ -565,6 +565,8 @@ We can compare the speed of the computations.  Analytic solutions are fast, as e
 
 ```{r timing, eval=FALSE}
 library(microbenchmark)
+library(ggplot2)
+
 compare <- microbenchmark(
   evaluate_design(poped_db_analytic),
   evaluate_design(poped_db_ode_desolve),
@@ -574,17 +576,32 @@ compare <- microbenchmark(
   evaluate_design(poped_db_ode_mrg),
   evaluate_design(poped_db_ode_rx),
   times = 100L)
-```
 
-```{r, eval=FALSE}
-library(ggplot2)
 autoplot(compare)
 ```
 
-![](model_def_other_pkgs_speed.png)
 
 ```{r,echo=FALSE,results="hide", eval=FALSE}
+
+if(interactive()) setwd(here::here("vignettes"))
+
+rdata_name <- "model_def_other_pkgs_compare_speed"
+obj_list <- c("compare")
+
+if(knitr::opts_chunk$get("run_compare")){
+  save(list = obj_list,file = paste0(rdata_name,".RData"))
+} else {
+  load(file = paste0(rdata_name,".RData"))
+}
+
+png("model_def_other_pkgs_compare_speed.png", 
+    width = 8, height = 4, units = 'in', 
+    res = 200)
+autoplot(compare)
+dev.off()
+
 compare.db <- print(compare)
+
 ```
 
 ```{r,echo=FALSE, eval=FALSE}
@@ -596,10 +613,14 @@ kable(
 ) %>%  kable_styling("striped",full_width = F) 
 ```
 
+![](model_def_other_pkgs_compare_speed.png)
+
+
 # Version information {-}
 
 ```{r session, cache.rebuild=TRUE}
 devtools::session_info()
+#sessionInfo()
 ```
 
 <!-- `r if (knitr::is_html_output()) '# References {-}'` -->
