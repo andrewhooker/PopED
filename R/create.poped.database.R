@@ -1118,7 +1118,10 @@ create.poped.database <-
     poped.db$parameters$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=poped.db$parameters$nbpop))
     
     # reorder named values
-    fg_names <- names(do.call(poped.db$model$fg_pointer,list(1,1,1,1,1)))
+    fg_names <- names(do.call(poped.db$model$fg_pointer,
+                              list(1,1,1,1,
+                                   ones(poped.db$parameters$NumDocc,
+                                        poped.db$parameters$NumOcc))))
 
     reorder_vec <- function(your_vec,name_order){
       if(!is.null(names(your_vec))){
