@@ -61,6 +61,7 @@ optim_ARS <- function(par,
                       parallel=F,
                       parallel_type=NULL,
                       num_cores = NULL,
+                      mrgsolve_model=NULL,
                       seed=round(runif(1,0,10000000)),
                       allow_replicates=TRUE,
                       generator=NULL,
@@ -194,7 +195,7 @@ optim_ARS <- function(par,
   } # end function
   
   if(parallel){
-    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,...) 
+    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,mrgsolve_model=mrgsolve_model,...) 
     on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
   }  
   iter_chunk = NULL
