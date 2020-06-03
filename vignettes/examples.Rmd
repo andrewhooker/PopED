@@ -25,8 +25,11 @@ vignette: >
 #  as_is: true
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include = FALSE, cache=FALSE}
 if(Sys.getenv("LOGNAME")=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
+
+library(deSolve)
+library(Rcpp)
 
 knitr::opts_chunk$set(
   collapse = TRUE
@@ -1244,7 +1247,9 @@ shrinkage(poped.db)
 ```
 The output shows us the expected shrinkage on the variance scale ($shrink_{var}=1-var(b_j)/D(j,j)$) and on the standard deviation scale ($shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))$), as well as the standard errors of the $b_j$ estimates.
 
-# Further examples (to be implemented)
+# Further examples 
+
+Available in PopED
 
 *	Espresso design
 *	Handling BLQ data	
@@ -1253,6 +1258,10 @@ The output shows us the expected shrinkage on the variance scale ($shrink_{var}=
 *	Constraining the optimization to different allowed sampling times for each response	
 * Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
 * Handling derived outputs	
+
+To be implemented
+
 * Symbolic differentiation	
+
 
 
