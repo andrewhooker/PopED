@@ -271,7 +271,7 @@
 #' @param strExecuteName Compilation output executable name 
 #' @param iNumProcesses Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) 
 #' @param iNumChunkDesignEvals Number of design evaluations that should be evaluated in each process before getting new work from job manager
-#' @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
+# @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
 #' @param Mat_Out_Pre The prefix of the output mat file to communicate with the executable 
 #' @param strExtraRunOptions Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options 
 #' @param dPollResultTime Polling time to check if the parallel execution is finished 
@@ -668,7 +668,9 @@ create.poped.database <-
            ## -- Number of design evaluations that should be evaluated in each process before getting new work from job manager --
            iNumChunkDesignEvals=poped.choose(popedInput$settings$parallel$iNumChunkDesignEvals,-2),
            ## -- The prefix of the input mat file to communicate with the executable --
-           strMatFileInputPrefix=poped.choose(popedInput$settings$parallel$strMatFileInputPrefix,'parallel_input'),
+           #strMatFileInputPrefix = poped.choose(
+           #   popedInput$settings$parallel$strMatFileInputPrefix,
+           #   'parallel_input'),
            ## -- The prefix of the output mat file to communicate with the executable --
            Mat_Out_Pre=poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,'parallel_output'),
            ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
@@ -889,7 +891,7 @@ create.poped.database <-
     poped.db$settings$parallel$strExecuteName = strExecuteName
     poped.db$settings$parallel$iNumProcesses = iNumProcesses
     poped.db$settings$parallel$iNumChunkDesignEvals = iNumChunkDesignEvals
-    poped.db$settings$parallel$strMatFileInputPrefix = strMatFileInputPrefix
+    #poped.db$settings$parallel$strMatFileInputPrefix = strMatFileInputPrefix
     poped.db$settings$parallel$strMatFileOutputPrefix = Mat_Out_Pre
     poped.db$settings$parallel$strExtraRunOptions = strExtraRunOptions
     poped.db$settings$parallel$dPollResultTime = dPollResultTime
