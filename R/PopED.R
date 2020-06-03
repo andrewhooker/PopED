@@ -84,7 +84,7 @@
 #' @importFrom utils stack
 #' @importFrom magrittr "%>%" 
 # @importFrom rlang .data
-#' 
+# @importFrom devtools load_all
 # @importFrom MASS write.matrix
 # @importFrom mvtnorm rmvnorm
 # @import ggplot2
