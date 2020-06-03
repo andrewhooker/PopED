@@ -62,10 +62,13 @@ poped_optimize(
 \item column 3 defines the variance of the distribution (or length of uniform distribution).
 }
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
-parameter value is to be used.}
+parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'bpop' then the order will be worked out automatically.}
 
 \item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
+matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
+The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'd' then the order will be worked out automatically.}
 
 \item{maxxt}{Matrix or single value defining the maximum value for each xt sample.  If a single value is 
 supplied then all xt values are given the same maximum value.}
@@ -222,7 +225,7 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 # only to check that things are working
 out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
                          rsit=2,sgit=2,ls_step_size=2, 
-                         iter_max=1)
+                         iter_max=1,out_file = "")
 
 \dontrun{
   

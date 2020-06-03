@@ -158,9 +158,6 @@ create.poped.database(
  
     iNumChunkDesignEvals = poped.choose(popedInput$settings$parallel$iNumChunkDesignEvals,
     -2),
- 
-    strMatFileInputPrefix = poped.choose(popedInput$settings$parallel$strMatFileInputPrefix,
-    "parallel_input"),
   Mat_Out_Pre = poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,
     "parallel_output"),
   strExtraRunOptions = poped.choose(popedInput$settings$parallel$strExtraRunOptions,
@@ -365,10 +362,13 @@ Number of typical values}
 \item column 3 defines the variance of the distribution (or length of uniform distribution).
 }
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
-parameter value is to be used.}
+parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'bpop' then the order will be worked out automatically.}
 
 \item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}.}
+matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
+The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'd' then the order will be worked out automatically.}
 
 \item{covd}{Column major vector defining the covariances of the IIV variances. 
 That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
@@ -382,9 +382,13 @@ can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{notfixed_bpop}{\itemize{
 \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
-Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed)}
+Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
+The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'notfixed_bpop' then the order will be worked out automatically.}
 
-\item{notfixed_d}{Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed)}
+\item{notfixed_d}{Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
+The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'notfixed_d' then the order will be worked out automatically.}
 
 \item{notfixed_covd}{Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed)}
 
@@ -550,8 +554,6 @@ User defined data structure that, for example could be used to send in data to t
 \item{iNumProcesses}{Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager)}
 
 \item{iNumChunkDesignEvals}{Number of design evaluations that should be evaluated in each process before getting new work from job manager}
-
-\item{strMatFileInputPrefix}{The prefix of the input mat file to communicate with the executable}
 
 \item{Mat_Out_Pre}{The prefix of the output mat file to communicate with the executable}
 

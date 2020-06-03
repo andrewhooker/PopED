@@ -40,8 +40,8 @@
 #' \item 30=Automatic differentiation (placeholder)
 #' }
 #' @param ... Other arguments passed to the function.
-#' @inheritParams Doptim
-#' @inheritParams create.poped.database
+# @inheritParams Doptim
+# @inheritParams create.poped.database
 #' 
 #' @return The FIM.
 #' 

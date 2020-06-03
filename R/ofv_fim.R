@@ -15,6 +15,7 @@
 #' rows and columns of the FIM: det(FIM)/det(FIM_u)
 #' \item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
 #' }
+#' @param use_log Should the criterion be in the log domain?
 #' @inheritParams RS_opt
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database

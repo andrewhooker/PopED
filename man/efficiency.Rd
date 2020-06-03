@@ -10,7 +10,9 @@ efficiency(
   poped_db,
   npar = get_fim_size(poped_db),
   ofv_calc_type = poped_db$settings$ofv_calc_type,
-  ds_index = poped_db$parameters$ds_index
+  ds_index = poped_db$parameters$ds_index,
+  use_log = TRUE,
+  ...
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma. 
 Default is the fixed effects being important, everything else not important.  Used in conjunction with
 \code{ofv_calc_type=6}.}
+
+\item{use_log}{Are the `ofv` arguments in the log space?}
+
+\item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \value{
 The specified efficiency value depending on the ofv_calc_type.  

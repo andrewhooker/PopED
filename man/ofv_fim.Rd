@@ -9,6 +9,7 @@ ofv_fim(
   poped.db,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
   ds_index = poped.db$parameters$ds_index,
+  use_log = TRUE,
   ...
 )
 }
@@ -32,6 +33,8 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma. 
 Default is the fixed effects being important, everything else not important.  Used in conjunction with
 \code{ofv_calc_type=6}.}
+
+\item{use_log}{Should the criterion be in the log domain?}
 
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
