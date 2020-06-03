@@ -48,7 +48,7 @@ test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work"
   sink("tmp.txt")
   source("temp.R")  
   sink()
-  file.remove("tmp.txt","temp.R")
+  file.remove("tmp.txt","temp.R","PopED_output_summary_mfea_opt_1.txt")
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
   
@@ -57,7 +57,7 @@ test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work"
   sink("tmp.txt")
   source("temp.R")  
   sink()
-  file.remove("tmp.txt","temp.R")
+  file.remove("tmp.txt","temp.R","PopED_output_summary_D_cont_opt_1.txt")
   
   expect_equivalent(out_1$poped.db$design$a[1,1],100)
   #expect_equivalent(out_2$poped.db$design$a[1,1],100)
@@ -78,7 +78,7 @@ test_that("a_line_search, mfea, poped_optimize, poped_optim and RS_opt_gen work"
   sink("tmp.txt")
   source("temp.R")
   sink()
-  file.remove("tmp.txt","temp.R")
+  file.remove("tmp.txt","temp.R","PopED_output_summary_RS.txt")
 
   expect_output(str(out_1),"List of 6")
   
