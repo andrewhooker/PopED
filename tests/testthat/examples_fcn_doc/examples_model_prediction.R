@@ -120,7 +120,6 @@ dosing_4 <- list(list(AMT=c(1000,20),Time=c(0.5,10))) # multiple dosing
 (df_14 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_3))
 (df_15 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_4))
 
-df_16 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,filename="test.csv")
 
 model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,model_num_points = 10)
 model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,model_num_points = 10,model_minxt=20)
