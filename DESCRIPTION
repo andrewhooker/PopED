@@ -8,7 +8,7 @@ Imports:
     ggplot2,
     MASS,
     mvtnorm,
-    dplyr,
+    dplyr (>= 0.5.0),
     codetools,
     stats,
     utils,
@@ -17,7 +17,6 @@ Imports:
     purrr,
     stringr,
     tibble,
-    tidyr,
     gtools
 Suggests:
     testthat,
@@ -31,7 +30,9 @@ Suggests:
     knitr,
     rmarkdown,
     gridExtra,
-    covr
+    covr,
+    devtools,
+    mrgsolve
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", 
       role=c("aut","cre","trl","cph"),
