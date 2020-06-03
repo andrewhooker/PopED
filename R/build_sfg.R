@@ -1,15 +1,18 @@
 
-#' Build PopED parameter function
+#' Build PopED parameter function from a model function
 #'
-#' @param model 
-#' @param covariates 
-#' @param par_names 
-#' @param etas 
-#' @param no_etas 
-#' @param env 
+#' @param model A string of text describing the model function name
+#' @param covariates A list of covariate names to be filtered out of the model 
+#' @param par_names A list of parameter names in the model file.  If not supplied then 
+#' all undefined variables in the model file are extracted and the covariate names are
+#' filtered out of that list.
+#' @param etas Can be "exp", "prop", "add" or "none".  Either one value for all parameters or
+#' a list defining the model per parameter.
+#' @param no_etas Parameters that should not have etas associated with them.
+#' @param env The environment to create the function in.
 #'
-#' @return
-# @export
+#' @return A parameter model function to be used as input to PopED calculations.
+#' @export
 #' @importFrom codetools findGlobals
 
 #'
