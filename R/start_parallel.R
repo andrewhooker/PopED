@@ -21,7 +21,6 @@
 #' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
 #'   
 # @inheritParams optim_LS
-
 #'
 #' @return An atomic vector (TRUE or FALSE) with two attributes: "type" and "cores".
 #'

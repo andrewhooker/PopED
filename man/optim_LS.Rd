@@ -16,6 +16,7 @@ optim_LS(
   parallel = F,
   parallel_type = NULL,
   num_cores = NULL,
+  mrgsolve_model = NULL,
   seed = round(runif(1, 0, 1e+07)),
   replicates_index = seq(1, length(par)),
   ofv_initial = NULL,
@@ -55,6 +56,10 @@ See \code{\link{start_parallel}}.}
  output from 
 \code{parallel::detectCores()}. 
 See \code{\link{start_parallel}}.}
+
+\item{mrgsolve_model}{If the computations require a mrgsolve model and you
+are using the "snow" method then you need to specify the name of the model
+object created by \code{mread} or \code{mcode}.}
 
 \item{seed}{The random seed to use in the algorithm,}
 

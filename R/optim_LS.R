@@ -27,6 +27,9 @@
 #'  output from 
 #' \code{parallel::detectCores()}. 
 #' See \code{\link{start_parallel}}.
+#' @param mrgsolve_model If the computations require a mrgsolve model and you
+#' are using the "snow" method then you need to specify the name of the model
+#' object created by \code{mread} or \code{mcode}.
 #' @param seed The random seed to use in the algorithm,
 #' @param replicates_index A vector, the same length as the parameters.  
 #' If two values are the same in this vector then the parameters may not assume the same value in the optimization.
@@ -62,6 +65,7 @@ optim_LS <- function(par,
                      parallel=F, # T or F or a list of (type, n_cores)
                      parallel_type=NULL,
                      num_cores = NULL,
+                     mrgsolve_model=NULL,
                      seed=round(runif(1,0,10000000)),
                      replicates_index=seq(1,length(par)), # same value, parameters can not be the same value
                      ofv_initial=NULL,
@@ -106,7 +110,7 @@ optim_LS <- function(par,
   
   # start parallel computing
   if(parallel){
-    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,...) 
+    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,mrgsolve_model=mrgsolve_model,...) 
     on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
   }   
   #if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1

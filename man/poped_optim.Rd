@@ -25,6 +25,7 @@ poped_optim(
   parallel = F,
   parallel_type = NULL,
   num_cores = NULL,
+  mrgsolve_model = NULL,
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE),
   iter_max = 10,
   stop_crit_eff = 1.001,
@@ -110,6 +111,10 @@ See \code{\link{start_parallel}}.}
  output from 
 \code{parallel::detectCores()}. 
 See \code{\link{start_parallel}}.}
+
+\item{mrgsolve_model}{If the computations require a mrgsolve model and you
+are using the "snow" method then you need to specify the name of the model
+object created by \code{mread} or \code{mcode}.}
 
 \item{loop_methods}{Should the optimization methods be looped for
 \code{iter_max} iterations, or until the efficiency of the design after the
