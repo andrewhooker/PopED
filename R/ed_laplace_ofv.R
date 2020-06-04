@@ -25,6 +25,7 @@
 #'        k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
 #'        to compute the hessian.
 #' @param return_gradient Should the gradient be returned.
+#' @param ... Arguments passed through from other functions, does not pass anything to another function.
 #'   
 #' @return The FIM and the hessian of the FIM.
 #'   
@@ -46,7 +47,7 @@ ed_laplace_ofv <- function(model_switch,groupsize,ni,xtopto,xopto,aopto,
                            return_gradient=FALSE,
                            optxt=poped.db$settings$optsw[2], 
                            opta=poped.db$settings$optsw[4],
-                           x=c())
+                           x=c(),...)
 {
   
   if(any(ddescr[,1,drop=F]!=0&ddescr[,1,drop=F]!=4)){

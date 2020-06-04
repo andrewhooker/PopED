@@ -87,7 +87,7 @@ evaluate.e.ofv.fim <- function(poped.db,
   } else { 
     E_ofv  <- ed_laplace_ofv(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db,...)[["f"]]   
     if(laplace.fim) {
-      E_fim <- ed_mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db)[["ED_fim"]]
+      E_fim <- ed_mftot(model_switch,groupsize,ni,xt,x,a,bpop,d,covd,sigma,docc,poped.db,...)[["ED_fim"]]
     }
   }    
   return(list(E_ofv=E_ofv,E_fim= E_fim, poped.db=poped.db))

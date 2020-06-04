@@ -22,7 +22,8 @@ ed_laplace_ofv(
   return_gradient = FALSE,
   optxt = poped.db$settings$optsw[2],
   opta = poped.db$settings$optsw[4],
-  x = c()
+  x = c(),
+  ...
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ to compute the hessian.}
 \item{opta}{If continuous design variables are optimized}
 
 \item{x}{The design parameters to compute the gradient on.}
+
+\item{...}{Arguments passed through from other functions, does not pass anything to another function.}
 }
 \value{
 The FIM and the hessian of the FIM.
