@@ -148,7 +148,7 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 # optimization of covariate, with coarse grid
 out_1 <- poped_optimize(poped.db,opt_a=1,
                               bUseExchangeAlgorithm=1,
-                              EAStepSize=25)
+                              EAStepSize=25,out_file = "")
 
 
 \dontrun{

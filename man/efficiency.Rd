@@ -40,6 +40,9 @@ size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixe
 Default is the fixed effects being important, everything else not important.  Used in conjunction with
 \code{ofv_calc_type=6}.}
 
+
+\item{use_log}{Are the `ofv` arguments in the log space?}
+
 \item{...}{arguments passed to \code{\link{evaluate.fim}} and \code{\link{ofv_fim}}.}
 }
 \value{

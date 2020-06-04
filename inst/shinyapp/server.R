@@ -4,6 +4,17 @@ library(rhandsontable)
 
 function(input, output, session) {
   
+  values = reactiveValues(
+    hot_dose_table = data.frame(group = 1L, 
+                     amount = 0,
+                     time = 0,
+                     duration = 0,
+                     n = 1L,
+                     tau = 0,
+                     cmt = 1L,
+                     stringsAsFactors = FALSE)
+  )
+  
   model_name <- reactive({
     mod_name <- NULL
     if(input$pk_mod) mod_name <- paste(input$struct_PK_model,"sd",input$param_PK_model,sep=".")
@@ -17,7 +28,6 @@ function(input, output, session) {
     return(mod_name)
   })
   
-  values = reactiveValues()
   setHot = function(x) values[["hot"]] = x
   
   data = reactive({
@@ -133,6 +143,9 @@ function(input, output, session) {
     rhandsontable(DF) %>%
       hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
   })
+  
+  # output$table_tmp <- renderTable(DF <- values[["hot2"]])
+  
   
   setHot3 = function(x) values[["hot3"]] = x
   
@@ -253,19 +266,28 @@ function(input, output, session) {
     
     setHot5(MAT)
     rhandsontable(MAT) %>%
-      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible") %>% 
+      hot_cols(renderer = "
+               function (instance, td, row, col, prop, value, cellProperties) {
+                 Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+                 if (col > row) {
+                   td.style.background = 'grey';
+                   td.style.color = 'grey';
+                   cellProperties.readOnly = true;
+                 }
+               }")
   })
   
   setHot6 = function(x) values[["hot6"]] = x
   
   output$hot6 = renderRHandsontable({
     par_names <- c()
-    if(input$struct_PK_model!="NULL"){
+    if(input$pk_mod){
       if (input$ruv_pk_model=="feps.add.prop") par_names <- c(par_names,"PK_prop","PK_add")
       if (input$ruv_pk_model=="feps.prop") par_names <- c(par_names,"PK_prop")
       if (input$ruv_pk_model=="feps.add") par_names <- c(par_names,"PK_add")
     }
-    if(input$struct_PD_model!="NULL"){
+    if(input$pd_mod){
       if (input$ruv_pd_model=="feps.add.prop") par_names <- c(par_names,"PD_prop","PD_add")
       if (input$ruv_pd_model=="feps.prop") par_names <- c(par_names,"PD_prop")
       if (input$ruv_pd_model=="feps.add") par_names <- c(par_names,"PD_add")
@@ -296,12 +318,14 @@ function(input, output, session) {
       MAT <-  zeros(length(par_names))
       diag(MAT) <- 0.01
       dimnames(MAT) <- c(list(par_names),list(par_names))
-      
     }
+    
+    #row_header_width <- max(nchar(row.names(MAT)))*10
     
     setHot6(MAT)
     rhandsontable(MAT) %>%
-      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible",stretchH = "right") %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible",stretchH = "right", 
+                rowHeaderWidth=max(nchar(row.names(MAT)))*10) %>%
       hot_cols(renderer = "
                function (instance, td, row, col, prop, value, cellProperties) {
                Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -364,7 +388,17 @@ function(input, output, session) {
     
     setHot7(MAT)
     rhandsontable(MAT) %>%
-      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible") 
+      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible",
+                rowHeaderWidth=max(nchar(row.names(MAT)))*10) %>% 
+      hot_cols(renderer = "
+               function (instance, td, row, col, prop, value, cellProperties) {
+                 Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+                 if (col > row) {
+                   td.style.background = 'grey';
+                   td.style.color = 'grey';
+                   cellProperties.readOnly = true;
+                 }
+               }")
   })
   
   # Compute the forumla text in a reactive expression since it is 
@@ -404,31 +438,62 @@ function(input, output, session) {
     dose_type <- input$dose_type
     return(dose_type)
   })
+
+
+  output$hot_dose_table = renderRHandsontable({
+    DF <- NULL
+    if (!is.null(input$hot_dose_table)) {
+      DF = hot_to_r(input$hot_dose_table)
+      values[["hot_dose_table"]] = DF
+    } else if (!is.null(values[["hot_dose_table"]])) {
+      DF = values[["hot_dose_table"]]
+    }
+    if(!is.null(DF)){
+      rhandsontable(DF,
+                    highlightCol = TRUE,
+                    highlightRow = TRUE)
+    }
+  })
   
+
   
-  setHot8 = function(x) values[["hot8"]] = x
+  get_mod_type <- reactive({
+    mod_type <- c()
+    if(input$pk_mod) mod_type <- c(mod_type,"PK")
+    if(input$pd_mod) mod_type <- c(mod_type,"PD")
+    mod_type
+  })
   
-  output$hot8 = renderRHandsontable({
-    if (!is.null(input$hot8)) {
-      DF = hot_to_r(input$hot8)
+  hot_sample_table_data = reactive({
+    mod_type <- get_mod_type()
+    if (!is.null(input$hot_sample_table)) {
+      DF = hot_to_r(input$hot_sample_table)
     } else {
       
-      
-      df <- data.frame(group = 1L, 
-                       amount = 20,
-                       time = 0,
-                       duration = 0,
-                       n = 1L,
-                       tau = 0,
-                       stringsAsFactors = FALSE)
-      
-      DF = df 
+      DF = data.frame(groups = c(""), 
+                      times = c(""),
+                      stringsAsFactors = FALSE)
+      if(length(mod_type)>1) 
+        DF$type <- factor(c(mod_type[1]),levels=c(mod_type))
     }
-    
-    setHot8(DF)
-    rhandsontable(DF) %>%
-      hot_table(highlightCol = TRUE, highlightRow = TRUE, overflow="visible")
+    if(length(mod_type)>1 && all(is.null(DF$type)))
+      DF$type <- factor("",levels=c(mod_type))
+    DF
   })
+  
+
+  output$hot_sample_table = renderRHandsontable({
+    DF <- hot_sample_table_data()
+    if(!is.null(DF)){
+      rhandsontable(DF,overflow="visible") 
+    }
+  })
+  
+  # output$table_tmp <- renderTable(DF <- hot_sample_table_data())
+  
+  
+  
+  
   
   output$group_designs <- renderUI({
     out <- list()
@@ -631,8 +696,108 @@ function(input, output, session) {
   })
   
   create_sfg <- reactive({
-    build_sfg(model=input$struct_PK_model,etas=input$bsv_pk_model)
+    eta_df <- values[["hot2"]]
+    eta_nl <- eta_df$bsv_model
+    names(eta_nl) <- eta_df$name
+    eta_nl <- dplyr::recode(eta_nl,"Exponential"="exp","Proportional"="prop","Additive"="add","None"="none")
+    build_sfg(model=model_name(),etas=levels(eta_nl)[eta_nl])
   })
+  
+
+  
+  create_db <- reactive({
+    
+    #model <- updateModel()
+    #design <- updateDesign()
+    
+    
+    
+    # df <- data()
+    # df_2 <- df[df$covariate==F,]
+    # bpop <- df_2[["pop_val"]]
+    # names(bpop) <- df_2[["name"]]
+    # bpop_notfixed <- !df_2[["pop_fixed"]]
+    # names(bpop_notfixed) <- df_2[["name"]]
+    # par_names <- df_2[["name"]]
+    
+
+    create_model <-  
+      function(struct_mod,
+               param_mod,
+               error_mod){
+        
+        model <- list(
+          ff_fun=struct_mod,
+          fError_fun=error_mod,
+          fg_fun=param_mod
+        )
+      }
+    
+    model_def <- create_model(model_name(),create_sfg(),input$ruv_pk_model)
+    
+    # parameters
+    
+    bpop_df <- values[["hot3"]]
+    bpop <- bpop_df$value
+    names(bpop) <- bpop_df$name
+    notfixed_bpop <- !(bpop_df$fixed)
+    names(notfixed_bpop) <- bpop_df$name
+    
+    omega_mat <- values[["hot4"]]
+    is_diagonal_omega <- all(diag(diag(omega_mat))==omega_mat)
+    d_vec <- diag(omega_mat)
+    covd <- NULL
+    if(!is_diagonal_omega) covd <- omega_mat[lower.tri(omega_mat)]
+    
+    omega_mat_fixed <- as.matrix(values[["hot5"]])
+    notfixed_d <- !diag(omega_mat_fixed)
+    notfixed_covd <- NULL
+    if(!is_diagonal_omega) notfixed_covd <- !(omega_mat_fixed[lower.tri(omega_mat_fixed)])
+    
+    sigma_mat <- values[["hot6"]]
+    # is_diagonal_sigma <- all(diag(diag(sigma_mat))==sigma_mat)
+    # sigma_vec <- diag(sigma_mat)
+    # covsigma <- NULL
+    # if(!is_diagonal_sigma) covsigma <- sigma_mat[lower.tri(sigma_mat)]
+    
+    sigma_mat_fixed <- as.matrix(values[["hot7"]])
+    notfixed_sigma <- !diag(sigma_mat_fixed)
+    # notfixed_covsigma <- NULL
+    # if(!is_diagonal_sigma) notfixed_covsigma <- !(sigma_mat_fixed[lower.tri(sigma_mat_fixed)])
+    
+    hot_sample_table_data()
+    
+    par_def <- list(
+      bpop = bpop,
+      notfixed_bpop=notfixed_bpop,
+      d=d_vec,
+      notfixed_d = notfixed_d,
+      covd = covd,
+      notfixed_covd=notfixed_covd,
+      sigma = sigma_mat,
+      notfixed_sigma = notfixed_sigma#,
+      # covsigma = covsigma,
+      # notfixed_covsigma = notfixed_covsigma
+    )
+    
+    
+    ## -- Define initial design  and design space
+    #design <- updateDesign()
+    
+    do.call(create.poped.database,
+                        c(model_def,
+                          par_def,
+                          list(groupsize=20,
+                               xt=c(0.5,1,2,6,24),
+                               #xt=c(1,2,3,15),
+                               #xt=eval(parse(text=paste("c(",input$xt,")"))),
+                               #xt=design$xt[[1]],
+                               minxt = 0,
+                               maxxt = 24,
+                               a=list(c(DOSE=100))
+                        )))
+  })
+  
   # Return the formula text for printing as a caption
   #output$caption <- renderText({
   #  "Model predictions"
@@ -644,141 +809,13 @@ function(input, output, session) {
   # Generate a plot of the requested variable against mpg and only 
   # include outliers if requested
   output$modelPlot <- renderPlot({
-    #     if(input$model=="one.comp") {
-    #       source("Model.2.PK.one.comp.oral.R")
-    #       poped.db <- poped.db.1
-    #       facet_scales="fixed"
-    #       #print(plot_model_prediction(poped.db.2,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales="free"))
-    #     }
-    #     if(input$model=="db.1") {
-    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.model.POPED.R")
-    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/one.comp.emax.design.POPED.R") 
-    #       poped.db <- poped.db.2
-    #       facet_scales="free"
-    #       #print(plot_model_prediction(poped.db.2,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups,facet_scales="free"))
-    #     }
-    #     if(input$model=="db.2"){
-    #       source("/Users/ahooker/Documents/_PROJECTS/PopED_in_R/poped_r/models/warfarin.model.design.all_in_one.POPED.R") # 4-group, add+prop, as pfim
-    #       poped.db <- create.poped.database(warfarin.design.1.red.input())
-    #       poped.db$design$a <- rbind(50,60,70,80)
-    #       facet_scales="fixed"
-    #       #print(plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
-    #     }
     
-    #model <- updateModel()
-    #design <- updateDesign()
-    
-    
-    #     ff <- function(model_switch,xt,parameters,poped.db){
-    #       ##-- Model: One comp first order absorption
-    #       with(as.list(parameters),{
-    #         y=xt
-    #         y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
-    #         return(list(y=y,poped.db=poped.db))
-    #       })
-    #     }
-    #     
-    #     sfg <- function(x,a,bpop,b,bocc){
-    #       ## -- parameter definition function 
-    #       parameters=c(CL=bpop[1]*exp(b[1]),
-    #                    V=bpop[2]*exp(b[2]),
-    #                    KA=bpop[3]*exp(b[3]),
-    #                    Favail=bpop[4],
-    #                    DOSE=a[1])
-    #       return(parameters) 
-    #     }
-    
-    #     feps <- function(model_switch,xt,parameters,epsi,poped.db){
-    #       ## -- Residual Error function
-    #       ## -- Proportional 
-    #       returnArgs <- ff(model_switch,xt,parameters,poped.db) 
-    #       y <- returnArgs[[1]]
-    #       poped.db <- returnArgs[[2]]
-    #       y = y*(1+epsi[,1])
-    #       
-    #       return(list(y=y,poped.db=poped.db)) 
-    #     }
-    
-    # input bpop, not_fixed (for all), d_vec, sigma
-    # get design variables
-    # get design space
-    
-    
-    df <- data()
-    # df_2 <- df[df$covariate==F,]
-    # bpop <- df_2[["pop_val"]]
-    # names(bpop) <- df_2[["name"]]
-    # bpop_notfixed <- !df_2[["pop_fixed"]]
-    # names(bpop_notfixed) <- df_2[["name"]]
-    # par_names <- df_2[["name"]]
-    
-    
-    sfg <- build_sfg(model=NULL,
-                     par_names = df[["name"]],
-                     covariates = df[["name"]][df[["covariate"]]],
-                     etas=df[["bsv_model"]],
-                     #covariates=c("DOSE"),
-                     #etas="exp", # can be exp, prop, add
-                     no_etas=NULL,
-                     env = parent.frame())
-    
-    
-    #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1)
-    bpop=df[df$covariate==F,"pop_val"]
-    names(bpop) <- df[df$covariate==F,"name"]
-    #bpop_notfixed <- c(CL=1, V=1, KA=1, Favail=0) 
-    bpop_notfixed <- !df[df$covariate==F,"pop_fixed"]
-    names(bpop_notfixed) <- df[df$covariate==F,"name"]
-    #d_vec <- c(CL=0.07, V=0.02, KA=0.6)
-    d_vec <- df[df$bsv_model!="none","variance"]
-    names(d_vec) <- df[df$bsv_model!="none","name"]
-    d_notfixed <- !df[df$bsv_model!="none","var_fixed"]
-    names(d_notfixed) <- df[df$bsv_model!="none","name"]
-    #sigma <- c(prop=0.01,add=0.1)
-    sigma <- c(prop=0.01,add=0.1)
-    
-    # parameter_names <- codetools::findGlobals(eval(parse(text=input$struct_PK_model)),merge=F)$variables  
-    # new_bpop <- c()
-    # new_bpop_notfixed <- c()
-    # new_d_vec <- c()
-    # for(var in parameter_names){
-    #   if(var %in% names(bpop)) new_bpop <- c(new_bpop,bpop[var])
-    #   if(var %in% names(bpop_notfixed))  new_bpop_notfixed <- c(new_bpop_notfixed,bpop_notfixed[var])
-    #   if(var %in% names(d_vec)) new_d_vec <- c(new_d_vec,d_vec[var])
-    # }
-    
-    # new_sigma <- sigma
-    
-    design <- updateDesign()
-    
-    ## -- Define initial design  and design space
-    
-    poped.db <- create.poped.database(ff_file=input$struct_PK_model,
-                                      #ff_file="ff",
-                                      #fg_fun=model$sfg,
-                                      #fg_fun=sfg,
-                                      fg_fun=sfg,
-                                      #fError_file="feps",
-                                      fError_file=input$ruv_pk_model,
-                                      #bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
-                                      bpop=bpop,  
-                                      notfixed_bpop=bpop_notfixed,
-                                      #d=c(CL=0.07, V=0.02, KA=0.6), 
-                                      d=d_vec, 
-                                      notfixed_d = d_notfixed,
-                                      sigma=sigma,
-                                      groupsize=design$groupsize,
-                                      #xt=c(0.5,1,2,6,24,36,72,120),
-                                      xt=design$xt,
-                                      #xt=eval(parse(text=paste("c(",input$xt,")"))),
-                                      #xt=design$xt[[1]],
-                                      minxt = 0,
-                                      maxxt = 120,
-                                      a=design$a)
+    poped_db <- create_db()
+
     #plot_model_prediction(poped.db)
     #print(plot_model_prediction(poped.db))
     
-    plot_model_prediction(poped.db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups)
+    plot_model_prediction(poped_db,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups)
     #print(plot_model_prediction(poped.db.1,IPRED=input$IPRED,DV=input$DV,separate.groups=input$separate.groups))
     #print(plot_model_prediction(poped.db.2,IPRED=TRUE,DV=TRUE))
   })

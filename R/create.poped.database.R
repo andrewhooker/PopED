@@ -152,9 +152,12 @@
 #' \item column 3 defines the variance of the distribution (or length of uniform distribution).
 #' }
 #' Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
-#' parameter value is to be used.
+#' parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'bpop' then the order will be worked out automatically.
 #' @param d Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 #' matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
+#' The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'd' then the order will be worked out automatically.
 #' @param covd Column major vector defining the covariances of the IIV variances. 
 #' That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}. 
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
@@ -164,8 +167,12 @@
 
 #' @param notfixed_bpop  \itemize{
 #' \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
-#' Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed) 
-#' @param notfixed_d Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed) 
+#' Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
+#' The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'notfixed_bpop' then the order will be worked out automatically.
+#' @param notfixed_d Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
+#' The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+#' arguments in 'notfixed_d' then the order will be worked out automatically. 
 #' @param notfixed_covd Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed)
 #' @param notfixed_docc Vector defining if an IOV variance is fixed or not (1=not fixed, 0=fixed)  
 #' @param notfixed_covdocc Vector row major order for lower triangular matrix defining if a covariance IOV is fixed or not (1=not fixed, 0=fixed) 
@@ -264,7 +271,7 @@
 #' @param strExecuteName Compilation output executable name 
 #' @param iNumProcesses Number of processes to use when running in parallel (e.g. 3 = 2 workers, 1 job manager) 
 #' @param iNumChunkDesignEvals Number of design evaluations that should be evaluated in each process before getting new work from job manager
-#' @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
+# @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
 #' @param Mat_Out_Pre The prefix of the output mat file to communicate with the executable 
 #' @param strExtraRunOptions Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options 
 #' @param dPollResultTime Polling time to check if the parallel execution is finished 
@@ -661,7 +668,9 @@ create.poped.database <-
            ## -- Number of design evaluations that should be evaluated in each process before getting new work from job manager --
            iNumChunkDesignEvals=poped.choose(popedInput$settings$parallel$iNumChunkDesignEvals,-2),
            ## -- The prefix of the input mat file to communicate with the executable --
-           strMatFileInputPrefix=poped.choose(popedInput$settings$parallel$strMatFileInputPrefix,'parallel_input'),
+           #strMatFileInputPrefix = poped.choose(
+           #   popedInput$settings$parallel$strMatFileInputPrefix,
+           #   'parallel_input'),
            ## -- The prefix of the output mat file to communicate with the executable --
            Mat_Out_Pre=poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,'parallel_output'),
            ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
@@ -882,7 +891,7 @@ create.poped.database <-
     poped.db$settings$parallel$strExecuteName = strExecuteName
     poped.db$settings$parallel$iNumProcesses = iNumProcesses
     poped.db$settings$parallel$iNumChunkDesignEvals = iNumChunkDesignEvals
-    poped.db$settings$parallel$strMatFileInputPrefix = strMatFileInputPrefix
+    #poped.db$settings$parallel$strMatFileInputPrefix = strMatFileInputPrefix
     poped.db$settings$parallel$strMatFileOutputPrefix = Mat_Out_Pre
     poped.db$settings$parallel$strExtraRunOptions = strExtraRunOptions
     poped.db$settings$parallel$dPollResultTime = dPollResultTime
@@ -1110,8 +1119,37 @@ create.poped.database <-
     poped.db$parameters$notfixed_d = poped.choose(notfixed_d,matrix(1,nrow=1,ncol=poped.db$parameters$NumRanEff))
     poped.db$parameters$notfixed_bpop = poped.choose(notfixed_bpop,matrix(1,nrow=1,ncol=poped.db$parameters$nbpop))
     
+    # reorder named values
+    fg_names <- names(do.call(poped.db$model$fg_pointer,
+                              list(1,1,1,1,
+                                   ones(poped.db$parameters$NumDocc,
+                                        poped.db$parameters$NumOcc))))
+
+    reorder_vec <- function(your_vec,name_order){
+      if(!is.null(names(your_vec))){
+        if(all(names(your_vec) %in% name_order)){
+          your_vec <- your_vec[name_order[name_order %in% names(your_vec)]]
+        }  
+      }
+      return(your_vec)
+    }
+    
+    poped.db$parameters$notfixed_bpop <- 
+      reorder_vec(poped.db$parameters$notfixed_bpop,
+                  fg_names)
+                           
+    poped.db$parameters$notfixed_d <- 
+      reorder_vec(poped.db$parameters$notfixed_d,
+                  fg_names)
+    
+    
     if(size(d,1)==1 && size(d,2)==poped.db$parameters$NumRanEff){ # we have just the parameter values not the uncertainty
       d_descr <- zeros(poped.db$parameters$NumRanEff,3)
+      
+      # reorder named values
+      d <- reorder_vec(d,fg_names)
+      
+      
       d_descr[,2] <- d
       d_descr[,1] <- 0 # point values
       d_descr[,3] <- 0 # variance
@@ -1121,6 +1159,10 @@ create.poped.database <-
     
     if(size(bpop,1)==1 && size(bpop,2)==poped.db$parameters$nbpop){ # we have just the parameter values not the uncertainty
       bpop_descr <- zeros(poped.db$parameters$nbpop,3)
+      
+      # reorder named values
+      bpop <- reorder_vec(bpop,fg_names)
+      
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
       bpop_descr[,3] <- 0 # variance

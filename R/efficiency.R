@@ -7,6 +7,7 @@
 #' @param ofv_final A final objective function.
 #' @param npar The number of parameters to use for normalization.
 #' @param poped_db a poped database
+#' @param use_log Are the `ofv` arguments in the log space?
 #' @inheritParams ofv_fim
 #' @inheritParams poped_optim
 #' @inheritParams create.poped.database

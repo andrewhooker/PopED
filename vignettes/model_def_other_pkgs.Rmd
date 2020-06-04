@@ -26,7 +26,7 @@ if(Sys.info()["user"]=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS
 
 devtools::install_github("InsightRX/PKPDsim",force = F)
 
-devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
+# devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
 
 library(knitr)
 
@@ -399,42 +399,27 @@ ff_ode_mrg <- function(model_switch, xt, p, poped.db){
 ## ODE solution using RxODE
 
 The  model written for RxODE:
-```{r rxode}
-ode_rx <- "
-d/dt(DEPOT) = -KA*DEPOT;
-d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
-CP=CENT/V;
-"
-```
-
-Compile and load the model with `RxODE`
 ```{r}
-modrx <- RxODE(model = ode_rx, modName = 'modrx')
+modrx <- RxODE({
+  d/dt(DEPOT) = -KA*DEPOT;
+  d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
+  CP=CENT/V;
+})
 ```
 
 
 ```{r}
 ff_ode_rx <- function(model_switch, xt, p, poped.db){
+  times_xt <- drop(xt)
+  et(0,amt=p[["DOSE"]], ii=p[["TAU"]], until=max(times_xt)) %>%
+    et(times_xt) -> data
   
-  times_xt <- drop(xt)  
-  times <- sort(unique(c(0,times_xt)))
-
-  ev <- eventTable() 
-  ev$add.dosing(
-    dose = p[["DOSE"]],
-    dosing.interval = p[["TAU"]],
-    nbr.doses = floor(max(times)/p[["TAU"]])+1, 
-    dosing.to = 1,
-    start.time = 0
-  )
-  ev$add.sampling(times)
-  Params <- c(CL = p[["CL"]], V = p[["V"]], KA = p[["KA"]]) 
+  out <- rxSolve(modrx, p, data, atol=1e-8, rtol=1e-8,maxsteps=5000,
+                 returnType="data.frame")
   
-  out <- modrx$solve(Params, ev,atol=1e-8,rtol=1e-8)
+  y <-  out$CP[match(times_xt,out$time)]
   
-  y = out[match(times_xt,out[,"time"]),"CP",drop=F]
-  
-  return(list(y=y,poped.db=poped.db))
+  return(list(y=matrix(y,ncol=1),poped.db=poped.db))
   
 }
 ```
@@ -580,6 +565,8 @@ We can compare the speed of the computations.  Analytic solutions are fast, as e
 
 ```{r timing, eval=FALSE}
 library(microbenchmark)
+library(ggplot2)
+
 compare <- microbenchmark(
   evaluate_design(poped_db_analytic),
   evaluate_design(poped_db_ode_desolve),
@@ -589,17 +576,32 @@ compare <- microbenchmark(
   evaluate_design(poped_db_ode_mrg),
   evaluate_design(poped_db_ode_rx),
   times = 100L)
-```
 
-```{r, eval=FALSE}
-library(ggplot2)
 autoplot(compare)
 ```
 
-![](model_def_other_pkgs_speed.png)
 
 ```{r,echo=FALSE,results="hide", eval=FALSE}
+
+if(interactive()) setwd(here::here("vignettes"))
+
+rdata_name <- "model_def_other_pkgs_compare_speed"
+obj_list <- c("compare")
+
+if(knitr::opts_chunk$get("run_compare")){
+  save(list = obj_list,file = paste0(rdata_name,".RData"))
+} else {
+  load(file = paste0(rdata_name,".RData"))
+}
+
+png("model_def_other_pkgs_compare_speed.png", 
+    width = 8, height = 4, units = 'in', 
+    res = 200)
+autoplot(compare)
+dev.off()
+
 compare.db <- print(compare)
+
 ```
 
 ```{r,echo=FALSE, eval=FALSE}
@@ -611,10 +613,14 @@ kable(
 ) %>%  kable_styling("striped",full_width = F) 
 ```
 
+![](model_def_other_pkgs_compare_speed.png)
+
+
 # Version information {-}
 
 ```{r session, cache.rebuild=TRUE}
-sessionInfo()
+devtools::session_info()
+#sessionInfo()
 ```
 
 <!-- `r if (knitr::is_html_output()) '# References {-}'` -->

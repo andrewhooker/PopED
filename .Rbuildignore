@@ -20,3 +20,4 @@
 ^README\.Rmd$
 ^vignettes/how-to-do-stuff\.Rmd$
 ^vignettes/model_def_other_pkgs\.Rmd$
+^vignettes/model_def_other_pkgs_cache$

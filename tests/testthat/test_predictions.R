@@ -36,8 +36,9 @@ test_that("model_prediction works", {
   
   expect_equal(length(unique(df_15$AMT[df_15$ID==1])),3)
   
-  expect_true("test.csv" %in% list.files())
   
+  df_16 <- model_prediction(design=design_3,DV=TRUE,dosing=dosing_4,filename="test.csv")
+  expect_true("test.csv" %in% list.files())
   unlink("test.csv")
   
   dosing_2 <- list(list(AMT=1000,RATE=NA,Time=0.5),list(AMT=3000,RATE=NA,Time=0.5),list(AMT=6000,RATE=NA,Time=0.5))

@@ -151,7 +151,7 @@ optimize_n_dist <-
 ## optimize HOW MANY n there should be, based on current design and a single parameter
 optimize_n <- function(poped.db,
                        bpop_idx,
-                       need_rse,
+                       need_rse, # not percent! RSE.
                        allowed_values = seq(poped.db$design$m,
                                             sum(poped.db$design$groupsize)*5,
                                             by=poped.db$design$m),

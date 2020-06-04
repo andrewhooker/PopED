@@ -6,7 +6,7 @@
 # optimization of covariate, with coarse grid
 out_1 <- poped_optimize(poped.db,opt_a=1,
                               bUseExchangeAlgorithm=1,
-                              EAStepSize=25)
+                              EAStepSize=25,out_file = "")
 
 
 \dontrun{

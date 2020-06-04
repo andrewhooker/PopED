@@ -405,7 +405,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 67.5762
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.157 seconds.
+#&gt; Elapsed time: 0.174 seconds.
 #&gt; 
 #&gt; Final OFV =  67.57618 
 #&gt; Parameters: -15.35198 
@@ -493,7 +493,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #&gt; 
 #&gt; Total iterations: 392 
-#&gt; Elapsed time: 0.139 seconds.
+#&gt; Elapsed time: 0.135 seconds.
 #&gt; 
 #&gt; Final OFV =  67.6696 
 #&gt; Parameters: -15.97183 
@@ -506,7 +506,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'>#plot of the function and solutions</span>
   <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>graphics</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>fw</span>, -<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Minimizing 'wild function'"</span>)
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>fw</span>, -<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Minimizing 'wild function'"</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(-<span class='fl'>15.81515</span>, <span class='fu'>fw</span>(-<span class='fl'>15.81515</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>res1</span>$<span class='no'>par</span>, <span class='no'>res1</span>$<span class='no'>ofv</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>res2</span>$<span class='no'>par</span>, <span class='no'>res2</span>$<span class='no'>ofv</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
@@ -626,7 +626,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 503.399
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.16 seconds.
+#&gt; Elapsed time: 0.168 seconds.
 #&gt; 
 #&gt; Final OFV =  503.399 
 #&gt; Parameters: 2.130566 2 2 2.059427 2 2 2.167358 2 2 2.142739 2 2 2.030765 2.254329 2 2 2.56842 2.045564 2.276299 2 2 2 2 2 3.690364 
@@ -733,7 +733,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 15264
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.27 seconds.
+#&gt; Elapsed time: 0.278 seconds.
 #&gt; 
 #&gt; Final OFV =  15264 
 #&gt; Parameters: 1 19 8 5 4 3 18 2 14 9 12 15 13 16 17 6 11 7 20 10 21 1 
@@ -746,7 +746,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
   <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>eurodistmat</span>))
   <span class='no'>tspinit</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>sq</span>,]
 
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
        <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Initial sequence of traveling salesman problem\n"</span>,
                     <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='no'>sq</span>)), <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspinit</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
@@ -755,7 +755,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
   <span class='co'># plot of final sequence from optim_ARS</span>
   <span class='no'>tspres</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>res3</span>$<span class='no'>par</span>,]
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
        <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"optim_ARS() 'solving' traveling salesman problem\n"</span>,
                     <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='no'>res3</span>$<span class='no'>par</span>,<span class='fl'>1</span>))),<span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
@@ -769,7 +769,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
                                 <span class='kw'>REPORT</span> <span class='kw'>=</span> <span class='fl'>500</span>)))
 
   <span class='no'>tspres</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>res4</span>$<span class='no'>par</span>,]
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
        <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"optim() 'solving' traveling salesman problem\n"</span>,
                     <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='no'>res4</span>$<span class='no'>par</span>)),<span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
@@ -871,7 +871,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 47.7055
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.202 seconds.
+#&gt; Elapsed time: 0.18 seconds.
 #&gt; 
 #&gt; Final OFV =  47.7055 
 #&gt; Parameters: 6.562641 
@@ -943,7 +943,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

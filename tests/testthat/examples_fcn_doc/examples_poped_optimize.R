@@ -10,7 +10,7 @@
 # only to check that things are working
 out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
                          rsit=2,sgit=2,ls_step_size=2, 
-                         iter_max=1)
+                         iter_max=1,out_file = "")
 
 \dontrun{
   

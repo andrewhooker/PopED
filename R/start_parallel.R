@@ -20,7 +20,7 @@
 #' object created by \code{mread} or \code{mcode}
 #' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
 #'   
-#' @inheritParams optim_LS
+# @inheritParams optim_LS
 #'
 #' @return An atomic vector (TRUE or FALSE) with two attributes: "type" and "cores".
 #'
@@ -81,7 +81,11 @@ start_parallel <- function(parallel=TRUE,
       }
       # load mrgsolve models in workers using loadso
       if (!is.null(mrgsolve_model)) {
-        parallel::clusterCall(cl, loadso, x=mrgsolve_model)
+        if (!requireNamespace("mrgsolve", quietly = TRUE)) {
+          stop("mrgsolve package needed for this function to work. Please install it.",
+               call. = FALSE)
+        }
+        parallel::clusterCall(cl, mrgsolve::loadso, x=mrgsolve_model)
       }
       # if(!is.null(cpp_files)){
       #   for(i in cpp_files){
