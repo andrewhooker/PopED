@@ -1,10 +1,10 @@
 #' Plot the efficiency of windows
 #' 
-#' Function plots the efficiency of windows around the optimal design points. 
-#' The function samples from a uniform distribution around the optimal design 
+#' Function plots the efficiency of windows around the sample time points. 
+#' The function samples from a uniform distribution around the sample time  
 #' points for each group (or each individual with \code{deviate_by_id=TRUE}, 
-#' with slower calculation times) and compares the results with the optimal 
-#' design. The maximal and minimal allowed values for all design variables as 
+#' with slower calculation times) and compares the results with the 
+#' design defined in \code{poped.db}. The maximal and minimal allowed values for all design variables as 
 #' defined in poped.db are respected (e.g. poped.db$design_space$minxt and 
 #' poped.db$design_space$maxxt).
 #' 
@@ -37,7 +37,7 @@
 #' @family Simulation
 #' @family Graphics
 #'   
-#' @example tests/testthat/examples_fcn_doc/warfarin_basic.R
+#' @example tests/testthat/examples_fcn_doc/warfarin_optimize.R
 #' @example 
 #' tests/testthat/examples_fcn_doc/examples_plot_efficiency_of_windows.R
 #' @export
