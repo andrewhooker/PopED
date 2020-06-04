@@ -1,9 +1,12 @@
 
-# Examine efficiency of sampling windows
+
+
+# Examine efficiency of sampling windows at plus/minus 0.5 hours from 
+# sample points in the design
 plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
 
-\dontrun{  
+if(interactive()){  
 
   plot_efficiency_of_windows(poped.db,
                              xt_plus=c( 0.5,1,2,1,2,3,7,1),
