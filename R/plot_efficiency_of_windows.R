@@ -30,7 +30,13 @@
 #' @param mean_color The color of the mean value line.
 #' @param deviate_by_id Should the computations look at deviations per
 #'   individual instead of per group?
-#'   
+#' @param parallel Should we use parallel computations (T/F)?
+#'  Other options can be defined in this function and passed 
+#'  to \code{\link{start_parallel}}.  See epecially 
+#'  the options \code{dlls} and \code{mrgsolve_model} from that function 
+#'  if you have a model defined with 
+#'  compiled code or are using mrgsolve. 
+#' @param seed The random seed to use.
 #' @return A \link[ggplot2]{ggplot} object.
 #'   
 #' @family evaluate_design
@@ -57,8 +63,14 @@ plot_efficiency_of_windows <- function(poped.db,
                                        #a_windows=NULL,x_windows=NULL,
                                        #d_switch=poped.db$settings$d_switch,
                                        deviate_by_id=FALSE,
+                                       parallel=F,
+                                       #parallel_type=NULL,
+                                       #num_cores = NULL,
+                                       #mrgsolve_model=NULL,
+                                       seed=round(runif(1,0,10000000)),
                                        ...){
   
+  if(!is.null(seed)) set.seed(seed)
   
   design = poped.db$design
   design_space = poped.db$design_space
@@ -97,7 +109,9 @@ plot_efficiency_of_windows <- function(poped.db,
     xt_val_max[xt_val_max>design_space$maxxt] = design_space$maxxt[xt_val_max>design_space$maxxt]
   }  
   
-  for(i in 1:iNumSimulations){
+  
+  # ------------ generate and evaluate new parameter sets
+  gen_eff <- function (it=1,...) {
     if(!is.null(xt_windows) || !is.null(xt_minus) || !is.null(xt_plus)){
       if(deviate_by_id){
         for(grp in 1:size(xt_val)[1]){
@@ -125,7 +139,7 @@ plot_efficiency_of_windows <- function(poped.db,
               }
             }
           }
-
+          
           
           if(grp==1){
             xt_new <- xt_tmp
@@ -153,10 +167,10 @@ plot_efficiency_of_windows <- function(poped.db,
         xt_new <- rand(size(xt_val,1),size(xt_val,2))*abs(xt_val_max - xt_val_min)+xt_val_min
         grouped_xt <- design_space$G_xt
         if(anyDuplicated(grouped_xt)){
-        #if((poped.db$design_space$bUseGrouped_xt)){
+          #if((poped.db$design_space$bUseGrouped_xt)){
           for(j in 1:size(xt_val,1) ){
             for(k in unique(grouped_xt[j,])){
-            #for(k in min(poped.db$design_space$G_xt[j,]):max(poped.db$design_space$G_xt[j,])){
+              #for(k in min(poped.db$design_space$G_xt[j,]):max(poped.db$design_space$G_xt[j,])){
               tmp.lst <- xt_new[j,design_space$G_xt[j,]==k]
               if(length(tmp.lst)!=1){
                 tmp <- sample(tmp.lst,1)
@@ -200,12 +214,13 @@ plot_efficiency_of_windows <- function(poped.db,
     #       returnArgs <-  mftot(model_switch,poped.db$design$groupsize,ni,xt_val,x_val,a_val,bpop[,2],fulld,design$sigma,fulldocc,poped.db) 
     #       fmf <- returnArgs[[1]]
     #       poped.db <- returnArgs[[2]]
+    eff <- NULL
     if(y_eff){
       tmp1 <- ofv_criterion(ofv_fim(fmf,poped.db,ofv_calc_type=ofv_calc_type),
                             p,poped.db,ofv_calc_type=ofv_calc_type)
       tmp2 <- ofv_criterion(ofv_fim(ref_fmf,poped.db,ofv_calc_type=ofv_calc_type),
                             p,poped.db,ofv_calc_type=ofv_calc_type) 
-      eff[1,i] = tmp1/tmp2  
+      eff = tmp1/tmp2*100
       # if(ofv_calc_type==4) {
       #   tmp1 <- ofv_criterion(ofv_fim(fmf,poped.db,ofv_calc_type=1),
       #                         p,poped.db,ofv_calc_type=1)
@@ -214,11 +229,8 @@ plot_efficiency_of_windows <- function(poped.db,
       #   d_eff[1,i] = tmp1/tmp2  
       # }
     }
-    if(y_rse){
-      rse_tmp <- get_rse(fmf,poped.db)
-      rse[i,] = rse_tmp
-      if(i==1) colnames(rse) <- names(rse_tmp)
-    }
+    rse <- NULL
+    if(y_rse) rse <- get_rse(fmf,poped.db)
     #       } else {
     #         eff(i) = (ofv_fim(fmf,poped.db)/optdetfim)
     #       }
@@ -319,27 +331,34 @@ plot_efficiency_of_windows <- function(poped.db,
     # }
     # 
     # return( eff min_eff mean_eff max_eff ) 
+    return(c(Efficiency=eff,rse))
   }
+  
+  if(parallel){
+    parallel <- start_parallel(parallel,
+                               seed=seed,
+                               #parallel_type=parallel_type,
+                               #num_cores=num_cores,
+                               #mrgsolve_model=mrgsolve_model,
+                               ...) 
+    on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
+  }  
+  
+  it_seq <- 1:iNumSimulations
+  if(parallel && (attr(parallel,"type")=="multicore")){
+    res <- parallel::mclapply(it_seq,gen_eff,mc.cores=attr(parallel, "cores"))
+  } else if(parallel && (attr(parallel,"type")=="snow")){
+    res <- parallel::parLapply(attr(parallel, "cluster"),it_seq,gen_eff)
+  } else {
+    res <- lapply(it_seq,gen_eff)
+  }
+  
+  df <- tibble::as_tibble(t(mapply(c,res,drop=0)))
+  df$drop <- NULL
+  df$sample <- it_seq
+  
   values <- NULL
   ind <- NULL
-  if(y_eff){
-    efficiency <- eff[1,]*100
-    # if(ofv_calc_type==4) {
-    #   d_efficiency <-  d_eff[1,]*100
-    # }
-  }
-  df <- data.frame(sample=c(1:iNumSimulations))
-  if(y_eff){
-    df$Efficiency <- efficiency
-    # if(ofv_calc_type==4) {
-    #   df["D-Efficiency"] <- d_efficiency
-    # }
-  }
-  if(y_rse){
-    rse_df <- data.frame(rse)
-    names(rse_df) <- colnames(rse)
-    df <- cbind(df,rse_df)
-  }
   #parameter_names_ff <- codetools::findGlobals(eval(parse(text=poped.db$model$ff_pointer)),merge=F)$variables 
   df_stack <- cbind(df$sample,stack(df,select=-sample))
   names(df_stack) <- c("sample","values","ind")
@@ -360,7 +379,8 @@ plot_efficiency_of_windows <- function(poped.db,
   
   # Compute sample mean and standard deviation in each group
   if(mean_line){
-    ds <- dplyr::summarise_(dplyr::group_by(df_stack, ind), mean=~mean(values), sd=~sd(values)) 
+    ds <- df_stack %>% dplyr::group_by(ind) %>% dplyr::summarise(mean=mean(values),sd=stats::sd(values))
+    #ds <- dplyr::summarise_(dplyr::group_by(df_stack, ind), mean=~mean(values), sd=~sd(values)) 
     p <- p + geom_hline(data = ds, aes(yintercept = mean),colour = mean_color)
   }
   

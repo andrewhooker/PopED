@@ -16,6 +16,8 @@ plot_efficiency_of_windows(
   mean_line = TRUE,
   mean_color = "red",
   deviate_by_id = FALSE,
+  parallel = F,
+  seed = round(runif(1, 0, 1e+07)),
   ...
 )
 }
@@ -60,17 +62,26 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)
 \item{deviate_by_id}{Should the computations look at deviations per
 individual instead of per group?}
 
+\item{parallel}{Should we use parallel computations (T/F)?
+Other options can be defined in this function and passed 
+to \code{\link{start_parallel}}.  See epecially 
+the options \code{dlls} and \code{mrgsolve_model} from that function 
+if you have a model defined with 
+compiled code or are using mrgsolve.}
+
+\item{seed}{The random seed to use.}
+
 \item{...}{Extra arguments passed to \code{evaluate.fim}}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
 }
 \description{
-Function plots the efficiency of windows around the optimal design points. 
-The function samples from a uniform distribution around the optimal design 
+Function plots the efficiency of windows around the sample time points. 
+The function samples from a uniform distribution around the sample time  
 points for each group (or each individual with \code{deviate_by_id=TRUE}, 
-with slower calculation times) and compares the results with the optimal 
-design. The maximal and minimal allowed values for all design variables as 
+with slower calculation times) and compares the results with the 
+design defined in \code{poped.db}. The maximal and minimal allowed values for all design variables as 
 defined in poped.db are respected (e.g. poped.db$design_space$minxt and 
 poped.db$design_space$maxxt).
 }
@@ -79,13 +90,16 @@ library(PopED)
 
 ############# START #################
 ## Create PopED database
-## (warfarin example)
+## (warfarin model for optimization)
 #####################################
 
 ## Warfarin example from software comparison in:
 ## Nyberg et al., "Methods and software tools for design evaluation 
 ##   for population pharmacokinetics-pharmacodynamics studies", 
 ##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error  
+## to avoid sample times at very low concentrations (time 0 or very late samples).
 
 ## find the parameters that are needed to define from the structural model
 ff.PK.1.comp.oral.sd.CL
@@ -101,29 +115,36 @@ sfg <- function(x,a,bpop,b,bocc){
   return(parameters) 
 }
 
-## -- Define model, parameters, initial design
+## -- Define initial design  and design space
 poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
                                   fg_fun=sfg,
-                                  fError_fun=feps.prop,
+                                  fError_fun=feps.add.prop,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   notfixed_bpop=c(1,1,1,0),
                                   d=c(CL=0.07, V=0.02, KA=0.6), 
-                                  sigma=c(prop=0.01),
+                                  sigma=c(prop=0.01,add=0.25),
                                   groupsize=32,
                                   xt=c( 0.5,1,2,6,24,36,72,120),
-                                  a=c(DOSE=70))
+                                  minxt=0.01,
+                                  maxxt=120,
+                                  a=c(DOSE=70),
+                                  mina=c(DOSE=0.01),
+                                  maxa=c(DOSE=100))
 
 ############# END ###################
 ## Create PopED database
-## (warfarin example)
+## (warfarin model for optimization)
 #####################################
 
 
-# Examine efficiency of sampling windows
+
+
+# Examine efficiency of sampling windows at plus/minus 0.5 hours from 
+# sample points in the design
 plot_efficiency_of_windows(poped.db,xt_windows=0.5)
 
 
-\dontrun{  
+if(interactive()){  
 
   plot_efficiency_of_windows(poped.db,
                              xt_plus=c( 0.5,1,2,1,2,3,7,1),

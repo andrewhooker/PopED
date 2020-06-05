@@ -29,8 +29,10 @@ test_that("plot_efficiency_of_windows works in parallel", {
                                     mina=c(DOSE=0.01),
                                     maxa=c(DOSE=100))
   
-  plot_efficiency_of_windows(poped.db,xt_windows=0.5)
+  t1 <- system.time(p1 <- plot_efficiency_of_windows(poped.db,xt_windows=0.5,parallel = T,iNumSimulations = 100))
+  t2 <- system.time(p1 <- plot_efficiency_of_windows(poped.db,xt_windows=0.5,parallel = F,iNumSimulations = 100))
   
+  expect_lt(t1["elapsed"],t2["elapsed"])
   
   
 })
