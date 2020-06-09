@@ -34,12 +34,12 @@ ff.ODE <- function(model_switch,xt,parameters,poped.db){
   ##-- Parameterized by CL, KA, F and V.
   with(as.list(parameters),{
     A_ini  <- c(A1 = DOSE*Favail, A2 = 0)
-    times <- drop(xt)##xt[,,drop=T] 
-    times <- sort(times) 
+    times_xt <- drop(xt) #xt[,,drop=T] 
+    times <- sort(times_xt) 
     times <- c(0,times) ## add extra time for start of integration
     out   <- ode(A_ini, times, one.comp.ode, parameters)#,atol=1e-13,rtol=1e-13)
     y = out[,"A2"]/(V)
-    y=y[-1] # remove initial time for start of integration
+    y=y[match(times_xt,out[,"time"])]
     y = cbind(y) # must be a column matrix 
     return(list( y= y,poped.db=poped.db)) 
   })
