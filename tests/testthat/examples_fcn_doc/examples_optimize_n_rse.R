@@ -21,19 +21,15 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
                                   mina=0.01,
                                   maxa=100)
 
-
+# plot of the design
 plot_model_prediction(poped.db)
 
-evaluate_design(poped.db)
+# the current RSE values
+evaluate_design(poped.db)$rse
 
-
-# what are the optimal proportions of 
-# individuals in the two groups in the study?
-(n_opt <- optimize_n_dist(poped.db))
-
-# How many individuals in the original design are needed to achieve an
-# efficiency of 1 compared to the optimized design with n=100?
-optimize_n_eff(poped.db,
-               ofv_ref=n_opt$opt_ofv)
+# number of individuals if CL should have 10% RSE
+optimize_n_rse(poped.db,
+                bpop_idx=1, # for CL
+                need_rse=10) # the RSE you want
 
 

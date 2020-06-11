@@ -38,8 +38,6 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
   return(fim)
 }
 
-
-## optimize on where the individuals should be
 #' Title Optimize the proportion of individuals in the design groups
 #'
 #' @param poped.db A PopED database. 
@@ -148,15 +146,29 @@ optimize_n_dist <-
 }
 
 
-## optimize HOW MANY n there should be, based on current design and a single parameter
-optimize_n <- function(poped.db,
-                       bpop_idx,
-                       need_rse, # not percent! RSE.
-                       allowed_values = seq(poped.db$design$m,
-                                            sum(poped.db$design$groupsize)*5,
-                                            by=poped.db$design$m),
-                       ...){
-
+#' Optimize the number of subjects based on desired uncertainty of a parameter.
+#' 
+#' Optimize the number of subjects, 
+#' based on the current design and the desired uncertainty of a single parameter
+#'
+#' @param poped.db A PopED database. 
+#' @param bpop_idx The index number of the parameter, currently only bpop parameters are allowed.
+#' @param need_rse The relative standard error (RSE) one would like to achieve (in percent, by default). 
+#' @param use_percent Should the RSE be represented as a percentage (T/F)?
+#' @param allowed_values A vector of the allowed total number of subjects in the study.
+#'
+#' @return 
+#' @export
+#'
+#' @examples tests/testthat/examples_fcn_doc/examples_optimize_n_rse.R
+optimize_n_rse <- function(poped.db,
+                           bpop_idx,
+                           need_rse, 
+                           use_percent = TRUE,
+                           allowed_values = seq(poped.db$design$m,
+                                                sum(poped.db$design$groupsize)*5,
+                                                by=poped.db$design$m)){
+  
   n_per_group = poped.db$design$groupsize
   n_tot <- sum(n_per_group)
   props = c(n_per_group/n_tot)
@@ -164,7 +176,7 @@ optimize_n <- function(poped.db,
 
   ofv_fun <- function(n_tot){
     fim_tmp <- combine_norm_group_fim(norm_group_fim,props*n_tot)
-    ofv <- get_rse(fim_tmp,poped.db,use_percent = F)[cumsum(poped.db$parameters$notfixed_bpop==1)[bpop_idx]] - need_rse
+    ofv <- get_rse(fim_tmp,poped.db,use_percent = use_percent)[cumsum(poped.db$parameters$notfixed_bpop==1)[bpop_idx]] - need_rse
     if(ofv>0){
       ofv <- Inf
     } else {
@@ -174,11 +186,28 @@ optimize_n <- function(poped.db,
   }
 
   result <- optim_LS(n_tot, ofv_fun, allowed_values = allowed_values,maximize = F,trace = F)
-  return(result)
+  
+  fim_final <- combine_norm_group_fim(norm_group_fim,props*result$par)
+  par_rse <- get_rse(fim_final,poped.db,use_percent = use_percent)[cumsum(poped.db$parameters$notfixed_bpop==1)[bpop_idx]]
+  
+  return(list(n=result$par,par_rse=par_rse))
 
 }
 
-## optimize HOW MANY n there should be to achive efficiency=1 compared to a reference ofv
+#' Translate efficiency to number of subjects
+#'
+#' optimize HOW MANY n there should be to achieve efficiency=1 compared to a reference OFV
+#'
+#' @param poped.db A PopED database. 
+#' @param ofv_ref A reference OFV value to compare to.
+#' @param norm_group_fim The FIM per individual in each design group. If \code{NULL}, then
+#' these are computed.
+#' @param ... Arguments passed to \code{\link{evaluate.fim}} and \code{efficiency}.
+#'
+#' @return
+#' @export
+#'
+#' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R
 optimize_n_eff <- function(poped.db,
                            ofv_ref,
                            norm_group_fim = NULL,  
