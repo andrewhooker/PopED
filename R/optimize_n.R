@@ -160,7 +160,7 @@ optimize_n_dist <-
 #' @return 
 #' @export
 #'
-#' @examples tests/testthat/examples_fcn_doc/examples_optimize_n_rse.R
+#' @example tests/testthat/examples_fcn_doc/examples_optimize_n_rse.R
 optimize_n_rse <- function(poped.db,
                            bpop_idx,
                            need_rse, 
