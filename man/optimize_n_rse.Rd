@@ -25,7 +25,7 @@ optimize_n_rse(
 \item{allowed_values}{A vector of the allowed total number of subjects in the study.}
 }
 \value{
-
+The total number of subjects needed and the RSE of the parameter.
 }
 \description{
 Optimize the number of subjects, 

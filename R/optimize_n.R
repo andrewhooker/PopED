@@ -157,7 +157,7 @@ optimize_n_dist <-
 #' @param use_percent Should the RSE be represented as a percentage (T/F)?
 #' @param allowed_values A vector of the allowed total number of subjects in the study.
 #'
-#' @return 
+#' @return The total number of subjects needed and the RSE of the parameter.
 #' @export
 #'
 #' @example tests/testthat/examples_fcn_doc/examples_optimize_n_rse.R
@@ -204,7 +204,7 @@ optimize_n_rse <- function(poped.db,
 #' these are computed.
 #' @param ... Arguments passed to \code{\link{evaluate.fim}} and \code{efficiency}.
 #'
-#' @return
+#' @return The number of individuals needed.
 #' @export
 #'
 #' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R
@@ -231,6 +231,6 @@ optimize_n_eff <- function(poped.db,
   }
   result <- optim(n_tot,ofv_fun,lower = 0,upper = sum(poped.db$design$groupsize)*10,method = "L-BFGS-B")
   
-  return(result$par)
+  return(n=result$par)
 }
 

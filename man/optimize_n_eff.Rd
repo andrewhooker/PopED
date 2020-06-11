@@ -17,7 +17,7 @@ these are computed.}
 \item{...}{Arguments passed to \code{\link{evaluate.fim}} and \code{efficiency}.}
 }
 \value{
-
+The number of individuals needed.
 }
 \description{
 optimize HOW MANY n there should be to achieve efficiency=1 compared to a reference OFV
