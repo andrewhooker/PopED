@@ -22,6 +22,7 @@ blockfinal(
   opt_xt = poped.db$settings$optsw[2],
   opt_a = poped.db$settings$optsw[4],
   opt_x = poped.db$settings$optsw[3],
+  opt_inds = poped.db$settings$optsw[5],
   fmf_init = NULL,
   dmf_init = NULL,
   param_cvs_init = NULL,
@@ -80,6 +81,8 @@ can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 \item{opt_a}{Should the continuous design variables be optimized?}
 
 \item{opt_x}{Should the discrete design variables be optimized?}
+
+\item{opt_inds}{Are the number of individuals per group being optimized?}
 
 \item{fmf_init}{Initial FIM.}
 

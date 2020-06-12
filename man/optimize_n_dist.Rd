@@ -7,6 +7,7 @@
 optimize_n_dist(
   poped.db,
   props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
+  trace = 1,
   ...
 )
 }
@@ -14,13 +15,19 @@ optimize_n_dist(
 \item{poped.db}{A PopED database.}
 
 \item{props}{The proportions of individuals in each group 
-(relative to the total number of individuals) to start the optimization from.}
+(relative to the total number of individuals) 
+to start the optimization from.}
+
+\item{trace}{Should there be tracing of the optimization? Value can be integer values.
+Larger numbers give more information.}
 
 \item{...}{Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}}
 }
 \value{
-A list of the optimal proportions, the optimal number of individuals in each group,
-and the initial and final objective function values.
+A list of the  initial objective function value, optimal proportions,
+the objective function value with those proportions, 
+the optimal number of individuals in each group (with integer number of individuals),
+and the objective function value with that number of individuals.
 }
 \description{
 Title Optimize the proportion of individuals in the design groups
@@ -62,7 +69,8 @@ evaluate_design(poped.db)
 # How many individuals in the original design are needed to achieve an
 # efficiency of 1 compared to the optimized design with n=100?
 optimize_n_eff(poped.db,
-               ofv_ref=n_opt$opt_ofv)
+               ofv_ref=n_opt$opt_ofv_with_n)
+
 
 
 }

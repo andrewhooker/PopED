@@ -42,7 +42,10 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 #'
 #' @param poped.db A PopED database. 
 #' @param props The proportions of individuals in each group 
-#'              (relative to the total number of individuals) to start the optimization from. 
+#'              (relative to the total number of individuals) 
+#'              to start the optimization from. 
+#' @param trace Should there be tracing of the optimization? Value can be integer values.
+#' Larger numbers give more information.              
 #' @param ... Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}
 #'
 #' @return A list of the  initial objective function value, optimal proportions,
