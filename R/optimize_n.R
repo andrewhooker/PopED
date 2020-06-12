@@ -45,8 +45,10 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 #'              (relative to the total number of individuals) to start the optimization from. 
 #' @param ... Arguments passed to \code{\link{ofv_fim}} and \code{\link[stats]{optim}}
 #'
-#' @return A list of the optimal proportions, the optimal number of individuals in each group,
-#' and the initial and final objective function values.
+#' @return A list of the  initial objective function value, optimal proportions,
+#' the objective function value with those proportions, 
+#' the optimal number of individuals in each group (with integer number of individuals),
+#' and the objective function value with that number of individuals.
 #'  
 #' @export
 #'
@@ -55,15 +57,24 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 optimize_n_dist <- 
   function(poped.db,
            props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
+           trace=1,
            ...){
-  
-  # need to fix:
-  # limits on the proportions to account for max and min values of N in each group
-  # return actual values.
-  
+    
+    # need to fix:
+    # limits on the proportions to account for max and min values of N in each group
+    # return actual values.
+    
   
   if(sum(props) != 1) stop("The sum of the proportions are not equal to 1\n") # check that the proportions add up to one
   
+  if(poped.db$design$m==1) stop("There is only one group, so group proportions of individuals cannot be optimized")
+    
+  if(!all(
+    poped.db$design_space$maxgroupsize==
+    poped.db$design_space$mingroupsize)){
+    cat("\nOptimization does not maintain groupsize limits\n")
+  }  
+    
   # Transform the parameters
   convert_to_lcp <- function(p){
     if(sum(p)!=1) stop("Probabilities do not add up to one")
@@ -107,6 +118,8 @@ optimize_n_dist <-
   
   initial_ofv <- ofv_fun(props,norm_group_fim,n_tot, poped.db, ...)
   
+  if(trace) cat("Initial proportions:\n",props,"\n\n")
+
   # ofv_fun(poped.db$design$groupsize/sum(poped.db$design$groupsize),norm_group_fim,
   #         sum(poped.db$design$groupsize),poped.db)
   
@@ -130,18 +143,65 @@ optimize_n_dist <-
   fnscale_val <- -1
   if(init_fun_val<1e-6) fnscale_val <- -init_fun_val
   
-  p <- optim(opt_var, opt_fun,...,control=list(fnscale=fnscale_val,trace=1),method = c("BFGS"))
+  p <- optim(opt_var, opt_fun,...,control=list(fnscale=fnscale_val,trace=trace),method = c("BFGS"))
   final_props <- convert_from_lcp(c(p$par,Inf)) # the proportions in each group
   if(!all.equal(sum(final_props),1)) stop("something went wrong\n the sum of the optimized proportions are not equal to 1\n") # check that the proportions add up to one
   n_per_group_opt <- final_props*n_tot # the numbers of individuals in each group
   ofv_opt <- p$value # the new OFV value
   #initial_ofv <- evaluate_design(poped.db)$ofv # the original value
   
+  if(trace) cat("\nOptimized proportions:\n",final_props,"\n\n")
+  
+  
+  # find the best n
+  best_n_res <- list()
+  ofv_fun_n <- function(n){
+    fim_tmp <- combine_norm_group_fim(norm_group_fim,n)
+    ofv_fim(fim_tmp,poped.db,...)
+  }
+  rounded_n <- round(n_per_group_opt)
+  rounded_ofv <- NULL
+  if(sum(rounded_n)==n_tot){
+    rounded_ofv <- ofv_fun_n(rounded_n)
+    best_n_res$rounded <- list(n=rounded_n,ofv=rounded_ofv)
+  }
+  
+  
+  floor_n <- floor(n_per_group_opt)
+  floor_n_ofv <- ofv_fun_n(floor_n)
+  extra_n <- n_tot-sum(floor_n)
+  floor_n_opt <- floor_n
+  floor_n_opt_ofv <- floor_n_ofv
+  for(i in 1:extra_n){
+    # add 1 individual to each group and take the best
+    add_on_calc_ofv <- function(j){
+      floor_n_tmp <- floor_n_opt
+      floor_n_tmp[j] <- floor_n_tmp[j] + 1
+      floor_n_tmp_ofv <- ofv_fun_n(floor_n_tmp)
+      return(list(n=floor_n_tmp,ofv=floor_n_tmp_ofv))
+    }
+    res <- sapply(1:length(floor_n),add_on_calc_ofv)
+    out <- res[,which.max(res["ofv",])] 
+    floor_n_opt <- out$n
+    floor_n_opt_ofv <- out$ofv
+  }
+  best_n_res$floor <- list(n=floor_n_opt,ofv=floor_n_opt_ofv)
+  
+  best_n_res <- simplify2array(best_n_res)
+  best_n <- best_n_res[,which.max(best_n_res["ofv",])] 
+  
+  if(trace) cat("Optimized number of individuals per group\n",
+                "OFV: ",best_n$ofv,"\n",
+                best_n$n,"\n\n")
+
+  
+  
   return(list(initial_props=props,
-               initial_ofv=initial_ofv,
-               opt_props=final_props,
-               opt_ofv=ofv_opt,
-               opt_n_per_group=n_per_group_opt) )
+              initial_ofv=initial_ofv,
+              opt_props=final_props,
+              opt_ofv_with_props=ofv_opt,
+              opt_n_per_group=best_n$n,
+              opt_ofv_with_n=best_n$ofv) )
   
 }
 
