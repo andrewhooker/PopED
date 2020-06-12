@@ -34,6 +34,7 @@ evaluate_design(poped.db)
 # How many individuals in the original design are needed to achieve an
 # efficiency of 1 compared to the optimized design with n=100?
 optimize_n_eff(poped.db,
-               ofv_ref=n_opt$opt_ofv)
+               ofv_ref=n_opt$opt_ofv_with_n)
+
 
 

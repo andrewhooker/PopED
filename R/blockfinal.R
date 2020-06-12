@@ -26,6 +26,7 @@
 
 blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,sigma,poped.db,
                        opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[3],
+                       opt_inds=poped.db$settings$optsw[5],
                        fmf_init=NULL,dmf_init=NULL,param_cvs_init=NULL,
                        compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,
                        run_time = NULL,
@@ -85,6 +86,31 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
           if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
           fprintf(fn,tmp_txt,a[ct1,ct2])
           if(fn!="") fprintf(tmp_txt,a[ct1,ct2])
+        }
+        fprintf(fn,'\n')
+        if(fn!="") fprintf('\n')
+      }
+      #     fprintf(fn,'\n')
+      #     fprintf('\n')
+      #     
+      #     fprintf(fn,'a :\n')
+      #     fprintf(fn,'%g \n',a)
+      #     cat("Optimized a values:\n")
+      #     print(a)
+    }
+    if((opt_inds==TRUE)){
+      tmp_txt <- "\nOptimized groupsize"
+      tmp_txt <- paste(tmp_txt,':\n',sep="")
+      fprintf(fn,tmp_txt)
+      if(fn!="") fprintf(tmp_txt)
+      for(ct1 in 1:poped.db$design$m){
+        fprintf(fn,'Group %g: ', ct1)
+        if(fn!="") fprintf('Group %g: ', ct1)
+        for(ct2 in 1:size(poped.db$design$groupsize,2)){
+          tmp_txt <- '%g'
+          if(ct2<size(poped.db$design$groupsize,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
+          fprintf(fn,tmp_txt,groupsize[ct1,ct2])
+          if(fn!="") fprintf(tmp_txt,groupsize[ct1,ct2])
         }
         fprintf(fn,'\n')
         if(fn!="") fprintf('\n')
