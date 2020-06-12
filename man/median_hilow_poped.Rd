@@ -9,8 +9,8 @@ median_hilow_poped(x, ...)
 \arguments{
 \item{x}{A numeric vector}
 
-\item{...}{Additional arguments passed to \code{\link[Hmisc]{smedian.hilow}} or 
-\code{\link[ggplot2]{median_hilow}}, depending on your version of ggplot.}
+\item{...}{Additional arguments passed to Hmisc's smedian.hilow function or 
+ggplot2's median_hilow function, depending on your version of ggplot.}
 }
 \description{
 Created for back compatibility with older versions of ggplot, and so that 

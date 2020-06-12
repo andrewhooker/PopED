@@ -4,8 +4,8 @@
 #' PopED does not have to load ggplot when started.
 #' 
 #' @param x A numeric vector
-#' @param ... Additional arguments passed to \code{\link[Hmisc]{smedian.hilow}} or 
-#'   \code{\link[ggplot2]{median_hilow}}, depending on your version of ggplot.
+#' @param ... Additional arguments passed to Hmisc's smedian.hilow function or 
+#'   ggplot2's median_hilow function, depending on your version of ggplot.
 #' 
 #' @export
 
