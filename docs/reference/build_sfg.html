@@ -199,13 +199,13 @@ a list defining the model per parameter.</p></td>
     <pre class="examples"><div class='input'><span class='fu'>build_sfg</span>(<span class='kw'>model</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>)</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2], KA = bpop[3] * 
 #&gt;     exp(b[2]), V = bpop[4] * exp(b[3]), DOSE = a[1], TAU = a[2])
-#&gt; &lt;environment: 0x7f8ff928c760&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7ff927aad5f0&gt;</div><div class='input'>
 <span class='no'>etas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>Favail</span><span class='kw'>=</span><span class='st'>"exp"</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='st'>"exp"</span>,<span class='kw'>V</span><span class='kw'>=</span><span class='st'>"add"</span>,<span class='kw'>CL</span><span class='kw'>=</span><span class='st'>"exp"</span>)
 <span class='fu'>build_sfg</span>(<span class='kw'>model</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>,<span class='kw'>etas</span> <span class='kw'>=</span> <span class='no'>etas</span>)</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2] * exp(b[2]), 
 #&gt;     KA = bpop[3] * exp(b[3]), V = bpop[4] + b[4], DOSE = a[1], 
 #&gt;     TAU = a[2])
-#&gt; &lt;environment: 0x7f8ff928c760&gt;</div></pre>
+#&gt; &lt;environment: 0x7ff927aad5f0&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

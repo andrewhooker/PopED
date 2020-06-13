@@ -83,6 +83,8 @@ The table below provides a check list of features for each of the 15 available e
 | Optimization with constraining <br> sampling times            |X|-|X|-|-|-|-|-|-|-|-|-|-|X|-|
 | Optimization of subjects <br>per group                        |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 
+*Note:* All features are available in PopED but some are not demonstrated in the supplied examples.
+
 
 #	Analytic solution of PKPD model, multiple study arms 
 
@@ -1249,7 +1251,7 @@ The output shows us the expected shrinkage on the variance scale ($shrink_{var}=
 
 # Further examples 
 
-Available in PopED
+Available in PopED, but not shown in examples:
 
 *	Espresso design
 *	Handling BLQ data	
@@ -1259,7 +1261,7 @@ Available in PopED
 * Keep some sampling time fixed (they will be automatically part of the optimal design protocol)	
 * Handling derived outputs	
 
-To be implemented
+To be implemented:
 
 * Symbolic differentiation	
 

@@ -1,6 +1,6 @@
 ## Test environments
-* macOS 10.13.6 (local), R release version
-* ubuntu 14.04 (on Travis CI), R release and devel version
+* macOS 10.15.5 (local), R release version
+* Ubuntu 16.04.6 LTS (on Travis CI), R release and devel version
 * windows Server 2012 R2 x64 (on AppVeyor), R release version
 * win-builder, R release and devel version
 
