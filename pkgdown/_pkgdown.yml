@@ -14,6 +14,9 @@ reference:
   - title: Predefined structural models
     contents:
       - starts_with("ff.")
+  - title: Between subject variability models
+    contents:
+      - build_sfg
   - title: Predefined residual error models 
     desc: >
       Define a residual unexplained variability (RUV) model.
@@ -51,6 +54,8 @@ reference:
       - optim_ARS
       - optim_LS
       - optimize_groupsize
+      - optimize_n_eff
+      - optimize_n_rse
       - LEDoptim
       - RS_opt
       - a_line_search
@@ -96,6 +101,8 @@ navbar:
         href: articles/examples.html
       - text: Defining models for PopED using R based PKPD simulators
         href: articles/model_def_other_pkgs.html
+      - text: Optimal design with LOQ data in PopED
+        href: articles/handling_LOQ.html
     news:
       text: Changelog
       href: news/index.html

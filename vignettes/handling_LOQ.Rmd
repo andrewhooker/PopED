@@ -13,7 +13,7 @@ output:
     number_sections: true
     #fig_width: 6
     #fig_height: 5
-bibliography: ["blq.bib"]
+bibliography: ["handling_LOQ.bib"]
 biblio-style: "apalike"
 link-citations: true
 editor_options: 

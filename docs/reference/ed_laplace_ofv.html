@@ -85,7 +85,7 @@ defined in the PopED database or as arguments to the function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ defined in the PopED database or as arguments to the function." />
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -173,7 +176,8 @@ defined in the PopED database or as arguments to the function.</p>
   <span class='kw'>return_gradient</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>optxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
   <span class='kw'>opta</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>()
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(),
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -261,6 +265,10 @@ to compute the hessian.</p></td>
       <th>x</th>
       <td><p>The design parameters to compute the gradient on.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed through from other functions, does not pass anything to another function.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -313,7 +321,7 @@ to compute the hessian.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -356,15 +364,12 @@ to compute the hessian.</p></td>
                                     <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file 'sfg': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, "r", encoding = encoding): cannot open the connection</span></div><div class='input'>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
-<span class='fu'><a href='tic.html'>tic</a></span>()
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='input'><span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
+<span class='fu'><a href='tic.html'>tic</a></span>(); <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>); <span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='output co'>#&gt; Elapsed time: 0.002 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
 
   <span class='co'>## ED value using MC integration (roughly)</span>
-  <span class='fu'><a href='tic.html'>tic</a></span>()
-  <span class='no'>e_ofv_mc_n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>500</span>,<span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-  <span class='fu'><a href='toc.html'>toc</a></span>()
+  <span class='fu'><a href='tic.html'>tic</a></span>();<span class='no'>e_ofv_mc_n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>500</span>,<span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='fl'>1</span>);<span class='fu'><a href='toc.html'>toc</a></span>()
   <span class='no'>e_ofv_mc_n</span>$<span class='no'>E_ofv</span>
 
 

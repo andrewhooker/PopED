@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -107,6 +107,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -182,15 +185,15 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>randn</span>(<span class='fl'>2</span>,<span class='fl'>3</span>)</div><div class='output co'>#&gt;            [,1]      [,2]       [,3]
-#&gt; [1,]  2.0646567 0.6338806  0.2501545
-#&gt; [2,] -0.1495222 0.4223444 -1.0401353</div><div class='input'>
-<span class='fu'>randn</span>(<span class='fl'>5</span>)</div><div class='output co'>#&gt;            [,1]         [,2]       [,3]         [,4]       [,5]
-#&gt; [1,] -0.0287149 -0.008765541 -0.6013227 -2.384946179 -1.6689696
-#&gt; [2,]  1.6451727  0.745206181 -1.4749807 -0.132497064  0.3094594
-#&gt; [3,]  0.2739507 -0.010497841 -0.6949729  1.052327238 -1.1409615
-#&gt; [4,]  0.7140061  0.215483199  0.4710895  0.021693757 -0.1954559
-#&gt; [5,] -1.4396878  1.105622658  2.3007945  0.002315637  0.9673516</div></pre>
+<span class='fu'>randn</span>(<span class='fl'>2</span>,<span class='fl'>3</span>)</div><div class='output co'>#&gt;           [,1]      [,2]       [,3]
+#&gt; [1,] 0.9712144 1.0130774  0.1491799
+#&gt; [2,] 0.4875448 0.1479461 -1.3667303</div><div class='input'>
+<span class='fu'>randn</span>(<span class='fl'>5</span>)</div><div class='output co'>#&gt;              [,1]        [,2]        [,3]       [,4]       [,5]
+#&gt; [1,] -0.333643126 -1.28105576 -0.08062677 -2.3971761 -1.6036518
+#&gt; [2,] -1.014570302 -0.06340291  1.04803150  0.8896998  2.0915851
+#&gt; [3,]  0.072088985 -1.01810795 -0.78249267 -0.2160804 -0.4684677
+#&gt; [4,] -0.005091017  0.20862835  0.58510806 -1.2907941  0.8625832
+#&gt; [5,] -0.359382124 -0.19491085 -1.89262569 -0.5540628 -0.7404393</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -47,11 +47,11 @@
 
 
 <meta property="og:title" content="Plot the efficiency of windows — plot_efficiency_of_windows" />
-<meta property="og:description" content="Function plots the efficiency of windows around the optimal design points. 
-The function samples from a uniform distribution around the optimal design 
+<meta property="og:description" content="Function plots the efficiency of windows around the sample time points. 
+The function samples from a uniform distribution around the sample time  
 points for each group (or each individual with deviate_by_id=TRUE, 
-with slower calculation times) and compares the results with the optimal 
-design. The maximal and minimal allowed values for all design variables as 
+with slower calculation times) and compares the results with the 
+design defined in poped.db. The maximal and minimal allowed values for all design variables as 
 defined in poped.db are respected (e.g. poped.db$design_space$minxt and 
 poped.db$design_space$maxxt)." />
 <meta property="og:image" content="/logo.png" />
@@ -86,7 +86,7 @@ poped.db$design_space$maxxt)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -113,6 +113,9 @@ poped.db$design_space$maxxt)." />
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -150,11 +153,11 @@ poped.db$design_space$maxxt)." />
     </div>
 
     <div class="ref-description">
-    <p>Function plots the efficiency of windows around the optimal design points. 
-The function samples from a uniform distribution around the optimal design 
+    <p>Function plots the efficiency of windows around the sample time points. 
+The function samples from a uniform distribution around the sample time  
 points for each group (or each individual with <code>deviate_by_id=TRUE</code>, 
-with slower calculation times) and compares the results with the optimal 
-design. The maximal and minimal allowed values for all design variables as 
+with slower calculation times) and compares the results with the 
+design defined in <code>poped.db</code>. The maximal and minimal allowed values for all design variables as 
 defined in poped.db are respected (e.g. poped.db$design_space$minxt and 
 poped.db$design_space$maxxt).</p>
     </div>
@@ -171,6 +174,8 @@ poped.db$design_space$maxxt).</p>
   <span class='kw'>mean_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>mean_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
   <span class='kw'>deviate_by_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1e+07</span>)),
   <span class='no'>...</span>
 )</pre>
 
@@ -239,6 +244,19 @@ rows and columns of the FIM: det(FIM)/det(FIM_u)</p></li>
 individual instead of per group?</p></td>
     </tr>
     <tr>
+      <th>parallel</th>
+      <td><p>Should we use parallel computations (T/F)?
+Other options can be defined in this function and passed 
+to <code><a href='start_parallel.html'>start_parallel</a></code>.  See epecially 
+the options <code>dlls</code> and <code>mrgsolve_model</code> from that function 
+if you have a model defined with 
+compiled code or are using mrgsolve.</p></td>
+    </tr>
+    <tr>
+      <th>seed</th>
+      <td><p>The random seed to use.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Extra arguments passed to <code>evaluate.fim</code></p></td>
     </tr>
@@ -267,13 +285,16 @@ individual instead of per group?</p></td>
 
 <span class='co'>############# START #################</span>
 <span class='co'>## Create PopED database</span>
-<span class='co'>## (warfarin example)</span>
+<span class='co'>## (warfarin model for optimization)</span>
 <span class='co'>#####################################</span>
 
 <span class='co'>## Warfarin example from software comparison in:</span>
 <span class='co'>## Nyberg et al., "Methods and software tools for design evaluation </span>
 <span class='co'>##   for population pharmacokinetics-pharmacodynamics studies", </span>
 <span class='co'>##   Br. J. Clin. Pharm., 2014. </span>
+
+<span class='co'>## Optimization using an additive + proportional reidual error  </span>
+<span class='co'>## to avoid sample times at very low concentrations (time 0 or very late samples).</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
 <span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
@@ -285,7 +306,7 @@ individual instead of per group?</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -298,28 +319,35 @@ individual instead of per group?</p></td>
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
 }
 
-<span class='co'>## -- Define model, parameters, initial design</span>
+<span class='co'>## -- Define initial design  and design space</span>
 <span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
                                   <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.prop</span>,
+                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
                                   <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>),
+                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>,<span class='kw'>add</span><span class='kw'>=</span><span class='fl'>0.25</span>),
                                   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
                                   <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>))
+                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0.01</span>,
+                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
+                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>),
+                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0.01</span>),
+                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>100</span>))
 
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
-<span class='co'>## (warfarin example)</span>
+<span class='co'>## (warfarin model for optimization)</span>
 <span class='co'>#####################################</span>
 
 
-<span class='co'># Examine efficiency of sampling windows</span>
+
+
+<span class='co'># Examine efficiency of sampling windows at plus/minus 0.5 hours from </span>
+<span class='co'># sample points in the design</span>
 <span class='fu'>plot_efficiency_of_windows</span>(<span class='no'>poped.db</span>,<span class='kw'>xt_windows</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='img'><img src='plot_efficiency_of_windows-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()){
 
   <span class='fu'>plot_efficiency_of_windows</span>(<span class='no'>poped.db</span>,
                              <span class='kw'>xt_plus</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>7</span>,<span class='fl'>1</span>),

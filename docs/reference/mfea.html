@@ -85,7 +85,7 @@ if they are supplied then they are used instead of the arguments from the PopED 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ if they are supplied then they are used instead of the arguments from the PopED 
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -336,7 +339,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -378,12 +381,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'># optimization of covariate, with coarse grid</span>
 <span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,
                               <span class='kw'>bUseExchangeAlgorithm</span><span class='kw'>=</span><span class='fl'>1</span>,
-                              <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>25</span>)</div><div class='output co'>#&gt; ===============================================================================
+                              <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>25</span>,<span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>)</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 55.3964
-#&gt; 
-#&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1016.94
 #&gt; 
 #&gt; Initial design
 #&gt; expected relative standard error
@@ -398,10 +399,20 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     sig_prop     0.01      32
 #&gt;      sig_add     0.25      26
 #&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Covariates
+#&gt; 
+#&gt; MFEA - It. : 1
 #&gt; MFEA - It. : 1
 #&gt; Exchanged covariate 1 in group/ind 1 from 70 to 100
+#&gt; Exchanged covariate 1 in group/ind 1 from 70 to 100
+#&gt; Delta : 0.0114735   OFV. : 56.032
 #&gt; Delta : 0.0114735   OFV. : 56.032
 #&gt; MFEA - It. : 2
+#&gt; MFEA - It. : 2
+#&gt; Delta : 0   OFV. : 56.032
 #&gt; Delta : 0   OFV. : 56.032
 #&gt; ===============================================================================
 #&gt; FINAL RESULTS
@@ -426,7 +437,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.038 seconds</div><div class='input'>
+#&gt; Total running time: 0.037 seconds</div><div class='input'>
 
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -107,6 +107,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -165,6 +168,7 @@
   <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
   <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
   <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
+  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>],
   <span class='kw'>fmf_init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dmf_init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>param_cvs_init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -223,12 +227,15 @@
 <li><p>column 2  defines the mean.</p></li>
 <li><p>column 3 defines the variance of the distribution (or length of uniform distribution).</p></li>
 </ul><p>Can also just supply the parameter values as a vector <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> if no uncertainty around the 
-parameter value is to be used.</p></td>
+parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'bpop' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>d</th>
       <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>.</p></td>
+matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. 
+The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'd' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>docc</th>
@@ -254,6 +261,10 @@ can also just supply the diagonal parameter values (variances) as a <code><a hre
     <tr>
       <th>opt_x</th>
       <td><p>Should the discrete design variables be optimized?</p></td>
+    </tr>
+    <tr>
+      <th>opt_inds</th>
+      <td><p>Are the number of individuals per group being optimized?</p></td>
     </tr>
     <tr>
       <th>fmf_init</th>
@@ -324,7 +335,7 @@ except for diagnostic purposes.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -400,7 +411,7 @@ except for diagnostic purposes.</p></td>
 #&gt;     sig_prop     0.01      32    32
 #&gt;      sig_add     0.25      26    26
 #&gt; 
-#&gt; Total running time: 0.961 seconds</div><div class='input'>
+#&gt; Total running time: 0.964 seconds</div><div class='input'>
 
 </div></pre>
   </div>

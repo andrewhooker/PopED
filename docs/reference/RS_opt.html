@@ -87,7 +87,7 @@ function, if they are supplied then they are used instead of the arguments from 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -114,6 +114,9 @@ function, if they are supplied then they are used instead of the arguments from 
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -421,7 +424,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -469,12 +472,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 
 
 <span class='co'># Just a few iterations, optimize on DOSE and sample times using the full FIM</span>
-<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>rsit</span><span class='kw'>=</span><span class='fl'>3</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; ===============================================================================
+<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>rsit</span><span class='kw'>=</span><span class='fl'>3</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>)</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 57.0828
-#&gt; 
-#&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1255.57
 #&gt; 
 #&gt; Initial design
 #&gt; expected relative standard error
@@ -489,10 +490,33 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;    SIGMA[1,1]     0.01      33
 #&gt;    SIGMA[2,2]     0.25      26
 #&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Sampling Schedule
+#&gt; * Optimize Covariates
+#&gt; 
+#&gt; *******************************
+#&gt; Initial Value
+#&gt;  OFV(mf) = 57.0828
+#&gt; *******************************
+#&gt; 
 #&gt; RS - It. : 3   OFV : 57.0828
+#&gt; 
+#&gt; *******************************
+#&gt; RS Results
+#&gt;  OFV(mf) = 57.0828
+#&gt; 
+#&gt; Optimized Sampling Schedule
+#&gt; Group 1:    0.5      1      2      6     24     36     72    120
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 70
+#&gt; 
+#&gt; *********************************
+#&gt; 
 #&gt; ===============================================================================
 #&gt; FINAL RESULTS
-#&gt; 
 #&gt; Optimized Sampling Schedule
 #&gt; Group 1:    0.5      1      2      6     24     36     72    120
 #&gt; 
@@ -516,7 +540,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;    SIGMA[1,1]     0.01      33    33
 #&gt;    SIGMA[2,2]     0.25      26    26
 #&gt; 
-#&gt; Total running time: 0.054 seconds</div><div class='input'>
+#&gt; Total running time: 0.038 seconds</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='fu'>RS_opt</span>(<span class='no'>poped.db</span>)

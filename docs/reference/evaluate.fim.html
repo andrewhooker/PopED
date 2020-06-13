@@ -83,7 +83,7 @@ function, if they are supplied then they are used instead of the arguments from 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -110,6 +110,9 @@ function, if they are supplied then they are used instead of the arguments from 
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -311,7 +314,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd77de25810&gt;
+#&gt; &lt;bytecode: 0x7f8ff92ed818&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -329,7 +332,8 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
                                   <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
                                   <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.prop"</span>,
                                   <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
+                                  <span class='co'># notfixed_bpop=c(1,1,1,0),</span>
+                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>V</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>0</span>),
                                   <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
                                   <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>,
                                   <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,

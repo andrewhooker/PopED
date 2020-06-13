@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -141,14 +144,26 @@
       <small>Source: <a href='https://github.com/andrewhooker/PopED/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="poped-0409000" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.0.9000">
-<a href="#poped-0409000" class="anchor"></a>PopED 0.4.0.9000<small> Unreleased </small>
+    <div id="poped-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#poped-050" class="anchor"></a>PopED 0.5.0<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>Updated the website at <a href="https://andrewhooker.github.io/PopED" class="uri">https://andrewhooker.github.io/PopED</a></p></li>
-<li><p>Named parameters are now passed to all calculations so that the FIM and RSE output is more readable with parameter names instead of default names.</p></li>
+<li><p>Added the ability to incorporate limit of quantification information into FIM calculations (both upper and lower limits). See the new vignette on the webpage <a href="https://andrewhooker.github.io/PopED/articles/handling_loq.html" class="uri">https://andrewhooker.github.io/PopED/articles/handling_loq.html</a></p></li>
+<li><p>Adding functionality to optimize groupsize and total size of the study. See <code><a href="../reference/optimize_groupsize.html">?optimize_groupsize</a></code>, `<code><a href="../reference/optimize_n_eff.html">?optimize_n_eff</a></code> and <code><a href="../reference/optimize_n_rse.html">?optimize_n_rse</a></code>. This is also implemented in <code>poped_optim</code> through the <code>opt_inds=T</code> argument.</p></li>
+<li><p>Updating Vignettes, including a new one about using other tools to use as simulators for design computations. See <a href="https://andrewhooker.github.io/PopED/articles/model_def_other_pkgs.html" class="uri">https://andrewhooker.github.io/PopED/articles/model_def_other_pkgs.html</a></p></li>
+<li><p>Simplify RxODE syntax in the above vingette (<a href='https://github.com/andrewhooker/PopED/issues/47'>#47</a>, <a href='https://github.com/mattfidler'>@mattfidler</a>).</p></li>
 <li><p>Added the ability to predict and plot model prediction intervals by computing the expected variance (using an FO approximation) and then computing a prediction interval based on an assumption of normality. See <code>?model_prediciton</code> and <code><a href="../reference/plot_model_prediction.html">?plot_model_prediction</a></code>. The computation is faster but less accurate compared to using <code>DV=TRUE</code> (and <code>groupsize_sim = 500</code>) in the two functions.</p></li>
+<li><p>Named parameters are now passed to all calculations so that the FIM and RSE output is more readable with parameter names instead of default names.</p></li>
+<li><p>Allow for parallel computation in <code>plot_efficiency_of_windows</code> (<a href='https://github.com/andrewhooker/PopED/issues/50'>#50</a>).</p></li>
+<li><p>Make parallelization work with mrgsolve on windows (<a href='https://github.com/andrewhooker/PopED/issues/37'>#37</a>, <a href='https://github.com/andrewhooker/PopED/issues/45'>#45</a>, <a href='https://github.com/andrewhooker/PopED/issues/46'>#46</a>, <a href='https://github.com/andrewhooker/PopED/issues/51'>#51</a>, <a href='https://github.com/Vincent-AC'>@Vincent-AC</a>).</p></li>
+<li><p>Updated the function for automatic building of parameter model function (see <code>build_sfg</code>).</p></li>
+<li><p>Simplify derivative calculations (<a href='https://github.com/andrewhooker/PopED/issues/34'>#34</a>, <a href='https://github.com/martin-gmx'>@martin-gmx</a>).</p></li>
+<li><p>Allow for only simulating model_switch &gt; 1 models.</p></li>
+<li><p>Change the defult Ds calculation to be on log scale.</p></li>
+<li><p>Updated the website at <a href="https://andrewhooker.github.io/PopED" class="uri">https://andrewhooker.github.io/PopED</a></p></li>
+<li><p>Remove options for discontinued dplyr commands <code>rbind_all</code> and <code>rbind_list</code>.</p></li>
+<li><p>Minor bug fixes in shrinkage calculations (<a href='https://github.com/andrewhooker/PopED/issues/44'>#44</a>, <a href='https://github.com/andrewhooker/PopED/issues/39'>#39</a>, <a href='https://github.com/martin-gmx'>@martin-gmx</a>).</p></li>
 </ul>
 </div>
     <div id="poped-040" class="section level1">
@@ -204,7 +219,7 @@
 <a href="#poped-030" class="anchor"></a>PopED 0.3.0<small> 2015-12-29 </small>
 </h1>
 <ul>
-<li><p>Added new optimization methods and tools, see <code>?poped_optim()</code>. This function incorporates the new optimization routines <code><a href="../reference/optim_ARS.html">optim_ARS()</a></code> and <code>optim_LS</code> which are optimized versions of previous optimization algorithms used in PopED. Both can be run with parallelization. <code><a href="../reference/poped_optim.html">poped_optim()</a></code> also incorporates the genetic algorithm from <code>GA::ga()</code>, which can also be run with parallelization, and the “L-BFGS-B” method from <code><a href="https://rdrr.io/r/stats/optim.html">stats::optim()</a></code>. <code><a href="../reference/poped_optim.html">poped_optim()</a></code> should be more efficient and faster than <code><a href="../reference/poped_optimize.html">poped_optimize()</a></code>.</p></li>
+<li><p>Added new optimization methods and tools, see <code>?poped_optim()</code>. This function incorporates the new optimization routines <code><a href="../reference/optim_ARS.html">optim_ARS()</a></code> and <code>optim_LS</code> which are optimized versions of previous optimization algorithms used in PopED. Both can be run with parallelization. <code><a href="../reference/poped_optim.html">poped_optim()</a></code> also incorporates the genetic algorithm from <code><a href="https://github.com/luca-scr/GA/reference/ga.html">GA::ga()</a></code>, which can also be run with parallelization, and the “L-BFGS-B” method from <code><a href="https://rdrr.io/r/stats/optim.html">stats::optim()</a></code>. <code><a href="../reference/poped_optim.html">poped_optim()</a></code> should be more efficient and faster than <code><a href="../reference/poped_optimize.html">poped_optimize()</a></code>.</p></li>
 <li><p>Changed the default objective function to be the log of the determinant of the FIM. <code><a href="../reference/create.poped.database.html">create.poped.database(ofv_calc_type=4)</a></code></p></li>
 <li><p>Various small changes and bug fixes.</p></li>
 </ul>

@@ -85,7 +85,7 @@ input file or as function arguments. Default arguments are supplied in the Usage
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ input file or as function arguments. Default arguments are supplied in the Usage
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -311,9 +314,6 @@ input file or as function arguments. Default arguments are supplied in the Usage
 
     <span class='kw'>iNumChunkDesignEvals</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>iNumChunkDesignEvals</span>,
     -<span class='fl'>2</span>),
-
-    <span class='kw'>strMatFileInputPrefix</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strMatFileInputPrefix</span>,
-    <span class='st'>"parallel_input"</span>),
   <span class='kw'>Mat_Out_Pre</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strMatFileOutputPrefix</span>,
     <span class='st'>"parallel_output"</span>),
   <span class='kw'>strExtraRunOptions</span> <span class='kw'>=</span> <span class='fu'><a href='poped.choose.html'>poped.choose</a></span>(<span class='no'>popedInput</span>$<span class='no'>settings</span>$<span class='no'>parallel</span>$<span class='no'>strExtraRunOptions</span>,
@@ -627,12 +627,15 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
 <li><p>column 2  defines the mean.</p></li>
 <li><p>column 3 defines the variance of the distribution (or length of uniform distribution).</p></li>
 </ul><p>Can also just supply the parameter values as a vector <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> if no uncertainty around the 
-parameter value is to be used.</p></td>
+parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'bpop' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>d</th>
       <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>.</p></td>
+matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. 
+The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'd' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>covd</th>
@@ -656,11 +659,15 @@ can also just supply the diagonal parameter values (variances) as a <code><a hre
       <th>notfixed_bpop</th>
       <td><ul>
 <li><p><b>******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********</b></p></li>
-</ul><p>Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed)</p></td>
+</ul><p>Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
+The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'notfixed_bpop' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>notfixed_d</th>
-      <td><p>Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed)</p></td>
+      <td><p>Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
+The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'notfixed_d' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>notfixed_covd</th>
@@ -971,10 +978,6 @@ Default is fixed.</p></td>
       <td><p>Number of design evaluations that should be evaluated in each process before getting new work from job manager</p></td>
     </tr>
     <tr>
-      <th>strMatFileInputPrefix</th>
-      <td><p>The prefix of the input mat file to communicate with the executable</p></td>
-    </tr>
-    <tr>
       <th>Mat_Out_Pre</th>
       <td><p>The prefix of the output mat file to communicate with the executable</p></td>
     </tr>
@@ -1041,7 +1044,7 @@ Default is fixed.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd77de25810&gt;
+#&gt; &lt;bytecode: 0x7f8ff92ed818&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>

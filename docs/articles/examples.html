@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -65,6 +65,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -93,13 +96,13 @@
 
       
 
-      </header><script src="examples_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="examples_files/header-attrs-2.2/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Examples</h1>
                         <h4 class="author">Giulia Lestini, Martin Fink and Andrew Hooker</h4>
             
-            <h4 class="date">30 April, 2020</h4>
+            <h4 class="date">13 June, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/examples.Rmd"><code>vignettes/examples.Rmd</code></a></small>
       <div class="hidden name"><code>examples.Rmd</code></div>
@@ -718,9 +721,9 @@
   <span class="kw">ff_fun</span><span class="kw">=</span><span class="st">"ff.PK.2.comp.oral.md.ode.Rcpp"</span>)</pre></body></html></div>
 <p>We can compare the time for design evaluation with these two methods of describing the same model.</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>(); <span class="no">eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 2.892 seconds.</span>
+<span class="co">#&gt; Elapsed time: 3.119 seconds.</span>
 <span class="fu"><a href="../reference/tic.html">tic</a></span>(); <span class="no">eval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db.Rcpp</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
-<span class="co">#&gt; Elapsed time: 1.539 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 1.773 seconds.</span></pre></body></html></div>
 <p>The difference is noticeable and gets larger for more complex ODE models.</p>
 </div>
 <div id="ode-solution-of-tmdd-model-with-2-outputs-multiple-arms-different-dose-routes-different-number-of-sample-times-per-arm" class="section level1">
@@ -1009,7 +1012,7 @@
   )</pre></body></html></div>
 <div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">ev</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_2</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">ofv</span>,<span class="fl">1</span>)
-<span class="co">#&gt; [1] 42.1</span></pre></body></html></div>
+<span class="co">#&gt; [1] 41.8</span></pre></body></html></div>
 <div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">ev</span>$<span class="no">rse</span>)</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
@@ -1027,11 +1030,11 @@
 </tr>
 <tr class="odd">
 <td>WT_CL</td>
-<td align="right">30</td>
+<td align="right">32</td>
 </tr>
 <tr class="even">
 <td>WT_V</td>
-<td align="right">23</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td>d_CL</td>
@@ -1088,9 +1091,9 @@
 <td>0%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">23.90</td>
-<td align="right">18.32</td>
-<td align="right">21.02</td>
+<td align="right">25.16</td>
+<td align="right">19.29</td>
+<td align="right">21.03</td>
 <td align="right">21.95</td>
 <td align="right">10.06</td>
 </tr>
@@ -1098,8 +1101,8 @@
 <td>25%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">27.39</td>
-<td align="right">20.99</td>
+<td align="right">28.52</td>
+<td align="right">21.86</td>
 <td align="right">21.03</td>
 <td align="right">21.95</td>
 <td align="right">10.07</td>
@@ -1108,28 +1111,28 @@
 <td>50%</td>
 <td align="right">3.26</td>
 <td align="right">3.33</td>
-<td align="right">29.79</td>
-<td align="right">22.83</td>
+<td align="right">29.46</td>
+<td align="right">22.58</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="even">
 <td>75%</td>
-<td align="right">3.30</td>
-<td align="right">3.37</td>
-<td align="right">31.80</td>
-<td align="right">24.36</td>
+<td align="right">3.31</td>
+<td align="right">3.38</td>
+<td align="right">31.94</td>
+<td align="right">24.48</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="odd">
 <td>100%</td>
-<td align="right">3.36</td>
-<td align="right">3.44</td>
-<td align="right">37.61</td>
-<td align="right">28.82</td>
+<td align="right">3.48</td>
+<td align="right">3.55</td>
+<td align="right">40.44</td>
+<td align="right">30.98</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.08</td>
@@ -1354,24 +1357,24 @@
 <td align="right">26</td>
 </tr>
 <tr class="odd">
+<td>sig_prop</td>
+<td align="right">11</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
 <td>D[2,1]</td>
 <td align="right">NA</td>
 <td align="right">31</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>D[3,1]</td>
 <td align="right">NA</td>
 <td align="right">41</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>D[3,2]</td>
 <td align="right">NA</td>
 <td align="right">31</td>
-</tr>
-<tr class="even">
-<td>sig_prop</td>
-<td align="right">11</td>
-<td align="right">11</td>
 </tr>
 </tbody>
 </table>
@@ -1420,24 +1423,24 @@
 <td align="right">26</td>
 </tr>
 <tr class="odd">
+<td>sig_prop</td>
+<td align="right">12</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
 <td>D[2,1]</td>
 <td align="right">NA</td>
 <td align="right">31</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>D[3,1]</td>
 <td align="right">NA</td>
 <td align="right">42</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>D[3,2]</td>
 <td align="right">NA</td>
 <td align="right">31</td>
-</tr>
-<tr class="even">
-<td>sig_prop</td>
-<td align="right">12</td>
-<td align="right">12</td>
 </tr>
 </tbody>
 </table>
@@ -1714,7 +1717,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <span class="co">#&gt;   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 </span>
 <span class="co">#&gt; SIGMA[2,2] </span>
 <span class="co">#&gt;  25.341368</span>
-<span class="co">#&gt; Elapsed time: 0.225 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 0.221 seconds.</span></pre></body></html></div>
 <p>We can see that the result, based on MC sampling, is somewhat variable with so few samples.</p>
 <div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="../reference/tic.html">tic</a></span>();<span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,<span class="kw">d_switch</span><span class="kw">=</span><span class="fl">FALSE</span>,<span class="kw">ED_samp_size</span><span class="kw">=</span><span class="fl">20</span>); <span class="fu"><a href="../reference/toc.html">toc</a></span>()
 <span class="co">#&gt; $ofv</span>
@@ -1745,7 +1748,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <span class="co">#&gt;   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 </span>
 <span class="co">#&gt; SIGMA[2,2] </span>
 <span class="co">#&gt;  25.311870</span>
-<span class="co">#&gt; Elapsed time: 0.199 seconds.</span></pre></body></html></div>
+<span class="co">#&gt; Elapsed time: 0.243 seconds.</span></pre></body></html></div>
 </div>
 <div id="design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality" class="section level1">
 <h1 class="hasAnchor">
@@ -1773,7 +1776,7 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <p>Design evaluation:</p>
 <div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>)
 <span class="co">#&gt; $ofv</span>
-<span class="co">#&gt; [1] 14534520</span>
+<span class="co">#&gt; [1] 16.49204</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $fim</span>
 <span class="co">#&gt;                     CL         V        KA         d_CL          d_V</span>
@@ -1809,16 +1812,17 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <p>To evaluate the estimation quality of the individual random effects in the model (the b’s) we use the function <code><a href="../reference/shrinkage.html">shrinkage()</a></code>.</p>
 <div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="fu"><a href="../reference/shrinkage.html">shrinkage</a></span>(<span class="no">poped.db</span>)
 <span class="co">#&gt; # A tibble: 3 x 5</span>
-<span class="co">#&gt;   `d[1]` `d[2]` `d[3]` type       group</span>
-<span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;</span>
-<span class="co">#&gt; 1  0.504  0.367  0.424 shrink_var grp_1</span>
-<span class="co">#&gt; 2  0.295  0.205  0.241 shrink_sd  grp_1</span>
-<span class="co">#&gt; 3  0.710  0.303  0.206 se         grp_1</span></pre></body></html></div>
+<span class="co">#&gt;    d_KA   d_V `D[3,3]` type       group</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;</span>
+<span class="co">#&gt; 1 0.504 0.367    0.424 shrink_var grp_1</span>
+<span class="co">#&gt; 2 0.295 0.205    0.241 shrink_sd  grp_1</span>
+<span class="co">#&gt; 3 0.710 0.303    0.206 se         grp_1</span></pre></body></html></div>
 <p>The output shows us the expected shrinkage on the variance scale (<span class="math inline">\(shrink_{var}=1-var(b_j)/D(j,j)\)</span>) and on the standard deviation scale (<span class="math inline">\(shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))\)</span>), as well as the standard errors of the <span class="math inline">\(b_j\)</span> estimates.</p>
 </div>
-<div id="further-examples-to-be-implemented" class="section level1">
+<div id="further-examples" class="section level1">
 <h1 class="hasAnchor">
-<a href="#further-examples-to-be-implemented" class="anchor"></a>Further examples (to be implemented)</h1>
+<a href="#further-examples" class="anchor"></a>Further examples</h1>
+<p>Available in PopED</p>
 <ul>
 <li>Espresso design</li>
 <li>Handling BLQ data<br>
@@ -1829,8 +1833,10 @@ Matrix defining the fixed effects, per row (row number = parameter_number) we sh
 <li>Constraining the optimization to different allowed sampling times for each response</li>
 <li>Keep some sampling time fixed (they will be automatically part of the optimal design protocol)<br>
 </li>
-<li>Handling derived outputs<br>
-</li>
+<li>Handling derived outputs</li>
+</ul>
+<p>To be implemented</p>
+<ul>
 <li>Symbolic differentiation</li>
 </ul>
 </div>

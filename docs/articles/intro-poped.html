@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -65,6 +65,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -93,13 +96,13 @@
 
       
 
-      </header><script src="intro-poped_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="intro-poped_files/header-attrs-2.2/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PopED</h1>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">30 April, 2020</h4>
+            <h4 class="date">13 June, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/intro-poped.Rmd"><code>vignettes/intro-poped.Rmd</code></a></small>
       <div class="hidden name"><code>intro-poped.Rmd</code></div>
@@ -133,7 +136,7 @@
 <p>Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution. In this case the solution is applicable for both multiple and single dosing. Note that this function is also predefined in PopED as <code>ff.PK.1.comp.oral.md.CL</code> (see <code><a href="../reference/ff.PK.1.comp.oral.md.CL.html">?ff.PK.1.comp.oral.md.CL</a></code> for more information).</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PopED</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span>(<span class="st">"PopED"</span>)
-<span class="co">#&gt; [1] '0.4.0.9002'</span></pre></body></html></div>
+<span class="co">#&gt; [1] '0.5.0'</span></pre></body></html></div>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">ff</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
     <span class="no">N</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span>(<span class="no">xt</span>/<span class="no">TAU</span>)+<span class="fl">1</span>
@@ -390,7 +393,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    26</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 18.058 seconds</span>
+<span class="co">#&gt; Total running time: 20.402 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output</span>$<span class="no">poped.db</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="700"></p>
 <p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
@@ -432,7 +435,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    27</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 9.961 seconds</span>
+<span class="co">#&gt; Total running time: 11.68 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output_discrete</span>$<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="700"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
@@ -467,10 +470,10 @@
 <span class="co">#&gt; Group 1: 31.5672 : 24</span>
 <span class="co">#&gt; Group 2: 55.2426 : 24</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; OFV = 3.96786e-15</span>
+<span class="co">#&gt; OFV = 6.09293e-15</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Efficiency: </span>
-<span class="co">#&gt;   (ofv_final / ofv_init) = 2.6998e-13</span>
+<span class="co">#&gt;   (ofv_final / ofv_init) = 4.1457e-13</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Expected relative standard error</span>
 <span class="co">#&gt; (%RSE, rounded to nearest integer):</span>
@@ -483,7 +486,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    28</span>
 <span class="co">#&gt;     sig_prop     0.04      14    14</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 3.65 seconds</span>
+<span class="co">#&gt; Total running time: 4.909 seconds</span>
 <span class="fu"><a href="../reference/get_rse.html">get_rse</a></span>(<span class="no">output_cost</span>$<span class="no">FIM</span>, <span class="no">output_cost</span>$<span class="no">poped.db</span>)
 <span class="co">#&gt;         V        KA        CL       d_V      d_KA      d_CL  sig_prop </span>
 <span class="co">#&gt;  8.207404 10.070674  4.399378 39.808012 60.478363 27.549531 13.800551</span>

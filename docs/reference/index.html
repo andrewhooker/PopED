@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -216,6 +219,25 @@ parameterized using CL driving an inhibitory IMAX model with a direct effect.</p
           <p><code><a href="ff.PKPD.1.comp.sd.CL.emax.html">ff.PKPD.1.comp.sd.CL.emax()</a></code> </p>
         </td>
         <td><p>Structural model: one-compartment, single bolus IV dose, parameterized using CL driving an EMAX model with a direct effect.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-between-subject-variability-models" class="hasAnchor"><a href="#section-between-subject-variability-models" class="anchor"></a>Between subject variability models</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="build_sfg.html">build_sfg()</a></code> </p>
+        </td>
+        <td><p>Build PopED parameter function from a model function</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -431,9 +453,21 @@ Proportional.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="optimize_n_dist.html">optimize_n_dist()</a></code> </p>
+          <p><code><a href="optimize_groupsize.html">optimize_groupsize()</a></code> </p>
         </td>
         <td><p>Title Optimize the proportion of individuals in the design groups</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="optimize_n_eff.html">optimize_n_eff()</a></code> </p>
+        </td>
+        <td><p>Translate efficiency to number of subjects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="optimize_n_rse.html">optimize_n_rse()</a></code> </p>
+        </td>
+        <td><p>Optimize the number of subjects based on desired uncertainty of a parameter.</p></td>
       </tr><tr>
         
         <td>

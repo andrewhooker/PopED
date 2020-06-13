@@ -81,7 +81,7 @@ unless you have a specific reason to use this function instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -108,6 +108,9 @@ unless you have a specific reason to use this function instead." />
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -221,12 +224,15 @@ unless you have a specific reason to use this function instead.</p>
 <li><p>column 2  defines the mean.</p></li>
 <li><p>column 3 defines the variance of the distribution (or length of uniform distribution).</p></li>
 </ul><p>Can also just supply the parameter values as a vector <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> if no uncertainty around the 
-parameter value is to be used.</p></td>
+parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'bpop' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>d</th>
       <td><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
-matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>.</p></td>
+matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. 
+The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
+arguments in 'd' then the order will be worked out automatically.</p></td>
     </tr>
     <tr>
       <th>maxxt</th>
@@ -423,7 +429,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7fd778116fb0&gt;
+#&gt; &lt;bytecode: 0x7f8ff4d63e28&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -469,12 +475,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'># only to check that things are working</span>
 <span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optimize</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
                          <span class='kw'>rsit</span><span class='kw'>=</span><span class='fl'>2</span>,<span class='kw'>sgit</span><span class='kw'>=</span><span class='fl'>2</span>,<span class='kw'>ls_step_size</span><span class='kw'>=</span><span class='fl'>2</span>,
-                         <span class='kw'>iter_max</span><span class='kw'>=</span><span class='fl'>1</span>)</div><div class='output co'>#&gt; ===============================================================================
+                         <span class='kw'>iter_max</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>)</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 55.3964
-#&gt; 
-#&gt; Efficiency criterion [usually defined as OFV^(1/npar)]  = 1016.94
 #&gt; 
 #&gt; Initial design
 #&gt; expected relative standard error
@@ -489,29 +493,107 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     sig_prop     0.01      32
 #&gt;      sig_add     0.25      26
 #&gt; 
+#&gt; ==============================================================================
+#&gt; Optimization of design parameters
+#&gt; 
+#&gt; * Optimize Sampling Schedule
+#&gt; * Optimize Covariates
+#&gt; 
+#&gt; *******************************
+#&gt; Initial Value
+#&gt;  OFV(mf) = 55.3964
+#&gt; *******************************
+#&gt; 
 #&gt; RS - It. : 2   OFV : 55.3964
+#&gt; 
+#&gt; *******************************
+#&gt; RS Results
+#&gt;  OFV(mf) = 55.3964
+#&gt; 
+#&gt; Optimized Sampling Schedule
+#&gt; Group 1:    0.5      1      2      6     24     36     72    120
+#&gt; 
+#&gt; Optimized Covariates:
+#&gt; Group 1: 70
+#&gt; 
+#&gt; *********************************
+#&gt; 
 #&gt; Run time for random search: 0.015 seconds
 #&gt; 
 #&gt; SG - It. : 1  OFV : 55.45   Diff. :     1
 #&gt; SG - It. : 2  OFV : 55.61   Diff. : 0.002799
-#&gt; Stochastic gradient run time: 0.369 seconds
 #&gt; 
-#&gt; Searching xt8 on group 1
+#&gt; SG - Iteration 2 --------- FINAL -------------------------
+#&gt; Normalized gradient: Grad_xt(OFV)/OFV
+#&gt; -0.00262406222188805
+#&gt;  -0.000132029318557143
+#&gt;  0.00495629130901136
+#&gt;  -0.000109895323235429
+#&gt;  -0.000341253277398965
+#&gt;  2.72641241963075e-05
+#&gt;  0.000160460619480128
+#&gt;  3.06136916146239e-05
+#&gt; xt opt:
+#&gt; 0.210318514650852
+#&gt;  0.950298514650852
+#&gt;  2.28968148534915
+#&gt;  5.71031851465085
+#&gt;  23.7103185146509
+#&gt;  36.2896814853491
+#&gt;  72.2896814853491
+#&gt;  120
+#&gt; Normalized gradient: Grad_a(OFV)/OFV
+#&gt; 6.312884e-04
+#&gt; aopt:
+#&gt; 7.024140e+01
+#&gt; OFV(mf)    : 55.6095
+#&gt; diff       : 0.00279928
+#&gt; *************************************************************
+#&gt; Stochastic gradient run time: 0.384 seconds
+#&gt; 
+#&gt; *****************************
+#&gt;             Line Search
+#&gt; 
 #&gt; Searching xt5 on group 1
-#&gt; Searching xt3 on group 1
-#&gt; Searching xt7 on group 1
+#&gt; group 1 -- xt[5] changed from  23.7103 to  120
+#&gt;      OFV(MF) changed from 55.6095 to 55.6533 
 #&gt; Searching xt2 on group 1
-#&gt; Searching xt6 on group 1
+#&gt; Searching xt7 on group 1
+#&gt; group 1 -- xt[7] changed from  72.2897 to  120
+#&gt;      OFV(MF) changed from 55.6533 to 55.7007 
 #&gt; Searching xt4 on group 1
+#&gt; Searching xt8 on group 1
+#&gt; Searching xt3 on group 1
+#&gt; Searching xt6 on group 1
 #&gt; Searching xt1 on group 1
+#&gt; group 1 -- xt[1] changed from  0.210319 to  0.01
+#&gt;      OFV(MF) changed from 55.7007 to 55.7289 
+#&gt; group 1 -- xt[1] changed from  0.01 to  60.005
+#&gt;      OFV(MF) changed from 55.7289 to 55.742 
+#&gt; group 1 -- xt[1] changed from  60.005 to  120
+#&gt;      OFV(MF) changed from 55.742 to 55.8146 
 #&gt;     OFV(MF): 55.8146
+#&gt; 
+#&gt; Best value for OFV(MF) = 55.8146
+#&gt; 
+#&gt; Best value for xt:
+#&gt; Group 1: 0.9503   2.29   5.71  36.29    120    120    120    120
+#&gt; 
 #&gt; Searching a1 on individual/group 1
+#&gt; group 1 -- a[1] changed from  70.2414 to  100
+#&gt;      OFV(MF) changed from 55.8146 to 56.5866 
 #&gt;     OFV(MF): 56.5866
-#&gt; Line search run time: 0.263 seconds
+#&gt; Best value for OFV(MF) = 56.5866
+#&gt; 
+#&gt; Best value for a: 
+#&gt; Group 1: 100
+#&gt; 
+#&gt; 
+#&gt; Line search run time: 0.237 seconds
+#&gt; ***************************
 #&gt; 
 #&gt; ===============================================================================
 #&gt; FINAL RESULTS
-#&gt; 
 #&gt; Optimized Sampling Schedule
 #&gt; Group 1: 0.9503   2.29   5.71  36.29    120    120    120    120
 #&gt; 
@@ -535,7 +617,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     sig_prop     0.01      32    25
 #&gt;      sig_add     0.25      26    16
 #&gt; 
-#&gt; Total running time: 0.652 seconds</div><div class='input'>
+#&gt; Total running time: 0.639 seconds</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># RS+SG+LS optimization of sample times </span>

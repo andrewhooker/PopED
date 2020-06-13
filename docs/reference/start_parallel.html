@@ -82,7 +82,7 @@ systems the default is &quot;multicore&quot;" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -109,6 +109,9 @@ systems the default is &quot;multicore&quot;" />
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -157,6 +160,7 @@ systems the default is "multicore"</p>
   <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dlls</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mrgsolve_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -188,6 +192,12 @@ for you depending on your operating system.</p></td>
       <td><p>If the computations require compiled code (DLL's) and you are
 using the "snow" method then you need to specify the name of the DLL's without 
 the extension as a text vector <code><a href='https://rdrr.io/r/base/c.html'>c("this_file","that_file")</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>mrgsolve_model</th>
+      <td><p>If the computations require a mrgsolve model and you 
+are using the "snow" method" then you need to specify the name of the model 
+object created by <code>mread</code> or <code>mcode</code></p></td>
     </tr>
     <tr>
       <th>...</th>

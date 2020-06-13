@@ -82,7 +82,7 @@ and allows for box-constraints and sets of allowed values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -109,6 +109,9 @@ and allows for box-constraints and sets of allowed values." />
     </li>
     <li>
       <a href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a>
+    </li>
+    <li>
+      <a href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a>
     </li>
   </ul>
 </li>
@@ -170,6 +173,7 @@ and allows for box-constraints and sets of allowed values.</p>
   <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mrgsolve_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1e+07</span>)),
   <span class='kw'>allow_replicates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>generator</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -268,6 +272,12 @@ See <code><a href='start_parallel.html'>start_parallel</a></code>.</p></td>
  output from 
 <code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code>. 
 See <code><a href='start_parallel.html'>start_parallel</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>mrgsolve_model</th>
+      <td><p>If the computations require a mrgsolve model and you
+are using the "snow" method then you need to specify the name of the model
+object created by <code>mread</code> or <code>mcode</code>.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -405,7 +415,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 67.5762
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.174 seconds.
+#&gt; Elapsed time: 0.165 seconds.
 #&gt; 
 #&gt; Final OFV =  67.57618 
 #&gt; Parameters: -15.35198 
@@ -493,7 +503,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #&gt; 
 #&gt; Total iterations: 392 
-#&gt; Elapsed time: 0.135 seconds.
+#&gt; Elapsed time: 0.143 seconds.
 #&gt; 
 #&gt; Final OFV =  67.6696 
 #&gt; Parameters: -15.97183 
@@ -626,7 +636,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 503.399
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.168 seconds.
+#&gt; Elapsed time: 0.178 seconds.
 #&gt; 
 #&gt; Final OFV =  503.399 
 #&gt; Parameters: 2.130566 2 2 2.059427 2 2 2.167358 2 2 2.142739 2 2 2.030765 2.254329 2 2 2.56842 2.045564 2.276299 2 2 2 2 2 3.690364 
@@ -733,7 +743,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 15264
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.278 seconds.
+#&gt; Elapsed time: 0.232 seconds.
 #&gt; 
 #&gt; Final OFV =  15264 
 #&gt; Parameters: 1 19 8 5 4 3 18 2 14 9 12 15 13 16 17 6 11 7 20 10 21 1 
@@ -871,7 +881,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 47.7055
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.18 seconds.
+#&gt; Elapsed time: 0.176 seconds.
 #&gt; 
 #&gt; Final OFV =  47.7055 
 #&gt; Parameters: 6.562641 
