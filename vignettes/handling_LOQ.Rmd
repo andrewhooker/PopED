@@ -1,0 +1,325 @@
+---
+title: "Optimal design with LOQ data in PopED"
+subtitle: "Optimization with a model for warfarin"
+author: "Andrew Hooker"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    number_sections: true
+    #fig_width: 6
+    #fig_height: 5
+bibliography: ["blq.bib"]
+biblio-style: "apalike"
+link-citations: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+set.seed(1234)
+
+devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
+#library(PopED)
+library(ggplot2)
+
+library(knitr)
+library(kableExtra)
+
+knitr::opts_chunk$set(
+  collapse = TRUE
+  , comment = "#>"
+  #, fig.width=6
+  , cache = TRUE
+  ,results="hold"
+)
+
+run_optimizations <- FALSE
+```
+
+```{r libs,eval=FALSE}
+library(PopED)
+library(ggplot2)
+```
+
+# Define a model
+
+Here we define, as an example, a one-compartment pharmacokinetic model with linear absorption (analytic solution) in PopED [@Nyberg2012a].
+
+```{r}
+ff <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })}
+```
+
+Next we define the parameters of this function.  `DOSE`is defined as a covariate (in vector `a`) so that we can optimize the value later.
+```{r}
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c( CL=bpop[1]*exp(b[1]),
+                V=bpop[2]*exp(b[2]),
+                KA=bpop[3]*exp(b[3]),
+                DOSE=a[1])
+}
+```
+
+We will use an additive and proportional residual unexplained variability (RUV) model, predefined in PopED as the function `feps.add.prop`.
+
+# Define an initial design and design space
+
+Now we define the model parameter values, the initial design and design space for optimization.
+
+We define model parameters similar to the Warfarin example from the software comparison in @nyberg2015 and an arbitrary design of two groups of 20 individuals.
+
+```{r}
+poped_db <- 
+  create.poped.database(
+    ff_fun=ff,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=c(CL=0.15, V=8, KA=1.0), 
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(prop=0.01,add=0.25),
+    groupsize=32,
+    xt=c( 0.5,3,50,120),
+    discrete_xt = list(c(0.5,1:120)),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100)
+                                
+```
+
+
+# Simulation
+First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values for the two groups:
+```{r simulate_without_BSV}
+plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T)
+```
+
+# Design evaluation
+Next, we evaluate the initial design. We see that the relative standard error of the parameters  (in percent) are relatively well estimated with this design except for the proportional RUV.
+
+```{r}
+eval_full <- evaluate_design(poped_db)
+```
+
+```{r,echo=FALSE}
+kable(
+  data.frame("RSE"=round(eval_full$rse)), 
+  booktabs = TRUE,
+  caption = 'Expected parameter RSE (in %) for the initial design.'
+)  %>%  kable_styling("striped",full_width = F)
+
+```
+
+# LOQ handling
+
+We assume that the LOQ level is at 2 concentration units.
+```{r}
+library(ggplot2)
+plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T) + 
+  geom_hline(yintercept = 2,color="red",linetype="dotted")
+```
+
+
+We use optimization criteria based on the D6 (`loq_method=1` which is the default) and D2 (`loq_method=2`) methods from @vong2012. For the D6 method, which has been shown to be a better method in comparison to SSE studies, we have updated the method to only investigate points where the 95% PI overlaps LOQ,  otherwise we set the design point to either no information or full information.  Further we filter out situations with very low probabilities (`loq_prob_limit = 0.001`). Both the CI% and the low probability limit can be specified in the calculation (default values are `loq_PI_conf_level = 0.95` and `loq_prob_limit = 0.001`).  In this way we can get the D6 method to compute in reasonable time-frames even for larger number of design samples.  
+
+Here we can evaluate the design with both methods and test the speed of computation.  We see that D6 is significantly slower than D2 (but D6 should be a more accurate representation of the RSE expected using M3 estimation methods).
+```{r}
+set.seed(1234)
+e_time_D6 <- system.time(
+  eval_D6 <- evaluate_design(poped_db,loq=2)
+)
+
+e_time_D2 <- system.time(
+  eval_D2 <- evaluate_design(poped_db,loq=2, loq_method=2)
+)
+
+cat("D6 evaluation time: ",e_time_D6[1],"\n" )
+cat("D2 evaluation time: ",e_time_D2[1],"\n" )
+```
+
+The D2 nmethod is the same as removing the last data point
+```{r}
+poped_db_2 <- create.poped.database(
+    ff_fun=ff,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=c(CL=0.15, V=8, KA=1.0), 
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(prop=0.01,add=0.25),
+    groupsize=32,
+    xt=c( 0.5,3,50),
+    discrete_xt = list(c(0.5,1:120)),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100)
+eval_red <- evaluate_design(poped_db_2)
+testthat::expect_equal(eval_red$ofv,eval_D2$ofv)
+testthat::expect_equal(eval_red$rse,eval_D2$rse)
+```
+
+Predicted parameter uncertainty for the three methods is shown below. We see that the uncertainty is generally higher with the LOQ evaluations (as expected).  We also see that because the D2 method ignores data that is below LOQ (the last observation in the design), then the predictions of uncertainty are significantly larger.
+
+```{r origRSE,echo=FALSE}
+eval_rse <-
+  tibble::tibble("Parameter"=names(eval_full$rse),
+                 "No LOQ"=round(eval_full$rse),
+                 "D6"=round(eval_D6$rse),
+                 "D2"=round(eval_D2$rse))
+
+```
+
+```{r,echo=FALSE}
+knitr::kable(
+  eval_rse, booktabs = TRUE,
+  caption = 'RSE (in %) for the initial design using different methods of handling LOQ.'
+) %>%  kable_styling("striped",full_width = F)
+
+```
+
+## ULOQ handling
+
+If needed we can also handle upper limits of quantification.  Lets assume we have an ULOQ at 7 units in addition to the LLOQ of 2 units:
+
+```{r}
+library(ggplot2)
+plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",
+                      PI=T, PI_alpha = 0.1) + 
+  geom_hline(yintercept = 2,color="red",linetype="dotted") + 
+  geom_hline(yintercept = 7,color="blue",linetype="dotted")
+```
+
+```{r}
+eval_ul_D6 <-evaluate_design(poped_db,
+                loq=2,
+                uloq=7)
+
+eval_ul_D2 <- evaluate_design(poped_db,
+                                loq=2,
+                                loq_method=2,
+                                uloq=7,
+                                uloq_method=2)
+
+```
+
+```{r origRSE2,echo=FALSE}
+eval_rse_2 <-
+  tibble::tibble("Parameter"=names(eval_full$rse),
+                 "No LOQ"=round(eval_full$rse),
+                 "D6 (only LLOQ)"=round(eval_D6$rse),
+                 "D2 (only LLOQ)"=round(eval_D2$rse),
+                 "D6 (ULOQ and LLOQ)"=round(eval_ul_D6$rse),
+                 "D2 (ULOQ and LLOQ)"=round(eval_ul_D2$rse))
+
+```
+
+```{r,echo=FALSE}
+knitr::kable(
+  eval_rse_2, booktabs = TRUE,
+  
+  caption = 'RSE (in %) for the initial design using different methods of handling LOQ and ULOQ.'
+)  %>%  kable_styling("striped",full_width = F)
+
+```
+
+# Design optimization
+
+We can then optimize the design using the different methods of computing the FIM. Here we optimize only using lower LOQ. 
+```{r,eval=run_optimizations,results="hide"}
+optim_D6 <- poped_optim(poped_db, opt_xt = TRUE,
+                        parallel=T,
+                        loq=2)
+
+optim_D2 <- poped_optim(poped_db, opt_xt = TRUE,
+                        parallel=T,
+                        loq=2,
+                        loq_method=2)
+
+optim_full <- poped_optim(poped_db, opt_xt = TRUE,
+                        parallel=T)
+
+```
+
+```{r,eval=run_optimizations,echo=FALSE}
+save(optim_D6,optim_D2,optim_full,file = "optim_warf.RData")
+```
+
+```{r,eval=!run_optimizations,echo=FALSE}
+load(file = "optim_warf.RData")
+```
+
+All designs together in one plot show how the different handling of BLQ data results in different optimal designs.
+```{r,fig.cap="Design points for the apraoch ignoring LOQ, using the D2 method, and using the D6 method",echo=FALSE}
+p1 <- plot_model_prediction(optim_full$poped.db,sample.times = F,PI=T,PI_alpha = 0.1)
+p1 <- p1 + geom_hline(yintercept = 2,color="red",linetype="dotted")
+
+df_d2 <- model_prediction(optim_D2$poped.db)
+df_d2$Type="D2"
+df_d6 <- model_prediction(optim_D6$poped.db)
+df_d6$Type="D6"
+df_full <- model_prediction(optim_full$poped.db)
+df_full$Type="Full"
+df_all <- rbind(df_d2,df_d6,df_full)
+
+p1 <- p1 + 
+  geom_point(data = df_all, 
+             aes(x=Time, y=PRED, colour=Type, shape=Type), 
+             size=5, alpha=0.5)+   
+  scale_colour_manual("Type",values=c("red","blue","green"),
+                      labels=c(D2="D2",D6="D6",Full="Full")) +   
+  scale_shape_manual("Type",values=c(16,17,18),
+                     labels=c(D2="D2",D6="D6",Full="Full"))
+
+p1
+```
+
+Predictions using the D6 method from each of the optimizations shows the expected %RSE of the parameters if each design is used and the LOQ is at 2 concentration units.  We see that D2 may be a reasonable strategy to optimize designs that are "good enough" if the D6 method is too slow for optimization.  
+```{r}
+optim_full_D6<- with(optim_full, 
+  evaluate_design(poped.db,
+                  loq=2))
+
+optim_D2_D6<- with(optim_D2, 
+  evaluate_design(poped.db,
+                  loq=2))
+
+optim_D6_D6<- with(optim_D6, 
+  evaluate_design(poped.db,
+                  loq=2))
+
+```
+
+```{r,echo=FALSE}
+optim_rse_D6 <-
+  tibble::tibble("Parameter"=names(eval_full$rse),
+                 "No LOQ"=round(optim_full_D6$rse),
+                 "D6"=round(optim_D6_D6$rse),
+                 "D2"=round(optim_D2_D6$rse))
+knitr::kable(
+  optim_rse_D6, booktabs = TRUE,
+  caption = 'RSE (in %) for the optimized designs evaluated using the D6 method.'
+) %>%  kable_styling("striped",full_width = F)
+```
+
+# Version information {-}
+
+```{r session}
+sessionInfo()
+```
+
+`r if (knitr::is_html_output()) '# References {-}'`
+
+
+
+
