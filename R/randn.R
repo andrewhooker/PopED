@@ -3,7 +3,7 @@
 #' Generate random samples from a standardized normal distribution and return in matrix form.
 #' 
 #' @param dim1 The dimension of the matrix (if square), otherwise the number of rows.
-#' @param dim2 The number of colums, if different from the number of rows.
+#' @param dim2 The number of columns, if different from the number of rows.
 #' 
 #' @return Matrix of random generated samples.
 #' 

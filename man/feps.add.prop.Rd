@@ -16,7 +16,7 @@ corresponding xt value.  Used for multiple response models.}
 
 \item{parameters}{A named list of parameter values.}
 
-\item{epsi}{A matrix with the same number of rows as the \code{xt} vector, colums match the numbers defined in this 
+\item{epsi}{A matrix with the same number of rows as the \code{xt} vector, columns match the numbers defined in this 
 function.}
 
 \item{poped.db}{a poped database.  This can be used to extract information that may be needed in the model file.}

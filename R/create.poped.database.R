@@ -273,7 +273,7 @@
 #' @param iNumChunkDesignEvals Number of design evaluations that should be evaluated in each process before getting new work from job manager
 # @param strMatFileInputPrefix The prefix of the input mat file to communicate with the executable 
 #' @param Mat_Out_Pre The prefix of the output mat file to communicate with the executable 
-#' @param strExtraRunOptions Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options 
+#' @param strExtraRunOptions Extra options send to e$g. the MPI executable or a batch script, see execute_parallel$m for more information and options 
 #' @param dPollResultTime Polling time to check if the parallel execution is finished 
 #' @param strFunctionInputName The file containing the popedInput structure that should be used to evaluate the designs 
 #' @param bParallelRS If the random search is going to be executed in parallel
@@ -673,7 +673,7 @@ create.poped.database <-
            #   'parallel_input'),
            ## -- The prefix of the output mat file to communicate with the executable --
            Mat_Out_Pre=poped.choose(popedInput$settings$parallel$strMatFileOutputPrefix,'parallel_output'),
-           ## -- Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options --
+           ## -- Extra options send to e$g. the MPI executable or a batch script, see execute_parallel$m for more information and options --
            strExtraRunOptions=poped.choose(popedInput$settings$parallel$strExtraRunOptions,''),
            ## -- Polling time to check if the parallel execution is finished --
            dPollResultTime=poped.choose(popedInput$settings$parallel$dPollResultTime,0.1),

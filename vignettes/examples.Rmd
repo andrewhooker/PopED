@@ -90,7 +90,7 @@ The table below provides a check list of features for each of the 15 available e
 
 The full code for this example is available in `ex.4.PKPD.1.comp.emax.R`.
 
-Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenus bolus administration and linear elimination.  The PD is an ordinary Emax model driven by the PK concentrations. The expected output of each measurement (PK or PD) is given in the vector `model_switch` (see below for details).
+Here we define a PKPD mode using analytical equations. The PK is a one compartment model with intravenous bolus administration and linear elimination.  The PD is an ordinary Emax model driven by the PK concentrations. The expected output of each measurement (PK or PD) is given in the vector `model_switch` (see below for details).
 ```{r}
 library(PopED)
 f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
@@ -475,7 +475,7 @@ tmdd_qss_one_target_model_ruv <- function(model_switch,xt,parameters,epsi,poped.
 ```
 
 Two different sub-studies are defined, with different sampling times per arm - in terms of total number of samples and the actual times^[Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., & Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and parallel processing efficiency on a target-mediated drug disposition model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1), 17–35. https://doi.org/10.1007/s10928-011-9228-y].
-Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`), what each sample time will measure (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matricies.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matriicies should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database` function.
+Due to this difference in numbers and the relatively complicated study design we define the sample times (`xt`), what each sample time will measure (`model_switch`) and which samples should be taken at the same study time (`G_xt`) as matrices.  Here three variables `xt`, `model_switch`, and `G_xt` are matrices with each row representing one arm, and the number of columns is the maximum number of samples (for all endpoints) in any of the arms (i.e., `max(ni)`). To be clear about which elements in the matrices should be considered we specify the number of samples per arm by defining the vector `ni` in the `create.poped.database` function.
 
 ```{r}
 xt <- zeros(6,30)
@@ -710,7 +710,7 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-These parameters can now be used in the model function to define the change in parameters between the occacions (here the change occurs with the 7th dose in a one-compartment model with first order absorption).
+These parameters can now be used in the model function to define the change in parameters between the occasions (here the change occurs with the 7th dose in a one-compartment model with first order absorption).
 ```{r}
 cppFunction(
   'List one_comp_oral_ode(double Time, NumericVector A, NumericVector Pars) {
@@ -967,7 +967,7 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 ```
 
-The design and design space for adults is defined below (Two arms, 5 sample time points per arm, doses of 20 and 40 mg, `isPediatric = 0`). As we want to pool the results (i.e. add the FIMs together), we also have to provide  the `pedCL` parameter so that both the adult and childrems FIM have the same dimensions.
+The design and design space for adults is defined below (Two arms, 5 sample time points per arm, doses of 20 and 40 mg, `isPediatric = 0`). As we want to pool the results (i.e. add the FIMs together), we also have to provide  the `pedCL` parameter so that both the adult and children FIMs have the same dimensions.
 ```{r}
 poped.db <- 
   create.poped.database(
@@ -1161,7 +1161,7 @@ ff <- function(model_switch,xt,parameters,poped.db){
 }
 ```
 
-For Ds optimality we add the `ds_index` option to the `create.poped.database` function to indicate whether a paramter is interesting (=0) or not (=1). Moreover, we set the `ofv_calc_type=6` for computing the Ds optimality criterion (it is set to 4 by default, for computing the log of the determiant of the FIM). More details are available by running the command `?create.poped.database`.
+For Ds optimality we add the `ds_index` option to the `create.poped.database` function to indicate whether a parameter is interesting (=0) or not (=1). Moreover, we set the `ofv_calc_type=6` for computing the Ds optimality criterion (it is set to 4 by default, for computing the log of the determinant of the FIM). More details are available by running the command `?create.poped.database`.
 
 ```{r}
 poped.db <- 

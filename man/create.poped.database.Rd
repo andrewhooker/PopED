@@ -557,7 +557,7 @@ User defined data structure that, for example could be used to send in data to t
 
 \item{Mat_Out_Pre}{The prefix of the output mat file to communicate with the executable}
 
-\item{strExtraRunOptions}{Extra options send to e$g. the MPI exectuable or a batch script, see execute_parallel$m for more information and options}
+\item{strExtraRunOptions}{Extra options send to e$g. the MPI executable or a batch script, see execute_parallel$m for more information and options}
 
 \item{dPollResultTime}{Polling time to check if the parallel execution is finished}
 

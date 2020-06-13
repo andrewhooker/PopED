@@ -50,8 +50,8 @@ library("kableExtra")
 This is a simple example on how to couple PopED with external R based PKPD simulation tools.  Typically, these tools might be R packages that can simulate from  hierarchical, ordinary differential equation (ODE) based models.  In this document you will see how to couple PopED to  models, defined with ODEs, implemented using:
 
 * deSolve (with native R ODE models)
-* deSolve (with compliled C ODE models)
-* deSolve (with compliled C++ ODE models using Rcpp)
+* deSolve (with compiled C ODE models)
+* deSolve (with compiled C++ ODE models using Rcpp)
 * PKPDsim
 * mrgsolve
 * RxODE
@@ -117,7 +117,7 @@ $$
   \end{split}
   (\#eq:par)
 $$
-where elements of the between subject variability (BSV),  $\eta_{j}$, vary accross individuals and come from normal distributions with means of zero and variances of $\omega^2_{j}$.
+where elements of the between subject variability (BSV),  $\eta_{j}$, vary across individuals and come from normal distributions with means of zero and variances of $\omega^2_{j}$.
 
 The residual unexplained variability  (RUV) model has a  proportional and additive component
 

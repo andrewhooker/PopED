@@ -228,7 +228,7 @@ knitr::kable(design_eval) #%>%
   #kableExtra::kable_styling("striped",full_width = FALSE) 
 ```
 
-Comparing the objective function value (OFV), we see that the alternative design (less samples per subject) has a smaller OFV (=worse). We can compare the two OFVs using efficiency, which tells us the proportion extra individuals that are needed in the alternative design to have the same information content as the original design (around 4 times more iindividuals than are currently in the design).
+Comparing the objective function value (OFV), we see that the alternative design (less samples per subject) has a smaller OFV (=worse). We can compare the two OFVs using efficiency, which tells us the proportion extra individuals that are needed in the alternative design to have the same information content as the original design (around 4 times more individuals than are currently in the design).
 
 ```{r}
 efficiency(ds2$ofv,ds1$ofv,poped.db)
@@ -236,7 +236,7 @@ efficiency(ds2$ofv,ds1$ofv,poped.db)
 
 
 # Design optimization
-Now we can optimize the sample times of the origianl design by maximizing the OFV^[Tip:  to make the optimization run faster use the option `parallel = TRUE` in the `poped_optim` command.].
+Now we can optimize the sample times of the original design by maximizing the OFV^[Tip:  to make the optimization run faster use the option `parallel = TRUE` in the `poped_optim` command.].
 ```{r optimize,message = FALSE,results='hide'}
 output <- poped_optim(poped.db, opt_xt=TRUE)
 ```

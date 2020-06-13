@@ -64,7 +64,7 @@ individual instead of per group?}
 
 \item{parallel}{Should we use parallel computations (T/F)?
 Other options can be defined in this function and passed 
-to \code{\link{start_parallel}}.  See epecially 
+to \code{\link{start_parallel}}.  See especially 
 the options \code{dlls} and \code{mrgsolve_model} from that function 
 if you have a model defined with 
 compiled code or are using mrgsolve.}

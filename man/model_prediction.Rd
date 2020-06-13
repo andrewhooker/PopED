@@ -79,7 +79,7 @@ a vector of numbers indicating the groups to include, e.g. \code{c(1,3,6)}.}
 evaluated using the code \code{for(i in 1:length(manipulation)){df <- within(df,{eval(manipulation[[i]])})}}. 
 Can be used to transform 
 or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
-so transformations in colums having to do with input to model predictions  will not affect the predictions.}
+so transformations in columns having to do with input to model predictions  will not affect the predictions.}
 
 \item{PI}{Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
 the model variance and a normality assumption of that variance.}

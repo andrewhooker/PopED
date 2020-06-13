@@ -33,4 +33,4 @@ All of these problems have been fixed in the current version.
 Plus many new features have been added.
    
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of PopED (currently: ncappc). The package passed.
+I have also run R CMD check on downstream dependencies of PopED (currently: ncappc). The package was not affected by the changes.

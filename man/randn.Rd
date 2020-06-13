@@ -9,7 +9,7 @@ randn(dim1, dim2 = NULL)
 \arguments{
 \item{dim1}{The dimension of the matrix (if square), otherwise the number of rows.}
 
-\item{dim2}{The number of colums, if different from the number of rows.}
+\item{dim2}{The number of columns, if different from the number of rows.}
 }
 \value{
 Matrix of random generated samples.
