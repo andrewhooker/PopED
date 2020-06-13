@@ -55,9 +55,9 @@ combine_norm_group_fim <- function(norm_group_fim,n_per_group){
 #'  
 #' @export
 #'
-#' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R
+#' @example tests/testthat/examples_fcn_doc/examples_optimize_groupsize.R
 #' 
-optimize_n_dist <- 
+optimize_groupsize <- 
   function(poped.db,
            props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
            trace=1,
@@ -270,7 +270,7 @@ optimize_n_rse <- function(poped.db,
 #' @return The number of individuals needed.
 #' @export
 #'
-#' @example tests/testthat/examples_fcn_doc/examples_optimize_n_dist.R
+#' @example tests/testthat/examples_fcn_doc/examples_optimize_groupsize.R
 optimize_n_eff <- function(poped.db,
                            ofv_ref,
                            norm_group_fim = NULL,  

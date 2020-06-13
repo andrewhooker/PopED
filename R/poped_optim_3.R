@@ -454,7 +454,7 @@ poped_optim_3 <- function(poped.db,
         # handle control arguments
         con <- control$opt_n_dist
         
-        output_opt_n_dist <- do.call(optimize_n_dist,
+        output_opt_n_dist <- do.call(optimize_groupsize,
                                      c(list(poped.db=poped.db),
                                        con,
                                        list(...)))

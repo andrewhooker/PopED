@@ -54,7 +54,7 @@ evaluate_design(poped.db)
 
 # what are the optimal proportions of 
 # individuals in the two groups in the study?
-(n_opt <- optimize_n_dist(poped.db))
+(n_opt <- optimize_groupsize(poped.db))
 
 # How many individuals in the original design are needed to achieve an
 # efficiency of 1 compared to the optimized design with n=100?

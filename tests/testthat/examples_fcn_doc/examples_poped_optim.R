@@ -122,9 +122,6 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
                                     mina=c(DOSE=0.01),
                                     maxa=c(DOSE=100))
   
-  evaluate_design(poped_db_2)
-  optimize_n_dist(poped_db_2)
-  
   opt_xt_inds <- 
     poped_optim(poped_db_2,
                 opt_a =TRUE,
