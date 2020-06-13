@@ -359,7 +359,7 @@ is done using the standard MC integration technique, so can be slow.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7ff91dee0318&gt;
+#&gt; &lt;bytecode: 0x7feb67e784c8&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -415,7 +415,7 @@ is done using the standard MC integration technique, so can be slow.</p></td>
 <span class='co'>## ED evaluate using Laplace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span>()
 <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.e.ofv.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 1.102 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.302806e+24</div><div class='input'>
+<span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; Elapsed time: 0.962 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; [1] 1.302806e+24</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'>## ED expected value with more precision. </span>

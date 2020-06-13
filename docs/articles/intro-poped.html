@@ -358,7 +358,7 @@
 </tr>
 </tbody>
 </table>
-<p>Comparing the objective function value (OFV), we see that the alternative design (less samples per subject) has a smaller OFV (=worse). We can compare the two OFVs using efficiency, which tells us the proportion extra individuals that are needed in the alternative design to have the same information content as the original design (around 4 times more iindividuals than are currently in the design).</p>
+<p>Comparing the objective function value (OFV), we see that the alternative design (less samples per subject) has a smaller OFV (=worse). We can compare the two OFVs using efficiency, which tells us the proportion extra individuals that are needed in the alternative design to have the same information content as the original design (around 4 times more individuals than are currently in the design).</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/efficiency.html">efficiency</a></span>(<span class="no">ds2</span>$<span class="no">ofv</span>,<span class="no">ds1</span>$<span class="no">ofv</span>,<span class="no">poped.db</span>)
 <span class="co">#&gt; [1] 3.965919</span>
 <span class="co">#&gt; attr(,"description")</span>
@@ -368,7 +368,7 @@
 <div id="design-optimization" class="section level1">
 <h1 class="hasAnchor">
 <a href="#design-optimization" class="anchor"></a>Design optimization</h1>
-<p>Now we can optimize the sample times of the origianl design by maximizing the OFV<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>Now we can optimize the sample times of the original design by maximizing the OFV<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span>(<span class="no">poped.db</span>, <span class="kw">opt_xt</span><span class="kw">=</span><span class="fl">TRUE</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">output</span>)
 <span class="co">#&gt; ===============================================================================</span>
@@ -393,7 +393,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    26</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 20.402 seconds</span>
+<span class="co">#&gt; Total running time: 18.588 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output</span>$<span class="no">poped.db</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="700"></p>
 <p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
@@ -435,7 +435,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    27</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 11.68 seconds</span>
+<span class="co">#&gt; Total running time: 10.872 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">output_discrete</span>$<span class="no">poped.db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">300</span>)</pre></body></html></div>
 <p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="700"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
@@ -486,7 +486,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    28</span>
 <span class="co">#&gt;     sig_prop     0.04      14    14</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 4.909 seconds</span>
+<span class="co">#&gt; Total running time: 4.257 seconds</span>
 <span class="fu"><a href="../reference/get_rse.html">get_rse</a></span>(<span class="no">output_cost</span>$<span class="no">FIM</span>, <span class="no">output_cost</span>$<span class="no">poped.db</span>)
 <span class="co">#&gt;         V        KA        CL       d_V      d_KA      d_CL  sig_prop </span>
 <span class="co">#&gt;  8.207404 10.070674  4.399378 39.808012 60.478363 27.549531 13.800551</span>

@@ -172,7 +172,7 @@
 </h1>
 <ul>
 <li><p>New and improved vignettes (<a href='https://github.com/andrewhooker/PopED/issues/30'>#30</a>, <a href='https://github.com/giulialestini'>@giulialestini</a>)!</p></li>
-<li><p>Added power evaluation script to test the power of a design to identify a prameter different than an assumed value. The function also calculates the number of individuals needed in a design to have a specific power. See <code><a href="../reference/evaluate_power.html">?evaluate_power</a></code> for more information (<a href='https://github.com/andrewhooker/PopED/issues/26'>#26</a>, <a href='https://github.com/martin-gmx'>@martin-gmx</a>).</p></li>
+<li><p>Added power evaluation script to test the power of a design to identify a parameter different than an assumed value. The function also calculates the number of individuals needed in a design to have a specific power. See <code><a href="../reference/evaluate_power.html">?evaluate_power</a></code> for more information (<a href='https://github.com/andrewhooker/PopED/issues/26'>#26</a>, <a href='https://github.com/martin-gmx'>@martin-gmx</a>).</p></li>
 <li><p>Added function to compute expected shrinkage of a design. See <code><a href="../reference/shrinkage.html">?shrinkage</a></code> for more information.</p></li>
 <li><p>Updated and added new example scripts in <code><a href="https://rdrr.io/r/base/system.file.html">system.file("examples", package="PopED")</a></code> (). This includes an example describing how to handle covariate distributions in optimal design, an example on how to incorporate IOV, an example on how to handle shrinkage, an example with a full covariance matrix and an example with a prior FIM (<a href='https://github.com/andrewhooker/PopED/issues/30'>#30</a>, <a href='https://github.com/giulialestini'>@giulialestini</a> and <a href='https://github.com/martin-gmx'>@martin-gmx</a>).</p></li>
 <li><p>Major overhaul in optimization methods used in <code><a href="../reference/poped_optim.html">poped_optim()</a></code> so that generic optimization routines like <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> can be easily used in optimizing PopED designs.</p></li>
@@ -231,7 +231,7 @@
 <ul>
 <li><p>Fixed <code><a href="../reference/plot_efficiency_of_windows.html">plot_efficiency_of_windows()</a></code> bug that had wrong headers on each subplot.</p></li>
 <li><p>Fixed bug in <code><a href="../reference/plot_model_prediction.html">plot_model_prediction()</a></code> that did not plot the optimized design, but instead the initial design</p></li>
-<li><p>Reorganized the database created from <code><a href="../reference/create.poped.database.html">create.poped.database()</a></code>. The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings. Also removed duplicate entries in the database for easier manipulation. This will cause some back compatibility issues when refering to elements in a database.</p></li>
+<li><p>Reorganized the database created from <code><a href="../reference/create.poped.database.html">create.poped.database()</a></code>. The output from this function is now a list with 5 sub-lists: design, design_space, model, parameters and settings. Also removed duplicate entries in the database for easier manipulation. This will cause some back compatibility issues when referring to elements in a database.</p></li>
 <li><p>Added example 10 describing a PKPD design of hepatitis C virus (HCV) kinetics to the <code><a href="https://rdrr.io/r/base/system.file.html">system.file("examples",package="PopED")</a></code> directory of the PopED installation.</p></li>
 </ul>
 </div>
@@ -260,7 +260,7 @@ Useful for testing of optimized designs via PsN’s (<a href="http://psn.sf.net"
 <ul>
 <li><p>Updated package author list</p></li>
 <li><p>New functionality to compute the ED OFV using the Laplace approximation. This can be orders of magnitude faster than the standard MC integration approach. See ‘?ed_laplace_ofv’ and ‘?evaluate.e.ofv.fim’</p></li>
-<li><p>Added a general function to compute the FIM and OFV(FIM) for all avaialbale methods in PopED. See ‘?calc_ofv_and_fim’.</p></li>
+<li><p>Added a general function to compute the FIM and OFV(FIM) for all available methods in PopED. See ‘?calc_ofv_and_fim’.</p></li>
 <li><p>Added a general optimization algorithm ‘RS_opt_gen()’ that works for both D-family and E-family optimization.</p></li>
 <li><p>Added optimization of E-family designs to ‘poped_optimize()’.</p></li>
 <li><p>Changed distribution tests for package building</p></li>
