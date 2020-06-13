@@ -5,25 +5,32 @@
 * win-builder, R release and devel version
 
 ## R CMD check results
-For macOS, ubuntu and windows server there were no ERRORs, WARNINGs or NOTEs. 
+There were no ERRORs, WARNINGs or NOTEs. 
 
-For win-builder release and devel versions there was one note:
+For win-builder release and devel versions there was one
+Note_to_CRAN_maintainers on the win-builder versions:
    
-* checking CRAN incoming feasibility ... NOTE
+* checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
 Maintainer: 'Andrew C. Hooker <andrew.hooker@farmbio.uu.se>'
 
-Possibly mis-spelled words in DESCRIPTION:
-  Foracchia (24:50)
-  Nyberg (23:62)
-  al (23:72, 24:63)
-  et (23:69, 24:60)
-     
-The first portion is just stating that I am the maintainer.  
+This is just stating that I am the maintainer.  
 
-The second portion does not recognize the last names of the first authors
-of the papers that describe the methods we implement in the package as well as "et al.". 
+## Reason for submission
+A number of platforms on CRAN check were giving warnings about
+
+* Missing or unexported objects:
+     'dplyr::rbind_all' 'dplyr::rbind_list' 
+
+* Found the following files/directories:
+     'PopED_output_summary_D_cont_opt_1.txt' 'PopED_output_summary_RS.txt'
+     'PopED_output_summary_mfea_opt_1.txt' 'test.csv' 
+
+* Namespace in Imports field not imported from: ‘tidyr’
+     All declared Imports should be used.
+     
+
+All of these problems have been fixed in the current version. 
+Plus many new features have been added.
    
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of PopED 
-(https://github.com/andrewhooker/PopED/tree/master/revdep). 
-All packages passed.
+I have also run R CMD check on downstream dependencies of PopED (currently: ncappc). The package passed.
