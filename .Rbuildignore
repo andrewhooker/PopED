@@ -26,3 +26,4 @@
 ^vignettes/handling_LOQ_files$
 ^vignettes/handling_LOQ\.bib$
 ^vignettes/optim_warf\.RData$
+^CRAN-RELEASE$
