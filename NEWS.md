@@ -1,3 +1,6 @@
+# PopED 0.5.0.9000 (unreleased changes)
+
+
 # PopED 0.5.0
 
 * Added the ability to incorporate limit of quantification information into FIM calculations (both upper and lower limits). See the new vignette on the webpage https://andrewhooker.github.io/PopED/articles/handling_loq.html 
