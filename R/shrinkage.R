@@ -101,9 +101,6 @@ shrinkage <- function(poped.db,
     db_list[[paste0("grp_",i)]] <- tmp_db
   }
   
-  
-  #browser()
-  
   #out_list <- list()
   out_df <- c()
   #for(i in 1:1){
@@ -149,7 +146,7 @@ shrinkage <- function(poped.db,
       }    
       fim_map <- fim_mean + inv(fulld)
     } else {
-      fim_map <- evaluate.fim(poped.db_sh)+ inv(fulld)
+      fim_map <- evaluate.fim(poped.db_sh) + inv(fulld)
     }
     
     rse <- get_rse(fim_map,poped.db = poped.db_sh)
