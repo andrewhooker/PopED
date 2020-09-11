@@ -26,7 +26,8 @@
 #'   for Adaptive Random Search \code{\link{optim_ARS}}.  \code{c("LS")} is for 
 #'   Line Search \code{\link{optim_LS}}. \code{c("BFGS")} is for Method 
 #'   "L-BFGS-B" from \code{\link[stats]{optim}}. \code{c("GA")} is for the 
-#'   genetic algorithm from \code{\link[GA]{ga}}.
+#'   genetic algorithm from \code{\link[GA]{ga}}. If \code{opt_inds=TRUE} then
+#'   this optimization is always added to the end of the sequential optimization.
 #' @param out_file Save output from the optimization to a file.
 #' @param loop_methods Should the optimization methods be looped for
 #'   \code{iter_max} iterations, or until the efficiency of the design after the
@@ -90,6 +91,9 @@ poped_optim_3 <- function(poped.db,
                           stop_crit_rel = NULL,
                           ofv_fun = poped.db$settings$ofv_fun,
                           maximize=T,
+                          allow_replicates=TRUE,
+                          allow_replicates_xt=TRUE,
+                          allow_replicates_a=TRUE,
                           ...){
   
   #------------ update poped.db with options supplied in function
@@ -204,6 +208,16 @@ poped_optim_3 <- function(poped.db,
                     num_cores = num_cores)
         con[names(control$ARS)] <- control$ARS
 
+        # handle replicates
+        if(!allow_replicates)
+          con$replicates_index=ps_tbl$type
+        if(!allow_replicates_xt | !allow_replicates_a)            
+          con$replicates_index <- seq(1,length(ps_tbl$par))
+        if(!allow_replicates_xt)
+          con$replicates_index[ps_tbl$type=="xt"]="xt"
+        if(!allow_replicates_a)
+          con$replicates_index[ps_tbl$type=="a"]="a"
+              
         tmp_ofv_fun <- function(par,...){
           ofv_optim(par,ps_tbl,poped.db,
                     d_switch=d_switch,
@@ -243,12 +257,24 @@ poped_optim_3 <- function(poped.db,
                                           opt_inds=opt_inds,
                                           transform_parameters=F)
         
+        
+        
         # handle control arguments
         con <- list(trace = trace, 
                     parallel=parallel,
                     parallel_type=parallel_type,
                     num_cores = num_cores)
         con[names(control$LS)] <- control$LS
+        
+        # handle replicates
+        if(!allow_replicates)
+          con$replicates_index=ps_tbl$type
+        if(!allow_replicates_xt | !allow_replicates_a)            
+          con$replicates_index <- seq(1,length(ps_tbl$par))
+        if(!allow_replicates_xt)
+          con$replicates_index[ps_tbl$type=="xt"]="xt"
+        if(!allow_replicates_a)
+          con$replicates_index[ps_tbl$type=="a"]="a"
 
         tmp_ofv_fun <- function(par,...){ofv_optim(par,ps_tbl,poped.db,
                                                    d_switch=d_switch,
@@ -298,6 +324,16 @@ poped_optim_3 <- function(poped.db,
           next
         }
         
+        if(!allow_replicates_xt | !allow_replicates_a | !allow_replicates){
+          msg <- stringr::str_glue(
+            'One or more of allow_replicates, allow_replicates_a, allow_replicates_xt are set to FALSE ', 
+            'with design parameters that will be optimized accross a continuous space. ',
+            'These options will be ignored for this optimization method and the ',
+            'continuous optimization parameters.'
+          )
+          message(msg)
+        }
+          
         if(trace) trace_optim=3
         if(is.numeric(trace)) trace_optim = trace
         #if(trace==2) trace_optim = 4
@@ -364,6 +400,16 @@ poped_optim_3 <- function(poped.db,
         if(nrow(ps_tbl)==0){
           cat("\nNo continuous variables to optimize, GA Optimization skipped\n\n")
           next
+        }
+        
+        if(!allow_replicates_xt | !allow_replicates_a | !allow_replicates){
+          msg <- stringr::str_glue(
+            'One or more of allow_replicates, allow_replicates_a, allow_replicates_xt are set to FALSE ', 
+            'with design parameters that will be optimized accross a continuous space. ',
+            'These options will be ignored for this optimization method and the ',
+            'continuous optimization parameters.'
+          )
+          message(msg)
         }
         
         # handle control arguments

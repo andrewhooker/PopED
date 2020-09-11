@@ -64,19 +64,20 @@ optim_ARS <- function(par,
                       mrgsolve_model=NULL,
                       seed=round(runif(1,0,10000000)),
                       allow_replicates=TRUE,
+                      replicates_index=seq(1,length(par)), # same value, parameters can not be the same value
                       generator=NULL,
                       ...){
   
   # constratints
   # uniform instead of normal sampling
 
-  #---------------- start trace
+  # start trace ---------------- 
   if((trace)){
     tic(name=".ars_savedTime")
     wd_iter <- nchar(iter) 
   }
   
-  #--------------- checks
+  # checks--------------- 
   if((is.null(lower) || is.null(upper)) && is.null(allowed_values) && is.null(generator)){
     stop("At least 'lower' and 'upper' or 'allowed_values' or 'generator' should be supplied.")
   }   
@@ -86,8 +87,15 @@ optim_ARS <- function(par,
     if(!is.list(allowed_values)) allowed_values <- list(allowed_values)
     if(length(allowed_values) == 1 && length(par)>1) allowed_values <- rep(allowed_values,length(par))  
   }
+  if(length(replicates_index)!=length(par)){
+    msg <- stringr::str_glue(
+      'The number of parameters ({length(par)}) ', 
+      'is not the same as the the length of replicates_index ({length(replicates_index)})!'
+    )
+    stop(msg)
+  }
   
-  #----------------- initialization 
+  # initialization ----------------- 
   nullit=1
   runs <- 1
   ff=1
@@ -101,7 +109,7 @@ optim_ARS <- function(par,
   dpar=(upper-lower)/loc_fac
   dpar[is.infinite(dpar)] <- no_bounds_sd
   if(!is.null(seed)) set.seed(seed)
-  
+  par_vec <- cell(iter,1) # investigated parameter vectors
   
   # continuous and discrete parameters
   par_type <- rep("cont",npar)
@@ -113,12 +121,43 @@ optim_ARS <- function(par,
     }
   }
   
-  resample <- function(x,size=1) x[sample.int(length(x),size=size)]
-  #if(!is.null(par)) iter = iter+1
-  par_vec <- cell(iter,1) # investigated parameter vectors
-  compare <-function(a,b) a < b
-  if(maximize) compare <-function(a,b) a > b
+  # handle replicates
+  if(!allow_replicates){
+    replicates_index <- rep(1,length(par))
+  }
+  handle_replicates <- FALSE
+  if(length(unique(replicates_index))!=length(par)) handle_replicates <- TRUE
   
+  # parallelization
+  if(parallel){
+    parallel <- start_parallel(parallel,seed=seed,
+                               parallel_type=parallel_type,
+                               num_cores=num_cores,
+                               mrgsolve_model=mrgsolve_model,
+                               ...) 
+    on.exit(if(parallel && (attr(parallel,"type")=="snow")) 
+      parallel::stopCluster(attr(parallel,"cluster")))
+  }  
+  iter_chunk = NULL
+  if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1
+  
+
+# Functions ---------------------------------------------------------------
+
+  resample <- function(x,size=1) x[sample.int(length(x),size=size)]
+  compare <- function(a,b) a < b
+  if(maximize) compare <- function(a,b) a > b
+  
+  # generate parameter sets
+  generate_par <- function(par,par_type,allowed_values,...){
+    par[par_type=="cont"]=par[par_type=="cont"] +
+      dpar[par_type=="cont"]/ff_scale*rnorm(length(par[par_type=="cont"]))
+    #par[par_type=="cont" && is.infinite(par)] <- par[par_type=="cont"]+1e10/ff*rnorm(length(par[par_type=="cont"]))
+    
+    # generate new discrete parameters
+    par[par_type=="cat"] <- vapply(allowed_values[par_type=="cat"],resample,c(0)) 
+    return(par)
+  }
   
   # ------------ generate and evaluate new parameter sets
   gen_par_ofv <- function (it, par, ...) {
@@ -127,23 +166,17 @@ optim_ARS <- function(par,
     
     #---------------- generate new parameter set
     while(need_new_par && (new_par_it < new_par_max_it)){
+      
+      # compute OFV for initial par if supplied
       if(it==1 && !is.null(par)){
         need_new_par <- FALSE
         break
       }
-      # generate new continuous parameters
+      
+      # generate new continuous parameters if not supplied
       if(is.null(par[par_type=="cont"])){
         par[par_type=="cont"]  <- lower[par_type=="cont"]+(upper[par_type=="cont"] - lower[par_type=="cont"])/2
         par[is.nan(par) && par_type=="cont"] <- 0
-      }
-      
-      generate_par <- function(par,par_type,allowed_values,...){
-        par[par_type=="cont"]=par[par_type=="cont"]+dpar[par_type=="cont"]/ff_scale*rnorm(length(par[par_type=="cont"]))
-        #par[par_type=="cont" && is.infinite(par)] <- par[par_type=="cont"]+1e10/ff*rnorm(length(par[par_type=="cont"]))
-        
-        # generate new discrete parameters
-        par[par_type=="cat"] <- vapply(allowed_values[par_type=="cat"],resample,c(0)) 
-        return(par)
       }
       
       if(!is.null(generator)){
@@ -151,17 +184,52 @@ optim_ARS <- function(par,
       } else {
         par <- generate_par(par,par_type,allowed_values)  
       }
-      
+      need_new_par <- FALSE
+      # browser()
       
       # handle replicates
-      if(!allow_replicates){
-        while(any(duplicated(par))) {
-          cur_pars <- par[!duplicated(par)]
-          tmp_allowed <- lapply(allowed_values[duplicated(par)],setdiff,cur_pars)
-          #if(any(sapply(tmp_allowed,length)==0)) stop("Not enough potential values for all parameters to have different values.")
-          par[duplicated(par)] <- generate_par(par[duplicated(par)],par_type[duplicated(par)],tmp_allowed)
+      # if(!allow_replicates){
+      #   while(any(duplicated(par))) {
+      #     cur_pars <- par[!duplicated(par)]
+      #     tmp_allowed <- lapply(allowed_values[duplicated(par)],setdiff,cur_pars)
+      #     #if(any(sapply(tmp_allowed,length)==0)) stop("Not enough potential values for all parameters to have different values.")
+      #     par[duplicated(par)] <- generate_par(par[duplicated(par)],par_type[duplicated(par)],tmp_allowed)
+      #   }
+      # }
+      
+      # (par <- c(rep(2,5),rep(3,4)))
+      # (replicates_index <-c(rep(1,5),rep(2,4)))
+      # handle_replicates <- T
+      
+      if(handle_replicates){
+        for(ii in unique(replicates_index)){
+          #ii <- unique(replicates_index)[[1]] # for testing
+          par_tmp <- par[replicates_index==ii]
+          if(any(duplicated(par_tmp))){
+            while(any(duplicated(par_tmp))) {
+              duped <- duplicated(par_tmp)
+              allowed_values_tmp <- allowed_values[replicates_index==ii]
+              par_type_tmp <- par_type[replicates_index==ii]
+              
+              cur_pars <- par_tmp[!duped]
+              tmp_allowed <- lapply(allowed_values_tmp[duped],setdiff,cur_pars)
+              if(any(sapply(tmp_allowed,length)==0)){
+                need_new_par <- TRUE
+                break
+              } else {
+                par_tmp[duped] <- generate_par(par_tmp[duped],par_type_tmp[duped],tmp_allowed)
+              }
+            }
+            par[replicates_index==ii] <- par_tmp
+          }
         }
       }
+        
+
+      # # handle replicates
+      # if(length(unique(replicates_index))!=length(par)){
+      #   par_i_set <- par_i_set[!(par_i_set %in% par[replicates_index==replicates_index[i]])]
+      # }
       
       # Group samples that should be grouped
       #       if(!is.null(par_grouping)){
@@ -179,7 +247,8 @@ optim_ARS <- function(par,
       # check if design has already been tested
       #need_new_par <- any(sapply(sapply(par_vec, length)!=0,function(x) all(x == par)))
       #par_vec[sapply(par_vec, length)!=0,]
-      need_new_par <- any(sapply(par_vec[sapply(par_vec, length)!=0,],function(x) all(x==par)))
+      if(!need_new_par) need_new_par <- any(sapply(par_vec[sapply(par_vec, length)!=0,],function(x) all(x==par)))
+      #need_new_par <- any(sapply(par_vec[sapply(par_vec, length)!=0,],function(x) all(x==par)))
       #browser()
       new_par_it <- new_par_it + 1
     } # end while  
@@ -194,12 +263,8 @@ optim_ARS <- function(par,
     return(list(ofv=ofv,par=par,need_new_par=need_new_par))
   } # end function
   
-  if(parallel){
-    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,mrgsolve_model=mrgsolve_model,...) 
-    on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
-  }  
-  iter_chunk = NULL
-  if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1
+
+# body --------------------------------------------------------------------
   
   for(it in 1:ceiling(iter/iter_chunk)){
     start_it <- (it-1)*iter_chunk+1
@@ -218,7 +283,7 @@ optim_ARS <- function(par,
       res <- mapply(c,lapply(it_seq,gen_par_ofv,par_opt))  
     }
 
-    # hamndle error messages and NULL values in OFV calculation  
+    # handle error messages and NULL values in OFV calculation  
     #print(res)
     res2 <- res
     if(is.null(dim(res2))) res2 <- mapply(c,res2[sapply(res2,is.list)])
@@ -294,7 +359,7 @@ optim_ARS <- function(par,
     }     
   }
   
-  #--------- Write results
+  # Write results / end trace ---------
   if((trace)){
     cat("\nTotal iterations:",stop_it,"\n")
     toc(name=".ars_savedTime")

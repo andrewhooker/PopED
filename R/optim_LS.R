@@ -31,6 +31,7 @@
 #' are using the "snow" method then you need to specify the name of the model
 #' object created by \code{mread} or \code{mcode}.
 #' @param seed The random seed to use in the algorithm,
+#' @param allow_replicates Should the algorithm allow parameters to have the same value?
 #' @param replicates_index A vector, the same length as the parameters.  
 #' If two values are the same in this vector then the parameters may not assume the same value in the optimization.
 #' @param ofv_initial An initial objective function value (OFV).  If not NULL then the initial design is not evaluated
@@ -67,6 +68,7 @@ optim_LS <- function(par,
                      num_cores = NULL,
                      mrgsolve_model=NULL,
                      seed=round(runif(1,0,10000000)),
+                     allow_replicates=TRUE,
                      replicates_index=seq(1,length(par)), # same value, parameters can not be the same value
                      ofv_initial=NULL,
                      closed_bounds=TRUE, # are upper and lower limits allowed values?
@@ -90,12 +92,24 @@ optim_LS <- function(par,
     if(!is.list(allowed_values)) allowed_values <- list(allowed_values)
     if(length(allowed_values) == 1 && length(par)>1) allowed_values <- rep(allowed_values,length(par))  
   }
+  if(length(replicates_index)!=length(par)){
+    msg <- stringr::str_glue(
+      'The number of parameters ({length(par)}) ', 
+      'is not the same as the the length of replicates_index ({length(replicates_index)})!'
+      )
+    stop(msg)
+  }
   
   #----------------- initialization 
   itvector <- c() 
   dmfvector <- c()
   counter = 0
   best_changed = FALSE
+  
+  # handle replicates
+  if(!allow_replicates){
+    replicates_index <- rep(1,length(par))
+  }
   
 
   fn1 <- function(par) fn(par, ...)  
@@ -152,6 +166,7 @@ optim_LS <- function(par,
     } else {
       par_i_set <- allowed_values[[i]]
     }
+    
           
     # handle replicates
     if(length(unique(replicates_index))!=length(par)){
@@ -183,6 +198,10 @@ optim_LS <- function(par,
       #pb <- txtProgressBar(min=0, max=n, initial=1, style=3) 
       #setTxtProgressBar(pb, i)
       #close(pb)
+    }
+    if(length(par_list)==0){
+      if(trace) cat(paste("     No change","\n"))  
+      next
     }
     
     if(parallel && (attr(parallel,"type")=="multicore")){
