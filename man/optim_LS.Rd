@@ -18,6 +18,7 @@ optim_LS(
   num_cores = NULL,
   mrgsolve_model = NULL,
   seed = round(runif(1, 0, 1e+07)),
+  allow_replicates = TRUE,
   replicates_index = seq(1, length(par)),
   ofv_initial = NULL,
   closed_bounds = TRUE,
@@ -63,6 +64,8 @@ object created by \code{mread} or \code{mcode}.}
 
 \item{seed}{The random seed to use in the algorithm,}
 
+\item{allow_replicates}{Should the algorithm allow parameters to have the same value?}
+
 \item{replicates_index}{A vector, the same length as the parameters.
 If two values are the same in this vector then the parameters may not assume the same value in the optimization.}
 
@@ -81,33 +84,48 @@ and allows for box-constraints (by using the upper and lower function arguments)
 allowed_values function argument) for all parameters, or on a parameter per parameter basis.
 }
 \examples{
-
-## "wild" function , global minimum at about -15.81515
+# "wild" function 
 fw <- function(x) 10*sin(0.3*x)*sin(1.3*x^2) + 0.00001*x^4 + 0.2*x+80
 
-# optimization with fewer function evaluations compared to SANN
+# Global minimum of 67.47 at about -15.81515
+(fw_min <- fw(-15.81515))
+
+if (interactive()){  
+  #plot of the function
+  require(graphics)
+  plot(fw, -50, 50, n = 10000, main = "Minimizing 'wild function'")
+  
+  # Known minimum
+  points(-15.81515, fw_min, pch = 21, col = "red", cex = 1.5)
+} 
+
+# optimization with fewer function evaluations 
+# compared to SANN: see examples in '?optim'
 res1 <- optim_LS(50, fw,lower = -50, upper=50, line_length = 10000)
 
-# Upper and lower bounds should be considered carefully
+if (interactive()){ 
+  require(graphics)
+  plot(fw, -20, 0, n = 10000, main = "Minimizing 'wild function'")
+  
+  # Known minimum
+  points(-15.81515, fw_min, pch = 21, col = "red", cex = 1.5)
+  
+  #plot of the optimization
+  points(res1$par, res1$ofv, pch = 16, col = "green", cex = 1)
+} 
+
+# Upper and lower bounds and line_length should be considered carefully
 res2 <- optim_LS(50, fw, lower=-Inf,upper=Inf,line_length = 10000)
 
 # Only integer values allowed
 res_int <- optim_LS(50, fw, allowed_values = seq(-50,50,by=1))
 
-\dontrun{ 
-  #plot of the function and solutions
-  require(graphics)
-  plot(fw, -50, 50, n = 1000, main = "Minimizing 'wild function'")
-  points(-15.81515, fw(-15.81515), pch = 16, col = "red", cex = 1)
-  points(res1$par, res1$ofv, pch = 16, col = "green", cex = 1)
-  points(res_int$par, res_int$ofv, pch = 16, col = "blue", cex = 1)
-} 
 
 # Rosenbrock Banana function
 # f(x, y) = (a-x)^2 + b*(y-x^2)^2
 # global minimum at (x, y)=(a, a^2), where f(x, y)=0. 
 # Usually a = 1 and b = 100 so x=1 and y=1
-\dontrun{ 
+if (interactive()){ 
   fr <- function(x,a=1,b=100) {   
     x1 <- x[1]
     x2 <- x[2]
@@ -123,7 +141,7 @@ res_int <- optim_LS(50, fw, allowed_values = seq(-50,50,by=1))
   z <- outer(x, y, f)
   persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "lightblue", ticktype="detailed") -> res
   points(trans3d(1, 1, 0, pmat = res), col = 2, pch = 16,cex=2)
-  points(trans3d(res3$par[1], res3$par[1], res3$ofv, pmat = res), col = "green", pch = 16,cex=2)
+  points(trans3d(res3$par[1], res3$par[1], res3$ofv, pmat = res), col = "green", pch = 16,cex=1.5)
 }
 
 # box constraints
@@ -133,13 +151,16 @@ flb <- function(x){
 }
 
 ## 25-dimensional box constrained
-\dontrun{ 
-optim(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),method = "L-BFGS-B") 
+if (interactive()){ 
+  optim(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),method = "L-BFGS-B") 
 }
-res_box <- optim_LS(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),line_length = 1000) 
+res_box <- optim_LS(rep(3, 25), flb,
+                    lower = rep(2, 25), 
+                    upper = rep(4, 25),
+                    line_length = 1000) 
 
 # one-dimensional function
-\dontrun{ 
+if (interactive()){ 
   f <- function(x)  abs(x)+cos(x)
   res5 <- optim_LS(-20,f,lower=-20, upper=20, line_length = 500)
   
@@ -151,7 +172,7 @@ res_box <- optim_LS(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),line_
 f <- function(x)  (x^2+x)*cos(x) # -10 < x < 10
 res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000) 
 
-\dontrun{ 
+if (interactive()){ 
   res_min <- optim_LS(0,f,lower=-10, upper=10, line_length = 1000) 
   
   curve(f, -10, 10)
@@ -162,7 +183,7 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000)
 
 # two-dimensional Rastrigin function
 #It has a global minimum at f(x) = f(0) = 0.
-\dontrun{ 
+if (interactive()){ 
   Rastrigin <- function(x1, x2){
     20 + x1^2 + x2^2 - 10*(cos(2*pi*x1) + cos(2*pi*x2))
   }
@@ -196,7 +217,7 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000)
 ## works better when each evaluation takes longer
 ## here we have added extra time to the computations
 ## just to show that it works
-\dontrun{ 
+if (interactive()){ 
   res7 <- optim_LS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},
                    lower=-5.12, upper=5.12, line_length = 200)
   res8 <- optim_LS(c(-4,4),function(x){Sys.sleep(0.01); Rastrigin(x[1], x[2])},

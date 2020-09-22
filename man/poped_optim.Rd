@@ -33,6 +33,9 @@ poped_optim(
   stop_crit_rel = NULL,
   ofv_fun = poped.db$settings$ofv_fun,
   maximize = T,
+  allow_replicates = TRUE,
+  allow_replicates_xt = TRUE,
+  allow_replicates_a = TRUE,
   ...
 )
 }
@@ -146,6 +149,8 @@ argument and have "..." in its argument list.  Can be referenced as a function o
 e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{maximize}{Should the objective function be maximized or minimized?}
+
+\item{allow_replicates}{Should the algorithm allow parameters to have the same value?}
 
 \item{...}{arguments passed to other functions.}
 }

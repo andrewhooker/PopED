@@ -26,6 +26,7 @@ optim_ARS(
   mrgsolve_model = NULL,
   seed = round(runif(1, 0, 1e+07)),
   allow_replicates = TRUE,
+  replicates_index = seq(1, length(par)),
   generator = NULL,
   ...
 )
@@ -92,6 +93,9 @@ object created by \code{mread} or \code{mcode}.}
 \item{seed}{The random seed to use in the algorithm,}
 
 \item{allow_replicates}{Should the algorithm allow parameters to have the same value?}
+
+\item{replicates_index}{A vector, the same length as the parameters.
+If two values are the same in this vector then the parameters may not assume the same value in the optimization.}
 
 \item{generator}{A user-defined function that generates new parameter sets to try in the algorithm.  See examples below.}
 

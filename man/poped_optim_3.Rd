@@ -32,6 +32,9 @@ poped_optim_3(
   stop_crit_rel = NULL,
   ofv_fun = poped.db$settings$ofv_fun,
   maximize = T,
+  allow_replicates = TRUE,
+  allow_replicates_xt = TRUE,
+  allow_replicates_a = TRUE,
   ...
 )
 }
@@ -53,7 +56,8 @@ fashion.  Options are \code{c("ARS","BFGS","LS","GA")}. \code{c("ARS")} is
 for Adaptive Random Search \code{\link{optim_ARS}}.  \code{c("LS")} is for 
 Line Search \code{\link{optim_LS}}. \code{c("BFGS")} is for Method 
 "L-BFGS-B" from \code{\link[stats]{optim}}. \code{c("GA")} is for the 
-genetic algorithm from \code{\link[GA]{ga}}.}
+genetic algorithm from \code{\link[GA]{ga}}. If \code{opt_inds=TRUE} then
+this optimization is always added to the end of the sequential optimization.}
 
 \item{control}{Contains control arguments specified for each method separately.}
 
@@ -141,6 +145,8 @@ argument and have "..." in its argument list.  Can be referenced as a function o
 e.g. "cost.txt" has a function named "cost" in it.}
 
 \item{maximize}{Should the objective function be maximized or minimized?}
+
+\item{allow_replicates}{Should the algorithm allow parameters to have the same value?}
 
 \item{...}{arguments passed to other functions.}
 }
