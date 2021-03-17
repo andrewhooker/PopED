@@ -58,7 +58,7 @@ get_rse <- function (fim, poped.db,
                      docc=poped.db$parameters$docc,
                      sigma=poped.db$parameters$sigma,
                      use_percent=TRUE,
-                     #fim.calc.type=poped.db$settings$iFIMCalculationType,
+                     fim.calc.type=poped.db$settings$iFIMCalculationType,
                      prior_fim = poped.db$settings$prior_fim,
                      #pseudo_on_fail = FALSE,
                      ...) {
