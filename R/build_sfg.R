@@ -43,7 +43,8 @@ build_sfg <- function (model="ff.PK.1.comp.oral.sd.CL",covariates=c("dose","tau"
   cov_locs <- grep(paste0("^",paste(covariates,collapse="|"),"$"),
                    parameter_names_ff,ignore.case = TRUE)
   covariate_names <- parameter_names_ff[cov_locs]
-  parameter_names <- parameter_names_ff[-cov_locs]
+  parameter_names <- parameter_names_ff
+  if(length(cov_locs)>0) parameter_names <- parameter_names_ff[-cov_locs]
   
   # match names
   df <- NULL
