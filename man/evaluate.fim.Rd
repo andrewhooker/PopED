@@ -107,9 +107,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                  fg_file="sfg",
-                                  fError_file="feps.prop",
+poped.db <- create.poped.database(ff_fun = ff.PK.1.comp.oral.sd.CL,
+                                  fg_fun = sfg,
+                                  fError_fun = feps.prop,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   # notfixed_bpop=c(1,1,1,0),
                                   notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
@@ -126,13 +126,15 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 FIM.1 <- evaluate.fim(poped.db) 
 FIM.1
 det(FIM.1)
+det(FIM.1)^(1/7)
 get_rse(FIM.1,poped.db)
 
 ## evaluate initial design with the full FIM
 FIM.0 <- evaluate.fim(poped.db,fim.calc.type=0) 
 FIM.0
 det(FIM.0)
-get_rse(FIM.0,poped.db,fim.calc.type=0)
+det(FIM.0)^(1/7)
+get_rse(FIM.0,poped.db)
 
 ## evaluate initial design with the reduced FIM 
 ## computing all derivatives with respect to the 

@@ -12,6 +12,7 @@ get_rse(
   docc = poped.db$parameters$docc,
   sigma = poped.db$parameters$sigma,
   use_percent = TRUE,
+  fim.calc.type = poped.db$settings$iFIMCalculationType,
   prior_fim = poped.db$settings$prior_fim,
   ...
 )
@@ -31,6 +32,21 @@ get_rse(
 can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 
 \item{use_percent}{Should RSE be reported as percent?}
+
+\item{fim.calc.type}{The method used for calculating the FIM. Potential values:
+\itemize{
+\item 0 = Full FIM.  No assumption that fixed and random effects are uncorrelated.  
+\item 1 = Reduced FIM. Assume that there is no correlation in the FIM between the fixed and random effects, and set these elements in 
+the FIM to zero. 
+\item 2 = weighted models (placeholder).
+\item 3 = Not currently used.
+\item 4 = Reduced FIM and computing all derivatives with respect to the standard deviation of the residual unexplained variation (sqrt(SIGMA) in NONMEM). 
+This matches what is done in PFIM, and assumes that the standard deviation of the residual unexplained variation is the estimated parameter
+(NOTE: NONMEM estimates the variance of the residual unexplained variation by default). 
+\item 5 = Full FIM parameterized with A,B,C matrices & derivative of variance. 
+\item 6 = Calculate one model switch at a time, good for large matrices. 
+\item 7 = Reduced FIM parameterized with A,B,C matrices & derivative of variance.
+}}
 
 \item{prior_fim}{A prior FIM to be added to the \code{fim}. Should be the same size as the \code{fim}.}
 
@@ -67,9 +83,9 @@ sfg <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define initial design  and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                  fg_file="sfg",
-                                  fError_file="feps.prop",
+poped.db <- create.poped.database(ff_fun = ff.PK.1.comp.oral.sd.CL,
+                                  fg_fun = sfg,
+                                  fError_fun = feps.prop,
                                   bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
                                   # notfixed_bpop=c(1,1,1,0),
                                   notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
@@ -86,13 +102,15 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
 FIM.1 <- evaluate.fim(poped.db) 
 FIM.1
 det(FIM.1)
+det(FIM.1)^(1/7)
 get_rse(FIM.1,poped.db)
 
 ## evaluate initial design with the full FIM
 FIM.0 <- evaluate.fim(poped.db,fim.calc.type=0) 
 FIM.0
 det(FIM.0)
-get_rse(FIM.0,poped.db,fim.calc.type=0)
+det(FIM.0)^(1/7)
+get_rse(FIM.0,poped.db)
 
 ## evaluate initial design with the reduced FIM 
 ## computing all derivatives with respect to the 
