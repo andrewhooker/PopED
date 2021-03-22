@@ -5,13 +5,9 @@
 
 <!-- badges: start -->
 
-[![Travis-CI Build
-Status](https://travis-ci.org/andrewhooker/PopED.svg?branch=master)](https://travis-ci.org/andrewhooker/PopED)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/andrewhooker/PopED?branch=master&svg=true)](https://ci.appveyor.com/project/andrewhooker/PopED)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/PopED)](https://CRAN.R-project.org/package=PopED)
-[![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
 [![R-CMD-check](https://github.com/andrewhooker/PopED/workflows/R-CMD-check/badge.svg)](https://github.com/andrewhooker/PopED/actions)
+[![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
 <!-- badges: end -->
 
 PopED computes optimal experimental designs for both population and
