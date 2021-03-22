@@ -50,6 +50,13 @@
 #'   the series) is less than, or equal to, \code{stop_crit_rel} (if \code{maximize==FALSE} then -stop_crit_rel is the cut
 #'   off and the relative difference in criterion value must be greater than or equal to this value to stop the looping).
 #' @param maximize Should the objective function be maximized or minimized?
+#' @param allow_replicates Should the algorithm allow optimized design components to have the same value? If FALSE then
+#' all discrete optimizations will not allow replicates within variable types 
+#' (equivalent to \code{allow_replicates_xt=FALSE} and \code{allow_replicates_a=FALSE}). 
+#' @param allow_replicates_xt Should the algorithm allow optimized \code{xt} design components to have the same value? If FALSE then
+#' all discrete optimizations will not allow replicates.
+#' @param allow_replicates_a Should the algorithm allow optimized \code{a} design components to have the same value? If FALSE then
+#' all discrete optimizations will not allow replicates.
 #'   
 #' @references \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and A. 
 #'   Ruggeri, "PopED, a software fir optimal experimental design in population 

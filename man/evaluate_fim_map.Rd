@@ -23,6 +23,10 @@ simulated to make the computations.}
 
 \item{use_purrr}{If \code{use_mc=TRUE} then should the method use the package
 purrr in calculations?  This may speed up computations (potentially).}
+
+\item{shrink_mat}{Should the shrinkage matrix be returned.  Calculated as the
+inverse of the  Bayesian Fisher information matrix times the inverse of the 
+omega matrix (variance matrix of the between-subject variability).}
 }
 \value{
 The Bayesian Fisher information matrix for each design group

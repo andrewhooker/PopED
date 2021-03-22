@@ -11,7 +11,9 @@
 #'   not then then a first order approximation is used
 #' @param use_purrr If \code{use_mc=TRUE} then should the method use the package
 #'   purrr in calculations?  This may speed up computations (potentially).
-#'
+#' @param shrink_mat Should the shrinkage matrix be returned.  Calculated as the
+#' inverse of the  Bayesian Fisher information matrix times the inverse of the 
+#' omega matrix (variance matrix of the between-subject variability).
 #' @return The Bayesian Fisher information matrix for each design group 
 #' @export
 #'
