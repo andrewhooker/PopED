@@ -34,7 +34,7 @@ Suggests:
     devtools,
     mrgsolve
 Authors@R: c(
-    person("Andrew C.","Hooker", email="andrew.hooker@farmbio.uu.se", 
+    person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se", 
       role=c("aut","cre","trl","cph"),
       comment=c(ORCID = "0000-0002-2676-5912")
     ),
