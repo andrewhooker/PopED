@@ -32,7 +32,7 @@ create_design <- function(
   groupsize,  ## -- Vector defining the size of the different groups (num individuals in each group) --
   m=NULL, ## -- Number of groups, computed from xt if not defined --                    
   x=NULL, ## -- Matrix defining the initial discrete values --               
-  a=NULL, ## -- Vector defining the initial covariate values --        
+  a=NULL,         
   ni=NULL,    ## -- Vector defining the number of samples for each group, computed as all elements of xt by default --
   model_switch=NULL) ## -- Vector defining which response a certain sampling time belongs to, defaults to one for all elements of xt --
 {
