@@ -1,36 +1,37 @@
 ## Test environments
-* macOS 10.15.5 (local), R release version
-* Ubuntu 16.04.6 LTS (on Travis CI), R release and devel version
-* windows Server 2012 R2 x64 (on AppVeyor), R release version
-* win-builder, R release and devel version
+* macOS 11.3.1 (local), R-release
+* Github actions, windows-latest,  R-release
+* Github actions, macOS-latest,  R-release 
+* Github actions, ubuntu-20.04,  R-release and R-devel 
+* rhub, Debian Linux,  R-devel
+* rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs. 
+There were no ERRORs, WARNINGs.
 
-For win-builder release and devel versions there was one
-Note_to_CRAN_maintainers on the win-builder versions:
-   
-* checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
-Maintainer: 'Andrew C. Hooker <andrew.hooker@farmbio.uu.se>'
+On some flavors I get the NOTE:
 
-This is just stating that I am the maintainer.  
+  * checking CRAN incoming feasibility ... 
+    Maintainer: 'Andrew C. Hooker <andrew.hooker@farmaci.uu.se>'
+
+Which, of course, is just my e-mail address. Note that this has changed
+after a move to a different department at my university.
 
 ## Reason for submission
-A number of platforms on CRAN check were giving warnings about
+I got a message from Brian Ripley that the PopED-Ex.Rout document in the 
+latest development candidate of R
+has the following warning:
 
-* Missing or unexported objects:
-     'dplyr::rbind_all' 'dplyr::rbind_list' 
+  Warning in matrix( ... ... ... )
+   data length differs from size of matrix
+ 
+There was a bug in a function and has been fixed in the current version. 
 
-* Found the following files/directories:
-     'PopED_output_summary_D_cont_opt_1.txt' 'PopED_output_summary_RS.txt'
-     'PopED_output_summary_mfea_opt_1.txt' 'test.csv' 
+A number of new features have also been added.
 
-* Namespace in Imports field not imported from: ‘tidyr’
-     All declared Imports should be used.
-     
-
-All of these problems have been fixed in the current version. 
-Plus many new features have been added.
+NOTE: I have changed my e-mail address after a move to a different department 
+at my university.
    
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of PopED (currently: ncappc). The package was not affected by the changes.
+I have also run R CMD check on downstream dependencies of 
+PopED (currently: ncappc). The package was not affected by the changes.

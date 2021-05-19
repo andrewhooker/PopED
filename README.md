@@ -49,4 +49,4 @@ You are welcome to:
 -   submit suggestions and bug-reports at:
     <https://github.com/andrewhooker/PopED/issues>
 -   send a pull request on: <https://github.com/andrewhooker/PopED>
--   compose a friendly e-mail to: <andrew.hooker@farmbio.uu.se>
+-   compose a friendly e-mail to: <andrew.hooker@farmaci.uu.se>

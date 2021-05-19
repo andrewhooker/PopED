@@ -1,7 +1,7 @@
 Package: PopED
 Type: Package
 Title: Population (and Individual) Optimal Experimental Design
-Version: 0.5.0.9000
+Version: 0.6.0
 Depends:
     R (>= 2.14)
 Imports:
@@ -56,7 +56,7 @@ License: LGPL (>= 3)
 ByteCompile: true
 URL: https://andrewhooker.github.io/PopED, https://github.com/andrewhooker/PopED, 
 BugReports: https://github.com/andrewhooker/PopED/issues
-Copyright: 2014-2018 Andrew C. Hooker
+Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
