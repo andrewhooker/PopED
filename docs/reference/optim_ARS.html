@@ -82,7 +82,7 @@ and allows for box-constraints and sets of allowed values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ and allows for box-constraints and sets of allowed values." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,7 +125,7 @@ and allows for box-constraints and sets of allowed values." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -154,31 +154,32 @@ The function works for both discrete and continuous optimization parameters
 and allows for box-constraints and sets of allowed values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>optim_ARS</span>(
-  <span class='no'>par</span>,
-  <span class='no'>fn</span>,
-  <span class='kw'>lower</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>upper</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>allowed_values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>loc_fac</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>no_bounds_sd</span> <span class='kw'>=</span> <span class='no'>par</span>,
-  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>,
-  <span class='kw'>iter_adapt</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>adapt_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>max_run</span> <span class='kw'>=</span> <span class='fl'>200</span>,
-  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>trace_iter</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>new_par_max_it</span> <span class='kw'>=</span> <span class='fl'>200</span>,
-  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mrgsolve_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1e+07</span>)),
-  <span class='kw'>allow_replicates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>generator</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>optim_ARS</span><span class='op'>(</span>
+  <span class='va'>par</span>,
+  <span class='va'>fn</span>,
+  lower <span class='op'>=</span> <span class='cn'>NULL</span>,
+  upper <span class='op'>=</span> <span class='cn'>NULL</span>,
+  allowed_values <span class='op'>=</span> <span class='cn'>NULL</span>,
+  loc_fac <span class='op'>=</span> <span class='fl'>4</span>,
+  no_bounds_sd <span class='op'>=</span> <span class='va'>par</span>,
+  iter <span class='op'>=</span> <span class='fl'>400</span>,
+  iter_adapt <span class='op'>=</span> <span class='fl'>50</span>,
+  adapt_scale <span class='op'>=</span> <span class='fl'>1</span>,
+  max_run <span class='op'>=</span> <span class='fl'>200</span>,
+  trace <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  trace_iter <span class='op'>=</span> <span class='fl'>5</span>,
+  new_par_max_it <span class='op'>=</span> <span class='fl'>200</span>,
+  maximize <span class='op'>=</span> <span class='cn'>F</span>,
+  parallel <span class='op'>=</span> <span class='cn'>F</span>,
+  parallel_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  num_cores <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mrgsolve_model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1e+07</span><span class='op'>)</span><span class='op'>)</span>,
+  allow_replicates <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  replicates_index <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>par</span><span class='op'>)</span><span class='op'>)</span>,
+  generator <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -288,6 +289,11 @@ object created by <code>mread</code> or <code>mcode</code>.</p></td>
       <td><p>Should the algorithm allow parameters to have the same value?</p></td>
     </tr>
     <tr>
+      <th>replicates_index</th>
+      <td><p>A vector, the same length as the parameters.
+If two values are the same in this vector then the parameters may not assume the same value in the optimization.</p></td>
+    </tr>
+    <tr>
       <th>generator</th>
       <td><p>A user-defined function that generates new parameter sets to try in the algorithm.  See examples below.</p></td>
     </tr>
@@ -329,10 +335,11 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>## "wild" function , global minimum at about -15.81515</span>
-<span class='no'>fw</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fl'>10</span>*<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span>(<span class='fl'>0.3</span>*<span class='no'>x</span>)*<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span>(<span class='fl'>1.3</span>*<span class='no'>x</span>^<span class='fl'>2</span>) + <span class='fl'>0.00001</span>*<span class='no'>x</span>^<span class='fl'>4</span> + <span class='fl'>0.2</span>*<span class='no'>x</span>+<span class='fl'>80</span>
+<span class='va'>fw</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fl'>10</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='fl'>0.3</span><span class='op'>*</span><span class='va'>x</span><span class='op'>)</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='fl'>1.3</span><span class='op'>*</span><span class='va'>x</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>0.00001</span><span class='op'>*</span><span class='va'>x</span><span class='op'>^</span><span class='fl'>4</span> <span class='op'>+</span> <span class='fl'>0.2</span><span class='op'>*</span><span class='va'>x</span><span class='op'>+</span><span class='fl'>80</span>
 
 <span class='co'># optimization with fewer function evaluations compared to SANN</span>
-<span class='no'>res1</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>,<span class='kw'>lower</span> <span class='kw'>=</span> -<span class='fl'>50</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; Initial OFV = 159.001
+<span class='va'>res1</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fl'>50</span>, <span class='va'>fw</span>,lower <span class='op'>=</span> <span class='op'>-</span><span class='fl'>50</span>, upper<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Initial OFV = 159.001
 #&gt; It.   5 | OFV = 83.4526
 #&gt; It.  10 | OFV = 76.4507
 #&gt; It.  15 | OFV = 76.4507
@@ -415,13 +422,14 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 67.5762
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.156 seconds.
+#&gt; Elapsed time: 0.19 seconds.
 #&gt; 
 #&gt; Final OFV =  67.57618 
 #&gt; Parameters: -15.35198 
 #&gt; </div><div class='input'>
 <span class='co'># often not as good performance when upper and lower bounds are poor</span>
-<span class='no'>res2</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>, <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>Inf</span>,<span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>Inf</span>)</div><div class='output co'>#&gt; Initial OFV = 159.001
+<span class='va'>res2</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fl'>50</span>, <span class='va'>fw</span>, lower<span class='op'>=</span><span class='op'>-</span><span class='cn'>Inf</span>,upper<span class='op'>=</span><span class='cn'>Inf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Initial OFV = 159.001
 #&gt; It.   5 | OFV = 82.9206
 #&gt; It.  10 | OFV = 81.2685
 #&gt; It.  15 | OFV = 70.2732
@@ -503,57 +511,58 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #&gt; 
 #&gt; Total iterations: 392 
-#&gt; Elapsed time: 0.139 seconds.
+#&gt; Elapsed time: 0.168 seconds.
 #&gt; 
 #&gt; Final OFV =  67.6696 
 #&gt; Parameters: -15.97183 
 #&gt; </div><div class='input'>
 <span class='co'># Only integer values allowed</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>res_int</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>50</span>, <span class='no'>fw</span>, <span class='kw'>allowed_values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>50</span>,<span class='fl'>100</span>,<span class='kw'>by</span><span class='kw'>=</span><span class='fl'>1</span>))
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+<span class='va'>res_int</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fl'>50</span>, <span class='va'>fw</span>, allowed_values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>50</span>,<span class='fl'>100</span>,by<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
   <span class='co'>#plot of the function and solutions</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>graphics</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>fw</span>, -<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Minimizing 'wild function'"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(-<span class='fl'>15.81515</span>, <span class='fu'>fw</span>(-<span class='fl'>15.81515</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>res1</span>$<span class='no'>par</span>, <span class='no'>res1</span>$<span class='no'>ofv</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>res2</span>$<span class='no'>par</span>, <span class='no'>res2</span>$<span class='no'>ofv</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-}
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>graphics</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fw</span>, <span class='op'>-</span><span class='fl'>50</span>, <span class='fl'>50</span>, n <span class='op'>=</span> <span class='fl'>1000</span>, main <span class='op'>=</span> <span class='st'>"Minimizing 'wild function'"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>15.81515</span>, <span class='fu'>fw</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>15.81515</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, cex <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>res1</span><span class='op'>$</span><span class='va'>par</span>, <span class='va'>res1</span><span class='op'>$</span><span class='va'>ofv</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, col <span class='op'>=</span> <span class='st'>"green"</span>, cex <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>res2</span><span class='op'>$</span><span class='va'>par</span>, <span class='va'>res2</span><span class='op'>$</span><span class='va'>ofv</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, cex <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='op'>}</span> 
 
 <span class='co'># optim_ARS does not work great for hard to find minima on flat surface:</span>
 <span class='co'># Rosenbrock Banana function</span>
 <span class='co'># f(x, y) = (a-x)^2 + b(y-x^2)^2</span>
 <span class='co'># global minimum at (x, y)=(a, a^2), where f(x, y)=0. </span>
 <span class='co'># Usually a = 1 and b = 100.</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>fr</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='no'>b</span><span class='kw'>=</span><span class='fl'>100</span>) {
-    <span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='fl'>1</span>]
-    <span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='fl'>2</span>]
-    <span class='no'>b</span>*(<span class='no'>x2</span> - <span class='no'>x1</span>*<span class='no'>x1</span>)^<span class='fl'>2</span> + (<span class='no'>a</span> - <span class='no'>x1</span>)^<span class='fl'>2</span>
-  }
-
-  <span class='no'>res3</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1.2</span>,<span class='fl'>1</span>), <span class='no'>fr</span>,<span class='kw'>lower</span> <span class='kw'>=</span> -<span class='fl'>5</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+  <span class='va'>fr</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span><span class='op'>=</span><span class='fl'>1</span>,<span class='va'>b</span><span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span> <span class='op'>{</span>   
+    <span class='va'>x1</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
+    <span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
+    <span class='va'>b</span><span class='op'>*</span><span class='op'>(</span><span class='va'>x2</span> <span class='op'>-</span> <span class='va'>x1</span><span class='op'>*</span><span class='va'>x1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>+</span> <span class='op'>(</span><span class='va'>a</span> <span class='op'>-</span> <span class='va'>x1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span>
+  <span class='op'>}</span>
+  
+  <span class='va'>res3</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1.2</span>,<span class='fl'>1</span><span class='op'>)</span>, <span class='va'>fr</span>,lower <span class='op'>=</span> <span class='op'>-</span><span class='fl'>5</span>, upper <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+  
   <span class='co'># plot the surface</span>
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='kw'>length</span><span class='kw'>=</span> <span class='fl'>30</span>)
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>
-  <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>y</span>){<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>x</span>,<span class='no'>y</span>),<span class='fl'>1</span>,<span class='no'>fr</span>)}
-  <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/outer.html'>outer</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>f</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/persp.html'>persp</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>, <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>phi</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>, <span class='kw'>ticktype</span><span class='kw'>=</span><span class='st'>"detailed"</span>) <span class='kw'>-&gt;</span> <span class='no'>res</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/trans3d.html'>trans3d</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='kw'>pmat</span> <span class='kw'>=</span> <span class='no'>res</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>,<span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>2</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/trans3d.html'>trans3d</a></span>(<span class='no'>res3</span>$<span class='no'>par</span>[<span class='fl'>1</span>], <span class='no'>res3</span>$<span class='no'>par</span>[<span class='fl'>1</span>], <span class='no'>res3</span>$<span class='no'>ofv</span>, <span class='kw'>pmat</span> <span class='kw'>=</span> <span class='no'>res</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>,<span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>2</span>)
-}
+  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>50</span>, <span class='fl'>50</span>, length<span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
+  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>x</span>
+  <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>y</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>y</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='va'>fr</span><span class='op'>)</span><span class='op'>}</span>
+  <span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/outer.html'>outer</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>f</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/persp.html'>persp</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>z</span>, theta <span class='op'>=</span> <span class='fl'>30</span>, phi <span class='op'>=</span> <span class='fl'>30</span>, expand <span class='op'>=</span> <span class='fl'>0.5</span>, col <span class='op'>=</span> <span class='st'>"lightblue"</span>, ticktype<span class='op'>=</span><span class='st'>"detailed"</span><span class='op'>)</span> <span class='op'>-&gt;</span> <span class='va'>res</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grDevices/trans3d.html'>trans3d</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, pmat <span class='op'>=</span> <span class='va'>res</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='fl'>2</span>, pch <span class='op'>=</span> <span class='fl'>16</span>,cex<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grDevices/trans3d.html'>trans3d</a></span><span class='op'>(</span><span class='va'>res3</span><span class='op'>$</span><span class='va'>par</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>res3</span><span class='op'>$</span><span class='va'>par</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>res3</span><span class='op'>$</span><span class='va'>ofv</span>, pmat <span class='op'>=</span> <span class='va'>res</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"green"</span>, pch <span class='op'>=</span> <span class='fl'>16</span>,cex<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># box constraints</span>
-<span class='no'>flb</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>){
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>x</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>4</span>, <span class='no'>p</span>-<span class='fl'>1</span>)) * (<span class='no'>x</span> - <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='no'>x</span>[-<span class='no'>p</span>])^<span class='fl'>2</span>)^<span class='fl'>2</span>)
-}
+<span class='va'>flb</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='va'>p</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>*</span> <span class='op'>(</span><span class='va'>x</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>x</span><span class='op'>[</span><span class='op'>-</span><span class='va'>p</span><span class='op'>]</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> 
+<span class='op'>}</span>
 <span class='co'>## 25-dimensional box constrained</span>
 <span class='co'>#optim(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25),method = "L-BFGS-B") </span>
-<span class='no'>res_box</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>3</span>, <span class='fl'>25</span>), <span class='no'>flb</span>,<span class='kw'>lower</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>2</span>, <span class='fl'>25</span>), <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>4</span>, <span class='fl'>25</span>))</div><div class='output co'>#&gt; Initial OFV = 3460
+<span class='va'>res_box</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>25</span><span class='op'>)</span>, <span class='va'>flb</span>,lower <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>25</span><span class='op'>)</span>, upper <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span> 
+</div><div class='output co'>#&gt; Initial OFV = 3460
 #&gt; It.   5 | OFV = 3460
 #&gt; It.  10 | OFV = 3460
 #&gt; It.  15 | OFV = 3460
@@ -636,31 +645,32 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 503.399
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.166 seconds.
+#&gt; Elapsed time: 0.197 seconds.
 #&gt; 
 #&gt; Final OFV =  503.399 
 #&gt; Parameters: 2.130566 2 2 2.059427 2 2 2.167358 2 2 2.142739 2 2 2.030765 2.254329 2 2 2.56842 2.045564 2.276299 2 2 2 2 2 3.690364 
 #&gt; </div><div class='input'>
 
 <span class='co'>## Combinatorial optimization: Traveling salesman problem</span>
-<span class='no'>eurodistmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>eurodist</span>)
+<span class='va'>eurodistmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>eurodist</span><span class='op'>)</span>
 
-<span class='no'>distance</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>sq</span>) {  <span class='co'># Target function</span>
-  <span class='no'>sq2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/embed.html'>embed</a></span>(<span class='no'>sq</span>, <span class='fl'>2</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>eurodistmat</span>[<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>sq2</span>[,<span class='fl'>2</span>], <span class='no'>sq2</span>[,<span class='fl'>1</span>])])
-}
+<span class='va'>distance</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>sq</span><span class='op'>)</span> <span class='op'>{</span>  <span class='co'># Target function</span>
+  <span class='va'>sq2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/embed.html'>embed</a></span><span class='op'>(</span><span class='va'>sq</span>, <span class='fl'>2</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>eurodistmat</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>sq2</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span>, <span class='va'>sq2</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='no'>genseq</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>sq</span>) {  <span class='co'># Generate new candidate sequence</span>
-  <span class='no'>idx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span>(<span class='no'>eurodistmat</span>)-<span class='fl'>1</span>)
-  <span class='no'>changepoints</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>idx</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='no'>sq</span>[<span class='no'>changepoints</span>[<span class='fl'>1</span>]]
-  <span class='no'>sq</span>[<span class='no'>changepoints</span>[<span class='fl'>1</span>]] <span class='kw'>&lt;-</span> <span class='no'>sq</span>[<span class='no'>changepoints</span>[<span class='fl'>2</span>]]
-  <span class='no'>sq</span>[<span class='no'>changepoints</span>[<span class='fl'>2</span>]] <span class='kw'>&lt;-</span> <span class='no'>tmp</span>
-  <span class='no'>sq</span>
-}
+<span class='va'>genseq</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>sq</span><span class='op'>)</span> <span class='op'>{</span>  <span class='co'># Generate new candidate sequence</span>
+  <span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='op'>(</span><span class='va'>eurodistmat</span><span class='op'>)</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>changepoints</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>idx</span>, size <span class='op'>=</span> <span class='fl'>2</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>sq</span><span class='op'>[</span><span class='va'>changepoints</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+  <span class='va'>sq</span><span class='op'>[</span><span class='va'>changepoints</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>sq</span><span class='op'>[</span><span class='va'>changepoints</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
+  <span class='va'>sq</span><span class='op'>[</span><span class='va'>changepoints</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span>
+  <span class='va'>sq</span>
+<span class='op'>}</span>
 
-<span class='no'>sq</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>eurodistmat</span>), <span class='fl'>1</span>)  <span class='co'># Initial sequence: alphabetic</span>
-<span class='no'>res3</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='no'>sq</span>,<span class='no'>distance</span>,<span class='kw'>generator</span><span class='kw'>=</span><span class='no'>genseq</span>) <span class='co'># Near optimum distance around 12842</span></div><div class='output co'>#&gt; Initial OFV = 29625
+<span class='va'>sq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>eurodistmat</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>  <span class='co'># Initial sequence: alphabetic</span>
+<span class='va'>res3</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='va'>sq</span>,<span class='va'>distance</span>,generator<span class='op'>=</span><span class='va'>genseq</span><span class='op'>)</span> <span class='co'># Near optimum distance around 12842</span>
+</div><div class='output co'>#&gt; Initial OFV = 29625
 #&gt; It.   5 | OFV = 28885
 #&gt; It.  10 | OFV = 28498
 #&gt; It.  15 | OFV = 27136
@@ -743,62 +753,63 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 15264
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.213 seconds.
+#&gt; Elapsed time: 0.242 seconds.
 #&gt; 
 #&gt; Final OFV =  15264 
 #&gt; Parameters: 1 19 8 5 4 3 18 2 14 9 12 15 13 16 17 6 11 7 20 10 21 1 
 #&gt; </div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
   <span class='co'># plot of initial sequence</span>
   <span class='co'># rotate for conventional orientation</span>
-  <span class='no'>loc</span> <span class='kw'>&lt;-</span> -<span class='fu'><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></span>(<span class='no'>eurodist</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='no'>points</span>
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[,<span class='fl'>1</span>]; <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[,<span class='fl'>2</span>]
-  <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>eurodistmat</span>))
-  <span class='no'>tspinit</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>sq</span>,]
-
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
-       <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Initial sequence of traveling salesman problem\n"</span>,
-                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='no'>sq</span>)), <span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspinit</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspinit</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
-         <span class='kw'>angle</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span>(<span class='no'>eurodist</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
-
+  <span class='va'>loc</span> <span class='op'>&lt;-</span> <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></span><span class='op'>(</span><span class='va'>eurodist</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>$</span><span class='va'>points</span>
+  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>loc</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span>; <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>loc</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span>
+  <span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>eurodistmat</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>tspinit</span> <span class='op'>&lt;-</span> <span class='va'>loc</span><span class='op'>[</span><span class='va'>sq</span>,<span class='op'>]</span>
+  
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, asp <span class='op'>=</span> <span class='fl'>1</span>, xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>,
+       main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"Initial sequence of traveling salesman problem\n"</span>,
+                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span><span class='op'>(</span><span class='va'>sq</span><span class='op'>)</span><span class='op'>)</span>, axes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span><span class='op'>(</span><span class='va'>tspinit</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspinit</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>2</span><span class='op'>]</span>, <span class='va'>tspinit</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspinit</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span>,
+         angle <span class='op'>=</span> <span class='fl'>10</span>, col <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span><span class='op'>(</span><span class='va'>eurodist</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+  
   <span class='co'># plot of final sequence from optim_ARS</span>
-  <span class='no'>tspres</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>res3</span>$<span class='no'>par</span>,]
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
-       <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"optim_ARS() 'solving' traveling salesman problem\n"</span>,
-                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='no'>res3</span>$<span class='no'>par</span>,<span class='fl'>1</span>))),<span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
-         <span class='kw'>angle</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span>(<span class='no'>eurodist</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
-
+  <span class='va'>tspres</span> <span class='op'>&lt;-</span> <span class='va'>loc</span><span class='op'>[</span><span class='va'>res3</span><span class='op'>$</span><span class='va'>par</span>,<span class='op'>]</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, asp <span class='op'>=</span> <span class='fl'>1</span>, xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>,
+       main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"optim_ARS() 'solving' traveling salesman problem\n"</span>,
+                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='va'>res3</span><span class='op'>$</span><span class='va'>par</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,axes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span><span class='op'>(</span><span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>2</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span>,
+         angle <span class='op'>=</span> <span class='fl'>10</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span><span class='op'>(</span><span class='va'>eurodist</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+  
   <span class='co'># using optim</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>) <span class='co'># chosen to get a good soln relatively quickly</span>
-  (<span class='no'>res4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/optim.html'>optim</a></span>(<span class='no'>sq</span>, <span class='no'>distance</span>, <span class='no'>genseq</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"SANN"</span>,
-                 <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span> <span class='kw'>=</span> <span class='fl'>30000</span>, <span class='kw'>temp</span> <span class='kw'>=</span> <span class='fl'>2000</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                                <span class='kw'>REPORT</span> <span class='kw'>=</span> <span class='fl'>500</span>)))
-
-  <span class='no'>tspres</span> <span class='kw'>&lt;-</span> <span class='no'>loc</span>[<span class='no'>res4</span>$<span class='no'>par</span>,]
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
-       <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"optim() 'solving' traveling salesman problem\n"</span>,
-                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span>(<span class='no'>res4</span>$<span class='no'>par</span>)),<span class='kw'>axes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>,<span class='fl'>2</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>1</span>], <span class='no'>tspres</span>[<span class='no'>s</span>+<span class='fl'>1</span>,<span class='fl'>2</span>],
-         <span class='kw'>angle</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span>(<span class='no'>eurodist</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
-}
-
-<span class='co'># one-dimensional function</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>)  <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='no'>x</span>)+<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='no'>x</span>)
-  <span class='no'>res5</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(-<span class='fl'>20</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>20</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>20</span>)
-
-  <span class='fu'><a href='https://rdrr.io/r/graphics/curve.html'>curve</a></span>(<span class='no'>f</span>, -<span class='fl'>20</span>, <span class='fl'>20</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='kw'>v</span> <span class='kw'>=</span> <span class='no'>res5</span>$<span class='no'>par</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>4</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"green"</span>)
-}
+  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span> <span class='co'># chosen to get a good soln relatively quickly</span>
+  <span class='op'>(</span><span class='va'>res4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/optim.html'>optim</a></span><span class='op'>(</span><span class='va'>sq</span>, <span class='va'>distance</span>, <span class='va'>genseq</span>, method <span class='op'>=</span> <span class='st'>"SANN"</span>,
+                 control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit <span class='op'>=</span> <span class='fl'>30000</span>, temp <span class='op'>=</span> <span class='fl'>2000</span>, trace <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                                REPORT <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> 
+  
+  <span class='va'>tspres</span> <span class='op'>&lt;-</span> <span class='va'>loc</span><span class='op'>[</span><span class='va'>res4</span><span class='op'>$</span><span class='va'>par</span>,<span class='op'>]</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, type <span class='op'>=</span> <span class='st'>"n"</span>, asp <span class='op'>=</span> <span class='fl'>1</span>, xlab <span class='op'>=</span> <span class='st'>""</span>, ylab <span class='op'>=</span> <span class='st'>""</span>,
+       main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"optim() 'solving' traveling salesman problem\n"</span>,
+                    <span class='st'>"Distance ="</span>,<span class='fu'>distance</span><span class='op'>(</span><span class='va'>res4</span><span class='op'>$</span><span class='va'>par</span><span class='op'>)</span><span class='op'>)</span>,axes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span><span class='op'>(</span><span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span>,<span class='fl'>2</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>tspres</span><span class='op'>[</span><span class='va'>s</span><span class='op'>+</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span>,
+         angle <span class='op'>=</span> <span class='fl'>10</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='fu'><a href='https://rdrr.io/r/base/labels.html'>labels</a></span><span class='op'>(</span><span class='va'>eurodist</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+<span class='op'>}</span>  
 
 <span class='co'># one-dimensional function</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>)  (<span class='no'>x</span>^<span class='fl'>2</span>+<span class='no'>x</span>)*<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='no'>x</span>) <span class='co'># -10 &lt; x &lt; 10</span>
-<span class='no'>res_max</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>0</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>10</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>maximize</span><span class='kw'>=</span><span class='fl'>TRUE</span>) <span class='co'># sometimes to local maxima</span></div><div class='output co'>#&gt; Initial OFV = 0
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+  <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>  <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+  <span class='va'>res5</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>20</span>,<span class='va'>f</span>,lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>20</span>, upper<span class='op'>=</span><span class='fl'>20</span><span class='op'>)</span>
+  
+  <span class='fu'><a href='https://rdrr.io/r/graphics/curve.html'>curve</a></span><span class='op'>(</span><span class='va'>f</span>, <span class='op'>-</span><span class='fl'>20</span>, <span class='fl'>20</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>v <span class='op'>=</span> <span class='va'>res5</span><span class='op'>$</span><span class='va'>par</span>, lty <span class='op'>=</span> <span class='fl'>4</span>,col<span class='op'>=</span><span class='st'>"green"</span><span class='op'>)</span>
+<span class='op'>}</span>  
+
+<span class='co'># one-dimensional function</span>
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>  <span class='op'>(</span><span class='va'>x</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>+</span><span class='va'>x</span><span class='op'>)</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='co'># -10 &lt; x &lt; 10</span>
+<span class='va'>res_max</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fl'>0</span>,<span class='va'>f</span>,lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>10</span>, upper<span class='op'>=</span><span class='fl'>10</span>,maximize<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span> <span class='co'># sometimes to local maxima</span>
+</div><div class='output co'>#&gt; Initial OFV = 0
 #&gt; It.   5 | OFV = 23.0891
 #&gt; It.  10 | OFV = 23.0891
 #&gt; It.  15 | OFV = 34.1068
@@ -881,63 +892,64 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt; It. 400 | OFV = 47.7055
 #&gt; 
 #&gt; Total iterations: 400 
-#&gt; Elapsed time: 0.179 seconds.
+#&gt; Elapsed time: 0.193 seconds.
 #&gt; 
 #&gt; Final OFV =  47.7055 
 #&gt; Parameters: 6.562641 
 #&gt; </div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>res_min</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fl'>0</span>,<span class='no'>f</span>,<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>10</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>10</span>) <span class='co'># sometimes to local minima</span>
-
-  <span class='fu'><a href='https://rdrr.io/r/graphics/curve.html'>curve</a></span>(<span class='no'>f</span>, -<span class='fl'>10</span>, <span class='fl'>10</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='kw'>v</span> <span class='kw'>=</span> <span class='no'>res_min</span>$<span class='no'>par</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>4</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"green"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='kw'>v</span> <span class='kw'>=</span> <span class='no'>res_max</span>$<span class='no'>par</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>4</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"red"</span>)
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+  <span class='va'>res_min</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fl'>0</span>,<span class='va'>f</span>,lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>10</span>, upper<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span> <span class='co'># sometimes to local minima</span>
+  
+  <span class='fu'><a href='https://rdrr.io/r/graphics/curve.html'>curve</a></span><span class='op'>(</span><span class='va'>f</span>, <span class='op'>-</span><span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>v <span class='op'>=</span> <span class='va'>res_min</span><span class='op'>$</span><span class='va'>par</span>, lty <span class='op'>=</span> <span class='fl'>4</span>,col<span class='op'>=</span><span class='st'>"green"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>v <span class='op'>=</span> <span class='va'>res_max</span><span class='op'>$</span><span class='va'>par</span>, lty <span class='op'>=</span> <span class='fl'>4</span>,col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 
 <span class='co'># two-dimensional Rastrigin function</span>
 <span class='co'>#It has a global minimum at f(x) = f(0) = 0.</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>Rastrigin</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x1</span>, <span class='no'>x2</span>){
-    <span class='fl'>20</span> + <span class='no'>x1</span>^<span class='fl'>2</span> + <span class='no'>x2</span>^<span class='fl'>2</span> - <span class='fl'>10</span>*(<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='fl'>2</span>*<span class='no'>pi</span>*<span class='no'>x1</span>) + <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='fl'>2</span>*<span class='no'>pi</span>*<span class='no'>x2</span>))
-  }
-
-
-  <span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>5.12</span>, <span class='fl'>5.12</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
-  <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/outer.html'>outer</a></span>(<span class='no'>x1</span>, <span class='no'>x2</span>, <span class='no'>Rastrigin</span>)
-
-  <span class='no'>res6</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>,<span class='fl'>4</span>),<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>Rastrigin</span>(<span class='no'>x</span>[<span class='fl'>1</span>], <span class='no'>x</span>[<span class='fl'>2</span>]),<span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>5.12</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>5.12</span>)
-
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+  <span class='va'>Rastrigin</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='fl'>20</span> <span class='op'>+</span> <span class='va'>x1</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>+</span> <span class='va'>x2</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>-</span> <span class='fl'>10</span><span class='op'>*</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>pi</span><span class='op'>*</span><span class='va'>x1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>pi</span><span class='op'>*</span><span class='va'>x2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  
+  
+  <span class='va'>x1</span> <span class='op'>&lt;-</span> <span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5.12</span>, <span class='fl'>5.12</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
+  <span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/outer.html'>outer</a></span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span>, <span class='va'>Rastrigin</span><span class='op'>)</span>
+  
+  <span class='va'>res6</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>Rastrigin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>5.12</span>, upper<span class='op'>=</span><span class='fl'>5.12</span><span class='op'>)</span>
+  
   <span class='co'># color scale</span>
-  <span class='no'>nrz</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>z</span>)
-  <span class='no'>ncz</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>z</span>)
-  <span class='no'>jet.colors</span> <span class='kw'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00007F"</span>, <span class='st'>"blue"</span>, <span class='st'>"#007FFF"</span>, <span class='st'>"cyan"</span>,
-                       <span class='st'>"#7FFF7F"</span>, <span class='st'>"yellow"</span>, <span class='st'>"#FF7F00"</span>, <span class='st'>"red"</span>, <span class='st'>"#7F0000"</span>))
+  <span class='va'>nrz</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
+  <span class='va'>ncz</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
+  <span class='va'>jet.colors</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#00007F"</span>, <span class='st'>"blue"</span>, <span class='st'>"#007FFF"</span>, <span class='st'>"cyan"</span>,
+                       <span class='st'>"#7FFF7F"</span>, <span class='st'>"yellow"</span>, <span class='st'>"#FF7F00"</span>, <span class='st'>"red"</span>, <span class='st'>"#7F0000"</span><span class='op'>)</span><span class='op'>)</span>
   <span class='co'># Generate the desired number of colors from this palette</span>
-  <span class='no'>nbcol</span> <span class='kw'>&lt;-</span> <span class='fl'>100</span>
-  <span class='no'>color</span> <span class='kw'>&lt;-</span> <span class='fu'>jet.colors</span>(<span class='no'>nbcol</span>)
+  <span class='va'>nbcol</span> <span class='op'>&lt;-</span> <span class='fl'>100</span>
+  <span class='va'>color</span> <span class='op'>&lt;-</span> <span class='fu'>jet.colors</span><span class='op'>(</span><span class='va'>nbcol</span><span class='op'>)</span>
   <span class='co'># Compute the z-value at the facet centres</span>
-  <span class='no'>zfacet</span> <span class='kw'>&lt;-</span> <span class='no'>z</span>[-<span class='fl'>1</span>, -<span class='fl'>1</span>] + <span class='no'>z</span>[-<span class='fl'>1</span>, -<span class='no'>ncz</span>] + <span class='no'>z</span>[-<span class='no'>nrz</span>, -<span class='fl'>1</span>] + <span class='no'>z</span>[-<span class='no'>nrz</span>, -<span class='no'>ncz</span>]
+  <span class='va'>zfacet</span> <span class='op'>&lt;-</span> <span class='va'>z</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>z</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>-</span><span class='va'>ncz</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>z</span><span class='op'>[</span><span class='op'>-</span><span class='va'>nrz</span>, <span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>z</span><span class='op'>[</span><span class='op'>-</span><span class='va'>nrz</span>, <span class='op'>-</span><span class='va'>ncz</span><span class='op'>]</span>
   <span class='co'># Recode facet z-values into color indices</span>
-  <span class='no'>facetcol</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cut.html'>cut</a></span>(<span class='no'>zfacet</span>, <span class='no'>nbcol</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/persp.html'>persp</a></span>(<span class='no'>x1</span>, <span class='no'>x2</span>, <span class='no'>z</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>color</span>[<span class='no'>facetcol</span>], <span class='kw'>phi</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fl'>30</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/filled.contour.html'>filled.contour</a></span>(<span class='no'>x1</span>, <span class='no'>x2</span>, <span class='no'>z</span>, <span class='kw'>color.palette</span> <span class='kw'>=</span> <span class='no'>jet.colors</span>)
-}
+  <span class='va'>facetcol</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cut.html'>cut</a></span><span class='op'>(</span><span class='va'>zfacet</span>, <span class='va'>nbcol</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/persp.html'>persp</a></span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span>, <span class='va'>z</span>, col <span class='op'>=</span> <span class='va'>color</span><span class='op'>[</span><span class='va'>facetcol</span><span class='op'>]</span>, phi <span class='op'>=</span> <span class='fl'>30</span>, theta <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/filled.contour.html'>filled.contour</a></span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span>, <span class='va'>z</span>, color.palette <span class='op'>=</span> <span class='va'>jet.colors</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 
 <span class='co'>## Parallel computation  </span>
 <span class='co'>## works better when each evaluation takes longer</span>
 <span class='co'>## here we have added extra time to the computations</span>
 <span class='co'>## just to show that it works</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>res7</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>,<span class='fl'>4</span>),<span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>0.01</span>); <span class='fu'>Rastrigin</span>(<span class='no'>x</span>[<span class='fl'>1</span>], <span class='no'>x</span>[<span class='fl'>2</span>])},
-                    <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>5.12</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>5.12</span>)
-  <span class='no'>res8</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>,<span class='fl'>4</span>),<span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>0.01</span>); <span class='fu'>Rastrigin</span>(<span class='no'>x</span>[<span class='fl'>1</span>], <span class='no'>x</span>[<span class='fl'>2</span>])},
-                    <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>5.12</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>5.12</span>,<span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>)
-  <span class='no'>res9</span> <span class='kw'>&lt;-</span> <span class='fu'>optim_ARS</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>,<span class='fl'>4</span>),<span class='kw'>function</span>(<span class='no'>x</span>){<span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>0.01</span>); <span class='fu'>Rastrigin</span>(<span class='no'>x</span>[<span class='fl'>1</span>], <span class='no'>x</span>[<span class='fl'>2</span>])},
-                    <span class='kw'>lower</span><span class='kw'>=</span>-<span class='fl'>5.12</span>, <span class='kw'>upper</span><span class='kw'>=</span><span class='fl'>5.12</span>,<span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>,<span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='st'>"snow"</span>)
-}</div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+  <span class='va'>res7</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span>; <span class='fu'>Rastrigin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>}</span>,
+                    lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>5.12</span>, upper<span class='op'>=</span><span class='fl'>5.12</span><span class='op'>)</span>
+  <span class='va'>res8</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span>; <span class='fu'>Rastrigin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>}</span>,
+                    lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>5.12</span>, upper<span class='op'>=</span><span class='fl'>5.12</span>,parallel <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+  <span class='va'>res9</span> <span class='op'>&lt;-</span> <span class='fu'>optim_ARS</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span>; <span class='fu'>Rastrigin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>}</span>,
+                    lower<span class='op'>=</span><span class='op'>-</span><span class='fl'>5.12</span>, upper<span class='op'>=</span><span class='fl'>5.12</span>,parallel <span class='op'>=</span> <span class='cn'>T</span>,parallel_type <span class='op'>=</span> <span class='st'>"snow"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -953,7 +965,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

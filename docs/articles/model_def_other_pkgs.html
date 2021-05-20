@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -81,7 +81,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -96,13 +96,14 @@
 
       
 
-      </header><script src="model_def_other_pkgs_files/header-attrs-2.2/header-attrs.js"></script><script src="model_def_other_pkgs_files/kePrint-0.0.1/kePrint.js"></script><div class="row">
+      </header><script src="model_def_other_pkgs_files/header-attrs-2.8/header-attrs.js"></script><script src="model_def_other_pkgs_files/kePrint-0.0.1/kePrint.js"></script><link href="model_def_other_pkgs_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Defining models for PopED using R based PKPD simulators</h1>
                         <h4 class="author">Andrew Hooker, Ron Keizer and Vijay Ivaturi</h4>
             
-            <h4 class="date">13 June, 2020</h4>
+            <h4 class="date">20 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/model_def_other_pkgs.Rmd"><code>vignettes/model_def_other_pkgs.Rmd</code></a></small>
       <div class="hidden name"><code>model_def_other_pkgs.Rmd</code></div>
@@ -123,12 +124,13 @@
 <li>mrgsolve</li>
 <li>RxODE</li>
 </ul>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PopED</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PKPDsim</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mrgsolve</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">deSolve</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcpp</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RxODE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED">PopED</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">PKPDsim</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/metrumresearchgroup/mrgsolve">mrgsolve</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://desolve.r-forge.r-project.org/">deSolve</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rcpp.org">Rcpp</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nlmixrdevelopment.github.io/RxODE/">RxODE</a></span><span class="op">)</span></code></pre></div>
 <p>For the future we will also show how to use</p>
 <ul>
 <li>PKPDmodels</li>
@@ -265,63 +267,67 @@ CL
 <h2 class="hasAnchor">
 <a href="#analytic-solution" class="anchor"></a>Analytic solution</h2>
 <p>First we implement an analytic solution to the model in a function that could be used in <code>PopED</code>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">ff</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
-    <span class="no">y</span><span class="kw">=</span><span class="no">xt</span>
-    <span class="no">N</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span>(<span class="no">xt</span>/<span class="no">TAU</span>)+<span class="fl">1</span>
-    <span class="no">y</span><span class="kw">=</span>(<span class="no">DOSE</span>/<span class="no">V</span>)*(<span class="no">KA</span>/(<span class="no">KA</span> - <span class="no">CL</span>/<span class="no">V</span>)) *
-      (<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">CL</span>/<span class="no">V</span> * (<span class="no">xt</span> - (<span class="no">N</span> - <span class="fl">1</span>) * <span class="no">TAU</span>)) * (<span class="fl">1</span> - <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">N</span> * <span class="no">CL</span>/<span class="no">V</span> * <span class="no">TAU</span>))/(<span class="fl">1</span> - <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">CL</span>/<span class="no">V</span> * <span class="no">TAU</span>)) -
-         <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">KA</span> * (<span class="no">xt</span> - (<span class="no">N</span> - <span class="fl">1</span>) * <span class="no">TAU</span>)) * (<span class="fl">1</span> - <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">N</span> * <span class="no">KA</span> * <span class="no">TAU</span>))/(<span class="fl">1</span> - <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">KA</span> * <span class="no">TAU</span>)))
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>( <span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-  })
-}</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>,<span class="va">xt</span>,<span class="va">parameters</span>,<span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span>
+    <span class="va">y</span><span class="op">=</span><span class="va">xt</span>
+    <span class="va">N</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="va">xt</span><span class="op">/</span><span class="va">TAU</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span>
+    <span class="va">y</span><span class="op">=</span><span class="op">(</span><span class="va">DOSE</span><span class="op">/</span><span class="va">V</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="va">KA</span><span class="op">/</span><span class="op">(</span><span class="va">KA</span> <span class="op">-</span> <span class="va">CL</span><span class="op">/</span><span class="va">V</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> 
+      <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span> <span class="op">*</span> <span class="op">(</span><span class="va">xt</span> <span class="op">-</span> <span class="op">(</span><span class="va">N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">N</span> <span class="op">*</span> <span class="va">CL</span><span class="op">/</span><span class="va">V</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> 
+         <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">KA</span> <span class="op">*</span> <span class="op">(</span><span class="va">xt</span> <span class="op">-</span> <span class="op">(</span><span class="va">N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">N</span> <span class="op">*</span> <span class="va">KA</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">KA</span> <span class="op">*</span> <span class="va">TAU</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-desolve" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-desolve" class="anchor"></a>ODE solution using deSolve</h2>
 <p>Model using ODEs defined in deSolve</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">PK_1_comp_oral_ode</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">Time</span>, <span class="no">State</span>, <span class="no">Pars</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">State</span>, <span class="no">Pars</span>)), {
-    <span class="no">dA1</span> <span class="kw">&lt;-</span> -<span class="no">KA</span>*<span class="no">A1</span>
-    <span class="no">dA2</span> <span class="kw">&lt;-</span> <span class="no">KA</span>*<span class="no">A1</span> - (<span class="no">CL</span>/<span class="no">V</span>)*<span class="no">A2</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">dA1</span>, <span class="no">dA2</span>)))
-  })
-}</pre></body></html></div>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">ff_ode_desolve</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
-    <span class="no">A_ini</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">A1</span><span class="kw">=</span><span class="fl">0</span>, <span class="kw">A2</span><span class="kw">=</span><span class="fl">0</span>)
-
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PK_1_comp_oral_ode</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">Time</span>, <span class="va">State</span>, <span class="va">Pars</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">State</span>, <span class="va">Pars</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span>    
+    <span class="va">dA1</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="va">KA</span><span class="op">*</span><span class="va">A1</span>
+    <span class="va">dA2</span> <span class="op">&lt;-</span> <span class="va">KA</span><span class="op">*</span><span class="va">A1</span> <span class="op">-</span> <span class="op">(</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span><span class="op">)</span><span class="op">*</span><span class="va">A2</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dA1</span>, <span class="va">dA2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff_ode_desolve</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">parameters</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span>
+    <span class="va">A_ini</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>A1<span class="op">=</span><span class="fl">0</span>, A2<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+    
     <span class="co">#Set up time points for the ODE</span>
-    <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">times_xt</span>) <span class="co">## add extra time for start of integration</span>
-    <span class="no">dose_times</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">to</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>),<span class="kw">by</span><span class="kw">=</span><span class="no">TAU</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">times</span>,<span class="no">dose_times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">times</span>) <span class="co"># remove duplicates</span>
-
-    <span class="no">eventdat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">var</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A1"</span>),
-                           <span class="kw">time</span> <span class="kw">=</span> <span class="no">dose_times</span>,
-                           <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">DOSE</span>), <span class="kw">method</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"add"</span>))
-
-    <span class="no">out</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span>(<span class="no">A_ini</span>, <span class="no">times</span>, <span class="no">PK_1_comp_oral_ode</span>, <span class="no">parameters</span>,
-               <span class="kw">events</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">eventdat</span>),
-               <span class="kw">atol</span><span class="kw">=</span><span class="fl">1e-8</span>, <span class="kw">rtol</span><span class="kw">=</span><span class="fl">1e-8</span>,<span class="kw">maxsteps</span><span class="kw">=</span><span class="fl">5000</span>)
-
+    <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">times_xt</span><span class="op">)</span> <span class="co">## add extra time for start of integration</span>
+    <span class="va">dose_times</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>,to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span>,by<span class="op">=</span><span class="va">TAU</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">times</span>,<span class="va">dose_times</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> 
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> <span class="co"># remove duplicates</span>
+    
+    <span class="va">eventdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A1"</span><span class="op">)</span>, 
+                           time <span class="op">=</span> <span class="va">dose_times</span>,
+                           value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"add"</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">A_ini</span>, <span class="va">times</span>, <span class="va">PK_1_comp_oral_ode</span>, <span class="va">parameters</span>, 
+               events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">eventdat</span><span class="op">)</span>,
+               atol<span class="op">=</span><span class="fl">1e-8</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>,maxsteps<span class="op">=</span><span class="fl">5000</span><span class="op">)</span>
+    
     <span class="co"># grab timepoint values</span>
-    <span class="no">out</span> <span class="kw">=</span> <span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="no">times_xt</span>,<span class="no">out</span>[,<span class="st">"time"</span>]),]
-
-    <span class="no">y</span> <span class="kw">=</span> <span class="no">out</span>[,<span class="st">"A2"</span>]/<span class="no">V</span>
-
-    <span class="no">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">y</span>) <span class="co"># must be a column matrix </span>
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-  })
-}</pre></body></html></div>
+    <span class="va">out</span> <span class="op">=</span> <span class="va">out</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">times_xt</span>,<span class="va">out</span><span class="op">[</span>,<span class="st">"time"</span><span class="op">]</span><span class="op">)</span>,<span class="op">]</span>
+    
+    <span class="va">y</span> <span class="op">=</span> <span class="va">out</span><span class="op">[</span>,<span class="st">"A2"</span><span class="op">]</span><span class="op">/</span><span class="va">V</span>
+    
+    <span class="va">y</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="co"># must be a column matrix </span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-desolve-and-compiled-c-code" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-desolve-and-compiled-c-code" class="anchor"></a>ODE solution using deSolve and compiled C code</h2>
 <p>Model using ODEs defined in deSolve with compiled code</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/readChar.html">readChar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/one_comp_oral_CL.c"</span>, <span class="kw">package</span><span class="kw">=</span><span class="st">"PopED"</span>), <span class="fl">1e5</span>))
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readChar.html">readChar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/one_comp_oral_CL.c"</span>, package<span class="op">=</span><span class="st">"PopED"</span><span class="op">)</span>, <span class="fl">1e5</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; /* file tmdd_qss_one_target.c */</span>
 <span class="co">#&gt; #include &lt;R.h&gt;</span>
 <span class="co">#&gt; static double parms[3];</span>
@@ -348,50 +354,53 @@ CL
 <span class="co">#&gt;   yout[0] = y[0]+y[1];</span>
 <span class="co">#&gt; }</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; /* END file tmdd_qss_one_target.c */</span></pre></body></html></div>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/one_comp_oral_CL.c"</span>, <span class="kw">package</span><span class="kw">=</span><span class="st">"PopED"</span>),<span class="st">"./one_comp_oral_CL.c"</span>)
+<span class="co">#&gt; /* END file tmdd_qss_one_target.c */</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/one_comp_oral_CL.c"</span>, package<span class="op">=</span><span class="st">"PopED"</span><span class="op">)</span>,<span class="st">"./one_comp_oral_CL.c"</span><span class="op">)</span>
 <span class="co">#&gt; [1] FALSE</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"R CMD SHLIB one_comp_oral_CL.c"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dynload.html">dyn.load</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"one_comp_oral_CL"</span>, <span class="no">.Platform</span>$<span class="no">dynlib.ext</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))</pre></body></html></div>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">ff_ode_desolve_c</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">parameters</span>, <span class="no">poped.db</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
-    <span class="no">A_ini</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">A1</span><span class="kw">=</span><span class="fl">0</span>, <span class="kw">A2</span><span class="kw">=</span><span class="fl">0</span>)
-
+<span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">'R CMD SHLIB one_comp_oral_CL.c'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dynload.html">dyn.load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"one_comp_oral_CL"</span>, <span class="va">.Platform</span><span class="op">$</span><span class="va">dynlib.ext</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff_ode_desolve_c</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">parameters</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span>
+    <span class="va">A_ini</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>A1<span class="op">=</span><span class="fl">0</span>, A2<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+    
     <span class="co">#Set up time points for the ODE</span>
-    <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">times_xt</span>) <span class="co">## add extra time for start of integration</span>
-    <span class="no">dose_times</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">to</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>),<span class="kw">by</span><span class="kw">=</span><span class="no">TAU</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">times</span>,<span class="no">dose_times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">times</span>) <span class="co"># remove duplicates</span>
-
-    <span class="no">eventdat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">var</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A1"</span>),
-                           <span class="kw">time</span> <span class="kw">=</span> <span class="no">dose_times</span>,
-                           <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">DOSE</span>), <span class="kw">method</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"add"</span>))
-
-    <span class="no">out</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span>(<span class="no">A_ini</span>, <span class="no">times</span>, <span class="kw">func</span> <span class="kw">=</span> <span class="st">"derivs"</span>,
-               <span class="kw">parms</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">CL</span>,<span class="no">V</span>,<span class="no">KA</span>),
-               <span class="kw">dllname</span> <span class="kw">=</span> <span class="st">"one_comp_oral_CL"</span>,
-               <span class="kw">initfunc</span> <span class="kw">=</span> <span class="st">"initmod"</span>, <span class="kw">nout</span> <span class="kw">=</span> <span class="fl">1</span>,
-               <span class="kw">outnames</span> <span class="kw">=</span> <span class="st">"Sum"</span>,
-               <span class="kw">events</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">eventdat</span>),
-               <span class="kw">atol</span><span class="kw">=</span><span class="fl">1e-8</span>, <span class="kw">rtol</span><span class="kw">=</span><span class="fl">1e-8</span>,<span class="kw">maxsteps</span><span class="kw">=</span><span class="fl">5000</span>)
+    <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">times_xt</span><span class="op">)</span> <span class="co">## add extra time for start of integration</span>
+    <span class="va">dose_times</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>,to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span>,by<span class="op">=</span><span class="va">TAU</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">times</span>,<span class="va">dose_times</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> 
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> <span class="co"># remove duplicates</span>
+    
+    <span class="va">eventdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A1"</span><span class="op">)</span>, 
+                           time <span class="op">=</span> <span class="va">dose_times</span>,
+                           value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"add"</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">A_ini</span>, <span class="va">times</span>, func <span class="op">=</span> <span class="st">"derivs"</span>, 
+               parms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">CL</span>,<span class="va">V</span>,<span class="va">KA</span><span class="op">)</span>, 
+               dllname <span class="op">=</span> <span class="st">"one_comp_oral_CL"</span>,
+               initfunc <span class="op">=</span> <span class="st">"initmod"</span>, nout <span class="op">=</span> <span class="fl">1</span>, 
+               outnames <span class="op">=</span> <span class="st">"Sum"</span>,
+               events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">eventdat</span><span class="op">)</span>,
+               atol<span class="op">=</span><span class="fl">1e-8</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>,maxsteps<span class="op">=</span><span class="fl">5000</span><span class="op">)</span>
 
     <span class="co"># grab timepoint values</span>
-    <span class="no">out</span> <span class="kw">=</span> <span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="no">times_xt</span>,<span class="no">out</span>[,<span class="st">"time"</span>]),]
-
-    <span class="no">y</span> <span class="kw">=</span> <span class="no">out</span>[, <span class="st">"A2"</span>]/<span class="no">V</span>
-
-    <span class="no">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">y</span>) <span class="co"># must be a column matrix </span>
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-  })
-}</pre></body></html></div>
+    <span class="va">out</span> <span class="op">=</span> <span class="va">out</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">times_xt</span>,<span class="va">out</span><span class="op">[</span>,<span class="st">"time"</span><span class="op">]</span><span class="op">)</span>,<span class="op">]</span>
+    
+    <span class="va">y</span> <span class="op">=</span> <span class="va">out</span><span class="op">[</span>, <span class="st">"A2"</span><span class="op">]</span><span class="op">/</span><span class="va">V</span>
+    
+    <span class="va">y</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="co"># must be a column matrix </span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-desolve-and-compiled-c-code-via-rcpp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-desolve-and-compiled-c-code-via-rcpp" class="anchor"></a>ODE solution using deSolve and compiled C++ code (via Rcpp)</h2>
 <p>Here we define the ODE system using inline C++ code via Rcpp</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(<span class="st">'List one_comp_oral_rcpp(double Time, NumericVector A, NumericVector Pars) {
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span><span class="op">(</span><span class="st">'List one_comp_oral_rcpp(double Time, NumericVector A, NumericVector Pars) {
 int n = A.size();
 NumericVector dA(n);
 
@@ -402,73 +411,76 @@ double KA = Pars[2];
 dA[0] = -KA*A[0];
 dA[1] = KA*A[0] - (CL/V)*A[1];
 return List::create(dA);
-}'</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">ff_ode_desolve_rcpp</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">p</span>, <span class="no">poped.db</span>){
-    <span class="no">A_ini</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">A1</span><span class="kw">=</span><span class="fl">0</span>, <span class="kw">A2</span><span class="kw">=</span><span class="fl">0</span>)
-
+}'</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff_ode_desolve_rcpp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">p</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">A_ini</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>A1<span class="op">=</span><span class="fl">0</span>, A2<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+    
     <span class="co">#Set up time points for the ODE</span>
-    <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">times_xt</span>) <span class="co">## add extra time for start of integration</span>
-    <span class="no">dose_times</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">to</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>),<span class="kw">by</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"TAU"</span>]])
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">times</span>,<span class="no">dose_times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">times</span>)
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">times</span>) <span class="co"># remove duplicates</span>
-
-    <span class="no">eventdat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">var</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A1"</span>),
-                           <span class="kw">time</span> <span class="kw">=</span> <span class="no">dose_times</span>,
-                           <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">p</span><span class="kw">[[</span><span class="st">"DOSE"</span>]]), <span class="kw">method</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"add"</span>))
-
-    <span class="no">out</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span>(<span class="no">A_ini</span>, <span class="no">times</span>,
-               <span class="no">one_comp_oral_rcpp</span>,
-               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"CL"</span>]],<span class="kw">V</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"V"</span>]], <span class="kw">KA</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"KA"</span>]]),
-               <span class="kw">events</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">eventdat</span>),
-               <span class="kw">atol</span><span class="kw">=</span><span class="fl">1e-8</span>, <span class="kw">rtol</span><span class="kw">=</span><span class="fl">1e-8</span>,<span class="kw">maxsteps</span><span class="kw">=</span><span class="fl">5000</span>)
-
-
+    <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">times_xt</span><span class="op">)</span> <span class="co">## add extra time for start of integration</span>
+    <span class="va">dose_times</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>,to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span>,by<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"TAU"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">times</span>,<span class="va">dose_times</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> 
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> <span class="co"># remove duplicates</span>
+    
+    <span class="va">eventdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A1"</span><span class="op">)</span>, 
+                           time <span class="op">=</span> <span class="va">dose_times</span>,
+                           value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">p</span><span class="op">[[</span><span class="st">"DOSE"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"add"</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">A_ini</span>, <span class="va">times</span>, 
+               <span class="va">one_comp_oral_rcpp</span>, 
+               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"CL"</span><span class="op">]</span><span class="op">]</span>,V<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"V"</span><span class="op">]</span><span class="op">]</span>, KA<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"KA"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, 
+               events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">eventdat</span><span class="op">)</span>,
+               atol<span class="op">=</span><span class="fl">1e-8</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>,maxsteps<span class="op">=</span><span class="fl">5000</span><span class="op">)</span>
+    
+    
     <span class="co"># grab timepoint values for central comp</span>
-    <span class="no">y</span> <span class="kw">=</span> <span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="no">times_xt</span>,<span class="no">out</span>[,<span class="st">"time"</span>]),<span class="st">"A2"</span>,<span class="kw">drop</span><span class="kw">=</span><span class="no">F</span>]/<span class="no">p</span><span class="kw">[[</span><span class="st">"V"</span>]]
-
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-}</pre></body></html></div>
+    <span class="va">y</span> <span class="op">=</span> <span class="va">out</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">times_xt</span>,<span class="va">out</span><span class="op">[</span>,<span class="st">"time"</span><span class="op">]</span><span class="op">)</span>,<span class="st">"A2"</span>,drop<span class="op">=</span><span class="cn">F</span><span class="op">]</span><span class="op">/</span><span class="va">p</span><span class="op">[[</span><span class="st">"V"</span><span class="op">]</span><span class="op">]</span>
+    
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-pkpdsim" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-pkpdsim" class="anchor"></a>ODE solution using PKPDsim</h2>
 <p>The same model written as a set of ODEs using PKPDsim:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">pk1cmtoral</span> <span class="kw">&lt;-</span> <span class="kw pkg">PKPDsim</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/new_ode_model.html">new_ode_model</a></span>(<span class="st">"pk_1cmt_oral"</span>) <span class="co"># take from library</span>
-<span class="no">ff_ode_pkpdsim</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">p</span>, <span class="no">poped.db</span>){
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pk1cmtoral</span> <span class="op">&lt;-</span> <span class="fu">PKPDsim</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/new_ode_model.html">new_ode_model</a></span><span class="op">(</span><span class="st">"pk_1cmt_oral"</span><span class="op">)</span> <span class="co"># take from library</span>
+<span class="va">ff_ode_pkpdsim</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">p</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
     <span class="co">#Set up time points for the ODE</span>
-    <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-    <span class="no">dose_times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">to</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>),<span class="kw">by</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"TAU"</span>]])
-    <span class="no">times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">times_xt</span>,<span class="no">dose_times</span>)))
+    <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>  
+    <span class="va">dose_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>,to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span>,by<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"TAU"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+    <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">times_xt</span>,<span class="va">dose_times</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
-    <span class="no">N</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">dose_times</span>)
-    <span class="no">regimen</span> <span class="kw">=</span> <span class="kw pkg">PKPDsim</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/new_regimen.html">new_regimen</a></span>(<span class="kw">amt</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"DOSE"</span>]],<span class="kw">n</span><span class="kw">=</span><span class="no">N</span>,<span class="kw">interval</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"TAU"</span>]])
-    <span class="no">design</span> <span class="kw">&lt;-</span> <span class="kw pkg">PKPDsim</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/sim.html">sim</a></span>(
-      <span class="kw">ode</span> <span class="kw">=</span> <span class="no">pk1cmtoral</span>,
-      <span class="kw">parameters</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"CL"</span>]],<span class="kw">V</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"V"</span>]],<span class="kw">KA</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"KA"</span>]]),
-      <span class="kw">regimen</span> <span class="kw">=</span> <span class="no">regimen</span>,
-      <span class="kw">only_obs</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-      <span class="kw">t_obs</span> <span class="kw">=</span> <span class="no">times</span>,
-      <span class="kw">checks</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-      <span class="kw">return_design</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-    <span class="no">tmp</span> <span class="kw">&lt;-</span> <span class="kw pkg">PKPDsim</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/sim_core.html">sim_core</a></span>(<span class="kw">sim_object</span> <span class="kw">=</span> <span class="no">design</span>, <span class="kw">ode</span> <span class="kw">=</span> <span class="no">pk1cmtoral</span>)
-    <span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">tmp</span>$<span class="no">y</span>
-    <span class="no">m_tmp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">times_xt</span>,<span class="kw">digits</span> <span class="kw">=</span> <span class="fl">6</span>),<span class="no">tmp</span>[,<span class="st">"t"</span>])
-    <span class="kw">if</span>(<span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">m_tmp</span>))){
-      <span class="fu"><a href="https://rdrr.io/r/base/stop.html">stop</a></span>(<span class="st">"can't find time points in solution\n"</span>,
-           <span class="st">"try changing the digits argument in the match function"</span>)
-    }
-
-    <span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">y</span>[<span class="no">m_tmp</span>]
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">poped.db</span> <span class="kw">=</span> <span class="no">poped.db</span>))
-}</pre></body></html></div>
+    <span class="va">N</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">dose_times</span><span class="op">)</span>
+    <span class="va">regimen</span> <span class="op">=</span> <span class="fu">PKPDsim</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/new_regimen.html">new_regimen</a></span><span class="op">(</span>amt<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"DOSE"</span><span class="op">]</span><span class="op">]</span>,n<span class="op">=</span><span class="va">N</span>,interval<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"TAU"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+    <span class="va">design</span> <span class="op">&lt;-</span> <span class="fu">PKPDsim</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/sim.html">sim</a></span><span class="op">(</span>
+      ode <span class="op">=</span> <span class="va">pk1cmtoral</span>, 
+      parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"CL"</span><span class="op">]</span><span class="op">]</span>,V<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"V"</span><span class="op">]</span><span class="op">]</span>,KA<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"KA"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, 
+      regimen <span class="op">=</span> <span class="va">regimen</span>,
+      only_obs <span class="op">=</span> <span class="cn">TRUE</span>,
+      t_obs <span class="op">=</span> <span class="va">times</span>,
+      checks <span class="op">=</span> <span class="cn">FALSE</span>,
+      return_design <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">PKPDsim</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PKPDsim/man/sim_core.html">sim_core</a></span><span class="op">(</span>sim_object <span class="op">=</span> <span class="va">design</span>, ode <span class="op">=</span> <span class="va">pk1cmtoral</span><span class="op">)</span>
+    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">tmp</span><span class="op">$</span><span class="va">y</span>
+    <span class="va">m_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">times_xt</span>,digits <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,<span class="va">tmp</span><span class="op">[</span>,<span class="st">"t"</span><span class="op">]</span><span class="op">)</span>
+    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">m_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+      <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"can't find time points in solution\n"</span>, 
+           <span class="st">"try changing the digits argument in the match function"</span><span class="op">)</span>
+    <span class="op">}</span> 
+    
+    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">m_tmp</span><span class="op">]</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span>, poped.db <span class="op">=</span> <span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-mrgsolve" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-mrgsolve" class="anchor"></a>ODE solution using mrgsolve</h2>
 <p>The same model written as a set of ODEs using mrgsolve:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">code</span> <span class="kw">&lt;-</span> <span class="st">'
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">code</span> <span class="op">&lt;-</span> <span class="st">'
 $PARAM CL=3.75, V=72.8, KA=0.25
 $CMT DEPOT CENT
 $ODE
@@ -476,77 +488,82 @@ dxdt_DEPOT = -KA*DEPOT;
 dxdt_CENT = KA*DEPOT - (CL/V)*CENT;
 $TABLE double CP  = CENT/V;
 $CAPTURE CP
-'</span></pre></body></html></div>
+'</span></code></pre></div>
 <p>Compile and load the model with <code>mcode</code></p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">moda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mrgsolve/man/mcode.html">mcode</a></span>(<span class="st">"optim"</span>, <span class="no">code</span>, <span class="kw">atol</span><span class="kw">=</span><span class="fl">1e-8</span>, <span class="kw">rtol</span><span class="kw">=</span><span class="fl">1e-8</span>,<span class="kw">maxsteps</span><span class="kw">=</span><span class="fl">5000</span>)
-<span class="co">#&gt; Building optim ... done.</span></pre></body></html></div>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">ff_ode_mrg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">p</span>, <span class="no">poped.db</span>){
-  <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-  <span class="no">dose_times</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">to</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>),<span class="kw">by</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"TAU"</span>]])
-  <span class="no">time</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">times_xt</span>,<span class="no">dose_times</span>)))
-  <span class="no">is.dose</span> <span class="kw">&lt;-</span> <span class="no">time</span> <span class="kw">%in%</span> <span class="no">dose_times</span>
-
-  <span class="no">data</span> <span class="kw">&lt;-</span>
-    <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(<span class="kw">ID</span> <span class="kw">=</span> <span class="fl">1</span>,
-                      <span class="kw">time</span> <span class="kw">=</span> <span class="no">time</span>,
-                      <span class="kw">amt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">is.dose</span>,<span class="no">p</span><span class="kw">[[</span><span class="st">"DOSE"</span>]], <span class="fl">0</span>),
-                      <span class="kw">cmt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">is.dose</span>, <span class="fl">1</span>, <span class="fl">0</span>),
-                      <span class="kw">evid</span> <span class="kw">=</span> <span class="no">cmt</span>,
-                      <span class="kw">CL</span> <span class="kw">=</span> <span class="no">p</span><span class="kw">[[</span><span class="st">"CL"</span>]], <span class="kw">V</span> <span class="kw">=</span> <span class="no">p</span><span class="kw">[[</span><span class="st">"V"</span>]], <span class="kw">KA</span> <span class="kw">=</span> <span class="no">p</span><span class="kw">[[</span><span class="st">"KA"</span>]])
-
-  <span class="no">out</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mrgsolve/man/mrgsim_q.html">mrgsim_q</a></span>(<span class="no">moda</span>, <span class="kw">data</span><span class="kw">=</span><span class="no">data</span>)
-
-  <span class="no">y</span> <span class="kw">&lt;-</span>  <span class="no">out</span>$<span class="no">CP</span>
-
-  <span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">y</span>[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="no">times_xt</span>,<span class="no">out</span>$<span class="no">time</span>)]
-
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="no">y</span>,<span class="kw">ncol</span><span class="kw">=</span><span class="fl">1</span>),<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-
-}</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">moda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mrgsolve/man/mcode.html">mcode</a></span><span class="op">(</span><span class="st">"optim"</span>, <span class="va">code</span>, atol<span class="op">=</span><span class="fl">1e-8</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>,maxsteps<span class="op">=</span><span class="fl">5000</span><span class="op">)</span>
+<span class="co">#&gt; Building optim ... done.</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff_ode_mrg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">p</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>  
+  <span class="va">dose_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>,to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span>,by<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"TAU"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">times_xt</span>,<span class="va">dose_times</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">is.dose</span> <span class="op">&lt;-</span> <span class="va">time</span> <span class="op">%in%</span> <span class="va">dose_times</span>
+  
+  <span class="va">data</span> <span class="op">&lt;-</span> 
+    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span>,
+                      time <span class="op">=</span> <span class="va">time</span>,
+                      amt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">is.dose</span>,<span class="va">p</span><span class="op">[[</span><span class="st">"DOSE"</span><span class="op">]</span><span class="op">]</span>, <span class="fl">0</span><span class="op">)</span>, 
+                      cmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">is.dose</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, 
+                      evid <span class="op">=</span> <span class="va">cmt</span>,
+                      CL <span class="op">=</span> <span class="va">p</span><span class="op">[[</span><span class="st">"CL"</span><span class="op">]</span><span class="op">]</span>, V <span class="op">=</span> <span class="va">p</span><span class="op">[[</span><span class="st">"V"</span><span class="op">]</span><span class="op">]</span>, KA <span class="op">=</span> <span class="va">p</span><span class="op">[[</span><span class="st">"KA"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+  
+  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mrgsolve/man/mrgsim_q.html">mrgsim_q</a></span><span class="op">(</span><span class="va">moda</span>, data<span class="op">=</span><span class="va">data</span><span class="op">)</span>
+  
+  <span class="va">y</span> <span class="op">&lt;-</span>  <span class="va">out</span><span class="op">$</span><span class="va">CP</span>
+  
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">times_xt</span>,<span class="va">out</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">]</span>
+  
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">y</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="ode-solution-using-rxode" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ode-solution-using-rxode" class="anchor"></a>ODE solution using RxODE</h2>
 <p>The model written for RxODE:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">modrx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/RxODE.html">RxODE</a></span>({
-  <span class="no">d</span>/<span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span>(<span class="no">DEPOT</span>) <span class="kw">=</span> -<span class="no">KA</span>*<span class="no">DEPOT</span>;
-  <span class="no">d</span>/<span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span>(<span class="no">CENT</span>) <span class="kw">=</span> <span class="no">KA</span>*<span class="no">DEPOT</span> - (<span class="no">CL</span>/<span class="no">V</span>)*<span class="no">CENT</span>;
-  <span class="no">CP</span><span class="kw">=</span><span class="no">CENT</span>/<span class="no">V</span>;
-})</pre></body></html></div>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">ff_ode_rx</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>, <span class="no">xt</span>, <span class="no">p</span>, <span class="no">poped.db</span>){
-  <span class="no">times_xt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>(<span class="no">xt</span>)
-  <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/et.html">et</a></span>(<span class="fl">0</span>,<span class="kw">amt</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"DOSE"</span>]], <span class="kw">ii</span><span class="kw">=</span><span class="no">p</span><span class="kw">[[</span><span class="st">"TAU"</span>]], <span class="kw">until</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">times_xt</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/et.html">et</a></span>(<span class="no">times_xt</span>) <span class="kw">-&gt;</span> <span class="no">data</span>
-
-  <span class="no">out</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/rxSolve.html">rxSolve</a></span>(<span class="no">modrx</span>, <span class="no">p</span>, <span class="no">data</span>, <span class="kw">atol</span><span class="kw">=</span><span class="fl">1e-8</span>, <span class="kw">rtol</span><span class="kw">=</span><span class="fl">1e-8</span>,<span class="kw">maxsteps</span><span class="kw">=</span><span class="fl">5000</span>,
-                 <span class="kw">returnType</span><span class="kw">=</span><span class="st">"data.frame"</span>)
-
-  <span class="no">y</span> <span class="kw">&lt;-</span>  <span class="no">out</span>$<span class="no">CP</span>[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="no">times_xt</span>,<span class="no">out</span>$<span class="no">time</span>)]
-
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="no">y</span>,<span class="kw">ncol</span><span class="kw">=</span><span class="fl">1</span>),<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-
-}</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">modrx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/RxODE.html">RxODE</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="va">d</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="va">DEPOT</span><span class="op">)</span> <span class="op">=</span> <span class="op">-</span><span class="va">KA</span><span class="op">*</span><span class="va">DEPOT</span>;
+  <span class="va">d</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="va">CENT</span><span class="op">)</span> <span class="op">=</span> <span class="va">KA</span><span class="op">*</span><span class="va">DEPOT</span> <span class="op">-</span> <span class="op">(</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span><span class="op">)</span><span class="op">*</span><span class="va">CENT</span>;
+  <span class="va">CP</span><span class="op">=</span><span class="va">CENT</span><span class="op">/</span><span class="va">V</span>;
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff_ode_rx</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>, <span class="va">xt</span>, <span class="va">p</span>, <span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">times_xt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="va">xt</span><span class="op">)</span>
+  <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/et.html">et</a></span><span class="op">(</span><span class="fl">0</span>,amt<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"DOSE"</span><span class="op">]</span><span class="op">]</span>, ii<span class="op">=</span><span class="va">p</span><span class="op">[[</span><span class="st">"TAU"</span><span class="op">]</span><span class="op">]</span>, until<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/et.html">et</a></span><span class="op">(</span><span class="va">times_xt</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">data</span>
+  
+  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nlmixrdevelopment.github.io/RxODE/reference/rxSolve.html">rxSolve</a></span><span class="op">(</span><span class="va">modrx</span>, <span class="va">p</span>, <span class="va">data</span>, atol<span class="op">=</span><span class="fl">1e-8</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>,maxsteps<span class="op">=</span><span class="fl">5000</span>,
+                 returnType<span class="op">=</span><span class="st">"data.frame"</span><span class="op">)</span>
+  
+  <span class="va">y</span> <span class="op">&lt;-</span>  <span class="va">out</span><span class="op">$</span><span class="va">CP</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">times_xt</span>,<span class="va">out</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">]</span>
+  
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">y</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="common-model-elements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#common-model-elements" class="anchor"></a>Common model elements</h2>
 <p>Other functions are used to define BSV and RUV.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r">
-<span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
-  <span class="no">parameters</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
-    <span class="kw">KA</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">1</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">1</span>]),
-    <span class="kw">CL</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">2</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">2</span>]),
-    <span class="kw">V</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">3</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">3</span>]),
-    <span class="kw">DOSE</span><span class="kw">=</span><span class="no">a</span>[<span class="fl">1</span>],
-    <span class="kw">TAU</span><span class="kw">=</span><span class="no">a</span>[<span class="fl">2</span>])
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>( <span class="no">parameters</span> )
-}
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">sfg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">a</span>,<span class="va">bpop</span>,<span class="va">b</span>,<span class="va">bocc</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">parameters</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> 
+    KA<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,
+    CL<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
+    V<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,
+    DOSE<span class="op">=</span><span class="va">a</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
+    TAU<span class="op">=</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span> <span class="va">parameters</span> <span class="op">)</span> 
+<span class="op">}</span>
 
-<span class="no">feps</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">epsi</span>,<span class="no">poped.db</span>){
-  <span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">poped.db</span>$<span class="no">model</span>$<span class="no">ff_pointer</span>,<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>))<span class="kw">[[</span><span class="fl">1</span>]]
-  <span class="no">y</span> <span class="kw">=</span> <span class="no">y</span>*(<span class="fl">1</span>+<span class="no">epsi</span>[,<span class="fl">1</span>])+<span class="no">epsi</span>[,<span class="fl">2</span>]
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-}</pre></body></html></div>
+<span class="va">feps</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>,<span class="va">xt</span>,<span class="va">parameters</span>,<span class="va">epsi</span>,<span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">ff_pointer</span>,<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">model_switch</span>,<span class="va">xt</span>,<span class="va">parameters</span>,<span class="va">poped.db</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+  <span class="va">y</span> <span class="op">=</span> <span class="va">y</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">epsi</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">+</span><span class="va">epsi</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span> 
+<span class="op">}</span></code></pre></div>
 </div>
 </div>
 <div id="create-poped-databases" class="section level1">
@@ -554,87 +571,91 @@ $CAPTURE CP
 <a href="#create-poped-databases" class="anchor"></a>Create PopED databases</h1>
 <p>Next we define the model to use, the parameters of those models, the intial design design and design space for any design calculation. Here we create a number of databases that correspond to different model implementations.</p>
 <p>The initial design is a 2 group design, with doses of 20 mg or 40 mg every 24 hours. Each group has the same sampling schedule, with 3 samples in the first day of the study and 2 on the 10th day of the study.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">poped_db_analytic</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="kw">ff_fun</span> <span class="kw">=</span><span class="no">ff</span>,
-                                  <span class="kw">fg_fun</span> <span class="kw">=</span><span class="no">sfg</span>,
-                                  <span class="kw">fError_fun</span><span class="kw">=</span><span class="no">feps</span>,
-                                  <span class="kw">bpop</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">KA</span><span class="kw">=</span><span class="fl">0.25</span>,<span class="kw">CL</span><span class="kw">=</span><span class="fl">3.75</span>,<span class="kw">V</span><span class="kw">=</span><span class="fl">72.8</span>),
-                                  <span class="kw">d</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">KA</span><span class="kw">=</span><span class="fl">0.09</span>,<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.25</span>^<span class="fl">2</span>,<span class="kw">V</span><span class="kw">=</span><span class="fl">0.09</span>),
-                                  <span class="kw">sigma</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">prop</span><span class="kw">=</span><span class="fl">0.04</span>,<span class="kw">add</span><span class="kw">=</span><span class="fl">0.0025</span>),
-                                  <span class="kw">m</span><span class="kw">=</span><span class="fl">2</span>,
-                                  <span class="kw">groupsize</span><span class="kw">=</span><span class="fl">20</span>,
-                                  <span class="kw">xt</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">8</span>,<span class="fl">240</span>,<span class="fl">245</span>),
-                                  <span class="kw">minxt</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">240</span>,<span class="fl">240</span>),
-                                  <span class="kw">maxxt</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">248</span>,<span class="fl">248</span>),
-                                  <span class="kw">bUseGrouped_xt</span><span class="kw">=</span><span class="fl">1</span>,
-                                  <span class="kw">a</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>,<span class="fl">40</span>),<span class="kw">TAU</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">24</span>,<span class="fl">24</span>)),
-                                  <span class="kw">maxa</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">200</span>,<span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>),
-                                  <span class="kw">mina</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">DOSE</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">TAU</span><span class="kw">=</span><span class="fl">24</span>))
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poped_db_analytic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_fun <span class="op">=</span><span class="va">ff</span>,
+                                  fg_fun <span class="op">=</span><span class="va">sfg</span>,
+                                  fError_fun<span class="op">=</span><span class="va">feps</span>,
+                                  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>KA<span class="op">=</span><span class="fl">0.25</span>,CL<span class="op">=</span><span class="fl">3.75</span>,V<span class="op">=</span><span class="fl">72.8</span><span class="op">)</span>, 
+                                  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>KA<span class="op">=</span><span class="fl">0.09</span>,CL<span class="op">=</span><span class="fl">0.25</span><span class="op">^</span><span class="fl">2</span>,V<span class="op">=</span><span class="fl">0.09</span><span class="op">)</span>, 
+                                  sigma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>prop<span class="op">=</span><span class="fl">0.04</span>,add<span class="op">=</span><span class="fl">0.0025</span><span class="op">)</span>,
+                                  m<span class="op">=</span><span class="fl">2</span>,
+                                  groupsize<span class="op">=</span><span class="fl">20</span>,
+                                  xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">8</span>,<span class="fl">240</span>,<span class="fl">245</span><span class="op">)</span>,
+                                  minxt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">240</span>,<span class="fl">240</span><span class="op">)</span>,
+                                  maxxt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">248</span>,<span class="fl">248</span><span class="op">)</span>,
+                                  bUseGrouped_xt<span class="op">=</span><span class="fl">1</span>,
+                                  a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>DOSE<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">40</span><span class="op">)</span>,TAU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">24</span><span class="op">)</span><span class="op">)</span>,
+                                  maxa<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>DOSE<span class="op">=</span><span class="fl">200</span>,TAU<span class="op">=</span><span class="fl">24</span><span class="op">)</span>,
+                                  mina<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>DOSE<span class="op">=</span><span class="fl">0</span>,TAU<span class="op">=</span><span class="fl">24</span><span class="op">)</span><span class="op">)</span>
 
 
-<span class="no">poped_db_ode_desolve</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_desolve</span>)
-<span class="no">poped_db_ode_desolve_c</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_desolve_c</span>)
-<span class="no">poped_db_ode_desolve_rcpp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_desolve_rcpp</span>)
-<span class="no">poped_db_ode_pkpdsim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_pkpdsim</span>)
-<span class="no">poped_db_ode_mrg</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_mrg</span>)
-<span class="no">poped_db_ode_rx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">ff_fun</span> <span class="kw">=</span> <span class="no">ff_ode_rx</span>)</pre></body></html></div>
+<span class="va">poped_db_ode_desolve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_desolve</span><span class="op">)</span>
+<span class="va">poped_db_ode_desolve_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_desolve_c</span><span class="op">)</span>
+<span class="va">poped_db_ode_desolve_rcpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_desolve_rcpp</span><span class="op">)</span>
+<span class="va">poped_db_ode_pkpdsim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_pkpdsim</span><span class="op">)</span>
+<span class="va">poped_db_ode_mrg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_mrg</span><span class="op">)</span>
+<span class="va">poped_db_ode_rx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,ff_fun <span class="op">=</span> <span class="va">ff_ode_rx</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="model-predictions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#model-predictions" class="anchor"></a>Model predictions</h1>
 <p>So are there difference in the model predictions between the different implementations?</p>
 <p>Here is a visual representation of the model predictions for this study design, based on the analytic solution:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,<span class="kw">PI</span><span class="kw">=</span><span class="no">T</span>,<span class="kw">separate.groups</span> <span class="kw">=</span> <span class="no">T</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,model_num_points <span class="op">=</span> <span class="fl">500</span>,PI<span class="op">=</span><span class="cn">T</span>,separate.groups <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> </code></pre></div>
 <p><img src="model_def_other_pkgs_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <p>We can compare the different predictions in this plot accross model implementations. Here we see that the accuracy of the different methods are within machine precision (or very small).</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">pred_std</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_analytic</span>,<span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,<span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,<span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pred_std</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_analytic</span>,model_num_points <span class="op">=</span> <span class="fl">500</span>,include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="no">pred_ode_desolve</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_desolve</span>,
-                                     <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                     <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                     <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_desolve</span>)
+<span class="va">pred_ode_desolve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve</span>,
+                                     model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                     include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_desolve</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">pred_ode_desolve_c</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_desolve_c</span>,
-                                       <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                       <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                       <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_desolve_c</span>)
+<span class="va">pred_ode_desolve_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_c</span>,
+                                       model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                       include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                       PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_desolve_c</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">pred_ode_desolve_rcpp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_desolve_rcpp</span>,
-                                          <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                          <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                          <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_desolve_rcpp</span>)
+<span class="va">pred_ode_desolve_rcpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_rcpp</span>,
+                                          model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                          include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                          PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_desolve_rcpp</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">pred_ode_pkpdsim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_pkpdsim</span>,
-                                     <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                     <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                     <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_pkpdsim</span>)
+<span class="va">pred_ode_pkpdsim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_pkpdsim</span>,
+                                     model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                     include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_pkpdsim</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Component \"PI_l\": Mean relative difference: 3.593837e-08"</span>
 
-<span class="no">pred_ode_mrg</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_mrg</span>,
-                                 <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                 <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                 <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_mrg</span>)
+<span class="va">pred_ode_mrg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_mrg</span>,
+                                 model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                 include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                 PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_mrg</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">pred_ode_rx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span>(<span class="no">poped_db_ode_rx</span>,
-                                 <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,
-                                 <span class="kw">include_sample_times</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                                 <span class="kw">PI</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">pred_std</span>,<span class="no">pred_ode_rx</span>)
-<span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
+<span class="va">pred_ode_rx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped_db_ode_rx</span>,
+                                 model_num_points <span class="op">=</span> <span class="fl">500</span>,
+                                 include_sample_times <span class="op">=</span> <span class="cn">TRUE</span>,
+                                 PI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">pred_std</span>,<span class="va">pred_ode_rx</span><span class="op">)</span>
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 <div id="evaluate-the-design" class="section level1">
 <h1 class="hasAnchor">
 <a href="#evaluate-the-design" class="anchor"></a>Evaluate the design</h1>
 <p>Here we compare the computation of the Fisher Information Matrix (FIM). By comparing the <span class="math inline">\(ln(det(FIM))\)</span> (the lnD-objective function value, or ofv).</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r">(<span class="no">eval_std</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_analytic</span>))
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">eval_std</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_analytic</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $ofv</span>
 <span class="co">#&gt; [1] 48.98804</span>
 <span class="co">#&gt; </span>
@@ -662,229 +683,171 @@ $CAPTURE CP
 <span class="co">#&gt;         KA         CL          V       d_KA       d_CL        d_V   sig_prop </span>
 <span class="co">#&gt;  16.285678   4.909749  11.209270 120.825798  34.448477  57.300408  36.104027 </span>
 <span class="co">#&gt;    sig_add </span>
-<span class="co">#&gt;  24.339781</span></pre></body></html></div>
+<span class="co">#&gt;  24.339781</span></code></pre></div>
 <p>All the computations give very similar results:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">eval_ode_desolve</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">eval_std</span>$<span class="no">ofv</span>,<span class="no">eval_ode_desolve</span>$<span class="no">ofv</span>)
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eval_ode_desolve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">eval_std</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_ode_desolve</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Mean relative difference: 2.493735e-08"</span>
 
-<span class="no">eval_ode_desolve_c</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve_c</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">eval_std</span>$<span class="no">ofv</span>,<span class="no">eval_ode_desolve_c</span>$<span class="no">ofv</span>)
+<span class="va">eval_ode_desolve_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_c</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">eval_std</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_ode_desolve_c</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Mean relative difference: 2.493735e-08"</span>
 
-<span class="no">eval_ode_desolve_rccp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve_rcpp</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">eval_std</span>$<span class="no">ofv</span>,<span class="no">eval_ode_desolve_rccp</span>$<span class="no">ofv</span>)
+<span class="va">eval_ode_desolve_rccp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_rcpp</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">eval_std</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_ode_desolve_rccp</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Mean relative difference: 2.493735e-08"</span>
 
-<span class="no">eval_ode_pkpdsim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_pkpdsim</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">eval_std</span>$<span class="no">ofv</span>,<span class="no">eval_ode_pkpdsim</span>$<span class="no">ofv</span>)
+<span class="va">eval_ode_pkpdsim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_pkpdsim</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">eval_std</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_ode_pkpdsim</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">eval_ode_mrg</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_mrg</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">eval_std</span>$<span class="no">ofv</span>,<span class="no">eval_ode_mrg</span>$<span class="no">ofv</span>)
-<span class="co">#&gt; [1] "Mean relative difference: 2.361616e-08"</span></pre></body></html></div>
+<span class="va">eval_ode_mrg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_mrg</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">eval_std</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_ode_mrg</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
+<span class="co">#&gt; [1] "Mean relative difference: 2.361616e-08"</span></code></pre></div>
 </div>
 <div id="speed-of-fim-computation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#speed-of-fim-computation" class="anchor"></a>Speed of FIM computation</h1>
 <p>We can compare the speed of the computations. Analytic solutions are fast, as expected, in this case more than 20 times faster than any of the ODE methods. mrgsolve is the fastest of the ODE solvers in this example. Note that, in previous work (<a href="http://pkpdsim.ronkeizer.com/speed.html" class="uri">http://pkpdsim.ronkeizer.com/speed.html</a>), much of the speed difference between mrgsolve, RxODE and PKPDsim has been found to be due to the overhead from pre- and post-processing of the simulation from ODE systems. Other ways of handling the pre- and post-processing may speed up these computations.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">microbenchmark</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/">microbenchmark</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="no">compare</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span>(
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_analytic</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve_c</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_desolve_rcpp</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_pkpdsim</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_mrg</span>),
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_ode_rx</span>),
-  <span class="kw">times</span> <span class="kw">=</span> <span class="fl">100L</span>)
+<span class="va">compare</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_analytic</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_c</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_desolve_rcpp</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_pkpdsim</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_mrg</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_ode_rx</span><span class="op">)</span>,
+  times <span class="op">=</span> <span class="fl">100L</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span>(<span class="no">compare</span>)</pre></body></html></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">compare</span><span class="op">)</span></code></pre></div>
 <p><img src="model_def_other_pkgs_compare_speed.png"></p>
 </div>
 <div id="version-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#version-information" class="anchor"></a>Version information</h1>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/reexports.html">session_info</a></span>()
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.0.1 (2020-06-06)</span>
-<span class="co">#&gt;  os       macOS Catalina 10.15.5      </span>
+<span class="co">#&gt;  version  R version 4.0.5 (2021-03-31)</span>
+<span class="co">#&gt;  os       macOS Big Sur 10.16         </span>
 <span class="co">#&gt;  system   x86_64, darwin17.0          </span>
 <span class="co">#&gt;  ui       X11                         </span>
 <span class="co">#&gt;  language (EN)                        </span>
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       Europe/Stockholm            </span>
-<span class="co">#&gt;  date     2020-06-13                  </span>
+<span class="co">#&gt;  date     2021-05-20                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  ! package       * version     date       lib</span>
-<span class="co">#&gt;    assertthat      0.2.1       2019-03-21 [2]</span>
-<span class="co">#&gt;    backports       1.1.7       2020-05-13 [2]</span>
-<span class="co">#&gt;    bookdown        0.19        2020-05-15 [2]</span>
-<span class="co">#&gt;    boot            1.3-25      2020-04-26 [2]</span>
-<span class="co">#&gt;    callr           3.4.3       2020-03-28 [2]</span>
-<span class="co">#&gt;    cli             2.0.2       2020-02-28 [2]</span>
-<span class="co">#&gt;    codetools       0.2-16      2018-12-24 [2]</span>
-<span class="co">#&gt;    colorspace      1.4-1       2019-03-18 [2]</span>
-<span class="co">#&gt;    crayon          1.3.4       2017-09-16 [2]</span>
-<span class="co">#&gt;    curl            4.3         2019-12-02 [2]</span>
-<span class="co">#&gt;    data.table      1.12.8      2019-12-09 [2]</span>
-<span class="co">#&gt;    desc            1.2.0       2018-05-01 [2]</span>
-<span class="co">#&gt;    deSolve       * 1.28        2020-03-08 [2]</span>
-<span class="co">#&gt;    devtools        2.3.0       2020-04-10 [2]</span>
-<span class="co">#&gt;    digest          0.6.25      2020-02-23 [2]</span>
-<span class="co">#&gt;    dplyr           1.0.0       2020-05-29 [2]</span>
-<span class="co">#&gt;    ellipsis        0.3.1       2020-05-15 [2]</span>
-<span class="co">#&gt;    evaluate        0.14        2019-05-28 [2]</span>
-<span class="co">#&gt;    fansi           0.4.1       2020-01-08 [2]</span>
-<span class="co">#&gt;    fs              1.4.1       2020-04-04 [2]</span>
-<span class="co">#&gt;    generics        0.0.2       2018-11-29 [2]</span>
-<span class="co">#&gt;    ggplot2         3.3.1       2020-05-28 [2]</span>
-<span class="co">#&gt;    glue            1.4.1       2020-05-13 [2]</span>
-<span class="co">#&gt;    gtable          0.3.0       2019-03-25 [2]</span>
-<span class="co">#&gt;    gtools          3.8.2       2020-03-31 [2]</span>
-<span class="co">#&gt;    hms             0.5.3       2020-01-08 [2]</span>
-<span class="co">#&gt;    htmltools       0.4.0       2019-10-04 [2]</span>
-<span class="co">#&gt;    httr            1.4.1       2019-08-05 [2]</span>
-<span class="co">#&gt;    kableExtra    * 1.1.0       2019-03-16 [2]</span>
-<span class="co">#&gt;    knitr         * 1.28        2020-02-06 [2]</span>
-<span class="co">#&gt;    lifecycle       0.2.0       2020-03-06 [2]</span>
-<span class="co">#&gt;    lotri           0.2.2       2020-05-29 [2]</span>
-<span class="co">#&gt;    magrittr        1.5         2014-11-22 [2]</span>
-<span class="co">#&gt;    MASS            7.3-51.6    2020-04-26 [2]</span>
-<span class="co">#&gt;    memoise         1.1.0       2017-04-21 [2]</span>
-<span class="co">#&gt;    mrgsolve      * 0.10.1      2020-02-21 [2]</span>
-<span class="co">#&gt;    munsell         0.5.0       2018-06-12 [2]</span>
-<span class="co">#&gt;    mvnfast         0.2.5       2018-01-31 [2]</span>
-<span class="co">#&gt;    mvtnorm         1.1-0       2020-02-24 [2]</span>
-<span class="co">#&gt;    pillar          1.4.4       2020-05-05 [2]</span>
-<span class="co">#&gt;    pkgbuild        1.0.8       2020-05-07 [2]</span>
-<span class="co">#&gt;    pkgconfig       2.0.3       2019-09-22 [2]</span>
-<span class="co">#&gt;    pkgdown         1.5.1       2020-04-09 [2]</span>
-<span class="co">#&gt;    pkgload         1.1.0       2020-05-29 [2]</span>
-<span class="co">#&gt;    PKPDsim       * 1.0.7       2020-04-29 [2]</span>
-<span class="co">#&gt;  P PopED         * 0.5.0       2020-06-13 [?]</span>
-<span class="co">#&gt;    PreciseSums     0.3         2018-04-12 [2]</span>
-<span class="co">#&gt;    prettyunits     1.1.1       2020-01-24 [2]</span>
-<span class="co">#&gt;    processx        3.4.2       2020-02-09 [2]</span>
-<span class="co">#&gt;    ps              1.3.3       2020-05-08 [2]</span>
-<span class="co">#&gt;    purrr           0.3.4       2020-04-17 [2]</span>
-<span class="co">#&gt;    R6              2.4.1       2019-11-12 [2]</span>
-<span class="co">#&gt;    Rcpp          * 1.0.4.6     2020-04-09 [2]</span>
-<span class="co">#&gt;    RcppArmadillo   0.9.880.1.0 2020-05-17 [2]</span>
-<span class="co">#&gt;    readr           1.3.1       2018-12-21 [2]</span>
-<span class="co">#&gt;    remotes         2.1.1       2020-02-15 [2]</span>
-<span class="co">#&gt;    rlang           0.4.6       2020-05-02 [2]</span>
-<span class="co">#&gt;    rmarkdown       2.2         2020-05-31 [2]</span>
-<span class="co">#&gt;    rprojroot       1.3-2       2018-01-03 [2]</span>
-<span class="co">#&gt;    rstudioapi      0.11        2020-02-07 [2]</span>
-<span class="co">#&gt;    rvest           0.3.5       2019-11-08 [2]</span>
-<span class="co">#&gt;    RxODE         * 0.9.2-0     2020-03-13 [2]</span>
-<span class="co">#&gt;    scales          1.1.1       2020-05-11 [2]</span>
-<span class="co">#&gt;    sessioninfo     1.1.1       2018-11-05 [2]</span>
-<span class="co">#&gt;    stringi         1.4.6       2020-02-17 [2]</span>
-<span class="co">#&gt;    stringr         1.4.0       2019-02-10 [2]</span>
-<span class="co">#&gt;    testthat      * 2.3.2       2020-03-02 [2]</span>
-<span class="co">#&gt;    tibble          3.0.1       2020-04-20 [2]</span>
-<span class="co">#&gt;    tidyselect      1.1.0       2020-05-11 [2]</span>
-<span class="co">#&gt;    units           0.6-6       2020-03-16 [2]</span>
-<span class="co">#&gt;    usethis         1.6.1       2020-04-29 [2]</span>
-<span class="co">#&gt;    vctrs           0.3.1       2020-06-05 [2]</span>
-<span class="co">#&gt;    viridisLite     0.3.0       2018-02-01 [2]</span>
-<span class="co">#&gt;    webshot         0.5.2       2019-11-22 [2]</span>
-<span class="co">#&gt;    withr           2.2.0       2020-04-20 [2]</span>
-<span class="co">#&gt;    xfun            0.14        2020-05-20 [2]</span>
-<span class="co">#&gt;    xml2            1.3.2       2020-04-23 [2]</span>
-<span class="co">#&gt;    yaml            2.2.1       2020-02-01 [2]</span>
-<span class="co">#&gt;  source                            </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.1)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.1)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.1)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  Github (InsightRX/PKPDsim@bd9b9e4)</span>
-<span class="co">#&gt;  local                             </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
-<span class="co">#&gt;  CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  ! package       * version  date       lib source                            </span>
+<span class="co">#&gt;    assertthat      0.2.1    2019-03-21 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    backports       1.2.1    2020-12-09 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    BH              1.75.0-0 2021-01-11 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    bookdown        0.22     2021-04-22 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    boot            1.3-28   2021-05-03 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    bslib           0.2.5.1  2021-05-18 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    cachem          1.0.5    2021-05-15 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    callr           3.7.0    2021-04-20 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    checkmate       2.0.0    2020-02-06 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    cli             2.5.0    2021-04-26 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    codetools       0.2-18   2020-11-04 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    colorspace      2.0-1    2021-05-04 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    crayon          1.4.1    2021-02-08 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    data.table      1.14.0   2021-02-21 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    DBI             1.1.1    2021-01-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    desc            1.3.0    2021-03-05 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    deSolve       * 1.28     2020-03-08 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    devtools        2.4.1    2021-05-05 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    digest          0.6.27   2020-10-24 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    dparser         1.3.1-4  2021-04-07 [2] CRAN (R 4.0.4)                    </span>
+<span class="co">#&gt;    dplyr           1.0.6    2021-05-05 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    ellipsis        0.3.2    2021-04-29 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    evaluate        0.14     2019-05-28 [2] CRAN (R 4.0.1)                    </span>
+<span class="co">#&gt;    fansi           0.4.2    2021-01-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    farver          2.1.0    2021-02-28 [2] CRAN (R 4.0.4)                    </span>
+<span class="co">#&gt;    fastmap         1.1.0    2021-01-25 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    fs              1.5.0    2020-07-31 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    generics        0.1.0    2020-10-31 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    ggplot2         3.3.3    2020-12-30 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    glue            1.4.2    2020-08-27 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    gtable          0.3.0    2019-03-25 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    gtools          3.8.2    2020-03-31 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    highr           0.9      2021-04-16 [2] CRAN (R 4.0.4)                    </span>
+<span class="co">#&gt;    htmltools       0.5.1.1  2021-01-22 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    httr            1.4.2    2020-07-20 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    jquerylib       0.1.4    2021-04-26 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    jsonlite        1.7.2    2020-12-09 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    kableExtra    * 1.3.4    2021-02-20 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    knitr         * 1.33     2021-04-24 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    labeling        0.4.2    2020-10-20 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    lifecycle       1.0.0    2021-02-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    lotri           0.3.1    2021-01-05 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    lubridate       1.7.10   2021-02-26 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    magrittr        2.0.1    2020-11-17 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    MASS            7.3-54   2021-05-03 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    memoise         2.0.0    2021-01-26 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    mrgsolve      * 0.11.1   2021-05-10 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    munsell         0.5.0    2018-06-12 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    mvtnorm         1.1-1    2020-06-09 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    pillar          1.6.1    2021-05-16 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    pkgbuild        1.2.0    2020-12-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    pkgconfig       2.0.3    2019-09-22 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    pkgdown         1.6.1    2020-09-12 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    pkgload         1.2.1    2021-04-06 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    PKPDsim       * 1.0.7    2021-05-20 [2] Github (InsightRX/PKPDsim@bd9b9e4)</span>
+<span class="co">#&gt;  P PopED         * 0.6.0    2021-05-20 [?] local                             </span>
+<span class="co">#&gt;    PreciseSums     0.4      2020-07-10 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    prettyunits     1.1.1    2020-01-24 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    processx        3.5.2    2021-04-30 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    ps              1.6.0    2021-02-28 [2] CRAN (R 4.0.4)                    </span>
+<span class="co">#&gt;    purrr           0.3.4    2020-04-17 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    qs              0.24.1   2021-03-07 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    R6              2.5.0    2020-10-28 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    ragg            1.1.2    2021-03-17 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    RApiSerialize   0.1.0    2014-04-19 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    Rcpp          * 1.0.6    2021-01-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    RcppParallel    5.1.4    2021-05-04 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    remotes         2.3.0    2021-04-01 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    rlang           0.4.11   2021-04-30 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    rmarkdown       2.8      2021-05-07 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    rprojroot       2.0.2    2020-11-15 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    rstudioapi      0.13     2020-11-12 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    rvest           1.0.0    2021-03-09 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    RxODE         * 1.0.9    2021-05-11 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    sass            0.4.0    2021-05-12 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    scales          1.1.1    2020-05-11 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    sessioninfo     1.1.1    2018-11-05 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    stringfish      0.15.1   2021-03-16 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    stringi         1.6.2    2021-05-17 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    stringr         1.4.0    2019-02-10 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    svglite         2.0.0    2021-02-20 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    sys             3.4      2020-07-23 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    systemfonts     1.0.2    2021-05-11 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    testthat      * 3.0.2    2021-02-14 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    textshaping     0.3.4    2021-05-11 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    tibble          3.1.2    2021-05-16 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    tidyselect      1.1.1    2021-04-30 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    usethis         2.0.1    2021-02-10 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    utf8            1.2.1    2021-03-12 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    vctrs           0.3.8    2021-04-29 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    viridisLite     0.4.0    2021-04-13 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    webshot         0.5.2    2019-11-22 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    withr           2.4.2    2021-04-18 [2] CRAN (R 4.0.4)                    </span>
+<span class="co">#&gt;    xfun            0.23     2021-05-15 [2] CRAN (R 4.0.5)                    </span>
+<span class="co">#&gt;    xml2            1.3.2    2020-04-23 [2] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;    yaml            2.2.1    2020-02-01 [2] CRAN (R 4.0.2)                    </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] /private/var/folders/pl/wj3tbf3s19db0h0p_j11_jym0000gp/T/Rtmp8E3c7R/temp_libpath6fb13283b1f9</span>
+<span class="co">#&gt; [1] /private/var/folders/g6/mk9zc6552f7g93c457xzgvfc0000gp/T/RtmpsIQNbH/temp_libpath2cc01a0b083c</span>
 <span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  P ── Loaded and on-disk path mismatch.</span>
-<span class="co">#sessionInfo()</span></pre></body></html></div>
+<span class="co">#sessionInfo()</span></code></pre></div>
 <!-- # References {-} -->
 </div>
   </div>
@@ -904,7 +867,7 @@ $CAPTURE CP
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -123,7 +123,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -150,7 +150,7 @@
     <p>Create a cell array as in MATLAB.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cell</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cell</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,20 +184,25 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>cell</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
+<span class='fu'>cell</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
 #&gt; [1,] Numeric,0 Numeric,0 Numeric,0
 #&gt; [2,] Numeric,0 Numeric,0 Numeric,0
-#&gt; [3,] Numeric,0 Numeric,0 Numeric,0</div><div class='input'><span class='fu'>cell</span>(<span class='fl'>2</span>,<span class='fl'>3</span>)</div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
+#&gt; [3,] Numeric,0 Numeric,0 Numeric,0</div><div class='input'><span class='fu'>cell</span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
 #&gt; [1,] Numeric,0 Numeric,0 Numeric,0
 #&gt; [2,] Numeric,0 Numeric,0 Numeric,0</div><div class='input'>
 <span class='co'>## define possible values of 2 categorical design variable</span>
-<span class='no'>x.space</span> <span class='kw'>&lt;-</span> <span class='fu'>cell</span>(<span class='fl'>1</span>,<span class='fl'>2</span>)
-<span class='no'>x.space</span>[<span class='fl'>1</span>,<span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>10</span>,<span class='fl'>100</span>,<span class='fl'>10</span>))
-<span class='no'>x.space</span>[<span class='fl'>1</span>,<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>10</span>,<span class='fl'>300</span>,<span class='fl'>10</span>))
-<span class='no'>x.space</span></div><div class='output co'>#&gt;      [,1]       [,2]      
-#&gt; [1,] Numeric,10 Numeric,30</div><div class='input'><span class='no'>x.space</span>[<span class='fl'>1</span>,<span class='fl'>1</span>]</div><div class='output co'>#&gt; [[1]]
+<span class='va'>x.space</span> <span class='op'>&lt;-</span> <span class='fu'>cell</span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>100</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>300</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>x.space</span>
+</div><div class='output co'>#&gt;      [,1]       [,2]      
+#&gt; [1,] Numeric,10 Numeric,30</div><div class='input'><span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt;  [1]  10  20  30  40  50  60  70  80  90 100
-#&gt; </div><div class='input'><span class='no'>x.space</span>[<span class='fl'>1</span>,<span class='fl'>2</span>]</div><div class='output co'>#&gt; [[1]]
+#&gt; </div><div class='input'><span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt;  [1]  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170 180 190
 #&gt; [20] 200 210 220 230 240 250 260 270 280 290 300
 #&gt; </div></pre>
@@ -216,7 +221,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

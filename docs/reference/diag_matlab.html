@@ -85,7 +85,7 @@ matrix in these situations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ matrix in these situations." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,7 +128,7 @@ matrix in these situations." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -160,7 +160,7 @@ returned. This function tries to match the MATLAB version in handling vectors
 matrix in these situations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>diag_matlab</span>(<span class='no'>mat</span>)</pre>
+    <pre class="usage"><span class='fu'>diag_matlab</span><span class='op'>(</span><span class='va'>mat</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,22 +192,29 @@ want to extract the diagonal from</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>diag_matlab</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3]
+<span class='fu'>diag_matlab</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3]
 #&gt; [1,]    1    0    0
 #&gt; [2,]    0    1    0
-#&gt; [3,]    0    0    1</div><div class='input'><span class='fu'>diag_matlab</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt;      [,1] [,2] [,3]
+#&gt; [3,]    0    0    1</div><div class='input'><span class='fu'>diag_matlab</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3]
 #&gt; [1,]    1    0    0
 #&gt; [2,]    0    2    0
-#&gt; [3,]    0    0    3</div><div class='input'><span class='fu'>diag_matlab</span>(<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt;      [,1] [,2] [,3]
+#&gt; [3,]    0    0    3</div><div class='input'><span class='fu'>diag_matlab</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3]
 #&gt; [1,]    1    0    0
 #&gt; [2,]    0    2    0
-#&gt; [3,]    0    0    3</div><div class='input'><span class='fu'>diag_matlab</span>(<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt;      [,1] [,2] [,3]
+#&gt; [3,]    0    0    3</div><div class='input'><span class='fu'>diag_matlab</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3]
 #&gt; [1,]    1    0    0
 #&gt; [2,]    0    2    0
 #&gt; [3,]    0    0    3</div><div class='input'>
-<span class='fu'>diag_matlab</span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>),<span class='fl'>6</span>,<span class='fl'>6</span>))</div><div class='output co'>#&gt; [1] 1 2 3 1 2 3</div><div class='input'>
+<span class='fu'>diag_matlab</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>,<span class='fl'>6</span>,<span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1 2 3 1 2 3</div><div class='input'>
 <span class='co'># here is where the R default does something different</span>
-<span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -224,7 +231,7 @@ want to extract the diagonal from</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

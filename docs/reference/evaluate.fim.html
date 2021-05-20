@@ -83,7 +83,7 @@ function, if they are supplied then they are used instead of the arguments from 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ function, if they are supplied then they are used instead of the arguments from 
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -126,7 +126,7 @@ function, if they are supplied then they are used instead of the arguments from 
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -156,24 +156,24 @@ by default these arguments are <code>NULL</code> in the
 function, if they are supplied then they are used instead of the arguments from the PopED database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>evaluate.fim</span>(
-  <span class='no'>poped.db</span>,
-  <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>approx.method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>FOCE.num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bpop.val</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>d_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>docc_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sigma_full</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model_switch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ni</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>groupsize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>deriv.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>evaluate.fim</span><span class='op'>(</span>
+  <span class='va'>poped.db</span>,
+  fim.calc.type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  approx.method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  FOCE.num <span class='op'>=</span> <span class='cn'>NULL</span>,
+  bpop.val <span class='op'>=</span> <span class='cn'>NULL</span>,
+  d_full <span class='op'>=</span> <span class='cn'>NULL</span>,
+  docc_full <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sigma_full <span class='op'>=</span> <span class='cn'>NULL</span>,
+  model_switch <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ni <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xt <span class='op'>=</span> <span class='cn'>NULL</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  a <span class='op'>=</span> <span class='cn'>NULL</span>,
+  groupsize <span class='op'>=</span> <span class='cn'>NULL</span>,
+  deriv.type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -299,10 +299,11 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 <span class='co'>##   for population pharmacokinetics-pharmacodynamics studies", </span>
 <span class='co'>##   Br. J. Clin. Pharm., 2014. </span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.md.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+<span class='va'>ff.PK.1.comp.oral.md.CL</span>
+</div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
 #&gt; {
 #&gt;     with(as.list(parameters), {
 #&gt;         y = xt
@@ -314,51 +315,159 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7feb697de9b8&gt;
+#&gt; &lt;bytecode: 0x7f84fb7561b0&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-    <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
-}
+<span class='va'>sfg</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span>,<span class='va'>bpop</span>,<span class='va'>b</span>,<span class='va'>bocc</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>parameters</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+               V<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,
+               KA<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>,
+               Favail<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+               DOSE<span class='op'>=</span><span class='va'>a</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+    <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>parameters</span><span class='op'>)</span> 
+<span class='op'>}</span>
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                  <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                  <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.prop"</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
+<span class='va'>poped.db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_fun <span class='op'>=</span> <span class='va'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  fg_fun <span class='op'>=</span> <span class='va'>sfg</span>,
+                                  fError_fun <span class='op'>=</span> <span class='va'>feps.prop</span>,
+                                  bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>, 
                                   <span class='co'># notfixed_bpop=c(1,1,1,0),</span>
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>V</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file 'sfg': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, "r", encoding = encoding): cannot open the connection</span></div><div class='input'>
+                                  notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>1</span>,V<span class='op'>=</span><span class='fl'>1</span>,KA<span class='op'>=</span><span class='fl'>1</span>,Favail<span class='op'>=</span><span class='fl'>0</span><span class='op'>)</span>,
+                                  d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                  sigma<span class='op'>=</span><span class='fl'>0.01</span>,
+                                  groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                  xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                  minxt<span class='op'>=</span><span class='fl'>0</span>,
+                                  maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                  a<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>
+
 
 <span class='co'>## evaluate initial design with the reduced FIM</span>
-<span class='no'>FIM.1</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.1' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span>(<span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.1' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1</span>,<span class='no'>poped.db</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
+<span class='va'>FIM.1</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>)</span> 
+<span class='va'>FIM.1</span>
+</div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.1</span><span class='op'>)</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>7</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1794.658</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.1</span>,<span class='va'>poped.db</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM</span>
-<span class='no'>FIM.0</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 0): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.0</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.0' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span>(<span class='no'>FIM.0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.0' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.0</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
+<span class='va'>FIM.0</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>0</span><span class='op'>)</span> 
+<span class='va'>FIM.0</span>
+</div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
+#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
+#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
+#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
+#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
+#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
+#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
+#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
+#&gt;             [,6]         [,7]
+#&gt; [1,]  4.49053810 -54419.72354
+#&gt; [2,] -6.55031322  -1070.93366
+#&gt; [3,] 18.65386273   2955.92423
+#&gt; [4,]  0.02613561    521.54030
+#&gt; [5,]  3.26560786  11214.21071
+#&gt; [6,] 41.81083599     71.08764
+#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.0</span><span class='op'>)</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>7</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2760.117</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.0</span>,<span class='va'>poped.db</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM </span>
 <span class='co'>## computing all derivatives with respect to the </span>
 <span class='co'>## standard deviation of the residual unexplained variation </span>
-<span class='no'>FIM.4</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 4): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.4' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span>(<span class='no'>FIM.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.4' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.4</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
+<span class='va'>FIM.4</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span> 
+<span class='va'>FIM.4</span>
+</div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 1.043081e+02  2242.842141 14.21752779
+#&gt;             [,7]
+#&gt; [1,]     0.00000
+#&gt; [2,]     0.00000
+#&gt; [3,]     0.00000
+#&gt; [4,]   104.30806
+#&gt; [5,]  2242.84214
+#&gt; [6,]    14.21753
+#&gt; [7,] 32247.07803</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2.398459e+21</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.4</span>,<span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327   5.585392 </div><div class='input'>
 <span class='co'>## evaluate initial design with the full FIM with A,B,C matricies</span>
 <span class='co'>## should give same answer as fim.calc.type=0</span>
-<span class='no'>FIM.5</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 5): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.5</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.5' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span>(<span class='no'>FIM.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.5' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.5</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
+<span class='va'>FIM.5</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span> 
+<span class='va'>FIM.5</span>
+</div><div class='output co'>#&gt;               [,1]         [,2]        [,3]          [,4]         [,5]
+#&gt; [1,]  47625.234145  -341.996566   35.504624 -2.073844e+03 -5899.486674
+#&gt; [2,]   -341.996566    30.887205  -12.589615 -1.686280e+01   -54.629529
+#&gt; [3,]     35.504624   -12.589615  452.758773 -8.336530e-01   -43.619195
+#&gt; [4,]  -2073.844369   -16.862802   -0.833653  3.107768e+03    10.728786
+#&gt; [5,]  -5899.486674   -54.629529  -43.619195  1.072879e+01 27307.089308
+#&gt; [6,]      4.490538    -6.550313   18.653863  2.613561e-02     3.265608
+#&gt; [7,] -54419.723543 -1070.933661 2955.924225  5.215403e+02 11214.210707
+#&gt;             [,6]         [,7]
+#&gt; [1,]  4.49053810 -54419.72354
+#&gt; [2,] -6.55031322  -1070.93366
+#&gt; [3,] 18.65386273   2955.92423
+#&gt; [4,]  0.02613561    521.54030
+#&gt; [5,]  3.26560786  11214.21071
+#&gt; [6,] 41.81083599     71.08764
+#&gt; [7,] 71.08763896 806176.95068</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1.220371e+24</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.5</span>,<span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   3.560994   2.560413   4.811952  26.270324  30.901555  26.503936  12.409516 </div><div class='input'>
 <span class='co'>## evaluate initial design with the reduced FIM with </span>
 <span class='co'>## A,B,C matricies and derivative of variance</span>
 <span class='co'>## should give same answer as fim.calc.type=1 (default)</span>
-<span class='no'>FIM.7</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db, fim.calc.type = 7): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.7</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'FIM.7' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span>(<span class='no'>FIM.7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in determinant(x, logarithm = TRUE, ...): object 'FIM.7' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.7</span>,<span class='no'>poped.db</span>,<span class='kw'>fim.calc.type</span><span class='kw'>=</span><span class='fl'>7</span>)</div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db' not found</span></div><div class='input'>
+<span class='va'>FIM.7</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>7</span><span class='op'>)</span> 
+<span class='va'>FIM.7</span>
+</div><div class='output co'>#&gt;             [,1]       [,2]      [,3]         [,4]         [,5]        [,6]
+#&gt; [1,] 19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+#&gt; [2,]   -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+#&gt; [3,]    -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+#&gt; [4,]     0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+#&gt; [5,]     0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+#&gt; [6,]     0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+#&gt; [7,]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763896
+#&gt;              [,7]
+#&gt; [1,]      0.00000
+#&gt; [2,]      0.00000
+#&gt; [3,]      0.00000
+#&gt; [4,]    521.54030
+#&gt; [5,]  11214.21071
+#&gt; [6,]     71.08764
+#&gt; [7,] 806176.95068</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/det.html'>det</a></span><span class='op'>(</span><span class='va'>FIM.7</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 5.996147e+22</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.7</span>,<span class='va'>poped.db</span>,fim.calc.type<span class='op'>=</span><span class='fl'>7</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </div><div class='input'>
 <span class='co'>## evaluate FIM and rse with prior FIM.1</span>
-<span class='no'>poped.db.prior</span> <span class='kw'>=</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='no'>poped.db</span>, <span class='kw'>prior_fim</span> <span class='kw'>=</span> <span class='no'>FIM.1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in poped.choose(popedInput$settings$poped_version, packageVersion("PopED")): object 'poped.db' not found</span></div><div class='input'><span class='no'>FIM.1.prior</span> <span class='kw'>&lt;-</span> <span class='fu'>evaluate.fim</span>(<span class='no'>poped.db.prior</span>)</div><div class='output co'>#&gt; <span class='error'>Error in evaluate.fim(poped.db.prior): object 'poped.db.prior' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>FIM.1</span>) <span class='co'># the FIM is only computed from the design in the poped.db</span></div><div class='output co'>#&gt; <span class='error'>Error in all.equal(FIM.1.prior, FIM.1): object 'FIM.1.prior' not found</span></div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>FIM.1.prior</span>,<span class='no'>poped.db.prior</span>) <span class='co'># the RSE is computed with the prior information</span></div><div class='output co'>#&gt; <span class='error'>Error in size(...): object 'poped.db.prior' not found</span></div></pre>
+<span class='va'>poped.db.prior</span> <span class='op'>=</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span><span class='va'>poped.db</span>, prior_fim <span class='op'>=</span> <span class='va'>FIM.1</span><span class='op'>)</span>
+<span class='va'>FIM.1.prior</span> <span class='op'>&lt;-</span> <span class='fu'>evaluate.fim</span><span class='op'>(</span><span class='va'>poped.db.prior</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>FIM.1.prior</span>,<span class='va'>FIM.1</span><span class='op'>)</span> <span class='co'># the FIM is only computed from the design in the poped.db</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>FIM.1.prior</span>,<span class='va'>poped.db.prior</span><span class='op'>)</span> <span class='co'># the RSE is computed with the prior information</span>
+</div><div class='output co'>#&gt;         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] 
+#&gt;   3.350460   1.948932   9.847048  18.121170  21.456671  18.227322   7.898937 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -374,7 +483,7 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

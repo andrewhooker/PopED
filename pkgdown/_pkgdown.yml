@@ -4,8 +4,8 @@ templates:
     #bootswatch: paper
     bootswatch: Flatly
 
-#development:
-#  mode: auto
+development:
+  mode: auto
   
 reference:
   - title: General information

@@ -21,7 +21,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 
-if(Sys.getenv("LOGNAME")=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
+if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repo/PopED/")
 
 set.seed(1234)
 
@@ -183,7 +183,7 @@ We see that the fixed-effect and residual variability parameters are relatively 
 
 ## Evaluate alternative design
 
-We can compare the initial design to a similar design with sparse sampling, i.e. having only 3 time points: xt = c(1,2,245).
+What about an alternative design with sparse sampling? For example, what if each individual only has 3 time points at 1, 2 and 245 hours: 
 
 ```{r}
 poped.db.new <- create.poped.database(
@@ -220,7 +220,7 @@ poped.db.new <- create.poped.database(
 The precision on CL is similar with the alternative design but the other parameters are less well estimated.
 
 ```{r,results='hide'}
-(design_eval <- round(data.frame(design_1=ds1$rse,design_2=ds2$rse)))
+(design_eval <- round(data.frame("Design 1"=ds1$rse,"Design 2"=ds2$rse)))
 ```
 
 ```{r design_summary,echo=FALSE}
@@ -310,7 +310,11 @@ output_cost <- poped_optim(poped.db, opt_a = TRUE, opt_xt = FALSE,
 
 ```{r simulate_cost_optmization}
 summary(output_cost)
-get_rse(output_cost$FIM, output_cost$poped.db)
-plot_model_prediction(output_cost$poped.db, model_num_points = 300)
 ```
+We see that the optimal doses are `r round(output_cost$poped.db$design$a[1,"DOSE"],1)` and `r round(output_cost$poped.db$design$a[2,"DOSE"],1)` for the two groups.  This leads to population trough concentrations of 0.2 and 0.35 for the two groups of patients at 240 hours:
+```{r}
+plot_model_prediction(output_cost$poped.db, model_num_points = 300)+
+  coord_cartesian(xlim=c(230,250))
+```
+
 

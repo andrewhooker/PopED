@@ -26,8 +26,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE, cache=FALSE}
-if(Sys.getenv("LOGNAME")=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
-
+if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repo/PopED/")
 library(deSolve)
 library(Rcpp)
 

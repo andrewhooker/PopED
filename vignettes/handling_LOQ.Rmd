@@ -23,10 +23,8 @@ editor_options:
 ```{r setup, include = FALSE}
 set.seed(1234)
 
-devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED/")
-#library(PopED)
+if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repo/PopED/")
 library(ggplot2)
-
 library(knitr)
 library(kableExtra)
 
@@ -41,9 +39,9 @@ knitr::opts_chunk$set(
 run_optimizations <- FALSE
 ```
 
-```{r libs,eval=FALSE}
+```{r libs}
 library(PopED)
-library(ggplot2)
+packageVersion("PopED")
 ```
 
 # Define a model

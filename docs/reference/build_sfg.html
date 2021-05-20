@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -123,7 +123,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -150,14 +150,14 @@
     <p>Build PopED parameter function from a model function</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_sfg</span>(
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dose"</span>, <span class='st'>"tau"</span>),
-  <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>etas</span> <span class='kw'>=</span> <span class='st'>"exp"</span>,
-  <span class='kw'>no_etas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"F"</span>, <span class='st'>"Favail"</span>),
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
-)</pre>
+    <pre class="usage"><span class='fu'>build_sfg</span><span class='op'>(</span>
+  model <span class='op'>=</span> <span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dose"</span>, <span class='st'>"tau"</span><span class='op'>)</span>,
+  par_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  etas <span class='op'>=</span> <span class='st'>"exp"</span>,
+  no_etas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"F"</span>, <span class='st'>"Favail"</span><span class='op'>)</span>,
+  env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,16 +196,18 @@ a list defining the model per parameter.</p></td>
     <p>A parameter model function to be used as input to PopED calculations.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>build_sfg</span>(<span class='kw'>model</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>)</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
+    <pre class="examples"><div class='input'><span class='fu'>build_sfg</span><span class='op'>(</span>model<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2], KA = bpop[3] * 
 #&gt;     exp(b[2]), V = bpop[4] * exp(b[3]), DOSE = a[1], TAU = a[2])
-#&gt; &lt;environment: 0x7feb6b8bd770&gt;</div><div class='input'>
-<span class='no'>etas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>Favail</span><span class='kw'>=</span><span class='st'>"exp"</span>,<span class='kw'>KA</span><span class='kw'>=</span><span class='st'>"exp"</span>,<span class='kw'>V</span><span class='kw'>=</span><span class='st'>"add"</span>,<span class='kw'>CL</span><span class='kw'>=</span><span class='st'>"exp"</span>)
-<span class='fu'>build_sfg</span>(<span class='kw'>model</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>,<span class='kw'>etas</span> <span class='kw'>=</span> <span class='no'>etas</span>)</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
+#&gt; &lt;environment: 0x7f84fb71ea70&gt;</div><div class='input'>
+<span class='va'>etas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Favail<span class='op'>=</span><span class='st'>"exp"</span>,KA<span class='op'>=</span><span class='st'>"exp"</span>,V<span class='op'>=</span><span class='st'>"add"</span>,CL<span class='op'>=</span><span class='st'>"exp"</span><span class='op'>)</span>
+<span class='fu'>build_sfg</span><span class='op'>(</span>model<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>,etas <span class='op'>=</span> <span class='va'>etas</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2] * exp(b[2]), 
 #&gt;     KA = bpop[3] * exp(b[3]), V = bpop[4] + b[4], DOSE = a[1], 
 #&gt;     TAU = a[2])
-#&gt; &lt;environment: 0x7feb6b8bd770&gt;</div></pre>
+#&gt; &lt;environment: 0x7f84fb71ea70&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -221,7 +223,7 @@ a list defining the model per parameter.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

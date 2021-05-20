@@ -81,7 +81,7 @@ method for nonlinear minimization with box constraints." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ method for nonlinear minimization with box constraints." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -124,7 +124,7 @@ method for nonlinear minimization with box constraints." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -152,7 +152,7 @@ method for nonlinear minimization with box constraints." />
 method for nonlinear minimization with box constraints.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bfgsb_min</span>(<span class='no'>f_name</span>, <span class='no'>f_options</span>, <span class='no'>x0</span>, <span class='no'>l</span>, <span class='no'>u</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+    <pre class="usage"><span class='fu'>bfgsb_min</span><span class='op'>(</span><span class='va'>f_name</span>, <span class='va'>f_options</span>, <span class='va'>x0</span>, <span class='va'>l</span>, <span class='va'>u</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,7 +210,7 @@ See <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code> as used 
 <code><a href='poped_optim.html'>poped_optim</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>############# START #################</span>
 <span class='co'>## Create PopED database</span>
@@ -226,7 +226,8 @@ See <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code> as used 
 <span class='co'>## to avoid sample times at very low concentrations (time 0 or very late samples).</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+<span class='va'>ff.PK.1.comp.oral.sd.CL</span>
+</div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
 #&gt; {
 #&gt;     with(as.list(parameters), {
 #&gt;         y = xt
@@ -235,34 +236,34 @@ See <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code> as used 
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7feb67e784c8&gt;
+#&gt; &lt;bytecode: 0x7f855b96f698&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
-}
+<span class='va'>sfg</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span>,<span class='va'>bpop</span>,<span class='va'>b</span>,<span class='va'>bocc</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>parameters</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+               V<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,
+               KA<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>,
+               Favail<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+               DOSE<span class='op'>=</span><span class='va'>a</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>parameters</span><span class='op'>)</span> 
+<span class='op'>}</span>
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
-                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>,<span class='kw'>add</span><span class='kw'>=</span><span class='fl'>0.25</span>),
-                                  <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>),
-                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0.01</span>),
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>100</span>))
+<span class='va'>poped.db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_fun<span class='op'>=</span><span class='va'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  fg_fun<span class='op'>=</span><span class='va'>sfg</span>,
+                                  fError_fun<span class='op'>=</span><span class='va'>feps.add.prop</span>,
+                                  bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>, 
+                                  notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                  d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                  sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>prop<span class='op'>=</span><span class='fl'>0.01</span>,add<span class='op'>=</span><span class='fl'>0.25</span><span class='op'>)</span>,
+                                  groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                  xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                  minxt<span class='op'>=</span><span class='fl'>0.01</span>,
+                                  maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                  a<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>,
+                                  mina<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>0.01</span><span class='op'>)</span>,
+                                  maxa<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
@@ -270,44 +271,46 @@ See <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code> as used 
 <span class='co'>#####################################</span>
 
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>  
+  
   <span class='co'># BFGS search, DOSE and sample time optimization</span>
-  <span class='no'>bfgs.output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                <span class='kw'>bUseRandomSearch</span><span class='kw'>=</span> <span class='fl'>0</span>,
-                                <span class='kw'>bUseStochasticGradient</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-                                <span class='kw'>bUseBFGSMinimizer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                                <span class='kw'>bUseLineSearch</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-  <span class='no'>f_name</span> <span class='kw'>&lt;-</span> <span class='st'>'calc_ofv_and_grad'</span>
-  <span class='no'>gen_des</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downsizing_general_design.html'>downsizing_general_design</a></span>(<span class='no'>poped.db</span>)
-
-  <span class='no'>aa</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaa</span>*<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'><a href='size.html'>size</a></span>(<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>a</span>,<span class='fl'>2</span>))
-  <span class='no'>axt</span><span class='kw'>=</span><span class='fl'>1</span>*<span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>cfaxt</span>*<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>m</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='no'>poped.db</span>$<span class='no'>design_space</span>$<span class='no'>maxni</span>))
-
-  <span class='no'>f_options_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>gen_des</span>$<span class='no'>x</span>,<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='no'>gen_des</span>$<span class='no'>model_switch</span>,
-                    <span class='kw'>aa</span><span class='kw'>=</span><span class='no'>aa</span>,<span class='kw'>axt</span><span class='kw'>=</span><span class='no'>axt</span>,<span class='no'>poped.db</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>,
-                    <span class='no'>gen_des</span>$<span class='no'>ni</span>,
-                    <span class='no'>gen_des</span>$<span class='no'>xt</span>,<span class='no'>gen_des</span>$<span class='no'>x</span>,<span class='no'>gen_des</span>$<span class='no'>a</span>,<span class='no'>gen_des</span>$<span class='no'>bpop</span>[,<span class='fl'>2</span>,<span class='kw'>drop</span><span class='kw'>=</span><span class='no'>F</span>],
-                    <span class='fu'><a href='getfulld.html'>getfulld</a></span>(<span class='no'>gen_des</span>$<span class='no'>d</span>[,<span class='fl'>2</span>,<span class='kw'>drop</span><span class='kw'>=</span><span class='no'>F</span>],<span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>),
-                    <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
-                    <span class='fu'><a href='getfulld.html'>getfulld</a></span>(<span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>[,<span class='fl'>2</span>,<span class='kw'>drop</span><span class='kw'>=</span><span class='no'>F</span>],
-                             <span class='no'>poped.db</span>$<span class='no'>parameters</span>$<span class='no'>covdocc</span>),<span class='no'>poped.db</span>)
-
-  <span class='no'>options</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>'factr'</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>BFGSConvergenceCriteriaMinStep</span>,
+  <span class='va'>bfgs.output</span> <span class='op'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='fl'>1</span>,opt_a<span class='op'>=</span><span class='fl'>0</span>,
+                                bUseRandomSearch<span class='op'>=</span> <span class='fl'>0</span>,
+                                bUseStochasticGradient <span class='op'>=</span> <span class='fl'>0</span>,
+                                bUseBFGSMinimizer <span class='op'>=</span> <span class='fl'>1</span>,
+                                bUseLineSearch <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+  
+  <span class='va'>f_name</span> <span class='op'>&lt;-</span> <span class='st'>'calc_ofv_and_grad'</span> 
+  <span class='va'>gen_des</span> <span class='op'>&lt;-</span> <span class='fu'><a href='downsizing_general_design.html'>downsizing_general_design</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
+  <span class='va'>aa</span> <span class='op'>&lt;-</span> <span class='fl'>0</span><span class='op'>*</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>cfaa</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='va'>poped.db</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>m</span>,<span class='fu'><a href='size.html'>size</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>a</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>axt</span><span class='op'>=</span><span class='fl'>1</span><span class='op'>*</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>cfaxt</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='va'>poped.db</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>m</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>design_space</span><span class='op'>$</span><span class='va'>maxni</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='va'>f_options_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>gen_des</span><span class='op'>$</span><span class='va'>x</span>,<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='va'>gen_des</span><span class='op'>$</span><span class='va'>model_switch</span>,
+                    aa<span class='op'>=</span><span class='va'>aa</span>,axt<span class='op'>=</span><span class='va'>axt</span>,<span class='va'>poped.db</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>groupsize</span>,
+                    <span class='va'>gen_des</span><span class='op'>$</span><span class='va'>ni</span>,
+                    <span class='va'>gen_des</span><span class='op'>$</span><span class='va'>xt</span>,<span class='va'>gen_des</span><span class='op'>$</span><span class='va'>x</span>,<span class='va'>gen_des</span><span class='op'>$</span><span class='va'>a</span>,<span class='va'>gen_des</span><span class='op'>$</span><span class='va'>bpop</span><span class='op'>[</span>,<span class='fl'>2</span>,drop<span class='op'>=</span><span class='cn'>F</span><span class='op'>]</span>,
+                    <span class='fu'><a href='getfulld.html'>getfulld</a></span><span class='op'>(</span><span class='va'>gen_des</span><span class='op'>$</span><span class='va'>d</span><span class='op'>[</span>,<span class='fl'>2</span>,drop<span class='op'>=</span><span class='cn'>F</span><span class='op'>]</span>,<span class='va'>poped.db</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>covd</span><span class='op'>)</span>,
+                    <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>sigma</span>,
+                    <span class='fu'><a href='getfulld.html'>getfulld</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>docc</span><span class='op'>[</span>,<span class='fl'>2</span>,drop<span class='op'>=</span><span class='cn'>F</span><span class='op'>]</span>,
+                             <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>covdocc</span><span class='op'>)</span>,<span class='va'>poped.db</span><span class='op'>)</span>
+  
+  <span class='va'>options</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>'factr'</span><span class='op'>=</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>BFGSConvergenceCriteriaMinStep</span>,
                <span class='co'>#'factr'=0.01,</span>
-               <span class='st'>'pgtol'</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>BFGSProjectedGradientTol</span>,
-               <span class='st'>'ftol'</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancef</span>,
-               <span class='st'>'gtol'</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>BFGSToleranceg</span>,
-               <span class='st'>'xtol'</span><span class='kw'>=</span><span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>BFGSTolerancex</span>)
+               <span class='st'>'pgtol'</span><span class='op'>=</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>BFGSProjectedGradientTol</span>,
+               <span class='st'>'ftol'</span><span class='op'>=</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>BFGSTolerancef</span>,
+               <span class='st'>'gtol'</span><span class='op'>=</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>BFGSToleranceg</span>,
+               <span class='st'>'xtol'</span><span class='op'>=</span><span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>BFGSTolerancex</span><span class='op'>)</span>
+  
+  <span class='va'>x_k</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>gen_des</span><span class='op'>$</span><span class='va'>xt</span><span class='op'>)</span>
+  <span class='va'>lb</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>gen_des</span><span class='op'>$</span><span class='va'>minxt</span><span class='op'>)</span>
+  <span class='va'>ub</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>gen_des</span><span class='op'>$</span><span class='va'>maxxt</span><span class='op'>)</span>
+  
+  <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'>bfgsb_min</span><span class='op'>(</span><span class='va'>f_name</span>,<span class='va'>f_options</span>, <span class='va'>x_k</span>,<span class='va'>lb</span>,<span class='va'>ub</span>,<span class='va'>options</span><span class='op'>)</span> 
+  
+<span class='op'>}</span>
 
-  <span class='no'>x_k</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>gen_des</span>$<span class='no'>xt</span>)
-  <span class='no'>lb</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>gen_des</span>$<span class='no'>minxt</span>)
-  <span class='no'>ub</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>gen_des</span>$<span class='no'>maxxt</span>)
-
-  <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>bfgsb_min</span>(<span class='no'>f_name</span>,<span class='no'>f_options</span>, <span class='no'>x_k</span>,<span class='no'>lb</span>,<span class='no'>ub</span>,<span class='no'>options</span>)
-
-}</div></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -323,7 +326,7 @@ See <code><a href='calc_ofv_and_grad.html'>calc_ofv_and_grad</a></code> as used 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -81,7 +81,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -96,14 +96,15 @@
 
       
 
-      </header><script src="handling_LOQ_files/header-attrs-2.2/header-attrs.js"></script><script src="handling_LOQ_files/kePrint-0.0.1/kePrint.js"></script><div class="row">
+      </header><script src="handling_LOQ_files/header-attrs-2.8/header-attrs.js"></script><script src="handling_LOQ_files/kePrint-0.0.1/kePrint.js"></script><link href="handling_LOQ_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Optimal design with LOQ data in PopED</h1>
             <h3 class="subtitle">Optimization with a model for warfarin</h3>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">13 June, 2020</h4>
+            <h4 class="date">20 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/handling_LOQ.Rmd"><code>vignettes/handling_LOQ.Rmd</code></a></small>
       <div class="hidden name"><code>handling_LOQ.Rmd</code></div>
@@ -112,61 +113,69 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PopED</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED">PopED</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"PopED"</span><span class="op">)</span>
+<span class="co">#&gt; [1] '0.6.0'</span></code></pre></div>
 <div id="define-a-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#define-a-model" class="anchor"></a>Define a model</h1>
-<p>Here we define, as an example, a one-compartment pharmacokinetic model with linear absorption (analytic solution) in PopED <span class="citation">(Nyberg et al. <a href="#ref-Nyberg2012a" role="doc-biblioref">2012</a>)</span>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">ff</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model_switch</span>,<span class="no">xt</span>,<span class="no">parameters</span>,<span class="no">poped.db</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">parameters</span>),{
-    <span class="no">y</span><span class="kw">=</span><span class="no">xt</span>
-    <span class="no">y</span><span class="kw">=</span>(<span class="no">DOSE</span>*<span class="no">KA</span>/(<span class="no">V</span>*(<span class="no">KA</span>-<span class="no">CL</span>/<span class="no">V</span>)))*(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">CL</span>/<span class="no">V</span>*<span class="no">xt</span>)-<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(-<span class="no">KA</span>*<span class="no">xt</span>))
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span><span class="kw">=</span><span class="no">y</span>,<span class="kw">poped.db</span><span class="kw">=</span><span class="no">poped.db</span>))
-  })}</pre></body></html></div>
+<p>Here we define, as an example, a one-compartment pharmacokinetic model with linear absorption (analytic solution) in PopED <span class="citation">(<a href="#ref-Nyberg2012a" role="doc-biblioref">Nyberg et al. 2012</a>)</span>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ff</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>,<span class="va">xt</span>,<span class="va">parameters</span>,<span class="va">poped.db</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span>
+    <span class="va">y</span><span class="op">=</span><span class="va">xt</span>
+    <span class="va">y</span><span class="op">=</span><span class="op">(</span><span class="va">DOSE</span><span class="op">*</span><span class="va">KA</span><span class="op">/</span><span class="op">(</span><span class="va">V</span><span class="op">*</span><span class="op">(</span><span class="va">KA</span><span class="op">-</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">CL</span><span class="op">/</span><span class="va">V</span><span class="op">*</span><span class="va">xt</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">KA</span><span class="op">*</span><span class="va">xt</span><span class="op">)</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span><span class="op">}</span></code></pre></div>
 <p>Next we define the parameters of this function. <code>DOSE</code>is defined as a covariate (in vector <code>a</code>) so that we can optimize the value later.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">sfg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>,<span class="no">a</span>,<span class="no">bpop</span>,<span class="no">b</span>,<span class="no">bocc</span>){
-  <span class="no">parameters</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="kw">CL</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">1</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">1</span>]),
-                <span class="kw">V</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">2</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">2</span>]),
-                <span class="kw">KA</span><span class="kw">=</span><span class="no">bpop</span>[<span class="fl">3</span>]*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">b</span>[<span class="fl">3</span>]),
-                <span class="kw">DOSE</span><span class="kw">=</span><span class="no">a</span>[<span class="fl">1</span>])
-}</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sfg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">a</span>,<span class="va">bpop</span>,<span class="va">b</span>,<span class="va">bocc</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">parameters</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> CL<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,
+                V<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
+                KA<span class="op">=</span><span class="va">bpop</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,
+                DOSE<span class="op">=</span><span class="va">a</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>We will use an additive and proportional residual unexplained variability (RUV) model, predefined in PopED as the function <code>feps.add.prop</code>.</p>
 </div>
 <div id="define-an-initial-design-and-design-space" class="section level1">
 <h1 class="hasAnchor">
 <a href="#define-an-initial-design-and-design-space" class="anchor"></a>Define an initial design and design space</h1>
 <p>Now we define the model parameter values, the initial design and design space for optimization.</p>
-<p>We define model parameters similar to the Warfarin example from the software comparison in <span class="citation">Nyberg et al. (<a href="#ref-nyberg2015" role="doc-biblioref">2015</a>)</span> and an arbitrary design of two groups of 20 individuals.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">poped_db</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
-    <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff</span>,
-    <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
-    <span class="kw">fError_fun</span><span class="kw">=</span><span class="no">feps.add.prop</span>,
-    <span class="kw">bpop</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.15</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">8</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">1.0</span>),
-    <span class="kw">d</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.07</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">0.02</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">0.6</span>),
-    <span class="kw">sigma</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">prop</span><span class="kw">=</span><span class="fl">0.01</span>,<span class="kw">add</span><span class="kw">=</span><span class="fl">0.25</span>),
-    <span class="kw">groupsize</span><span class="kw">=</span><span class="fl">32</span>,
-    <span class="kw">xt</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="fl">0.5</span>,<span class="fl">3</span>,<span class="fl">50</span>,<span class="fl">120</span>),
-    <span class="kw">discrete_xt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.5</span>,<span class="fl">1</span>:<span class="fl">120</span>)),
-    <span class="kw">minxt</span><span class="kw">=</span><span class="fl">0</span>,
-    <span class="kw">maxxt</span><span class="kw">=</span><span class="fl">120</span>,
-    <span class="kw">a</span><span class="kw">=</span><span class="fl">70</span>,
-    <span class="kw">mina</span><span class="kw">=</span><span class="fl">0</span>,
-    <span class="kw">maxa</span><span class="kw">=</span><span class="fl">100</span>)</pre></body></html></div>
+<p>We define model parameters similar to the Warfarin example from the software comparison in <span class="citation"><a href="#ref-nyberg2015" role="doc-biblioref">Nyberg et al.</a> (<a href="#ref-nyberg2015" role="doc-biblioref">2015</a>)</span> and an arbitrary design of two groups of 20 individuals.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poped_db</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span>
+    ff_fun<span class="op">=</span><span class="va">ff</span>,
+    fg_fun<span class="op">=</span><span class="va">sfg</span>,
+    fError_fun<span class="op">=</span><span class="va">feps.add.prop</span>,
+    bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span><span class="op">)</span>, 
+    d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, 
+    sigma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>prop<span class="op">=</span><span class="fl">0.01</span>,add<span class="op">=</span><span class="fl">0.25</span><span class="op">)</span>,
+    groupsize<span class="op">=</span><span class="fl">32</span>,
+    xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">3</span>,<span class="fl">50</span>,<span class="fl">120</span><span class="op">)</span>,
+    discrete_xt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">120</span><span class="op">)</span><span class="op">)</span>,
+    minxt<span class="op">=</span><span class="fl">0</span>,
+    maxxt<span class="op">=</span><span class="fl">120</span>,
+    a<span class="op">=</span><span class="fl">70</span>,
+    mina<span class="op">=</span><span class="fl">0</span>,
+    maxa<span class="op">=</span><span class="fl">100</span><span class="op">)</span>
+                                </code></pre></div>
 </div>
 <div id="simulation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#simulation" class="anchor"></a>Simulation</h1>
 <p>First it may make sense to check your model and design to make sure you get what you expect when simulating data. Here we plot the model typical values for the two groups:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,<span class="kw">facet_scales</span> <span class="kw">=</span> <span class="st">"free"</span>,<span class="kw">PI</span><span class="kw">=</span><span class="no">T</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span>, model_num_points <span class="op">=</span> <span class="fl">500</span>,facet_scales <span class="op">=</span> <span class="st">"free"</span>,PI<span class="op">=</span><span class="cn">T</span><span class="op">)</span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/simulate_without_BSV-1.png" width="700"></p>
 </div>
 <div id="design-evaluation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#design-evaluation" class="anchor"></a>Design evaluation</h1>
 <p>Next, we evaluate the initial design. We see that the relative standard error of the parameters (in percent) are relatively well estimated with this design except for the proportional RUV.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">eval_full</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eval_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span><span class="op">)</span></code></pre></div>
 <table class="table table table-striped">
 <caption>
 Expected parameter RSE (in %) for the initial design.
@@ -250,44 +259,47 @@ sig_add
 <h1 class="hasAnchor">
 <a href="#loq-handling" class="anchor"></a>LOQ handling</h1>
 <p>We assume that the LOQ level is at 2 concentration units.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,<span class="kw">facet_scales</span> <span class="kw">=</span> <span class="st">"free"</span>,<span class="kw">PI</span><span class="kw">=</span><span class="no">T</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="kw">yintercept</span> <span class="kw">=</span> <span class="fl">2</span>,<span class="kw">color</span><span class="kw">=</span><span class="st">"red"</span>,<span class="kw">linetype</span><span class="kw">=</span><span class="st">"dotted"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span>, model_num_points <span class="op">=</span> <span class="fl">500</span>,facet_scales <span class="op">=</span> <span class="st">"free"</span>,PI<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">2</span>,color<span class="op">=</span><span class="st">"red"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>We use optimization criteria based on the D6 (<code>loq_method=1</code> which is the default) and D2 (<code>loq_method=2</code>) methods from <span class="citation">Vong et al. (<a href="#ref-vong2012" role="doc-biblioref">2012</a>)</span>. For the D6 method, which has been shown to be a better method in comparison to SSE studies, we have updated the method to only investigate points where the 95% PI overlaps LOQ, otherwise we set the design point to either no information or full information. Further we filter out situations with very low probabilities (<code>loq_prob_limit = 0.001</code>). Both the CI% and the low probability limit can be specified in the calculation (default values are <code>loq_PI_conf_level = 0.95</code> and <code>loq_prob_limit = 0.001</code>). In this way we can get the D6 method to compute in reasonable time-frames even for larger number of design samples.</p>
+<p>We use optimization criteria based on the D6 (<code>loq_method=1</code> which is the default) and D2 (<code>loq_method=2</code>) methods from <span class="citation"><a href="#ref-vong2012" role="doc-biblioref">Vong et al.</a> (<a href="#ref-vong2012" role="doc-biblioref">2012</a>)</span>. For the D6 method, which has been shown to be a better method in comparison to SSE studies, we have updated the method to only investigate points where the 95% PI overlaps LOQ, otherwise we set the design point to either no information or full information. Further we filter out situations with very low probabilities (<code>loq_prob_limit = 0.001</code>). Both the CI% and the low probability limit can be specified in the calculation (default values are <code>loq_PI_conf_level = 0.95</code> and <code>loq_prob_limit = 0.001</code>). In this way we can get the D6 method to compute in reasonable time-frames even for larger number of design samples.</p>
 <p>Here we can evaluate the design with both methods and test the speed of computation. We see that D6 is significantly slower than D2 (but D6 should be a more accurate representation of the RSE expected using M3 estimation methods).</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1234</span>)
-<span class="no">e_time_D6</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">eval_D6</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>,<span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>)
-)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<span class="va">e_time_D6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">eval_D6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="no">e_time_D2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">eval_D2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>,<span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>, <span class="kw">loq_method</span><span class="kw">=</span><span class="fl">2</span>)
-)
+<span class="va">e_time_D2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">eval_D2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,loq<span class="op">=</span><span class="fl">2</span>, loq_method<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"D6 evaluation time: "</span>,<span class="no">e_time_D6</span>[<span class="fl">1</span>],<span class="st">"\n"</span> )
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"D2 evaluation time: "</span>,<span class="no">e_time_D2</span>[<span class="fl">1</span>],<span class="st">"\n"</span> )
-<span class="co">#&gt; D6 evaluation time:  0.47 </span>
-<span class="co">#&gt; D2 evaluation time:  0.137</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"D6 evaluation time: "</span>,<span class="va">e_time_D6</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"D2 evaluation time: "</span>,<span class="va">e_time_D2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span>
+<span class="co">#&gt; D6 evaluation time:  0.501 </span>
+<span class="co">#&gt; D2 evaluation time:  0.103</span></code></pre></div>
 <p>The D2 nmethod is the same as removing the last data point</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">poped_db_2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span>(
-    <span class="kw">ff_fun</span><span class="kw">=</span><span class="no">ff</span>,
-    <span class="kw">fg_fun</span><span class="kw">=</span><span class="no">sfg</span>,
-    <span class="kw">fError_fun</span><span class="kw">=</span><span class="no">feps.add.prop</span>,
-    <span class="kw">bpop</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.15</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">8</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">1.0</span>),
-    <span class="kw">d</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">CL</span><span class="kw">=</span><span class="fl">0.07</span>, <span class="kw">V</span><span class="kw">=</span><span class="fl">0.02</span>, <span class="kw">KA</span><span class="kw">=</span><span class="fl">0.6</span>),
-    <span class="kw">sigma</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">prop</span><span class="kw">=</span><span class="fl">0.01</span>,<span class="kw">add</span><span class="kw">=</span><span class="fl">0.25</span>),
-    <span class="kw">groupsize</span><span class="kw">=</span><span class="fl">32</span>,
-    <span class="kw">xt</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="fl">0.5</span>,<span class="fl">3</span>,<span class="fl">50</span>),
-    <span class="kw">discrete_xt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.5</span>,<span class="fl">1</span>:<span class="fl">120</span>)),
-    <span class="kw">minxt</span><span class="kw">=</span><span class="fl">0</span>,
-    <span class="kw">maxxt</span><span class="kw">=</span><span class="fl">120</span>,
-    <span class="kw">a</span><span class="kw">=</span><span class="fl">70</span>,
-    <span class="kw">mina</span><span class="kw">=</span><span class="fl">0</span>,
-    <span class="kw">maxa</span><span class="kw">=</span><span class="fl">100</span>)
-<span class="no">eval_red</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db_2</span>)
-<span class="kw pkg">testthat</span><span class="kw ns">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span>(<span class="no">eval_red</span>$<span class="no">ofv</span>,<span class="no">eval_D2</span>$<span class="no">ofv</span>)
-<span class="kw pkg">testthat</span><span class="kw ns">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span>(<span class="no">eval_red</span>$<span class="no">rse</span>,<span class="no">eval_D2</span>$<span class="no">rse</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poped_db_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span>
+    ff_fun<span class="op">=</span><span class="va">ff</span>,
+    fg_fun<span class="op">=</span><span class="va">sfg</span>,
+    fError_fun<span class="op">=</span><span class="va">feps.add.prop</span>,
+    bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span><span class="op">)</span>, 
+    d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, 
+    sigma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>prop<span class="op">=</span><span class="fl">0.01</span>,add<span class="op">=</span><span class="fl">0.25</span><span class="op">)</span>,
+    groupsize<span class="op">=</span><span class="fl">32</span>,
+    xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">3</span>,<span class="fl">50</span><span class="op">)</span>,
+    discrete_xt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">120</span><span class="op">)</span><span class="op">)</span>,
+    minxt<span class="op">=</span><span class="fl">0</span>,
+    maxxt<span class="op">=</span><span class="fl">120</span>,
+    a<span class="op">=</span><span class="fl">70</span>,
+    mina<span class="op">=</span><span class="fl">0</span>,
+    maxa<span class="op">=</span><span class="fl">100</span><span class="op">)</span>
+<span class="va">eval_red</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_2</span><span class="op">)</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="va">eval_red</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_D2</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="va">eval_red</span><span class="op">$</span><span class="va">rse</span>,<span class="va">eval_D2</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span></code></pre></div>
 <p>Predicted parameter uncertainty for the three methods is shown below. We see that the uncertainty is generally higher with the LOQ evaluations (as expected). We also see that because the D2 method ignores data that is below LOQ (the last observation in the design), then the predictions of uncertainty are significantly larger.</p>
 <table class="table table table-striped">
 <caption>
@@ -426,22 +438,24 @@ sig_add
 <h2 class="hasAnchor">
 <a href="#uloq-handling" class="anchor"></a>ULOQ handling</h2>
 <p>If needed we can also handle upper limits of quantification. Lets assume we have an ULOQ at 7 units in addition to the LLOQ of 2 units:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span>(<span class="no">poped_db</span>, <span class="kw">model_num_points</span> <span class="kw">=</span> <span class="fl">500</span>,<span class="kw">facet_scales</span> <span class="kw">=</span> <span class="st">"free"</span>,
-                      <span class="kw">PI</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">PI_alpha</span> <span class="kw">=</span> <span class="fl">0.1</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="kw">yintercept</span> <span class="kw">=</span> <span class="fl">2</span>,<span class="kw">color</span><span class="kw">=</span><span class="st">"red"</span>,<span class="kw">linetype</span><span class="kw">=</span><span class="st">"dotted"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="kw">yintercept</span> <span class="kw">=</span> <span class="fl">7</span>,<span class="kw">color</span><span class="kw">=</span><span class="st">"blue"</span>,<span class="kw">linetype</span><span class="kw">=</span><span class="st">"dotted"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span>, model_num_points <span class="op">=</span> <span class="fl">500</span>,facet_scales <span class="op">=</span> <span class="st">"free"</span>,
+                      PI<span class="op">=</span><span class="cn">T</span>, PI_alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">2</span>,color<span class="op">=</span><span class="st">"red"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">7</span>,color<span class="op">=</span><span class="st">"blue"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">eval_ul_D6</span> <span class="kw">&lt;-</span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>,
-                <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>,
-                <span class="kw">uloq</span><span class="kw">=</span><span class="fl">7</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eval_ul_D6</span> <span class="op">&lt;-</span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,
+                loq<span class="op">=</span><span class="fl">2</span>,
+                uloq<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
 
-<span class="no">eval_ul_D2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped_db</span>,
-                                <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>,
-                                <span class="kw">loq_method</span><span class="kw">=</span><span class="fl">2</span>,
-                                <span class="kw">uloq</span><span class="kw">=</span><span class="fl">7</span>,
-                                <span class="kw">uloq_method</span><span class="kw">=</span><span class="fl">2</span>)
-<span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span></pre></body></html></div>
+<span class="va">eval_ul_D2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,
+                                loq<span class="op">=</span><span class="fl">2</span>,
+                                loq_method<span class="op">=</span><span class="fl">2</span>,
+                                uloq<span class="op">=</span><span class="fl">7</span>,
+                                uloq_method<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span></code></pre></div>
 <table class="table table table-striped">
 <caption>
 RSE (in %) for the initial design using different methods of handling LOQ and ULOQ.
@@ -635,17 +649,18 @@ sig_add
 <h1 class="hasAnchor">
 <a href="#design-optimization" class="anchor"></a>Design optimization</h1>
 <p>We can then optimize the design using the different methods of computing the FIM. Here we optimize only using lower LOQ.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">optim_D6</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span>(<span class="no">poped_db</span>, <span class="kw">opt_xt</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                        <span class="kw">parallel</span><span class="kw">=</span><span class="no">T</span>,
-                        <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>)
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">optim_D6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span><span class="op">(</span><span class="va">poped_db</span>, opt_xt <span class="op">=</span> <span class="cn">TRUE</span>,
+                        parallel<span class="op">=</span><span class="cn">T</span>,
+                        loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 
-<span class="no">optim_D2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span>(<span class="no">poped_db</span>, <span class="kw">opt_xt</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                        <span class="kw">parallel</span><span class="kw">=</span><span class="no">T</span>,
-                        <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>,
-                        <span class="kw">loq_method</span><span class="kw">=</span><span class="fl">2</span>)
+<span class="va">optim_D2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span><span class="op">(</span><span class="va">poped_db</span>, opt_xt <span class="op">=</span> <span class="cn">TRUE</span>,
+                        parallel<span class="op">=</span><span class="cn">T</span>,
+                        loq<span class="op">=</span><span class="fl">2</span>,
+                        loq_method<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 
-<span class="no">optim_full</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span>(<span class="no">poped_db</span>, <span class="kw">opt_xt</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                        <span class="kw">parallel</span><span class="kw">=</span><span class="no">T</span>)</pre></body></html></div>
+<span class="va">optim_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span><span class="op">(</span><span class="va">poped_db</span>, opt_xt <span class="op">=</span> <span class="cn">TRUE</span>,
+                        parallel<span class="op">=</span><span class="cn">T</span><span class="op">)</span></code></pre></div>
 All designs together in one plot show how the different handling of BLQ data results in different optimal designs.
 <div class="figure">
 <img src="handling_LOQ_files/figure-html/unnamed-chunk-16-1.png" alt="Design points for the apraoch ignoring LOQ, using the D2 method, and using the D6 method" width="700"><p class="caption">
@@ -653,17 +668,18 @@ Design points for the apraoch ignoring LOQ, using the D2 method, and using the D
 </p>
 </div>
 <p>Predictions using the D6 method from each of the optimizations shows the expected %RSE of the parameters if each design is used and the LOQ is at 2 concentration units. We see that D2 may be a reasonable strategy to optimize designs that are “good enough” if the D6 method is too slow for optimization.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">optim_full_D6</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">optim_full</span>,
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,
-                  <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>))
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">optim_full_D6</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">optim_full</span>, 
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span>,
+                  loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">optim_D2_D6</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">optim_D2</span>,
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,
-                  <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>))
+<span class="va">optim_D2_D6</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">optim_D2</span>, 
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span>,
+                  loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">optim_D6_D6</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">optim_D6</span>,
-  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span>(<span class="no">poped.db</span>,
-                  <span class="kw">loq</span><span class="kw">=</span><span class="fl">2</span>))</pre></body></html></div>
+<span class="va">optim_D6_D6</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">optim_D6</span>, 
+  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span>,
+                  loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table table table-striped">
 <caption>
 RSE (in %) for the optimized designs evaluated using the D6 method.
@@ -801,10 +817,11 @@ sig_add
 <div id="version-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#version-information" class="anchor"></a>Version information</h1>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
-<span class="co">#&gt; R version 4.0.1 (2020-06-06)</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; R version 4.0.5 (2021-03-31)</span>
 <span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
-<span class="co">#&gt; Running under: macOS Catalina 10.15.5</span>
+<span class="co">#&gt; Running under: macOS Big Sur 10.16</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Matrix products: default</span>
 <span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span>
@@ -817,40 +834,42 @@ sig_add
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] kableExtra_1.1.0 knitr_1.28       ggplot2_3.3.1    PopED_0.5.0     </span>
-<span class="co">#&gt; [5] testthat_2.3.2  </span>
+<span class="co">#&gt; [1] kableExtra_1.3.4 knitr_1.33       ggplot2_3.3.3    PopED_0.6.0     </span>
+<span class="co">#&gt; [5] testthat_3.0.2  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] gtools_3.8.2      tidyselect_1.1.0  xfun_0.14         remotes_2.1.1    </span>
-<span class="co">#&gt;  [5] purrr_0.3.4       colorspace_1.4-1  vctrs_0.3.1       generics_0.0.2   </span>
-<span class="co">#&gt;  [9] viridisLite_0.3.0 usethis_1.6.1     htmltools_0.4.0   yaml_2.2.1       </span>
-<span class="co">#&gt; [13] rlang_0.4.6       pkgbuild_1.0.8    pkgdown_1.5.1     pillar_1.4.4     </span>
-<span class="co">#&gt; [17] glue_1.4.1        withr_2.2.0       sessioninfo_1.1.1 lifecycle_0.2.0  </span>
-<span class="co">#&gt; [21] stringr_1.4.0     munsell_0.5.0     gtable_0.3.0      rvest_0.3.5      </span>
-<span class="co">#&gt; [25] devtools_2.3.0    mvtnorm_1.1-0     codetools_0.2-16  memoise_1.1.0    </span>
-<span class="co">#&gt; [29] evaluate_0.14     labeling_0.3      callr_3.4.3       ps_1.3.3         </span>
-<span class="co">#&gt; [33] fansi_0.4.1       highr_0.8         Rcpp_1.0.4.6      readr_1.3.1      </span>
-<span class="co">#&gt; [37] backports_1.1.7   scales_1.1.1      desc_1.2.0        pkgload_1.1.0    </span>
-<span class="co">#&gt; [41] webshot_0.5.2     farver_2.0.3      fs_1.4.1          hms_0.5.3        </span>
-<span class="co">#&gt; [45] digest_0.6.25     stringi_1.4.6     bookdown_0.19     processx_3.4.2   </span>
-<span class="co">#&gt; [49] dplyr_1.0.0       rprojroot_1.3-2   grid_4.0.1        cli_2.0.2        </span>
-<span class="co">#&gt; [53] tools_4.0.1       magrittr_1.5      tibble_3.0.1      crayon_1.3.4     </span>
-<span class="co">#&gt; [57] pkgconfig_2.0.3   MASS_7.3-51.6     ellipsis_0.3.1    xml2_1.3.2       </span>
-<span class="co">#&gt; [61] prettyunits_1.1.1 httr_1.4.1        assertthat_0.2.1  rmarkdown_2.2    </span>
-<span class="co">#&gt; [65] rstudioapi_0.11   R6_2.4.1          boot_1.3-25       compiler_4.0.1</span></pre></body></html></div>
+<span class="co">#&gt;  [1] svglite_2.0.0     mvtnorm_1.1-1     prettyunits_1.1.1 ps_1.6.0         </span>
+<span class="co">#&gt;  [5] gtools_3.8.2      assertthat_0.2.1  rprojroot_2.0.2   digest_0.6.27    </span>
+<span class="co">#&gt;  [9] utf8_1.2.1        R6_2.5.0          evaluate_0.14     highr_0.9        </span>
+<span class="co">#&gt; [13] httr_1.4.2        pillar_1.6.1      rlang_0.4.11      rstudioapi_0.13  </span>
+<span class="co">#&gt; [17] callr_3.7.0       jquerylib_0.1.4   rmarkdown_2.8     pkgdown_1.6.1    </span>
+<span class="co">#&gt; [21] labeling_0.4.2    textshaping_0.3.4 desc_1.3.0        devtools_2.4.1   </span>
+<span class="co">#&gt; [25] webshot_0.5.2     stringr_1.4.0     munsell_0.5.0     compiler_4.0.5   </span>
+<span class="co">#&gt; [29] xfun_0.23         pkgconfig_2.0.3   systemfonts_1.0.2 pkgbuild_1.2.0   </span>
+<span class="co">#&gt; [33] htmltools_0.5.1.1 tidyselect_1.1.1  tibble_3.1.2      bookdown_0.22    </span>
+<span class="co">#&gt; [37] codetools_0.2-18  viridisLite_0.4.0 fansi_0.4.2       crayon_1.4.1     </span>
+<span class="co">#&gt; [41] dplyr_1.0.6       withr_2.4.2       MASS_7.3-54       grid_4.0.5       </span>
+<span class="co">#&gt; [45] jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.1        </span>
+<span class="co">#&gt; [49] magrittr_2.0.1    scales_1.1.1      cli_2.5.0         stringi_1.6.2    </span>
+<span class="co">#&gt; [53] cachem_1.0.5      farver_2.1.0      fs_1.5.0          remotes_2.3.0    </span>
+<span class="co">#&gt; [57] xml2_1.3.2        bslib_0.2.5.1     ellipsis_0.3.2    ragg_1.1.2       </span>
+<span class="co">#&gt; [61] vctrs_0.3.8       generics_0.1.0    boot_1.3-28       tools_4.0.5      </span>
+<span class="co">#&gt; [65] glue_1.4.2        purrr_0.3.4       processx_3.5.2    pkgload_1.2.1    </span>
+<span class="co">#&gt; [69] fastmap_1.1.0     yaml_2.2.1        colorspace_2.0-1  sessioninfo_1.1.1</span>
+<span class="co">#&gt; [73] rvest_1.0.0       memoise_2.0.0     sass_0.4.0        usethis_2.0.1</span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
-<div id="refs" class="references hanging-indent">
-<div id="ref-nyberg2015">
-<p>Nyberg, Joakim, Caroline Bazzoli, Kay Ogungbenro, Alexander Aliev, Sergei Leonov, Stephen Duffull, Andrew C Hooker, and France Mentré. 2015. “Methods and software tools for design evaluation in population pharmacokinetics-pharmacodynamics studies.” <em>British Journal of Clinical Pharmacology</em> 79 (1): 6–17. <a href="https://doi.org/10.1111/bcp.12352">https://doi.org/10.1111/bcp.12352</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-nyberg2015" class="csl-entry">
+Nyberg, Joakim, Caroline Bazzoli, Kay Ogungbenro, Alexander Aliev, Sergei Leonov, Stephen Duffull, Andrew C Hooker, and France Mentré. 2015. <span>“<span class="nocase">Methods and software tools for design evaluation in population pharmacokinetics-pharmacodynamics studies</span>.”</span> <em>British Journal of Clinical Pharmacology</em> 79 (1): 6–17. <a href="https://doi.org/10.1111/bcp.12352">https://doi.org/10.1111/bcp.12352</a>.
 </div>
-<div id="ref-Nyberg2012a">
-<p>Nyberg, Joakim, Sebastian Ueckert, Eric A. Strömberg, Stefanie Hennig, Mats O. Karlsson, and Andrew C. Hooker. 2012. “PopED: An extended, parallelized, nonlinear mixed effects models optimal design tool.” <em>Computer Methods and Programs in Biomedicine</em> 108 (2): 789–805. <a href="https://doi.org/10.1016/j.cmpb.2012.05.005">https://doi.org/10.1016/j.cmpb.2012.05.005</a>.</p>
+<div id="ref-Nyberg2012a" class="csl-entry">
+Nyberg, Joakim, Sebastian Ueckert, Eric A. Strömberg, Stefanie Hennig, Mats O. Karlsson, and Andrew C. Hooker. 2012. <span>“<span class="nocase">PopED: An extended, parallelized, nonlinear mixed effects models optimal design tool</span>.”</span> <em>Computer Methods and Programs in Biomedicine</em> 108 (2): 789–805. <a href="https://doi.org/10.1016/j.cmpb.2012.05.005">https://doi.org/10.1016/j.cmpb.2012.05.005</a>.
 </div>
-<div id="ref-vong2012">
-<p>Vong, Camille, Sebastian Ueckert, Joakim Nyberg, and Andrew C. Hooker. 2012. “Handling Below Limit of Quantification Data in Optimal Trial Design.” <em>PAGE, Abstracts of the Annual Meeting of the Population Approach Group in Europe</em>. <a href="https://www.page-meeting.org/?abstract=2578">https://www.page-meeting.org/?abstract=2578</a>.</p>
+<div id="ref-vong2012" class="csl-entry">
+Vong, Camille, Sebastian Ueckert, Joakim Nyberg, and Andrew C. Hooker. 2012. <span>“Handling Below Limit of Quantification Data in Optimal Trial Design.”</span> <em>PAGE, Abstracts of the Annual Meeting of the Population Approach Group in Europe</em>. <a href="https://www.page-meeting.org/?abstract=2578">https://www.page-meeting.org/?abstract=2578</a>.
 </div>
 </div>
 </div>
@@ -871,7 +890,7 @@ sig_add
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

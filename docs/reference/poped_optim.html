@@ -83,7 +83,7 @@ continuous optimization variables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ continuous optimization variables." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -126,7 +126,7 @@ continuous optimization variables." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -156,37 +156,40 @@ function works for both discrete and
 continuous optimization variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>poped_optim</span>(
-  <span class='no'>poped.db</span>,
-  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
-  <span class='kw'>opt_samps</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>1</span>],
-  <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>5</span>],
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>, <span class='st'>"LS"</span>),
-  <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>fim.calc.type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iFIMCalculationType</span>,
-  <span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_calc_type</span>,
-  <span class='kw'>approx_type</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iApproximationMethod</span>,
-  <span class='kw'>d_switch</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>d_switch</span>,
-  <span class='kw'>ED_samp_size</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ED_samp_size</span>,
-  <span class='kw'>bLHS</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>bLHS</span>,
-  <span class='kw'>use_laplace</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>iEDCalculationType</span>,
-  <span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>parallel_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>num_cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mrgsolve_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>loop_methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>method</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>stop_crit_eff</span> <span class='kw'>=</span> <span class='fl'>1.001</span>,
-  <span class='kw'>stop_crit_diff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stop_crit_rel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ofv_fun</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ofv_fun</span>,
-  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>poped_optim</span><span class='op'>(</span>
+  <span class='va'>poped.db</span>,
+  opt_xt <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,
+  opt_a <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+  opt_x <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>,
+  opt_samps <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
+  opt_inds <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ARS"</span>, <span class='st'>"BFGS"</span>, <span class='st'>"LS"</span><span class='op'>)</span>,
+  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  trace <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  fim.calc.type <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>iFIMCalculationType</span>,
+  ofv_calc_type <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>ofv_calc_type</span>,
+  approx_type <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>iApproximationMethod</span>,
+  d_switch <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>d_switch</span>,
+  ED_samp_size <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>ED_samp_size</span>,
+  bLHS <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>bLHS</span>,
+  use_laplace <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>iEDCalculationType</span>,
+  out_file <span class='op'>=</span> <span class='st'>""</span>,
+  parallel <span class='op'>=</span> <span class='cn'>F</span>,
+  parallel_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  num_cores <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mrgsolve_model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  loop_methods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>method</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>1</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+  iter_max <span class='op'>=</span> <span class='fl'>10</span>,
+  stop_crit_eff <span class='op'>=</span> <span class='fl'>1.001</span>,
+  stop_crit_diff <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stop_crit_rel <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ofv_fun <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>ofv_fun</span>,
+  maximize <span class='op'>=</span> <span class='cn'>T</span>,
+  allow_replicates <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  allow_replicates_xt <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  allow_replicates_a <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -356,6 +359,22 @@ e.g. "cost.txt" has a function named "cost" in it.</p></td>
       <td><p>Should the objective function be maximized or minimized?</p></td>
     </tr>
     <tr>
+      <th>allow_replicates</th>
+      <td><p>Should the algorithm allow optimized design components to have the same value? If FALSE then
+all discrete optimizations will not allow replicates within variable types 
+(equivalent to <code>allow_replicates_xt=FALSE</code> and <code>allow_replicates_a=FALSE</code>).</p></td>
+    </tr>
+    <tr>
+      <th>allow_replicates_xt</th>
+      <td><p>Should the algorithm allow optimized <code>xt</code> design components to have the same value? If FALSE then
+all discrete optimizations will not allow replicates.</p></td>
+    </tr>
+    <tr>
+      <th>allow_replicates_a</th>
+      <td><p>Should the algorithm allow optimized <code>a</code> design components to have the same value? If FALSE then
+all discrete optimizations will not allow replicates.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>arguments passed to other functions.</p></td>
     </tr>
@@ -406,7 +425,7 @@ iterations, or until the efficiency of the design after the current series
 <code><a href='poped_optimize.html'>poped_optimize</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>############# START #################</span>
 <span class='co'>## Create PopED database</span>
@@ -422,7 +441,8 @@ iterations, or until the efficiency of the design after the current series
 <span class='co'>## to avoid sample times at very low concentrations (time 0 or very late samples).</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+<span class='va'>ff.PK.1.comp.oral.sd.CL</span>
+</div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
 #&gt; {
 #&gt;     with(as.list(parameters), {
 #&gt;         y = xt
@@ -431,34 +451,34 @@ iterations, or until the efficiency of the design after the current series
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7feb67e784c8&gt;
+#&gt; &lt;bytecode: 0x7f855b96f698&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
-}
+<span class='va'>sfg</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span>,<span class='va'>bpop</span>,<span class='va'>b</span>,<span class='va'>bocc</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>parameters</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+               V<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,
+               KA<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>,
+               Favail<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+               DOSE<span class='op'>=</span><span class='va'>a</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>parameters</span><span class='op'>)</span> 
+<span class='op'>}</span>
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
-                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>,<span class='kw'>add</span><span class='kw'>=</span><span class='fl'>0.25</span>),
-                                  <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>),
-                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0.01</span>),
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>100</span>))
+<span class='va'>poped.db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_fun<span class='op'>=</span><span class='va'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  fg_fun<span class='op'>=</span><span class='va'>sfg</span>,
+                                  fError_fun<span class='op'>=</span><span class='va'>feps.add.prop</span>,
+                                  bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>, 
+                                  notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                  d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                  sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>prop<span class='op'>=</span><span class='fl'>0.01</span>,add<span class='op'>=</span><span class='fl'>0.25</span><span class='op'>)</span>,
+                                  groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                  xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                  minxt<span class='op'>=</span><span class='fl'>0.01</span>,
+                                  maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                  a<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>,
+                                  mina<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>0.01</span><span class='op'>)</span>,
+                                  maxa<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
@@ -475,11 +495,12 @@ iterations, or until the efficiency of the design after the current series
 <span class='co'># ARS+BFGS+LS optimization of dose</span>
 <span class='co'># optimization with just a few iterations</span>
 <span class='co'># only to check that things are working</span>
-<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                     <span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                     <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                      <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; ===============================================================================
+<span class='va'>out_1</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                      control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                     BFGS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                     LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+                      iter_max <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 55.3964
@@ -510,7 +531,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 55.3964
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.02 seconds.
+#&gt; Elapsed time: 0.016 seconds.
 #&gt; 
 #&gt; Final OFV =  55.39645 
 #&gt; Parameters: 70 
@@ -575,22 +596,23 @@ iterations, or until the efficiency of the design after the current series
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.329 seconds</div><div class='input'>
+#&gt; Total running time: 0.412 seconds</div><div class='input'>
 
 <span class='co'># cost function</span>
 <span class='co'># PRED at 120 hours</span>
-<span class='no'>crit_fcn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>poped.db</span>,<span class='no'>...</span>){
-  <span class='no'>pred_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='model_prediction.html'>model_prediction</a></span>(<span class='no'>poped.db</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>pred_df</span>[<span class='no'>pred_df</span>$<span class='no'>Time</span><span class='kw'>==</span><span class='fl'>120</span>,<span class='st'>"PRED"</span>])
-}
+<span class='va'>crit_fcn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>poped.db</span>,<span class='va'>...</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>pred_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='model_prediction.html'>model_prediction</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>pred_df</span><span class='op'>[</span><span class='va'>pred_df</span><span class='op'>$</span><span class='va'>Time</span><span class='op'>==</span><span class='fl'>120</span>,<span class='st'>"PRED"</span><span class='op'>]</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># maximize cost function</span>
-<span class='no'>out_2</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                     <span class='kw'>ofv_fun</span><span class='kw'>=</span><span class='no'>crit_fcn</span>,
-                     <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                    <span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                    <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                     <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; ===============================================================================
+<span class='va'>out_2</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                     ofv_fun<span class='op'>=</span><span class='va'>crit_fcn</span>,
+                     control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                    BFGS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                    LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+                     iter_max <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 0.939866
@@ -621,7 +643,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 0.939866
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.009 seconds.
+#&gt; Elapsed time: 0.007 seconds.
 #&gt; 
 #&gt; Final OFV =  1.244413 
 #&gt; Parameters: 92.68227 
@@ -643,7 +665,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 93.2764 to 100 ; OFV = 1.34267 
 #&gt; 
-#&gt;    Elapsed time: 0.014 seconds.
+#&gt;    Elapsed time: 0.013 seconds.
 #&gt; 
 #&gt;    Final OFV =  1.342665 
 #&gt;    Parameters: 100 
@@ -693,7 +715,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 100 to 100 ; OFV = 1.34267 
 #&gt; 
-#&gt;    Elapsed time: 0.011 seconds.
+#&gt;    Elapsed time: 0.012 seconds.
 #&gt; 
 #&gt;    Final OFV =  1.342665 
 #&gt;    Parameters: 100 
@@ -736,16 +758,17 @@ iterations, or until the efficiency of the design after the current series
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.574 seconds</div><div class='input'>
+#&gt; Total running time: 0.476 seconds</div><div class='input'>
 <span class='co'># minimize the cost function</span>
-<span class='no'>out_3</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                     <span class='kw'>ofv_fun</span><span class='kw'>=</span><span class='no'>crit_fcn</span>,
-                     <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                    <span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                    <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                     <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                     <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                     <span class='kw'>evaluate_fim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ===============================================================================
+<span class='va'>out_3</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                     ofv_fun<span class='op'>=</span><span class='va'>crit_fcn</span>,
+                     control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                    BFGS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                    LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+                     iter_max <span class='op'>=</span> <span class='fl'>2</span>,
+                     maximize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+                     evaluate_fim <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 0.939866
@@ -762,7 +785,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 0.939866
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.007 seconds.
+#&gt; Elapsed time: 0.006 seconds.
 #&gt; 
 #&gt; Final OFV =  0.833124 
 #&gt; Parameters: 62.05002 
@@ -784,7 +807,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 54.3773 to 0.01 ; OFV = 0.000134267 
 #&gt; 
-#&gt;    Elapsed time: 0.01 seconds.
+#&gt;    Elapsed time: 0.009 seconds.
 #&gt; 
 #&gt;    Final OFV =  0.0001342665 
 #&gt;    Parameters: 0.01 
@@ -812,7 +835,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Initial OFV = 0.000134267
 #&gt; 
 #&gt; Total iterations: 2 
-#&gt; Elapsed time: 0.008 seconds.
+#&gt; Elapsed time: 0.007 seconds.
 #&gt; 
 #&gt; Final OFV =  0.0001342665 
 #&gt; Parameters: 0.01 
@@ -834,7 +857,7 @@ iterations, or until the efficiency of the design after the current series
 #&gt;    Searching parameter 1 
 #&gt;      Changed from 0.01 to 0.01 ; OFV = 0.000134267 
 #&gt; 
-#&gt;    Elapsed time: 0.011 seconds.
+#&gt;    Elapsed time: 0.013 seconds.
 #&gt; 
 #&gt;    Final OFV =  0.0001342665 
 #&gt;    Parameters: 0.01 
@@ -865,145 +888,146 @@ iterations, or until the efficiency of the design after the current series
 #&gt; Efficiency: 
 #&gt;   (ofv_final / ofv_init) = 0.00014286
 #&gt; 
-#&gt; Total running time: 0.538 seconds</div><div class='input'>
+#&gt; Total running time: 0.452 seconds</div><div class='input'>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  
   <span class='co'># RS+BFGS+LS optimization of sample times </span>
   <span class='co'># (longer run time than above but more likely to reach a maximum)</span>
-  <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-  <span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>output</span>$<span class='no'>FIM</span>,<span class='no'>output</span>$<span class='no'>poped.db</span>)
-  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>output</span>$<span class='no'>poped.db</span>)
-
+  <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,parallel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  
+  <span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>output</span><span class='op'>$</span><span class='va'>FIM</span>,<span class='va'>output</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span><span class='op'>(</span><span class='va'>output</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
   <span class='co'># optimization with only integer times allowed</span>
-  <span class='no'>poped.db.2</span> <span class='kw'>&lt;-</span> <span class='no'>poped.db</span>
-  <span class='no'>poped.db.2</span>$<span class='no'>design_space</span>$<span class='no'>xt_space</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>120</span>)),<span class='fl'>1</span>,<span class='fl'>8</span>)
-  <span class='no'>output_2</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db.2</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='va'>poped.db.2</span> <span class='op'>&lt;-</span> <span class='va'>poped.db</span>
+  <span class='va'>poped.db.2</span><span class='op'>$</span><span class='va'>design_space</span><span class='op'>$</span><span class='va'>xt_space</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>120</span><span class='op'>)</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='fl'>8</span><span class='op'>)</span>
+  <span class='va'>output_2</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db.2</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,parallel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-  <span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>output_2</span>$<span class='no'>FIM</span>,<span class='no'>output_2</span>$<span class='no'>poped.db</span>)
-  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>output_2</span>$<span class='no'>poped.db</span>)
-
+  <span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>output_2</span><span class='op'>$</span><span class='va'>FIM</span>,<span class='va'>output_2</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span><span class='op'>(</span><span class='va'>output_2</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
   <span class='co'># Examine efficiency of sampling windows</span>
-  <span class='fu'><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></span>(<span class='no'>output_2</span>$<span class='no'>poped.db</span>,<span class='kw'>xt_windows</span><span class='kw'>=</span><span class='fl'>0.5</span>)
-  <span class='fu'><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></span>(<span class='no'>output_2</span>$<span class='no'>poped.db</span>,<span class='kw'>xt_windows</span><span class='kw'>=</span><span class='fl'>1</span>)
-
+  <span class='fu'><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></span><span class='op'>(</span><span class='va'>output_2</span><span class='op'>$</span><span class='va'>poped.db</span>,xt_windows<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span>
+  <span class='fu'><a href='plot_efficiency_of_windows.html'>plot_efficiency_of_windows</a></span><span class='op'>(</span><span class='va'>output_2</span><span class='op'>$</span><span class='va'>poped.db</span>,xt_windows<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+  
   <span class='co'># Adaptive Random Search (ARS, just a few samples here)</span>
-  <span class='no'>rs.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ARS"</span>,
-                           <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>5</span>)))
-
-  <span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>rs.output</span>$<span class='no'>FIM</span>,<span class='no'>rs.output</span>$<span class='no'>poped.db</span>)
-
+  <span class='va'>rs.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,method <span class='op'>=</span> <span class='st'>"ARS"</span>,
+                           control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>rs.output</span><span class='op'>$</span><span class='va'>FIM</span>,<span class='va'>rs.output</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
   <span class='co'># line search, DOSE and sample time optimization</span>
-  <span class='no'>ls.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"LS"</span>,
-                           <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>5</span>)))
-
+  <span class='va'>ls.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,opt_a<span class='op'>=</span><span class='cn'>T</span>,method <span class='op'>=</span> <span class='st'>"LS"</span>,
+                           control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
   <span class='co'># Adaptive random search, </span>
   <span class='co'># DOSE and sample time optimization</span>
-  <span class='no'>ars.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ARS"</span>,
-                           <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>5</span>)))
-
+  <span class='va'>ars.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,opt_a<span class='op'>=</span><span class='cn'>T</span>,method <span class='op'>=</span> <span class='st'>"ARS"</span>,
+                           control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
   <span class='co'># BFGS gradient search from the stats::optim() function, </span>
   <span class='co'># DOSE and sample time optimization</span>
-  <span class='no'>bfgs.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"BFGS"</span>,
-                            <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>5</span>)))
-
-
+  <span class='va'>bfgs.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,opt_a<span class='op'>=</span><span class='cn'>T</span>,method <span class='op'>=</span> <span class='st'>"BFGS"</span>,
+                            control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>BFGS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
+  
   <span class='co'># genetic algorithm from the GA::ga() function, </span>
   <span class='co'># DOSE and sample time optimization</span>
-  <span class='no'>ga.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='no'>F</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GA"</span>,<span class='kw'>parallel</span><span class='kw'>=</span><span class='no'>T</span>)
-
+  <span class='va'>ga.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,opt_a<span class='op'>=</span><span class='cn'>F</span>,method <span class='op'>=</span> <span class='st'>"GA"</span>,parallel<span class='op'>=</span><span class='cn'>T</span><span class='op'>)</span>
+  
   <span class='co'># cost function with GA</span>
   <span class='co'># maximize</span>
-  <span class='no'>out_2</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                       <span class='kw'>ofv_fun</span><span class='kw'>=</span><span class='no'>crit_fcn</span>,
-                       <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>,
-                       <span class='kw'>method</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GA"</span>))
-
+  <span class='va'>out_2</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                       ofv_fun<span class='op'>=</span><span class='va'>crit_fcn</span>,
+                       parallel <span class='op'>=</span> <span class='cn'>T</span>,
+                       method<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GA"</span><span class='op'>)</span><span class='op'>)</span>
+  
   <span class='co'># cost function with GA</span>
   <span class='co'># minimize</span>
-  <span class='no'>out_2</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                       <span class='kw'>ofv_fun</span><span class='kw'>=</span><span class='no'>crit_fcn</span>,
-                       <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>,
-                       <span class='kw'>method</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GA"</span>),
-                       <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                       <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='no'>F</span>,
-                       <span class='kw'>evaluate_fim</span> <span class='kw'>=</span> <span class='no'>F</span>)
-
+  <span class='va'>out_2</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                       ofv_fun<span class='op'>=</span><span class='va'>crit_fcn</span>,
+                       parallel <span class='op'>=</span> <span class='cn'>T</span>,
+                       method<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GA"</span><span class='op'>)</span>,
+                       iter_max <span class='op'>=</span> <span class='fl'>1</span>,
+                       maximize <span class='op'>=</span> <span class='cn'>F</span>,
+                       evaluate_fim <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>
+  
   <span class='co'># optimize distribution of individuals in 3 groups</span>
-  <span class='no'>poped_db_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
-                                    <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                    <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
-                                    <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                    <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                    <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                    <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>,<span class='kw'>add</span><span class='kw'>=</span><span class='fl'>0.25</span>),
-                                    <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                    <span class='kw'>m</span><span class='kw'>=</span><span class='fl'>3</span>,
-                                    <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>8</span>),<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>12</span>,<span class='fl'>14</span>,<span class='fl'>16</span>,<span class='fl'>18</span>,<span class='fl'>20</span>,<span class='fl'>22</span>,<span class='fl'>24</span>)),
-                                    <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                    <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                    <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>),
-                                    <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0.01</span>),
-                                    <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>100</span>))
-
-  <span class='no'>opt_xt_inds</span> <span class='kw'>&lt;-</span>
-    <span class='fu'>poped_optim</span>(<span class='no'>poped_db_2</span>,
-                <span class='kw'>opt_a</span> <span class='kw'>=</span><span class='fl'>TRUE</span>,
-                <span class='kw'>opt_inds</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
-                               <span class='kw'>BFGS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>maxit</span><span class='kw'>=</span><span class='fl'>2</span>),
-                               <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
-
-
+  <span class='va'>poped_db_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_fun<span class='op'>=</span><span class='va'>ff.PK.1.comp.oral.sd.CL</span>,
+                                    fg_fun<span class='op'>=</span><span class='va'>sfg</span>,
+                                    fError_fun<span class='op'>=</span><span class='va'>feps.add.prop</span>,
+                                    bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>, 
+                                    notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                    d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                    sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>prop<span class='op'>=</span><span class='fl'>0.01</span>,add<span class='op'>=</span><span class='fl'>0.25</span><span class='op'>)</span>,
+                                    groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                    m<span class='op'>=</span><span class='fl'>3</span>,
+                                    xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>8</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>12</span>,<span class='fl'>14</span>,<span class='fl'>16</span>,<span class='fl'>18</span>,<span class='fl'>20</span>,<span class='fl'>22</span>,<span class='fl'>24</span><span class='op'>)</span><span class='op'>)</span>,
+                                    minxt<span class='op'>=</span><span class='fl'>0.01</span>,
+                                    maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                    a<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>,
+                                    mina<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>0.01</span><span class='op'>)</span>,
+                                    maxa<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='va'>opt_xt_inds</span> <span class='op'>&lt;-</span> 
+    <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped_db_2</span>,
+                opt_a <span class='op'>=</span><span class='cn'>TRUE</span>,
+                opt_inds <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                               BFGS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxit<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                               LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+                iter_max <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  
+  
+  
   <span class='co'>##############</span>
   <span class='co'># E-family Optimization</span>
   <span class='co'>##############</span>
-
+  
   <span class='co'># Adding 10% log-normal Uncertainty to fixed effects (not Favail)</span>
-  <span class='no'>bpop_vals</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>)
-  <span class='no'>bpop_vals_ed_ln</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*<span class='fl'>4</span>, <span class='co'># log-normal distribution</span>
-                           <span class='no'>bpop_vals</span>,
-                           <span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*(<span class='no'>bpop_vals</span>*<span class='fl'>0.1</span>)^<span class='fl'>2</span>) <span class='co'># 10% of bpop value</span>
-  <span class='no'>bpop_vals_ed_ln</span>[<span class='st'>"Favail"</span>,]  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>)
-  <span class='no'>bpop_vals_ed_ln</span>
-
+  <span class='va'>bpop_vals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>bpop_vals_ed_ln</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>4</span>, <span class='co'># log-normal distribution</span>
+                           <span class='va'>bpop_vals</span>,
+                           <span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>*</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> <span class='co'># 10% of bpop value</span>
+  <span class='va'>bpop_vals_ed_ln</span><span class='op'>[</span><span class='st'>"Favail"</span>,<span class='op'>]</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>
+  <span class='va'>bpop_vals_ed_ln</span>
+  
   <span class='co'>## -- Define initial design  and design space</span>
-  <span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                    <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                    <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
-                                    <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>bpop_vals_ed_ln</span>,
-                                    <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                    <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                    <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>,<span class='fl'>0.25</span>),
-                                    <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                    <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                    <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                    <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                    <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
-                                    <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                    <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
-
-
+  <span class='va'>poped.db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_file<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
+                                    fg_file<span class='op'>=</span><span class='st'>"sfg"</span>,
+                                    fError_file<span class='op'>=</span><span class='st'>"feps.add.prop"</span>,
+                                    bpop<span class='op'>=</span><span class='va'>bpop_vals_ed_ln</span>, 
+                                    notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                    d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                    sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>,<span class='fl'>0.25</span><span class='op'>)</span>,
+                                    groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                    xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                    minxt<span class='op'>=</span><span class='fl'>0</span>,
+                                    maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                    a<span class='op'>=</span><span class='fl'>70</span>,
+                                    mina<span class='op'>=</span><span class='fl'>0</span>,
+                                    maxa<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
+  
+  
   <span class='co'># E_ln(D) optimization using Random search (just a few samples here)</span>
-  <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>d_switch</span><span class='kw'>=</span><span class='fl'>0</span>,
-                        <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ARS"</span>,<span class='st'>"LS"</span>),
-                        <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>2</span>),
-                                       <span class='kw'>LS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>line_length</span><span class='kw'>=</span><span class='fl'>2</span>)),
-                        <span class='kw'>iter_max</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-  <span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>output</span>$<span class='no'>FIM</span>,<span class='no'>output</span>$<span class='no'>poped.db</span>)
-
+  <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>TRUE</span>,opt_a<span class='op'>=</span><span class='cn'>TRUE</span>,d_switch<span class='op'>=</span><span class='fl'>0</span>,
+                        method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ARS"</span>,<span class='st'>"LS"</span><span class='op'>)</span>,
+                        control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,
+                                       LS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>line_length<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+                        iter_max <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>output</span><span class='op'>$</span><span class='va'>FIM</span>,<span class='va'>output</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
   <span class='co'># ED with laplace approximation, </span>
   <span class='co'># optimization using Random search (just a few iterations here)</span>
-  <span class='no'>ars.output</span> <span class='kw'>&lt;-</span> <span class='fu'>poped_optim</span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='no'>T</span>,<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ARS"</span>,
-                            <span class='kw'>d_switch</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='co'>#laplace.fim=TRUE,</span>
-                            <span class='kw'>parallel</span><span class='kw'>=</span><span class='no'>T</span>,
-                            <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ARS</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>iter</span><span class='kw'>=</span><span class='fl'>5</span>)))
-
-}</div></pre>
+  <span class='va'>ars.output</span> <span class='op'>&lt;-</span> <span class='fu'>poped_optim</span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='cn'>T</span>,opt_a<span class='op'>=</span><span class='cn'>T</span>,method <span class='op'>=</span> <span class='st'>"ARS"</span>,
+                            d_switch<span class='op'>=</span><span class='fl'>0</span>,use_laplace<span class='op'>=</span><span class='cn'>TRUE</span>,<span class='co'>#laplace.fim=TRUE,</span>
+                            parallel<span class='op'>=</span><span class='cn'>T</span>,
+                            control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ARS<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>iter<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -1019,7 +1043,7 @@ iterations, or until the efficiency of the design after the current series
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -22,13 +22,11 @@ editor_options:
 ```{r setup, include = FALSE}
 set.seed(1234)
 
-if(Sys.info()["user"]=="andrewhooker") devtools::load_all("~/Documents/_PROJECTS/PopED/repos/PopED")
-
-devtools::install_github("InsightRX/PKPDsim",force = F)
-
+if(Sys.getenv("LOGNAME")=="ancho179") devtools::load_all("~/Documents/_PROJECTS/PopED/repo/PopED/")
+#devtools::install_github("InsightRX/PKPDsim",force = F)
 # devtools::install_github("metrumresearchgroup/mrgsolve",force = F)
-
 library(knitr)
+library("kableExtra")
 
 knitr::opts_chunk$set(
   collapse = TRUE
@@ -37,8 +35,6 @@ knitr::opts_chunk$set(
   , cache = TRUE
   #,results="hold"
 )
-
-library("kableExtra")
 ```
 
 
@@ -220,7 +216,7 @@ cat(readChar(system.file("examples/one_comp_oral_CL.c", package="PopED"), 1e5))
 
 ```{r}
 file.copy(system.file("examples/one_comp_oral_CL.c", package="PopED"),"./one_comp_oral_CL.c")
-system("R CMD SHLIB one_comp_oral_CL.c")
+system('R CMD SHLIB one_comp_oral_CL.c')
 dyn.load(paste("one_comp_oral_CL", .Platform$dynlib.ext, sep = ""))
 ```
 

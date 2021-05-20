@@ -85,7 +85,7 @@ defined in the PopED database or as arguments to the function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ defined in the PopED database or as arguments to the function." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,7 +128,7 @@ defined in the PopED database or as arguments to the function." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -159,26 +159,26 @@ parameters, distributions of parameter uncertainty, design and methods
 defined in the PopED database or as arguments to the function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ed_laplace_ofv</span>(
-  <span class='no'>model_switch</span>,
-  <span class='no'>groupsize</span>,
-  <span class='no'>ni</span>,
-  <span class='no'>xtopto</span>,
-  <span class='no'>xopto</span>,
-  <span class='no'>aopto</span>,
-  <span class='no'>bpopdescr</span>,
-  <span class='no'>ddescr</span>,
-  <span class='no'>covd</span>,
-  <span class='no'>sigma</span>,
-  <span class='no'>docc</span>,
-  <span class='no'>poped.db</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>return_gradient</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>optxt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opta</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ed_laplace_ofv</span><span class='op'>(</span>
+  <span class='va'>model_switch</span>,
+  <span class='va'>groupsize</span>,
+  <span class='va'>ni</span>,
+  <span class='va'>xtopto</span>,
+  <span class='va'>xopto</span>,
+  <span class='va'>aopto</span>,
+  <span class='va'>bpopdescr</span>,
+  <span class='va'>ddescr</span>,
+  <span class='va'>covd</span>,
+  <span class='va'>sigma</span>,
+  <span class='va'>docc</span>,
+  <span class='va'>poped.db</span>,
+  method <span class='op'>=</span> <span class='fl'>1</span>,
+  return_gradient <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  optxt <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,
+  opta <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+  x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -309,10 +309,11 @@ to compute the hessian.</p></td>
 
 <span class='co'>## Optimization using an additive + proportional reidual error to </span>
 <span class='co'>##   avoid sample times at very low concentrations (time 0 or very late samoples).</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+<span class='va'>ff.PK.1.comp.oral.sd.CL</span>
+</div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
 #&gt; {
 #&gt;     with(as.list(parameters), {
 #&gt;         y = xt
@@ -321,133 +322,139 @@ to compute the hessian.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7feb67e784c8&gt;
+#&gt; &lt;bytecode: 0x7f855b96f698&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
-}
+<span class='va'>sfg</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span>,<span class='va'>bpop</span>,<span class='va'>b</span>,<span class='va'>bocc</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>parameters</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+               V<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,
+               KA<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>,
+               Favail<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+               DOSE<span class='op'>=</span><span class='va'>a</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>parameters</span><span class='op'>)</span> 
+<span class='op'>}</span>
 
 <span class='co'>######################</span>
 <span class='co'># Normal distribution</span>
 <span class='co'>######################</span>
-<span class='no'>bpop_vals</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>)
-<span class='no'>bpop_vals_ed_n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*<span class='fl'>1</span>, <span class='co'># normal distribution</span>
-                        <span class='no'>bpop_vals</span>,
-                        <span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*(<span class='no'>bpop_vals</span>*<span class='fl'>0.1</span>)^<span class='fl'>2</span>) <span class='co'># 10% of bpop value</span>
-<span class='no'>bpop_vals_ed_n</span>[<span class='st'>"Favail"</span>,]  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>)
-<span class='no'>bpop_vals_ed_n</span></div><div class='output co'>#&gt;          bpop_vals         
+<span class='va'>bpop_vals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>bpop_vals_ed_n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>1</span>, <span class='co'># normal distribution</span>
+                        <span class='va'>bpop_vals</span>,
+                        <span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>*</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> <span class='co'># 10% of bpop value</span>
+<span class='va'>bpop_vals_ed_n</span><span class='op'>[</span><span class='st'>"Favail"</span>,<span class='op'>]</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>bpop_vals_ed_n</span>
+</div><div class='output co'>#&gt;          bpop_vals         
 #&gt; CL     1      0.15 0.000225
 #&gt; V      1      8.00 0.640000
 #&gt; KA     1      1.00 0.010000
 #&gt; Favail 0      1.00 0.000000</div><div class='input'>
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db.n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                    <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                    <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
-                                    <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>bpop_vals_ed_n</span>,
-                                    <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                    <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                    <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>,<span class='fl'>0.25</span>),
-                                    <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                    <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                    <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                    <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                    <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
-                                    <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                    <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file 'sfg': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, "r", encoding = encoding): cannot open the connection</span></div><div class='input'>
+<span class='va'>poped.db.n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_file<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
+                                    fg_file<span class='op'>=</span><span class='st'>"sfg"</span>,
+                                    fError_file<span class='op'>=</span><span class='st'>"feps.add.prop"</span>,
+                                    bpop<span class='op'>=</span><span class='va'>bpop_vals_ed_n</span>, 
+                                    notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                    d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                    sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>,<span class='fl'>0.25</span><span class='op'>)</span>,
+                                    groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                    xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                    minxt<span class='op'>=</span><span class='fl'>0</span>,
+                                    maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                    a<span class='op'>=</span><span class='fl'>70</span>,
+                                    mina<span class='op'>=</span><span class='fl'>0</span>,
+                                    maxa<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file 'sfg': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(filename, "r", encoding = encoding): cannot open the connection</span></div><div class='input'>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
-<span class='fu'><a href='tic.html'>tic</a></span>(); <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>); <span class='fu'><a href='toc.html'>toc</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='no'>output</span>$<span class='no'>E_ofv</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-
-
+<span class='fu'><a href='tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span><span class='op'>(</span><span class='va'>poped.db.n</span>,use_laplace<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>; <span class='fu'><a href='toc.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='va'>output</span><span class='op'>$</span><span class='va'>E_ofv</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  
+  
   <span class='co'>## ED value using MC integration (roughly)</span>
-  <span class='fu'><a href='tic.html'>tic</a></span>();<span class='no'>e_ofv_mc_n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.n</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>500</span>,<span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='fl'>1</span>);<span class='fu'><a href='toc.html'>toc</a></span>()
-  <span class='no'>e_ofv_mc_n</span>$<span class='no'>E_ofv</span>
-
-
+  <span class='fu'><a href='tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>;<span class='va'>e_ofv_mc_n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span><span class='op'>(</span><span class='va'>poped.db.n</span>,ED_samp_size<span class='op'>=</span><span class='fl'>500</span>,ofv_calc_type <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>;<span class='fu'><a href='toc.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>e_ofv_mc_n</span><span class='op'>$</span><span class='va'>E_ofv</span>
+  
+  
   <span class='co'>## Using ed_laplce_ofv directly</span>
-  <span class='fu'>ed_laplace_ofv</span>(<span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>,
-                 <span class='kw'>groupsize</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>,
-                 <span class='kw'>ni</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>ni</span>,
-                 <span class='kw'>xtopto</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>xt</span>,
-                 <span class='kw'>xopto</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>x</span>,
-                 <span class='kw'>aopto</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>design</span>$<span class='no'>a</span>,
-                 <span class='kw'>bpopdescr</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>,
-                 <span class='kw'>ddescr</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>parameters</span>$<span class='no'>d</span>,
-                 <span class='kw'>covd</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>,
-                 <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
-                 <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db.n</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,
-                 <span class='no'>poped.db.n</span>)
-
-
+  <span class='fu'>ed_laplace_ofv</span><span class='op'>(</span>model_switch<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>model_switch</span>,
+                 groupsize<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>groupsize</span>,
+                 ni<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>ni</span>,
+                 xtopto<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>xt</span>,
+                 xopto<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>x</span>,
+                 aopto<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>a</span>,
+                 bpopdescr<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>bpop</span>,
+                 ddescr<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>d</span>,
+                 covd<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>covd</span>,
+                 sigma<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>sigma</span>,
+                 docc<span class='op'>=</span><span class='va'>poped.db.n</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>docc</span>, 
+                 <span class='va'>poped.db.n</span><span class='op'>)</span>
+  
+  
   <span class='co'>######################</span>
   <span class='co'># Log-normal distribution</span>
   <span class='co'>######################</span>
-
+  
   <span class='co'># Adding 10% log-normal Uncertainty to fixed effects (not Favail)</span>
-  <span class='no'>bpop_vals</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>)
-  <span class='no'>bpop_vals_ed_ln</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*<span class='fl'>4</span>, <span class='co'># log-normal distribution</span>
-                           <span class='no'>bpop_vals</span>,
-                           <span class='fu'><a href='ones.html'>ones</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bpop_vals</span>),<span class='fl'>1</span>)*(<span class='no'>bpop_vals</span>*<span class='fl'>0.1</span>)^<span class='fl'>2</span>) <span class='co'># 10% of bpop value</span>
-  <span class='no'>bpop_vals_ed_ln</span>[<span class='st'>"Favail"</span>,]  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>)
-  <span class='no'>bpop_vals_ed_ln</span>
-
+  <span class='va'>bpop_vals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>bpop_vals_ed_ln</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>4</span>, <span class='co'># log-normal distribution</span>
+                           <span class='va'>bpop_vals</span>,
+                           <span class='fu'><a href='ones.html'>ones</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='op'>(</span><span class='va'>bpop_vals</span><span class='op'>*</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> <span class='co'># 10% of bpop value</span>
+  <span class='va'>bpop_vals_ed_ln</span><span class='op'>[</span><span class='st'>"Favail"</span>,<span class='op'>]</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>
+  <span class='va'>bpop_vals_ed_ln</span>
+  
   <span class='co'>## -- Define initial design  and design space</span>
-  <span class='no'>poped.db.ln</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_file</span><span class='kw'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
-                                       <span class='kw'>fg_file</span><span class='kw'>=</span><span class='st'>"sfg"</span>,
-                                       <span class='kw'>fError_file</span><span class='kw'>=</span><span class='st'>"feps.add.prop"</span>,
-                                       <span class='kw'>bpop</span><span class='kw'>=</span><span class='no'>bpop_vals_ed_ln</span>,
-                                       <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                       <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                       <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>,<span class='fl'>0.25</span>),
-                                       <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                       <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                       <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                       <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                       <span class='kw'>a</span><span class='kw'>=</span><span class='fl'>70</span>,
-                                       <span class='kw'>mina</span><span class='kw'>=</span><span class='fl'>0</span>,
-                                       <span class='kw'>maxa</span><span class='kw'>=</span><span class='fl'>100</span>)
-
-
-
+  <span class='va'>poped.db.ln</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_file<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.sd.CL"</span>,
+                                       fg_file<span class='op'>=</span><span class='st'>"sfg"</span>,
+                                       fError_file<span class='op'>=</span><span class='st'>"feps.add.prop"</span>,
+                                       bpop<span class='op'>=</span><span class='va'>bpop_vals_ed_ln</span>, 
+                                       notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                       d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                       sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>,<span class='fl'>0.25</span><span class='op'>)</span>,
+                                       groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                       xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                       minxt<span class='op'>=</span><span class='fl'>0</span>,
+                                       maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                       a<span class='op'>=</span><span class='fl'>70</span>,
+                                       mina<span class='op'>=</span><span class='fl'>0</span>,
+                                       maxa<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
+  
+  
+  
   <span class='co'>## ED evaluate using LaPlace approximation </span>
-  <span class='fu'><a href='tic.html'>tic</a></span>()
-  <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.ln</span>,<span class='kw'>use_laplace</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-  <span class='fu'><a href='toc.html'>toc</a></span>()
-  <span class='no'>output</span>$<span class='no'>E_ofv</span>
-
+  <span class='fu'><a href='tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span><span class='op'>(</span><span class='va'>poped.db.ln</span>,use_laplace<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='fu'><a href='toc.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>output</span><span class='op'>$</span><span class='va'>E_ofv</span>
+  
   <span class='co'>## expected value (roughly)</span>
-  <span class='fu'><a href='tic.html'>tic</a></span>()
-  <span class='no'>e_ofv_mc_ln</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span>(<span class='no'>poped.db.ln</span>,<span class='kw'>ED_samp_size</span><span class='kw'>=</span><span class='fl'>500</span>,<span class='kw'>ofv_calc_type</span> <span class='kw'>=</span> <span class='fl'>1</span>)<span class='kw'>[[</span><span class='st'>"E_ofv"</span>]]
-  <span class='fu'><a href='toc.html'>toc</a></span>()
-  <span class='no'>e_ofv_mc_ln</span>
-
+  <span class='fu'><a href='tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>e_ofv_mc_ln</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span><span class='op'>(</span><span class='va'>poped.db.ln</span>,ED_samp_size<span class='op'>=</span><span class='fl'>500</span>,ofv_calc_type <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"E_ofv"</span><span class='op'>]</span><span class='op'>]</span>
+  <span class='fu'><a href='toc.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>e_ofv_mc_ln</span>
+  
   <span class='co'>## Using ed_laplce_ofv directly</span>
-  <span class='fu'>ed_laplace_ofv</span>(<span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>model_switch</span>,
-                 <span class='kw'>groupsize</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>groupsize</span>,
-                 <span class='kw'>ni</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>ni</span>,
-                 <span class='kw'>xtopto</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>xt</span>,
-                 <span class='kw'>xopto</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>x</span>,
-                 <span class='kw'>aopto</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>design</span>$<span class='no'>a</span>,
-                 <span class='kw'>bpopdescr</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>parameters</span>$<span class='no'>bpop</span>,
-                 <span class='kw'>ddescr</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>parameters</span>$<span class='no'>d</span>,
-                 <span class='kw'>covd</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>parameters</span>$<span class='no'>covd</span>,
-                 <span class='kw'>sigma</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>parameters</span>$<span class='no'>sigma</span>,
-                 <span class='kw'>docc</span><span class='kw'>=</span><span class='no'>poped.db.ln</span>$<span class='no'>parameters</span>$<span class='no'>docc</span>,
-                 <span class='no'>poped.db.ln</span>)
+  <span class='fu'>ed_laplace_ofv</span><span class='op'>(</span>model_switch<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>model_switch</span>,
+                 groupsize<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>groupsize</span>,
+                 ni<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>ni</span>,
+                 xtopto<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>xt</span>,
+                 xopto<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>x</span>,
+                 aopto<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>design</span><span class='op'>$</span><span class='va'>a</span>,
+                 bpopdescr<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>bpop</span>,
+                 ddescr<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>d</span>,
+                 covd<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>covd</span>,
+                 sigma<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>sigma</span>,
+                 docc<span class='op'>=</span><span class='va'>poped.db.ln</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>$</span><span class='va'>docc</span>, 
+                 <span class='va'>poped.db.ln</span><span class='op'>)</span>
+  
+  
+  
+  
+<span class='op'>}</span>
 
-
-
-
-}</div></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -463,7 +470,7 @@ to compute the hessian.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -144,10 +144,17 @@
       <small>Source: <a href='https://github.com/andrewhooker/PopED/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="poped-0509000-unreleased-changes" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.0.9000">
-<a href="#poped-0509000-unreleased-changes" class="anchor"></a>PopED 0.5.0.9000 (unreleased changes)<small> Unreleased </small>
+    <div id="poped-060" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.0">
+<a href="#poped-060" class="anchor"></a>PopED 0.6.0<small> Unreleased </small>
 </h1>
+<ul>
+<li><p>Added the options <code>allow_replicates=TRUE/FALSE</code>, <code>allow_replicates_xt=TRUE/FALSE</code> and <code>allow_replicates_a=TRUE/FALSE</code> to <code>poped_optim</code>. This allows the optimization algorithm to avoid replicates (or not) in the design components. Currently only works for discrete variable optimization. Future versions will also handle continuous optimization.</p></li>
+<li><p>Exported a function for the computation of the Bayesian Fisher information matrix for individual parameters of a population model based on Maximum A Posteriori (MAP) estimation of the empirical Bayes estimates (EBEs) in a population model. See <code><a href="../reference/evaluate_fim_map.html">?evaluate_fim_map</a></code> for more details.</p></li>
+<li><p>Allowing for no covariates in the function that automatically builds a PopED parameter function from a model function (<code><a href="../reference/build_sfg.html">?build_sfg</a></code>).</p></li>
+<li><p>Updates to documentation and package testing.</p></li>
+<li><p>Minor bug fixes.</p></li>
+</ul>
 </div>
     <div id="poped-050" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">

@@ -85,7 +85,7 @@ if they are supplied then they are used instead of the arguments from the PopED 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PopED</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ if they are supplied then they are used instead of the arguments from the PopED 
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,7 +128,7 @@ if they are supplied then they are used instead of the arguments from the PopED 
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/andrewhooker/PopED">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
     Source
   </a>
@@ -160,29 +160,29 @@ Some of the arguments coming from the PopED database can be overwritten;
 if they are supplied then they are used instead of the arguments from the PopED database.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mfea</span>(
-  <span class='no'>poped.db</span>,
-  <span class='no'>model_switch</span>,
-  <span class='no'>ni</span>,
-  <span class='no'>xt</span>,
-  <span class='no'>x</span>,
-  <span class='no'>a</span>,
-  <span class='no'>bpopdescr</span>,
-  <span class='no'>ddescr</span>,
-  <span class='no'>maxxt</span>,
-  <span class='no'>minxt</span>,
-  <span class='no'>maxa</span>,
-  <span class='no'>mina</span>,
-  <span class='no'>fmf</span>,
-  <span class='no'>dmf</span>,
-  <span class='kw'>EAStepSize</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>EAStepSize</span>,
-  <span class='kw'>ourzero</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>ourzero</span>,
-  <span class='kw'>opt_xt</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>2</span>],
-  <span class='kw'>opt_a</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>4</span>],
-  <span class='kw'>opt_x</span> <span class='kw'>=</span> <span class='no'>poped.db</span>$<span class='no'>settings</span>$<span class='no'>optsw</span>[<span class='fl'>3</span>],
-  <span class='kw'>trflag</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>mfea</span><span class='op'>(</span>
+  <span class='va'>poped.db</span>,
+  <span class='va'>model_switch</span>,
+  <span class='va'>ni</span>,
+  <span class='va'>xt</span>,
+  <span class='va'>x</span>,
+  <span class='va'>a</span>,
+  <span class='va'>bpopdescr</span>,
+  <span class='va'>ddescr</span>,
+  <span class='va'>maxxt</span>,
+  <span class='va'>minxt</span>,
+  <span class='va'>maxa</span>,
+  <span class='va'>mina</span>,
+  <span class='va'>fmf</span>,
+  <span class='va'>dmf</span>,
+  EAStepSize <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>EAStepSize</span>,
+  ourzero <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>ourzero</span>,
+  opt_xt <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,
+  opt_a <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+  opt_x <span class='op'>=</span> <span class='va'>poped.db</span><span class='op'>$</span><span class='va'>settings</span><span class='op'>$</span><span class='va'>optsw</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>,
+  trflag <span class='op'>=</span> <span class='cn'>T</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -314,7 +314,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <code><a href='poped_optim.html'>poped_optim</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PopED</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>############# START #################</span>
 <span class='co'>## Create PopED database</span>
@@ -330,7 +330,8 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'>## to avoid sample times at very low concentrations (time 0 or very late samples).</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
-<span class='no'>ff.PK.1.comp.oral.sd.CL</span></div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
+<span class='va'>ff.PK.1.comp.oral.sd.CL</span>
+</div><div class='output co'>#&gt; function (model_switch, xt, parameters, poped.db) 
 #&gt; {
 #&gt;     with(as.list(parameters), {
 #&gt;         y = xt
@@ -339,34 +340,34 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7feb67e784c8&gt;
+#&gt; &lt;bytecode: 0x7f855b96f698&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
-<span class='no'>sfg</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>,<span class='no'>a</span>,<span class='no'>bpop</span>,<span class='no'>b</span>,<span class='no'>bocc</span>){
-  <span class='no'>parameters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>1</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>1</span>]),
-               <span class='kw'>V</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>2</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>2</span>]),
-               <span class='kw'>KA</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>3</span>]*<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(<span class='no'>b</span>[<span class='fl'>3</span>]),
-               <span class='kw'>Favail</span><span class='kw'>=</span><span class='no'>bpop</span>[<span class='fl'>4</span>],
-               <span class='kw'>DOSE</span><span class='kw'>=</span><span class='no'>a</span>[<span class='fl'>1</span>])
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>parameters</span>)
-}
+<span class='va'>sfg</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>a</span>,<span class='va'>bpop</span>,<span class='va'>b</span>,<span class='va'>bocc</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>parameters</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+               V<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,
+               KA<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>,
+               Favail<span class='op'>=</span><span class='va'>bpop</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+               DOSE<span class='op'>=</span><span class='va'>a</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>parameters</span><span class='op'>)</span> 
+<span class='op'>}</span>
 
 <span class='co'>## -- Define initial design  and design space</span>
-<span class='no'>poped.db</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span>(<span class='kw'>ff_fun</span><span class='kw'>=</span><span class='no'>ff.PK.1.comp.oral.sd.CL</span>,
-                                  <span class='kw'>fg_fun</span><span class='kw'>=</span><span class='no'>sfg</span>,
-                                  <span class='kw'>fError_fun</span><span class='kw'>=</span><span class='no'>feps.add.prop</span>,
-                                  <span class='kw'>bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.15</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>8</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>1.0</span>, <span class='kw'>Favail</span><span class='kw'>=</span><span class='fl'>1</span>),
-                                  <span class='kw'>notfixed_bpop</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-                                  <span class='kw'>d</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>CL</span><span class='kw'>=</span><span class='fl'>0.07</span>, <span class='kw'>V</span><span class='kw'>=</span><span class='fl'>0.02</span>, <span class='kw'>KA</span><span class='kw'>=</span><span class='fl'>0.6</span>),
-                                  <span class='kw'>sigma</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>prop</span><span class='kw'>=</span><span class='fl'>0.01</span>,<span class='kw'>add</span><span class='kw'>=</span><span class='fl'>0.25</span>),
-                                  <span class='kw'>groupsize</span><span class='kw'>=</span><span class='fl'>32</span>,
-                                  <span class='kw'>xt</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span>),
-                                  <span class='kw'>minxt</span><span class='kw'>=</span><span class='fl'>0.01</span>,
-                                  <span class='kw'>maxxt</span><span class='kw'>=</span><span class='fl'>120</span>,
-                                  <span class='kw'>a</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>70</span>),
-                                  <span class='kw'>mina</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>0.01</span>),
-                                  <span class='kw'>maxa</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>DOSE</span><span class='kw'>=</span><span class='fl'>100</span>))
+<span class='va'>poped.db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create.poped.database.html'>create.poped.database</a></span><span class='op'>(</span>ff_fun<span class='op'>=</span><span class='va'>ff.PK.1.comp.oral.sd.CL</span>,
+                                  fg_fun<span class='op'>=</span><span class='va'>sfg</span>,
+                                  fError_fun<span class='op'>=</span><span class='va'>feps.add.prop</span>,
+                                  bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.15</span>, V<span class='op'>=</span><span class='fl'>8</span>, KA<span class='op'>=</span><span class='fl'>1.0</span>, Favail<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>, 
+                                  notfixed_bpop<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                                  d<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>CL<span class='op'>=</span><span class='fl'>0.07</span>, V<span class='op'>=</span><span class='fl'>0.02</span>, KA<span class='op'>=</span><span class='fl'>0.6</span><span class='op'>)</span>, 
+                                  sigma<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>prop<span class='op'>=</span><span class='fl'>0.01</span>,add<span class='op'>=</span><span class='fl'>0.25</span><span class='op'>)</span>,
+                                  groupsize<span class='op'>=</span><span class='fl'>32</span>,
+                                  xt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>6</span>,<span class='fl'>24</span>,<span class='fl'>36</span>,<span class='fl'>72</span>,<span class='fl'>120</span><span class='op'>)</span>,
+                                  minxt<span class='op'>=</span><span class='fl'>0.01</span>,
+                                  maxxt<span class='op'>=</span><span class='fl'>120</span>,
+                                  a<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>,
+                                  mina<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>0.01</span><span class='op'>)</span>,
+                                  maxa<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>DOSE<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>############# END ###################</span>
 <span class='co'>## Create PopED database</span>
@@ -379,9 +380,10 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 <span class='co'>##############</span>
 
 <span class='co'># optimization of covariate, with coarse grid</span>
-<span class='no'>out_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span>(<span class='no'>poped.db</span>,<span class='kw'>opt_a</span><span class='kw'>=</span><span class='fl'>1</span>,
-                              <span class='kw'>bUseExchangeAlgorithm</span><span class='kw'>=</span><span class='fl'>1</span>,
-                              <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>25</span>,<span class='kw'>out_file</span> <span class='kw'>=</span> <span class='st'>""</span>)</div><div class='output co'>#&gt; ===============================================================================
+<span class='va'>out_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span><span class='op'>(</span><span class='va'>poped.db</span>,opt_a<span class='op'>=</span><span class='fl'>1</span>,
+                              bUseExchangeAlgorithm<span class='op'>=</span><span class='fl'>1</span>,
+                              EAStepSize<span class='op'>=</span><span class='fl'>25</span>,out_file <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ===============================================================================
 #&gt; Initial design evaluation
 #&gt; 
 #&gt; Initial OFV = 55.3964
@@ -437,43 +439,46 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 #&gt;     sig_prop     0.01      32    23
 #&gt;      sig_add     0.25      26    30
 #&gt; 
-#&gt; Total running time: 0.038 seconds</div><div class='input'>
+#&gt; Total running time: 0.039 seconds</div><div class='input'>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-
-
-
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  
+  
+  
   <span class='co'># MFEA optimization with only integer times allowed</span>
-  <span class='no'>out_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span>(<span class='no'>poped.db</span>,<span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>,
-                                <span class='kw'>bUseExchangeAlgorithm</span><span class='kw'>=</span><span class='fl'>1</span>,
-                                <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>1</span>)
-  <span class='fu'><a href='get_rse.html'>get_rse</a></span>(<span class='no'>out_2</span>$<span class='no'>fmf</span>,<span class='no'>out_2</span>$<span class='no'>poped.db</span>)
-  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span>(<span class='no'>out_2</span>$<span class='no'>poped.db</span>)
-
-
+  <span class='va'>out_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='poped_optimize.html'>poped_optimize</a></span><span class='op'>(</span><span class='va'>poped.db</span>,opt_xt<span class='op'>=</span><span class='fl'>1</span>,
+                                bUseExchangeAlgorithm<span class='op'>=</span><span class='fl'>1</span>,
+                                EAStepSize<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+  <span class='fu'><a href='get_rse.html'>get_rse</a></span><span class='op'>(</span><span class='va'>out_2</span><span class='op'>$</span><span class='va'>fmf</span>,<span class='va'>out_2</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  <span class='fu'><a href='plot_model_prediction.html'>plot_model_prediction</a></span><span class='op'>(</span><span class='va'>out_2</span><span class='op'>$</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
+  
   <span class='co'>##############</span>
   <span class='co'># If you really want to you can use mfea dirtectly</span>
   <span class='co'>##############</span>
-  <span class='no'>dsl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downsizing_general_design.html'>downsizing_general_design</a></span>(<span class='no'>poped.db</span>)
+  <span class='va'>dsl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='downsizing_general_design.html'>downsizing_general_design</a></span><span class='op'>(</span><span class='va'>poped.db</span><span class='op'>)</span>
+  
+  <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'>mfea</span><span class='op'>(</span><span class='va'>poped.db</span>,
+                 model_switch<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>model_switch</span>,
+                 ni<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>ni</span>,
+                 xt<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>xt</span>,
+                 x<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>x</span>,
+                 a<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>a</span>,
+                 bpopdescr<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>bpop</span>,
+                 ddescr<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>d</span>,
+                 maxxt<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>maxxt</span>,
+                 minxt<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>minxt</span>,
+                 maxa<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>maxa</span>,
+                 mina<span class='op'>=</span><span class='va'>dsl</span><span class='op'>$</span><span class='va'>mina</span>,
+                 fmf<span class='op'>=</span><span class='fl'>0</span>,dmf<span class='op'>=</span><span class='fl'>0</span>,
+                 EAStepSize<span class='op'>=</span><span class='fl'>1</span>,
+                 opt_xt<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+  
+  
+<span class='op'>}</span>
 
-  <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='fu'>mfea</span>(<span class='no'>poped.db</span>,
-                 <span class='kw'>model_switch</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>model_switch</span>,
-                 <span class='kw'>ni</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>ni</span>,
-                 <span class='kw'>xt</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>xt</span>,
-                 <span class='kw'>x</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>x</span>,
-                 <span class='kw'>a</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>a</span>,
-                 <span class='kw'>bpopdescr</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>bpop</span>,
-                 <span class='kw'>ddescr</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>d</span>,
-                 <span class='kw'>maxxt</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>maxxt</span>,
-                 <span class='kw'>minxt</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>minxt</span>,
-                 <span class='kw'>maxa</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>maxa</span>,
-                 <span class='kw'>mina</span><span class='kw'>=</span><span class='no'>dsl</span>$<span class='no'>mina</span>,
-                 <span class='kw'>fmf</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>dmf</span><span class='kw'>=</span><span class='fl'>0</span>,
-                 <span class='kw'>EAStepSize</span><span class='kw'>=</span><span class='fl'>1</span>,
-                 <span class='kw'>opt_xt</span><span class='kw'>=</span><span class='fl'>1</span>)
 
-
-}</div></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -489,7 +494,7 @@ Computer Methods and Programs in Biomedicine, 108, 2012.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
