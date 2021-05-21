@@ -783,7 +783,7 @@ a_line_search <- function(poped.db,
           for(ct1 in 1:poped.db$design$m){
             fprintf(fn,'Group %g: ', ct1)
             for(ct2 in 1:size(poped.db$design$a,2)){
-              tmp_txt <- '%g'
+              tmp_txt <- '%g [%g,%g]'
               if(ct2<size(poped.db$design$a,2)) tmp_txt <- paste(tmp_txt,' : ',sep="")
               fprintf(fn,tmp_txt,poped.db$design$a[ct1,ct2],poped.db$design_space$mina[ct1,ct2],poped.db$design_space$maxa[ct1,ct2])
             }
