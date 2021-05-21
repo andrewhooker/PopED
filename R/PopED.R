@@ -60,8 +60,7 @@
 #' Computer Methods and Programs in Biomedicine, 108, 2012.
 #' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software for optimal 
 #' experimental design in population kinetics", Computer Methods and Programs in Biomedicine, 74, 2004. 
-#' \item \href{http://poped.sourceforge.net}{poped.sf.net}
-#' \item \url{https://github.com/andrewhooker/PopED.git}
+#' \item \url{https://andrewhooker.github.io/PopED/}
 #' }
 #' 
 #' @docType package
