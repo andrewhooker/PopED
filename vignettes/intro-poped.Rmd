@@ -286,7 +286,7 @@ output_dose_opt <- poped_optim(output$poped.db, opt_xt=TRUE, opt_a=TRUE)
 ```
 
 
-In this case the results are predictable ... higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case).
+In this case the results are predictable ... higher doses give observations with somewhat lower absolute residual variability leading to both groups at the highest allowed dose levels (200 mg in this case). 
 
 ## Cost function to optimize dose
 
@@ -313,6 +313,7 @@ summary(output_cost)
 ```
 We see that the optimal doses are `r round(output_cost$poped.db$design$a[1,"DOSE"],1)` and `r round(output_cost$poped.db$design$a[2,"DOSE"],1)` for the two groups.  This leads to population trough concentrations of 0.2 and 0.35 for the two groups of patients at 240 hours:
 ```{r}
+library(ggplot2)
 plot_model_prediction(output_cost$poped.db, model_num_points = 300)+
   coord_cartesian(xlim=c(230,250))
 ```
