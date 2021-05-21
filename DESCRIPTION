@@ -54,7 +54,7 @@ Description: Optimal experimental designs for both population and individual
     <doi:10.1016/S0169-2607(03)00073-7>.
 License: LGPL (>= 3)
 ByteCompile: true
-URL: https://andrewhooker.github.io/PopED, https://github.com/andrewhooker/PopED, 
+URL: https://andrewhooker.github.io/PopED/, https://github.com/andrewhooker/PopED, 
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
