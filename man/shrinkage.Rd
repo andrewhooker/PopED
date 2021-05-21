@@ -79,11 +79,11 @@ shrinkage(poped.db)
   Frey, N., & Mentre, F. (2013). Prediction of shrinkage of individual
   parameters using the Bayesian information matrix in non-linear mixed effect
   models with evaluation in pharmacokinetics. Pharmaceutical Research, 30(9),
-  2355-67. \url{https://doi.org/10.1007/s11095-013-1079-3}. 
+  2355-67. \doi{10.1007/s11095-013-1079-3}. 
   \item Hennig, S., Nyberg, J., Fanta, S., Backman, J.
   T., Hoppu, K., Hooker, A. C., & Karlsson, M. O. (2012). Application of the
   optimal design approach to improve a pretransplant drug dose finding design
   for ciclosporin. Journal of Clinical Pharmacology, 52(3), 347-360.
-  \url{https://doi.org/10.1177/0091270010397731}. 
+  \doi{10.1177/0091270010397731}. 
   }
 }
