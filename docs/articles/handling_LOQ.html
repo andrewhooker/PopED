@@ -104,7 +104,7 @@
             <h3 class="subtitle">Optimization with a model for warfarin</h3>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">20 May, 2021</h4>
+            <h4 class="date">21 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/handling_LOQ.Rmd"><code>vignettes/handling_LOQ.Rmd</code></a></small>
       <div class="hidden name"><code>handling_LOQ.Rmd</code></div>
@@ -114,7 +114,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED">PopED</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED/">PopED</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"PopED"</span><span class="op">)</span>
 <span class="co">#&gt; [1] '0.6.0'</span></code></pre></div>
 <div id="define-a-model" class="section level1">
@@ -278,8 +278,8 @@ sig_add
 
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"D6 evaluation time: "</span>,<span class="va">e_time_D6</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"D2 evaluation time: "</span>,<span class="va">e_time_D2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span>
-<span class="co">#&gt; D6 evaluation time:  0.501 </span>
-<span class="co">#&gt; D2 evaluation time:  0.103</span></code></pre></div>
+<span class="co">#&gt; D6 evaluation time:  0.367 </span>
+<span class="co">#&gt; D2 evaluation time:  0.135</span></code></pre></div>
 <p>The D2 nmethod is the same as removing the last data point</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">poped_db_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span>
@@ -819,13 +819,13 @@ sig_add
 <a href="#version-information" class="anchor"></a>Version information</h1>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R version 4.0.5 (2021-03-31)</span>
+<span class="co">#&gt; R version 4.1.0 (2021-05-18)</span>
 <span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
 <span class="co">#&gt; Running under: macOS Big Sur 10.16</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span>
-<span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib</span>
+<span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.dylib</span>
+<span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; locale:</span>
 <span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
@@ -844,16 +844,16 @@ sig_add
 <span class="co">#&gt; [13] httr_1.4.2        pillar_1.6.1      rlang_0.4.11      rstudioapi_0.13  </span>
 <span class="co">#&gt; [17] callr_3.7.0       jquerylib_0.1.4   rmarkdown_2.8     pkgdown_1.6.1    </span>
 <span class="co">#&gt; [21] labeling_0.4.2    textshaping_0.3.4 desc_1.3.0        devtools_2.4.1   </span>
-<span class="co">#&gt; [25] webshot_0.5.2     stringr_1.4.0     munsell_0.5.0     compiler_4.0.5   </span>
+<span class="co">#&gt; [25] webshot_0.5.2     stringr_1.4.0     munsell_0.5.0     compiler_4.1.0   </span>
 <span class="co">#&gt; [29] xfun_0.23         pkgconfig_2.0.3   systemfonts_1.0.2 pkgbuild_1.2.0   </span>
 <span class="co">#&gt; [33] htmltools_0.5.1.1 tidyselect_1.1.1  tibble_3.1.2      bookdown_0.22    </span>
 <span class="co">#&gt; [37] codetools_0.2-18  viridisLite_0.4.0 fansi_0.4.2       crayon_1.4.1     </span>
-<span class="co">#&gt; [41] dplyr_1.0.6       withr_2.4.2       MASS_7.3-54       grid_4.0.5       </span>
+<span class="co">#&gt; [41] dplyr_1.0.6       withr_2.4.2       MASS_7.3-54       grid_4.1.0       </span>
 <span class="co">#&gt; [45] jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.1        </span>
 <span class="co">#&gt; [49] magrittr_2.0.1    scales_1.1.1      cli_2.5.0         stringi_1.6.2    </span>
 <span class="co">#&gt; [53] cachem_1.0.5      farver_2.1.0      fs_1.5.0          remotes_2.3.0    </span>
 <span class="co">#&gt; [57] xml2_1.3.2        bslib_0.2.5.1     ellipsis_0.3.2    ragg_1.1.2       </span>
-<span class="co">#&gt; [61] vctrs_0.3.8       generics_0.1.0    boot_1.3-28       tools_4.0.5      </span>
+<span class="co">#&gt; [61] vctrs_0.3.8       generics_0.1.0    boot_1.3-28       tools_4.1.0      </span>
 <span class="co">#&gt; [65] glue_1.4.2        purrr_0.3.4       processx_3.5.2    pkgload_1.2.1    </span>
 <span class="co">#&gt; [69] fastmap_1.1.0     yaml_2.2.1        colorspace_2.0-1  sessioninfo_1.1.1</span>
 <span class="co">#&gt; [73] rvest_1.0.0       memoise_2.0.0     sass_0.4.0        usethis_2.0.1</span></code></pre></div>

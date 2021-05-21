@@ -309,7 +309,7 @@ to compute the hessian.</p></td>
 
 <span class='co'>## Optimization using an additive + proportional reidual error to </span>
 <span class='co'>##   avoid sample times at very low concentrations (time 0 or very late samoples).</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED'>PopED</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://andrewhooker.github.io/PopED/'>PopED</a></span><span class='op'>)</span>
 
 <span class='co'>## find the parameters that are needed to define from the structural model</span>
 <span class='va'>ff.PK.1.comp.oral.sd.CL</span>
@@ -322,7 +322,7 @@ to compute the hessian.</p></td>
 #&gt;         return(list(y = y, poped.db = poped.db))
 #&gt;     })
 #&gt; }
-#&gt; &lt;bytecode: 0x7f855b96f698&gt;
+#&gt; &lt;bytecode: 0x7fe20a979808&gt;
 #&gt; &lt;environment: namespace:PopED&gt;</div><div class='input'>
 <span class='co'>## -- parameter definition function </span>
 <span class='co'>## -- names match parameters in function ff</span>
@@ -368,7 +368,7 @@ to compute the hessian.</p></td>
 
 <span class='co'>## ED evaluate using LaPlace approximation </span>
 <span class='fu'><a href='tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluate.e.ofv.fim.html'>evaluate.e.ofv.fim</a></span><span class='op'>(</span><span class='va'>poped.db.n</span>,use_laplace<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>; <span class='fu'><a href='toc.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='output co'>#&gt; Elapsed time: 0.001 seconds.</div><div class='input'><span class='va'>output</span><span class='op'>$</span><span class='va'>E_ofv</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in poped.db$settings$iEDCalculationType &lt;- use_laplace: object 'poped.db.n' not found</span></div><div class='output co'>#&gt; Elapsed time: 0.002 seconds.</div><div class='input'><span class='va'>output</span><span class='op'>$</span><span class='va'>E_ofv</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'output' not found</span></div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
   

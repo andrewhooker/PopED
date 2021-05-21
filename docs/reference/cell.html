@@ -186,19 +186,19 @@
     <pre class="examples"><div class='input'>
 <span class='fu'>cell</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
-#&gt; [1,] Numeric,0 Numeric,0 Numeric,0
-#&gt; [2,] Numeric,0 Numeric,0 Numeric,0
-#&gt; [3,] Numeric,0 Numeric,0 Numeric,0</div><div class='input'><span class='fu'>cell</span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>
+#&gt; [1,] numeric,0 numeric,0 numeric,0
+#&gt; [2,] numeric,0 numeric,0 numeric,0
+#&gt; [3,] numeric,0 numeric,0 numeric,0</div><div class='input'><span class='fu'>cell</span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      [,1]      [,2]      [,3]     
-#&gt; [1,] Numeric,0 Numeric,0 Numeric,0
-#&gt; [2,] Numeric,0 Numeric,0 Numeric,0</div><div class='input'>
+#&gt; [1,] numeric,0 numeric,0 numeric,0
+#&gt; [2,] numeric,0 numeric,0 numeric,0</div><div class='input'>
 <span class='co'>## define possible values of 2 categorical design variable</span>
 <span class='va'>x.space</span> <span class='op'>&lt;-</span> <span class='fu'>cell</span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>100</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>300</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>x.space</span>
 </div><div class='output co'>#&gt;      [,1]       [,2]      
-#&gt; [1,] Numeric,10 Numeric,30</div><div class='input'><span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>
+#&gt; [1,] numeric,10 numeric,30</div><div class='input'><span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt;  [1]  10  20  30  40  50  60  70  80  90 100
 #&gt; </div><div class='input'><span class='va'>x.space</span><span class='op'>[</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span>

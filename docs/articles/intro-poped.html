@@ -102,7 +102,7 @@
       <h1 data-toc-skip>Introduction to PopED</h1>
                         <h4 class="author">Andrew Hooker</h4>
             
-            <h4 class="date">20 May, 2021</h4>
+            <h4 class="date">21 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/intro-poped.Rmd"><code>vignettes/intro-poped.Rmd</code></a></small>
       <div class="hidden name"><code>intro-poped.Rmd</code></div>
@@ -138,7 +138,7 @@
 <a href="#define-a-model" class="anchor"></a>Define a model</h1>
 <p>Here we define a one-compartment pharmacokinetic model with linear absorption using an analytical solution. In this case the solution is applicable for both multiple and single dosing. Note that this function is also predefined in PopED as <code>ff.PK.1.comp.oral.md.CL</code> (see <code><a href="../reference/ff.PK.1.comp.oral.md.CL.html">?ff.PK.1.comp.oral.md.CL</a></code> for more information).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED">PopED</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED/">PopED</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"PopED"</span><span class="op">)</span>
 <span class="co">#&gt; [1] '0.6.0'</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -411,7 +411,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    26</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 22.938 seconds</span>
+<span class="co">#&gt; Total running time: 23.15 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">poped.db</span><span class="op">)</span></code></pre></div>
 <p><img src="intro-poped_files/figure-html/simulate_optimal_design-1.png" width="700"></p>
 <p>We see that there are four distinct sample times for this design. This means that for this model, with these exact parameter values, that the most information from the study to inform the parameter estimation is with these sample times.</p>
@@ -456,7 +456,7 @@
 <span class="co">#&gt;         d_CL   0.0625      28    27</span>
 <span class="co">#&gt;     sig_prop     0.04      14    15</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 12.883 seconds</span>
+<span class="co">#&gt; Total running time: 13.47 seconds</span>
 <span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">output_discrete</span><span class="op">$</span><span class="va">poped.db</span>, model_num_points <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></code></pre></div>
 <p><img src="intro-poped_files/figure-html/simulate_discrete_optimization-1.png" width="700"></p>
 <p>Here we see that the optimization ran somewhat quicker, but gave a less efficient design.</p>
@@ -511,10 +511,11 @@
 <span class="co">#&gt;         d_CL   0.0625      28    28</span>
 <span class="co">#&gt;     sig_prop     0.04      14    14</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Total running time: 4.842 seconds</span></code></pre></div>
+<span class="co">#&gt; Total running time: 4.739 seconds</span></code></pre></div>
 <p>We see that the optimal doses are 31.6 and 55.2 for the two groups. This leads to population trough concentrations of 0.2 and 0.35 for the two groups of patients at 240 hours:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">output_cost</span><span class="op">$</span><span class="va">poped.db</span>, model_num_points <span class="op">=</span> <span class="fl">300</span><span class="op">)</span><span class="op">+</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">output_cost</span><span class="op">$</span><span class="va">poped.db</span>, model_num_points <span class="op">=</span> <span class="fl">300</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">230</span>,<span class="fl">250</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="intro-poped_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>

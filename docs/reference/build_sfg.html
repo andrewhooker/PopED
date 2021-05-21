@@ -200,14 +200,14 @@ a list defining the model per parameter.</p></td>
 </div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2], KA = bpop[3] * 
 #&gt;     exp(b[2]), V = bpop[4] * exp(b[3]), DOSE = a[1], TAU = a[2])
-#&gt; &lt;environment: 0x7f84fb71ea70&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fe20d5952a8&gt;</div><div class='input'>
 <span class='va'>etas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Favail<span class='op'>=</span><span class='st'>"exp"</span>,KA<span class='op'>=</span><span class='st'>"exp"</span>,V<span class='op'>=</span><span class='st'>"add"</span>,CL<span class='op'>=</span><span class='st'>"exp"</span><span class='op'>)</span>
 <span class='fu'>build_sfg</span><span class='op'>(</span>model<span class='op'>=</span><span class='st'>"ff.PK.1.comp.oral.md.CL"</span>,etas <span class='op'>=</span> <span class='va'>etas</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; function (x, a, bpop, b, bocc) 
 #&gt; parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2] * exp(b[2]), 
 #&gt;     KA = bpop[3] * exp(b[3]), V = bpop[4] + b[4], DOSE = a[1], 
 #&gt;     TAU = a[2])
-#&gt; &lt;environment: 0x7f84fb71ea70&gt;</div></pre>
+#&gt; &lt;environment: 0x7fe20d5952a8&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
