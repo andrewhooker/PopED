@@ -2,6 +2,7 @@ context("Examples")
 
 test_that("The Examples run", {
   
+  skip_on_cran()
   if(skip_examples) skip("Examples with long run times")
   
   cur_dir <- getwd()
@@ -10,7 +11,6 @@ test_that("The Examples run", {
 
   source(file.path(run_dir,"ex.1.a.PK.1.comp.oral.md.intro.R"),chdir=T)  
   source(file.path(run_dir,"ex.1.b.PK.1.comp.oral.md.re-parameterize.R"),chdir=T)  
-  
   
   source(file.path(run_dir,"ex.1.c.PK.1.comp.oral.md.ODE.compiled.R"),chdir=T) 
   source(file.path(run_dir,"ex.2.a.warfarin.evaluate.R"),chdir=T)
@@ -43,12 +43,6 @@ test_that("The Examples run", {
   source(file.path(run_dir,"ex.14.PK.IOV.R"),chdir=T)
   source(file.path(run_dir,"ex.15.full.covariance.matrix.R"),chdir=T)
   
-  
-  
-  
-  
-  
   #setwd(cur_dir)
-  
   
 })

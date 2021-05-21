@@ -1,3 +1,4 @@
+library(PopED)
 
 ## following example 1.4.2 in PFIM
 sfg <- function(x,a,bpop,b,bocc){

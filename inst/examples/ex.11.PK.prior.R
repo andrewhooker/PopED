@@ -121,5 +121,5 @@ poped.db.all <- create.poped.database(
 # compared to the pediatrics only.
 
 # One can also obtain the power for estimating the covariate to be different from 1.
-round(evaluate_power(poped.db.all, bpop_idx=5, h0=1,out=out.all)$power,1)
+evaluate_power(poped.db.all, bpop_idx=5, h0=1,out=out.all)
 

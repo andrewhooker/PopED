@@ -55,7 +55,7 @@ poped.db <- create.poped.database(ff_file="ff",
 plot_model_prediction(poped.db)
 
 ##  create plot of model with variability 
-plot_model_prediction(poped.db,IPRED=T,DV=T)
+plot_model_prediction(poped.db,PI=TRUE)
 
 ## evaluate initial design
 evaluate_design(poped.db)

@@ -1,4 +1,4 @@
-#library(PopED)
+library(PopED)
 
 ##-- Model: One comp first order absorption
 library(Rcpp)
