@@ -1,3 +1,7 @@
+# PopED 0.6.0.900x (new updates in the current development version)
+
+* Nothing yet
+
 # PopED 0.6.0
 
 * Added the options `allow_replicates=TRUE/FALSE`, `allow_replicates_xt=TRUE/FALSE` and `allow_replicates_a=TRUE/FALSE` to `poped_optim`.  This allows the optimization algorithm to avoid replicates (or not) in the design components.  Currently only works for discrete variable optimization. Future versions will also handle continuous optimization.
