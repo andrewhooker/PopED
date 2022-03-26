@@ -10,7 +10,8 @@ ui <- function(){
     tabPanel("Model Definition", fluidPage(
       fluidRow(
         column(
-          9, offset = offset, #align ="center",
+          9, offset = offset, 
+          #8, offset = 2, #align ="center",
           #title = "Model Definition",
           #titlePanel("Model Definition"),
           h1("Structural Model"),
