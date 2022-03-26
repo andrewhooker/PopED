@@ -1,7 +1,7 @@
 #' Return all the unfixed parameters
 #' 
 #' all = vector of all unfixed params var derivative is a vector of 1 and 0, 1
-#' means derivative of parameter is taken w$r.t. variance otherwise w$r.t. sd If
+#' means derivative of parameter is taken w.r.t. variance otherwise w.r.t. sd If
 #' params is supplied then the parameter is taken from this vector instead of
 #' poped.db
 #' @param poped.db a PopED database.
