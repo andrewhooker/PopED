@@ -58,5 +58,5 @@ URL: https://andrewhooker.github.io/PopED/, https://github.com/andrewhooker/PopE
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr

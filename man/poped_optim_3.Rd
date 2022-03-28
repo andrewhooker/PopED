@@ -16,6 +16,7 @@ poped_optim_3(
   trace = TRUE,
   fim.calc.type = poped.db$settings$iFIMCalculationType,
   ofv_calc_type = poped.db$settings$ofv_calc_type,
+  ds_index = poped.db$parameters$ds_index,
   approx_type = poped.db$settings$iApproximationMethod,
   d_switch = poped.db$settings$d_switch,
   ED_samp_size = poped.db$settings$ED_samp_size,
@@ -88,6 +89,11 @@ This matches what is done in PFIM, and assumes that the standard deviation of th
 rows and columns of the FIM: det(FIM)/det(FIM_u)
 \item 7 = Inverse of the sum of the expected parameter RSE: 1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
 }}
+
+\item{ds_index}{Ds_index is a vector set to 1 if a parameter is uninteresting, otherwise 0.
+size=(1,num unfixed parameters). First unfixed bpop, then unfixed d, then unfixed docc and last unfixed sigma. 
+Default is the fixed effects being important, everything else not important.  Used in conjunction with
+\code{ofv_calc_type=6}.}
 
 \item{approx_type}{Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.}
 
