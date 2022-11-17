@@ -35,8 +35,12 @@
 #' or create new columns in the resulting data frame. Note that these transformations are created after any model predictions occur,
 #' so transformations in columns having to do with input to model predictions  will not affect the predictions.   
 #' @param PI Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
-#' the model variance and a normality assumption of that variance.
-#' @param PI_conf_level The confidence level for the prediction interval computed.   
+#' the model variance and a log-normality assumption of that variance (by default), if all predictions are positive, otherwise a 
+#' normal distribution is assumed.
+#' @param PI_conf_level The confidence level for the prediction interval computed.  
+#' @param PI_ln_dist Should the PI calculation be done assuming log-normal or a normal distribution. TRUE is the default and
+#' indicates a log-normal distribution. If any of the PRED values from the model are negative then a normal distribution is
+#' assumed. 
 #' 
 #' @return A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 
 #' based on the input design.
@@ -85,7 +89,8 @@ model_prediction <- function(poped.db=NULL,
                              include_x = TRUE,
                              manipulation=NULL,
                              PI = FALSE,
-                             PI_conf_level = 0.95) 
+                             PI_conf_level = 0.95,
+                             PI_ln_dist = TRUE) 
 {
   
   if(is.null(predictions)){
@@ -246,9 +251,19 @@ model_prediction <- function(poped.db=NULL,
           
           PI_alpha <- 1-PI_conf_level
           z_val <- qnorm(1-PI_alpha/2)
+          #z_val <- qt(1-PI_alpha/2,df=(sum(design$groupsize)-5))
           se_val <- sqrt(diag(cov))
           PI_u <- pred + z_val*se_val 
-          PI_l <- pred - z_val*se_val 
+          PI_l <- pred - z_val*se_val
+          #PI_ln_dist <- TRUE
+          if(PI_ln_dist && all(pred>0)){ 
+            # using method of moments (Stein)
+            # assuming univariate distributions
+            se_val_log <- sqrt(log(diag(cov)/(pred^2)+1))
+            mean_val_log <- log(pred^2/sqrt(diag(cov) + pred^2))
+            PI_u <- exp(mean_val_log + z_val*se_val_log)
+            PI_l <- exp(mean_val_log - z_val*se_val_log)
+          }
           group.df <- data.frame(group.df,PI_l=PI_l,PI_u=PI_u)
         }      
       }    
