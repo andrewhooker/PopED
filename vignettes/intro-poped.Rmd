@@ -43,7 +43,7 @@ To get started you need to define
 
 There are a number of functions to help you with these tasks.  See `?poped` for more information.  
  
-Below is an example to introduce the package.  This example and several other examples, are available as r-scripts in the "examples" folder in the 
+Below is an example to introduce the package.  Several other examples are available as r-scripts in the "examples" folder in the 
 PopED installation directory located at:
 
 
@@ -57,7 +57,7 @@ ex_dir <- system.file("examples", package="PopED")
 list.files(ex_dir)
 ```
 
-You can then open one of the examples (for example, `ex.1.a.PK.1.comp.oral.md.intro.R`, the code found in this vignette) using the following code
+You can then open one of the examples (for example, `ex.1.a.PK.1.comp.oral.md.intro.R`, is very similar to the code found in this vignette) using the following code
 ```{r,eval=FALSE}
 file_name <- "ex.1.a.PK.1.comp.oral.md.intro.R"
 ex_file <- system.file("examples",file_name,package="PopED")
