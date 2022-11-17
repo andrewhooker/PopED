@@ -6,9 +6,9 @@
 \usage{
 model_prediction(
   poped.db = NULL,
-  design = list(xt = poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m
-    = poped.db$design[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni
-    = poped.db$design$ni, model_switch = poped.db$design$model_switch),
+  design = list(xt = poped.db$design[["xt"]], groupsize = poped.db$design$groupsize, m =
+    poped.db$design[["m"]], x = poped.db$design[["x"]], a = poped.db$design[["a"]], ni =
+    poped.db$design$ni, model_switch = poped.db$design$model_switch),
   model = list(fg_pointer = poped.db$model$fg_pointer, ff_pointer =
     poped.db$model$ff_pointer, ferror_pointer = poped.db$model$ferror_pointer),
   parameters = list(docc = poped.db$parameters$docc, d = poped.db$parameters$d, bpop =
@@ -29,7 +29,8 @@ model_prediction(
   include_x = TRUE,
   manipulation = NULL,
   PI = FALSE,
-  PI_conf_level = 0.95
+  PI_conf_level = 0.95,
+  PI_ln_dist = TRUE
 )
 }
 \arguments{
@@ -82,9 +83,14 @@ or create new columns in the resulting data frame. Note that these transformatio
 so transformations in columns having to do with input to model predictions  will not affect the predictions.}
 
 \item{PI}{Compute prediction intervals for the data given the model.  Predictions are based on first-order approximations to 
-the model variance and a normality assumption of that variance.}
+the model variance and a log-normality assumption of that variance (by default), if all predictions are positive, otherwise a 
+normal distribution is assumed.}
 
 \item{PI_conf_level}{The confidence level for the prediction interval computed.}
+
+\item{PI_ln_dist}{Should the PI calculation be done assuming log-normal or a normal distribution. TRUE is the default and
+indicates a log-normal distribution. If any of the PRED values from the model are negative then a normal distribution is
+assumed.}
 }
 \value{
 A dataframe containing a design and (potentially) simulated data with some dense grid of samples and/or 
