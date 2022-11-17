@@ -38,7 +38,7 @@ start_parallel <- function(parallel=TRUE,
   # Start parallel computing for poped package
   # edited from GA package version startParallel.R
   
-  if(is.null(num_cores)) num_cores <- parallel::detectCores()
+  if(is.null(num_cores)) num_cores <- max(parallel::detectCores() - 1, 1)
   if(is.null(parallel_type)) parallel_type <- if(.Platform$OS.type == "windows") 
     "snow" else "multicore"
   attr(parallel, "type") <- parallel_type
