@@ -8,8 +8,8 @@
 #' @inheritParams evaluate.fim
 #' @inheritParams Doptim
 #' @inheritParams create.poped.database
-#' @param ofv The current ofv.  If other than zero then this values is simply returned unchanged.
-#' @param fim The current FIM. If other than zero then this values is simply returned unchanged.
+#' @param ofv The current ofv.  If other than zero then this value is simply returned unchanged.
+#' @param fim The current FIM. If other than zero then this value is simply returned unchanged.
 #' @param use_laplace Should the Laplace method be used in calculating the expectation of the OFV?  
 #' @param laplace.fim Should an E(FIM) be calculated when computing the Laplace approximated E(OFV).  Typically
 #' the FIM does not need to be computed and, if desired,  this calculation
