@@ -119,8 +119,8 @@ poped.db.1 <- create.poped.database(ff_fun=tmdd_qss_one_target_model,
 
 plot_model_prediction(poped.db.1,facet_scales="free")
 
-# evaluation time is roughly 18 seconds 
-# (macbook pro,OS X 10.13.5, 3.5 GHz Intel Core i7, 16 GB 2133 MHz LPDDR3)
+# evaluation time is roughly 8 seconds 
+# (macbook pro,OS X 13.6.1, M1 Max, 64 GB RAM)
 # see compiled version below for a faster implementation
 tic(); eval <- evaluate_design(poped.db.1); toc()
 
