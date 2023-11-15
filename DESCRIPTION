@@ -63,5 +63,6 @@ VignetteBuilder: knitr
 Config/Needs/website:
     mrgsolve,
     kableExtra,
-    PKPDsim
+    PKPDsim,
+    rxode2
 
