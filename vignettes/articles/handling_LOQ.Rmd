@@ -105,28 +105,32 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=
 ```
 
 # Design evaluation
-Next, we evaluate the initial design. We see that the relative standard error of the parameters  (in percent) are relatively well estimated with this design except for the proportional RUV.
+Next, we evaluate the initial design. 
 
 ```{r}
 eval_full <- evaluate_design(poped_db)
+round(eval_full$rse)
 ```
 
-```{r,echo=FALSE}
+We see that the relative standard error of the parameters  (in percent) are relatively well estimated with this initial design except for the proportional RUV parameter (`sig_prop`).
+
+
+```{r,echo=FALSE,eval=FALSE}
 kable(
   data.frame("RSE"=round(eval_full$rse)), 
-  booktabs = TRUE,
-  caption = 'Expected parameter RSE (in %) for the initial design.'
+  booktabs = TRUE#,
+  #caption = 'Expected parameter RSE (in %) for the initial design.'
 )  %>%  kable_styling("striped",full_width = F)
 
 ```
 
 # LOQ handling
 
-We assume that the LOQ level is at 2 concentration units.
+We assume that the LOQ level is at 2 concentration units. Here shown as a red dotted line.
 ```{r}
 library(ggplot2)
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T) + 
-  geom_hline(yintercept = 2,color="red",linetype="dotted")
+  geom_hline(yintercept = 2,color="red",linetype="dotted",linewidth=1)
 ```
 
 
@@ -169,7 +173,7 @@ testthat::expect_equal(eval_red$ofv,eval_D2$ofv)
 testthat::expect_equal(eval_red$rse,eval_D2$rse)
 ```
 
-Predicted parameter uncertainty for the three methods is shown below. We see that the uncertainty is generally higher with the LOQ evaluations (as expected).  We also see that because the D2 method ignores data that is below LOQ (the last observation in the design), then the predictions of uncertainty are significantly larger.
+Predicted parameter uncertainty for the three methods is shown in the table below (as relative standard error, RSE, in percent). We see that the uncertainty is generally higher with the LOQ evaluations (as expected).  We also see that because the D2 method ignores data that is below LOQ (the last observation in the design), then the predictions of uncertainty are significantly larger.
 
 ```{r origRSE,echo=FALSE}
 eval_rse <-
@@ -178,15 +182,14 @@ eval_rse <-
                  "D6"=round(eval_D6$rse),
                  "D2"=round(eval_D2$rse))
 
-```
-
-```{r,echo=FALSE}
 knitr::kable(
   eval_rse, booktabs = TRUE,
-  caption = 'RSE (in %) for the initial design using different methods of handling LOQ.'
+  #caption = 'RSE (in %) for the initial design using different methods of handling LOQ.'
 ) %>%  kable_styling("striped",full_width = F)
 
+
 ```
+
 
 ## ULOQ handling
 

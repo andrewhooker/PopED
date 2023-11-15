@@ -60,3 +60,7 @@ Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
+Config/Needs/website:
+    mrgsolve,
+    kableExtra
+
