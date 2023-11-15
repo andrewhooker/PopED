@@ -4,7 +4,8 @@ subtitle: "Optimization with a model for warfarin"
 author: "Andrew Hooker"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  bookdown::html_document2:
+  rmarkdown::html_document:
+  #bookdown::html_document2:
     toc: true
     toc_depth: 3
     toc_float:
@@ -15,6 +16,7 @@ output:
     #fig_height: 5
 bibliography: ["handling_LOQ.bib"]
 biblio-style: "apalike"
+#biblio-style: apa
 link-citations: true
 editor_options: 
   chunk_output_type: console
@@ -310,13 +312,16 @@ knitr::kable(
 ) %>%  kable_styling("striped",full_width = F)
 ```
 
+`r if (knitr::is_html_output()) '# References {-}'`
+<div id="refs"></div>
+
 # Version information {-}
 
 ```{r session}
 sessionInfo()
 ```
 
-`r if (knitr::is_html_output()) '# References {-}'`
+
 
 
 
