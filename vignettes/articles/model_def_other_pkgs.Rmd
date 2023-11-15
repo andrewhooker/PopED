@@ -15,10 +15,6 @@ output:
     #fig_height: 5
 #bibliography: ["blq.bib"]
 #biblio-style: "apalike"
-vignette: >
-  %\VignetteIndexEntry{Defining models for PopED using R based PKPD simulators}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 link-citations: true
 editor_options: 
   chunk_output_type: console
