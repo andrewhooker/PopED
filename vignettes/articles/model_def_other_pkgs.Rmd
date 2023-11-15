@@ -3,7 +3,7 @@ title: "Defining models for PopED using R based PKPD simulators"
 author: "Andrew Hooker, Ron Keizer and Vijay Ivaturi"
 #date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  rmarkdown::html_vignette:
+  rmarkdown::html_document:
   #bookdown::html_document2:
     toc: true
     toc_depth: 3
@@ -78,7 +78,7 @@ We will use a one-compartment with linear absorption population pharmacokinetic 
 <!-- knitr::include_graphics("model_def_other_pkgs_1-comp-lin-abs.png") -->
 <!-- ``` -->
 
-![](model_def_other_pkgs_1-comp-lin-abs.png)
+![](model_def_other_pkgs_img/model_def_other_pkgs_1-comp-lin-abs.png)
 
 
 This model can be described with the following set of ODEs:
@@ -618,7 +618,7 @@ kable(
 ) %>%  kable_styling("striped",full_width = F) 
 ```
 
-![](model_def_other_pkgs_compare_speed.png)
+![](model_def_other_pkgs_img/model_def_other_pkgs_compare_speed.png)
 
 
 # Version information {-}

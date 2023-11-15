@@ -1,13 +1,15 @@
-url: https://andrewhooker.github.io/PopED/
 template:
   bootstrap: 5
-  #bootswatch: cerulean
-  #bootswatch: paper
-  bootswatch: Flatly
+  bootswatch: spacelab
+  #litera
+  #spacelab 
+  #flatly
 
 development:
   mode: release
   
+url: https://andrewhooker.github.io/PopED/
+
 reference:
   - title: General information
     contents:
