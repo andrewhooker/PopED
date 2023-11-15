@@ -31,9 +31,9 @@ calc_ofv_and_fim(
 \arguments{
 \item{poped.db}{A PopED database.}
 
-\item{ofv}{The current ofv.  If other than zero then this values is simply returned unchanged.}
+\item{ofv}{The current ofv.  If other than zero then this value is simply returned unchanged.}
 
-\item{fim}{The current FIM. If other than zero then this values is simply returned unchanged.}
+\item{fim}{The current FIM. If other than zero then this value is simply returned unchanged.}
 
 \item{d_switch}{\itemize{
 \item \bold{******START OF CRITERION SPECIFICATION OPTIONS**********}}
