@@ -255,11 +255,17 @@ optim_full <- poped_optim(poped_db, opt_xt = TRUE,
 ```
 
 ```{r,eval=run_optimizations,echo=FALSE}
-save(optim_D6,optim_D2,optim_full,file = "optim_warf.RData")
+#save(optim_D6,optim_D2,optim_full,file = "optim_warf.RData")
+saveRDS(optim_D6,file = file.path("handling_LOQ_data","optim_D6.rds"))
+saveRDS(optim_D2,file = file.path("handling_LOQ_data","optim_D2.rds"))
+saveRDS(optim_full,file = file.path("handling_LOQ_data","optim_full.rds"))
 ```
 
 ```{r,eval=!run_optimizations,echo=FALSE}
-load(file = "optim_warf.RData")
+#load(file = "optim_warf.RData")
+optim_D6 <- readRDS(file = file.path("handling_LOQ_data","optim_D6.rds"))
+optim_D2 <- readRDS(file = file.path("handling_LOQ_data","optim_D2.rds"))
+optim_full <- readRDS(file = file.path("handling_LOQ_data","optim_full.rds"))
 ```
 
 All designs together in one plot show how the different handling of BLQ data results in different optimal designs.
