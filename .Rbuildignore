@@ -28,3 +28,4 @@
 ^vignettes/optim_warf\.RData$
 ^CRAN-RELEASE$
 ^\.github$
+^vignettes/articles$
