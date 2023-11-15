@@ -1,0 +1,13 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  handling_LOQ: handling_LOQ.html
+  model_def_other_pkgs: model_def_other_pkgs.html
+  examples: examples.html
+  intro-poped: intro-poped.html
+last_built: 2023-11-15T20:14Z
+urls:
+  reference: https://andrewhooker.github.io/PopED/reference
+  article: https://andrewhooker.github.io/PopED/articles
+
