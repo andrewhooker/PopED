@@ -1,11 +1,12 @@
-templates:
-  params:
-    #bootswatch: cerulean
-    #bootswatch: paper
-    bootswatch: Flatly
+url: https://andrewhooker.github.io/PopED/
+template:
+  bootstrap: 5
+  #bootswatch: cerulean
+  #bootswatch: paper
+  bootswatch: Flatly
 
 development:
-  mode: auto
+  mode: release
   
 reference:
   - title: General information
