@@ -1,4 +1,4 @@
-/* file tmdd_qss_one_target.c */
+/* file one_comp_oral_CL.c */
 #include <R.h>
 static double parms[3];
 #define CL parms[0]
@@ -24,4 +24,4 @@ void derivs (int *neq, double *t, double *y, double *ydot,
   yout[0] = y[0]+y[1];
 }
 
-/* END file tmdd_qss_one_target.c */
+/* END file one_comp_oral_CL.c */
