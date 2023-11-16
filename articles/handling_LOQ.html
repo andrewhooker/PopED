@@ -103,16 +103,16 @@ Hooker</h4>
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED/">PopED</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"PopED"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] '0.6.0.9002'</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="define-a-model">Define a model<a class="anchor" aria-label="anchor" href="#define-a-model"></a>
 </h2>
 <p>Here we define, as an example, a one-compartment pharmacokinetic
 model with linear absorption (analytic solution) in PopED <span class="citation">(<a href="#ref-Nyberg2012a" role="doc-biblioref">Nyberg
 et al. 2012</a>)</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED/">PopED</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"PopED"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] '0.6.0.9002'</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ff</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model_switch</span>,<span class="va">xt</span>,<span class="va">parameters</span>,<span class="va">poped.db</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span></span>
@@ -138,10 +138,9 @@ variability (RUV) model, predefined in PopED as the function
 <h2 id="define-an-initial-design-and-design-space">Define an initial design and design space<a class="anchor" aria-label="anchor" href="#define-an-initial-design-and-design-space"></a>
 </h2>
 <p>Now we define the model parameter values, the initial design and
-design space for optimization.</p>
-<p>We define model parameters similar to the Warfarin example from the
-software comparison in <span class="citation">Nyberg et al. (<a href="#ref-nyberg2015" role="doc-biblioref">2015</a>)</span> and an
-arbitrary design of two groups of 20 individuals.</p>
+design space for optimization. We define model parameters similar to the
+Warfarin example from the software comparison in <span class="citation">Nyberg et al. (<a href="#ref-nyberg2015" role="doc-biblioref">2015</a>)</span> and an arbitrary design of one
+group of 32 individuals.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">poped_db</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span></span>
@@ -164,9 +163,9 @@ arbitrary design of two groups of 20 individuals.</p>
 <div class="section level2">
 <h2 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
 </h2>
-<p>First it may make sense to check your model and design to make sure
-you get what you expect when simulating data. Here we plot the model
-typical values for the two groups:</p>
+<p>First it may make sense to check the model and design to make sure we
+get what we expect when simulating data. Here we plot the model typical
+value and a 95% prediction interval (PI) for the intial design:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span>, model_num_points <span class="op">=</span> <span class="fl">500</span>,facet_scales <span class="op">=</span> <span class="st">"free"</span>,PI<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/simulate_without_BSV-1.png" width="700"></p>
@@ -177,12 +176,87 @@ typical values for the two groups:</p>
 <p>Next, we evaluate the initial design.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_full</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       CL        V       KA     d_CL      d_V     d_KA sig_prop  sig_add </span></span>
-<span><span class="co">#&gt;        5        4       15       34       70       28       89       36</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_full</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span></span></code></pre></div>
+<table class="table table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+RSE
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CL
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KA
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_CL
+</td>
+<td style="text-align:right;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_V
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_KA
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sig_prop
+</td>
+<td style="text-align:right;">
+89
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sig_add
+</td>
+<td style="text-align:right;">
+36
+</td>
+</tr>
+</tbody>
+</table>
 <p>We see that the relative standard error of the parameters (in
 percent) are relatively well estimated with this initial design except
-for the proportional RUV parameter (<code>sig_prop</code>).</p>
+for the between subject variability parameter for volume of distribution
+(<code>d_V</code>) and the proportional RUV parameter
+(<code>sig_prop</code>).</p>
 </div>
 <div class="section level2">
 <h2 id="loq-handling">LOQ handling<a class="anchor" aria-label="anchor" href="#loq-handling"></a>
@@ -194,25 +268,37 @@ as a red dotted line.</p>
 <span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span>, model_num_points <span class="op">=</span> <span class="fl">500</span>,facet_scales <span class="op">=</span> <span class="st">"free"</span>,PI<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">2</span>,color<span class="op">=</span><span class="st">"red"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span>,linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>We use optimization criteria based on the D6
-(<code>loq_method=1</code> which is the default) and D2
-(<code>loq_method=2</code>) methods from <span class="citation">Vong et
-al. (<a href="#ref-vong2012" role="doc-biblioref">2012</a>)</span>. For
-the D6 method, which has been shown to be a better method in comparison
-to SSE studies, we have updated the method to only investigate points
-where the 95% PI overlaps LOQ, otherwise we set the design point to
-either no information or full information. Further we filter out
-situations with very low probabilities
-(<code>loq_prob_limit = 0.001</code>). Both the CI% and the low
-probability limit can be specified in the calculation (default values
-are <code>loq_PI_conf_level = 0.95</code> and
-<code>loq_prob_limit = 0.001</code>). In this way we can get the D6
-method to compute in reasonable time-frames even for larger number of
-design samples.</p>
-<p>Here we can evaluate the design with both methods and test the speed
-of computation. We see that D6 is significantly slower than D2 (but D6
-should be a more accurate representation of the RSE expected using M3
-estimation methods).</p>
+<p>To evaluate the designs we use the design evaluation criteria based
+on the “integration and FIM scaling” method (<code>loq_method=1</code>
+which is the default) and the “omit observations where PRED&lt;LOQ”
+method (<code>loq_method=2</code>) from <span class="citation">Vong et
+al. (<a href="#ref-vong2012" role="doc-biblioref">2012</a>)</span>
+(referred to as the D6 and D2 methods, respectively, in the presentation
+by Vong et al.). In the D6 method we:</p>
+<ol style="list-style-type: decimal">
+<li><p>Enumerate all permutations of each sample point being
+quantifiable or not (below the lower LOQ, or above the upper LOQ). If
+sample points have an expected prediction interval (default is 95%,
+<code>loq_PI_conf_level = 0.95</code>) that does not overlap the LOQ
+then the design point is assumed to either always be observed or to
+always be outside the limit of quantification.</p></li>
+<li><p>Compute the probability of each permutation occurring, filtering
+out potential realized designs with very low probabilities (default is
+<code>loq_prob_limit = 0.001</code>).</p></li>
+<li><p>Evalaute the Fisher Information Matrix (FIM) for all remaining
+design permutations, assuming no information from any design point if,
+for that permutation, it is not in within the limits of
+quantification.</p></li>
+<li><p>Take the weighted sum of the resulting information
+matrices.</p></li>
+</ol>
+<p>The D2 method is a simplification of this process where all samples
+with a typical value prediction (PRED) below the lower LOQ or above
+upper LOQ are removed from the design before calculating the FIM.</p>
+<p>Here we evaluate the initial design with both methods and test the
+speed of the computations. We see that D6 is significantly slower than
+D2 (but D6 should be a more accurate representation of the RSE expected
+using M3 estimation methods).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">e_time_D6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
@@ -223,11 +309,12 @@ estimation methods).</p>
 <span>  <span class="va">eval_D2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,loq<span class="op">=</span><span class="fl">2</span>, loq_method<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"D6 evaluation time: "</span>,<span class="va">e_time_D6</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"D2 evaluation time: "</span>,<span class="va">e_time_D2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"\n"</span> <span class="op">)</span></span>
-<span><span class="co">#&gt; D6 evaluation time:  0.047 </span></span>
-<span><span class="co">#&gt; D2 evaluation time:  0.007</span></span></code></pre></div>
-<p>The D2 nmethod is the same as removing the last data point</p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"D6 evaluation time: "</span>,<span class="va">e_time_D6</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"seconds \n"</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"D2 evaluation time: "</span>,<span class="va">e_time_D2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">"deconds \n"</span> <span class="op">)</span></span>
+<span><span class="co">#&gt; D6 evaluation time:  0.047 seconds </span></span>
+<span><span class="co">#&gt; D2 evaluation time:  0.007 deconds</span></span></code></pre></div>
+<p>The D2 method is the same as removing the last design point, as you
+can se below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">poped_db_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create.poped.database.html">create.poped.database</a></span><span class="op">(</span></span>
 <span>    ff_fun<span class="op">=</span><span class="va">ff</span>,</span>
@@ -247,12 +334,17 @@ estimation methods).</p>
 <span><span class="va">eval_red</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_2</span><span class="op">)</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="va">eval_red</span><span class="op">$</span><span class="va">ofv</span>,<span class="va">eval_D2</span><span class="op">$</span><span class="va">ofv</span><span class="op">)</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="va">eval_red</span><span class="op">$</span><span class="va">rse</span>,<span class="va">eval_D2</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span></span></code></pre></div>
-<p>Predicted parameter uncertainty for the three methods is shown in the
-table below (as relative standard error, RSE, in percent). We see that
-the uncertainty is generally higher with the LOQ evaluations (as
-expected). We also see that because the D2 method ignores data that is
-below LOQ (the last observation in the design), then the predictions of
-uncertainty are significantly larger.</p>
+<p>The predicted parameter uncertainty for the three methods is shown in
+the table below (as relative standard error, RSE, in percent). We see
+that the uncertainty is generally higher with the LOQ evaluations (as
+expected). We also see that the predictions of uncertainty are
+significantly larger than the D6 method. This too is expected, because
+the D2 method ignores design points where the model PRED is below LOQ
+(the last observation in the design), whereas it appears from the
+previous figure that ~25% of the observations from the last design point
+will be above LOQ. The M6 method accounts for this probability that the
+last design point will have data above LOQ and is thus a more realistic
+assessment of the expected parameter uncertainty.</p>
 <table class="table table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -396,6 +488,7 @@ units:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">2</span>,color<span class="op">=</span><span class="st">"red"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span>,linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">7</span>,color<span class="op">=</span><span class="st">"blue"</span>,linetype<span class="op">=</span><span class="st">"dotted"</span>,linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="handling_LOQ_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p>We can then evaluate the design based on the D2 and D6 methods.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_ul_D6</span> <span class="op">&lt;-</span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span>,</span>
 <span>                loq<span class="op">=</span><span class="fl">2</span>,</span>
@@ -407,11 +500,17 @@ units:</p>
 <span>                                uloq<span class="op">=</span><span class="fl">7</span>,</span>
 <span>                                uloq_method<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Problems inverting the matrix. Results could be misleading.</span></span></code></pre></div>
+<p>And then look at the predicted RSE in percent.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eval_rse_2</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"Parameter"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">eval_full</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"No LOQ"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_full</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D6 (only LLOQ)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_D6</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D2 (only LLOQ)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_D2</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D6 (ULOQ and LLOQ)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_ul_D6</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D2 (ULOQ and LLOQ)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_ul_D2</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">eval_rse_2</span></span></code></pre></div>
 <table class="table table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-RSE (in %) for the initial design using different methods of handling
-LOQ and ULOQ.
-</caption>
 <thead><tr>
 <th style="text-align:left;">
 Parameter
@@ -600,9 +699,9 @@ sig_add
 <div class="section level2">
 <h2 id="design-optimization">Design optimization<a class="anchor" aria-label="anchor" href="#design-optimization"></a>
 </h2>
-<p>We can then optimize the design using the different methods of
-computing the FIM. Here we optimize only using lower LOQ.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Next, we optimize the design using the different methods of computing
+the FIM. Here we optimize only using the lower LOQ.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optim_D6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span><span class="op">(</span><span class="va">poped_db</span>, opt_xt <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                        parallel<span class="op">=</span><span class="cn">T</span>,</span>
 <span>                        loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -614,20 +713,16 @@ computing the FIM. Here we optimize only using lower LOQ.</p>
 <span></span>
 <span><span class="va">optim_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poped_optim.html">poped_optim</a></span><span class="op">(</span><span class="va">poped_db</span>, opt_xt <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                        parallel<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-All designs together in one plot show how the different handling of BLQ
-data results in different optimal designs.
-<div class="figure">
-<img src="handling_LOQ_files/figure-html/unnamed-chunk-15-1.png" alt="Design points for the apraoch ignoring LOQ, using the D2 method, and using the D6 method" width="700"><p class="caption">
-Design points for the apraoch ignoring LOQ, using the D2 method, and
-using the D6 method
-</p>
-</div>
-<p>Predictions using the D6 method from each of the optimizations shows
-the expected %RSE of the parameters if each design is used and the LOQ
-is at 2 concentration units. We see that D2 may be a reasonable strategy
-to optimize designs that are “good enough” if the D6 method is too slow
-for optimization.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>All designs points shown together in one plot to demonstrate how the
+different handling of BLQ data results in different optimal designs. The
+“full” design, ignoring LOQ, places a design point at the end of the
+sampling space, which will results in many observations below LOQ. Both
+the D2 and D6 methods push the design points to regions where fewer LOQ
+observations will occur.<br><img src="handling_LOQ_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p>To compare the effects of these different designs on parameter
+precision, we evaluate each of the optimal designs above using the D6
+method.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optim_full_D6</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">optim_full</span>, </span>
 <span>  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span>,</span>
 <span>                  loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -639,10 +734,18 @@ for optimization.</p>
 <span><span class="va">optim_D6_D6</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">optim_D6</span>, </span>
 <span>  <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span>,</span>
 <span>                  loq<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>The expected %RSE of the parameters is shown below. We see that the
+D6 optimized design gives, on average, the best parameter precision. The
+D2 optimal design stragetgy may be a reasonable obtain designs that are
+“good enough” if the D6 method is too slow for optimization.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">optim_rse_D6</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"Parameter"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">eval_full</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"No LOQ"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">optim_full_D6</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D6"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">optim_D6_D6</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span>,</span>
+<span>                 <span class="st">"D2"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">optim_D2_D6</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">optim_rse_D6</span></span></code></pre></div>
 <table class="table table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-RSE (in %) for the optimized designs evaluated using the D6 method.
-</caption>
 <thead><tr>
 <th style="text-align:left;">
 Parameter
@@ -802,7 +905,7 @@ Population Approach Group in Europe</em>. <a href="https://www.page-meeting.org/
 <div class="section level2">
 <h2 class="unnumbered" id="version-information">Version information<a class="anchor" aria-label="anchor" href="#version-information"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.2 (2023-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
