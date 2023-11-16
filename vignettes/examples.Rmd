@@ -1,7 +1,7 @@
 ---
 title: "Examples"
 author: "Giulia Lestini, Martin Fink and Andrew Hooker"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_vignette:
   # rmarkdown::html_document:

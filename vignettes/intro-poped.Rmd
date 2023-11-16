@@ -1,7 +1,7 @@
 ---
 title: "Introduction to PopED"
 author: "Andrew Hooker"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_vignette:
   #html_document:  

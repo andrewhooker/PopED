@@ -78,6 +78,8 @@ reference:
       - zeros
 
 navbar:
+  #bg: light
+  #type: dark
   structure:
     left:
     - home

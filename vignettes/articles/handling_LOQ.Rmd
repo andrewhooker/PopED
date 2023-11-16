@@ -2,7 +2,7 @@
 title: "Optimal design with LOQ data in PopED"
 subtitle: "Optimization with a model for warfarin"
 author: "Andrew Hooker"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_document:
   #bookdown::html_document2:
@@ -199,8 +199,8 @@ If needed we can also handle upper limits of quantification.  Lets assume we hav
 library(ggplot2)
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",
                       PI=T, PI_alpha = 0.1) + 
-  geom_hline(yintercept = 2,color="red",linetype="dotted") + 
-  geom_hline(yintercept = 7,color="blue",linetype="dotted")
+  geom_hline(yintercept = 2,color="red",linetype="dotted",linewidth=1) + 
+  geom_hline(yintercept = 7,color="blue",linetype="dotted",linewidth=1)
 ```
 
 ```{r}
