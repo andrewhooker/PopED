@@ -41,14 +41,16 @@ knitr::opts_chunk$set(
 run_optimizations <- FALSE
 ```
 
-```{r libs}
-library(PopED)
-packageVersion("PopED")
-```
+
 
 # Define a model
 
 Here we define, as an example, a one-compartment pharmacokinetic model with linear absorption (analytic solution) in PopED [@Nyberg2012a].
+
+```{r libs}
+library(PopED)
+packageVersion("PopED")
+```
 
 ```{r}
 ff <- function(model_switch,xt,parameters,poped.db){
@@ -73,9 +75,7 @@ We will use an additive and proportional residual unexplained variability (RUV) 
 
 # Define an initial design and design space
 
-Now we define the model parameter values, the initial design and design space for optimization.
-
-We define model parameters similar to the Warfarin example from the software comparison in @nyberg2015 and an arbitrary design of two groups of 20 individuals.
+Now we define the model parameter values, the initial design and design space for optimization. We define model parameters similar to the Warfarin example from the software comparison in @nyberg2015 and an arbitrary design of one group of 32 individuals.
 
 ```{r}
 poped_db <- 
@@ -99,7 +99,7 @@ poped_db <-
 
 
 # Simulation
-First it may make sense to check your model and design to make sure you get what you expect when simulating data.  Here we plot the model typical values for the two groups:
+First it may make sense to check the model and design to make sure we get what we expect when simulating data.  Here we plot the model typical value and a 95% prediction interval (PI) for the intial design:
 ```{r simulate_without_BSV}
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T)
 ```
@@ -107,15 +107,11 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=
 # Design evaluation
 Next, we evaluate the initial design. 
 
-```{r}
+```{r,results='hide'}
 eval_full <- evaluate_design(poped_db)
 round(eval_full$rse)
 ```
-
-We see that the relative standard error of the parameters  (in percent) are relatively well estimated with this initial design except for the proportional RUV parameter (`sig_prop`).
-
-
-```{r,echo=FALSE,eval=FALSE}
+```{r,echo=FALSE}
 kable(
   data.frame("RSE"=round(eval_full$rse)), 
   booktabs = TRUE#,
@@ -123,6 +119,7 @@ kable(
 )  %>%  kable_styling("striped",full_width = F)
 
 ```
+We see that the relative standard error of the parameters  (in percent) are relatively well estimated with this initial design except for the between subject variability parameter for volume of distribution (`d_V`) and the proportional RUV parameter (`sig_prop`).
 
 # LOQ handling
 
@@ -133,10 +130,19 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=
   geom_hline(yintercept = 2,color="red",linetype="dotted",linewidth=1)
 ```
 
+To evaluate the designs we use the design evaluation criteria based on the "integration and FIM scaling" method (`loq_method=1` which is the default) and the "omit observations where PRED<LOQ" method (`loq_method=2`) from @vong2012 (referred to as the D6 and D2 methods, respectively, in the presentation by Vong et al.). In the D6 method we:
 
-We use optimization criteria based on the D6 (`loq_method=1` which is the default) and D2 (`loq_method=2`) methods from @vong2012. For the D6 method, which has been shown to be a better method in comparison to SSE studies, we have updated the method to only investigate points where the 95% PI overlaps LOQ,  otherwise we set the design point to either no information or full information.  Further we filter out situations with very low probabilities (`loq_prob_limit = 0.001`). Both the CI% and the low probability limit can be specified in the calculation (default values are `loq_PI_conf_level = 0.95` and `loq_prob_limit = 0.001`).  In this way we can get the D6 method to compute in reasonable time-frames even for larger number of design samples.  
+1. Enumerate all permutations of each sample point being quantifiable or not (below the lower LOQ, or above the upper LOQ). If sample points have an expected prediction interval (default is 95%, `loq_PI_conf_level = 0.95`) that does not overlap the LOQ then the design point is assumed to either always be observed or to always be outside the limit of quantification. 
 
-Here we can evaluate the design with both methods and test the speed of computation.  We see that D6 is significantly slower than D2 (but D6 should be a more accurate representation of the RSE expected using M3 estimation methods).
+2. Compute the probability of each permutation occurring, filtering out potential realized designs with very low probabilities (default is `loq_prob_limit = 0.001`).
+
+3. Evalaute the Fisher Information Matrix (FIM) for all remaining design permutations, assuming no information from any design point if, for that permutation, it is not in within the limits of quantification. 
+
+4. Take the weighted sum of the resulting information matrices.
+
+The D2 method is a simplification of this process where all samples with a typical value prediction (PRED) below the lower LOQ or above upper LOQ are removed from the design before calculating the FIM. 
+
+Here we  evaluate the initial design with both methods and test the speed of the computations.  We see that D6 is significantly slower than D2 (but D6 should be a more accurate representation of the RSE expected using M3 estimation methods).
 ```{r}
 set.seed(1234)
 e_time_D6 <- system.time(
@@ -147,11 +153,11 @@ e_time_D2 <- system.time(
   eval_D2 <- evaluate_design(poped_db,loq=2, loq_method=2)
 )
 
-cat("D6 evaluation time: ",e_time_D6[1],"\n" )
-cat("D2 evaluation time: ",e_time_D2[1],"\n" )
+cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
+cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
 ```
 
-The D2 nmethod is the same as removing the last data point
+The D2 method is the same as removing the last design point, as you can se below.
 ```{r}
 poped_db_2 <- create.poped.database(
     ff_fun=ff,
@@ -173,7 +179,7 @@ testthat::expect_equal(eval_red$ofv,eval_D2$ofv)
 testthat::expect_equal(eval_red$rse,eval_D2$rse)
 ```
 
-Predicted parameter uncertainty for the three methods is shown in the table below (as relative standard error, RSE, in percent). We see that the uncertainty is generally higher with the LOQ evaluations (as expected).  We also see that because the D2 method ignores data that is below LOQ (the last observation in the design), then the predictions of uncertainty are significantly larger.
+The predicted parameter uncertainty for the three methods is shown in the table below (as relative standard error, RSE, in percent). We see that the uncertainty is generally higher with the LOQ evaluations (as expected).  We also see that the predictions of uncertainty are significantly larger than the D6 method. This too is expected, because the D2 method ignores design points where the model PRED is below LOQ (the last observation in the design), whereas it appears from the previous figure that ~25% of the observations from the last design point will be above LOQ. The M6 method accounts for this probability that the last design point will have data above LOQ and is thus a more realistic assessment of the expected parameter uncertainty.
 
 ```{r origRSE,echo=FALSE}
 eval_rse <-
@@ -203,6 +209,7 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",
   geom_hline(yintercept = 7,color="blue",linetype="dotted",linewidth=1)
 ```
 
+We can then evaluate the design based on the D2 and D6 methods.
 ```{r}
 eval_ul_D6 <-evaluate_design(poped_db,
                 loq=2,
@@ -216,7 +223,8 @@ eval_ul_D2 <- evaluate_design(poped_db,
 
 ```
 
-```{r origRSE2,echo=FALSE}
+And then look at the predicted RSE in percent.
+```{r origRSE2,results='hide'}
 eval_rse_2 <-
   tibble::tibble("Parameter"=names(eval_full$rse),
                  "No LOQ"=round(eval_full$rse),
@@ -224,6 +232,7 @@ eval_rse_2 <-
                  "D2 (only LLOQ)"=round(eval_D2$rse),
                  "D6 (ULOQ and LLOQ)"=round(eval_ul_D6$rse),
                  "D2 (ULOQ and LLOQ)"=round(eval_ul_D2$rse))
+eval_rse_2
 
 ```
 
@@ -231,14 +240,14 @@ eval_rse_2 <-
 knitr::kable(
   eval_rse_2, booktabs = TRUE,
   
-  caption = 'RSE (in %) for the initial design using different methods of handling LOQ and ULOQ.'
+  #caption = 'RSE (in %) for the initial design using different methods of handling LOQ and ULOQ.'
 )  %>%  kable_styling("striped",full_width = F)
 
 ```
 
 # Design optimization
 
-We can then optimize the design using the different methods of computing the FIM. Here we optimize only using lower LOQ. 
+Next, we optimize the design using the different methods of computing the FIM. Here we optimize only using the lower LOQ. 
 ```{r,eval=run_optimizations,results="hide"}
 optim_D6 <- poped_optim(poped_db, opt_xt = TRUE,
                         parallel=T,
@@ -268,10 +277,10 @@ optim_D2 <- readRDS(file = file.path("handling_LOQ_data","optim_D2.rds"))
 optim_full <- readRDS(file = file.path("handling_LOQ_data","optim_full.rds"))
 ```
 
-All designs together in one plot show how the different handling of BLQ data results in different optimal designs.
-```{r,fig.cap="Design points for the apraoch ignoring LOQ, using the D2 method, and using the D6 method",echo=FALSE}
+All designs points shown together in one plot to demonstrate how the different handling of BLQ data results in different optimal designs. The "full" design, ignoring LOQ, places a design point at the end of the sampling space, which will results in many observations below LOQ. Both the D2 and D6 methods push the design points to regions where fewer LOQ observations will occur.  
+```{r,echo=FALSE}
 p1 <- plot_model_prediction(optim_full$poped.db,sample.times = F,PI=T,PI_alpha = 0.1)
-p1 <- p1 + geom_hline(yintercept = 2,color="red",linetype="dotted")
+p1 <- p1 + geom_hline(yintercept = 2,color="red",linetype="dotted",linewidth=1)
 
 df_d2 <- model_prediction(optim_D2$poped.db)
 df_d2$Type="D2"
@@ -293,7 +302,7 @@ p1 <- p1 +
 p1
 ```
 
-Predictions using the D6 method from each of the optimizations shows the expected %RSE of the parameters if each design is used and the LOQ is at 2 concentration units.  We see that D2 may be a reasonable strategy to optimize designs that are "good enough" if the D6 method is too slow for optimization.  
+To compare the effects of these different designs on parameter precision, we evaluate each of the optimal designs above using the D6 method. 
 ```{r}
 optim_full_D6<- with(optim_full, 
   evaluate_design(poped.db,
@@ -309,15 +318,19 @@ optim_D6_D6<- with(optim_D6,
 
 ```
 
-```{r,echo=FALSE}
+The expected %RSE of the parameters is shown below.  We see that the D6 optimized design gives, on average, the best parameter precision. The D2 optimal design stragetgy may be a reasonable obtain designs that are "good enough" if the D6 method is too slow for optimization.  
+```{r,results='hide'}
 optim_rse_D6 <-
   tibble::tibble("Parameter"=names(eval_full$rse),
                  "No LOQ"=round(optim_full_D6$rse),
                  "D6"=round(optim_D6_D6$rse),
                  "D2"=round(optim_D2_D6$rse))
+optim_rse_D6
+```
+```{r,echo=FALSE}
 knitr::kable(
   optim_rse_D6, booktabs = TRUE,
-  caption = 'RSE (in %) for the optimized designs evaluated using the D6 method.'
+  #caption = 'RSE (in %) for the optimized designs evaluated using the D6 method.'
 ) %>%  kable_styling("striped",full_width = F)
 ```
 
