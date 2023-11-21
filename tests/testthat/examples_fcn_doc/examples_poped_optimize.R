@@ -75,20 +75,21 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
   bpop_vals_ed_ln
   
   ## -- Define initial design  and design space
-  poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.sd.CL",
-                                    fg_file="sfg",
-                                    fError_file="feps.add.prop",
-                                    bpop=bpop_vals_ed_ln, 
-                                    notfixed_bpop=c(1,1,1,0),
-                                    d=c(CL=0.07, V=0.02, KA=0.6), 
-                                    sigma=c(0.01,0.25),
-                                    groupsize=32,
-                                    xt=c( 0.5,1,2,6,24,36,72,120),
-                                    minxt=0,
-                                    maxxt=120,
-                                    a=70,
-                                    mina=0,
-                                    maxa=100)
+  poped.db <- create.poped.database(
+    ff_fun=ff.PK.1.comp.oral.sd.CL,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=bpop_vals_ed_ln, 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(0.01,0.25),
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100)
   
   # ED optimization using Random search (just a few samples here)
   output <- poped_optimize(poped.db,opt_xt=1,opt_a=1,rsit=10,d_switch=0)

@@ -1,6 +1,6 @@
 template:
   bootstrap: 5
-  bootswatch: spacelab
+  bootswatch: litera
   #litera
   #spacelab 
   #flatly

@@ -27,7 +27,7 @@ A list consisting of:
 \description{
 This is a structural model function that encodes the model described above.
 The function is suitable for input to the \code{\link{create.poped.database}} function using the
- \code{ff_file} argument.
+ \code{ff_fun} or \code{ff_file} argument.
 }
 \examples{
 

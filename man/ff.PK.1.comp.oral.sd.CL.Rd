@@ -28,7 +28,7 @@ A list consisting of:
 This is a structural model function that encodes a  model that is 
 one-compartment, oral absorption, single bolus dose, parameterized using CL.
 The function is suitable for input to the \code{\link{create.poped.database}} function using the
- \code{ff_file} argument.
+ \code{ff_fun} or \code{ff_file} argument.
 }
 \examples{
 library(PopED)

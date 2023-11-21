@@ -3,7 +3,7 @@
 #' This is a structural model function that encodes a  model that is 
 #' one-compartment, oral absorption, multiple bolus dose, parameterized using KE.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #' 
 #' @param model_switch a vector of values, the same size as \code{xt}, identifying which model 
 #' response should be computed for the 
@@ -43,7 +43,7 @@ ff.PK.1.comp.oral.md.KE <- function(model_switch,xt,parameters,poped.db){
 #' This is a structural model function that encodes a  model that is 
 #' one-compartment, oral absorption, multiple bolus dose, parameterized using CL.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #'
 #' @inheritParams ff.PK.1.comp.oral.md.KE
 #' 
@@ -77,7 +77,7 @@ ff.PK.1.comp.oral.md.CL <- function(model_switch,xt,parameters,poped.db){
 #' This is a structural model function that encodes a  model that is 
 #' one-compartment, oral absorption, single bolus dose, parameterized using KE.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #'
 #' @inheritParams ff.PK.1.comp.oral.md.KE
 #' 
@@ -111,7 +111,7 @@ ff.PK.1.comp.oral.sd.KE <- function(model_switch,xt,parameters,poped.db){
 #' This is a structural model function that encodes a  model that is 
 #' one-compartment, oral absorption, single bolus dose, parameterized using CL.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #'
 #' @inheritParams ff.PK.1.comp.oral.md.KE
 #' 
@@ -141,7 +141,7 @@ ff.PK.1.comp.oral.sd.CL <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' This is a structural model function that encodes the model described above.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #'
 #' @inheritParams ff.PK.1.comp.oral.md.KE
 #' 
@@ -180,7 +180,7 @@ ff.PKPD.1.comp.sd.CL.emax <- function(model_switch,xt,parameters,poped.db){
 #' 
 #' This is a structural model function that encodes the model described above.
 #' The function is suitable for input to the \code{\link{create.poped.database}} function using the
-#'  \code{ff_file} argument.
+#'  \code{ff_fun} or \code{ff_file} argument.
 #'
 #' @inheritParams ff.PK.1.comp.oral.md.KE
 #' 
