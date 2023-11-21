@@ -293,7 +293,7 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5639ca581ca8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564e4b3655b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
@@ -308,28 +308,27 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- Define initial design  and design space</span></span></span>
-<span class="r-in"><span><span class="va">poped.db</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_file<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.sd.CL"</span>,</span></span>
-<span class="r-in"><span>                                  fg_file<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
-<span class="r-in"><span>                                  fError_file<span class="op">=</span><span class="st">"feps.prop"</span>,</span></span>
-<span class="r-in"><span>                                  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>                                  notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>                                  sigma<span class="op">=</span><span class="fl">0.01</span>,</span></span>
-<span class="r-in"><span>                                  groupsize<span class="op">=</span><span class="fl">32</span>,</span></span>
-<span class="r-in"><span>                                  xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">24</span>,<span class="fl">36</span>,<span class="fl">72</span>,<span class="fl">120</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                  minxt<span class="op">=</span><span class="fl">0</span>,</span></span>
-<span class="r-in"><span>                                  maxxt<span class="op">=</span><span class="fl">120</span>,</span></span>
-<span class="r-in"><span>                                  a<span class="op">=</span><span class="fl">70</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'sfg': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(filename, "r", encoding = encoding):</span> cannot open the connection</span>
+<span class="r-in"><span><span class="va">poped.db</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ff_fun<span class="op">=</span><span class="va">ff.PK.1.comp.oral.sd.CL</span>,</span></span>
+<span class="r-in"><span>  fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
+<span class="r-in"><span>  fError_fun<span class="op">=</span><span class="va">feps.prop</span>,</span></span>
+<span class="r-in"><span>  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  sigma<span class="op">=</span><span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>  groupsize<span class="op">=</span><span class="fl">32</span>,</span></span>
+<span class="r-in"><span>  xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">24</span>,<span class="fl">36</span>,<span class="fl">72</span>,<span class="fl">120</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  minxt<span class="op">=</span><span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  maxxt<span class="op">=</span><span class="fl">120</span>,</span></span>
+<span class="r-in"><span>  a<span class="op">=</span><span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##  create plot of model without variability </span></span></span>
 <span class="r-in"><span><span class="fu">plot_model_prediction</span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-plt img"><img src="plot_model_prediction-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##  create plot of model with variability by simulating from OMEGA and SIGMA</span></span></span>
 <span class="r-in"><span><span class="fu">plot_model_prediction</span><span class="op">(</span><span class="va">poped.db</span>,IPRED<span class="op">=</span><span class="cn">TRUE</span>,DV<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-plt img"><img src="plot_model_prediction-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##  create plot of model with variability by </span></span></span>
 <span class="r-in"><span><span class="co">##  computing the expected variance (using an FO approximation) </span></span></span>
@@ -338,7 +337,7 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-in"><span><span class="co">##  computation is faster but less accurate </span></span></span>
 <span class="r-in"><span><span class="co">##  compared to using DV=TRUE (and groupsize_sim = 500)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_model_prediction</span><span class="op">(</span><span class="va">poped.db</span>,PI<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-plt img"><img src="plot_model_prediction-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##-- Model: One comp first order absorption + inhibitory imax</span></span></span>
 <span class="r-in"><span><span class="co">## -- works for both mutiple and single dosing  </span></span></span>
@@ -398,9 +397,9 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">poped.db</span> <span class="op">&lt;-</span> </span></span>
 <span class="r-in"><span>  <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    ff_fun<span class="op">=</span><span class="st">"ff"</span>,</span></span>
-<span class="r-in"><span>    fError_fun<span class="op">=</span><span class="st">"feps"</span>,</span></span>
-<span class="r-in"><span>    fg_fun<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
+<span class="r-in"><span>    ff_fun<span class="op">=</span><span class="va">ff</span>,</span></span>
+<span class="r-in"><span>    fError_fun<span class="op">=</span><span class="va">feps</span>,</span></span>
+<span class="r-in"><span>    fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
 <span class="r-in"><span>    groupsize<span class="op">=</span><span class="fl">20</span>,</span></span>
 <span class="r-in"><span>    m<span class="op">=</span><span class="fl">3</span>,</span></span>
 <span class="r-in"><span>    bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>V<span class="op">=</span><span class="fl">72.8</span>,KA<span class="op">=</span><span class="fl">0.25</span>,CL<span class="op">=</span><span class="fl">3.75</span>,Favail<span class="op">=</span><span class="fl">0.9</span>,</span></span>
@@ -420,12 +419,11 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-in"><span>    maxa<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>DOSE<span class="op">=</span><span class="fl">200</span>,TAU<span class="op">=</span><span class="fl">40</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    mina<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>DOSE<span class="op">=</span><span class="fl">0</span>,TAU<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    ourzero<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in do.call(poped.db$model$fg_pointer, list(0, 0, 0, 0, zeros(poped.db$parameters$NumDocc,     poped.db$parameters$NumOcc))):</span> 'what' must be a function or character string</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##  create plot of model and design </span></span></span>
 <span class="r-in"><span><span class="fu">plot_model_prediction</span><span class="op">(</span><span class="va">poped.db</span>,facet_scales<span class="op">=</span><span class="st">"free"</span>,</span></span>
 <span class="r-in"><span>                      model.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK"</span>,<span class="st">"PD"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-plt img"><img src="plot_model_prediction-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">##  create plot of model with variability by  </span></span></span>
 <span class="r-in"><span><span class="co">##  computing the expected variance (using an FO approximation) </span></span></span>
@@ -437,7 +435,7 @@ forget to load the ggplot2 library using <code><a href="https://ggplot2.tidyvers
 <span class="r-in"><span>                      model.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK"</span>,<span class="st">"PD"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      PI<span class="op">=</span><span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      separate.groups <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-plt img"><img src="plot_model_prediction-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

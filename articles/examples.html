@@ -786,9 +786,9 @@ the previously created database.</p>
 of describing the same model.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 2.855 seconds.</span></span>
+<span><span class="co">#&gt; Elapsed time: 2.788 seconds.</span></span>
 <span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db.Rcpp</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 1.359 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 1.339 seconds.</span></span></code></pre></div>
 <p>The difference is noticeable and gets larger for more complex ODE
 models.</p>
 </div>
@@ -1129,7 +1129,7 @@ normal distribution with mean=70 and sd=10
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db_2</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ev</span><span class="op">$</span><span class="va">ofv</span>,<span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 42.6</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 42.7</span></span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ev</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -1148,11 +1148,11 @@ normal distribution with mean=70 and sd=10
 </tr>
 <tr class="odd">
 <td align="left">WT_CL</td>
-<td align="right">26</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">WT_V</td>
-<td align="right">20</td>
+<td align="right">19</td>
 </tr>
 <tr class="odd">
 <td align="left">d_CL</td>
@@ -1214,50 +1214,50 @@ experiments given the expected weight distribution.</p>
 <td align="left">0%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">20.84</td>
-<td align="right">16.06</td>
+<td align="right">25.05</td>
+<td align="right">19.20</td>
 <td align="right">21.02</td>
-<td align="right">21.94</td>
+<td align="right">21.95</td>
 <td align="right">10.06</td>
 </tr>
 <tr class="even">
 <td align="left">25%</td>
 <td align="right">3.25</td>
 <td align="right">3.32</td>
-<td align="right">27.43</td>
-<td align="right">21.03</td>
+<td align="right">27.54</td>
+<td align="right">21.11</td>
 <td align="right">21.03</td>
 <td align="right">21.95</td>
 <td align="right">10.06</td>
 </tr>
 <tr class="odd">
 <td align="left">50%</td>
-<td align="right">3.27</td>
-<td align="right">3.34</td>
-<td align="right">29.21</td>
-<td align="right">22.38</td>
+<td align="right">3.26</td>
+<td align="right">3.33</td>
+<td align="right">29.11</td>
+<td align="right">22.31</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="even">
 <td align="left">75%</td>
-<td align="right">3.31</td>
-<td align="right">3.38</td>
-<td align="right">32.91</td>
-<td align="right">25.22</td>
+<td align="right">3.30</td>
+<td align="right">3.37</td>
+<td align="right">32.84</td>
+<td align="right">25.17</td>
 <td align="right">21.03</td>
 <td align="right">21.96</td>
 <td align="right">10.07</td>
 </tr>
 <tr class="odd">
 <td align="left">100%</td>
-<td align="right">3.69</td>
-<td align="right">3.77</td>
-<td align="right">41.23</td>
-<td align="right">31.59</td>
+<td align="right">3.44</td>
+<td align="right">3.52</td>
+<td align="right">37.90</td>
+<td align="right">29.04</td>
 <td align="right">21.03</td>
-<td align="right">21.97</td>
+<td align="right">21.96</td>
 <td align="right">10.08</td>
 </tr>
 </tbody>
@@ -1935,7 +1935,7 @@ evaluation or optimization arguments:</p>
 <span><span class="co">#&gt;   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 </span></span>
 <span><span class="co">#&gt; SIGMA[2,2] </span></span>
 <span><span class="co">#&gt;  25.341368</span></span>
-<span><span class="co">#&gt; Elapsed time: 0.141 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 0.142 seconds.</span></span></code></pre></div>
 <p>We can see that the result, based on MC sampling, is somewhat
 variable with so few samples.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">

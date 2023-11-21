@@ -948,7 +948,7 @@ Default is fixed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5639ca581ca8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564e4b3655b8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
@@ -963,25 +963,48 @@ Default is fixed.</p></dd>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- Define initial design  and design space</span></span></span>
-<span class="r-in"><span><span class="va">poped.db</span> <span class="op">&lt;-</span> <span class="fu">create.poped.database</span><span class="op">(</span>ff_file<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.sd.CL"</span>,</span></span>
-<span class="r-in"><span>                                  fg_file<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
-<span class="r-in"><span>                                  fError_file<span class="op">=</span><span class="st">"feps.prop"</span>,</span></span>
-<span class="r-in"><span>                                  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>                                  notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>                                  sigma<span class="op">=</span><span class="fl">0.01</span>,</span></span>
-<span class="r-in"><span>                                  groupsize<span class="op">=</span><span class="fl">32</span>,</span></span>
-<span class="r-in"><span>                                  xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">24</span>,<span class="fl">36</span>,<span class="fl">72</span>,<span class="fl">120</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                  minxt<span class="op">=</span><span class="fl">0</span>,</span></span>
-<span class="r-in"><span>                                  maxxt<span class="op">=</span><span class="fl">120</span>,</span></span>
-<span class="r-in"><span>                                  a<span class="op">=</span><span class="fl">70</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'sfg': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(filename, "r", encoding = encoding):</span> cannot open the connection</span>
+<span class="r-in"><span><span class="va">poped.db</span> <span class="op">&lt;-</span> <span class="fu">create.poped.database</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ff_fun<span class="op">=</span><span class="va">ff.PK.1.comp.oral.sd.CL</span>,</span></span>
+<span class="r-in"><span>  fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
+<span class="r-in"><span>  fError_fun<span class="op">=</span><span class="va">feps.prop</span>,</span></span>
+<span class="r-in"><span>  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  sigma<span class="op">=</span><span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>  groupsize<span class="op">=</span><span class="fl">32</span>,</span></span>
+<span class="r-in"><span>  xt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">24</span>,<span class="fl">36</span>,<span class="fl">72</span>,<span class="fl">120</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  minxt<span class="op">=</span><span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  maxxt<span class="op">=</span><span class="fl">120</span>,</span></span>
+<span class="r-in"><span>  a<span class="op">=</span><span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## evaluate initial design</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ofv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 52.44799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     CL          V        KA         d_CL          d_V</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CL         19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V            -21.83655  20.656071 -1.807099 0.000000e+00     0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KA            -8.62214  -1.807099 51.729039 0.000000e+00     0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_CL           0.00000   0.000000  0.000000 3.107768e+03    10.728786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_V            0.00000   0.000000  0.000000 1.072879e+01 27307.089308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_KA           0.00000   0.000000  0.000000 2.613561e-02     3.265608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SIGMA[1,1]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   d_KA   SIGMA[1,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CL          0.00000000      0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V           0.00000000      0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KA          0.00000000      0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_CL        0.02613561    521.54030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_V         3.26560786  11214.21071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d_KA       41.81083599     71.08764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SIGMA[1,1] 71.08763902 806176.95068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

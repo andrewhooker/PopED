@@ -247,7 +247,7 @@ to compute the hessian.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5639cc3a7808&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564e4be77e58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
@@ -277,9 +277,9 @@ to compute the hessian.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Favail 0      1.00 0.000000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- Define initial design  and design space</span></span></span>
-<span class="r-in"><span><span class="va">poped.db.n</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_file<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.sd.CL"</span>,</span></span>
-<span class="r-in"><span>                                    fg_file<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
-<span class="r-in"><span>                                    fError_file<span class="op">=</span><span class="st">"feps.add.prop"</span>,</span></span>
+<span class="r-in"><span><span class="va">poped.db.n</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_fun<span class="op">=</span><span class="va">ff.PK.1.comp.oral.sd.CL</span>,</span></span>
+<span class="r-in"><span>                                    fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
+<span class="r-in"><span>                                    fError_fun<span class="op">=</span><span class="va">feps.add.prop</span>,</span></span>
 <span class="r-in"><span>                                    bpop<span class="op">=</span><span class="va">bpop_vals_ed_n</span>, </span></span>
 <span class="r-in"><span>                                    notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                    d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
@@ -291,16 +291,13 @@ to compute the hessian.</p></dd>
 <span class="r-in"><span>                                    a<span class="op">=</span><span class="fl">70</span>,</span></span>
 <span class="r-in"><span>                                    mina<span class="op">=</span><span class="fl">0</span>,</span></span>
 <span class="r-in"><span>                                    maxa<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'sfg': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(filename, "r", encoding = encoding):</span> cannot open the connection</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ED evaluate using LaPlace approximation </span></span></span>
 <span class="r-in"><span><span class="fu"><a href="tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluate.e.ofv.fim.html">evaluate.e.ofv.fim</a></span><span class="op">(</span><span class="va">poped.db.n</span>,use_laplace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>; <span class="fu"><a href="toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db.n' not found</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Elapsed time: 0.001 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Elapsed time: 0.905 seconds.</span>
 <span class="r-in"><span><span class="va">output</span><span class="op">$</span><span class="va">E_ofv</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.331515e+24</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  </span></span>
@@ -338,9 +335,9 @@ to compute the hessian.</p></dd>
 <span class="r-in"><span>  <span class="va">bpop_vals_ed_ln</span></span></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span>  <span class="co">## -- Define initial design  and design space</span></span></span>
-<span class="r-in"><span>  <span class="va">poped.db.ln</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_file<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.sd.CL"</span>,</span></span>
-<span class="r-in"><span>                                       fg_file<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
-<span class="r-in"><span>                                       fError_file<span class="op">=</span><span class="st">"feps.add.prop"</span>,</span></span>
+<span class="r-in"><span>  <span class="va">poped.db.ln</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_fun<span class="op">=</span><span class="va">ff.PK.1.comp.oral.sd.CL</span>,</span></span>
+<span class="r-in"><span>                                       fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
+<span class="r-in"><span>                                       fError_fun<span class="op">=</span><span class="va">feps.add.prop</span>,</span></span>
 <span class="r-in"><span>                                       bpop<span class="op">=</span><span class="va">bpop_vals_ed_ln</span>, </span></span>
 <span class="r-in"><span>                                       notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                       d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>

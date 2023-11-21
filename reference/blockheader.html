@@ -240,7 +240,7 @@ except for diagnostic purposes.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5639cc3a7808&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564e4be77e58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
@@ -371,9 +371,9 @@ except for diagnostic purposes.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span>  </span></span>
-<span class="r-in"><span><span class="va">poped.db.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_file<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.sd.CL"</span>,</span></span>
-<span class="r-in"><span>                                  fg_file<span class="op">=</span><span class="st">"sfg"</span>,</span></span>
-<span class="r-in"><span>                                  fError_file<span class="op">=</span><span class="st">"feps.add.prop"</span>,</span></span>
+<span class="r-in"><span><span class="va">poped.db.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="create.poped.database.html">create.poped.database</a></span><span class="op">(</span>ff_fun<span class="op">=</span><span class="va">ff.PK.1.comp.oral.sd.CL</span>,</span></span>
+<span class="r-in"><span>                                  fg_fun<span class="op">=</span><span class="va">sfg</span>,</span></span>
+<span class="r-in"><span>                                  fError_fun<span class="op">=</span><span class="va">feps.add.prop</span>,</span></span>
 <span class="r-in"><span>                                  bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>                                  notfixed_bpop<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                  d<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span></span>
@@ -387,13 +387,131 @@ except for diagnostic purposes.</p></dd>
 <span class="r-in"><span>                                  a<span class="op">=</span><span class="fl">70</span>,</span></span>
 <span class="r-in"><span>                                  mina<span class="op">=</span><span class="fl">0</span>,</span></span>
 <span class="r-in"><span>                                  maxa<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'sfg': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(filename, "r", encoding = encoding):</span> cannot open the connection</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">blockheader</span><span class="op">(</span><span class="va">poped.db.1</span>,name<span class="op">=</span><span class="st">""</span>,trflag<span class="op">=</span><span class="fl">2</span>,opt_xt<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==============================================================================</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'poped.db.1' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model description : PopED model </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Sizes : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of individual model parameters                  g[j]    : Ng    = 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of population model fixed parameters            bpop[j] : Nbpop = 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of population model random effects parameters   b[j]    : Nb    = 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Typical Population Parameters:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bpop[1]:  0.15 </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bpop[2]:     8 </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bpop[3]:     1 </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> bpop[4]:     1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Between Subject Variability matrix D (variance units) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.07 0.00 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.00 0.02 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.00 0.00 0.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Diagonal Elements of D [sqrt(param)]:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> D[1,1]:  0.07 [0.2646] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> D[2,2]:  0.02 [0.1414] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> D[3,3]:   0.6 [0.7746] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual Unexplained Variability matrix SIGMA (variance units) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.01 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.00 0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Diagonal Elements of SIGMA [sqrt(param)]:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SIGMA[1,1]:  0.01 [  0.1] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5 arguments not used by format '%s[%g%s]: %5.4g %s</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SIGMA[2,2]:  0.25 [  0.5] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==============================================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Experiment description (design and design space)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 arguments not used by format 'Number of individuals: %g</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of individuals: 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of groups (individuals with same design): 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of individuals per group:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 arguments not used by format '    Group %g: %g</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group 1: 32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Group 2: 32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of samples per group:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of discrete experimental variables: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of model covariates: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial Sampling Schedule</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 1:    0.5      1      2      6     24     36     72    120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 2:    0.5    1.1      2      6     24     36     72    120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum allowed sampling values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 1:  1e-05      1    1.5      3     20     30     70    118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 2:    0.1    1.1    1.6    3.1   20.1   30.1   70.1  118.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum allowed sampling values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 1:     12     13     14     15     26     44     78    120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 2:     12     13     14     15     26     44     78    120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Covariates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 1: </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 arguments not used by format '%g'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 2: </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 arguments not used by format '%g'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==============================================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Criterion Specification</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OFV calculation for FIM: 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1=Determinant of FIM,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4=log determinant of FIM,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6=determinant of interesting part of FIM (Ds)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Approximation method: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0=FO, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1=FOCE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2=FOCEI, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3=FOI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fisher Information Matrix type: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0=Full FIM,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1=Reduced FIM,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2=weighted models,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3=Loc models,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4=reduced FIM with derivative of SD of sigma as pfim,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5=FULL FIM parameterized with A,B,C matrices &amp; derivative of variance,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6=Calculate one model switch at a time, good for large matrices,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7=Reduced FIM parameterized with A,B,C matrices &amp; derivative of variance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Design family: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   D-family design (1) or </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ED-family design (0) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (with or without parameter uncertainty)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==============================================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization of design parameters</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * Optimize Sampling Schedule</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
