@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 # PopED <img src="man/figures/logo.png" align="right" alt="" width="240" />
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/PopED)](https://CRAN.R-project.org/package=PopED)
-[![R-CMD-check](https://github.com/andrewhooker/PopED/workflows/R-CMD-check/badge.svg)](https://github.com/andrewhooker/PopED/actions)
-[![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
+[![R-CMD-check](https://github.com/andrewhooker/PopED/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/andrewhooker/PopED/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/andrewhooker/PopED/graph/badge.svg)](https://app.codecov.io/gh/andrewhooker/PopED)
 <!-- badges: end -->
 
 PopED computes optimal experimental designs for both population 

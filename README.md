@@ -5,9 +5,10 @@
 
 <!-- badges: start -->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/PopED)](https://CRAN.R-project.org/package=PopED)
-[![R-CMD-check](https://github.com/andrewhooker/PopED/workflows/R-CMD-check/badge.svg)](https://github.com/andrewhooker/PopED/actions)
-[![codecov.io](https://codecov.io/github/andrewhooker/PopED/coverage.svg?branch=master)](https://codecov.io/github/andrewhooker/PopED?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/PopED)](https://CRAN.R-project.org/package=PopED)
+[![R-CMD-check](https://github.com/andrewhooker/PopED/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/andrewhooker/PopED/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/andrewhooker/PopED/graph/badge.svg)](https://app.codecov.io/gh/andrewhooker/PopED)
 <!-- badges: end -->
 
 PopED computes optimal experimental designs for both population and
@@ -46,7 +47,7 @@ PopED](https://andrewhooker.github.io/PopED/articles/intro-poped.html)
 
 You are welcome to:
 
--   submit suggestions and bug-reports at:
-    <https://github.com/andrewhooker/PopED/issues>
--   send a pull request on: <https://github.com/andrewhooker/PopED>
--   compose a friendly e-mail to: <andrew.hooker@farmaci.uu.se>
+- submit suggestions and bug-reports at:
+  <https://github.com/andrewhooker/PopED/issues>
+- send a pull request on: <https://github.com/andrewhooker/PopED>
+- compose a friendly e-mail to: <andrew.hooker@farmaci.uu.se>
