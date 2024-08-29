@@ -21,8 +21,8 @@ use the function \code{\link{create.poped.database}}.
 \seealso{
 Other poped_input: 
 \code{\link{create.poped.database}()},
-\code{\link{create_design_space}()},
 \code{\link{create_design}()},
+\code{\link{create_design_space}()},
 \code{\link{downsizing_general_design}()},
 \code{\link{poped.choose}()}
 }

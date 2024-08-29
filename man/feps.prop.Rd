@@ -90,8 +90,8 @@ get_rse(FIM,poped.db)
 }
 \seealso{
 Other models: 
-\code{\link{feps.add.prop}()},
 \code{\link{feps.add}()},
+\code{\link{feps.add.prop}()},
 \code{\link{ff.PK.1.comp.oral.md.CL}()},
 \code{\link{ff.PK.1.comp.oral.md.KE}()},
 \code{\link{ff.PK.1.comp.oral.sd.CL}()},
@@ -100,8 +100,8 @@ Other models:
 \code{\link{ff.PKPD.1.comp.sd.CL.emax}()}
 
 Other RUV_models: 
-\code{\link{feps.add.prop}()},
-\code{\link{feps.add}()}
+\code{\link{feps.add}()},
+\code{\link{feps.add.prop}()}
 }
 \concept{RUV_models}
 \concept{models}

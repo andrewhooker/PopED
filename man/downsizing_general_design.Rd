@@ -26,8 +26,8 @@ variables and rescues the design so that a FIM can be calculated using \code{\li
 Other poped_input: 
 \code{\link{convert_variables}()},
 \code{\link{create.poped.database}()},
-\code{\link{create_design_space}()},
 \code{\link{create_design}()},
+\code{\link{create_design_space}()},
 \code{\link{poped.choose}()}
 }
 \concept{poped_input}

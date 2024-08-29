@@ -138,10 +138,10 @@ Other Optimize:
 \code{\link{mfea}()},
 \code{\link{optim_ARS}()},
 \code{\link{optim_LS}()},
+\code{\link{poped_optim}()},
 \code{\link{poped_optim_1}()},
 \code{\link{poped_optim_2}()},
 \code{\link{poped_optim_3}()},
-\code{\link{poped_optimize}()},
-\code{\link{poped_optim}()}
+\code{\link{poped_optimize}()}
 }
 \concept{Optimize}

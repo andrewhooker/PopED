@@ -1,3 +1,5 @@
+url: https://andrewhooker.github.io/PopED/
+
 template:
   bootstrap: 5
   bootswatch: litera
@@ -8,7 +10,6 @@ template:
 development:
   mode: release
   
-url: https://andrewhooker.github.io/PopED/
 
 reference:
   - title: General information
@@ -93,6 +94,7 @@ navbar:
     home:
       icon: fas fa-home fa-lg
       href: index.html
+      aria-label: Go to homepage
     reference:
       text: Reference
       href: reference/index.html
@@ -115,6 +117,8 @@ navbar:
       icon: fab fa-github fa-lg
       text: Source
       href: https://github.com/andrewhooker/PopED
+      aria-label: Go to github for PopED
+
  
 #navbar:
 #  title: "PopED"

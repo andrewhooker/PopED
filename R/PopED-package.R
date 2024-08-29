@@ -63,9 +63,6 @@
 #' \item \url{https://andrewhooker.github.io/PopED/}
 #' }
 #' 
-#' @docType package
-#' @name PopED
-#' @aliases poped PopED-package
 #' 
 #' @example tests/testthat/examples_fcn_doc/examples_poped-package.R
 #' 
@@ -87,5 +84,9 @@
 # @importFrom MASS write.matrix
 # @importFrom mvtnorm rmvnorm
 # @import ggplot2
+#' @keywords internal
+"_PACKAGE"
 
+## usethis namespace: start
+## usethis namespace: end
 NULL

@@ -34,8 +34,8 @@ Other MATLAB:
 \code{\link{fileparts}()},
 \code{\link{isempty}()},
 \code{\link{ones}()},
-\code{\link{randn}()},
 \code{\link{rand}()},
+\code{\link{randn}()},
 \code{\link{tic}()},
 \code{\link{toc}()},
 \code{\link{zeros}()}

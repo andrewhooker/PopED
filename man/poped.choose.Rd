@@ -26,8 +26,8 @@ poped.choose(NULL,"hello")
 Other poped_input: 
 \code{\link{convert_variables}()},
 \code{\link{create.poped.database}()},
-\code{\link{create_design_space}()},
 \code{\link{create_design}()},
+\code{\link{create_design_space}()},
 \code{\link{downsizing_general_design}()}
 }
 \concept{poped_input}

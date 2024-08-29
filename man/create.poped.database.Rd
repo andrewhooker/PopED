@@ -618,8 +618,8 @@ evaluate_design(poped.db)
 \seealso{
 Other poped_input: 
 \code{\link{convert_variables}()},
-\code{\link{create_design_space}()},
 \code{\link{create_design}()},
+\code{\link{create_design_space}()},
 \code{\link{downsizing_general_design}()},
 \code{\link{poped.choose}()}
 }
