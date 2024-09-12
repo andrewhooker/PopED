@@ -13,7 +13,7 @@ PopED database."><meta property="og:image" content="https://andrewhooker.github.
 
     <a class="navbar-brand me-2" href="../index.html">PopED</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,14 +122,16 @@ the <code>bpopdescr</code>).</p></dd>
 <li><p>column 3 defines the variance of the distribution (or length of uniform distribution).</p></li>
 </ul><p>Can also just supply the parameter values as a vector <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> if no uncertainty around the
 parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named
-arguments in 'bpop' then the order will be worked out automatically.</p></dd>
+arguments in 'bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'.
+See `reorder_parameter_vectors`.</p></dd>
 
 
 <dt id="arg-d">d<a class="anchor" aria-label="anchor" href="#arg-d"></a></dt>
 <dd><p>Matrix defining the diagonals of the IIV (same logic as for the fixed effects
 matrix bpop to define uncertainty). One can also just supply the parameter values as a <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>.
 The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named
-arguments in 'd' then the order will be worked out automatically.</p></dd>
+arguments in 'd' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'.
+See `reorder_parameter_vectors`.</p></dd>
 
 
 <dt id="arg-docc-full">docc_full<a class="anchor" aria-label="anchor" href="#arg-docc-full"></a></dt>
@@ -255,7 +257,7 @@ e.g. "cost.txt" has a function named "cost" in it.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55dc33da93d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55abde0556e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
