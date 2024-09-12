@@ -70,12 +70,14 @@ calc_autofocus(
 }
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'bpop' then the order will be worked out automatically.}
+arguments in 'bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`.}
 
 \item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
 The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'd' then the order will be worked out automatically.}
+arguments in 'd' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`.}
 
 \item{sigma}{Matrix defining the variances can covariances of the residual variability terms of the model.
 can also just supply the diagonal parameter values (variances) as a \code{c()}.}

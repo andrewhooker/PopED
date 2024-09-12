@@ -78,6 +78,7 @@ create.poped.database(
     size(sigma, 2)))),
   notfixed_covsigma = poped.choose(popedInput$parameters$notfixed_covsigma, zeros(1,
     length(notfixed_sigma) * (length(notfixed_sigma) - 1)/2)),
+  reorder_parameter_vectors = FALSE,
   bUseRandomSearch = poped.choose(popedInput$settings$bUseRandomSearch, TRUE),
   bUseStochasticGradient = poped.choose(popedInput$settings$bUseStochasticGradient, TRUE),
   bUseLineSearch = poped.choose(popedInput$settings$bUseLineSearch, TRUE),
@@ -355,12 +356,14 @@ Number of typical values}
 }
 Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'bpop' then the order will be worked out automatically.}
+arguments in 'bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`.}
 
 \item{d}{Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
 The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'd' then the order will be worked out automatically.}
+arguments in 'd' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`.}
 
 \item{covd}{Column major vector defining the covariances of the IIV variances. 
 That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}.}
@@ -376,11 +379,13 @@ can also just supply the diagonal parameter values (variances) as a \code{c()}.}
 \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
 Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
 The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'notfixed_bpop' then the order will be worked out automatically.}
+arguments in 'notfixed_bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`.}
 
 \item{notfixed_d}{Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
 The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-arguments in 'notfixed_d' then the order will be worked out automatically.}
+arguments in 'notfixed_d' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+See `reorder_parameter_vectors`. .}
 
 \item{notfixed_covd}{Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed)}
 
@@ -392,6 +397,9 @@ arguments in 'notfixed_d' then the order will be worked out automatically.}
 
 \item{notfixed_covsigma}{Vector defining if a covariance residual error parameter is fixed or not (1=not fixed, 0=fixed). 
 Default is fixed.}
+
+\item{reorder_parameter_vectors}{If you use named arguments in 'bpop' or 'd' then PopED will try to figure out the order of the parameters 
+based on what is found in the 'fg_fun'. See the resulting `poped_db$parameters` and make sure the order matches with 'fg_fun'.}
 
 \item{bUseRandomSearch}{\itemize{
 \item \bold{******START OF Optimization algorithm  SPECIFICATION OPTIONS**********}}
