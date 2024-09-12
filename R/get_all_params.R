@@ -22,7 +22,8 @@
 get_all_params <- function(poped.db){
   #Return all params (in a vector all) with the specified order above
   
-  bpop = poped.db$parameters$bpop[,2,drop=F]
+  #bpop = poped.db$parameters$bpop[,2,drop=F] 
+  bpop <- poped.db[["parameters"]][["bpop"]][,2,drop=F]
   d = poped.db$parameters$d[,2,drop=F]
   docc = poped.db$parameters$docc[,2,drop=F]
   covd = poped.db$parameters$covd

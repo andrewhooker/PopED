@@ -151,6 +151,50 @@ test_that("Number of variables are counted correctly in find.largest.index()", {
   expect_equal(find.largest.index(sfg_test,"b"),3)
   expect_equal(find.largest.index(sfg_test,"x"),0)
   expect_equal(find.largest.index(sfg_test,"a"),2)
+  
+  sfg_test_2 <- function(x,a,bpop,b,bocc){
+    parameters=c( V=bpop[1]*exp(b[1]),
+                  KA=bpop[2]*exp(b[2]),
+                  Favail=bpop[4],
+                  CL_OCC_1=bpop[3]*exp(b[3]+bocc[1,1]+bocc[2,2]),
+                  CL_OCC_2=bpop[3]*exp(b[3]+bocc[1,2]+bocc[2,1] + bocc[1,3]),
+                  DOSE=a[1],
+                  TAU=a[2])
+    return( parameters ) 
+  }
+  expect_equal(find.largest.index(sfg_test_2,"bpop"),4)
+  
+  sfg_test_3 <- function(x,a,bpop,b,bocc){
+    parameters <- 
+      c(
+        V=bpop[1]*exp(b[1]),
+        KA=bpop[2]*exp(b[2]),
+        CL=bpop[3]*exp(b[3])*bpop[5]^a[3], # add covariate for pediatrics
+        Favail=bpop[4],
+        DOSE=a[1],
+        TAU=a[2],
+        isPediatric = a[3]
+      )
+  }
+  expect_equal(find.largest.index(sfg_test_3,"bpop"),5)
+  
+  sfg_test_4 <- function(x,a,bpop,b,bocc){
+    parameters=c( 
+      Favail=bpop[4],
+      KA_OCC_1=bpop[2]*exp(b[2]+bocc[4,3]+bocc[2,1]),
+      KA_OCC_2=bpop[2]*exp(b[2]+bocc[2,2]),
+      V_OCC_2=bpop[1]*exp(b[3]+bocc[3,2]),
+      V_OCC_1=bpop[1]*exp(b[3]+bocc[3,1]),
+      CL_OCC_2=bpop[3]*exp(b[1]+bocc[1,2]),
+      CL_OCC_1=bpop[3]*exp(b[1]+bocc[1,1]),
+      DOSE=a[1],
+      TAU=a[2])
+    return( parameters ) 
+  }
+  expect_equal(find.largest.index(sfg_test_4,"b"),3)
+  expect_equal(find.largest.index(sfg_test_4,"bocc",mat=T,mat.row=T),4)
+  expect_equal(find.largest.index(sfg_test_4,"bocc",mat=T,mat.row=F),3)
+  
 })
 
 test_that("Named vectors are ordered correctly", {
@@ -177,7 +221,8 @@ test_that("Named vectors are ordered correctly", {
   poped_db <- do.call(create.poped.database,
                       c(model_def,
                         par_def,
-                        design_def)
+                        design_def,
+                        reorder_parameter_vectors=T)
   )
   
   #plot_model_prediction(poped_db)
@@ -239,4 +284,51 @@ test_that("Named vectors are ordered correctly", {
   FIM.1 <- evaluate.fim(poped_db_1) 
   FIM.2 <- evaluate.fim(poped_db_2) 
   expect_equal(det(FIM.1),det(FIM.2))
+  
+  # switch KA and V in bpop
+  poped_db_3 <- create.poped.database(
+    ff_file="ff.PK.1.comp.oral.sd.CL",
+    fg_file="sfg",
+    fError_file="feps.prop",
+    bpop=c(CL=0.15,  KA=1.0, V=8, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    #notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=0.01,
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    reorder_parameter_vectors = T)
+  FIM_3 <- evaluate.fim(poped_db_3) 
+  expect_equal(log(det(FIM.1)),log(det(FIM_3)))
+  
+  # switch order of parameters in sfg
+  sfg_2 <- function(x,a,bpop,b,bocc){
+    parameters=c(CL=bpop[1]*exp(b[1]),
+                 Favail=bpop[4],
+                 V=bpop[2]*exp(b[2]),
+                 KA=bpop[3]*exp(b[3]),
+                 DOSE=a[1])
+    return(parameters) 
+  }
+  poped_db_4 <- create.poped.database(
+    ff_fun=ff.PK.1.comp.oral.sd.CL,
+    fg_fun =sfg_2,
+    fError_fun=feps.prop,
+    bpop=c(CL=0.15,  V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    #notfixed_bpop=c(CL=1,V=1,KA=1,Favail=0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=0.01,
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70)
+  FIM_4 <- evaluate.fim(poped_db_4) 
+  expect_equal(log(det(FIM.1)),log(det(FIM_4)))
+  
 })
+
