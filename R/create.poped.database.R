@@ -153,26 +153,32 @@
 #' }
 #' Can also just supply the parameter values as a vector \code{c()} if no uncertainty around the 
 #' parameter value is to be used. The parameter order of  'bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-#' arguments in 'bpop' then the order will be worked out automatically.
+#' arguments in 'bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+#' See `reorder_parameter_vectors`. 
 #' @param d Matrix defining the diagonals of the IIV (same logic as for the fixed effects 
 #' matrix bpop to define uncertainty). One can also just supply the parameter values as a \code{c()}. 
 #' The parameter order of 'd' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-#' arguments in 'd' then the order will be worked out automatically.
+#' arguments in 'd' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+#' See `reorder_parameter_vectors`. 
 #' @param covd Column major vector defining the covariances of the IIV variances. 
 #' That is, from your full IIV matrix  \code{covd <-  IIV[lower.tri(IIV)]}. 
 #' @param sigma Matrix defining the variances can covariances of the residual variability terms of the model.
 #' can also just supply the diagonal parameter values (variances) as a \code{c()}. 
 #' @param docc Matrix defining the IOV, the IOV variances and the IOV distribution as for d and bpop. 
 #' @param covdocc Column major vector defining the covariance of the IOV, as in covd. 
+#' @param reorder_parameter_vectors If you use named arguments in 'bpop' or 'd' then PopED will try to figure out the order of the parameters 
+#' based on what is found in the 'fg_fun'. See the resulting `poped_db$parameters` and make sure the order matches with 'fg_fun'.
 
 #' @param notfixed_bpop  \itemize{
 #' \item \bold{******START OF Model parameters fixed or not  SPECIFICATION OPTIONS**********}}
 #' Vector defining if a typical value is fixed or not (1=not fixed, 0=fixed). 
 #' The parameter order of 'notfixed_bpop' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-#' arguments in 'notfixed_bpop' then the order will be worked out automatically.
+#' arguments in 'notfixed_bpop' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+#' See `reorder_parameter_vectors`. 
 #' @param notfixed_d Vector defining if a IIV is fixed or not (1=not fixed, 0=fixed). 
 #' The parameter order of 'notfixed_d' is defined in the 'fg_fun' or 'fg_file'. If you use named 
-#' arguments in 'notfixed_d' then the order will be worked out automatically. 
+#' arguments in 'notfixed_d' then the order of this vector can be rearranged to match the 'fg_fun' or 'fg_file'. 
+#' See `reorder_parameter_vectors`. . 
 #' @param notfixed_covd Vector defining if a covariance IIV is fixed or not (1=not fixed, 0=fixed)
 #' @param notfixed_docc Vector defining if an IOV variance is fixed or not (1=not fixed, 0=fixed)  
 #' @param notfixed_covdocc Vector row major order for lower triangular matrix defining if a covariance IOV is fixed or not (1=not fixed, 0=fixed) 
@@ -498,6 +504,9 @@ create.poped.database <-
            ## -- Vector defining if a covariance residual error parameter is fixed or not (1=not fixed, 0=fixed) --
            ## default is fixed
            notfixed_covsigma=poped.choose(popedInput$parameters$notfixed_covsigma,zeros(1,length(notfixed_sigma)*(length(notfixed_sigma)-1)/2)),  
+           
+           # options for parameter vectors
+           reorder_parameter_vectors = FALSE,
            
            
            ## --------------------------
@@ -1134,20 +1143,21 @@ create.poped.database <-
       return(your_vec)
     }
     
-    poped.db$parameters$notfixed_bpop <- 
-      reorder_vec(poped.db$parameters$notfixed_bpop,
-                  fg_names)
-                           
-    poped.db$parameters$notfixed_d <- 
-      reorder_vec(poped.db$parameters$notfixed_d,
-                  fg_names)
-    
+    if(reorder_parameter_vectors){
+      poped.db$parameters$notfixed_bpop <- 
+        reorder_vec(poped.db$parameters$notfixed_bpop,
+                    fg_names)
+      
+      poped.db$parameters$notfixed_d <- 
+        reorder_vec(poped.db$parameters$notfixed_d,
+                    fg_names)
+    }
     
     if(size(d,1)==1 && size(d,2)==poped.db$parameters$NumRanEff){ # we have just the parameter values not the uncertainty
       d_descr <- zeros(poped.db$parameters$NumRanEff,3)
       
       # reorder named values
-      d <- reorder_vec(d,fg_names)
+      if(reorder_parameter_vectors) d <- reorder_vec(d,fg_names)
       
       
       d_descr[,2] <- d
@@ -1161,7 +1171,7 @@ create.poped.database <-
       bpop_descr <- zeros(poped.db$parameters$nbpop,3)
       
       # reorder named values
-      bpop <- reorder_vec(bpop,fg_names)
+      if(reorder_parameter_vectors) bpop <- reorder_vec(bpop,fg_names)
       
       bpop_descr[,2] <- bpop
       bpop_descr[,1] <- 0 # point values
