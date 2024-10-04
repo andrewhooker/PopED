@@ -22,7 +22,7 @@
 #' @param aopto the continuous design variables
 #' @param method If 0 then use an optimization routine translated from PopED code written in MATLAB to
 #'        optimize the parameters in the Laplace approximation.  If 1 then use \code{\link{optim}} to compute both
-#'        k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link{fdHess}}
+#'        k and the hessian of k (see Dodds et al, JPP, 2005 for more information). If 2 then use \code{\link[nlme]{fdHess}}
 #'        to compute the hessian.
 #' @param return_gradient Should the gradient be returned.
 #' @param ... Arguments passed through from other functions, does not pass anything to another function.

@@ -197,7 +197,7 @@ experimental design in population kinetics", Computer Methods and Programs in Bi
 Useful links:
 \itemize{
   \item \url{https://andrewhooker.github.io/PopED/}
-  \item \url{https://github.com/andrewhooker/PopED,}
+  \item \url{https://github.com/andrewhooker/PopED}
   \item Report bugs at \url{https://github.com/andrewhooker/PopED/issues}
 }
 

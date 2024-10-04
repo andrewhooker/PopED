@@ -18,7 +18,7 @@ start_parallel(
 \item{parallel}{Should the parallel functionality start up?}
 
 \item{num_cores}{How many cores to use.  Default is
-\code{parallel::detectCores()}. See \code{\link[parallel]{detectCores}} for more information.}
+\code{parallel::detectCores()}-1 . See \code{\link[parallel]{detectCores}} for more information.}
 
 \item{parallel_type}{Which type of parallelization should be used? Can be
 "snow" or "multicore".  "snow"  works on Linux-like systems & Windows.

@@ -47,6 +47,7 @@ PopED](https://andrewhooker.github.io/PopED/articles/intro-poped.html)
 
 You are welcome to:
 
+- Ask questions at: <https://github.com/andrewhooker/PopED/discussions>
 - submit suggestions and bug-reports at:
   <https://github.com/andrewhooker/PopED/issues>
 - send a pull request on: <https://github.com/andrewhooker/PopED>
