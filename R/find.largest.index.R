@@ -18,9 +18,11 @@
 find.largest.index <- function (func.str="sfg",lab="bpop",mat=F,mat.row=T) {
   
   if(is.function(func.str)){
-    txt <- capture.output(func.str)
+    #txt <- capture.output(func.str)
+    txt <- deparse(func.str)
   } else {
-    txt <- capture.output(eval(parse(text=func.str)))
+    #txt <- capture.output(eval(parse(text=func.str)))
+    txt <- deparse(eval(parse(text=func.str)))
   }
   
   txt <- grep(paste("^[^\\#]*",lab,"\\[",sep=""),txt,value=T)
