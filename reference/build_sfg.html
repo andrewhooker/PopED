@@ -96,7 +96,7 @@ a list defining the model per parameter.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, a, bpop, b, bocc) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2], KA = bpop[3] * </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     exp(b[2]), V = bpop[4] * exp(b[3]), DOSE = a[1], TAU = a[2])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c0591a3620&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c06c04df30&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">etas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Favail<span class="op">=</span><span class="st">"exp"</span>,KA<span class="op">=</span><span class="st">"exp"</span>,V<span class="op">=</span><span class="st">"add"</span>,CL<span class="op">=</span><span class="st">"exp"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">build_sfg</span><span class="op">(</span>model<span class="op">=</span><span class="st">"ff.PK.1.comp.oral.md.CL"</span>,etas <span class="op">=</span> <span class="va">etas</span><span class="op">)</span></span></span>
@@ -104,7 +104,7 @@ a list defining the model per parameter.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2] * exp(b[2]), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     KA = bpop[3] * exp(b[3]), V = bpop[4] + b[4], DOSE = a[1], </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     TAU = a[2])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c0591a3620&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c06c04df30&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
