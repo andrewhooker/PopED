@@ -29,3 +29,4 @@
 ^CRAN-RELEASE$
 ^\.github$
 ^vignettes/articles$
+^CRAN-SUBMISSION$
