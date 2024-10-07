@@ -5,19 +5,20 @@
 
 ## Test environments
 * macOS 14.7 (local), R-release (4.4.1)
+* macOS 14.7 (local), R-oldrel-1 (4.3.3)
 * Github actions, windows-latest, R-release (4.4.1)
 * Github actions, macOS-latest, R-release (4.4.1)
 * Github actions, ubuntu-latest, R-release (4.4.1)
 * Github actions, ubuntu-latest, R-devel (2024-10-01 r87205) 
 * Github actions, ubuntu-latest, R-oldrel-1 (4.3.3) 
-* winbuilder, R-devel (2024-10-01 r87205 ucrt)
+* winbuilder, R-devel (2024-10-04 r87208 ucrt)
+* winbuilder, R-oldrel-1 (4.3.3)
 
 
 ## Reason for submission
 
-This is a re-submission. 
-
  * We got a message from CRAN that there were problems in check_results on CRAN, those problems have been fixed. 
+
  * A number of new features have also been added.
 
 
