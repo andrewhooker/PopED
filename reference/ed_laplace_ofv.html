@@ -40,7 +40,7 @@ defined in the PopED database or as arguments to the function."><meta property="
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Evaluate the expectation of determinant the Fisher Information Matrix (FIM) using the Laplace approximation.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/R/ed_laplace_ofv.R" class="external-link"><code>R/ed_laplace_ofv.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/v0.7.0/R/ed_laplace_ofv.R" class="external-link"><code>R/ed_laplace_ofv.R</code></a></small>
       <div class="d-none name"><code>ed_laplace_ofv.Rd</code></div>
     </div>
 
@@ -219,7 +219,7 @@ to compute the hessian.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(list(y = y, poped.db = poped.db))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55f4536f0b00&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557079188b38&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:PopED&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## -- parameter definition function </span></span></span>
@@ -267,7 +267,7 @@ to compute the hessian.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ED evaluate using LaPlace approximation </span></span></span>
 <span class="r-in"><span><span class="fu"><a href="tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluate.e.ofv.fim.html">evaluate.e.ofv.fim</a></span><span class="op">(</span><span class="va">poped.db.n</span>,use_laplace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>; <span class="fu"><a href="toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Elapsed time: 0.885 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Elapsed time: 0.857 seconds.</span>
 <span class="r-in"><span><span class="va">output</span><span class="op">$</span><span class="va">E_ofv</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.331515e+24</span>
 <span class="r-in"><span></span></span>
