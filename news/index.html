@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PopED</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.0" id="poped-070">PopED 0.7.0<a class="anchor" aria-label="anchor" href="#poped-070"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.0" id="poped-070">PopED 0.7.0<a class="anchor" aria-label="anchor" href="#poped-070"></a></h2><p class="text-muted">CRAN release: 2024-10-07</p>
 <ul><li><p><code><a href="../reference/create.poped.database.html">create.poped.database()</a></code> now uses a better method of identifying the total number of parameters of each type (bpop, d, sigma, etc.) in a user defined model parameter function (the <code>ff_fun</code> argument in <code><a href="../reference/create.poped.database.html">create.poped.database()</a></code>) (<a href="https://github.com/andrewhooker/PopED/issues/73" class="external-link">#73</a>).</p></li>
 <li><p><code><a href="../reference/create.poped.database.html">create.poped.database()</a></code> has a new option <code>reorder_parameter_vectors</code>, which is turned off by default. When turned on, if you use named arguments in <code>bpop</code> or <code>d</code> then PopED will try to figure out the order of the parameters based on what is found in the <code>fg_fun</code>. See the resulting <code>poped_db$parameters</code> and make sure the order matches with <code>fg_fun</code>.</p></li>
 <li><p><code><a href="../reference/start_parallel.html">start_parallel()</a></code> has a new default for<code>num_cores</code>, which is now one less than the number of cores available from <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>.</p></li>
