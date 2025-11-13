@@ -1,0 +1,264 @@
+# Create design variables and a design space for a full description of an optimization problem.
+
+`create_design_space` takes an initial design and arguments for a design
+space and creates a design and design space for design optimization.
+Checks the sizes of supplied design space variables and changes them to
+sizes that make sense if there are inconsistencies. Function arguments
+can use shorthand notation (single values, vectors, lists of vectors and
+list of list) or matricies. Returns a list of matricies compatible with
+PopED.
+
+## Usage
+
+``` r
+create_design_space(
+  design,
+  maxni = NULL,
+  minni = NULL,
+  maxtotni = NULL,
+  mintotni = NULL,
+  maxgroupsize = NULL,
+  mingroupsize = NULL,
+  maxtotgroupsize = NULL,
+  mintotgroupsize = NULL,
+  maxxt = NULL,
+  minxt = NULL,
+  xt_space = NULL,
+  maxa = NULL,
+  mina = NULL,
+  a_space = NULL,
+  x_space = NULL,
+  use_grouped_xt = FALSE,
+  grouped_xt = NULL,
+  use_grouped_a = FALSE,
+  grouped_a = NULL,
+  use_grouped_x = FALSE,
+  grouped_x = NULL,
+  our_zero = NULL
+)
+```
+
+## Arguments
+
+- design:
+
+  The output from a call to
+  [`create_design`](https://andrewhooker.github.io/PopED/dev/reference/create_design.md).
+
+- maxni:
+
+  Vector defining the maximum number of samples per group.
+
+- minni:
+
+  Vector defining the minimum number of samples per group.
+
+- maxtotni:
+
+  Number defining the maximum number of samples allowed in the
+  experiment.
+
+- mintotni:
+
+  Number defining the minimum number of samples allowed in the
+  experiment.
+
+- maxgroupsize:
+
+  Vector defining the maximum size of the different groups (maximum
+  number of individuals in each group)
+
+- mingroupsize:
+
+  Vector defining the minimum size of the different groups (minimum num
+  individuals in each group)
+
+- maxtotgroupsize:
+
+  The total maximal groupsize over all groups
+
+- mintotgroupsize:
+
+  The total minimal groupsize over all groups
+
+- maxxt:
+
+  Matrix or single value defining the maximum value for each xt sample.
+  If a single value is supplied then all xt values are given the same
+  maximum value.
+
+- minxt:
+
+  Matrix or single value defining the minimum value for each xt sample.
+  If a single value is supplied then all xt values are given the same
+  minimum value
+
+- xt_space:
+
+  Cell array
+  [`cell`](https://andrewhooker.github.io/PopED/dev/reference/cell.md)
+  defining the discrete variables allowed for each xt value. Can also be
+  a vector of values `c(1:10)` (same values allowed for all xt), or a
+  list of lists `list(1:10, 2:23, 4:6)` (one for each value in xt in row
+  major order or just for one row in xt, and all other rows will be
+  duplicated).
+
+- maxa:
+
+  Vector defining the maximum value for each covariate. IF a single
+  value is supplied then all a values are given the same maximum value
+
+- mina:
+
+  Vector defining the minimum value for each covariate. IF a single
+  value is supplied then all a values are given the same minimum value
+
+- a_space:
+
+  Cell array
+  [`cell`](https://andrewhooker.github.io/PopED/dev/reference/cell.md)
+  defining the discrete variables allowed for each a value. Can also be
+  a list of values `list(1:10)` (same values allowed for all a), or a
+  list of lists `list(1:10, 2:23, 4:6)` (one for each value in a).
+
+- x_space:
+
+  Cell array
+  [`cell`](https://andrewhooker.github.io/PopED/dev/reference/cell.md)
+  defining the discrete variables for each x value.
+
+- use_grouped_xt:
+
+  Group sampling times between groups so that each group has the same
+  values (`TRUE` or `FALSE`).
+
+- grouped_xt:
+
+  Matrix defining the grouping of sample points. Matching integers mean
+  that the points are matched. Allows for finer control than
+  `use_grouped_xt`
+
+- use_grouped_a:
+
+  Group continuous design variables between groups so that each group
+  has the same values (`TRUE` or `FALSE`).
+
+- grouped_a:
+
+  Matrix defining the grouping of continuous design variables. Matching
+  integers mean that the values are matched. Allows for finer control
+  than `use_grouped_a`.
+
+- use_grouped_x:
+
+  Group discrete design variables between groups so that each group has
+  the same values (`TRUE` or `FALSE`).
+
+- grouped_x:
+
+  Matrix defining the grouping of discrete design variables. Matching
+  integers mean that the values are matched. Allows for finer control
+  than `use_grouped_x`.
+
+- our_zero:
+
+  Value to interpret as zero in design.
+
+## Details
+
+If a value (or a vector or a list of values) is supplied that
+corresponds to only one group and the design has multiple groups then
+all groups will have the same value(s). If a matrix is expected then a
+list of lists can be supplied instead, each list corresponding to a
+group.
+
+## See also
+
+Other poped_input:
+[`convert_variables()`](https://andrewhooker.github.io/PopED/dev/reference/convert_variables.md),
+[`create.poped.database()`](https://andrewhooker.github.io/PopED/dev/reference/create.poped.database.md),
+[`create_design()`](https://andrewhooker.github.io/PopED/dev/reference/create_design.md),
+[`downsizing_general_design()`](https://andrewhooker.github.io/PopED/dev/reference/downsizing_general_design.md),
+[`poped.choose()`](https://andrewhooker.github.io/PopED/dev/reference/poped.choose.md)
+
+## Examples
+
+``` r
+library(PopED)
+
+design_1 <- create_design(xt=list(c(1,2,3,4,5),
+                                  c(1,2,3,4)),
+                          groupsize=c(50,20),
+                          a=list(c(WT=70,DOSE=1000),
+                                 c(DOSE=1000,WT=35)))
+
+ds_1 <- create_design_space(design_1)
+
+ds_1_a <- create_design_space(design_1,our_zero = 1e-5)
+
+ds_2 <- create_design_space(design_1,maxni=10,maxxt=10,minxt=0)
+
+ds_3 <- create_design_space(design_1,maxni=10,mingroupsize=20,maxxt=10,minxt=0)
+
+ds_4 <- create_design_space(design_1,maxa=c(100,2000))
+
+ds_5 <- create_design_space(design_1,mina=c(10,20))
+
+design_2 <- create_design(xt=list(c(1,2,3,4,5),
+                                  c(1,2,3,4)),
+                          groupsize=c(50,20),
+                          a=list(c(WT=70,DOSE=1000),
+                                 c(WT=35,DOSE=1000)),
+                          x=list(c(SEX=1,DOSE_discrete=100),
+                                 c(SEX=2,DOSE_discrete=200)))
+
+ds_6 <- create_design_space(design_2) 
+
+ds_7 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)))
+
+ds_8 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)),
+                            grouped_xt=c(1,2,3,4,5))
+
+ds_9 <- create_design_space(design_2,
+                            x_space=list(SEX=c(1,2),
+                                         DOSE_discrete=seq(100,400,by=20)),
+                            use_grouped_xt=TRUE)
+
+design_3 <- create_design(xt=list(c(1,2,3,4,5),
+                                  c(1,2,3,4)),
+                          groupsize=c(50,20),
+                          a=list(c(WT=35,DOSE=1000)),
+                          x=list(c(SEX=1,DOSE_discrete=100)))
+
+ds_10 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             use_grouped_a=TRUE)
+
+ds_11 <- create_design_space(design_2,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             grouped_a=list(c(1,2),c(3,2)))
+
+ds_12 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             use_grouped_x=TRUE)
+
+ds_13 <- create_design_space(design_3,
+                             x_space=list(SEX=c(1,2),DOSE_discrete=seq(100,400,by=20)),
+                             grouped_x=list(c(1,2),c(3,2)))
+
+seq_1 <- 1:10
+ds_14 <- create_design_space(design_1,maxxt=10,minxt=0,
+                             xt_space = list(seq_1,seq_1,seq_1,seq_1,seq_1))
+ds_15 <- create_design_space(design_1,maxxt=10,minxt=0,xt_space = list(seq_1))
+
+possible_values <- as.matrix(cbind(list(0:10),list(0:10),list(0:10),list(0:20),list(0:20)))
+xt_space <- as.matrix(rbind(possible_values,possible_values))
+
+ds_16 <- create_design_space(design_1,maxxt=10,minxt=0,xt_space = xt_space)
+
+ds_17 <- create_design_space(design_1,a_space = list(1:100,seq(1000,100000,by=1000)))
+```

@@ -1,0 +1,156 @@
+# Package index
+
+## General information
+
+- [`PopED`](https://andrewhooker.github.io/PopED/dev/reference/PopED-package.md)
+  [`PopED-package`](https://andrewhooker.github.io/PopED/dev/reference/PopED-package.md)
+  :
+
+  PopED - **Pop**ulation (and individual) optimal **E**xperimental
+  **D**esign.
+
+## Predefined structural models
+
+- [`ff.PK.1.comp.oral.md.CL()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PK.1.comp.oral.md.CL.md)
+  : Structural model: one-compartment, oral absorption, multiple bolus
+  dose, parameterized using CL.
+- [`ff.PK.1.comp.oral.md.KE()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PK.1.comp.oral.md.KE.md)
+  : Structural model: one-compartment, oral absorption, multiple bolus
+  dose, parameterized using KE.
+- [`ff.PK.1.comp.oral.sd.CL()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PK.1.comp.oral.sd.CL.md)
+  : Structural model: one-compartment, oral absorption, single bolus
+  dose, parameterized using CL.
+- [`ff.PK.1.comp.oral.sd.KE()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PK.1.comp.oral.sd.KE.md)
+  : Structural model: one-compartment, oral absorption, single bolus
+  dose, parameterized using KE.
+- [`ff.PKPD.1.comp.oral.md.CL.imax()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PKPD.1.comp.oral.md.CL.imax.md)
+  : Structural model: one-compartment, oral absorption, multiple bolus
+  dose, parameterized using CL driving an inhibitory IMAX model with a
+  direct effect.
+- [`ff.PKPD.1.comp.sd.CL.emax()`](https://andrewhooker.github.io/PopED/dev/reference/ff.PKPD.1.comp.sd.CL.emax.md)
+  : Structural model: one-compartment, single bolus IV dose,
+  parameterized using CL driving an EMAX model with a direct effect.
+
+## Between subject variability models
+
+- [`build_sfg()`](https://andrewhooker.github.io/PopED/dev/reference/build_sfg.md)
+  : Build PopED parameter function from a model function
+
+## Predefined residual error models
+
+Define a residual unexplained variability (RUV) model.
+
+- [`feps.add()`](https://andrewhooker.github.io/PopED/dev/reference/feps.add.md)
+  : RUV model: Additive .
+- [`feps.add.prop()`](https://andrewhooker.github.io/PopED/dev/reference/feps.add.prop.md)
+  : RUV model: Additive and Proportional.
+- [`feps.prop()`](https://andrewhooker.github.io/PopED/dev/reference/feps.prop.md)
+  : RUV model: Proportional.
+
+## Create an initial study design and design space
+
+Create an initial study design, and design space, if optimizing. Input
+the design and model information into a format that PopED understands.
+
+- [`create.poped.database()`](https://andrewhooker.github.io/PopED/dev/reference/create.poped.database.md)
+  : Create a PopED database
+- [`create_design()`](https://andrewhooker.github.io/PopED/dev/reference/create_design.md)
+  : Create design variables for a full description of a design.
+- [`create_design_space()`](https://andrewhooker.github.io/PopED/dev/reference/create_design_space.md)
+  : Create design variables and a design space for a full description of
+  an optimization problem.
+
+## Simulate from the model and design
+
+- [`plot_model_prediction()`](https://andrewhooker.github.io/PopED/dev/reference/plot_model_prediction.md)
+  : Plot model predictions
+- [`model_prediction()`](https://andrewhooker.github.io/PopED/dev/reference/model_prediction.md)
+  : Model predictions
+
+## Evaluate or summarize the design(s)
+
+- [`evaluate.e.ofv.fim()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.e.ofv.fim.md)
+  : Evaluate the expectation of the Fisher Information Matrix (FIM) and
+  the expectation of the OFV(FIM).
+- [`evaluate.fim()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.fim.md)
+  : Evaluate the Fisher Information Matrix (FIM)
+- [`evaluate_design()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate_design.md)
+  : Evaluate a design
+- [`evaluate_fim_map()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate_fim_map.md)
+  : Compute the Bayesian Fisher information matrix
+- [`evaluate_power()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate_power.md)
+  : Power of a design to estimate a parameter.
+- [`shrinkage()`](https://andrewhooker.github.io/PopED/dev/reference/shrinkage.md)
+  : Predict shrinkage of empirical Bayes estimates (EBEs) in a
+  population model
+- [`calc_ofv_and_fim()`](https://andrewhooker.github.io/PopED/dev/reference/calc_ofv_and_fim.md)
+  : Calculate the Fisher Information Matrix (FIM) and the OFV(FIM) for
+  either point values or parameters or distributions.
+- [`ofv_fim()`](https://andrewhooker.github.io/PopED/dev/reference/ofv_fim.md)
+  : Evaluate a criterion of the Fisher Information Matrix (FIM)
+- [`ofv_criterion()`](https://andrewhooker.github.io/PopED/dev/reference/ofv_criterion.md)
+  : Normalize an objective function by the size of the FIM matrix
+- [`get_rse()`](https://andrewhooker.github.io/PopED/dev/reference/get_rse.md)
+  : Compute the expected parameter relative standard errors
+- [`plot_efficiency_of_windows()`](https://andrewhooker.github.io/PopED/dev/reference/plot_efficiency_of_windows.md)
+  : Plot the efficiency of windows
+- [`efficiency()`](https://andrewhooker.github.io/PopED/dev/reference/efficiency.md)
+  : Compute efficiency.
+- [`design_summary()`](https://andrewhooker.github.io/PopED/dev/reference/design_summary.md)
+  : Display a summary of output from poped_db
+
+## Optimize a design
+
+Optimize a design given a model, design and design space.
+
+- [`poped_optim()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optim.md)
+  : Optimize a design defined in a PopED database
+- [`summary(`*`<poped_optim>`*`)`](https://andrewhooker.github.io/PopED/dev/reference/summary.poped_optim.md)
+  : Display a summary of output from poped_optim
+- [`optim_ARS()`](https://andrewhooker.github.io/PopED/dev/reference/optim_ARS.md)
+  : Optimize a function using adaptive random search.
+- [`optim_LS()`](https://andrewhooker.github.io/PopED/dev/reference/optim_LS.md)
+  : Optimize a function using a line search algorithm.
+- [`optimize_groupsize()`](https://andrewhooker.github.io/PopED/dev/reference/optimize_groupsize.md)
+  : Title Optimize the proportion of individuals in the design groups
+- [`optimize_n_eff()`](https://andrewhooker.github.io/PopED/dev/reference/optimize_n_eff.md)
+  : Translate efficiency to number of subjects
+- [`optimize_n_rse()`](https://andrewhooker.github.io/PopED/dev/reference/optimize_n_rse.md)
+  : Optimize the number of subjects based on desired uncertainty of a
+  parameter.
+- [`LEDoptim()`](https://andrewhooker.github.io/PopED/dev/reference/LEDoptim.md)
+  : Optimization function for D-family, E-family and Laplace
+  approximated ED designs
+- [`RS_opt()`](https://andrewhooker.github.io/PopED/dev/reference/RS_opt.md)
+  : Optimize the objective function using an adaptive random search
+  algorithm for D-family and E-family designs.
+- [`a_line_search()`](https://andrewhooker.github.io/PopED/dev/reference/a_line_search.md)
+  : Optimize using line search
+- [`poped_optimize()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optimize.md)
+  : Retired optimization module for PopED
+
+## Miscellaneous
+
+- [`cell()`](https://andrewhooker.github.io/PopED/dev/reference/cell.md)
+  : Create a cell array (a matrix of lists)
+- [`mc_mean()`](https://andrewhooker.github.io/PopED/dev/reference/mc_mean.md)
+  : Compute the monte-carlo mean of a function
+- [`median_hilow_poped()`](https://andrewhooker.github.io/PopED/dev/reference/median_hilow_poped.md)
+  : Wrap summary functions from Hmisc and ggplot to work with
+  stat_summary in ggplot
+- [`ones()`](https://andrewhooker.github.io/PopED/dev/reference/ones.md)
+  : Create a matrix of ones
+- [`pargen()`](https://andrewhooker.github.io/PopED/dev/reference/pargen.md)
+  : Parameter simulation
+- [`poped_gui()`](https://andrewhooker.github.io/PopED/dev/reference/poped_gui.md)
+  : Run the graphical interface for PopED
+- [`size()`](https://andrewhooker.github.io/PopED/dev/reference/size.md)
+  : Function written to match MATLAB's size function
+- [`start_parallel()`](https://andrewhooker.github.io/PopED/dev/reference/start_parallel.md)
+  : Start parallel computational processes
+- [`tic()`](https://andrewhooker.github.io/PopED/dev/reference/tic.md) :
+  Timer function (as in MATLAB)
+- [`toc()`](https://andrewhooker.github.io/PopED/dev/reference/toc.md) :
+  Timer function (as in MATLAB)
+- [`zeros()`](https://andrewhooker.github.io/PopED/dev/reference/zeros.md)
+  : Create a matrix of zeros.

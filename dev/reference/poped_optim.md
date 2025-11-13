@@ -1,0 +1,938 @@
+# Optimize a design defined in a PopED database
+
+Optimize a design defined in a PopED database using the objective
+function described in the database (or in the arguments to this
+function). The function works for both discrete and continuous
+optimization variables.
+
+## Usage
+
+``` r
+poped_optim(
+  poped.db,
+  opt_xt = poped.db$settings$optsw[2],
+  opt_a = poped.db$settings$optsw[4],
+  opt_x = poped.db$settings$optsw[3],
+  opt_samps = poped.db$settings$optsw[1],
+  opt_inds = poped.db$settings$optsw[5],
+  method = c("ARS", "BFGS", "LS"),
+  control = list(),
+  trace = TRUE,
+  fim.calc.type = poped.db$settings$iFIMCalculationType,
+  ofv_calc_type = poped.db$settings$ofv_calc_type,
+  ds_index = poped.db$parameters$ds_index,
+  approx_type = poped.db$settings$iApproximationMethod,
+  d_switch = poped.db$settings$d_switch,
+  ED_samp_size = poped.db$settings$ED_samp_size,
+  bLHS = poped.db$settings$bLHS,
+  use_laplace = poped.db$settings$iEDCalculationType,
+  out_file = "",
+  parallel = F,
+  parallel_type = NULL,
+  num_cores = NULL,
+  mrgsolve_model = NULL,
+  loop_methods = ifelse(length(method) > 1, TRUE, FALSE),
+  iter_max = 10,
+  stop_crit_eff = 1.001,
+  stop_crit_diff = NULL,
+  stop_crit_rel = NULL,
+  ofv_fun = poped.db$settings$ofv_fun,
+  maximize = T,
+  allow_replicates = TRUE,
+  allow_replicates_xt = TRUE,
+  allow_replicates_a = TRUE,
+  ...
+)
+```
+
+## Arguments
+
+- poped.db:
+
+  A PopED database.
+
+- opt_xt:
+
+  Should the sample times be optimized?
+
+- opt_a:
+
+  Should the continuous design variables be optimized?
+
+- opt_x:
+
+  Should the discrete design variables be optimized?
+
+- opt_samps:
+
+  Are the number of sample times per group being optimized?
+
+- opt_inds:
+
+  Are the number of individuals per group being optimized?
+
+- method:
+
+  A vector of optimization methods to use in a sequential fashion.
+  Options are `c("ARS","BFGS","LS","GA")`. `c("ARS")` is for Adaptive
+  Random Search
+  [`optim_ARS`](https://andrewhooker.github.io/PopED/dev/reference/optim_ARS.md).
+  `c("LS")` is for Line Search
+  [`optim_LS`](https://andrewhooker.github.io/PopED/dev/reference/optim_LS.md).
+  `c("BFGS")` is for Method "L-BFGS-B" from
+  [`optim`](https://rdrr.io/r/stats/optim.html). `c("GA")` is for the
+  genetic algorithm from
+  [`ga`](https://github.com/luca-scr/GA/reference/ga.html).
+
+- control:
+
+  Contains control arguments for each method specified.
+
+- trace:
+
+  Should the algorithm output results intermittently.
+
+- fim.calc.type:
+
+  The method used for calculating the FIM. Potential values:
+
+  - 0 = Full FIM. No assumption that fixed and random effects are
+    uncorrelated.
+
+  - 1 = Reduced FIM. Assume that there is no correlation in the FIM
+    between the fixed and random effects, and set these elements in the
+    FIM to zero.
+
+  - 2 = weighted models (placeholder).
+
+  - 3 = Not currently used.
+
+  - 4 = Reduced FIM and computing all derivatives with respect to the
+    standard deviation of the residual unexplained variation
+    (sqrt(SIGMA) in NONMEM). This matches what is done in PFIM, and
+    assumes that the standard deviation of the residual unexplained
+    variation is the estimated parameter (NOTE: NONMEM estimates the
+    variance of the residual unexplained variation by default).
+
+  - 5 = Full FIM parameterized with A,B,C matrices & derivative of
+    variance.
+
+  - 6 = Calculate one model switch at a time, good for large matrices.
+
+  - 7 = Reduced FIM parameterized with A,B,C matrices & derivative of
+    variance.
+
+- ofv_calc_type:
+
+  OFV calculation type for FIM
+
+  - 1 = "D-optimality". Determinant of the FIM: det(FIM)
+
+  - 2 = "A-optimality". Inverse of the sum of the expected parameter
+    variances: 1/trace_matrix(inv(FIM))
+
+  - 4 = "lnD-optimality". Natural logarithm of the determinant of the
+    FIM: log(det(FIM))
+
+  - 6 = "Ds-optimality". Ratio of the Determinant of the FIM and the
+    Determinant of the uninteresting rows and columns of the FIM:
+    det(FIM)/det(FIM_u)
+
+  - 7 = Inverse of the sum of the expected parameter RSE:
+    1/sum(get_rse(FIM,poped.db,use_percent=FALSE))
+
+- ds_index:
+
+  Ds_index is a vector set to 1 if a parameter is uninteresting,
+  otherwise 0. size=(1,num unfixed parameters). First unfixed bpop, then
+  unfixed d, then unfixed docc and last unfixed sigma. Default is the
+  fixed effects being important, everything else not important. Used in
+  conjunction with `ofv_calc_type=6`.
+
+- approx_type:
+
+  Approximation method for model, 0=FO, 1=FOCE, 2=FOCEI, 3=FOI.
+
+- d_switch:
+
+  - **\*\*\*\*\*\*START OF CRITERION SPECIFICATION
+    OPTIONS\*\*\*\*\*\*\*\*\*\***
+
+  D-family design (1) or ED-family design (0) (with or without parameter
+  uncertainty)
+
+- ED_samp_size:
+
+  Sample size for E-family sampling
+
+- bLHS:
+
+  How to sample from distributions in E-family calculations. 0=Random
+  Sampling, 1=LatinHyperCube –
+
+- use_laplace:
+
+  Should the Laplace method be used in calculating the expectation of
+  the OFV?
+
+- out_file:
+
+  Save output from the optimization to a file.
+
+- parallel:
+
+  Should we use parallel computations?
+
+- parallel_type:
+
+  Which type of parallelization should be used? Can be "snow" or
+  "multicore". "snow" works on Linux-like systems & Windows. "multicore"
+  works only on Linux-like systems. By default this is chosen for you
+  depending on your operating system. See
+  [`start_parallel`](https://andrewhooker.github.io/PopED/dev/reference/start_parallel.md).
+
+- num_cores:
+
+  The number of cores to use in the parallelization. By default is set
+  to the number output from
+  [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
+  See
+  [`start_parallel`](https://andrewhooker.github.io/PopED/dev/reference/start_parallel.md).
+
+- mrgsolve_model:
+
+  If the computations require a mrgsolve model and you are using the
+  "snow" method then you need to specify the name of the model object
+  created by `mread` or `mcode`.
+
+- loop_methods:
+
+  Should the optimization methods be looped for `iter_max` iterations,
+  or until the efficiency of the design after the current series
+  (compared to the start of the series) is less than, or equal to,
+  `stop_crit_eff`?
+
+- iter_max:
+
+  If line search is used then the algorithm tests if line search (always
+  run at the end of the optimization iteration) changes the design in
+  any way. If not, the algorithm stops. If yes, then a new iteration is
+  run unless `iter_max` iterations have already been run.
+
+- stop_crit_eff:
+
+  If `loop_methods==TRUE`, the looping will stop if the efficiency of
+  the design after the current series (compared to the start of the
+  series) is less than, or equal to, `stop_crit_eff` (if
+  `maximize==FALSE` then 1/stop_crit_eff is the cut off and the
+  efficiency must be greater than or equal to this value to stop the
+  looping).
+
+- stop_crit_diff:
+
+  If `loop_methods==TRUE`, the looping will stop if the difference in
+  criterion value of the design after the current series (compared to
+  the start of the series) is less than, or equal to, `stop_crit_diff`
+  (if `maximize==FALSE` then -stop_crit_diff is the cut off and the
+  difference in criterion value must be greater than or equal to this
+  value to stop the looping).
+
+- stop_crit_rel:
+
+  If `loop_methods==TRUE`, the looping will stop if the relative
+  difference in criterion value of the design after the current series
+  (compared to the start of the series) is less than, or equal to,
+  `stop_crit_rel` (if `maximize==FALSE` then -stop_crit_rel is the cut
+  off and the relative difference in criterion value must be greater
+  than or equal to this value to stop the looping).
+
+- ofv_fun:
+
+  User defined function used to compute the objective function. The
+  function must have a poped database object as its first argument and
+  have "..." in its argument list. Can be referenced as a function or as
+  a file name where the function defined in the file has the same name
+  as the file. e.g. "cost.txt" has a function named "cost" in it.
+
+- maximize:
+
+  Should the objective function be maximized or minimized?
+
+- allow_replicates:
+
+  Should the algorithm allow optimized design components to have the
+  same value? If FALSE then all discrete optimizations will not allow
+  replicates within variable types (equivalent to
+  `allow_replicates_xt=FALSE` and `allow_replicates_a=FALSE`).
+
+- allow_replicates_xt:
+
+  Should the algorithm allow optimized `xt` design components to have
+  the same value? If FALSE then all discrete optimizations will not
+  allow replicates.
+
+- allow_replicates_a:
+
+  Should the algorithm allow optimized `a` design components to have the
+  same value? If FALSE then all discrete optimizations will not allow
+  replicates.
+
+- ...:
+
+  arguments passed to other functions.
+
+## Details
+
+This function takes information from the PopED database supplied as an
+argument. The PopED database supplies information about the the model,
+parameters, design and methods to use. Some of the arguments coming from
+the PopED database can be overwritten; if they are supplied then they
+are used instead of the arguments from the PopED database.
+
+If more than one optimization method is specified then the methods are
+run in series. If `loop_methods=TRUE` then the series of optimization
+methods will be run for `iter_max` iterations, or until the efficiency
+of the design after the current series (compared to the start of the
+series) is less than `stop_crit_eff`.
+
+## References
+
+1.  M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a
+    software fir optimal experimental design in population kinetics",
+    Computer Methods and Programs in Biomedicine, 74, 2004.
+
+2.  J. Nyberg, S. Ueckert, E.A. Stroemberg, S. Hennig, M.O. Karlsson and
+    A.C. Hooker, "PopED: An extended, parallelized, nonlinear mixed
+    effects models optimal design tool", Computer Methods and Programs
+    in Biomedicine, 108, 2012.
+
+## See also
+
+Other Optimize:
+[`Doptim()`](https://andrewhooker.github.io/PopED/dev/reference/Doptim.md),
+[`LEDoptim()`](https://andrewhooker.github.io/PopED/dev/reference/LEDoptim.md),
+[`RS_opt()`](https://andrewhooker.github.io/PopED/dev/reference/RS_opt.md),
+[`a_line_search()`](https://andrewhooker.github.io/PopED/dev/reference/a_line_search.md),
+[`bfgsb_min()`](https://andrewhooker.github.io/PopED/dev/reference/bfgsb_min.md),
+[`calc_autofocus()`](https://andrewhooker.github.io/PopED/dev/reference/calc_autofocus.md),
+[`calc_ofv_and_grad()`](https://andrewhooker.github.io/PopED/dev/reference/calc_ofv_and_grad.md),
+[`mfea()`](https://andrewhooker.github.io/PopED/dev/reference/mfea.md),
+[`optim_ARS()`](https://andrewhooker.github.io/PopED/dev/reference/optim_ARS.md),
+[`optim_LS()`](https://andrewhooker.github.io/PopED/dev/reference/optim_LS.md),
+[`poped_optim_1()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optim_1.md),
+[`poped_optim_2()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optim_2.md),
+[`poped_optim_3()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optim_3.md),
+[`poped_optimize()`](https://andrewhooker.github.io/PopED/dev/reference/poped_optimize.md)
+
+## Examples
+
+``` r
+library(PopED)
+
+############# START #################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error  
+## to avoid sample times at very low concentrations (time 0 or very late samples).
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+#> function (model_switch, xt, parameters, poped.db) 
+#> {
+#>     with(as.list(parameters), {
+#>         y = xt
+#>         y = (DOSE * Favail * KA/(V * (KA - CL/V))) * (exp(-CL/V * 
+#>             xt) - exp(-KA * xt))
+#>         return(list(y = y, poped.db = poped.db))
+#>     })
+#> }
+#> <bytecode: 0x560952eadfa8>
+#> <environment: namespace:PopED>
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Define initial design  and design space
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                  fg_fun=sfg,
+                                  fError_fun=feps.add.prop,
+                                  bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+                                  notfixed_bpop=c(1,1,1,0),
+                                  d=c(CL=0.07, V=0.02, KA=0.6), 
+                                  sigma=c(prop=0.01,add=0.25),
+                                  groupsize=32,
+                                  xt=c( 0.5,1,2,6,24,36,72,120),
+                                  minxt=0.01,
+                                  maxxt=120,
+                                  a=c(DOSE=70),
+                                  mina=c(DOSE=0.01),
+                                  maxa=c(DOSE=100))
+
+############# END ###################
+## Create PopED database
+## (warfarin model for optimization)
+#####################################
+
+##############
+# D-family Optimization
+##############
+
+# below are a number of ways to optimize the problem
+
+
+# ARS+BFGS+LS optimization of dose
+# optimization with just a few iterations
+# only to check that things are working
+out_1 <- poped_optim(poped.db,opt_a =TRUE,
+                      control = list(ARS=list(iter=2),
+                                     BFGS=list(maxit=2),
+                                     LS=list(line_length=2)),
+                      iter_max = 1)
+#> ===============================================================================
+#> Initial design evaluation
+#> 
+#> Initial OFV = 55.3964
+#> 
+#> Initial design
+#> expected relative standard error
+#> (%RSE, rounded to nearest integer)
+#>    Parameter   Values   RSE_0
+#>           CL     0.15       5
+#>            V        8       3
+#>           KA        1      14
+#>         d_CL     0.07      30
+#>          d_V     0.02      37
+#>         d_KA      0.6      27
+#>     sig_prop     0.01      32
+#>      sig_add     0.25      26
+#> 
+#> ==============================================================================
+#> Optimization of design parameters
+#> 
+#> * Optimize Covariates
+#> 
+#> ************* Iteration 1  for all optimization methods***********************
+#> 
+#> *******************************************
+#> Running Adaptive Random Search Optimization
+#> *******************************************
+#> Initial OFV = 55.3964
+#> 
+#> Total iterations: 2 
+#> Elapsed time: 0.015 seconds.
+#> 
+#> Final OFV =  56.03204 
+#> Parameters: 100 
+#> 
+#> *******************************************
+#> Running BFGS Optimization
+#> *******************************************
+#> initial  value -56.032042 
+#> final  value -56.032042 
+#> converged
+#> 
+#> *******************************************
+#> Running Line Search Optimization
+#> *******************************************
+#> 
+#>    Initial parameters: 100 
+#>    Initial OFV: 56.03204 
+#> 
+#>    Searching parameter 1 
+#>      Changed from 100 to 100 ; OFV = 56.032 
+#> 
+#>    Elapsed time: 0.021 seconds.
+#> 
+#>    Final OFV =  56.03204 
+#>    Parameters: 100 
+#> 
+#> *******************************************
+#> Stopping criteria testing
+#> (Compare between start of iteration and end of iteration)
+#> *******************************************
+#> Difference in OFV:  0.636
+#> Relative difference in OFV:  1.15%
+#> Efficiency: 
+#>   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#> 
+#>  Efficiency stopping criteria: 
+#>   Is (1.0827 <= 1.001)?   No.
+#>   Stopping criteria NOT achieved.
+#> 
+#> Stopping criteria NOT achieved.
+#> 
+#> ===============================================================================
+#> FINAL RESULTS
+#> 
+#> Optimized Covariates:
+#> Group 1: 100
+#> 
+#> OFV = 56.032
+#> 
+#> Efficiency: 
+#>   ((exp(ofv_final) / exp(ofv_init))^(1/n_parameters)) = 1.0827
+#> 
+#> Expected relative standard error
+#> (%RSE, rounded to nearest integer):
+#>    Parameter   Values   RSE_0   RSE
+#>           CL     0.15       5     5
+#>            V        8       3     3
+#>           KA        1      14    14
+#>         d_CL     0.07      30    28
+#>          d_V     0.02      37    34
+#>         d_KA      0.6      27    26
+#>     sig_prop     0.01      32    23
+#>      sig_add     0.25      26    30
+#> 
+#> Total running time: 0.263 seconds
+
+
+# cost function
+# PRED at 120 hours
+crit_fcn <- function(poped.db,...){
+  pred_df <- model_prediction(poped.db)
+  return(pred_df[pred_df$Time==120,"PRED"])
+}
+
+# maximize cost function
+out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2)
+#> ===============================================================================
+#> Initial design evaluation
+#> 
+#> Initial OFV = 0.939866
+#> 
+#> Initial design
+#> expected relative standard error
+#> (%RSE, rounded to nearest integer)
+#>    Parameter   Values   RSE_0
+#>           CL     0.15       5
+#>            V        8       3
+#>           KA        1      14
+#>         d_CL     0.07      30
+#>          d_V     0.02      37
+#>         d_KA      0.6      27
+#>     sig_prop     0.01      32
+#>      sig_add     0.25      26
+#> 
+#> ==============================================================================
+#> Optimization of design parameters
+#> 
+#> * Optimize Covariates
+#> 
+#> ************* Iteration 1  for all optimization methods***********************
+#> 
+#> *******************************************
+#> Running Adaptive Random Search Optimization
+#> *******************************************
+#> Initial OFV = 0.939866
+#> 
+#> Total iterations: 2 
+#> Elapsed time: 0.006 seconds.
+#> 
+#> Final OFV =  0.9398657 
+#> Parameters: 70 
+#> 
+#> *******************************************
+#> Running BFGS Optimization
+#> *******************************************
+#> initial  value -0.939866 
+#> final  value -1.014649 
+#> stopped after 2 iterations
+#> 
+#> *******************************************
+#> Running Line Search Optimization
+#> *******************************************
+#> 
+#>    Initial parameters: 75.56977 
+#>    Initial OFV: 1.014649 
+#> 
+#>    Searching parameter 1 
+#>      Changed from 75.5698 to 100 ; OFV = 1.34267 
+#> 
+#>    Elapsed time: 0.009 seconds.
+#> 
+#>    Final OFV =  1.342665 
+#>    Parameters: 100 
+#> 
+#> *******************************************
+#> Stopping criteria testing
+#> (Compare between start of iteration and end of iteration)
+#> *******************************************
+#> Difference in OFV:  0.403
+#> Relative difference in OFV:  42.9%
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 1.4286
+#> 
+#>  Efficiency stopping criteria: 
+#>   Is (1.4286 <= 1.001)?   No.
+#>   Stopping criteria NOT achieved.
+#> 
+#> Stopping criteria NOT achieved.
+#> 
+#> ************* Iteration 2  for all optimization methods***********************
+#> 
+#> *******************************************
+#> Running Adaptive Random Search Optimization
+#> *******************************************
+#> Initial OFV = 1.34267
+#> 
+#> Total iterations: 2 
+#> Elapsed time: 0.007 seconds.
+#> 
+#> Final OFV =  1.342665 
+#> Parameters: 100 
+#> 
+#> *******************************************
+#> Running BFGS Optimization
+#> *******************************************
+#> initial  value -1.342665 
+#> final  value -1.342665 
+#> converged
+#> 
+#> *******************************************
+#> Running Line Search Optimization
+#> *******************************************
+#> 
+#>    Initial parameters: 100 
+#>    Initial OFV: 1.342665 
+#> 
+#>    Searching parameter 1 
+#>      Changed from 100 to 100 ; OFV = 1.34267 
+#> 
+#>    Elapsed time: 0.009 seconds.
+#> 
+#>    Final OFV =  1.342665 
+#>    Parameters: 100 
+#> 
+#> *******************************************
+#> Stopping criteria testing
+#> (Compare between start of iteration and end of iteration)
+#> *******************************************
+#> Difference in OFV:  0
+#> Relative difference in OFV:  0%
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 1
+#> 
+#>  Efficiency stopping criteria: 
+#>   Is (1 <= 1.001)?   Yes.
+#>   Stopping criteria achieved.
+#> 
+#> Stopping criteria achieved.
+#> 
+#> ===============================================================================
+#> FINAL RESULTS
+#> 
+#> Optimized Covariates:
+#> Group 1: 100
+#> 
+#> OFV = 1.34267
+#> 
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 1.4286
+#> 
+#> Expected relative standard error
+#> (%RSE, rounded to nearest integer):
+#>    Parameter   Values   RSE_0   RSE
+#>           CL     0.15       5     5
+#>            V        8       3     3
+#>           KA        1      14    14
+#>         d_CL     0.07      30    28
+#>          d_V     0.02      37    34
+#>         d_KA      0.6      27    26
+#>     sig_prop     0.01      32    23
+#>      sig_add     0.25      26    30
+#> 
+#> Total running time: 0.37 seconds
+
+# minimize the cost function
+out_3 <- poped_optim(poped.db,opt_a =TRUE,
+                     ofv_fun=crit_fcn,
+                     control = list(ARS=list(iter=2),
+                                    BFGS=list(maxit=2),
+                                    LS=list(line_length=2)),
+                     iter_max = 2,
+                     maximize = FALSE,
+                     evaluate_fim = FALSE)
+#> ===============================================================================
+#> Initial design evaluation
+#> 
+#> Initial OFV = 0.939866
+#> ==============================================================================
+#> Optimization of design parameters
+#> 
+#> * Optimize Covariates
+#> 
+#> ************* Iteration 1  for all optimization methods***********************
+#> 
+#> *******************************************
+#> Running Adaptive Random Search Optimization
+#> *******************************************
+#> Initial OFV = 0.939866
+#> 
+#> Total iterations: 2 
+#> Elapsed time: 0.006 seconds.
+#> 
+#> Final OFV =  0.8221768 
+#> Parameters: 61.23468 
+#> 
+#> *******************************************
+#> Running BFGS Optimization
+#> *******************************************
+#> initial  value 0.822177 
+#> final  value 0.717752 
+#> stopped after 2 iterations
+#> 
+#> *******************************************
+#> Running Line Search Optimization
+#> *******************************************
+#> 
+#>    Initial parameters: 53.45728 
+#>    Initial OFV: 0.7177523 
+#> 
+#>    Searching parameter 1 
+#>      Changed from 53.4573 to 0.01 ; OFV = 0.000134267 
+#> 
+#>    Elapsed time: 0.009 seconds.
+#> 
+#>    Final OFV =  0.0001342665 
+#>    Parameters: 0.01 
+#> 
+#> *******************************************
+#> Stopping criteria testing
+#> (Compare between start of iteration and end of iteration)
+#> *******************************************
+#> Difference in OFV:  -0.94
+#> Relative difference in OFV:  -100%
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 0.00014286
+#> 
+#>  Efficiency stopping criteria: 
+#>   Is (0.00014286 >= 0.999)?   No.
+#>   Stopping criteria NOT achieved.
+#> 
+#> Stopping criteria NOT achieved.
+#> 
+#> ************* Iteration 2  for all optimization methods***********************
+#> 
+#> *******************************************
+#> Running Adaptive Random Search Optimization
+#> *******************************************
+#> Initial OFV = 0.000134267
+#> 
+#> Total iterations: 2 
+#> Elapsed time: 0.006 seconds.
+#> 
+#> Final OFV =  0.0001342665 
+#> Parameters: 0.01 
+#> 
+#> *******************************************
+#> Running BFGS Optimization
+#> *******************************************
+#> initial  value 0.000134 
+#> final  value 0.000134 
+#> converged
+#> 
+#> *******************************************
+#> Running Line Search Optimization
+#> *******************************************
+#> 
+#>    Initial parameters: 0.01000001 
+#>    Initial OFV: 0.0001342667 
+#> 
+#>    Searching parameter 1 
+#>      Changed from 0.01 to 0.01 ; OFV = 0.000134267 
+#> 
+#>    Elapsed time: 0.009 seconds.
+#> 
+#>    Final OFV =  0.0001342665 
+#>    Parameters: 0.01 
+#> 
+#> *******************************************
+#> Stopping criteria testing
+#> (Compare between start of iteration and end of iteration)
+#> *******************************************
+#> Difference in OFV:  0
+#> Relative difference in OFV:  0%
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 1
+#> 
+#>  Efficiency stopping criteria: 
+#>   Is (1 >= 0.999)?   Yes.
+#>   Stopping criteria achieved.
+#> 
+#> Stopping criteria achieved.
+#> 
+#> ===============================================================================
+#> FINAL RESULTS
+#> 
+#> Optimized Covariates:
+#> Group 1: 0.01
+#> 
+#> OFV = 0.000134267
+#> 
+#> Efficiency: 
+#>   (ofv_final / ofv_init) = 0.00014286
+#> 
+#> Total running time: 0.36 seconds
+
+
+if (FALSE) { # \dontrun{
+  
+  # RS+BFGS+LS optimization of sample times 
+  # (longer run time than above but more likely to reach a maximum)
+  output <- poped_optim(poped.db,opt_xt=T,parallel = TRUE)
+  
+  get_rse(output$FIM,output$poped.db)
+  plot_model_prediction(output$poped.db)
+  
+  # optimization with only integer times allowed
+  poped.db.2 <- poped.db
+  poped.db.2$design_space$xt_space <- matrix(list(seq(1,120)),1,8)
+  output_2 <- poped_optim(poped.db.2,opt_xt=T,parallel = TRUE)
+
+  get_rse(output_2$FIM,output_2$poped.db)
+  plot_model_prediction(output_2$poped.db)
+  
+  # Examine efficiency of sampling windows
+  plot_efficiency_of_windows(output_2$poped.db,xt_windows=0.5)
+  plot_efficiency_of_windows(output_2$poped.db,xt_windows=1)
+  
+  # Adaptive Random Search (ARS, just a few samples here)
+  rs.output <- poped_optim(poped.db,opt_xt=T,method = "ARS",
+                           control = list(ARS=list(iter=5)))
+  
+  get_rse(rs.output$FIM,rs.output$poped.db)
+  
+  # line search, DOSE and sample time optimization
+  ls.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "LS",
+                           control = list(LS=list(line_length=5)))
+  
+  # Adaptive random search, 
+  # DOSE and sample time optimization
+  ars.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "ARS",
+                           control = list(ARS=list(iter=5)))
+  
+  # BFGS gradient search from the stats::optim() function, 
+  # DOSE and sample time optimization
+  bfgs.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "BFGS",
+                            control = list(BFGS=list(maxit=5)))
+  
+  
+  # genetic algorithm from the GA::ga() function, 
+  # DOSE and sample time optimization
+  ga.output <- poped_optim(poped.db,opt_xt=T,opt_a=F,method = "GA",parallel=T)
+  
+  # cost function with GA
+  # maximize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"))
+  
+  # cost function with GA
+  # minimize
+  out_2 <- poped_optim(poped.db,opt_a =TRUE,
+                       ofv_fun=crit_fcn,
+                       parallel = T,
+                       method=c("GA"),
+                       iter_max = 1,
+                       maximize = F,
+                       evaluate_fim = F)
+  
+  # optimize distribution of individuals in 3 groups
+  poped_db_2 <- create.poped.database(
+    ff_fun=ff.PK.1.comp.oral.sd.CL,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(prop=0.01,add=0.25),
+    groupsize=32,
+    m=3,
+    xt=list(c( 0.5,1,2,6,8),c(36,72,120),
+            c(10,12,14,16,18,20,22,24)),
+    minxt=0.01,
+    maxxt=120,
+    a=c(DOSE=70),
+    mina=c(DOSE=0.01),
+    maxa=c(DOSE=100))
+  
+  opt_xt_inds <- 
+    poped_optim(poped_db_2,
+                opt_a =TRUE,
+                opt_inds = TRUE,
+                control = list(ARS=list(iter=2),
+                               BFGS=list(maxit=2),
+                               LS=list(line_length=2)),
+                iter_max = 1)
+  
+  
+  
+  ##############
+  # E-family Optimization
+  ##############
+  
+  # Adding 10% log-normal Uncertainty to fixed effects (not Favail)
+  bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+  bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                           bpop_vals,
+                           ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+  bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+  bpop_vals_ed_ln
+  
+  ## -- Define initial design  and design space
+  poped.db <- create.poped.database(
+    ff_fun=ff.PK.1.comp.oral.sd.CL,
+    fg_fun=sfg,
+    fError_fun=feps.add.prop,
+    bpop=bpop_vals_ed_ln, 
+    notfixed_bpop=c(1,1,1,0),
+    d=c(CL=0.07, V=0.02, KA=0.6), 
+    sigma=c(0.01,0.25),
+    groupsize=32,
+    xt=c( 0.5,1,2,6,24,36,72,120),
+    minxt=0,
+    maxxt=120,
+    a=70,
+    mina=0,
+    maxa=100)
+  
+  
+  # E_ln(D) optimization using Random search (just a few samples here)
+  output <- poped_optim(poped.db,opt_xt=TRUE,opt_a=TRUE,d_switch=0,
+                        method = c("ARS","LS"),
+                        control = list(ARS=list(iter=2),
+                                       LS=list(line_length=2)),
+                        iter_max = 1)
+  get_rse(output$FIM,output$poped.db)
+  
+  # ED with laplace approximation, 
+  # optimization using Random search (just a few iterations here)
+  ars.output <- poped_optim(poped.db,opt_xt=T,opt_a=T,method = "ARS",
+                            d_switch=0,use_laplace=TRUE,#laplace.fim=TRUE,
+                            parallel=T,
+                            control = list(ARS=list(iter=5)))
+  
+} # }
+```

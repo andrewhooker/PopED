@@ -1,0 +1,324 @@
+# Evaluate the expectation of determinant the Fisher Information Matrix (FIM) using the Laplace approximation.
+
+Compute the expectation of the `det(FIM)` using the Laplace
+approximation to the expectation. Computations are made based on the
+model, parameters, distributions of parameter uncertainty, design and
+methods defined in the PopED database or as arguments to the function.
+
+## Usage
+
+``` r
+ed_laplace_ofv(
+  model_switch,
+  groupsize,
+  ni,
+  xtopto,
+  xopto,
+  aopto,
+  bpopdescr,
+  ddescr,
+  covd,
+  sigma,
+  docc,
+  poped.db,
+  method = 1,
+  return_gradient = FALSE,
+  optxt = poped.db$settings$optsw[2],
+  opta = poped.db$settings$optsw[4],
+  x = c(),
+  ...
+)
+```
+
+## Arguments
+
+- model_switch:
+
+  A matrix that is the same size as xt, specifying which model each
+  sample belongs to.
+
+- groupsize:
+
+  A vector of the number of individuals in each group.
+
+- ni:
+
+  A vector of the number of samples in each group.
+
+- xtopto:
+
+  the sampling times
+
+- xopto:
+
+  the discrete design variables
+
+- aopto:
+
+  the continuous design variables
+
+- bpopdescr:
+
+  Matrix defining the fixed effects, per row (row number =
+  parameter_number) we should have:
+
+  - column 1 the type of the distribution for E-family designs (0 =
+    Fixed, 1 = Normal, 2 = Uniform, 3 = User Defined Distribution, 4 =
+    lognormal and 5 = truncated normal)
+
+  - column 2 defines the mean.
+
+  - column 3 defines the variance of the distribution (or length of
+    uniform distribution).
+
+- ddescr:
+
+  Matrix defining the diagonals of the IIV (same logic as for the
+  `bpopdescr`).
+
+- covd:
+
+  Column major vector defining the covariances of the IIV variances.
+  That is, from your full IIV matrix `covd <- IIV[lower.tri(IIV)]`.
+
+- sigma:
+
+  Matrix defining the variances can covariances of the residual
+  variability terms of the model. can also just supply the diagonal
+  parameter values (variances) as a
+  [`c()`](https://rdrr.io/r/base/c.html).
+
+- docc:
+
+  Matrix defining the IOV, the IOV variances and the IOV distribution as
+  for d and bpop.
+
+- poped.db:
+
+  A PopED database.
+
+- method:
+
+  If 0 then use an optimization routine translated from PopED code
+  written in MATLAB to optimize the parameters in the Laplace
+  approximation. If 1 then use
+  [`optim`](https://rdrr.io/r/stats/optim.html) to compute both k and
+  the hessian of k (see Dodds et al, JPP, 2005 for more information). If
+  2 then use [`fdHess`](https://rdrr.io/pkg/nlme/man/fdHess.html) to
+  compute the hessian.
+
+- return_gradient:
+
+  Should the gradient be returned.
+
+- optxt:
+
+  If sampling times are optimized
+
+- opta:
+
+  If continuous design variables are optimized
+
+- x:
+
+  The design parameters to compute the gradient on.
+
+- ...:
+
+  Arguments passed through from other functions, does not pass anything
+  to another function.
+
+## Value
+
+The FIM and the hessian of the FIM.
+
+## Details
+
+This computation follows the method outlined in Dodds et al, "Robust
+Population Pharmacokinetic Experiment Design" JPP, 2005, equation 16.
+
+Typically this function will not be run by the user. Instead use
+[`evaluate.e.ofv.fim`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.e.ofv.fim.md).
+
+## See also
+
+Other FIM:
+[`LinMatrixH()`](https://andrewhooker.github.io/PopED/dev/reference/LinMatrixH.md),
+[`LinMatrixLH()`](https://andrewhooker.github.io/PopED/dev/reference/LinMatrixLH.md),
+[`LinMatrixL_occ()`](https://andrewhooker.github.io/PopED/dev/reference/LinMatrixL_occ.md),
+[`calc_ofv_and_fim()`](https://andrewhooker.github.io/PopED/dev/reference/calc_ofv_and_fim.md),
+[`ed_mftot()`](https://andrewhooker.github.io/PopED/dev/reference/ed_mftot.md),
+[`efficiency()`](https://andrewhooker.github.io/PopED/dev/reference/efficiency.md),
+[`evaluate.e.ofv.fim()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.e.ofv.fim.md),
+[`evaluate.fim()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.fim.md),
+[`gradf_eps()`](https://andrewhooker.github.io/PopED/dev/reference/gradf_eps.md),
+[`mf3()`](https://andrewhooker.github.io/PopED/dev/reference/mf3.md),
+[`mf7()`](https://andrewhooker.github.io/PopED/dev/reference/mf7.md),
+[`mftot()`](https://andrewhooker.github.io/PopED/dev/reference/mftot.md),
+[`ofv_criterion()`](https://andrewhooker.github.io/PopED/dev/reference/ofv_criterion.md),
+[`ofv_fim()`](https://andrewhooker.github.io/PopED/dev/reference/ofv_fim.md)
+
+Other E-family:
+[`calc_ofv_and_fim()`](https://andrewhooker.github.io/PopED/dev/reference/calc_ofv_and_fim.md),
+[`ed_mftot()`](https://andrewhooker.github.io/PopED/dev/reference/ed_mftot.md),
+[`evaluate.e.ofv.fim()`](https://andrewhooker.github.io/PopED/dev/reference/evaluate.e.ofv.fim.md)
+
+## Examples
+
+``` r
+## Warfarin example from software comparison in:
+## Nyberg et al., "Methods and software tools for design evaluation 
+##   for population pharmacokinetics-pharmacodynamics studies", 
+##   Br. J. Clin. Pharm., 2014. 
+
+## Optimization using an additive + proportional reidual error to 
+##   avoid sample times at very low concentrations (time 0 or very late samoples).
+library(PopED)
+
+## find the parameters that are needed to define from the structural model
+ff.PK.1.comp.oral.sd.CL
+#> function (model_switch, xt, parameters, poped.db) 
+#> {
+#>     with(as.list(parameters), {
+#>         y = xt
+#>         y = (DOSE * Favail * KA/(V * (KA - CL/V))) * (exp(-CL/V * 
+#>             xt) - exp(-KA * xt))
+#>         return(list(y = y, poped.db = poped.db))
+#>     })
+#> }
+#> <bytecode: 0x560952eadfa8>
+#> <environment: namespace:PopED>
+
+## -- parameter definition function 
+## -- names match parameters in function ff
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+######################
+# Normal distribution
+######################
+bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+bpop_vals_ed_n <- cbind(ones(length(bpop_vals),1)*1, # normal distribution
+                        bpop_vals,
+                        ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+bpop_vals_ed_n["Favail",]  <- c(0,1,0)
+bpop_vals_ed_n
+#>          bpop_vals         
+#> CL     1      0.15 0.000225
+#> V      1      8.00 0.640000
+#> KA     1      1.00 0.010000
+#> Favail 0      1.00 0.000000
+
+## -- Define initial design  and design space
+poped.db.n <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                    fg_fun=sfg,
+                                    fError_fun=feps.add.prop,
+                                    bpop=bpop_vals_ed_n, 
+                                    notfixed_bpop=c(1,1,1,0),
+                                    d=c(CL=0.07, V=0.02, KA=0.6), 
+                                    sigma=c(0.01,0.25),
+                                    groupsize=32,
+                                    xt=c( 0.5,1,2,6,24,36,72,120),
+                                    minxt=0,
+                                    maxxt=120,
+                                    a=70,
+                                    mina=0,
+                                    maxa=100)
+
+
+## ED evaluate using LaPlace approximation 
+tic(); output <- evaluate.e.ofv.fim(poped.db.n,use_laplace=TRUE); toc()
+#> Elapsed time: 0.928 seconds.
+output$E_ofv
+#> [1] 1.331515e+24
+
+if (FALSE) { # \dontrun{
+  
+  
+  ## ED value using MC integration (roughly)
+  tic();e_ofv_mc_n <- evaluate.e.ofv.fim(poped.db.n,ED_samp_size=500,ofv_calc_type = 1);toc()
+  e_ofv_mc_n$E_ofv
+  
+  
+  ## Using ed_laplce_ofv directly
+  ed_laplace_ofv(model_switch=poped.db.n$design$model_switch,
+                 groupsize=poped.db.n$design$groupsize,
+                 ni=poped.db.n$design$ni,
+                 xtopto=poped.db.n$design$xt,
+                 xopto=poped.db.n$design$x,
+                 aopto=poped.db.n$design$a,
+                 bpopdescr=poped.db.n$parameters$bpop,
+                 ddescr=poped.db.n$parameters$d,
+                 covd=poped.db.n$parameters$covd,
+                 sigma=poped.db.n$parameters$sigma,
+                 docc=poped.db.n$parameters$docc, 
+                 poped.db.n)
+  
+  
+  ######################
+  # Log-normal distribution
+  ######################
+  
+  # Adding 10% log-normal Uncertainty to fixed effects (not Favail)
+  bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
+  bpop_vals_ed_ln <- cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
+                           bpop_vals,
+                           ones(length(bpop_vals),1)*(bpop_vals*0.1)^2) # 10% of bpop value
+  bpop_vals_ed_ln["Favail",]  <- c(0,1,0)
+  bpop_vals_ed_ln
+  
+  ## -- Define initial design  and design space
+  poped.db.ln <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
+                                       fg_fun=sfg,
+                                       fError_fun=feps.add.prop,
+                                       bpop=bpop_vals_ed_ln, 
+                                       notfixed_bpop=c(1,1,1,0),
+                                       d=c(CL=0.07, V=0.02, KA=0.6), 
+                                       sigma=c(0.01,0.25),
+                                       groupsize=32,
+                                       xt=c( 0.5,1,2,6,24,36,72,120),
+                                       minxt=0,
+                                       maxxt=120,
+                                       a=70,
+                                       mina=0,
+                                       maxa=100)
+  
+  
+  
+  ## ED evaluate using LaPlace approximation 
+  tic()
+  output <- evaluate.e.ofv.fim(poped.db.ln,use_laplace=TRUE)
+  toc()
+  output$E_ofv
+  
+  ## expected value (roughly)
+  tic()
+  e_ofv_mc_ln <- evaluate.e.ofv.fim(poped.db.ln,ED_samp_size=500,ofv_calc_type = 1)[["E_ofv"]]
+  toc()
+  e_ofv_mc_ln
+  
+  ## Using ed_laplce_ofv directly
+  ed_laplace_ofv(model_switch=poped.db.ln$design$model_switch,
+                 groupsize=poped.db.ln$design$groupsize,
+                 ni=poped.db.ln$design$ni,
+                 xtopto=poped.db.ln$design$xt,
+                 xopto=poped.db.ln$design$x,
+                 aopto=poped.db.ln$design$a,
+                 bpopdescr=poped.db.ln$parameters$bpop,
+                 ddescr=poped.db.ln$parameters$d,
+                 covd=poped.db.ln$parameters$covd,
+                 sigma=poped.db.ln$parameters$sigma,
+                 docc=poped.db.ln$parameters$docc, 
+                 poped.db.ln)
+  
+  
+  
+  
+} # }
+```
