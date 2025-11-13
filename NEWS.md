@@ -1,4 +1,4 @@
-# PopED development verson
+# PopED (development version)
 
 * Make parallelization work with `babelmixr2` models on windows (#79)
 
