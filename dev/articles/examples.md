@@ -342,9 +342,9 @@ describing the same model.
 
 ``` r
 tic(); eval <- evaluate_design(poped.db); toc()
-#> Elapsed time: 3.005 seconds.
+#> Elapsed time: 3.104 seconds.
 tic(); eval <- evaluate_design(poped.db.Rcpp); toc()
-#> Elapsed time: 1.282 seconds.
+#> Elapsed time: 1.29 seconds.
 ```
 
 The difference is noticeable and gets larger for more complex ODE
@@ -1312,7 +1312,7 @@ tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #>   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 
 #> SIGMA[2,2] 
 #>  25.341368
-#> Elapsed time: 0.141 seconds.
+#> Elapsed time: 0.139 seconds.
 ```
 
 We can see that the result, based on MC sampling, is somewhat variable
@@ -1348,7 +1348,7 @@ tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #>   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 
 #> SIGMA[2,2] 
 #>  25.311870
-#> Elapsed time: 0.135 seconds.
+#> Elapsed time: 0.134 seconds.
 ```
 
 ## Design evaluation for a subset of model parameters of interest (Ds optimality)

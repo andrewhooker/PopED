@@ -186,7 +186,7 @@ res1 <- optim_LS(50, fw,lower = -50, upper=50, line_length = 10000)
 #>    Searching parameter 1 
 #>      Changed from 50 to -15.8166 ; OFV = 67.485 
 #> 
-#>    Elapsed time: 0.047 seconds.
+#>    Elapsed time: 0.045 seconds.
 #> 
 #>    Final OFV =  67.48502 
 #>    Parameters: -15.81658 
@@ -326,7 +326,7 @@ res_box <- optim_LS(rep(3, 25), flb,
 #>    Searching parameter 4 
 #>      Changed from 3 to 2 ; OFV = 438.2 
 #> 
-#>    Elapsed time: 0.166 seconds.
+#>    Elapsed time: 0.156 seconds.
 #> 
 #>    Final OFV =  438.2004 
 #>    Parameters: 2 2 2.144144 2 2.144144 2 2.144144 2 2 2 2.144144 2 2.144144 2 2 2.144144 2 2 2.144144 2 2.144144 2 2 2.108108 4 
@@ -351,7 +351,7 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000)
 #>    Searching parameter 1 
 #>      Changed from 0 to 6.55656 ; OFV = 47.7052 
 #> 
-#>    Elapsed time: 0.004 seconds.
+#>    Elapsed time: 0.003 seconds.
 #> 
 #>    Final OFV =  47.7052 
 #>    Parameters: 6.556557 

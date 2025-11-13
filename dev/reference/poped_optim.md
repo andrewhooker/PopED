@@ -353,7 +353,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x560952eadfa8>
+#> <bytecode: 0x5641610772b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -456,7 +456,7 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #>    Searching parameter 1 
 #>      Changed from 100 to 100 ; OFV = 56.032 
 #> 
-#>    Elapsed time: 0.021 seconds.
+#>    Elapsed time: 0.022 seconds.
 #> 
 #>    Final OFV =  56.03204 
 #>    Parameters: 100 
@@ -499,7 +499,7 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #>     sig_prop     0.01      32    23
 #>      sig_add     0.25      26    30
 #> 
-#> Total running time: 0.263 seconds
+#> Total running time: 0.251 seconds
 
 
 # cost function
@@ -597,7 +597,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
 #> Initial OFV = 1.34267
 #> 
 #> Total iterations: 2 
-#> Elapsed time: 0.007 seconds.
+#> Elapsed time: 0.006 seconds.
 #> 
 #> Final OFV =  1.342665 
 #> Parameters: 100 
@@ -662,7 +662,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
 #>     sig_prop     0.01      32    23
 #>      sig_add     0.25      26    30
 #> 
-#> Total running time: 0.37 seconds
+#> Total running time: 0.358 seconds
 
 # minimize the cost function
 out_3 <- poped_optim(poped.db,opt_a =TRUE,
@@ -712,7 +712,7 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #>    Searching parameter 1 
 #>      Changed from 53.4573 to 0.01 ; OFV = 0.000134267 
 #> 
-#>    Elapsed time: 0.009 seconds.
+#>    Elapsed time: 0.008 seconds.
 #> 
 #>    Final OFV =  0.0001342665 
 #>    Parameters: 0.01 
@@ -762,7 +762,7 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #>    Searching parameter 1 
 #>      Changed from 0.01 to 0.01 ; OFV = 0.000134267 
 #> 
-#>    Elapsed time: 0.009 seconds.
+#>    Elapsed time: 0.01 seconds.
 #> 
 #>    Final OFV =  0.0001342665 
 #>    Parameters: 0.01 
@@ -793,7 +793,7 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #> Efficiency: 
 #>   (ofv_final / ofv_init) = 0.00014286
 #> 
-#> Total running time: 0.36 seconds
+#> Total running time: 0.349 seconds
 
 
 if (FALSE) { # \dontrun{
