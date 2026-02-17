@@ -8,8 +8,9 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
                        uloq = Inf,
                        uloq_method=1,
                        uloq_start_time = NULL,
-                       verbose=FALSE,
                        FLAG_MC=FALSE,
+                       n_mc_samples = ceiling(2/loq_prob_limit),
+                       verbose=FALSE,
                        ...){
   
   
@@ -110,10 +111,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   
   if(n_pot_loq>0){ # D6 Method
     
-    # 1. Define number of Monte Carlo samples (Adjust for speed vs accuracy)
-    n_mc_samples <- 1000 
-    
-    # If number of observations with potential LOQ is small, can do exhaustive permutations instead of MC sampling
+    # If number of permutation lower than MC sampling, then use permutation approach instead of MC sampling.
     if(2^n_pot_loq <= n_mc_samples){
       FLAG_MC <- FALSE
     }
@@ -124,40 +122,64 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       pred_pot_loq <- pred[loq_obs_master == 2]
       cov_pot_loq  <- cov[loq_obs_master == 2, loq_obs_master == 2]
       
-      # 2. Simulate potential outcomes from the MVN distribution
-      # This replaces the exhaustive permutation matrix
+      # 1. Simulate potential outcomes from the MVN distribution
+      #   This replaces the exhaustive permutation matrix
       sim_outcomes <- mvtnorm::rmvnorm(n_mc_samples, mean = pred_pot_loq, sigma = cov_pot_loq)
       
-      fim <- zeros(fim_size)
+      # Evaluate sampled permutation:
+      # compare each row of simulated outcomes to the corresponding LOQ values to determine if they would be considered BLOQ, ULOQ, or normal observations
+      sim_bloq <- sim_outcomes < matrix(rep(loq_full[loq_obs_master == 2] , n_mc_samples), nrow = n_mc_samples, byrow = TRUE)
+      sim_aloq <- sim_outcomes > matrix(rep(uloq_full[loq_obs_master == 2], n_mc_samples), nrow = n_mc_samples, byrow = TRUE)
+      sim_loq  <- as.data.frame(sim_bloq | sim_aloq)
       
-      # 3. Iterate through MC samples instead of permutations
-      for (s in 1:n_mc_samples) {
-        current_obs <- sim_outcomes[s, ]
+      # Summarize sampled permutations:
+      #   Count each permutation:
+      sum_sim_loq <- sim_loq %>% 
+        dplyr::group_by_all() %>%
+        dplyr::summarise(count = n(),
+                         prob  = count/n_mc_samples,
+                         .groups = "drop") %>%
+        as.data.frame()
+      
+      prob_check <- 0
+      k_check    <- 0
+      while(prob_check < loq_PI_conf_level){
+        # Define the probability limit for filtering out low probability permutations:
+        #   decrease limit with each iteration to allow more permutations if needed
+        loq_prob_limit_k <- loq_prob_limit*0.5^k_check
         
-        # Determine LOQ status for this specific simulation
-        # 0 = Observed, 1 = BLOQ, 2 = ALOQ
-        loq_obs_tmp <- loq_obs_master
+        # Summarize sampled permutations:
+        #   Count each permutation:
+        sum_sim_loq <- sum_sim_loq %>% 
+          dplyr::mutate(prob_adjusted = if_else(prob < loq_prob_limit_k, 0, prob))
         
-        sim_bloq <- current_obs < loq_full[loq_obs_master == 2]
-        sim_aloq <- current_obs > uloq_full[loq_obs_master == 2]
-        
-        status <- rep(0, n_pot_loq)
-        status[sim_bloq] <- 1
-        status[sim_aloq] <- 2
-        
-        loq_obs_tmp[loq_obs_master == 2] <- status
+        # Run check that not too many permutations are being filtered out
+        prob_check <- sum(sum_sim_loq$prob_adjusted)
+        k_check    <- k_check+1
+      }
+      
+      # Fitler out low probability permutations:
+      sum_sim_loq <- sum_sim_loq %>%
+        dplyr::filter(prob_adjusted > 0) %>% 
+        dplyr::mutate(prob_adjusted = prob_adjusted/sum(prob_adjusted)) # rescale probabilities
+      
+      # 3. Iterate through the sampled permutation
+      fim <- zeros(fim_size)
+      for (k in 1:nrow(sum_sim_loq)) {
+        perm_k <- sum_sim_loq[k, names(sim_loq)]
+        prob_k <- sum_sim_loq$prob_adjusted[k]
         
         # 4. Calculate FIM for the 'observed' points (status == 0)
-        if (any(loq_obs_tmp == 0)) {
-          fim_tmp <- mf_all(
-            model_switch_i[loq_obs_tmp == 0, 1, drop = F], 
-            xt_i[loq_obs_tmp == 0, 1, drop = F], 
+        if (any(perm_k == 0)) {
+          fim_k <- mf_all(
+            model_switch_i[perm_k == 0, 1, drop = F], 
+            xt_i[perm_k == 0, 1, drop = F], 
             x_i, a_i, bpop_val, d_full, sigma_full, 
             docc_full, poped.db
           )$ret
           
-          # Add to running total (Weight is 1/S)
-          fim <- fim + (fim_tmp / n_mc_samples)
+          # Add to running total (Weight is the probability of this permutation)
+          fim <- fim + prob_k*fim_k
         }
       }
       
@@ -244,8 +266,10 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       # sum of probabilities
       tot_p <- sum(p_loq_comb_full)
       max_diff <- PI_alpha/2*length(loq_obs_master==2) # max p missed if all points are truncated with PI 
-      if(tot_p > 1.01 | tot_p < (1-max_diff)) stop("Sum of initial probabilities: ", sprintf("%6.5g",tot_p),"\n",
-                                                   "Probabilities do not add up to one!")
+      if(tot_p > 1.01 | tot_p < (1-max_diff)){
+        stop("Sum of initial probabilities: ", sprintf("%6.5g",tot_p),"\n",
+             "Probabilities do not add up to one!")
+      }
       
       # rescale probabilities
       p_loq_comb <- p_loq_comb/sum(p_loq_comb)
@@ -296,4 +320,3 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   
   return(list(fim=fim,poped.db=poped.db)) 
 }
-
