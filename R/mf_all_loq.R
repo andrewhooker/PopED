@@ -9,7 +9,6 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
                        uloq_method=1,
                        uloq_start_time = NULL,
                        FLAG_MC=FALSE,
-                       n_mc_samples = ceiling(2/loq_prob_limit),
                        verbose=FALSE,
                        ...){
   
@@ -111,6 +110,11 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
   
   if(n_pot_loq>0){ # D6 Method
     
+    # 1. Estimate number of needed MC samples:
+    #    The upper limits of none sample permutation should be loq_prob_limit.
+    #    To estimate how many sample are needed the Clopper-Pearson formula is used (assuming number of observation k=0)
+    n_mc_samples <- ceiling(log((1-loq_PI_conf_level)/2)/log(1-loq_prob_limit))
+    
     # If number of permutation lower than MC sampling, then use permutation approach instead of MC sampling.
     if(2^n_pot_loq <= n_mc_samples){
       FLAG_MC <- FALSE
@@ -122,7 +126,7 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
       pred_pot_loq <- pred[loq_obs_master == 2]
       cov_pot_loq  <- cov[loq_obs_master == 2, loq_obs_master == 2]
       
-      # 1. Simulate potential outcomes from the MVN distribution
+      # 2. Simulate potential outcomes from the MVN distribution
       #   This replaces the exhaustive permutation matrix
       sim_outcomes <- mvtnorm::rmvnorm(n_mc_samples, mean = pred_pot_loq, sigma = cov_pot_loq)
       
@@ -139,29 +143,22 @@ mf_all_loq <- function(model_switch_i,xt_i,x_i,a_i,bpop_val,d_full,sigma_full,do
         dplyr::summarise(count = n(),
                          prob  = count/n_mc_samples,
                          .groups = "drop") %>%
-        as.data.frame()
+        as.data.frame() %>% 
+        dplyr::mutate(prob_adjusted = if_else(prob < loq_prob_limit, 0, prob))
       
-      prob_check <- 0
-      k_check    <- 0
-      while(prob_check < loq_PI_conf_level){
-        # Define the probability limit for filtering out low probability permutations:
-        #   decrease limit with each iteration to allow more permutations if needed
-        loq_prob_limit_k <- loq_prob_limit*0.5^k_check
+      # Can permutation with prob<loq_prob_limit be removed?
+      prob_check <- sum(sum_sim_loq$prob_adjusted)
+      if(prob_check >= loq_PI_conf_level){
+        # Fitler out low probability permutations:
+        sum_sim_loq <- sum_sim_loq %>%
+          dplyr::filter(prob_adjusted > 0) %>% 
+          dplyr::mutate(prob_adjusted = prob_adjusted/sum(prob_adjusted)) # rescale probabilities
         
-        # Summarize sampled permutations:
-        #   Count each permutation:
-        sum_sim_loq <- sum_sim_loq %>% 
-          dplyr::mutate(prob_adjusted = if_else(prob < loq_prob_limit_k, 0, prob))
-        
-        # Run check that not too many permutations are being filtered out
-        prob_check <- sum(sum_sim_loq$prob_adjusted)
-        k_check    <- k_check+1
+        # Just keep initial probabilities for diagnostics:
+      }else{
+        sum_sim_loq <- sum_sim_loq %>%
+          dplyr::mutate(prob_adjusted = prob)
       }
-      
-      # Fitler out low probability permutations:
-      sum_sim_loq <- sum_sim_loq %>%
-        dplyr::filter(prob_adjusted > 0) %>% 
-        dplyr::mutate(prob_adjusted = prob_adjusted/sum(prob_adjusted)) # rescale probabilities
       
       # 3. Iterate through the sampled permutation
       fim <- zeros(fim_size)
