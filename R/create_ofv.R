@@ -15,7 +15,6 @@ create_ofv <- function(poped.db,
                        ofv_fun = poped.db$settings$ofv_fun,
                        transform_parameters=T,
                        ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   #------------ update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 blockother <- function(fn,poped.db,d_switch=poped.db$settings$d_switch){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   fprintf(fn,'==============================================================================\n')
   fprintf(fn,'Criterion Specification\n\n')
   

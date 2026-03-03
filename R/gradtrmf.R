@@ -3,7 +3,6 @@ gradtrmf <- function(model_switch,aX,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped
   #  Looks at the gradient of tr(FIM^-1) with respect to time (xt) or covariate (a).
   #  problems can arise when a or xt goes negative. So only do forward
   #  differencing. 
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   m=size(ni,1)
   if (gradxt == FALSE) {
     gdmf=matrix(1,m,size(a,2))

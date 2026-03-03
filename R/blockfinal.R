@@ -31,7 +31,6 @@ blockfinal <- function(fn,fmf,dmf,groupsize,ni,xt,x,a,model_switch,bpop,d,docc,s
                        compute_inv=TRUE,out_file=NULL,trflag=TRUE,footer_flag=TRUE,
                        run_time = NULL,
                        ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   time_value <- NULL
   
   if(!trflag) return(invisible() ) 

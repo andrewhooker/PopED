@@ -48,7 +48,6 @@ a_line_search <- function(poped.db,
                           opt_samps=poped.db$settings$optsw[1],
                           opt_inds=poped.db$settings$optsw[5],
                           ls_step_size=poped.db$settings$ls_step_size){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   
   optsw <- cbind(opt_samps,opt_xt,opt_x,opt_a,opt_inds)
   # 

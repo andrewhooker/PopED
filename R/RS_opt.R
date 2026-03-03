@@ -73,7 +73,6 @@ RS_opt <- function(poped.db,
                        out_file=NULL,
                        compute_inv=TRUE,
                        ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2    
   
   # Only get inputs that are needed, not double inputs
   # needed inputs to function: get first then run function

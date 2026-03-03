@@ -18,7 +18,6 @@
 ## Author: Andrew Hooker
 
 LinMatrixL_occ <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,iCurrentOcc,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #
   # size: (samples per individual x number of iovs)
   #

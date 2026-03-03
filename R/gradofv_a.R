@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 gradofv_a <- function(model_switch,aa,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #Input: the prior FIM or (empty) and all the other things to calculate the
   #grad with for a
   #Return a vector that is the gradient

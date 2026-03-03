@@ -31,7 +31,6 @@ shrinkage <- function(poped.db,
                       use_mc = FALSE,
                       num_sim_ids = 1000,
                       use_purrr = FALSE){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   # if (poped.db$design$m > 1) {
   #   warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
   # }

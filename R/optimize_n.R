@@ -9,7 +9,6 @@
 #' @keywords internal
 #'
 extract_norm_group_fim <- function (poped.db,...) {
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   num_groups <- poped.db$design$m
   fim_group <- list()
   for(i in 1:num_groups){
@@ -63,7 +62,6 @@ optimize_groupsize <-
            props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
            trace=1,
            ...){
-      start_parallel_env$babelmixr2 <- poped.db$babelmixr2
     # need to fix:
     # limits on the proportions to account for max and min values of N in each group
     # return actual values.
@@ -116,7 +114,6 @@ optimize_groupsize <-
   norm_group_fim <- extract_norm_group_fim(poped.db)
   
   ofv_fun <- function(props,norm_group_fim,n_tot, poped.db, ...){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
     fim_tmp <- combine_norm_group_fim(norm_group_fim,props*n_tot)
     ofv_fim(fim_tmp,poped.db,...)
   }
@@ -233,7 +230,6 @@ optimize_n_rse <- function(poped.db,
                            allowed_values = seq(poped.db$design$m,
                                                 sum(poped.db$design$groupsize)*5,
                                                 by=poped.db$design$m)){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   n_per_group = poped.db$design$groupsize
   n_tot <- sum(n_per_group)
   props = c(n_per_group/n_tot)
@@ -277,7 +273,6 @@ optimize_n_eff <- function(poped.db,
                            ofv_ref,
                            norm_group_fim = NULL,  
                            ...){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   n_per_group = poped.db$design$groupsize
   n_tot <- sum(n_per_group)
   props = c(n_per_group/n_tot)

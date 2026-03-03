@@ -73,7 +73,6 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
                    iter_tot=poped.db$settings$iNumSearchIterationsIfNotLineSearch,
                    iter_max=10,
                    ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   
   ## update poped.db with options supplied in function
   called_args <- match.call()

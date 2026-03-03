@@ -1,7 +1,6 @@
 #Get the emperical bayes estimates for one individual
 #Written for PopED by JN
 ind_estimates <- function(data,bpop,d,sigma,start_bind,bInter,bUDDLike,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   b_i = t(start_bind)
   c1 = length(t(start_bind))/2*log(2*pi)
   c2 = 1/2*log(det(d))
@@ -33,7 +32,6 @@ ind_estimates <- function(data,bpop,d,sigma,start_bind,bInter,bUDDLike,model_swi
 
 #This is the function that should be minimized, w$r.t eta
 min_function <- function(data,bpop,d,sigma,bInter,bUDDLike,model_switch,xt_ind,x,a,bocc_ind,poped.db,c1,c2,c3,lC,det_res_var,b_ind,return_deriv=F){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   bAnalytic = FALSE
   li = ind_likelihood(data,bpop,d,sigma,bInter,bUDDLike,model_switch,xt_ind,x,a,bocc_ind,poped.db,lC,det_res_var,b_ind) #Individual log likelihood
   ret =c1+c2+1/2*t(b_ind)*c3*b_ind-li

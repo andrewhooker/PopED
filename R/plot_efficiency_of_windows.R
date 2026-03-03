@@ -69,7 +69,6 @@ plot_efficiency_of_windows <- function(poped.db,
                                        #mrgsolve_model=NULL,
                                        seed=round(runif(1,0,10000000)),
                                        ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   if(!is.null(seed)) set.seed(seed)
   
   design = poped.db$design

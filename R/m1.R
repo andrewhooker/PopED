@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 m1 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #
   # function computes the derivative of the
   # linerarized model function w$r.t. bpop

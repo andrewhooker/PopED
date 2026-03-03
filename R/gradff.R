@@ -9,7 +9,6 @@ gradff <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
   # derivative of model w.r.t. g eval at b=b_ind
   #
   #
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   fg0 = feval(poped.db$model$fg_pointer,x,a,bpop,b_ind,bocc_ind)
   epsi0 = zeros(1,length(poped.db$parameters$notfixed_sigma))
 

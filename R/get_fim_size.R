@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 get_fim_size <- function(poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #Returns the size of FIM, i$e. col or row size
   numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
   numnotfixed_d    = sum(poped.db$parameters$notfixed_d)

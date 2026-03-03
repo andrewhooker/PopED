@@ -16,7 +16,6 @@
 ## Author: Andrew Hooker
 
 convert_variables <- function(poped.db){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
     design = poped.db$design
     design_space = poped.db$design_space
 

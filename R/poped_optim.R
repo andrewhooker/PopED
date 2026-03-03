@@ -105,7 +105,6 @@ poped_optim <- function(poped.db,
                         allow_replicates_xt=TRUE,
                         allow_replicates_a=TRUE,
                         ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   
  
   #------------ update argument list with called arguments

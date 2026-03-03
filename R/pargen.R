@@ -29,7 +29,6 @@
 ## Author: Andrew Hooker
 
 pargen <- function(par,user_dist_pointer,sample_size,bLHS,sample_number,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   nvar=size(par,1)
   ret=zeros(sample_size,nvar)
   

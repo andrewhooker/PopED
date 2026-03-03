@@ -1,5 +1,4 @@
 get_cv <- function(param_vars,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #Return the RSE,CV of parameters
   ## Author: Andrew Hooker
   params_all <-  get_all_params(poped.db)[[8]] 
@@ -63,7 +62,6 @@ get_rse <- function (fim, poped.db,
                      prior_fim = poped.db$settings$prior_fim,
                      #pseudo_on_fail = FALSE,
                      ...) {
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

@@ -3,7 +3,6 @@
 
 graddetmf <- function(model_switch,aX,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE,gradxt=FALSE){
   
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   n = get_fim_size(poped.db)
   m=size(ni,1)
   if (gradxt == FALSE) {

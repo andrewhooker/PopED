@@ -3,7 +3,6 @@
 ## Author: Andrew Hooker
 
 write_iterationfile <- function(strSearch,iteration,xt,a,x,ni,groupsize,fim,ofv,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
 ## #Make sure that this doesn't crash the search
 ## try 
 ##     fn = file(poped.db$settings$strIterationFileName, 'w')

@@ -1,5 +1,4 @@
 par_and_space_tbl <- function(poped.db) {
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   df <- NULL
   allowed_values <- allowed_values_2 <- cont <- lower <- upper <- par <- NULL
   
@@ -266,7 +265,6 @@ get_par_and_space_optim <- function(poped.db,
                                     warn_when_none=TRUE) 
 {
 
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
   
   #----------- checks

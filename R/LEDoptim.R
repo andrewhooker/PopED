@@ -52,7 +52,6 @@ LEDoptim <- function(poped.db,
                      laplace.fim=FALSE, 
                      use_RS=poped.db$settings$bUseRandomSearch,
                      ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #+++++++++++++++++++++  D CONTINUOUS VARIABLE OPTIMIZATION FUNCTION
   
   # ------------- downsizing of general design

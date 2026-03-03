@@ -24,7 +24,6 @@
 
 
 downsizing_general_design <- function(poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   # ------------- downsizing of general design
   
   ni=poped.db$design$ni[1:poped.db$design$m,,drop=F]

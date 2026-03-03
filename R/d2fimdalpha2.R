@@ -1,5 +1,4 @@
 d2fimdalpha2 <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,ha){  
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   bpop=bpopdescr[,2,drop=F]
   bpop[bpopdescr[,1,drop=F]!=0]=alpha[1:sum(bpopdescr[,1,drop=F]!=0)]
   d=ddescr[,2,drop=F]

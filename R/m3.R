@@ -4,7 +4,6 @@
 m3 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,bUseVarSigmaDerivative,poped.db){
   #
   # size: (samps per subject^2 x (number of random effects + number of occasion variances + number of sigmas))
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   dv_dd = NULL
   dv_covd = NULL
   dv_ddocc = NULL

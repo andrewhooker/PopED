@@ -3,7 +3,6 @@
 ## Author: Andrew Hooker
 
 mf_all <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
     returnArgs <- switch(poped.db$settings$iFIMCalculationType+1,
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Default (with no assumption that bpop and b are uncorrelated)
                          mf3(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db), #Reduced FIM

@@ -492,7 +492,6 @@ calc_k <- function(alpha, model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr
   if(return_gradient){
     
     comp_grad_1 <- function(alpha, model_switch, groupsize, ni, xtoptn, xoptn, aoptn, bpopdescr, ddescr, covd, sigma, docc, poped.db, grad_p) {
-      start_parallel_env$babelmixr2 <- poped.db$babelmixr2
       returnArgs <- dfimdalpha(alpha,model_switch,groupsize,ni,xtoptn,xoptn,aoptn,bpopdescr,ddescr,covd,sigma,docc,poped.db,1e-6) 
       d_fim <- returnArgs[[1]]
       fim <- returnArgs[[2]]

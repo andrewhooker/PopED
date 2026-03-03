@@ -30,7 +30,6 @@
 ## Author: Andrew Hooker
 
 mftot <- function(model_switch,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   m=size(ni,1)
   s=0
   for(i in 1:m){

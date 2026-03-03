@@ -37,7 +37,6 @@ blockheader <- function(poped.db,name="Default",iter=NULL,
                           header_flag=TRUE,
                           ...)
 {
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   # BLOCKHEADER_2
   #   filename to write to is 
   #   poped.db$settings$strOutputFilePath,poped.db$settings$strOutputFileName,NAME,iter,poped.db$settings$strOutputFileExtension

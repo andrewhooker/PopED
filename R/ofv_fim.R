@@ -37,7 +37,6 @@ ofv_fim <- function(fmf,poped.db,
                     ds_index=poped.db$parameters$ds_index,
                     use_log = TRUE,
                     ...){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #Input: the FIM
   #Return the single value that should be maximized
   

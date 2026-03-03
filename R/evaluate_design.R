@@ -12,7 +12,6 @@
 #' @family evaluate_design
 
 evaluate_design <- function(poped.db, ...) {
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   out <- calc_ofv_and_fim(poped.db,...)
   if(is.null(out$fim)){
     out$rse <- NULL

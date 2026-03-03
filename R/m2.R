@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 m2 <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
 # M2 derivative of the vectorized variance w$r.t. bpops
 # 
 # the output is a matrix with dimensions (ind_samps^2 X nbpop)

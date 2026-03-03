@@ -15,7 +15,6 @@
 #' @export
 #' @keywords internal
 get_unfixed_params <- function(poped.db,params=NULL){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   if(is.null(params)){
     bpop = poped.db$parameters$bpop[,2,drop=F]
     d = poped.db$parameters$d[,2,drop=F]

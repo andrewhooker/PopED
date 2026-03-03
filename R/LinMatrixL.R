@@ -22,7 +22,6 @@
 ## Author: Andrew Hooker
 
 LinMatrixL <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   if((poped.db$parameters$NumRanEff==0)){
     y=0
   } else {

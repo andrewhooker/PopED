@@ -38,7 +38,6 @@
 evaluate_power <- function(poped.db, bpop_idx, h0=0, alpha=0.05, power=0.80, twoSided=TRUE, 
                            find_min_n=TRUE,
                            fim=NULL, out=NULL,...) {
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   # If two-sided then halve the alpha
   if (twoSided == TRUE) alpha = alpha/2
   

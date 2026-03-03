@@ -71,7 +71,6 @@ evaluate.fim <- function(poped.db,
                          groupsize=NULL,
                          deriv.type = NULL,
                          ...){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   
   if(is.null(bpop.val)) bpop.val <- poped.db$parameters$param.pt.val$bpop
   if(is.null(d_full)) d_full <- poped.db$parameters$param.pt.val$d

@@ -23,7 +23,6 @@
 #        log(det(RR))+ (res'/RR)*res;        
 
 ind_likelihood <- function(data,bpop,d,sigma,bInter,bUDDLike,model_switch,xt_ind,x,a,bocc_ind,poped.db,lC,det_res_var,b_ind){
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   # % from davidian and giltinan p 173 
   if((!bUDDLike)){
     #browser()

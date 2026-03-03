@@ -20,7 +20,6 @@
 ## Author: Andrew Hooker
 
 get_all_params <- function(poped.db){
-  start_parallel_env$babelmixr2 <- poped.db$babelmixr2
   #Return all params (in a vector all) with the specified order above
   
   #bpop = poped.db$parameters$bpop[,2,drop=F] 

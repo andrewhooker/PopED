@@ -3,7 +3,6 @@
 
 v <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db){
   # number of samples X number of samples (per individual)
-    start_parallel_env$babelmixr2 <- poped.db$babelmixr2  
   bUseAutoCorrelation = !isempty(poped.db$model$auto_pointer)
   
   bUseFullSigmaCorrelation = FALSE
