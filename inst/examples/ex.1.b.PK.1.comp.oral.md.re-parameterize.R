@@ -38,9 +38,10 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.md.KE,
 ##  create plot of model without variability 
 plot_model_prediction(poped.db)
 
-##  create plot of model with variability (both BSV and RUV)
-plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T,model_num_points = 500) # slower, no approximation if many "model_num_points"
-plot_model_prediction(poped.db,separate.groups=T,PI=T) # faster, with approximations
+##  create plot of model with variability 
+plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T,
+                      model_num_points = 500) #slower
+plot_model_prediction(poped.db,IPRED=T,separate.groups=T,PI=T) #more approximations
 
 ## evaluate initial design
 evaluate_design(poped.db)
@@ -61,8 +62,9 @@ summary(output_2)
 round(get_rse(output_2$FIM,output_2$poped.db),2)
 plot_model_prediction(output_2$poped.db)
 
-# Optimization of sample times with only integer time points in design space
-# faster than continuous optimization in this case (but not quite as good in terms of efficiency)
+# Optimization of sample times with only integer time points in design space.
+# Faster than continuous optimization in this case,
+# but worse in terms of efficiency
 poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
 output_discrete <- poped_optim(poped.db.discrete, opt_xt=T, parallel = TRUE)
 
