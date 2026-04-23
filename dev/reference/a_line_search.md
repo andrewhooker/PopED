@@ -156,7 +156,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5641610772b0>
+#> <bytecode: 0x55b94b2139b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -197,52 +197,50 @@ output <- a_line_search(poped.db, opt_xt=TRUE, opt_a=TRUE, ls_step_size=4)
 #> *****************************
 #>             Line Search
 #> 
-#> Searching xt3 on group 1
-#> group 1 -- xt[3] changed from  2 to  0.01
-#>      OFV(MF) changed from 55.3964 to 55.4591 
-#> group 1 -- xt[3] changed from  0.01 to  120
-#>      OFV(MF) changed from 55.4591 to 55.5251 
+#> Searching xt1 on group 1
+#> group 1 -- xt[1] changed from  0.5 to  0.01
+#>      OFV(MF) changed from 55.3964 to 55.7394 
+#> group 1 -- xt[1] changed from  0.01 to  90.0025
+#>      OFV(MF) changed from 55.7394 to 55.7436 
+#> group 1 -- xt[1] changed from  90.0025 to  120
+#>      OFV(MF) changed from 55.7436 to 55.8023 
+#> Searching xt6 on group 1
+#> group 1 -- xt[6] changed from  36 to  0.01
+#>      OFV(MF) changed from 55.8023 to 55.8666 
+#> group 1 -- xt[6] changed from  0.01 to  90.0025
+#>      OFV(MF) changed from 55.8666 to 55.9043 
+#> group 1 -- xt[6] changed from  90.0025 to  120
+#>      OFV(MF) changed from 55.9043 to 55.9321 
 #> Searching xt2 on group 1
-#> group 1 -- xt[2] changed from  1 to  0.01
-#>      OFV(MF) changed from 55.5251 to 55.5817 
-#> group 1 -- xt[2] changed from  0.01 to  30.0075
-#>      OFV(MF) changed from 55.5817 to 55.6164 
-#> group 1 -- xt[2] changed from  30.0075 to  120
-#>      OFV(MF) changed from 55.6164 to 55.6467 
-#> Searching xt8 on group 1
+#> Searching xt3 on group 1
 #> Searching xt7 on group 1
 #> group 1 -- xt[7] changed from  72 to  30.0075
-#>      OFV(MF) changed from 55.6467 to 55.7441 
-#> Searching xt6 on group 1
-#> group 1 -- xt[6] changed from  36 to  30.0075
-#>      OFV(MF) changed from 55.7441 to 55.8112 
-#> group 1 -- xt[6] changed from  30.0075 to  90.0025
-#>      OFV(MF) changed from 55.8112 to 55.8255 
-#> group 1 -- xt[6] changed from  90.0025 to  120
-#>      OFV(MF) changed from 55.8255 to 55.84 
+#>      OFV(MF) changed from 55.9321 to 55.9484 
+#> group 1 -- xt[7] changed from  30.0075 to  90.0025
+#>      OFV(MF) changed from 55.9484 to 55.9661 
+#> Searching xt8 on group 1
 #> Searching xt5 on group 1
-#> Searching xt1 on group 1
 #> Searching xt4 on group 1
-#>     OFV(MF): 55.84
+#>     OFV(MF): 55.9661
 #> 
-#> Best value for OFV(MF) = 55.84
+#> Best value for OFV(MF) = 55.9661
 #> 
 #> Best value for xt:
-#> Group 1:    0.5      6     24  30.01    120    120    120    120
+#> Group 1:      1      2      6     24     90    120    120    120
 #> 
 #> Searching a1 on individual/group 1
 #> group 1 -- a[1] changed from  70 to  75.0025
-#>      OFV(MF) changed from 55.84 to 56.0555 
+#>      OFV(MF) changed from 55.9661 to 56.1502 
 #> group 1 -- a[1] changed from  75.0025 to  100
-#>      OFV(MF) changed from 56.0555 to 56.7349 
-#>     OFV(MF): 56.7349
-#> Best value for OFV(MF) = 56.7349
+#>      OFV(MF) changed from 56.1502 to 56.7067 
+#>     OFV(MF): 56.7067
+#> Best value for OFV(MF) = 56.7067
 #> 
 #> Best value for a: 
 #> Group 1: 100 [0.01,100]
 #> 
 #> 
-#> Line search run time: 0.315 seconds
+#> Line search run time: 0.345 seconds
 #> ***************************
 #> 
 

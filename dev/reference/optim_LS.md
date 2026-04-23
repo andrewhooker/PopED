@@ -186,7 +186,7 @@ res1 <- optim_LS(50, fw,lower = -50, upper=50, line_length = 10000)
 #>    Searching parameter 1 
 #>      Changed from 50 to -15.8166 ; OFV = 67.485 
 #> 
-#>    Elapsed time: 0.045 seconds.
+#>    Elapsed time: 0.036 seconds.
 #> 
 #>    Final OFV =  67.48502 
 #>    Parameters: -15.81658 
@@ -212,7 +212,7 @@ res2 <- optim_LS(50, fw, lower=-Inf,upper=Inf,line_length = 10000)
 #>    Searching parameter 1 
 #>      Changed from 50 to -5.0055 ; OFV = 69.8766 
 #> 
-#>    Elapsed time: 0.036 seconds.
+#>    Elapsed time: 0.19 seconds.
 #> 
 #>    Final OFV =  69.87659 
 #>    Parameters: -5.005501 
@@ -275,61 +275,61 @@ res_box <- optim_LS(rep(3, 25), flb,
 #>    Initial parameters: 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
 #>    Initial OFV: 3460 
 #> 
-#>    Searching parameter 21 
-#>      Changed from 3 to 2.14414 ; OFV = 3370.22 
 #>    Searching parameter 7 
-#>      Changed from 3 to 2.14414 ; OFV = 3280.43 
-#>    Searching parameter 5 
-#>      Changed from 3 to 2.14414 ; OFV = 3190.65 
-#>    Searching parameter 11 
-#>      Changed from 3 to 2.14414 ; OFV = 3100.87 
+#>      Changed from 3 to 2.14414 ; OFV = 3370.22 
 #>    Searching parameter 16 
-#>      Changed from 3 to 2.14414 ; OFV = 3011.09 
-#>    Searching parameter 13 
-#>      Changed from 3 to 2.14414 ; OFV = 2921.3 
-#>    Searching parameter 25 
-#>      Changed from 3 to 4 ; OFV = 2877.3 
-#>    Searching parameter 22 
-#>      Changed from 3 to 2 ; OFV = 2754.08 
-#>    Searching parameter 19 
-#>      Changed from 3 to 2.14414 ; OFV = 2664.3 
-#>    Searching parameter 6 
-#>      Changed from 3 to 2 ; OFV = 2506.84 
-#>    Searching parameter 20 
-#>      Changed from 3 to 2 ; OFV = 2349.39 
-#>    Searching parameter 15 
-#>      Changed from 3 to 2 ; OFV = 2227.15 
-#>    Searching parameter 3 
-#>      Changed from 3 to 2.14414 ; OFV = 2137.37 
-#>    Searching parameter 1 
-#>      Changed from 3 to 2 ; OFV = 1994.37 
-#>    Searching parameter 23 
-#>      Changed from 3 to 2 ; OFV = 1866.37 
-#>    Searching parameter 18 
-#>      Changed from 3 to 2 ; OFV = 1744.14 
-#>    Searching parameter 8 
-#>      Changed from 3 to 2 ; OFV = 1620.92 
-#>    Searching parameter 9 
-#>      Changed from 3 to 2 ; OFV = 1492.92 
-#>    Searching parameter 10 
-#>      Changed from 3 to 2 ; OFV = 1330.68 
-#>    Searching parameter 14 
-#>      Changed from 3 to 2 ; OFV = 1167.46 
-#>    Searching parameter 17 
-#>      Changed from 3 to 2 ; OFV = 1004.24 
+#>      Changed from 3 to 2.14414 ; OFV = 3280.43 
 #>    Searching parameter 2 
-#>      Changed from 3 to 2 ; OFV = 842.005 
-#>    Searching parameter 24 
-#>      Changed from 3 to 2.10811 ; OFV = 753.111 
-#>    Searching parameter 12 
-#>      Changed from 3 to 2 ; OFV = 595.656 
+#>      Changed from 3 to 2.14414 ; OFV = 3190.65 
+#>    Searching parameter 25 
+#>      Changed from 3 to 4 ; OFV = 3146.65 
+#>    Searching parameter 20 
+#>      Changed from 3 to 2.14414 ; OFV = 3056.87 
+#>    Searching parameter 11 
+#>      Changed from 3 to 2.14414 ; OFV = 2967.09 
+#>    Searching parameter 1 
+#>      Changed from 3 to 2 ; OFV = 2789.85 
+#>    Searching parameter 13 
+#>      Changed from 3 to 2.14414 ; OFV = 2700.07 
+#>    Searching parameter 18 
+#>      Changed from 3 to 2.14414 ; OFV = 2610.29 
+#>    Searching parameter 9 
+#>      Changed from 3 to 2.14414 ; OFV = 2520.5 
+#>    Searching parameter 21 
+#>      Changed from 3 to 2 ; OFV = 2397.28 
 #>    Searching parameter 4 
-#>      Changed from 3 to 2 ; OFV = 438.2 
+#>      Changed from 3 to 2.14414 ; OFV = 2307.5 
+#>    Searching parameter 5 
+#>      Changed from 3 to 2 ; OFV = 2184.28 
+#>    Searching parameter 8 
+#>      Changed from 3 to 2 ; OFV = 2026.82 
+#>    Searching parameter 12 
+#>      Changed from 3 to 2 ; OFV = 1869.37 
+#>    Searching parameter 19 
+#>      Changed from 3 to 2 ; OFV = 1711.91 
+#>    Searching parameter 15 
+#>      Changed from 3 to 2 ; OFV = 1589.68 
+#>    Searching parameter 10 
+#>      Changed from 3 to 2 ; OFV = 1432.22 
+#>    Searching parameter 22 
+#>      Changed from 3 to 2 ; OFV = 1304.22 
+#>    Searching parameter 3 
+#>      Changed from 3 to 2 ; OFV = 1146.77 
+#>    Searching parameter 6 
+#>      Changed from 3 to 2 ; OFV = 984.533 
+#>    Searching parameter 17 
+#>      Changed from 3 to 2 ; OFV = 827.077 
+#>    Searching parameter 23 
+#>      Changed from 3 to 2 ; OFV = 699.077 
+#>    Searching parameter 24 
+#>      Changed from 3 to 2.10811 ; OFV = 610.183 
+#>    Searching parameter 14 
+#>      Changed from 3 to 2 ; OFV = 446.962 
 #> 
-#>    Elapsed time: 0.156 seconds.
+#>    Elapsed time: 0.135 seconds.
 #> 
-#>    Final OFV =  438.2004 
-#>    Parameters: 2 2 2.144144 2 2.144144 2 2.144144 2 2 2 2.144144 2 2.144144 2 2 2.144144 2 2 2.144144 2 2.144144 2 2 2.108108 4 
+#>    Final OFV =  446.9622 
+#>    Parameters: 2 2.144144 2 2.144144 2 2 2.144144 2 2.144144 2 2.144144 2 2.144144 2 2 2.144144 2 2.144144 2 2.144144 2 2 2 2.108108 4 
 #> 
 
 # one-dimensional function
@@ -351,7 +351,7 @@ res_max <- optim_LS(0,f,lower=-10, upper=10,maximize=TRUE,line_length = 1000)
 #>    Searching parameter 1 
 #>      Changed from 0 to 6.55656 ; OFV = 47.7052 
 #> 
-#>    Elapsed time: 0.003 seconds.
+#>    Elapsed time: 0.009 seconds.
 #> 
 #>    Final OFV =  47.7052 
 #>    Parameters: 6.556557 

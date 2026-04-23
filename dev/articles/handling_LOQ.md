@@ -161,7 +161,7 @@ e_time_D2 <- system.time(
 
 cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
 cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
-#> D6 evaluation time:  0.047 seconds 
+#> D6 evaluation time:  0.049 seconds 
 #> D2 evaluation time:  0.008 deconds
 ```
 
@@ -360,9 +360,9 @@ Approach Group in Europe*.
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -381,21 +381,22 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] PopED_0.7.0.9000 kableExtra_1.4.0 knitr_1.50       ggplot2_4.0.0   
+#> [1] PopED_0.7.0.9000 kableExtra_1.4.0 knitr_1.51       ggplot2_4.0.2   
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] utf8_1.2.6         sass_0.4.10        generics_0.1.4     xml2_1.4.1        
-#>  [5] gtools_3.9.5       stringi_1.8.7      digest_0.6.37      magrittr_2.0.4    
-#>  [9] evaluate_1.0.5     grid_4.5.2         RColorBrewer_1.1-3 mvtnorm_1.3-3     
-#> [13] pkgload_1.4.1      fastmap_1.2.0      rprojroot_2.1.1    jsonlite_2.0.0    
-#> [17] brio_1.1.5         viridisLite_0.4.2  scales_1.4.0       codetools_0.2-20  
-#> [21] textshaping_1.0.4  jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
-#> [25] withr_3.0.2        cachem_1.1.0       yaml_2.3.10        tools_4.5.2       
-#> [29] dplyr_1.1.4        vctrs_0.6.5        R6_2.6.1           lifecycle_1.0.4   
-#> [33] stringr_1.6.0      fs_1.6.6           htmlwidgets_1.6.4  ragg_1.5.0        
-#> [37] pkgconfig_2.0.3    desc_1.4.3         pkgdown_2.2.0      pillar_1.11.1     
-#> [41] bslib_0.9.0        gtable_0.3.6       glue_1.8.0         systemfonts_1.3.1 
-#> [45] xfun_0.54          tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.17.1 
-#> [49] farver_2.1.2       htmltools_0.5.8.1  rmarkdown_2.30     svglite_2.2.2     
-#> [53] labeling_0.4.3     testthat_3.2.3     compiler_4.5.2     S7_0.2.0
+#>  [1] utf8_1.2.6         sass_0.4.10        generics_0.1.4     xml2_1.5.2        
+#>  [5] gtools_3.9.5       stringi_1.8.7      digest_0.6.39      magrittr_2.0.5    
+#>  [9] evaluate_1.0.5     grid_4.5.3         RColorBrewer_1.1-3 mvtnorm_1.3-7     
+#> [13] pkgload_1.5.1      fastmap_1.2.0      rprojroot_2.1.1    jsonlite_2.0.0    
+#> [17] brio_1.1.5         viridisLite_0.4.3  scales_1.4.0       codetools_0.2-20  
+#> [21] textshaping_1.0.5  jquerylib_0.1.4    cli_3.6.6          rlang_1.2.0       
+#> [25] withr_3.0.2        cachem_1.1.0       yaml_2.3.12        otel_0.2.0        
+#> [29] tools_4.5.3        dplyr_1.2.1        vctrs_0.7.3        R6_2.6.1          
+#> [33] lifecycle_1.0.5    stringr_1.6.0      fs_2.1.0           htmlwidgets_1.6.4 
+#> [37] ragg_1.5.2         pkgconfig_2.0.3    desc_1.4.3         pkgdown_2.2.0     
+#> [41] pillar_1.11.1      bslib_0.10.0       gtable_0.3.6       glue_1.8.1        
+#> [45] systemfonts_1.3.2  xfun_0.57          tibble_3.3.1       tidyselect_1.2.1  
+#> [49] rstudioapi_0.18.0  farver_2.1.2       htmltools_0.5.9    rmarkdown_2.31    
+#> [53] svglite_2.2.2      labeling_0.4.3     testthat_3.3.2     compiler_4.5.3    
+#> [57] S7_0.2.1-1
 ```

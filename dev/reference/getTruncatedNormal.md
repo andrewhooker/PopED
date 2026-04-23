@@ -27,6 +27,6 @@ A random sample from the specified truncated normal distribution
 ``` r
 getTruncatedNormal(mean=3,variance=100)
 #>          [,1]
-#> [1,] 16.43245
+#> [1,] 7.909153
 
 ```

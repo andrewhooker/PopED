@@ -332,7 +332,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5641610772b0>
+#> <bytecode: 0x55b94b2139b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -454,29 +454,29 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> OFV(mf)    : 55.6095
 #> diff       : 0.00279928
 #> *************************************************************
-#> Stochastic gradient run time: 0.358 seconds
+#> Stochastic gradient run time: 0.336 seconds
 #> 
 #> *****************************
 #>             Line Search
 #> 
-#> Searching xt3 on group 1
-#> Searching xt8 on group 1
+#> Searching xt2 on group 1
+#> Searching xt4 on group 1
 #> Searching xt1 on group 1
 #> group 1 -- xt[1] changed from  0.210319 to  0.01
 #>      OFV(MF) changed from 55.6095 to 55.8352 
 #> group 1 -- xt[1] changed from  0.01 to  120
 #>      OFV(MF) changed from 55.8352 to 55.8915 
-#> Searching xt2 on group 1
-#> Searching xt5 on group 1
 #> Searching xt6 on group 1
 #> group 1 -- xt[6] changed from  36.2897 to  0.01
 #>      OFV(MF) changed from 55.8915 to 55.9642 
 #> group 1 -- xt[6] changed from  0.01 to  120
 #>      OFV(MF) changed from 55.9642 to 56.0271 
+#> Searching xt3 on group 1
 #> Searching xt7 on group 1
 #> group 1 -- xt[7] changed from  72.2897 to  120
 #>      OFV(MF) changed from 56.0271 to 56.0561 
-#> Searching xt4 on group 1
+#> Searching xt5 on group 1
+#> Searching xt8 on group 1
 #>     OFV(MF): 56.0561
 #> 
 #> Best value for OFV(MF) = 56.0561
@@ -494,7 +494,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> Group 1: 100 [0.01,100]
 #> 
 #> 
-#> Line search run time: 0.202 seconds
+#> Line search run time: 0.351 seconds
 #> ***************************
 #> 
 #> ===============================================================================
@@ -522,7 +522,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #>     sig_prop     0.01      32    24
 #>      sig_add     0.25      26    16
 #> 
-#> Total running time: 0.577 seconds
+#> Total running time: 0.702 seconds
 
 if (FALSE) { # \dontrun{
   

@@ -199,7 +199,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5641610772b0>
+#> <bytecode: 0x55b94b2139b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -299,7 +299,7 @@ out_1 <- poped_optimize(poped.db,opt_a=1,
 #>     sig_prop     0.01      32    23
 #>      sig_add     0.25      26    30
 #> 
-#> Total running time: 0.055 seconds
+#> Total running time: 0.038 seconds
 
 
 if (FALSE) { # \dontrun{

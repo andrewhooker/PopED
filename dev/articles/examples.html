@@ -596,7 +596,7 @@ outputs in the graph.</p>
 <span>  facet_scales<span class="op">=</span><span class="st">"free"</span>,</span>
 <span>  separate.groups<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>  model.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK"</span>,<span class="st">"PD"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_multi-response_model-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_multi-response_model-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="ode-solution-of-pk-model-multiple-dosing">ODE solution of PK model, multiple dosing<a class="anchor" aria-label="anchor" href="#ode-solution-of-pk-model-multiple-dosing"></a>
@@ -608,7 +608,7 @@ installed for computing solutions to a system of differential equations.
 For faster solutions one can use pre-compiled code using the
 <code>Rcpp</code> library (see below).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://desolve.r-forge.r-project.org/" class="external-link">deSolve</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tpetzoldt/deSolve/" class="external-link">deSolve</a></span><span class="op">)</span></span></code></pre></div>
 <p>Here we define the two compartment model in R using deSolve
 notation</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -691,7 +691,7 @@ parameters used in the above two functions.</p>
 design</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>,model_num_points <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_ODE_model-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_ODE_model-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p><strong>Faster computations with Rcpp:</strong> We could also define
 the system using Rcpp, which will produce compiled code that should run
 faster (further examples in
@@ -758,9 +758,9 @@ the previously created database.</p>
 of describing the same model.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 3.104 seconds.</span></span>
+<span><span class="co">#&gt; Elapsed time: 3.06 seconds.</span></span>
 <span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db.Rcpp</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 1.29 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 1.312 seconds.</span></span></code></pre></div>
 <p>The difference is noticeable and gets larger for more complex ODE
 models.</p>
 </div>
@@ -887,7 +887,7 @@ setup.</p>
 the design.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped.db.2</span>,facet_scales<span class="op">=</span><span class="st">"free"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_different_dose_regimen-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_different_dose_regimen-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">eval_2</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span> <span class="co"># in percent</span></span></code></pre></div>
@@ -1044,7 +1044,7 @@ we define the individuals’ typical weight as 70 kg
 individual</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped_db</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>And evaluate the initial design</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped_db</span><span class="op">)</span></span>
@@ -1351,7 +1351,7 @@ clearance.</p>
 <span>  alpha.IPRED.lines<span class="op">=</span><span class="fl">0.6</span>,</span>
 <span>  sample.times <span class="op">=</span> <span class="cn">F</span></span>
 <span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">6</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_IOV_with_IIV-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_IOV_with_IIV-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>We can also see that the design is relatively poor for estimating the
 IOV parameter:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
@@ -1443,7 +1443,7 @@ predictions.</p>
 <span><span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="va">p1</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"No covariance in BSV"</span><span class="op">)</span>, <span class="va">p2</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Covariance in BSV"</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Removed 4 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_ribbon()`).</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_with_cov_matrix-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_with_cov_matrix-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Evaluating the designs with and without the covariances:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ev1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span></span>
@@ -1635,7 +1635,7 @@ dimensions.</p>
 <p>Create plot of model without variability</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>, model_num_points <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_adult-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_adult-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>To store the FIM from the adult design we evaluate this design</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">outAdult</span> <span class="op">=</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span></span>
@@ -1714,7 +1714,7 @@ one arm, 4 sample-time points.</p>
 <p>We can create a plot of the pediatric model without variability</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_model_prediction.html">plot_model_prediction</a></span><span class="op">(</span><span class="va">poped.db.ped</span>, model_num_points <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/simulate_pediatrics-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/simulate_pediatrics-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Evaluate the design of the pediatrics study alone.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db.ped</span><span class="op">)</span></span>
@@ -1910,7 +1910,7 @@ evaluation or optimization arguments:</p>
 <span><span class="co">#&gt;   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 </span></span>
 <span><span class="co">#&gt; SIGMA[2,2] </span></span>
 <span><span class="co">#&gt;  25.341368</span></span>
-<span><span class="co">#&gt; Elapsed time: 0.139 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 0.136 seconds.</span></span></code></pre></div>
 <p>We can see that the result, based on MC sampling, is somewhat
 variable with so few samples.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
@@ -1943,7 +1943,7 @@ variable with so few samples.</p>
 <span><span class="co">#&gt;   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 </span></span>
 <span><span class="co">#&gt; SIGMA[2,2] </span></span>
 <span><span class="co">#&gt;  25.311870</span></span>
-<span><span class="co">#&gt; Elapsed time: 0.134 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 0.138 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality">Design evaluation for a subset of model parameters of interest (Ds
@@ -2017,7 +2017,7 @@ the FIM). More details are available by running the command
 </h2>
 <p>The full code for this example is available in
 “ex.13.shrinkage.R”.</p>
-<p><img src="examples_files/figure-html/unnamed-chunk-61-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="examples_files/figure-html/unnamed-chunk-61-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>To evaluate the estimation quality of the individual random effects
 in the model (the b’s) we use the function <code><a href="../reference/shrinkage.html">shrinkage()</a></code>.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">

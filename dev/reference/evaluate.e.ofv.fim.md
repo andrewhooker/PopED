@@ -263,7 +263,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5641610772b0>
+#> <bytecode: 0x55b94b2139b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -316,18 +316,18 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 ## ED evaluate (with very few samples)
 output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=10)
 output$E_ofv
-#> [1] 55.39412
+#> [1] 55.45214
 
 ## API evaluate (with very few samples)
 output <- evaluate.e.ofv.fim(poped.db,ED_samp_size=10,ofv_calc_type=4)
 output$E_ofv
-#> [1] 55.42212
+#> [1] 55.46088
 
 ## ED evaluate using Laplace approximation 
 tic()
 output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE)
 toc()
-#> Elapsed time: 0.897 seconds.
+#> Elapsed time: 0.891 seconds.
 output$E_ofv
 #> [1] 1.302806e+24
 

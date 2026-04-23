@@ -353,7 +353,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5641610772b0>
+#> <bytecode: 0x55b94b2139b0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -436,27 +436,27 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #> Total iterations: 2 
 #> Elapsed time: 0.015 seconds.
 #> 
-#> Final OFV =  56.03204 
-#> Parameters: 100 
+#> Final OFV =  55.39645 
+#> Parameters: 70 
 #> 
 #> *******************************************
 #> Running BFGS Optimization
 #> *******************************************
-#> initial  value -56.032042 
-#> final  value -56.032042 
-#> converged
+#> initial  value -55.396450 
+#> final  value -55.766379 
+#> stopped after 2 iterations
 #> 
 #> *******************************************
 #> Running Line Search Optimization
 #> *******************************************
 #> 
-#>    Initial parameters: 100 
-#>    Initial OFV: 56.03204 
+#>    Initial parameters: 83.20112 
+#>    Initial OFV: 55.76638 
 #> 
 #>    Searching parameter 1 
-#>      Changed from 100 to 100 ; OFV = 56.032 
+#>      Changed from 83.2011 to 100 ; OFV = 56.032 
 #> 
-#>    Elapsed time: 0.022 seconds.
+#>    Elapsed time: 0.029 seconds.
 #> 
 #>    Final OFV =  56.03204 
 #>    Parameters: 100 
@@ -499,7 +499,7 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #>     sig_prop     0.01      32    23
 #>      sig_add     0.25      26    30
 #> 
-#> Total running time: 0.251 seconds
+#> Total running time: 0.262 seconds
 
 
 # cost function
@@ -547,7 +547,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
 #> Initial OFV = 0.939866
 #> 
 #> Total iterations: 2 
-#> Elapsed time: 0.006 seconds.
+#> Elapsed time: 0.007 seconds.
 #> 
 #> Final OFV =  0.9398657 
 #> Parameters: 70 
@@ -662,7 +662,7 @@ out_2 <- poped_optim(poped.db,opt_a =TRUE,
 #>     sig_prop     0.01      32    23
 #>      sig_add     0.25      26    30
 #> 
-#> Total running time: 0.358 seconds
+#> Total running time: 0.388 seconds
 
 # minimize the cost function
 out_3 <- poped_optim(poped.db,opt_a =TRUE,
@@ -692,27 +692,27 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #> Total iterations: 2 
 #> Elapsed time: 0.006 seconds.
 #> 
-#> Final OFV =  0.8221768 
-#> Parameters: 61.23468 
+#> Final OFV =  0.9398657 
+#> Parameters: 70 
 #> 
 #> *******************************************
 #> Running BFGS Optimization
 #> *******************************************
-#> initial  value 0.822177 
-#> final  value 0.717752 
+#> initial  value 0.939866 
+#> final  value 0.856208 
 #> stopped after 2 iterations
 #> 
 #> *******************************************
 #> Running Line Search Optimization
 #> *******************************************
 #> 
-#>    Initial parameters: 53.45728 
-#>    Initial OFV: 0.7177523 
+#>    Initial parameters: 63.76928 
+#>    Initial OFV: 0.856208 
 #> 
 #>    Searching parameter 1 
-#>      Changed from 53.4573 to 0.01 ; OFV = 0.000134267 
+#>      Changed from 63.7693 to 0.01 ; OFV = 0.000134267 
 #> 
-#>    Elapsed time: 0.008 seconds.
+#>    Elapsed time: 0.009 seconds.
 #> 
 #>    Final OFV =  0.0001342665 
 #>    Parameters: 0.01 
@@ -740,7 +740,7 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #> Initial OFV = 0.000134267
 #> 
 #> Total iterations: 2 
-#> Elapsed time: 0.006 seconds.
+#> Elapsed time: 0.007 seconds.
 #> 
 #> Final OFV =  0.0001342665 
 #> Parameters: 0.01 
@@ -793,7 +793,7 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
 #> Efficiency: 
 #>   (ofv_final / ofv_init) = 0.00014286
 #> 
-#> Total running time: 0.349 seconds
+#> Total running time: 0.381 seconds
 
 
 if (FALSE) { # \dontrun{

@@ -17,8 +17,8 @@ install.packages("PopED")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("andrewhooker/PopED")
+# install.packages("pak")
+pak::pak("andrewhooker/PopED")
 ```
 
 ## Getting started
