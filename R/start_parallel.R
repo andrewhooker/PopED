@@ -32,6 +32,7 @@ start_parallel <- function(parallel=TRUE,
                            seed=NULL,
                            dlls=NULL,
                            mrgsolve_model=NULL,
+                           bablemixr2_model=NULL,
                            #cpp_files=NULL,
                            ...)
 {
@@ -87,17 +88,14 @@ start_parallel <- function(parallel=TRUE,
         }
         parallel::clusterCall(cl, mrgsolve::loadso, x=mrgsolve_model)
       }
-      bm2 <- if (exists("poped.db", envir = parent.frame(), inherits = FALSE)) {
-        get("poped.db", envir = parent.frame())[["babelmixr2"]]
-      } else {
-        NULL
-      }
-      if (!is.null(bm2)) {
+      
+      # load babelmixr2 models in workers using .popedCluster
+      if (!is.null(babelmixr2_model)) {
         if (!requireNamespace("babelmixr2", quietly=TRUE)) {
           stop("babelmixr2 package needed for this function to work. Please install it.",
                call.=FALSE)
         }
-        parallel::clusterCall(cl, babelmixr2::.popedCluster, bm2)
+        parallel::clusterCall(cl, babelmixr2::.popedCluster, babelmixr2_model)
       }
       # if(!is.null(cpp_files)){
       #   for(i in cpp_files){

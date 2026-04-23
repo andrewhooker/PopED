@@ -16,12 +16,12 @@ fg.PK.1.comp.oral.md.param.2 <- function(x,a,bpop,b,bocc){
 }
 
 ## -- Define design and design space
-poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.md.KE",
-                                  fg_file="fg.PK.1.comp.oral.md.param.2",
-                                  fError_file="feps.add.prop",
+poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.md.KE,
+                                  fg_fun=fg.PK.1.comp.oral.md.param.2,
+                                  fError_fun=feps.add.prop,
                                   groupsize=20,
                                   m=2,
-                                  sigma=c(0.04,5e-6),
+                                  sigma=c(PROP=0.04,ADD=5e-6),
                                   bpop=c(V=72.8,KA=0.25,KE=3.75/72.8,Favail=0.9), 
                                   d=c(V=0.09,KA=0.09,KE=0.25^2), 
                                   notfixed_bpop=c(1,1,1,0),
@@ -38,8 +38,9 @@ poped.db <- create.poped.database(ff_file="ff.PK.1.comp.oral.md.KE",
 ##  create plot of model without variability 
 plot_model_prediction(poped.db)
 
-##  create plot of model with variability 
-plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T)
+##  create plot of model with variability (both BSV and RUV)
+plot_model_prediction(poped.db,IPRED=T,DV=T,separate.groups=T,model_num_points = 500) # slower, no approximation if many "model_num_points"
+plot_model_prediction(poped.db,separate.groups=T,PI=T) # faster, with approximations
 
 ## evaluate initial design
 evaluate_design(poped.db)
@@ -50,24 +51,23 @@ output <- poped_optim(poped.db, opt_xt =TRUE, parallel=TRUE)
 
 # Evaluate optimization results
 summary(output)
-get_rse(output$FIM,output$poped.db)
+round(get_rse(output$FIM,output$poped.db),2)
 plot_model_prediction(output$poped.db)
 
 # Optimization of sample times, doses and dose intervals
-output_2 <- poped_optim(output$poped.db, opt_xt =TRUE, opt_a = TRUE, parallel = TRUE)
+output_2 <- poped_optim(poped.db, opt_xt =TRUE, opt_a = TRUE, parallel = TRUE)
 
 summary(output_2)
-get_rse(output_2$FIM,output_2$poped.db)
+round(get_rse(output_2$FIM,output_2$poped.db),2)
 plot_model_prediction(output_2$poped.db)
 
 # Optimization of sample times with only integer time points in design space
-# faster than continuous optimization in this case
+# faster than continuous optimization in this case (but not quite as good in terms of efficiency)
 poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(0:248))
-
 output_discrete <- poped_optim(poped.db.discrete, opt_xt=T, parallel = TRUE)
 
 summary(output_discrete)
-get_rse(output_discrete$FIM,output_discrete$poped.db)
+round(get_rse(output_discrete$FIM,output_discrete$poped.db),2)
 plot_model_prediction(output_discrete$poped.db)
 
 

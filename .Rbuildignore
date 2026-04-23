@@ -30,3 +30,5 @@
 ^\.github$
 ^vignettes/articles$
 ^CRAN-SUBMISSION$
+^\.positai$
+^\.claude$

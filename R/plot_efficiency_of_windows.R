@@ -339,6 +339,7 @@ plot_efficiency_of_windows <- function(poped.db,
                                #parallel_type=parallel_type,
                                #num_cores=num_cores,
                                #mrgsolve_model=mrgsolve_model,
+                               babelmixr2_model=poped.db$babelmixr2,
                                ...) 
     on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
   }  
