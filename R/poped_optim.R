@@ -94,6 +94,7 @@ poped_optim <- function(poped.db,
                         parallel_type=NULL,
                         num_cores = NULL,
                         mrgsolve_model = NULL,
+                        babelmixr2_model=poped.db$babelmixr2,
                         loop_methods=ifelse(length(method)>1,TRUE,FALSE),
                         iter_max = 10,
                         stop_crit_eff = 1.001,
@@ -105,7 +106,6 @@ poped_optim <- function(poped.db,
                         allow_replicates_xt=TRUE,
                         allow_replicates_a=TRUE,
                         ...){
-  
   
  
   #------------ update argument list with called arguments

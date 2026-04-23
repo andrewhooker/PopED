@@ -1,5 +1,7 @@
 # PopED (development version)
 
+* Make parallelization work with `babelmixr2` models on windows (#79)
+
 # PopED 0.7.0
 
 * `create.poped.database()` now uses a better method of identifying the total number of parameters of each type (bpop, d, sigma, etc.) in a user defined model parameter function (the `ff_fun` argument in `create.poped.database()`) (#73).

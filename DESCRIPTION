@@ -32,7 +32,8 @@ Suggests:
     gridExtra,
     covr,
     devtools,
-    mrgsolve
+    mrgsolve,
+    babelmixr2
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se", 
       role=c("aut","cre","trl","cph"),
@@ -58,7 +59,7 @@ URL: https://andrewhooker.github.io/PopED/, https://github.com/andrewhooker/PopE
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Config/Needs/website:
     mrgsolve,

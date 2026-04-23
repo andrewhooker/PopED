@@ -96,7 +96,6 @@ poped_optim_3 <- function(poped.db,
                           allow_replicates_xt=TRUE,
                           allow_replicates_a=TRUE,
                           ...){
-  
   #------------ update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

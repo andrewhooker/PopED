@@ -62,7 +62,6 @@ get_rse <- function (fim, poped.db,
                      prior_fim = poped.db$settings$prior_fim,
                      #pseudo_on_fail = FALSE,
                      ...) {
-  
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

@@ -1,7 +1,6 @@
 #Get the emperical bayes estimates for one individual
 #Written for PopED by JN
 ind_estimates <- function(data,bpop,d,sigma,start_bind,bInter,bUDDLike,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db){
-  
   b_i = t(start_bind)
   c1 = length(t(start_bind))/2*log(2*pi)
   c2 = 1/2*log(det(d))

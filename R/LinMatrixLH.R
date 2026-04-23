@@ -56,6 +56,7 @@ LinMatrixLH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,NumEPS,poped
 
 #Helper function to get the hessian for the AD derivative
 new_ferror_file <- function(model_switch,deriv_vec,xt_ind,x,a,bpop,bocc_ind,poped.db){
+
   fg0=feval(poped.db$model$fg_pointer,x,a,bpop,deriv_vec(1:poped.db$parameters$NumRanEff),bocc_ind) #Interaction
   returnArgs <- feval(poped.db$model$ferror_pointer,model_switch,xt_ind,fg0,deriv_vec(poped.db$parameters$NumRanEff+1:length(deriv_vec)),poped.db) 
   f_error <- returnArgs[[1]]

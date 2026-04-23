@@ -72,7 +72,6 @@ evaluate.fim <- function(poped.db,
                          deriv.type = NULL,
                          ...){
   
-  
   if(is.null(bpop.val)) bpop.val <- poped.db$parameters$param.pt.val$bpop
   if(is.null(d_full)) d_full <- poped.db$parameters$param.pt.val$d
   if(is.null(docc_full)) docc_full <- poped.db$parameters$param.pt.val$docc

@@ -1,6 +1,5 @@
 #Hessian over eta, evaluated at eta_hat => laplace approximation possible
 hessian_eta_complex <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db,return_gradient=F){
-  
   bAutomatic = FALSE
   epsi0 = zeros(1,length(poped.db$parameters$notfixed_sigma))
   n=length(b_ind)

@@ -67,6 +67,7 @@ optim_LS <- function(par,
                      parallel_type=NULL,
                      num_cores = NULL,
                      mrgsolve_model=NULL,
+                     babelmixr2_model=NULL,
                      seed=round(runif(1,0,10000000)),
                      allow_replicates=TRUE,
                      replicates_index=seq(1,length(par)), # same value, parameters can not be the same value
@@ -124,7 +125,7 @@ optim_LS <- function(par,
   
   # start parallel computing
   if(parallel){
-    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,mrgsolve_model=mrgsolve_model,...) 
+    parallel <- start_parallel(parallel,seed=seed,parallel_type=parallel_type,num_cores=num_cores,mrgsolve_model=mrgsolve_model,babelmixr2_model=babelmixr2_model,...) 
     on.exit(if(parallel && (attr(parallel,"type")=="snow")) parallel::stopCluster(attr(parallel,"cluster")))
   }   
   #if(is.null(iter_chunk)) if(parallel) iter_chunk <- attr(parallel,"cores") else iter_chunk <- 1

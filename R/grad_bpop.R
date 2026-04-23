@@ -13,7 +13,6 @@ grad_bpop <- function(func,select_par,nout,model_switch,xt_ind,x,a,bpop,b_ind,bo
 
 # helper for m2
 helper_v_EBE <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) {
-  
   if((poped.db$settings$bCalculateEBE)){
     #zeros(size(b_ind)[1],size(b_ind)[2])
     b_ind_x = ind_estimates(poped.db$mean_data,bpop,d,sigma,t(b_ind),(poped.db$settings$iApproximationMethod==2),FALSE,model_switch,xt_ind,x,a,b_ind,bocc_ind,poped.db)
@@ -28,7 +27,6 @@ helper_v_EBE <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,doc
 
 # helper for m1
 helper_LinMatrix <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,d,sigma,docc,poped.db) {
-  
   epsi0 = zeros(1,length(poped.db$parameters$notfixed_sigma))
   
   # create linearized model

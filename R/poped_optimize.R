@@ -67,7 +67,6 @@ poped_optimize <- function(poped.db,
                            bLHS=poped.db$settings$bLHS,
                            use_laplace=poped.db$settings$iEDCalculationType,
                            ...){
-  
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

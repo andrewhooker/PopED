@@ -22,7 +22,6 @@
 ## Author: Andrew Hooker
 
 mf3 <- function(model_switch,xt,x,a,bpop,d,sigma,docc,poped.db){
-
   numnotfixed_bpop = sum(poped.db$parameters$notfixed_bpop)
   numnotfixed_d    = sum(poped.db$parameters$notfixed_d)
   numnotfixed_covd = sum(poped.db$parameters$notfixed_covd)
