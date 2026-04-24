@@ -30,3 +30,8 @@
 ^\.github$
 ^vignettes/articles$
 ^CRAN-SUBMISSION$
+^\.positai$
+^\.claude$
+^vignettes/articles/\.quarto$
+^vignettes/articles/*_files$
+^vignettes/\.quarto$

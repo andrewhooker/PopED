@@ -1,0 +1,327 @@
+---
+title: "Compare Uncertaitny Predictions from PopED with NONMEM"
+date: last-modified
+bibliography: references.bib
+author:
+  - name: Andrew Hooker
+    orcid: 0000-0002-2676-5912
+title-block-banner: true
+toc: true
+toc-title: On this page
+number-sections: true
+highlight-style: github
+smooth-scroll: true
+format:
+  html:
+    html-math-method: katex
+    embed-resources: false # set to true for the final version
+    self-contained-math: false # set to true for the final version
+    number-sections: true
+    smooth-scroll: true
+    code-tools: true
+    code-link: true
+    theme: cosmo
+    minimal: true
+knitr:
+  opts_chunk:
+    class-output: output
+    #collapse: true
+    #comment: "#>"
+#execute:
+  #echo: true
+  #eval: false   # set to true when rendering the solutions version
+editor: visual
+---
+
+```{css, echo=FALSE, eval=TRUE}
+
+.output {
+  border: 1px solid lightgrey;
+  background-color: snow;
+}
+
+div.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
+.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
+
+```
+
+# Population models
+
+In this work we are using population, or nonlinear mixed-effect (NLME) models. Here we define $y_{ij}$ for the $j^{th}$ observation of the $i^{th}$ individual in a population as:
+
+$$ 
+y_{ij}=f(t_{ij},\vec{a}_{i},\vec{\theta}_i) + h(t_{ij},\vec{a}_{i},\vec{\theta}_i, \vec{\varepsilon}_{ij}) $$ {#eq-moddef}
+
+Where $t_{ij}$ are the measurement times $\vec{a}_{i}$ is a vector of covariates (doses of a drug, weight, age, concentration of a drug in blood plasma, etc.), $\vec{\theta}_i$ is a vector of model parameter values, $h(.)$ is a model for the residual error (also referred to as residual unexplained variability, or RUV) in the model and $\vec{\varepsilon}_{ij}$ is a vector of of random variables describing data-level deviations from the model. Often, as is the case in the models described here, the elements of $\vec{\varepsilon}_{ij}$ are assumed to come from normal distributions with means of zero and a covariance matrix of $\boldsymbol{\Sigma}$ (elements of $\sigma^2_{lm}$), where $\boldsymbol{\Sigma}$ is typically diagonal.
+
+Population effects are modeled on the parameter level, where individual parameter values are derived from typical (or population) parameters $\vec{\theta}$, individual deviations due to covariates $\vec{a}_{i}$, and random individual deviations $\vec{\eta}_{i}$ (referred to as a between-subject variability, or BSV, term).
+
+$$\vec{\theta}_i=g(\vec{\theta},\vec{a}_{i},\vec{\eta}_{i}) $$ {#eq-poppar}
+
+Extensions, where deviations are on other scales, are possible as well (such as parameter deviations between occasions within an individual's study, center level deviations, study level deviations, etc.). Often, as is the case in the models described here, the elements of $\vec{\eta}_{i}$ are assumed to come from normal distributions with means of zero and a covariance matrix of $\boldsymbol{\Omega}$ (elements of $\omega^2_{pq}$).
+
+# Simple Population PK model in PopED
+
+## Structural model
+
+Here we define a one-compartment pharmacokinetic model with linear absorption and a single drug dose using an analytical solution.
+
+$$f(t_{ij},D_i,\vec{\theta}_i) =  \frac{D_i \cdot F \cdot Ka_i}{V_i \cdot (Ka_i -CL_i/V_i)} \cdot (e^{-\frac{CL_i}{V_i} t_{ij}} - e^{-Ka_i\cdot t_{ij}}) $$ {#eq-startmod}
+
+Where $D_i$ is the dose of drug given to individual $i$, $F$ is the bioavailability, $Ka_i$ is the absorption rate constant for individual $i$, $V_i$ is the volume of distribution for individual $i$, and $CL_i$ is the clearance for individual $i$.
+
+Defining this in PopED we have:
+
+```{r,eval=TRUE}
+#| warning: false
+#| label: setup
+
+library(PopED)
+library(tidyverse)
+```
+
+```{r}
+##-- Model: One comp first order absorption
+ff <- function(model_switch,xt,parameters,poped.db){
+  with(as.list(parameters),{
+    y=xt
+    y=(DOSE*Favail*KA/(V*(KA-CL/V)))*(exp(-CL/V*xt)-exp(-KA*xt))
+    return(list(y=y,poped.db=poped.db))
+  })
+}
+```
+
+## Random effects model
+
+Taking the random effect structure and parameter values from the Warfarin example from software comparison in Nyberg et al., "Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies", Br. J. Clin. Pharm., 2014 [@nybergMethodsSoftwareTools2015], we have a proportional residual error model, with a coefficient of variation of 10%, and exponential random effects are assumed for CL, V and Ka.
+
+$$\begin{align} 
+y_{ij} &=  f(t_{ij},D_i,\vec{\theta}_i)   \cdot  (1+ \vec{\varepsilon}_{ij}) \\
+&\\
+CL_i &= \theta_{CL} \cdot e^{\eta_{CL,i}} \\
+V_i &= \theta_{V} \cdot e^{ \eta_{V,i}}\\
+Ka_i &= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
+\boldsymbol{\Omega} &= \begin{bmatrix}
+\omega^2_{CL} & 0 & 0\\
+0 & \omega^2_V & 0 \\
+0 & 0 & \omega^2_{Ka}
+\end{bmatrix} \\
+\boldsymbol{\Sigma} &= \begin{bmatrix}
+\sigma^2_{\text{prop}}
+\end{bmatrix}
+\end{align}$$ {#eq-startmodrand}
+
+This is defined in PopED with the following:
+
+```{r}
+## -- parameter definition function 
+sfg <- function(x,a,bpop,b,bocc){
+  parameters=c(CL=bpop[1]*exp(b[1]),
+               V=bpop[2]*exp(b[2]),
+               KA=bpop[3]*exp(b[3]),
+               Favail=bpop[4],
+               DOSE=a[1])
+  return(parameters) 
+}
+
+## -- Residual Error function
+feps <- function(model_switch,xt,parameters,epsi,poped.db){
+  y <- do.call(poped.db$model$ff_pointer,list(model_switch,xt,parameters,poped.db))[[1]] 
+  y = y*(1+epsi[,1])  
+  return(list(y=y,poped.db=poped.db)) 
+}
+```
+
+## Parameter values and study design
+
+We create a poped database to link the model defined above with a set of model parameters, the initial design and a design space for optimization.
+
+In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`). We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated (and is know without uncertainty).
+
+For the initial design, we define 1 group (`m=1`) of 32 individuals (`groupsize=32`), with a single dose of 70 mg (`a`). The initial design has 8 sample times per individual (`xt`).
+
+For the design space, which can be searched during design optimization, we define a potential dose range of between 0 and 100 mg (`mina` and `maxa`), and a range of potential sample times between 0 and 120 hours (`minxt` and `maxxt`).
+
+```{r}
+## -- Define initial design  and design space
+poped.db <- 
+  create.poped.database(
+    # Model
+    ff_fun = ff,
+    fg_fun = sfg,
+    fError_fun = feps,
+                                  
+    # Parameters 
+    bpop = c(CL=0.15, V=8, KA=1.0, Favail=1), 
+    notfixed_bpop = c(1,1,1,0),
+    d = c(CL=0.07, V=0.02, KA=0.6), 
+    sigma = c(0.01),
+                                  
+    # Design
+    groupsize = 32,
+    xt = c(0.5,1,2,6,24,36,72,120),
+    a = 70,
+    
+    # Design space
+    minxt = 0,
+    maxxt = 120,
+    mina = 0,
+    maxa = 100)
+```
+
+## Design simulation
+
+First it may make sense to check your model and design to make sure you get what you expect when simulating data. Here we plot the model typical values:
+
+```{r simulate_without_BSV}
+plot_model_prediction(poped.db, model_num_points = 300)
+```
+
+Next, we plot the expected prediction interval (by default a 95% PI) of the data taking into account the BSV and RUV using the option `PI=TRUE`. This option makes predictions based on first-order approximations to the model variance and a normality assumption of that variance. Better (and slower) computations are possible with the `DV=T`, `IPRED=T` and `groupsize_sim = some large number` options.
+
+```{r simulate_with_BSV}
+plot_model_prediction(poped.db, 
+                      PI=TRUE, 
+                      model_num_points = 300, 
+                      sample.times = FALSE)
+```
+
+We can get these predictions numerically as well:
+
+```{r}
+dat <- model_prediction(poped.db,DV=TRUE)
+head(dat,n=5);tail(dat,n=5)
+```
+
+## Design evaluation
+
+Next, we evaluate the initial design
+
+```{r}
+(ds1 <- evaluate_design(poped.db))
+```
+
+We see that all parameters relative standard errors (rse above) in % are predicted to be relatively well estimated.
+
+# Evaluation of design in NONMEM
+
+## Create dataset
+
+Now we create a dataset simulated from this model and design
+
+```{r}
+set.seed(12398)
+dosing_1 <- list(list(AMT=70,Time=0))
+dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./data/temp.csv") |> 
+  dplyr::select(-c(IPRED,PRED))
+readr::write_csv(dat,file = "./data/warfarin.csv",na = ".")
+dat[1:20,]
+```
+
+The simulated data look like this:
+
+```{r}
+#| warning: false
+library(ggplot2)
+p <- ggplot(dat,aes(x=Time,y=DV,group=ID)) + 
+    geom_line(color="grey") + 
+    geom_point(size=3,alpha=0.5,
+               aes(colour = ID) ) + 
+  theme(legend.position = "none")#+
+    # labs(color="ID")
+p
+```
+
+## NONMEM evaluation
+
+We create a NONMEM model file.
+
+```{r}
+#| warning: false
+
+nm_mod <- paste(
+"$PROBLEM
+$INPUT ID TIME DV AMT GROUP MODEL DOSE
+$DATA ../data/warfarin.csv IGNORE=@
+$SUBROUTINES ADVAN2  TRANS2 
+$PK
+  CL = THETA(1) * EXP(ETA(1))
+  VC = THETA(2) * EXP(ETA(2))
+  KA = THETA(3) * EXP(ETA(3))
+  V = VC
+
+$ERROR
+  CONC = A(2)/VC
+  Y = CONC + CONC * EPS(1)
+
+$ESTIMATION METHOD=COND INTERACTION MAXEVAL=9999 POSTHOC 
+$COVARIANCE
+
+$THETA (0, 0.15) ; POP_CL
+$THETA (0, 8) ; POP_VC
+$THETA (0, 1) ; POP_KA
+
+$OMEGA 0.07 ; IIV_CL
+$OMEGA 0.02 ; IIV_VC
+$OMEGA 0.6 ; IIV_KA
+
+$SIGMA 0.01; RUV_PROP
+
+$TABLE VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT
+") |> glue::as_glue()
+
+write_file(nm_mod,file="./nonmem_models/run1.mod")
+nm_mod
+```
+
+Then we estimate the model from the data in NONMEM
+
+```{zsh nonmem-first-model, filename="PsN command"}
+#| output: false
+#| cache: true
+
+execute ./nonmem_models/run1.mod
+```
+
+```{zsh, filename="PsN command"}
+sumo ./nonmem_models/run1.lst
+```
+
+For NONMEM, parameter RSE is:
+
+```{r}
+ext.val <- read_table("./nonmem_models/run1.ext",skip=1,show_col_types = FALSE)
+par_est_nonmem <- ext.val |> filter(ITERATION==-1000000000) |> 
+  select(-c(OBJ,ITERATION,"OMEGA(2,1)","OMEGA(3,1)","OMEGA(3,2)")) 
+par_se_nonmem <- ext.val |> filter(ITERATION==-1000000001) |>
+  select(-c(OBJ,ITERATION,"OMEGA(2,1)","OMEGA(3,1)","OMEGA(3,2)")) 
+par_rse_nonmem <- par_se_nonmem/par_est_nonmem*100
+names(par_rse_nonmem) <- c("CL","V","KA","SIGMA[1,1]","d_CL","d_V","d_KA")
+par_rse_nonmem <- par_rse_nonmem |> relocate("SIGMA[1,1]", .after = last_col())
+par_rse_nonmem
+```
+
+# Compare PopED and NONMEM
+
+We can compare between the prediction in PopED and the covariance matrix in NONMEM
+
+```{r}
+result <- rbind(par_rse_nonmem,ds1$rse)|> 
+  mutate("Method"=c("NONMEM","PopED"),.before=CL)
+result
+```
+
+```{r}
+result |> 
+  pivot_longer(-Method,names_to = "Parameter",values_to = "RSE") |> 
+  ggplot(aes(x=Parameter,y=RSE,fill=Method)) + 
+  geom_col(position = position_dodge()) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(limits = names(result[-1]))
+```
+
+The NONMEM and PopED results are similar, though they differ in how they are obtained. The NONMEM results are based on a single simulation of the design and estimation of the model, whereas the PopED results reflect an evaluation of the expected uncertainties, on average, across all realizations of the data. Additionally, the PopED results rely on the Fisher Information Matrix, which is an asymptotic approximation and therefore represents an upper bound on the overall information. As a result, the predicted RSE values from PopED are expected to be lower on average (Cramér-Rao Lower Bound).
+
+We could also compare the results of an SSE in NONMEM to the PopED results, which would be more comparable since both would be based on many realizations of the data. This was done in @nybergMethodsSoftwareTools2015.
+
+# References {.unnumbered}
