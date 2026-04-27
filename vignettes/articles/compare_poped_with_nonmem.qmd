@@ -281,7 +281,7 @@ write_file(nm_mod,file="./compare_poped_with_nonmem_models/run1.mod")
 Then we estimate the model from the data in NONMEM
 
 ```{zsh nonmem-first-model, filename="PsN command"}
-#| eval: !expr file.exists('run_nonmem_analysis.txt')
+#| eval: false
 #| output: false
 #| cache: true
 
@@ -289,7 +289,7 @@ execute ./compare_poped_with_nonmem_models/run1.mod
 ```
 
 ```{zsh sumo-first-model, filename="PsN command"}
-#| eval: !expr file.exists('run_nonmem_analysis.txt')
+#| eval: false
 #| cache: true
 
 sumo ./compare_poped_with_nonmem_models/run1.lst
