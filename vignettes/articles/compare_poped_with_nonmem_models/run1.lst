@@ -1,4 +1,4 @@
-Mon Apr 27 12:25:18 CEST 2026
+Mon Apr 27 17:54:00 CEST 2026
 $PROBLEM   
 $INPUT      ID TIME DV AMT GROUP MODEL DOSE
 $DATA      warfarin.csv IGNORE=@
@@ -269,7 +269,7 @@ Days until program expires : 322
   
  #TERE:
  Elapsed estimation  time in seconds:     0.14
- Elapsed covariance  time in seconds:     0.12
+ Elapsed covariance  time in seconds:     0.11
  Elapsed postprocess time in seconds:     0.00
 1
  
@@ -569,6 +569,6 @@ Days until program expires : 322
 +       -1.78E+03 -9.92E+02  3.54E+03 -1.16E+04 ......... .........  5.39E+04 ......... -1.24E+03  1.37E+06
  
  Elapsed finaloutput time in seconds:     0.00
- #CPUT: Total CPU Time in Seconds,        0.296
+ #CPUT: Total CPU Time in Seconds,        0.288
 Stop Time:
-Mon Apr 27 12:25:19 CEST 2026
+Mon Apr 27 17:54:03 CEST 2026
