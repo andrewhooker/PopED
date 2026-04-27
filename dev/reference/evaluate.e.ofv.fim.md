@@ -263,7 +263,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x55b94b2139b0>
+#> <bytecode: 0x55c6a83a2c18>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -327,7 +327,7 @@ output$E_ofv
 tic()
 output <- evaluate.e.ofv.fim(poped.db,use_laplace=TRUE)
 toc()
-#> Elapsed time: 0.891 seconds.
+#> Elapsed time: 0.874 seconds.
 output$E_ofv
 #> [1] 1.302806e+24
 

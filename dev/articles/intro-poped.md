@@ -54,7 +54,7 @@ for more information).
 ``` r
 library(PopED)
 packageVersion("PopED")
-#> [1] '0.7.0.9000'
+#> [1] '0.7.0.9001'
 ```
 
 ``` r
@@ -364,7 +364,7 @@ summary(output)
 #>         d_CL   0.0625      28    26
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 18.289 seconds
+#> Total running time: 17.362 seconds
 plot_model_prediction(output$poped.db)
 ```
 
@@ -433,7 +433,7 @@ summary(output_discrete)
 #>         d_CL   0.0625      28    27
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 11.18 seconds
+#> Total running time: 10.659 seconds
 plot_model_prediction(output_discrete$poped.db, model_num_points = 300)
 ```
 
@@ -508,7 +508,7 @@ summary(output_cost)
 #>         d_CL   0.0625      28    28
 #>     sig_prop     0.04      14    14
 #> 
-#> Total running time: 3.806 seconds
+#> Total running time: 3.855 seconds
 ```
 
 We see that the optimal doses are 31.6 and 55.2 for the two groups. This

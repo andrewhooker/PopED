@@ -657,7 +657,7 @@ autoplot(compare)
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -665,9 +665,9 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-23
+#>  date     2026-04-27
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
-#>  quarto   NA
+#>  quarto   1.9.37 @ /usr/local/bin/quarto
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  package      * version    date (UTC) lib source
@@ -677,7 +677,7 @@ devtools::session_info()
 #>  cachem         1.1.0      2024-05-16 [1] RSPM
 #>  checkmate      2.3.4      2026-02-03 [1] RSPM
 #>  cli            3.6.6      2026-04-09 [1] RSPM
-#>  codetools      0.2-20     2024-03-31 [3] CRAN (R 4.5.3)
+#>  codetools      0.2-20     2024-03-31 [3] CRAN (R 4.6.0)
 #>  crayon         1.5.3      2024-06-20 [1] RSPM
 #>  data.table     1.18.2.1   2026-01-27 [1] RSPM
 #>  desc           1.4.3      2023-12-10 [1] RSPM
@@ -692,7 +692,7 @@ devtools::session_info()
 #>  fastmap        1.2.0      2024-05-15 [1] RSPM
 #>  fs             2.1.0      2026-04-18 [1] RSPM
 #>  generics       0.1.4      2025-05-09 [1] RSPM
-#>  ggplot2        4.0.2      2026-02-03 [1] RSPM
+#>  ggplot2        4.0.3      2026-04-22 [1] RSPM
 #>  glue           1.8.1      2026-04-17 [1] RSPM
 #>  gtable         0.3.6      2024-10-25 [1] RSPM
 #>  htmltools      0.5.9      2025-12-04 [1] RSPM
@@ -702,35 +702,35 @@ devtools::session_info()
 #>  kableExtra   * 1.4.0      2024-01-24 [1] RSPM
 #>  knitr        * 1.51       2025-12-20 [1] RSPM
 #>  labeling       0.4.3      2023-08-29 [1] RSPM
-#>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.5.3)
+#>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.6.0)
 #>  lifecycle      1.0.5      2026-01-08 [1] RSPM
 #>  lotri          1.0.3      2026-03-11 [1] RSPM
 #>  magrittr       2.0.5      2026-04-04 [1] RSPM
 #>  memoise        2.0.1      2021-11-26 [1] RSPM
 #>  mrgsolve     * 1.7.2      2026-01-22 [1] RSPM
-#>  nlme           3.1-168    2025-03-31 [3] CRAN (R 4.5.3)
+#>  nlme           3.1-169    2026-03-27 [3] CRAN (R 4.6.0)
 #>  otel           0.2.0      2025-08-29 [1] RSPM
 #>  pillar         1.11.1     2025-09-17 [1] RSPM
 #>  pkgbuild       1.4.8      2025-05-26 [1] RSPM
 #>  pkgconfig      2.0.3      2019-09-22 [1] RSPM
 #>  pkgdown        2.2.0      2025-11-06 [1] RSPM
-#>  pkgload        1.5.1      2026-04-01 [1] RSPM
+#>  pkgload        1.5.2      2026-04-22 [1] RSPM
 #>  PKPDsim      * 1.4.1      2025-04-17 [1] RSPM
-#>  PopED        * 0.7.0.9000 2026-04-23 [1] local
+#>  PopED        * 0.7.0.9001 2026-04-27 [1] local
 #>  PreciseSums    0.7        2024-09-17 [1] RSPM
 #>  purrr          1.2.2      2026-04-10 [1] RSPM
-#>  qs2            0.1.7      2026-01-20 [1] RSPM
+#>  qs2            0.2.0      2026-04-22 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
 #>  ragg           1.5.2      2026-03-23 [1] RSPM
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM
-#>  Rcpp         * 1.1.1-1    2026-04-16 [1] RSPM
+#>  Rcpp         * 1.1.1-1.1  2026-04-24 [1] RSPM
 #>  RcppParallel   5.1.11-2   2026-03-05 [1] RSPM
 #>  rlang          1.2.0      2026-04-06 [1] RSPM
 #>  rmarkdown      2.31       2026-03-26 [1] RSPM
 #>  rstudioapi     0.18.0     2026-01-16 [1] RSPM
 #>  rxode2       * 5.0.2      2026-03-20 [1] RSPM
 #>  rxode2ll       2.0.14     2026-02-24 [1] RSPM
-#>  S7             0.2.1-1    2025-11-14 [1] RSPM
+#>  S7             0.2.2      2026-04-22 [1] RSPM
 #>  sass           0.4.10     2025-04-11 [1] RSPM
 #>  scales         1.4.0      2025-04-24 [1] RSPM
 #>  sessioninfo    1.2.3      2025-02-05 [1] RSPM
@@ -752,8 +752,8 @@ devtools::session_info()
 #>  yaml           2.3.12     2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────

@@ -55,7 +55,7 @@ build_sfg(model="ff.PK.1.comp.oral.md.CL")
 #> function (x, a, bpop, b, bocc) 
 #> parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2], KA = bpop[3] * 
 #>     exp(b[2]), V = bpop[4] * exp(b[3]), DOSE = a[1], TAU = a[2])
-#> <environment: 0x55b947b9ae60>
+#> <environment: 0x55c6ae600ee0>
 
 etas <- c(Favail="exp",KA="exp",V="add",CL="exp")
 build_sfg(model="ff.PK.1.comp.oral.md.CL",etas = etas)
@@ -63,5 +63,5 @@ build_sfg(model="ff.PK.1.comp.oral.md.CL",etas = etas)
 #> parameters = c(CL = bpop[1] * exp(b[1]), Favail = bpop[2] * exp(b[2]), 
 #>     KA = bpop[3] * exp(b[3]), V = bpop[4] + b[4], DOSE = a[1], 
 #>     TAU = a[2])
-#> <environment: 0x55b947b9ae60>
+#> <environment: 0x55c6ae600ee0>
 ```

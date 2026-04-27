@@ -2,11 +2,12 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  articles/compare_poped_with_nonmem: compare_poped_with_nonmem.html
   examples: examples.html
   articles/handling_LOQ: handling_LOQ.html
   intro-poped: intro-poped.html
   articles/model_def_other_pkgs: model_def_other_pkgs.html
-last_built: 2026-04-23T13:12Z
+last_built: 2026-04-27T15:22Z
 urls:
   reference: https://andrewhooker.github.io/PopED/reference
   article: https://andrewhooker.github.io/PopED/articles

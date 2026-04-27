@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Compare Uncertaitny Predictions from PopED with
+  NONMEM](https://andrewhooker.github.io/PopED/dev/articles/compare_poped_with_nonmem.md):
 - [Examples](https://andrewhooker.github.io/PopED/dev/articles/examples.md):
 - [Optimal design with LOQ data in
   PopED](https://andrewhooker.github.io/PopED/dev/articles/handling_LOQ.md):

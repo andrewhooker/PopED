@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PopED</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/examples.html">Examples</a></li>
     <li><a class="dropdown-item" href="../articles/model_def_other_pkgs.html">Defining models for PopED using R based PKPD simulators</a></li>
     <li><a class="dropdown-item" href="../articles/handling_LOQ.html">Optimal design with LOQ data in PopED</a></li>
+    <li><a class="dropdown-item" href="../articles/compare_poped_with_nonmem.html">Compare Uncertaitny Predictions from PopED with NONMEM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -39,7 +40,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="poped-development-version">PopED (development version)<a class="anchor" aria-label="anchor" href="#poped-development-version"></a></h2>
-</div>
+<ul><li>New vignette about comparing PopED and NONMEM uncertainty estimates. See <a href="https://andrewhooker.github.io/PopED/articles/compare_poped_with_nonmem.html" class="uri">https://andrewhooker.github.io/PopED/articles/compare_poped_with_nonmem.html</a>
+</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="poped-070">PopED 0.7.0<a class="anchor" aria-label="anchor" href="#poped-070"></a></h2><p class="text-muted">CRAN release: 2024-10-07</p>
 <ul><li><p><code><a href="../reference/create.poped.database.html">create.poped.database()</a></code> now uses a better method of identifying the total number of parameters of each type (bpop, d, sigma, etc.) in a user defined model parameter function (the <code>ff_fun</code> argument in <code><a href="../reference/create.poped.database.html">create.poped.database()</a></code>) (<a href="https://github.com/andrewhooker/PopED/issues/73" class="external-link">#73</a>).</p></li>

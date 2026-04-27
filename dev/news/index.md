@@ -2,6 +2,10 @@
 
 ## PopED (development version)
 
+- New vignette about comparing PopED and NONMEM uncertainty estimates.
+  See
+  <https://andrewhooker.github.io/PopED/articles/compare_poped_with_nonmem.html>
+
 ## PopED 0.7.0
 
 CRAN release: 2024-10-07
