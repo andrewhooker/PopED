@@ -2,4 +2,3 @@
 *.R
 *_files
 run*.dir*
-run_nonmem_analysis.txt
