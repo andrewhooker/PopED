@@ -1,4 +1,4 @@
-Fri Apr 24 16:31:43 CEST 2026
+Mon Apr 27 12:25:18 CEST 2026
 $PROBLEM   
 $INPUT      ID TIME DV AMT GROUP MODEL DOSE
 $DATA      warfarin.csv IGNORE=@
@@ -22,7 +22,8 @@ $OMEGA  0.07  ;     IIV_CL
 $OMEGA  0.02  ;     IIV_VC
 $OMEGA  0.6  ;     IIV_KA
 $SIGMA  0.01  ;   RUV_PROP
-$TABLE      VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT
+$TABLE      ID VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND
+            NOPRINT
 
 
 NM-TRAN MESSAGES
@@ -41,8 +42,8 @@ Note: Analytical 2nd Derivatives are constructed in FSUBS but are never used.
 
 License Registered to: Uppsala University Department of Pharmacy
 Expiration Date:    14 MAR 2027
-Current Date:       24 APR 2026
-Days until program expires : 325
+Current Date:       27 APR 2026
+Days until program expires : 322
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.6.0 (nm760)
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -127,7 +128,7 @@ Days until program expires : 325
  RFORMAT:               
  FIXED_EFFECT_ETAS:     
 0USER-CHOSEN ITEMS:
- VC CL KA ETA1 ETA2 ETA3
+ ID VC CL KA ETA1 ETA2 ETA3
 1DOUBLE PRECISION PREDPP VERSION 7.6.0 (nm760)
  
  ONE COMPARTMENT MODEL WITH FIRST-ORDER ABSORPTION (ADVAN2)
@@ -267,8 +268,8 @@ Days until program expires : 325
  TOTAL EFFECTIVE ETAS (NIND*NETA):                            96
   
  #TERE:
- Elapsed estimation  time in seconds:     0.15
- Elapsed covariance  time in seconds:     0.11
+ Elapsed estimation  time in seconds:     0.14
+ Elapsed covariance  time in seconds:     0.12
  Elapsed postprocess time in seconds:     0.00
 1
  
@@ -568,6 +569,6 @@ Days until program expires : 325
 +       -1.78E+03 -9.92E+02  3.54E+03 -1.16E+04 ......... .........  5.39E+04 ......... -1.24E+03  1.37E+06
  
  Elapsed finaloutput time in seconds:     0.00
- #CPUT: Total CPU Time in Seconds,        0.291
+ #CPUT: Total CPU Time in Seconds,        0.296
 Stop Time:
-Fri Apr 24 16:31:45 CEST 2026
+Mon Apr 27 12:25:19 CEST 2026
