@@ -33,7 +33,9 @@ Suggests:
     covr,
     devtools,
     mrgsolve,
-    quarto
+    quarto,
+    tidyverse,
+    glue
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se", 
       role=c("aut","cre","trl","cph"),
