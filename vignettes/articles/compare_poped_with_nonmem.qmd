@@ -27,11 +27,22 @@ knitr:
     class-output: output
     #collapse: true
     #comment: "#>"
-#execute:
+execute:
   #echo: true
   #eval: false   # set to true when rendering the solutions version
+  eval-nonmem: false
 editor: visual
 ---
+
+```{r,eval=TRUE}
+#| warning: false
+#| label: setup
+#| code-fold: true
+#| code-summary: "Packages used for this vignette"
+
+library(PopED)
+library(tidyverse)
+```
 
 ```{css, echo=FALSE, eval=TRUE}
 
@@ -72,13 +83,7 @@ Where $D_i$ is the dose of drug given to individual $i$, $F$ is the bioavailabil
 
 Defining this in PopED we have:
 
-```{r,eval=TRUE}
-#| warning: false
-#| label: setup
 
-library(PopED)
-library(tidyverse)
-```
 
 ```{r}
 ##-- Model: One comp first order absorption
@@ -212,9 +217,9 @@ Now we create a dataset simulated from this model and design
 ```{r}
 set.seed(12398)
 dosing_1 <- list(list(AMT=70,Time=0))
-dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./data/temp.csv") |> 
+dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./compare_poped_with_nonmem_data/temp.csv") |> 
   dplyr::select(-c(IPRED,PRED))
-readr::write_csv(dat,file = "./data/warfarin.csv",na = ".")
+readr::write_csv(dat,file = "./compare_poped_with_nonmem_data/warfarin.csv",na = ".")
 dat[1:20,]
 ```
 
@@ -242,7 +247,7 @@ We create a NONMEM model file.
 nm_mod <- paste(
 "$PROBLEM
 $INPUT ID TIME DV AMT GROUP MODEL DOSE
-$DATA ../data/warfarin.csv IGNORE=@
+$DATA ../compare_poped_with_nonmem_data/warfarin.csv IGNORE=@
 $SUBROUTINES ADVAN2  TRANS2 
 $PK
   CL = THETA(1) * EXP(ETA(1))
@@ -267,30 +272,32 @@ $OMEGA 0.6 ; IIV_KA
 
 $SIGMA 0.01; RUV_PROP
 
-$TABLE VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT
+$TABLE ID VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT
 ") |> glue::as_glue()
 
-write_file(nm_mod,file="./nonmem_models/run1.mod")
-nm_mod
+write_file(nm_mod,file="./compare_poped_with_nonmem_models/run1.mod")
+#nm_mod
 ```
 
 Then we estimate the model from the data in NONMEM
 
 ```{zsh nonmem-first-model, filename="PsN command"}
+#| eval: false
 #| output: false
-#| cache: true
 
-execute ./nonmem_models/run1.mod
+execute ./compare_poped_with_nonmem_models/run1.mod
 ```
 
-```{zsh, filename="PsN command"}
-sumo ./nonmem_models/run1.lst
+```{zsh sumo-first-model, filename="PsN command"}
+#| eval: false
+
+sumo ./compare_poped_with_nonmem_models/run1.lst
 ```
 
 For NONMEM, parameter RSE is:
 
 ```{r}
-ext.val <- read_table("./nonmem_models/run1.ext",skip=1,show_col_types = FALSE)
+ext.val <- read_table("./compare_poped_with_nonmem_models/run1.ext",skip=1,show_col_types = FALSE)
 par_est_nonmem <- ext.val |> filter(ITERATION==-1000000000) |> 
   select(-c(OBJ,ITERATION,"OMEGA(2,1)","OMEGA(3,1)","OMEGA(3,2)")) 
 par_se_nonmem <- ext.val |> filter(ITERATION==-1000000001) |>
@@ -298,7 +305,7 @@ par_se_nonmem <- ext.val |> filter(ITERATION==-1000000001) |>
 par_rse_nonmem <- par_se_nonmem/par_est_nonmem*100
 names(par_rse_nonmem) <- c("CL","V","KA","SIGMA[1,1]","d_CL","d_V","d_KA")
 par_rse_nonmem <- par_rse_nonmem |> relocate("SIGMA[1,1]", .after = last_col())
-par_rse_nonmem
+round(par_rse_nonmem,2)
 ```
 
 # Compare PopED and NONMEM
