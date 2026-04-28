@@ -280,26 +280,26 @@ write_file(nm_mod,file="./compare_poped_with_nonmem_models/run1.mod")
 
 Then we estimate the model from the data in NONMEM. In PsN this would be
 
-<!-- `execute ./compare_poped_with_nonmem_models/run1.mod` -->
+`execute ./compare_poped_with_nonmem_models/run1.mod`
 
-<!-- and -->
+and
 
-<!-- `sumo ./compare_poped_with_nonmem_models/run1.lst` -->
+`sumo ./compare_poped_with_nonmem_models/run1.lst`
 
-```{bash nonmem-first-model, filename="PsN command"}
-#| eval: !expr file.exists('run_nonmem_analysis.txt')
-#| output: false
-#| cache: true
+<!-- ```{bash nonmem-first-model, filename="PsN command"} -->
+<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
+<!-- #| output: false -->
+<!-- #| cache: true -->
 
-execute ./compare_poped_with_nonmem_models/run1.mod
-```
+<!-- execute ./compare_poped_with_nonmem_models/run1.mod -->
+<!-- ``` -->
 
-```{bash sumo-first-model, filename="PsN command"}
-#| eval: !expr file.exists('run_nonmem_analysis.txt')
-#| cache: true
+<!-- ```{bash sumo-first-model, filename="PsN command"} -->
+<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
+<!-- #| cache: true -->
 
-sumo ./compare_poped_with_nonmem_models/run1.lst
-```
+<!-- sumo ./compare_poped_with_nonmem_models/run1.lst -->
+<!-- ``` -->
 
 For NONMEM, the parameters' RSE derived from the covariance matrix are:
 
