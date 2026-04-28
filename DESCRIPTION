@@ -34,8 +34,8 @@ Suggests:
     devtools,
     mrgsolve,
     quarto,
-    tidyverse,
-    glue
+    tidyr,
+    readr
 Authors@R: c(
     person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se", 
       role=c("aut","cre","trl","cph"),

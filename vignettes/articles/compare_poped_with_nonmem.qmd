@@ -1,5 +1,5 @@
 ---
-title: "Compare Uncertaitny Predictions from PopED with NONMEM"
+title: "Compare Uncertainty Predictions from PopED with NONMEM"
 date: last-modified
 bibliography: references.bib
 author:
@@ -8,29 +8,20 @@ author:
 title-block-banner: true
 toc: true
 toc-title: On this page
-number-sections: true
 highlight-style: github
-smooth-scroll: true
 format:
   html:
     html-math-method: katex
-    embed-resources: false # set to true for the final version
-    self-contained-math: false # set to true for the final version
+    embed-resources: false
+    self-contained-math: false
     number-sections: true
     smooth-scroll: true
     code-tools: true
     code-link: true
     theme: cosmo
-    minimal: true
 knitr:
   opts_chunk:
     class-output: output
-    #collapse: true
-    #comment: "#>"
-#execute:
-  #echo: true
-  #eval: false   # set to true when rendering the solutions version
-editor: visual
 ---
 
 ```{r,eval=TRUE}
@@ -40,7 +31,10 @@ editor: visual
 #| code-summary: "Packages used for this vignette"
 
 library(PopED)
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
 ```
 
 ```{css, echo=FALSE, eval=TRUE}
@@ -50,10 +44,11 @@ library(tidyverse)
   background-color: snow;
 }
 
-div.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
-.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
-
 ```
+
+# Introduction
+
+Before running a clinical study, it is useful to know how precisely the model parameters can be estimated from the planned design. PopED answers that question by inverting the Fisher Information Matrix (FIM) for the design, producing predicted parameter RSE without any data. This article checks those predictions against what NONMEM reports from `$COVARIANCE` after fitting the same model to one simulated dataset, using the Warfarin example from @nybergMethodsSoftwareTools2015. We find that the two agree closely, with PopED slightly lower, on average. This is consistent with the FIM giving a Cramér-Rao lower bound and a single NONMEM fit reflecting just one realization of the data.
 
 # Population models
 
@@ -62,7 +57,7 @@ In this work we are using population, or nonlinear mixed-effect (NLME) models. H
 $$ 
 y_{ij}=f(t_{ij},\vec{a}_{i},\vec{\theta}_i) + h(t_{ij},\vec{a}_{i},\vec{\theta}_i, \vec{\varepsilon}_{ij}) $$ {#eq-moddef}
 
-Where $t_{ij}$ are the measurement times $\vec{a}_{i}$ is a vector of covariates (doses of a drug, weight, age, concentration of a drug in blood plasma, etc.), $\vec{\theta}_i$ is a vector of model parameter values, $h(.)$ is a model for the residual error (also referred to as residual unexplained variability, or RUV) in the model and $\vec{\varepsilon}_{ij}$ is a vector of of random variables describing data-level deviations from the model. Often, as is the case in the models described here, the elements of $\vec{\varepsilon}_{ij}$ are assumed to come from normal distributions with means of zero and a covariance matrix of $\boldsymbol{\Sigma}$ (elements of $\sigma^2_{lm}$), where $\boldsymbol{\Sigma}$ is typically diagonal.
+Where $t_{ij}$ are the measurement times $\vec{a}_{i}$ is a vector of covariates (doses of a drug, weight, age, concentration of a drug in blood plasma, etc.), $\vec{\theta}_i$ is a vector of model parameter values, $h(.)$ is a model for the residual error (also referred to as residual unexplained variability, or RUV) in the model and $\vec{\varepsilon}_{ij}$ is a vector of random variables describing data-level deviations from the model. Often, as is the case in the models described here, the elements of $\vec{\varepsilon}_{ij}$ are assumed to come from normal distributions with means of zero and a covariance matrix of $\boldsymbol{\Sigma}$ (elements of $\sigma^2_{lm}$), where $\boldsymbol{\Sigma}$ is typically diagonal.
 
 Population effects are modeled on the parameter level, where individual parameter values are derived from typical (or population) parameters $\vec{\theta}$, individual deviations due to covariates $\vec{a}_{i}$, and random individual deviations $\vec{\eta}_{i}$ (referred to as a between-subject variability, or BSV, term).
 
@@ -140,7 +135,7 @@ feps <- function(model_switch,xt,parameters,epsi,poped.db){
 
 We create a poped database to link the model defined above with a set of model parameters, the initial design and a design space for optimization.
 
-In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`). We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated (and is know without uncertainty).
+In this example, the parameter values are defined for the fixed effects (`bpop`), the between-subject variability variances (`d`) and the residual variability variances (`sigma`). We also fix the parameter `Favail` using `notfixed_bpop`, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated (and is known without uncertainty).
 
 For the initial design, we define 1 group (`m=1`) of 32 individuals (`groupsize=32`), with a single dose of 70 mg (`a`). The initial design has 8 sample times per individual (`xt`).
 
@@ -159,7 +154,7 @@ poped.db <-
     bpop = c(CL=0.15, V=8, KA=1.0, Favail=1), 
     notfixed_bpop = c(1,1,1,0),
     d = c(CL=0.07, V=0.02, KA=0.6), 
-    sigma = c(0.01),
+    sigma = c(prop=0.01),
                                   
     # Design
     groupsize = 32,
@@ -194,7 +189,7 @@ We can get these predictions numerically as well:
 
 ```{r}
 dat <- model_prediction(poped.db,DV=TRUE)
-head(dat,n=5);tail(dat,n=5)
+head(dat,n=8);tail(dat,n=8)
 ```
 
 ## Design evaluation
@@ -211,28 +206,28 @@ We see that all parameters relative standard errors (rse above) in % are predict
 
 ## Create dataset
 
-Now we create a dataset simulated from this model and design
+Now we create a dataset simulated from this model and design. File paths below are relative to the directory containing this `.qmd` file.
 
 ```{r}
 set.seed(12398)
 dosing_1 <- list(list(AMT=70,Time=0))
-dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./compare_poped_with_nonmem_data/temp.csv") |> 
+dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./compare_poped_with_nonmem_data/temp.csv") |>
   dplyr::select(-c(IPRED,PRED))
 readr::write_csv(dat,file = "./compare_poped_with_nonmem_data/warfarin.csv",na = ".")
-dat[1:20,]
 ```
 
 The simulated data look like this:
 
 ```{r}
 #| warning: false
-library(ggplot2)
-p <- ggplot(dat,aes(x=Time,y=DV,group=ID)) + 
-    geom_line(color="grey") + 
+
+head(dat,20)
+
+p <- ggplot(dat,aes(x=Time,y=DV,group=ID)) +
+    geom_line(color="grey") +
     geom_point(size=3,alpha=0.5,
-               aes(colour = ID) ) + 
-  theme(legend.position = "none")#+
-    # labs(color="ID")
+               aes(colour = ID) ) +
+  theme(legend.position = "none")
 p
 ```
 
@@ -272,70 +267,97 @@ $OMEGA 0.6 ; IIV_KA
 $SIGMA 0.01; RUV_PROP
 
 $TABLE ID VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT
-") |> glue::as_glue()
-
+") 
 write_file(nm_mod,file="./compare_poped_with_nonmem_models/run1.mod")
-#nm_mod
 ```
 
-Then we estimate the model from the data in NONMEM. In PsN this would be
+::: {.callout-tip collapse="true"}
+## How to reproduce the NONMEM run
 
-`execute ./compare_poped_with_nonmem_models/run1.mod`
+The NONMEM output files needed below (`run1.ext`, etc.) are precomputed and shipped with this article in the PopED GitHub repository under `vignettes/articles/compare_poped_with_nonmem_models/`, so rendering this document does not require a NONMEM installation.
 
-and
+To regenerate them yourself, run the following from the article directory (`vignettes/articles/`) using [PsN](https://uupharmacometrics.github.io/PsN/) and a working NONMEM installation:
 
-`sumo ./compare_poped_with_nonmem_models/run1.lst`
+```bash
+# Estimate the model
+execute ./compare_poped_with_nonmem_models/run1.mod
 
-<!-- ```{bash nonmem-first-model, filename="PsN command"} -->
-<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
-<!-- #| output: false -->
-<!-- #| cache: true -->
+# Optional: print a parameter-estimate summary
+sumo ./compare_poped_with_nonmem_models/run1.lst
+```
 
-<!-- execute ./compare_poped_with_nonmem_models/run1.mod -->
-<!-- ``` -->
+After `execute` completes, `run1.ext` will be available alongside `run1.mod` and the rest of the chunks below can be re-rendered without changes.
+:::
 
-<!-- ```{bash sumo-first-model, filename="PsN command"} -->
-<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
-<!-- #| cache: true -->
-
-<!-- sumo ./compare_poped_with_nonmem_models/run1.lst -->
-<!-- ``` -->
-
-For NONMEM, the parameters' RSE derived from the covariance matrix are:
-
+We define a small helper that extracts parameter RSE (%) from a NONMEM `.ext` file. 
 ```{r}
-ext.val <- read_table("./compare_poped_with_nonmem_models/run1.ext",skip=1,show_col_types = FALSE)
-par_est_nonmem <- ext.val |> filter(ITERATION==-1000000000) |> 
-  select(-c(OBJ,ITERATION,"OMEGA(2,1)","OMEGA(3,1)","OMEGA(3,2)")) 
-par_se_nonmem <- ext.val |> filter(ITERATION==-1000000001) |>
-  select(-c(OBJ,ITERATION,"OMEGA(2,1)","OMEGA(3,1)","OMEGA(3,2)")) 
-par_rse_nonmem <- par_se_nonmem/par_est_nonmem*100
-names(par_rse_nonmem) <- c("CL","V","KA","SIGMA[1,1]","d_CL","d_V","d_KA")
-par_rse_nonmem <- par_rse_nonmem |> relocate("SIGMA[1,1]", .after = last_col())
-round(par_rse_nonmem,2)
+nonmem_rse <- function(ext_file) {
+  ext <- read_table(ext_file, skip = 1, show_col_types = FALSE)
+  est <- ext |> filter(ITERATION == -1000000000) |> select(-ITERATION, -OBJ)
+  se  <- ext |> filter(ITERATION == -1000000001) |> select(-ITERATION, -OBJ)
+  rse <- abs(se) / abs(est) * 100
+  rse[, unlist(se) != 0, drop = FALSE]
+  rse[, unlist(est) != 0, drop = FALSE]
+}
+
+par_rse_nonmem <- nonmem_rse("./compare_poped_with_nonmem_models/run1.ext") |>
+  rename(
+    CL           = THETA1,
+    V            = THETA2,
+    KA           = THETA3,
+    d_CL         = `OMEGA(1,1)`,
+    d_V          = `OMEGA(2,2)`,
+    d_KA         = `OMEGA(3,3)`,
+    `sig_prop`   = `SIGMA(1,1)`
+  ) |>
+  relocate(`sig_prop`, .after = last_col())
+
+round(par_rse_nonmem, 2)
 ```
+
 
 # Compare PopED and NONMEM
 
-We can compare between the prediction in PopED and the covariance matrix in NONMEM
+We can compare between the prediction in PopED and the covariance matrix in NONMEM.
 
 ```{r}
-result <- rbind(par_rse_nonmem,ds1$rse)|> 
+result <- rbind(par_rse_nonmem,ds1$rse)|>
   mutate("Method"=c("NONMEM","PopED"),.before=CL)
-result
+
+result_table <- result |> 
+  pivot_longer(-Method, names_to = "Parameter", values_to = "RSE") |>
+  pivot_wider(names_from = Method, values_from = RSE) 
+knitr::kable(result_table, digits = 2, 
+             caption = "Predicted parameter RSE (%) from NONMEM and PopED.") 
 ```
 
 ```{r}
-result |> 
-  pivot_longer(-Method,names_to = "Parameter",values_to = "RSE") |> 
-  ggplot(aes(x=Parameter,y=RSE,fill=Method)) + 
-  geom_col(position = position_dodge()) + 
+result |>
+  pivot_longer(-Method,names_to = "Parameter",values_to = "RSE") |>
+  ggplot(aes(x=Parameter,y=RSE,fill=Method)) +
+  geom_col(position = position_dodge()) +
+  labs(y = "RSE (%)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_x_discrete(limits = names(result[-1]))
 ```
 
-The NONMEM and PopED results are similar, though they differ in how they are obtained. The NONMEM results are based on a single simulation of the design and estimation of the model, whereas the PopED results reflect an evaluation of the expected uncertainties, on average, across all realizations of the data. Additionally, the PopED results rely on the Fisher Information Matrix, which is an asymptotic approximation and therefore represents an upper bound on the overall information. As a result, the predicted RSE values from PopED are expected to be lower on average (Cramér-Rao Lower Bound).
+# Conclusions
 
-We could also compare the results of an SSE in NONMEM to the PopED results, which would be more comparable since both would be based on many realizations of the data. This was done in @nybergMethodsSoftwareTools2015.
+The NONMEM and PopED results are similar, though they differ in how they are obtained:
+
+- **NONMEM** estimates RSE from the covariance matrix produced by `$COVARIANCE` after fitting the model to a *single* simulated dataset. The values therefore reflect the variability of one particular realization of the data.
+- **PopED** computes RSE by inverting the Fisher Information Matrix evaluated from the design and assumed model and parameter values. The RSE values therefore reflect the *expected* uncertainty across all realizations of the data, before any data are collected.
+- Because the FIM gives the **Cramér-Rao lower bound** on the variance of any unbiased estimator, PopED's RSE values are expected to be smaller on average than NONMEM's. This is consistent with what we observe here.
+- A more directly comparable check would be a **stochastic simulation and estimation (SSE)** study in NONMEM — many simulated datasets, each fit with the same model — which averages out the single-realization noise. This comparison was carried out in @nybergMethodsSoftwareTools2015.
+
+In short: for the planning stage, the FIM-based predictions from PopED are a fast and reliable substitute for the much more expensive simulate-and-estimate workflow, with the expectation that they will be slightly optimistic relative to a single NONMEM run.
+
+# Session info {.unnumbered}
+
+```{r}
+#| code-fold: true
+#| code-summary: "Session info"
+sessionInfo()
+```
 
 # References {.unnumbered}
