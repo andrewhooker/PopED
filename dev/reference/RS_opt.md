@@ -303,7 +303,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x55bed4d97ed8>
+#> <bytecode: 0x56460e6c7a50>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -423,7 +423,7 @@ out_1 <- RS_opt(poped.db,opt_xt=1,opt_a=1,rsit=3,fim.calc.type=0, out_file = "")
 #>    SIGMA[1,1]     0.01      33    33
 #>    SIGMA[2,2]     0.25      26    26
 #> 
-#> Total running time: 0.05 seconds
+#> Total running time: 0.029 seconds
 
 if (FALSE) { # \dontrun{
   

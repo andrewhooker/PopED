@@ -345,8 +345,8 @@ summary(output)
 #> ===============================================================================
 #> FINAL RESULTS
 #> Optimized Sampling Schedule
-#> Group 1: 0.4574     10     10    240  240.9
-#> Group 2: 0.4574     10     10    240  240.9
+#> Group 1: 0.4573     10     10    240  240.9
+#> Group 2: 0.4573     10     10    240  240.9
 #> 
 #> OFV = 40.5277
 #> 
@@ -364,7 +364,7 @@ summary(output)
 #>         d_CL   0.0625      28    26
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 28.891 seconds
+#> Total running time: 16.441 seconds
 plot_model_prediction(output$poped.db)
 ```
 
@@ -433,7 +433,7 @@ summary(output_discrete)
 #>         d_CL   0.0625      28    27
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 17.884 seconds
+#> Total running time: 9.973 seconds
 plot_model_prediction(output_discrete$poped.db, model_num_points = 300)
 ```
 
@@ -508,7 +508,7 @@ summary(output_cost)
 #>         d_CL   0.0625      28    28
 #>     sig_prop     0.04      14    14
 #> 
-#> Total running time: 3.52 seconds
+#> Total running time: 3.498 seconds
 ```
 
 We see that the optimal doses are 31.6 and 55.2 for the two groups. This

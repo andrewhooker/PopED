@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Compare Uncertaitny Predictions from PopED with NONMEM • PopED</title>
+<title>Compare Uncertainty Predictions from PopED with NONMEM • PopED</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="compare_poped_with_nonmem_files/libs/quarto-html/popper.min.js"></script><script src="compare_poped_with_nonmem_files/libs/quarto-html/tippy.umd.min.js"></script><link href="compare_poped_with_nonmem_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="compare_poped_with_nonmem_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Compare Uncertaitny Predictions from PopED with NONMEM">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Compare Uncertainty Predictions from PopED with NONMEM">
 <meta property="og:image" content="https://andrewhooker.github.io/PopED/logo.png">
 <meta name="robots" content="noindex">
 </head>
@@ -62,7 +62,7 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Compare Uncertaitny Predictions from PopED with NONMEM</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Compare Uncertainty Predictions from PopED with NONMEM</h1>
 
       <p class="author">Andrew Hooker</p>
       <p class="date">2026-04-28</p>
@@ -79,7 +79,10 @@
     <div class="cell">
 <details class="code-fold"><summary>Packages used for this vignette</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewhooker.github.io/PopED/">PopED</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -90,26 +93,27 @@
   background-color: snow;
 }
 
-div.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
-.dos { background-color:LightYellow; border-radius: 5px; padding: 20px;}
-
 </style>
 </div>
-<section class="section level2" data-number="1"><h2 data-number="1" id="population-models">
-<span class="header-section-number">1</span> Population models<a class="anchor" aria-label="anchor" href="#population-models"></a>
+<section class="section level2" data-number="1"><h2 data-number="1" id="introduction">
+<span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>Before running a clinical study, it is useful to know how precisely the model parameters can be estimated from the planned design. PopED answers that question by inverting the Fisher Information Matrix (FIM) for the design, producing predicted parameter RSE without any data. This article checks those predictions against what NONMEM reports from <code>$COVARIANCE</code> after fitting the same model to one simulated dataset, using the Warfarin example from <span class="citation" data-cites="nybergMethodsSoftwareTools2015">Nyberg et al. (<a href="#ref-nybergMethodsSoftwareTools2015" role="doc-biblioref">2015</a>)</span>. We find that the two agree closely, with PopED slightly lower, on average. This is consistent with the FIM giving a Cramér-Rao lower bound and a single NONMEM fit reflecting just one realization of the data.</p>
+</section><section class="section level2" data-number="2"><h2 data-number="2" id="population-models">
+<span class="header-section-number">2</span> Population models<a class="anchor" aria-label="anchor" href="#population-models"></a>
 </h2>
 <p>In this work we are using population, or nonlinear mixed-effect (NLME) models. Here we define <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">y_{ij}</annotation></semantics></math> for the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>j</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup><annotation encoding="application/x-tex">j^{th}</annotation></semantics></math> observation of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>i</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup><annotation encoding="application/x-tex">i^{th}</annotation></semantics></math> individual in a population as:</p>
 <p><span id="eq-moddef"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>,</mo><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>,</mo><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>,</mo><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
 y_{ij}=f(t_{ij},\vec{a}_{i},\vec{\theta}_i) + h(t_{ij},\vec{a}_{i},\vec{\theta}_i, \vec{\varepsilon}_{ij})  \qquad(1)</annotation></semantics></math></span></p>
-<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{ij}</annotation></semantics></math> are the measurement times <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{a}_{i}</annotation></semantics></math> is a vector of covariates (doses of a drug, weight, age, concentration of a drug in blood plasma, etc.), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{\theta}_i</annotation></semantics></math> is a vector of model parameter values, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>.</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(.)</annotation></semantics></math> is a model for the residual error (also referred to as residual unexplained variability, or RUV) in the model and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\vec{\varepsilon}_{ij}</annotation></semantics></math> is a vector of of random variables describing data-level deviations from the model. Often, as is the case in the models described here, the elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\vec{\varepsilon}_{ij}</annotation></semantics></math> are assumed to come from normal distributions with means of zero and a covariance matrix of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝚺</mi><annotation encoding="application/x-tex">\boldsymbol{\Sigma}</annotation></semantics></math> (elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>l</mi><mi>m</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_{lm}</annotation></semantics></math>), where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝚺</mi><annotation encoding="application/x-tex">\boldsymbol{\Sigma}</annotation></semantics></math> is typically diagonal.</p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{ij}</annotation></semantics></math> are the measurement times <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{a}_{i}</annotation></semantics></math> is a vector of covariates (doses of a drug, weight, age, concentration of a drug in blood plasma, etc.), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{\theta}_i</annotation></semantics></math> is a vector of model parameter values, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>.</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(.)</annotation></semantics></math> is a model for the residual error (also referred to as residual unexplained variability, or RUV) in the model and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\vec{\varepsilon}_{ij}</annotation></semantics></math> is a vector of random variables describing data-level deviations from the model. Often, as is the case in the models described here, the elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\vec{\varepsilon}_{ij}</annotation></semantics></math> are assumed to come from normal distributions with means of zero and a covariance matrix of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝚺</mi><annotation encoding="application/x-tex">\boldsymbol{\Sigma}</annotation></semantics></math> (elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>l</mi><mi>m</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_{lm}</annotation></semantics></math>), where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝚺</mi><annotation encoding="application/x-tex">\boldsymbol{\Sigma}</annotation></semantics></math> is typically diagonal.</p>
 <p>Population effects are modeled on the parameter level, where individual parameter values are derived from typical (or population) parameters <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>θ</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{\theta}</annotation></semantics></math>, individual deviations due to covariates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{a}_{i}</annotation></semantics></math>, and random individual deviations <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>η</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{\eta}_{i}</annotation></semantics></math> (referred to as a between-subject variability, or BSV, term).</p>
 <p><span id="eq-poppar"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>θ</mi><mo accent="true">→</mo></mover><mo>,</mo><msub><mover><mi>a</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo>,</mo><msub><mover><mi>η</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\vec{\theta}_i=g(\vec{\theta},\vec{a}_{i},\vec{\eta}_{i})  \qquad(2)</annotation></semantics></math></span></p>
 <p>Extensions, where deviations are on other scales, are possible as well (such as parameter deviations between occasions within an individual’s study, center level deviations, study level deviations, etc.). Often, as is the case in the models described here, the elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>η</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{\eta}_{i}</annotation></semantics></math> are assumed to come from normal distributions with means of zero and a covariance matrix of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛀</mi><annotation encoding="application/x-tex">\boldsymbol{\Omega}</annotation></semantics></math> (elements of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>ω</mi><mrow><mi>p</mi><mi>q</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\omega^2_{pq}</annotation></semantics></math>).</p>
-</section><section class="section level2" data-number="2"><h2 data-number="2" id="simple-population-pk-model-in-poped">
-<span class="header-section-number">2</span> Simple Population PK model in PopED<a class="anchor" aria-label="anchor" href="#simple-population-pk-model-in-poped"></a>
+</section><section class="section level2" data-number="3"><h2 data-number="3" id="simple-population-pk-model-in-poped">
+<span class="header-section-number">3</span> Simple Population PK model in PopED<a class="anchor" aria-label="anchor" href="#simple-population-pk-model-in-poped"></a>
 </h2>
-<section class="level2" data-number="2.1"><h3 data-number="2.1" id="structural-model">
-<span class="header-section-number">2.1</span> Structural model<a class="anchor" aria-label="anchor" href="#structural-model"></a>
+<section class="level2" data-number="3.1"><h3 data-number="3.1" id="structural-model">
+<span class="header-section-number">3.1</span> Structural model<a class="anchor" aria-label="anchor" href="#structural-model"></a>
 </h3>
 <p>Here we define a one-compartment pharmacokinetic model with linear absorption and a single drug dose using an analytical solution.</p>
 <p><span id="eq-startmod"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>D</mi><mi>i</mi></msub><mo>,</mo><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msub><mi>D</mi><mi>i</mi></msub><mo>⋅</mo><mi>F</mi><mo>⋅</mo><mi>K</mi><msub><mi>a</mi><mi>i</mi></msub></mrow><mrow><msub><mi>V</mi><mi>i</mi></msub><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><mi>K</mi><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><mi>C</mi><msub><mi>L</mi><mi>i</mi></msub><mi>/</mi><msub><mi>V</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>−</mi><mfrac><mrow><mi>C</mi><msub><mi>L</mi><mi>i</mi></msub></mrow><msub><mi>V</mi><mi>i</mi></msub></mfrac><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>K</mi><msub><mi>a</mi><mi>i</mi></msub><mo>⋅</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></msup><mo stretchy="false" form="postfix">)</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(t_{ij},D_i,\vec{\theta}_i) =  \frac{D_i \cdot F \cdot Ka_i}{V_i \cdot (Ka_i -CL_i/V_i)} \cdot (e^{-\frac{CL_i}{V_i} t_{ij}} - e^{-Ka_i\cdot t_{ij}})  \qquad(3)</annotation></semantics></math></span></p>
@@ -126,8 +130,8 @@ y_{ij}=f(t_{ij},\vec{a}_{i},\vec{\theta}_i) + h(t_{ij},\vec{a}_{i},\vec{\theta}_
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
-</section><section class="level2" data-number="2.2"><h3 data-number="2.2" id="random-effects-model">
-<span class="header-section-number">2.2</span> Random effects model<a class="anchor" aria-label="anchor" href="#random-effects-model"></a>
+</section><section class="level2" data-number="3.2"><h3 data-number="3.2" id="random-effects-model">
+<span class="header-section-number">3.2</span> Random effects model<a class="anchor" aria-label="anchor" href="#random-effects-model"></a>
 </h3>
 <p>Taking the random effect structure and parameter values from the Warfarin example from software comparison in Nyberg et al., “Methods and software tools for design evaluation for population pharmacokinetics-pharmacodynamics studies”, Br. J. Clin. Pharm., 2014 <span class="citation" data-cites="nybergMethodsSoftwareTools2015">(<a href="#ref-nybergMethodsSoftwareTools2015" role="doc-biblioref">Nyberg et al. 2015</a>)</span>, we have a proportional residual error model, with a coefficient of variation of 10%, and exponential random effects are assumed for CL, V and Ka.</p>
 <p><span id="eq-startmodrand"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>D</mi><mi>i</mi></msub><mo>,</mo><msub><mover><mi>θ</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><msub><mover><mi>ε</mi><mo accent="true">→</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>C</mi><msub><mi>L</mi><mi>i</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>θ</mi><mrow><mi>C</mi><mi>L</mi></mrow></msub><mo>⋅</mo><msup><mi>e</mi><msub><mi>η</mi><mrow><mi>C</mi><mi>L</mi><mo>,</mo><mi>i</mi></mrow></msub></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>V</mi><mi>i</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>θ</mi><mi>V</mi></msub><mo>⋅</mo><msup><mi>e</mi><msub><mi>η</mi><mrow><mi>V</mi><mo>,</mo><mi>i</mi></mrow></msub></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>K</mi><msub><mi>a</mi><mi>i</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>θ</mi><mrow><mi>K</mi><mi>a</mi></mrow></msub><mo>⋅</mo><msup><mi>e</mi><msub><mi>η</mi><mrow><mi>K</mi><mi>a</mi><mo>,</mo><mi>i</mi></mrow></msub></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝛀</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>ω</mi><mrow><mi>C</mi><mi>L</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>ω</mi><mi>V</mi><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>ω</mi><mrow><mi>K</mi><mi>a</mi></mrow><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝚺</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mtext mathvariant="normal">prop</mtext><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr></mtable><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{align}
@@ -165,11 +169,11 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,poped.db<span class="op">=</span><span class="va">poped.db</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
-</section><section class="level2" data-number="2.3"><h3 data-number="2.3" id="parameter-values-and-study-design">
-<span class="header-section-number">2.3</span> Parameter values and study design<a class="anchor" aria-label="anchor" href="#parameter-values-and-study-design"></a>
+</section><section class="level2" data-number="3.3"><h3 data-number="3.3" id="parameter-values-and-study-design">
+<span class="header-section-number">3.3</span> Parameter values and study design<a class="anchor" aria-label="anchor" href="#parameter-values-and-study-design"></a>
 </h3>
 <p>We create a poped database to link the model defined above with a set of model parameters, the initial design and a design space for optimization.</p>
-<p>In this example, the parameter values are defined for the fixed effects (<code>bpop</code>), the between-subject variability variances (<code>d</code>) and the residual variability variances (<code>sigma</code>). We also fix the parameter <code>Favail</code> using <code>notfixed_bpop</code>, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated (and is know without uncertainty).</p>
+<p>In this example, the parameter values are defined for the fixed effects (<code>bpop</code>), the between-subject variability variances (<code>d</code>) and the residual variability variances (<code>sigma</code>). We also fix the parameter <code>Favail</code> using <code>notfixed_bpop</code>, since we have only oral dosing and the parameter is not identifiable. Fixing a parameter means that we assume the parameter will not be estimated (and is known without uncertainty).</p>
 <p>For the initial design, we define 1 group (<code>m=1</code>) of 32 individuals (<code>groupsize=32</code>), with a single dose of 70 mg (<code>a</code>). The initial design has 8 sample times per individual (<code>xt</code>).</p>
 <p>For the design space, which can be searched during design optimization, we define a potential dose range of between 0 and 100 mg (<code>mina</code> and <code>maxa</code>), and a range of potential sample times between 0 and 120 hours (<code>minxt</code> and <code>maxxt</code>).</p>
 <div class="cell">
@@ -186,7 +190,7 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 <span>    bpop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.15</span>, V<span class="op">=</span><span class="fl">8</span>, KA<span class="op">=</span><span class="fl">1.0</span>, Favail<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
 <span>    notfixed_bpop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span>
 <span>    d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CL<span class="op">=</span><span class="fl">0.07</span>, V<span class="op">=</span><span class="fl">0.02</span>, KA<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span>, </span>
-<span>    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>prop<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>,</span>
 <span>                                  </span>
 <span>    <span class="co"># Design</span></span>
 <span>    groupsize <span class="op">=</span> <span class="fl">32</span>,</span>
@@ -199,8 +203,8 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 <span>    mina <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    maxa <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2" data-number="2.4"><h3 data-number="2.4" id="design-simulation">
-<span class="header-section-number">2.4</span> Design simulation<a class="anchor" aria-label="anchor" href="#design-simulation"></a>
+</section><section class="level2" data-number="3.4"><h3 data-number="3.4" id="design-simulation">
+<span class="header-section-number">3.4</span> Design simulation<a class="anchor" aria-label="anchor" href="#design-simulation"></a>
 </h3>
 <p>First it may make sense to check your model and design to make sure you get what you expect when simulating data. Here we plot the model typical values:</p>
 <div class="cell">
@@ -231,26 +235,32 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>,DV<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">5</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">8</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre class="output"><code>  ID Time       DV    IPRED     PRED Group Model a_i
-1  1  0.5 1.914837 2.021837 3.425436     1     1  70
-2  1  1.0 3.006945 3.601120 5.471104     1     1  70
-3  1  2.0 5.682086 5.787545 7.382183     1     1  70
-4  1  6.0 8.294482 8.502033 7.946280     1     1  70
-5  1 24.0 8.183214 7.030715 5.685856     1     1  70</code></pre>
+<pre class="output"><code>  ID  Time        DV     IPRED      PRED Group Model a_i
+1  1   0.5 4.3470706 4.4871432 3.4254357     1     1  70
+2  1   1.0 6.9354158 6.5381440 5.4711041     1     1  70
+3  1   2.0 7.2289142 7.8255245 7.3821834     1     1  70
+4  1   6.0 7.8433729 7.5230426 7.9462805     1     1  70
+5  1  24.0 4.7704277 4.9963083 5.6858561     1     1  70
+6  1  36.0 3.3831460 3.8029098 4.5402483     1     1  70
+7  1  72.0 1.8834851 1.6769357 2.3116966     1     1  70
+8  1 120.0 0.6216558 0.5628382 0.9398657     1     1  70</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre class="output"><code>    ID Time        DV     IPRED      PRED Group Model a_i
-252 32    6 7.7257414 7.0731581 7.9462805     1     1  70
-253 32   24 4.5670370 5.0361175 5.6858561     1     1  70
-254 32   36 4.7348264 3.7172223 4.5402483     1     1  70
-255 32   72 1.3920926 1.4941734 2.3116966     1     1  70
-256 32  120 0.4433979 0.4432445 0.9398657     1     1  70</code></pre>
+<pre class="output"><code>    ID  Time        DV    IPRED      PRED Group Model a_i
+249 32   0.5 10.332921 8.487080 3.4254357     1     1  70
+250 32   1.0  9.387750 8.477020 5.4711041     1     1  70
+251 32   2.0  7.347085 8.361443 7.3821834     1     1  70
+252 32   6.0  8.882205 7.913646 7.9462805     1     1  70
+253 32  24.0  6.257901 6.177403 5.6858561     1     1  70
+254 32  36.0  5.717171 5.237116 4.5402483     1     1  70
+255 32  72.0  2.769390 3.191176 2.3116966     1     1  70
+256 32 120.0  1.634981 1.648525 0.9398657     1     1  70</code></pre>
 </div>
 </div>
-</section><section class="level2" data-number="2.5"><h3 data-number="2.5" id="design-evaluation">
-<span class="header-section-number">2.5</span> Design evaluation<a class="anchor" aria-label="anchor" href="#design-evaluation"></a>
+</section><section class="level2" data-number="3.5"><h3 data-number="3.5" id="design-evaluation">
+<span class="header-section-number">3.5</span> Design evaluation<a class="anchor" aria-label="anchor" href="#design-evaluation"></a>
 </h3>
 <p>Next, we evaluate the initial design</p>
 <div class="cell">
@@ -261,44 +271,48 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 [1] 52.44799
 
 $fim
-                    CL          V        KA         d_CL          d_V
-CL         19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000
-V            -21.83655  20.656071 -1.807099 0.000000e+00     0.000000
-KA            -8.62214  -1.807099 51.729039 0.000000e+00     0.000000
-d_CL           0.00000   0.000000  0.000000 3.107768e+03    10.728786
-d_V            0.00000   0.000000  0.000000 1.072879e+01 27307.089308
-d_KA           0.00000   0.000000  0.000000 2.613561e-02     3.265608
-SIGMA[1,1]     0.00000   0.000000  0.000000 5.215403e+02 11214.210707
-                  d_KA   SIGMA[1,1]
-CL          0.00000000      0.00000
-V           0.00000000      0.00000
-KA          0.00000000      0.00000
-d_CL        0.02613561    521.54030
-d_V         3.26560786  11214.21071
-d_KA       41.81083599     71.08764
-SIGMA[1,1] 71.08763902 806176.95068
+                  CL          V        KA         d_CL          d_V        d_KA
+CL       19821.28445 -21.836551 -8.622140 0.000000e+00     0.000000  0.00000000
+V          -21.83655  20.656071 -1.807099 0.000000e+00     0.000000  0.00000000
+KA          -8.62214  -1.807099 51.729039 0.000000e+00     0.000000  0.00000000
+d_CL         0.00000   0.000000  0.000000 3.107768e+03    10.728786  0.02613561
+d_V          0.00000   0.000000  0.000000 1.072879e+01 27307.089308  3.26560786
+d_KA         0.00000   0.000000  0.000000 2.613561e-02     3.265608 41.81083599
+sig_prop     0.00000   0.000000  0.000000 5.215403e+02 11214.210707 71.08763902
+             sig_prop
+CL            0.00000
+V             0.00000
+KA            0.00000
+d_CL        521.54030
+d_V       11214.21071
+d_KA         71.08764
+sig_prop 806176.95068
 
 $rse
-        CL          V         KA       d_CL        d_V       d_KA SIGMA[1,1]
-  4.738266   2.756206  13.925829  25.627205  30.344316  25.777327  11.170784 </code></pre>
+       CL         V        KA      d_CL       d_V      d_KA  sig_prop
+ 4.738266  2.756206 13.925829 25.627205 30.344316 25.777327 11.170784 </code></pre>
 </div>
 </div>
 <p>We see that all parameters relative standard errors (rse above) in % are predicted to be relatively well estimated.</p>
-</section></section><section class="section level2" data-number="3"><h2 data-number="3" id="evaluation-of-design-in-nonmem">
-<span class="header-section-number">3</span> Evaluation of design in NONMEM<a class="anchor" aria-label="anchor" href="#evaluation-of-design-in-nonmem"></a>
+</section></section><section class="section level2" data-number="4"><h2 data-number="4" id="evaluation-of-design-in-nonmem">
+<span class="header-section-number">4</span> Evaluation of design in NONMEM<a class="anchor" aria-label="anchor" href="#evaluation-of-design-in-nonmem"></a>
 </h2>
-<section class="level2" data-number="3.1"><h3 data-number="3.1" id="create-dataset">
-<span class="header-section-number">3.1</span> Create dataset<a class="anchor" aria-label="anchor" href="#create-dataset"></a>
+<section class="level2" data-number="4.1"><h3 data-number="4.1" id="create-dataset">
+<span class="header-section-number">4.1</span> Create dataset<a class="anchor" aria-label="anchor" href="#create-dataset"></a>
 </h3>
-<p>Now we create a dataset simulated from this model and design</p>
+<p>Now we create a dataset simulated from this model and design. File paths below are relative to the directory containing this <code>.qmd</code> file.</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12398</span><span class="op">)</span></span>
 <span><span class="va">dosing_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>AMT<span class="op">=</span><span class="fl">70</span>,Time<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>, dosing <span class="op">=</span> <span class="va">dosing_1</span>, DV<span class="op">=</span><span class="cn">T</span>,filename <span class="op">=</span> <span class="st">"./compare_poped_with_nonmem_data/temp.csv"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>, dosing <span class="op">=</span> <span class="va">dosing_1</span>, DV<span class="op">=</span><span class="cn">T</span>,filename <span class="op">=</span> <span class="st">"./compare_poped_with_nonmem_data/temp.csv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">IPRED</span>,<span class="va">PRED</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">dat</span>,file <span class="op">=</span> <span class="st">"./compare_poped_with_nonmem_data/warfarin.csv"</span>,na <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
-<span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span></span></code></pre></div>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">dat</span>,file <span class="op">=</span> <span class="st">"./compare_poped_with_nonmem_data/warfarin.csv"</span>,na <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>The simulated data look like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span>,<span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="output"><code>   ID  Time       DV AMT Group Model a_i
 1   1   0.0       NA  70     1     1  70
@@ -322,17 +336,12 @@ $rse
 19  3   0.0       NA  70     1     1  70
 20  3   0.5 8.317745  NA     1     1  70</code></pre>
 </div>
-</div>
-<p>The simulated data look like this:</p>
-<div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>,y<span class="op">=</span><span class="va">DV</span>,group<span class="op">=</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"grey"</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>,y<span class="op">=</span><span class="va">DV</span>,group<span class="op">=</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"grey"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">3</span>,alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">ID</span><span class="op">)</span> <span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span><span class="co">#+</span></span>
-<span>    <span class="co"># labs(color="ID")</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">ID</span><span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -341,12 +350,12 @@ $rse
 </div>
 </div>
 </div>
-</section><section class="level2" data-number="3.2"><h3 data-number="3.2" id="nonmem-evaluation">
-<span class="header-section-number">3.2</span> NONMEM evaluation<a class="anchor" aria-label="anchor" href="#nonmem-evaluation"></a>
+</section><section class="level2" data-number="4.2"><h3 data-number="4.2" id="nonmem-evaluation">
+<span class="header-section-number">4.2</span> NONMEM evaluation<a class="anchor" aria-label="anchor" href="#nonmem-evaluation"></a>
 </h3>
 <p>We create a NONMEM model file.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nm_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
 <span><span class="st">"$PROBLEM</span></span>
 <span><span class="st">$INPUT ID TIME DV AMT GROUP MODEL DOSE</span></span>
@@ -376,64 +385,121 @@ $rse
 <span><span class="st">$SIGMA 0.01; RUV_PROP</span></span>
 <span><span class="st"></span></span>
 <span><span class="st">$TABLE ID VC CL KA ETA(1) ETA(2) ETA(3) FILE=sdtab1 NOAPPEND NOPRINT</span></span>
-<span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/as_glue.html" class="external-link">as_glue</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_file.html" class="external-link">write_file</a></span><span class="op">(</span><span class="va">nm_mod</span>,file<span class="op">=</span><span class="st">"./compare_poped_with_nonmem_models/run1.mod"</span><span class="op">)</span></span>
-<span><span class="co">#nm_mod</span></span></code></pre></div>
+<span><span class="st">"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_file.html" class="external-link">write_file</a></span><span class="op">(</span><span class="va">nm_mod</span>,file<span class="op">=</span><span class="st">"./compare_poped_with_nonmem_models/run1.mod"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Then we estimate the model from the data in NONMEM. In PsN this would be</p>
-<p><code>execute ./compare_poped_with_nonmem_models/run1.mod</code></p>
-<p>and</p>
-<p><code>sumo ./compare_poped_with_nonmem_models/run1.lst</code></p>
-<!-- ```{bash nonmem-first-model, filename="PsN command"} -->
-<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
-<!-- #| output: false -->
-<!-- #| cache: true -->
-<!-- execute ./compare_poped_with_nonmem_models/run1.mod -->
-<!-- ``` -->
-<!-- ```{bash sumo-first-model, filename="PsN command"} -->
-<!-- #| eval: !expr file.exists('run_nonmem_analysis.txt') -->
-<!-- #| cache: true -->
-<!-- sumo ./compare_poped_with_nonmem_models/run1.lst -->
-<!-- ``` -->
-<p>For NONMEM, the parameters’ RSE derived from the covariance matrix are:</p>
-<div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ext.val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span><span class="st">"./compare_poped_with_nonmem_models/run1.ext"</span>,skip<span class="op">=</span><span class="fl">1</span>,show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">par_est_nonmem</span> <span class="op">&lt;-</span> <span class="va">ext.val</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ITERATION</span><span class="op">==</span><span class="op">-</span><span class="fl">1000000000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">OBJ</span>,<span class="va">ITERATION</span>,<span class="st">"OMEGA(2,1)"</span>,<span class="st">"OMEGA(3,1)"</span>,<span class="st">"OMEGA(3,2)"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="va">par_se_nonmem</span> <span class="op">&lt;-</span> <span class="va">ext.val</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ITERATION</span><span class="op">==</span><span class="op">-</span><span class="fl">1000000001</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">OBJ</span>,<span class="va">ITERATION</span>,<span class="st">"OMEGA(2,1)"</span>,<span class="st">"OMEGA(3,1)"</span>,<span class="st">"OMEGA(3,2)"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="va">par_rse_nonmem</span> <span class="op">&lt;-</span> <span class="va">par_se_nonmem</span><span class="op">/</span><span class="va">par_est_nonmem</span><span class="op">*</span><span class="fl">100</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">par_rse_nonmem</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CL"</span>,<span class="st">"V"</span>,<span class="st">"KA"</span>,<span class="st">"SIGMA[1,1]"</span>,<span class="st">"d_CL"</span>,<span class="st">"d_V"</span>,<span class="st">"d_KA"</span><span class="op">)</span></span>
-<span><span class="va">par_rse_nonmem</span> <span class="op">&lt;-</span> <span class="va">par_rse_nonmem</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="st">"SIGMA[1,1]"</span>, .after <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">last_col</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">par_rse_nonmem</span>,<span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre class="output"><code>    CL    V    KA  d_CL   d_V  d_KA SIGMA[1,1]
-1 4.58 2.28 16.63 26.81 38.72 24.14       9.02</code></pre>
+<div>
+<blockquote>
+<p><strong>How to reproduce the NONMEM run</strong></p>
+<p>The NONMEM output files needed below (<code>run1.ext</code>, etc.) are precomputed and shipped with this article in the PopED GitHub repository under <code>vignettes/articles/compare_poped_with_nonmem_models/</code>, so rendering this document does not require a NONMEM installation.</p>
+<p>To regenerate them yourself, run the following from the article directory (<code>vignettes/articles/</code>) using <a href="https://uupharmacometrics.github.io/PsN/" class="external-link">PsN</a> and a working NONMEM installation:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate the model</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">execute</span> ./compare_poped_with_nonmem_models/run1.mod</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: print a parameter-estimate summary</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sumo</span> ./compare_poped_with_nonmem_models/run1.lst</span></code></pre></div>
+<p>After <code>execute</code> completes, <code>run1.ext</code> will be available alongside <code>run1.mod</code> and the rest of the chunks below can be re-rendered without changes.</p>
+</blockquote>
 </div>
-</div>
-</section></section><section class="section level2" data-number="4"><h2 data-number="4" id="compare-poped-and-nonmem">
-<span class="header-section-number">4</span> Compare PopED and NONMEM<a class="anchor" aria-label="anchor" href="#compare-poped-and-nonmem"></a>
-</h2>
-<p>We can compare between the prediction in PopED and the covariance matrix in NONMEM</p>
+<p>We define a small helper that extracts parameter RSE (%) from a NONMEM <code>.ext</code> file.</p>
 <div class="cell">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">par_rse_nonmem</span>,<span class="va">ds1</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span><span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"Method"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NONMEM"</span>,<span class="st">"PopED"</span><span class="op">)</span>,.before<span class="op">=</span><span class="va">CL</span><span class="op">)</span></span>
-<span><span class="va">result</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nonmem_rse</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ext_file</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span><span class="va">ext_file</span>, skip <span class="op">=</span> <span class="fl">1</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">est</span> <span class="op">&lt;-</span> <span class="va">ext</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ITERATION</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1000000000</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ITERATION</span>, <span class="op">-</span><span class="va">OBJ</span><span class="op">)</span></span>
+<span>  <span class="va">se</span>  <span class="op">&lt;-</span> <span class="va">ext</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ITERATION</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1000000001</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ITERATION</span>, <span class="op">-</span><span class="va">OBJ</span><span class="op">)</span></span>
+<span>  <span class="va">rse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">est</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span>  <span class="va">rse</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="va">rse</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">est</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">par_rse_nonmem</span> <span class="op">&lt;-</span> <span class="fu">nonmem_rse</span><span class="op">(</span><span class="st">"./compare_poped_with_nonmem_models/run1.ext"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
+<span>    CL           <span class="op">=</span> <span class="va">THETA1</span>,</span>
+<span>    V            <span class="op">=</span> <span class="va">THETA2</span>,</span>
+<span>    KA           <span class="op">=</span> <span class="va">THETA3</span>,</span>
+<span>    d_CL         <span class="op">=</span> <span class="va">`OMEGA(1,1)`</span>,</span>
+<span>    d_V          <span class="op">=</span> <span class="va">`OMEGA(2,2)`</span>,</span>
+<span>    d_KA         <span class="op">=</span> <span class="va">`OMEGA(3,3)`</span>,</span>
+<span>    `sig_prop`   <span class="op">=</span> <span class="va">`SIGMA(1,1)`</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="va">`sig_prop`</span>, .after <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">last_col</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">par_rse_nonmem</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre class="output"><code>  Method       CL        V       KA     d_CL      d_V     d_KA SIGMA[1,1]
-1 NONMEM 4.584171 2.283751 16.63198 26.80822 38.71585 24.14017   9.019811
-2  PopED 4.738266 2.756206 13.92583 25.62720 30.34432 25.77733  11.170784</code></pre>
+<pre class="output"><code>    CL    V    KA  d_CL   d_V  d_KA sig_prop
+1 4.58 2.28 16.63 26.81 38.72 24.14     9.02</code></pre>
+</div>
+</div>
+</section></section><section class="section level2" data-number="5"><h2 data-number="5" id="compare-poped-and-nonmem">
+<span class="header-section-number">5</span> Compare PopED and NONMEM<a class="anchor" aria-label="anchor" href="#compare-poped-and-nonmem"></a>
+</h2>
+<p>We can compare between the prediction in PopED and the covariance matrix in NONMEM.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">par_rse_nonmem</span>,<span class="va">ds1</span><span class="op">$</span><span class="va">rse</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"Method"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NONMEM"</span>,<span class="st">"PopED"</span><span class="op">)</span>,.before<span class="op">=</span><span class="va">CL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result_table</span> <span class="op">&lt;-</span> <span class="va">result</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">Method</span>, names_to <span class="op">=</span> <span class="st">"Parameter"</span>, values_to <span class="op">=</span> <span class="st">"RSE"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">Method</span>, values_from <span class="op">=</span> <span class="va">RSE</span><span class="op">)</span> </span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">result_table</span>, digits <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>             caption <span class="op">=</span> <span class="st">"Predicted parameter RSE (%) from NONMEM and PopED."</span><span class="op">)</span> </span></code></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top">
+<caption>Predicted parameter RSE (%) from NONMEM and PopED.</caption>
+<thead><tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">NONMEM</th>
+<th style="text-align: right;">PopED</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CL</td>
+<td style="text-align: right;">4.58</td>
+<td style="text-align: right;">4.74</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V</td>
+<td style="text-align: right;">2.28</td>
+<td style="text-align: right;">2.76</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KA</td>
+<td style="text-align: right;">16.63</td>
+<td style="text-align: right;">13.93</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">d_CL</td>
+<td style="text-align: right;">26.81</td>
+<td style="text-align: right;">25.63</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">d_V</td>
+<td style="text-align: right;">38.72</td>
+<td style="text-align: right;">30.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">d_KA</td>
+<td style="text-align: right;">24.14</td>
+<td style="text-align: right;">25.78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sig_prop</td>
+<td style="text-align: right;">9.02</td>
+<td style="text-align: right;">11.17</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">Method</span>,names_to <span class="op">=</span> <span class="st">"Parameter"</span>,values_to <span class="op">=</span> <span class="st">"RSE"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Parameter</span>,y<span class="op">=</span><span class="va">RSE</span>,fill<span class="op">=</span><span class="va">Method</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">Method</span>,names_to <span class="op">=</span> <span class="st">"Parameter"</span>,values_to <span class="op">=</span> <span class="st">"RSE"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Parameter</span>,y<span class="op">=</span><span class="va">RSE</span>,fill<span class="op">=</span><span class="va">Method</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"RSE (%)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">result</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
@@ -443,8 +509,63 @@ $rse
 </div>
 </div>
 </div>
-<p>The NONMEM and PopED results are similar, though they differ in how they are obtained. The NONMEM results are based on a single simulation of the design and estimation of the model, whereas the PopED results reflect an evaluation of the expected uncertainties, on average, across all realizations of the data. Additionally, the PopED results rely on the Fisher Information Matrix, which is an asymptotic approximation and therefore represents an upper bound on the overall information. As a result, the predicted RSE values from PopED are expected to be lower on average (Cramér-Rao Lower Bound).</p>
-<p>We could also compare the results of an SSE in NONMEM to the PopED results, which would be more comparable since both would be based on many realizations of the data. This was done in <span class="citation" data-cites="nybergMethodsSoftwareTools2015">Nyberg et al. (<a href="#ref-nybergMethodsSoftwareTools2015" role="doc-biblioref">2015</a>)</span>.</p>
+</section><section class="section level2" data-number="6"><h2 data-number="6" id="conclusions">
+<span class="header-section-number">6</span> Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
+</h2>
+<p>The NONMEM and PopED results are similar, though they differ in how they are obtained:</p>
+<ul>
+<li>
+<strong>NONMEM</strong> estimates RSE from the covariance matrix produced by <code>$COVARIANCE</code> after fitting the model to a <em>single</em> simulated dataset. The values therefore reflect the variability of one particular realization of the data.</li>
+<li>
+<strong>PopED</strong> computes RSE by inverting the Fisher Information Matrix evaluated from the design and assumed model and parameter values. The RSE values therefore reflect the <em>expected</em> uncertainty across all realizations of the data, before any data are collected.</li>
+<li>Because the FIM gives the <strong>Cramér-Rao lower bound</strong> on the variance of any unbiased estimator, PopED’s RSE values are expected to be smaller on average than NONMEM’s. This is consistent with what we observe here.</li>
+<li>A more directly comparable check would be a <strong>stochastic simulation and estimation (SSE)</strong> study in NONMEM — many simulated datasets, each fit with the same model — which averages out the single-realization noise. This comparison was carried out in <span class="citation" data-cites="nybergMethodsSoftwareTools2015">Nyberg et al. (<a href="#ref-nybergMethodsSoftwareTools2015" role="doc-biblioref">2015</a>)</span>.</li>
+</ul>
+<p>In short: for the planning stage, the FIM-based predictions from PopED are a fast and reliable substitute for the much more expensive simulate-and-estimate workflow, with the expectation that they will be slightly optimistic relative to a single NONMEM run.</p>
+</section><section class="section level2"><h2 class="unnumbered" id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<div class="cell">
+<details class="code-fold"><summary>Session info</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre class="output"><code>R version 4.6.0 (2026-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 24.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8
+ [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8
+ [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C
+[10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C
+
+time zone: UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] ggplot2_4.0.3    readr_2.2.0      tidyr_1.3.2      dplyr_1.2.1
+[5] PopED_0.7.0.9001
+
+loaded via a namespace (and not attached):
+ [1] bit_4.6.0          gtable_0.3.6       jsonlite_2.0.0     crayon_1.5.3
+ [5] compiler_4.6.0     tidyselect_1.2.1   parallel_4.6.0     scales_1.4.0
+ [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3
+[13] generics_0.1.4     knitr_1.51         tibble_3.3.1       pillar_1.11.1
+[17] RColorBrewer_1.1-3 tzdb_0.5.0         rlang_1.2.0        xfun_0.57
+[21] S7_0.2.2           bit64_4.8.0        otel_0.2.0         cli_3.6.6
+[25] withr_3.0.2        magrittr_2.0.5     digest_0.6.39      grid_4.6.0
+[29] vroom_1.7.1        mvtnorm_1.3-7      hms_1.1.4          lifecycle_1.0.5
+[33] vctrs_0.7.3        evaluate_1.0.5     glue_1.8.1         farver_2.1.2
+[37] codetools_0.2-20   rmarkdown_2.31     purrr_1.2.2        tools_4.6.0
+[41] pkgconfig_2.0.3    htmltools_0.5.9   </code></pre>
+</div>
+</div>
 </section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">

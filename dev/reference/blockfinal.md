@@ -214,7 +214,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x55bed4d97ed8>
+#> <bytecode: 0x56460e6c7a50>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -292,6 +292,6 @@ blockfinal(fn="",fmf=FIM,
 #>     sig_prop     0.01      32    32
 #>      sig_add     0.25      26    26
 #> 
-#> Total running time: 1.748 seconds
+#> Total running time: 1.472 seconds
 
 ```
