@@ -332,7 +332,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x55c6a83a2c18>
+#> <bytecode: 0x55bed4d97ed8>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -423,21 +423,21 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> 
 #> *********************************
 #> 
-#> Run time for random search: 0.013 seconds
+#> Run time for random search: 0.022 seconds
 #> 
 #> SG - It. : 1  OFV : 55.45   Diff. :     1
 #> SG - It. : 2  OFV : 55.61   Diff. : 0.002799
 #> 
 #> SG - Iteration 2 --------- FINAL -------------------------
 #> Normalized gradient: Grad_xt(OFV)/OFV
-#> -0.00262405729196299
-#>  -0.000132025609212243
-#>  0.0049562882696737
-#>  -0.000109893316026729
-#>  -0.000341253164434824
-#>  2.72645074812749e-05
-#>  0.000160461661950708
-#>  3.06020481312946e-05
+#> -0.00262405729815211
+#>  -0.00013202558115728
+#>  0.00495628826966481
+#>  -0.000109893332631826
+#>  -0.000341253169198276
+#>  2.72645457612273e-05
+#>  0.000160461631525812
+#>  3.06020469784836e-05
 #> xt opt:
 #> 0.210318514650852
 #>  0.950298514650852
@@ -454,7 +454,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> OFV(mf)    : 55.6095
 #> diff       : 0.00279928
 #> *************************************************************
-#> Stochastic gradient run time: 0.371 seconds
+#> Stochastic gradient run time: 0.531 seconds
 #> 
 #> *****************************
 #>             Line Search
@@ -494,7 +494,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> Group 1: 100 [0.01,100]
 #> 
 #> 
-#> Line search run time: 0.196 seconds
+#> Line search run time: 0.295 seconds
 #> ***************************
 #> 
 #> ===============================================================================
@@ -522,7 +522,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #>     sig_prop     0.01      32    24
 #>      sig_add     0.25      26    16
 #> 
-#> Total running time: 0.582 seconds
+#> Total running time: 0.85 seconds
 
 if (FALSE) { # \dontrun{
   

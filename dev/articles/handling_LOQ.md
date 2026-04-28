@@ -161,7 +161,7 @@ e_time_D2 <- system.time(
 
 cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
 cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
-#> D6 evaluation time:  0.048 seconds 
+#> D6 evaluation time:  0.043 seconds 
 #> D2 evaluation time:  0.007 deconds
 ```
 

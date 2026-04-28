@@ -186,7 +186,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x55c6a83a2c18>
+#> <bytecode: 0x55bed4d97ed8>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -255,15 +255,15 @@ calc_ofv_and_grad(x=c(poped.db$design$xt,poped.db$design$a),
 #> 
 #> $g
 #>               [,1]
-#>  [1,]  0.079631185
+#>  [1,]  0.079631186
 #>  [2,] -0.025697327
 #>  [3,] -0.312973785
-#>  [4,]  0.009484133
-#>  [5,]  0.019485307
+#>  [4,]  0.009484134
+#>  [5,]  0.019485306
 #>  [6,] -0.001675713
-#>  [7,] -0.009544061
-#>  [8,] -0.001929802
-#>  [9,] -0.035844547
+#>  [7,] -0.009544060
+#>  [8,] -0.001929799
+#>  [9,] -0.035844546
 #> 
 
 if (FALSE) { # \dontrun{
