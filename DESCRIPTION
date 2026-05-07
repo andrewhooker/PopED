@@ -33,12 +33,12 @@ Suggests:
     covr,
     devtools,
     mrgsolve,
-    babelmixr2
+    babelmixr2,
     quarto,
     tidyr,
     readr
 Authors@R: c(
-    person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se", 
+    person("Andrew C.","Hooker", email="andrew.hooker@farmaci.uu.se",
       role=c("aut","cre","trl","cph"),
       comment=c(ORCID = "0000-0002-2676-5912")
     ),
@@ -53,12 +53,12 @@ Description: Optimal experimental designs for both population and individual
     studies based on nonlinear mixed-effect models. Often this is based on a
     computation of the Fisher Information Matrix. This package was developed
     for pharmacometric problems, and examples and predefined models are available
-    for these types of systems. The methods are described in Nyberg et al. 
-    (2012) <doi:10.1016/j.cmpb.2012.05.005>, and Foracchia et al. (2004) 
+    for these types of systems. The methods are described in Nyberg et al.
+    (2012) <doi:10.1016/j.cmpb.2012.05.005>, and Foracchia et al. (2004)
     <doi:10.1016/S0169-2607(03)00073-7>.
 License: LGPL (>= 3)
 ByteCompile: true
-URL: https://andrewhooker.github.io/PopED/, https://github.com/andrewhooker/PopED 
+URL: https://andrewhooker.github.io/PopED/, https://github.com/andrewhooker/PopED
 BugReports: https://github.com/andrewhooker/PopED/issues
 Copyright: 2014-2021 Andrew C. Hooker
 Encoding: UTF-8
