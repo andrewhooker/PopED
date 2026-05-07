@@ -19,7 +19,6 @@
 ## Author: Andrew Hooker
 
 mf7 <- function(model_switch,xt_ind,x,a,bpop,d,sigma,docc,poped.db){
-  
   #This calculation of FIM divides the calculation up into one calculation
   #per model switch
   

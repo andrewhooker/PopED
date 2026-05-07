@@ -20,7 +20,7 @@
 ## Author: Andrew Hooker
 
 blockopt <- function(fn,poped.db,opt_method=""){
-  
+
   if(any(opt_method==c("RS","SG","DO"))){
     fprintf(fn,'==============================================================================\n')
     fprintf(fn,'Optimization Settings\n\n')

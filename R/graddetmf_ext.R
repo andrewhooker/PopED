@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 graddetmf_ext <- function(model_switch,aX,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db,lndet=FALSE,gradxt=FALSE){
-  
   n = get_fim_size(poped.db)
   m=size(ni,1)
   if (gradxt==FALSE) {

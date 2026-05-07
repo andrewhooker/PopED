@@ -1,5 +1,5 @@
 # PopED (development version)
-
+* Make parallelization work with `babelmixr2` models on windows (#79)
 * New vignette about comparing PopED and NONMEM uncertainty estimates.  See https://andrewhooker.github.io/PopED/articles/compare_poped_with_nonmem.html 
 
 # PopED 0.7.0

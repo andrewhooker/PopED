@@ -47,7 +47,8 @@ calc_ofv_and_fim <- function (poped.db,
                               ofv_fun = poped.db$settings$ofv_fun,
                               evaluate_fim = TRUE,
                               ...) {
-  
+
+
   ## compute the OFV
   if((ofv==0)){
     if(d_switch){ 
