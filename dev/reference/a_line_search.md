@@ -156,7 +156,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x563a4f06b378>
+#> <bytecode: 0x56080dec8568>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -240,7 +240,7 @@ output <- a_line_search(poped.db, opt_xt=TRUE, opt_a=TRUE, ls_step_size=4)
 #> Group 1: 100 [0.01,100]
 #> 
 #> 
-#> Line search run time: 0.312 seconds
+#> Line search run time: 0.275 seconds
 #> ***************************
 #> 
 

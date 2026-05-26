@@ -747,7 +747,7 @@ devtools::session_info()
 #>  pkgdown        2.2.0      2025-11-06 [1] RSPM
 #>  pkgload        1.5.2      2026-04-22 [1] RSPM
 #>  PKPDsim      * 1.4.1      2025-04-17 [1] RSPM
-#>  PopED        * 0.7.0.9001 2026-05-26 [1] local
+#>  PopED        * 0.7.0.9002 2026-05-26 [1] local
 #>  PreciseSums    0.7        2024-09-17 [1] RSPM
 #>  purrr          1.2.2      2026-04-10 [1] RSPM
 #>  qs2            0.2.1      2026-05-04 [1] RSPM

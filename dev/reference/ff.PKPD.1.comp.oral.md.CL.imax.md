@@ -81,7 +81,7 @@ ff.PKPD.1.comp.oral.md.CL.imax
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x563a4ff42b20>
+#> <bytecode: 0x5608170393c8>
 #> <environment: namespace:PopED>
 ff.PK.1.comp.oral.md.CL
 #> function (model_switch, xt, parameters, poped.db) 
@@ -96,7 +96,7 @@ ff.PK.1.comp.oral.md.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x563a4b04abb8>
+#> <bytecode: 0x56080b9e96a8>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 

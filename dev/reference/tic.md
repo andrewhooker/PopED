@@ -43,11 +43,11 @@ Other MATLAB:
 
 tic()
 toc()
-#> Elapsed time: 0 seconds.
+#> Elapsed time: 0.001 seconds.
 
 tic(name="foo")
 toc()
-#> Elapsed time: 0.001 seconds.
+#> Elapsed time: 0.002 seconds.
 tic()
 toc()
 #> Elapsed time: 0 seconds.

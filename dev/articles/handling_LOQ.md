@@ -10,7 +10,7 @@ with linear absorption (analytic solution) in PopED ([Nyberg et al.
 
 library(PopED)
 packageVersion("PopED")
-#> [1] '0.7.0.9001'
+#> [1] '0.7.0.9002'
 ```
 
 ``` r
@@ -169,8 +169,8 @@ e_time_D2 <- system.time(
 
 cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
 cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
-#> D6 evaluation time:  0.046 seconds 
-#> D2 evaluation time:  0.007 deconds
+#> D6 evaluation time:  0.045 seconds 
+#> D2 evaluation time:  0.008 deconds
 ```
 
 The D2 method is the same as removing the last design point, as you can
@@ -396,7 +396,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] PopED_0.7.0.9001 kableExtra_1.4.0 knitr_1.51       ggplot2_4.0.3   
+#> [1] PopED_0.7.0.9002 kableExtra_1.4.0 knitr_1.51       ggplot2_4.0.3   
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] utf8_1.2.6         sass_0.4.10        generics_0.1.4     xml2_1.5.2        
