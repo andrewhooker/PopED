@@ -32,7 +32,7 @@ start_parallel <- function(parallel=TRUE,
                            seed=NULL,
                            dlls=NULL,
                            mrgsolve_model=NULL,
-                           bablemixr2_model=NULL,
+                           babelmixr2_model=NULL,
                            #cpp_files=NULL,
                            ...)
 {
