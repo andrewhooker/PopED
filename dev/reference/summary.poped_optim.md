@@ -51,7 +51,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x564a17fbbe00>
+#> <bytecode: 0x563a4f06b378>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -130,7 +130,7 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #> Initial OFV = 55.3964
 #> 
 #> Total iterations: 2 
-#> Elapsed time: 0.014 seconds.
+#> Elapsed time: 0.015 seconds.
 #> 
 #> Final OFV =  56.01888 
 #> Parameters: 98.84467 
@@ -152,7 +152,7 @@ out_1 <- poped_optim(poped.db,opt_a =TRUE,
 #>    Searching parameter 1 
 #>      Changed from 98.8598 to 100 ; OFV = 56.032 
 #> 
-#>    Elapsed time: 0.02 seconds.
+#>    Elapsed time: 0.021 seconds.
 #> 
 #>    Final OFV =  56.03204 
 #>    Parameters: 100 

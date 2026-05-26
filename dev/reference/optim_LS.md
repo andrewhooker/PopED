@@ -186,7 +186,7 @@ res1 <- optim_LS(50, fw,lower = -50, upper=50, line_length = 10000)
 #>    Searching parameter 1 
 #>      Changed from 50 to -15.8166 ; OFV = 67.485 
 #> 
-#>    Elapsed time: 0.032 seconds.
+#>    Elapsed time: 0.033 seconds.
 #> 
 #>    Final OFV =  67.48502 
 #>    Parameters: -15.81658 
@@ -227,7 +227,7 @@ res_int <- optim_LS(50, fw, allowed_values = seq(-50,50,by=1))
 #>    Searching parameter 1 
 #>      Changed from 50 to -17 ; OFV = 68.5368 
 #> 
-#>    Elapsed time: 0.001 seconds.
+#>    Elapsed time: 0 seconds.
 #> 
 #>    Final OFV =  68.53679 
 #>    Parameters: -17 
