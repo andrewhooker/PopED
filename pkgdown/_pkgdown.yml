@@ -10,7 +10,9 @@ template:
 development:
   mode: auto
   
-
+project:
+  render: ['*.qmd']
+  
 reference:
   - title: General information
     contents:
@@ -110,6 +112,8 @@ navbar:
         href: articles/model_def_other_pkgs.html
       - text: Optimal design with LOQ data in PopED
         href: articles/handling_LOQ.html
+      - text: Compare Uncertaitny Predictions from PopED with NONMEM
+        href: articles/compare_poped_with_nonmem.html 
     news:
       text: Changelog
       href: news/index.html

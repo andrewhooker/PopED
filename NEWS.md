@@ -2,6 +2,8 @@
 
 * Make parallelization work with `babelmixr2` models on windows (#79)
 
+* New vignette about comparing PopED and NONMEM uncertainty estimates.  See https://andrewhooker.github.io/PopED/articles/compare_poped_with_nonmem.html 
+
 # PopED 0.7.0
 
 * `create.poped.database()` now uses a better method of identifying the total number of parameters of each type (bpop, d, sigma, etc.) in a user defined model parameter function (the `ff_fun` argument in `create.poped.database()`) (#73).

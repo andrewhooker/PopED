@@ -6,3 +6,6 @@
 *.o
 *.so
 *.RData
+
+/.quarto/
+**/*.quarto_ipynb
