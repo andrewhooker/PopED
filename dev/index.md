@@ -11,12 +11,14 @@ www.r-project.org. You can install the released version of PopED from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
+
 install.packages("PopED")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("andrewhooker/PopED")
 ```

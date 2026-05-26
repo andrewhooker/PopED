@@ -18,12 +18,14 @@ available as r-scripts in the “examples” folder in the PopED
 installation directory located at:
 
 ``` r
+
 system.file("examples", package="PopED")
 ```
 
 You can view a list of the example files using the commands:
 
 ``` r
+
 ex_dir <- system.file("examples", package="PopED")
 list.files(ex_dir)
 ```
@@ -33,6 +35,7 @@ You can then open one of the examples (for example,
 this vignette) using the following code
 
 ``` r
+
 file_name <- "ex.1.a.PK.1.comp.oral.md.intro.R"
 ex_file <- system.file("examples",file_name,package="PopED")
 file.copy(ex_file,tempdir(),overwrite = T)
@@ -52,12 +55,14 @@ is also predefined in PopED as `ff.PK.1.comp.oral.md.CL` (see
 for more information).
 
 ``` r
+
 library(PopED)
 packageVersion("PopED")
 #> [1] '0.7.0.9001'
 ```
 
 ``` r
+
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     N = floor(xt/TAU)+1
@@ -76,6 +81,7 @@ distributed (parameter `Favail` is assumed not to have BSV). `DOSE` and
 their values later.
 
 ``` r
+
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( V=bpop[1]*exp(b[1]),
                 KA=bpop[2]*exp(b[2]),
@@ -90,6 +96,7 @@ Now we define the residual unexplained variability (RUV) function, in
 this case the RUV has both an additive and proportional component.
 
 ``` r
+
 feps <- function(model_switch,xt,parameters,epsi,poped.db){
   returnArgs <- ff(model_switch,xt,parameters,poped.db) 
   f <- returnArgs[[1]]
@@ -130,6 +137,7 @@ two samples (`minxt` and `maxxt`). Finally, we fix the two groups of
 subjects to have the same sample times (`bUseGrouped_xt=TRUE`).
 
 ``` r
+
 poped.db <- create.poped.database(
   # Model
   ff_fun=ff,
@@ -162,6 +170,7 @@ get what you expect when simulating data. Here we plot the model typical
 values:
 
 ``` r
+
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
@@ -175,6 +184,7 @@ slower) computations are possible with the `DV=T`, `IPRED=T` and
 `groupsize_sim = some large number` options.
 
 ``` r
+
 plot_model_prediction(poped.db, 
                       PI=TRUE, 
                       separate.groups=T, 
@@ -187,6 +197,7 @@ plot_model_prediction(poped.db,
 We can get these predictions numerically as well:
 
 ``` r
+
 dat <- model_prediction(poped.db,DV=TRUE)
 head(dat,n=5);tail(dat,n=5)
 #>   ID Time         DV      IPRED       PRED Group Model DOSE TAU
@@ -208,6 +219,7 @@ head(dat,n=5);tail(dat,n=5)
 Next, we evaluate the initial design
 
 ``` r
+
 (ds1 <- evaluate_design(poped.db))
 #> $ofv
 #> [1] 39.309
@@ -245,6 +257,7 @@ What about an alternative design with sparse sampling? For example, what
 if each individual only has 3 time points at 1, 2 and 245 hours:
 
 ``` r
+
 poped.db.new <- create.poped.database(
   # Model
   ff_fun=ff,
@@ -271,6 +284,7 @@ poped.db.new <- create.poped.database(
 ```
 
 ``` r
+
 (ds2 <- evaluate_design(poped.db.new))
 #> $ofv
 #> [1] 29.66484
@@ -304,6 +318,7 @@ The precision on CL is similar with the alternative design but the other
 parameters are less well estimated.
 
 ``` r
+
 (design_eval <- round(data.frame("Design 1"=ds1$rse,"Design 2"=ds2$rse)))
 ```
 
@@ -325,6 +340,7 @@ design to have the same information content as the original design
 (around 4 times more individuals than are currently in the design).
 
 ``` r
+
 efficiency(ds2$ofv,ds1$ofv,poped.db)
 #> [1] 3.965919
 #> attr(,"description")
@@ -334,13 +350,15 @@ efficiency(ds2$ofv,ds1$ofv,poped.db)
 ## Design optimization
 
 Now we can optimize the sample times of the original design by
-maximizing the OFV[¹](#fn1).
+maximizing the OFV[^1].
 
 ``` r
+
 output <- poped_optim(poped.db, opt_xt=TRUE)
 ```
 
 ``` r
+
 summary(output)
 #> ===============================================================================
 #> FINAL RESULTS
@@ -364,7 +382,7 @@ summary(output)
 #>         d_CL   0.0625      28    26
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 16.441 seconds
+#> Total running time: 17.251 seconds
 plot_model_prediction(output$poped.db)
 ```
 
@@ -380,20 +398,21 @@ with these sample times.
 Of course, this means that there are multiple samples at some of these
 time points. We can explore a more practical design by looking at the
 loss of efficiency if we spread out sample times in a uniform
-distribution around these optimal points ($\pm 30$ minutes).
+distribution around these optimal points ($`\pm 30`$ minutes).
 
 ``` r
+
 plot_efficiency_of_windows(output$poped.db,xt_windows=0.5)
 ```
 
 ![](intro-poped_files/figure-html/simulate_efficiency_windows-1.png)
 
 Here we see the efficiency
-($\left( \left| FIM_{optimized} \right|/\left| FIM_{initial} \right| \right)^{1/npar}$)
-drops below 80% in some cases, which is mostly caused by an increase in
-the parameter uncertainty of the BSV parameter on absorption (om_KA).
-Smaller windows or different windowing on different samples might be
-needed. To investigate see
+($`(|FIM_{optimized}|/|FIM_{initial}|)^{1/npar}`$) drops below 80% in
+some cases, which is mostly caused by an increase in the parameter
+uncertainty of the BSV parameter on absorption (om_KA). Smaller windows
+or different windowing on different samples might be needed. To
+investigate see
 [`?plot_efficiency_of_windows`](https://andrewhooker.github.io/PopED/dev/reference/plot_efficiency_of_windows.md).
 
 ### Optimize over a discrete design space
@@ -404,12 +423,14 @@ upper limit). We could also limit the search to only “allowed” values,
 for example, only samples taken on the hour are allowed.
 
 ``` r
+
 poped.db.discrete <- create.poped.database(poped.db,discrete_xt = list(c(0:10,240:248)))
                                           
 output_discrete <- poped_optim(poped.db.discrete, opt_xt=TRUE)
 ```
 
 ``` r
+
 summary(output_discrete)
 #> ===============================================================================
 #> FINAL RESULTS
@@ -433,7 +454,7 @@ summary(output_discrete)
 #>         d_CL   0.0625      28    27
 #>     sig_prop     0.04      14    15
 #> 
-#> Total running time: 9.973 seconds
+#> Total running time: 10.485 seconds
 plot_model_prediction(output_discrete$poped.db, model_num_points = 300)
 ```
 
@@ -448,6 +469,7 @@ One could also optimize over dose, to see if a different dose could help
 in parameter estimation .
 
 ``` r
+
 output_dose_opt <- poped_optim(output$poped.db, opt_xt=TRUE, opt_a=TRUE)
 ```
 
@@ -467,6 +489,7 @@ First we define the criteria we use to optimize the doses, here a least
 squares minimization.
 
 ``` r
+
 crit_fcn <- function(poped.db,...){
   pred_df <- model_prediction(poped.db)
   sum((pred_df[pred_df["Time"]==240,"PRED"] - c(0.2,0.35))^2)
@@ -478,12 +501,14 @@ crit_fcn(output$poped.db)
 Now we minimize the cost function
 
 ``` r
+
 output_cost <- poped_optim(poped.db, opt_a = TRUE, opt_xt = FALSE,
                      ofv_fun=crit_fcn, 
                      maximize = FALSE)
 ```
 
 ``` r
+
 summary(output_cost)
 #> ===============================================================================
 #> FINAL RESULTS
@@ -508,7 +533,7 @@ summary(output_cost)
 #>         d_CL   0.0625      28    28
 #>     sig_prop     0.04      14    14
 #> 
-#> Total running time: 3.498 seconds
+#> Total running time: 3.858 seconds
 ```
 
 We see that the optimal doses are 31.6 and 55.2 for the two groups. This
@@ -516,6 +541,7 @@ leads to population trough concentrations of 0.2 and 0.35 for the two
 groups of patients at 240 hours:
 
 ``` r
+
 library(ggplot2)
 plot_model_prediction(output_cost$poped.db, model_num_points = 300)+
   coord_cartesian(xlim=c(230,250))
@@ -523,7 +549,5 @@ plot_model_prediction(output_cost$poped.db, model_num_points = 300)+
 
 ![](intro-poped_files/figure-html/unnamed-chunk-16-1.png)
 
-------------------------------------------------------------------------
-
-1.  Tip: to make the optimization run faster use the option
+[^1]: Tip: to make the optimization run faster use the option
     `parallel = TRUE` in the `poped_optim` command.

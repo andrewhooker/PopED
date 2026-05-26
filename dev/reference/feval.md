@@ -42,6 +42,7 @@ Other MATLAB:
 ## Examples
 
 ``` r
+
 feval("sin",pi/2)
 #> [1] 1
 ```

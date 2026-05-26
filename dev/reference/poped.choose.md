@@ -31,6 +31,7 @@ Other poped_input:
 ## Examples
 
 ``` r
+
 poped.choose(2,5)
 #> [1] 2
 

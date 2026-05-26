@@ -7,12 +7,14 @@ with linear absorption (analytic solution) in PopED ([Nyberg et al.
 2012](#ref-Nyberg2012a)).
 
 ``` r
+
 library(PopED)
 packageVersion("PopED")
 #> [1] '0.7.0.9001'
 ```
 
 ``` r
+
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -25,6 +27,7 @@ Next we define the parameters of this function. `DOSE`is defined as a
 covariate (in vector `a`) so that we can optimize the value later.
 
 ``` r
+
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL=bpop[1]*exp(b[1]),
                 V=bpop[2]*exp(b[2]),
@@ -46,6 +49,7 @@ Warfarin example from the software comparison in Nyberg et al.
 individuals.
 
 ``` r
+
 poped_db <- 
   create.poped.database(
     ff_fun=ff,
@@ -72,6 +76,7 @@ get what we expect when simulating data. Here we plot the model typical
 value and a 95% prediction interval (PI) for the intial design:
 
 ``` r
+
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T)
 ```
 
@@ -82,6 +87,7 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=
 Next, we evaluate the initial design.
 
 ``` r
+
 eval_full <- evaluate_design(poped_db)
 round(eval_full$rse)
 ```
@@ -108,6 +114,7 @@ We assume that the LOQ level is at 2 concentration units. Here shown as
 a red dotted line.
 
 ``` r
+
 library(ggplot2)
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",PI=T) + 
   geom_hline(yintercept = 2,color="red",linetype="dotted",linewidth=1)
@@ -150,6 +157,7 @@ D6 should be a more accurate representation of the RSE expected using M3
 estimation methods).
 
 ``` r
+
 set.seed(1234)
 e_time_D6 <- system.time(
   eval_D6 <- evaluate_design(poped_db,loq=2)
@@ -161,14 +169,15 @@ e_time_D2 <- system.time(
 
 cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
 cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
-#> D6 evaluation time:  0.046 seconds 
-#> D2 evaluation time:  0.007 deconds
+#> D6 evaluation time:  0.047 seconds 
+#> D2 evaluation time:  0.008 deconds
 ```
 
 The D2 method is the same as removing the last design point, as you can
 se below.
 
 ``` r
+
 poped_db_2 <- create.poped.database(
     ff_fun=ff,
     fg_fun=sfg,
@@ -218,6 +227,7 @@ If needed we can also handle upper limits of quantification. Lets assume
 we have an ULOQ at 7 units in addition to the LLOQ of 2 units:
 
 ``` r
+
 library(ggplot2)
 plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",
                       PI=T, PI_alpha = 0.1) + 
@@ -230,6 +240,7 @@ plot_model_prediction(poped_db, model_num_points = 500,facet_scales = "free",
 We can then evaluate the design based on the D2 and D6 methods.
 
 ``` r
+
 eval_ul_D6 <-evaluate_design(poped_db,
                 loq=2,
                 uloq=7)
@@ -245,6 +256,7 @@ eval_ul_D2 <- evaluate_design(poped_db,
 And then look at the predicted RSE in percent.
 
 ``` r
+
 eval_rse_2 <-
   tibble::tibble("Parameter"=names(eval_full$rse),
                  "No LOQ"=round(eval_full$rse),
@@ -256,15 +268,15 @@ eval_rse_2
 ```
 
 | Parameter | No LOQ | D6 (only LLOQ) | D2 (only LLOQ) | D6 (ULOQ and LLOQ) | D2 (ULOQ and LLOQ) |
-|:----------|-------:|---------------:|---------------:|-------------------:|-------------------:|
-| CL        |      5 |              6 |              6 |                  6 |                  6 |
-| V         |      4 |              4 |              4 |                  8 |                  0 |
-| KA        |     15 |             17 |             15 |                 21 |                 14 |
-| d_CL      |     34 |             50 |            498 |                 59 |                276 |
-| d_V       |     70 |            109 |            428 |                203 |               1743 |
-| d_KA      |     28 |             33 |            113 |                 35 |                 55 |
-| sig_prop  |     89 |            161 |           1444 |                297 |               1645 |
-| sig_add   |     36 |            118 |           2127 |                122 |                  6 |
+|:---|---:|---:|---:|---:|---:|
+| CL | 5 | 6 | 6 | 6 | 6 |
+| V | 4 | 4 | 4 | 8 | 0 |
+| KA | 15 | 17 | 15 | 21 | 14 |
+| d_CL | 34 | 50 | 498 | 59 | 276 |
+| d_V | 70 | 109 | 428 | 203 | 1743 |
+| d_KA | 28 | 33 | 113 | 35 | 55 |
+| sig_prop | 89 | 161 | 1444 | 297 | 1645 |
+| sig_add | 36 | 118 | 2127 | 122 | 6 |
 
 ## Design optimization
 
@@ -272,6 +284,7 @@ Next, we optimize the design using the different methods of computing
 the FIM. Here we optimize only using the lower LOQ.
 
 ``` r
+
 optim_D6 <- poped_optim(poped_db, opt_xt = TRUE,
                         parallel=T,
                         loq=2)
@@ -298,6 +311,7 @@ precision, we evaluate each of the optimal designs above using the D6
 method.
 
 ``` r
+
 optim_full_D6<- with(optim_full, 
   evaluate_design(poped.db,
                   loq=2))
@@ -317,6 +331,7 @@ optimal design stragetgy may be a reasonable obtain designs that are
 “good enough” if the D6 method is too slow for optimization.
 
 ``` r
+
 optim_rse_D6 <-
   tibble::tibble("Parameter"=names(eval_full$rse),
                  "No LOQ"=round(optim_full_D6$rse),
@@ -338,9 +353,8 @@ optim_rse_D6
 
 ## References
 
-Nyberg, Joakim, Caroline Bazzoli, Kay Ogungbenro, Alexander Aliev,
-Sergei Leonov, Stephen Duffull, Andrew C Hooker, and France Mentré.
-2015. “Methods and software tools for design evaluation in population
+Nyberg, Joakim, Caroline Bazzoli, Kay Ogungbenro, et al. 2015. “Methods
+and software tools for design evaluation in population
 pharmacokinetics-pharmacodynamics studies.” *British Journal of Clinical
 Pharmacology* 79 (1): 6–17. <https://doi.org/10.1111/bcp.12352>.
 
@@ -359,6 +373,7 @@ Approach Group in Europe*.
 ## Version information
 
 ``` r
+
 sessionInfo()
 #> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
@@ -394,7 +409,7 @@ sessionInfo()
 #> [29] tools_4.6.0        dplyr_1.2.1        vctrs_0.7.3        R6_2.6.1          
 #> [33] lifecycle_1.0.5    stringr_1.6.0      fs_2.1.0           htmlwidgets_1.6.4 
 #> [37] ragg_1.5.2         pkgconfig_2.0.3    desc_1.4.3         pkgdown_2.2.0     
-#> [41] pillar_1.11.1      bslib_0.10.0       gtable_0.3.6       glue_1.8.1        
+#> [41] pillar_1.11.1      bslib_0.11.0       gtable_0.3.6       glue_1.8.1        
 #> [45] systemfonts_1.3.2  xfun_0.57          tibble_3.3.1       tidyselect_1.2.1  
 #> [49] rstudioapi_0.18.0  farver_2.1.2       htmltools_0.5.9    rmarkdown_2.31    
 #> [53] svglite_2.2.2      labeling_0.4.3     testthat_3.3.2     compiler_4.6.0    

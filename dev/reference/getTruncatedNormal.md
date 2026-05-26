@@ -25,6 +25,7 @@ A random sample from the specified truncated normal distribution
 ## Examples
 
 ``` r
+
 getTruncatedNormal(mean=3,variance=100)
 #>          [,1]
 #> [1,] 7.909153

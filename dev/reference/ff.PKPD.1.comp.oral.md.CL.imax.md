@@ -62,6 +62,7 @@ Other structural_models:
 ## Examples
 
 ``` r
+
 library(PopED)
 
 ## find the parameters that are needed to define from the structural model
@@ -80,7 +81,7 @@ ff.PKPD.1.comp.oral.md.CL.imax
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x564610800160>
+#> <bytecode: 0x564a190a8860>
 #> <environment: namespace:PopED>
 ff.PK.1.comp.oral.md.CL
 #> function (model_switch, xt, parameters, poped.db) 
@@ -95,7 +96,7 @@ ff.PK.1.comp.oral.md.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x5646149c46f8>
+#> <bytecode: 0x564a142391f0>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 

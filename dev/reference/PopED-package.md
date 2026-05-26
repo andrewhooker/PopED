@@ -90,6 +90,10 @@ holder\]
 
 Authors:
 
+- Andrew C. Hooker <andrew.hooker@farmaci.uu.se>
+  ([ORCID](https://orcid.org/0000-0002-2676-5912)) \[translator,
+  copyright holder\]
+
 - Marco Foracchia (O-Matrix version)
 
 - Sebastian Ueckert ([ORCID](https://orcid.org/0000-0002-3712-0255))
@@ -110,6 +114,7 @@ Other contributors:
 ## Examples
 
 ``` r
+
 library(PopED)
 
 ##-- Model: One comp first order absorption

@@ -28,6 +28,7 @@ The full matrix of variances for the between subject variances
 ## Examples
 
 ``` r
+
 getfulld(c(1,2,3))
 #>      [,1] [,2] [,3]
 #> [1,]    1    0    0

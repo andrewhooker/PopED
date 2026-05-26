@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="compare_poped_with_nonmem_files/libs/quarto-html/popper.min.js"></script><script src="compare_poped_with_nonmem_files/libs/quarto-html/tippy.umd.min.js"></script><link href="compare_poped_with_nonmem_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="compare_poped_with_nonmem_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -65,7 +65,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Compare Uncertainty Predictions from PopED with NONMEM</h1>
 
       <p class="author">Andrew Hooker</p>
-      <p class="date">2026-04-28</p>
+      <p class="date">2026-05-26</p>
 
       <small class="dont-index">Source: <a href="https://github.com/andrewhooker/PopED/blob/master/vignettes/articles/compare_poped_with_nonmem.qmd" class="external-link"><code>vignettes/articles/compare_poped_with_nonmem.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -237,26 +237,26 @@ Ka_i &amp;= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_prediction.html">model_prediction</a></span><span class="op">(</span><span class="va">poped.db</span>,DV<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">8</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">dat</span>,n<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre class="output"><code>  ID  Time        DV     IPRED      PRED Group Model a_i
-1  1   0.5 4.3470706 4.4871432 3.4254357     1     1  70
-2  1   1.0 6.9354158 6.5381440 5.4711041     1     1  70
-3  1   2.0 7.2289142 7.8255245 7.3821834     1     1  70
-4  1   6.0 7.8433729 7.5230426 7.9462805     1     1  70
-5  1  24.0 4.7704277 4.9963083 5.6858561     1     1  70
-6  1  36.0 3.3831460 3.8029098 4.5402483     1     1  70
-7  1  72.0 1.8834851 1.6769357 2.3116966     1     1  70
-8  1 120.0 0.6216558 0.5628382 0.9398657     1     1  70</code></pre>
+<pre class="output"><code>  ID  Time       DV    IPRED      PRED Group Model a_i
+1  1   0.5 4.526262 4.397072 3.4254357     1     1  70
+2  1   1.0 6.591049 6.425627 5.4711041     1     1  70
+3  1   2.0 6.485902 7.750662 7.3821834     1     1  70
+4  1   6.0 8.746955 7.752158 7.9462805     1     1  70
+5  1  24.0 6.407704 6.192846 5.6858561     1     1  70
+6  1  36.0 4.859054 5.331318 4.5402483     1     1  70
+7  1  72.0 3.935067 3.401478 2.3116966     1     1  70
+8  1 120.0 2.217633 1.868293 0.9398657     1     1  70</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre class="output"><code>    ID  Time        DV    IPRED      PRED Group Model a_i
-249 32   0.5 10.332921 8.487080 3.4254357     1     1  70
-250 32   1.0  9.387750 8.477020 5.4711041     1     1  70
-251 32   2.0  7.347085 8.361443 7.3821834     1     1  70
-252 32   6.0  8.882205 7.913646 7.9462805     1     1  70
-253 32  24.0  6.257901 6.177403 5.6858561     1     1  70
-254 32  36.0  5.717171 5.237116 4.5402483     1     1  70
-255 32  72.0  2.769390 3.191176 2.3116966     1     1  70
-256 32 120.0  1.634981 1.648525 0.9398657     1     1  70</code></pre>
+<pre class="output"><code>    ID  Time       DV    IPRED      PRED Group Model a_i
+249 32   0.5 3.989214 4.036540 3.4254357     1     1  70
+250 32   1.0 5.684337 5.097059 5.4711041     1     1  70
+251 32   2.0 5.028157 5.415577 7.3821834     1     1  70
+252 32   6.0 4.621354 5.252598 7.9462805     1     1  70
+253 32  24.0 4.724045 4.471880 5.6858561     1     1  70
+254 32  36.0 5.020320 4.016990 4.5402483     1     1  70
+255 32  72.0 2.564255 2.911606 2.3116966     1     1  70
+256 32 120.0 2.013351 1.895724 0.9398657     1     1  70</code></pre>
 </div>
 </div>
 </section><section class="level2" data-number="3.5"><h3 data-number="3.5" id="design-evaluation">
@@ -558,7 +558,7 @@ loaded via a namespace (and not attached):
  [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3
 [13] generics_0.1.4     knitr_1.51         tibble_3.3.1       pillar_1.11.1
 [17] RColorBrewer_1.1-3 tzdb_0.5.0         rlang_1.2.0        xfun_0.57
-[21] S7_0.2.2           bit64_4.8.0        otel_0.2.0         cli_3.6.6
+[21] S7_0.2.2           bit64_4.8.2        otel_0.2.0         cli_3.6.6
 [25] withr_3.0.2        magrittr_2.0.5     digest_0.6.39      grid_4.6.0
 [29] vroom_1.7.1        mvtnorm_1.3-7      hms_1.1.4          lifecycle_1.0.5
 [33] vctrs_0.7.3        evaluate_1.0.5     glue_1.8.1         farver_2.1.2

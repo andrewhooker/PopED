@@ -3,6 +3,7 @@
 Packages used for this vignette
 
 ``` r
+
 library(PopED)
 library(dplyr)
 library(tidyr)
@@ -27,41 +28,42 @@ reflecting just one realization of the data.
 ## 2 Population models
 
 In this work we are using population, or nonlinear mixed-effect (NLME)
-models. Here we define $y_{ij}$ for the $j^{th}$ observation of the
-$i^{th}$ individual in a population as:
+models. Here we define $`y_{ij}`$ for the $`j^{th}`$ observation of the
+$`i^{th}`$ individual in a population as:
 
-$$y_{ij} = f(t_{ij},{\overset{\rightarrow}{a}}_{i},{\overset{\rightarrow}{\theta}}_{i}) + h(t_{ij},{\overset{\rightarrow}{a}}_{i},{\overset{\rightarrow}{\theta}}_{i},{\overset{\rightarrow}{\varepsilon}}_{ij})\qquad(1)$$
+``` math
+y_{ij}=f(t_{ij},\vec{a}_{i},\vec{\theta}_i) + h(t_{ij},\vec{a}_{i},\vec{\theta}_i, \vec{\varepsilon}_{ij})  \qquad(1)
+```
 
-Where $t_{ij}$ are the measurement times
-${\overset{\rightarrow}{a}}_{i}$ is a vector of covariates (doses of a
-drug, weight, age, concentration of a drug in blood plasma, etc.),
-${\overset{\rightarrow}{\theta}}_{i}$ is a vector of model parameter
-values, $h(.)$ is a model for the residual error (also referred to as
+Where $`t_{ij}`$ are the measurement times $`\vec{a}_{i}`$ is a vector
+of covariates (doses of a drug, weight, age, concentration of a drug in
+blood plasma, etc.), $`\vec{\theta}_i`$ is a vector of model parameter
+values, $`h(.)`$ is a model for the residual error (also referred to as
 residual unexplained variability, or RUV) in the model and
-${\overset{\rightarrow}{\varepsilon}}_{ij}$ is a vector of random
-variables describing data-level deviations from the model. Often, as is
-the case in the models described here, the elements of
-${\overset{\rightarrow}{\varepsilon}}_{ij}$ are assumed to come from
-normal distributions with means of zero and a covariance matrix of
-$\mathbf{\Sigma}$ (elements of $\sigma_{lm}^{2}$), where
-$\mathbf{\Sigma}$ is typically diagonal.
+$`\vec{\varepsilon}_{ij}`$ is a vector of random variables describing
+data-level deviations from the model. Often, as is the case in the
+models described here, the elements of $`\vec{\varepsilon}_{ij}`$ are
+assumed to come from normal distributions with means of zero and a
+covariance matrix of $`\boldsymbol{\Sigma}`$ (elements of
+$`\sigma^2_{lm}`$), where $`\boldsymbol{\Sigma}`$ is typically diagonal.
 
 Population effects are modeled on the parameter level, where individual
 parameter values are derived from typical (or population) parameters
-$\overset{\rightarrow}{\theta}$, individual deviations due to covariates
-${\overset{\rightarrow}{a}}_{i}$, and random individual deviations
-${\overset{\rightarrow}{\eta}}_{i}$ (referred to as a between-subject
-variability, or BSV, term).
+$`\vec{\theta}`$, individual deviations due to covariates
+$`\vec{a}_{i}`$, and random individual deviations $`\vec{\eta}_{i}`$
+(referred to as a between-subject variability, or BSV, term).
 
-$${\overset{\rightarrow}{\theta}}_{i} = g(\overset{\rightarrow}{\theta},{\overset{\rightarrow}{a}}_{i},{\overset{\rightarrow}{\eta}}_{i})\qquad(2)$$
+``` math
+\vec{\theta}_i=g(\vec{\theta},\vec{a}_{i},\vec{\eta}_{i})  \qquad(2)
+```
 
 Extensions, where deviations are on other scales, are possible as well
 (such as parameter deviations between occasions within an individual’s
 study, center level deviations, study level deviations, etc.). Often, as
 is the case in the models described here, the elements of
-${\overset{\rightarrow}{\eta}}_{i}$ are assumed to come from normal
-distributions with means of zero and a covariance matrix of
-$\mathbf{\Omega}$ (elements of $\omega_{pq}^{2}$).
+$`\vec{\eta}_{i}`$ are assumed to come from normal distributions with
+means of zero and a covariance matrix of $`\boldsymbol{\Omega}`$
+(elements of $`\omega^2_{pq}`$).
 
 ## 3 Simple Population PK model in PopED
 
@@ -70,16 +72,19 @@ $\mathbf{\Omega}$ (elements of $\omega_{pq}^{2}$).
 Here we define a one-compartment pharmacokinetic model with linear
 absorption and a single drug dose using an analytical solution.
 
-$$f(t_{ij},D_{i},{\overset{\rightarrow}{\theta}}_{i}) = \frac{D_{i} \cdot F \cdot Ka_{i}}{V_{i} \cdot (Ka_{i} - CL_{i}/V_{i})} \cdot (e^{-\frac{CL_{i}}{V_{i}}t_{ij}} - e^{-Ka_{i} \cdot t_{ij}})\qquad(3)$$
+``` math
+f(t_{ij},D_i,\vec{\theta}_i) =  \frac{D_i \cdot F \cdot Ka_i}{V_i \cdot (Ka_i -CL_i/V_i)} \cdot (e^{-\frac{CL_i}{V_i} t_{ij}} - e^{-Ka_i\cdot t_{ij}})  \qquad(3)
+```
 
-Where $D_{i}$ is the dose of drug given to individual $i$, $F$ is the
-bioavailability, $Ka_{i}$ is the absorption rate constant for individual
-$i$, $V_{i}$ is the volume of distribution for individual $i$, and
-$CL_{i}$ is the clearance for individual $i$.
+Where $`D_i`$ is the dose of drug given to individual $`i`$, $`F`$ is
+the bioavailability, $`Ka_i`$ is the absorption rate constant for
+individual $`i`$, $`V_i`$ is the volume of distribution for individual
+$`i`$, and $`CL_i`$ is the clearance for individual $`i`$.
 
 Defining this in PopED we have:
 
 ``` r
+
 ##-- Model: One comp first order absorption
 ff <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
@@ -100,25 +105,28 @@ pharmacokinetics-pharmacodynamics studies”, Br. J. Clin. Pharm., 2014
 proportional residual error model, with a coefficient of variation of
 10%, and exponential random effects are assumed for CL, V and Ka.
 
-$$\begin{aligned}
-y_{ij} & {= f(t_{ij},D_{i},{\overset{\rightarrow}{\theta}}_{i}) \cdot (1 + {\overset{\rightarrow}{\varepsilon}}_{ij})} \\
- & \\
-{CL_{i}} & {= \theta_{CL} \cdot e^{\eta_{CL,i}}} \\
-V_{i} & {= \theta_{V} \cdot e^{\eta_{V,i}}} \\
-{Ka_{i}} & {= \theta_{Ka} \cdot e^{\eta_{Ka,i}}} \\
-\mathbf{\Omega} & {= \begin{bmatrix}
-\omega_{CL}^{2} & 0 & 0 \\
-0 & \omega_{V}^{2} & 0 \\
-0 & 0 & \omega_{Ka}^{2}
-\end{bmatrix}} \\
-\mathbf{\Sigma} & {= \begin{bmatrix}
-\sigma_{\text{prop}}^{2}
-\end{bmatrix}}
-\end{aligned}\qquad(4)$$
+``` math
+\begin{align}
+y_{ij} &=  f(t_{ij},D_i,\vec{\theta}_i)   \cdot  (1+ \vec{\varepsilon}_{ij}) \\
+&\\
+CL_i &= \theta_{CL} \cdot e^{\eta_{CL,i}} \\
+V_i &= \theta_{V} \cdot e^{ \eta_{V,i}}\\
+Ka_i &= \theta_{Ka} \cdot e^{ \eta_{Ka,i}}\\
+\boldsymbol{\Omega} &= \begin{bmatrix}
+\omega^2_{CL} & 0 & 0\\
+0 & \omega^2_V & 0 \\
+0 & 0 & \omega^2_{Ka}
+\end{bmatrix} \\
+\boldsymbol{\Sigma} &= \begin{bmatrix}
+\sigma^2_{\text{prop}}
+\end{bmatrix}
+\end{align} \qquad(4)
+```
 
 This is defined in PopED with the following:
 
 ``` r
+
 ## -- parameter definition function 
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c(CL=bpop[1]*exp(b[1]),
@@ -160,6 +168,7 @@ we define a potential dose range of between 0 and 100 mg (`mina` and
 (`minxt` and `maxxt`).
 
 ``` r
+
 ## -- Define initial design  and design space
 poped.db <- 
   create.poped.database(
@@ -193,6 +202,7 @@ get what you expect when simulating data. Here we plot the model typical
 values:
 
 ``` r
+
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
@@ -206,6 +216,7 @@ slower) computations are possible with the `DV=T`, `IPRED=T` and
 `groupsize_sim = some large number` options.
 
 ``` r
+
 plot_model_prediction(poped.db, 
                       PI=TRUE, 
                       model_num_points = 300, 
@@ -217,32 +228,33 @@ plot_model_prediction(poped.db,
 We can get these predictions numerically as well:
 
 ``` r
+
 dat <- model_prediction(poped.db,DV=TRUE)
 head(dat,n=8);tail(dat,n=8)
 ```
 
 ``` output
-  ID  Time        DV     IPRED      PRED Group Model a_i
-1  1   0.5 4.3470706 4.4871432 3.4254357     1     1  70
-2  1   1.0 6.9354158 6.5381440 5.4711041     1     1  70
-3  1   2.0 7.2289142 7.8255245 7.3821834     1     1  70
-4  1   6.0 7.8433729 7.5230426 7.9462805     1     1  70
-5  1  24.0 4.7704277 4.9963083 5.6858561     1     1  70
-6  1  36.0 3.3831460 3.8029098 4.5402483     1     1  70
-7  1  72.0 1.8834851 1.6769357 2.3116966     1     1  70
-8  1 120.0 0.6216558 0.5628382 0.9398657     1     1  70
+  ID  Time       DV    IPRED      PRED Group Model a_i
+1  1   0.5 4.526262 4.397072 3.4254357     1     1  70
+2  1   1.0 6.591049 6.425627 5.4711041     1     1  70
+3  1   2.0 6.485902 7.750662 7.3821834     1     1  70
+4  1   6.0 8.746955 7.752158 7.9462805     1     1  70
+5  1  24.0 6.407704 6.192846 5.6858561     1     1  70
+6  1  36.0 4.859054 5.331318 4.5402483     1     1  70
+7  1  72.0 3.935067 3.401478 2.3116966     1     1  70
+8  1 120.0 2.217633 1.868293 0.9398657     1     1  70
 ```
 
 ``` output
-    ID  Time        DV    IPRED      PRED Group Model a_i
-249 32   0.5 10.332921 8.487080 3.4254357     1     1  70
-250 32   1.0  9.387750 8.477020 5.4711041     1     1  70
-251 32   2.0  7.347085 8.361443 7.3821834     1     1  70
-252 32   6.0  8.882205 7.913646 7.9462805     1     1  70
-253 32  24.0  6.257901 6.177403 5.6858561     1     1  70
-254 32  36.0  5.717171 5.237116 4.5402483     1     1  70
-255 32  72.0  2.769390 3.191176 2.3116966     1     1  70
-256 32 120.0  1.634981 1.648525 0.9398657     1     1  70
+    ID  Time       DV    IPRED      PRED Group Model a_i
+249 32   0.5 3.989214 4.036540 3.4254357     1     1  70
+250 32   1.0 5.684337 5.097059 5.4711041     1     1  70
+251 32   2.0 5.028157 5.415577 7.3821834     1     1  70
+252 32   6.0 4.621354 5.252598 7.9462805     1     1  70
+253 32  24.0 4.724045 4.471880 5.6858561     1     1  70
+254 32  36.0 5.020320 4.016990 4.5402483     1     1  70
+255 32  72.0 2.564255 2.911606 2.3116966     1     1  70
+256 32 120.0 2.013351 1.895724 0.9398657     1     1  70
 ```
 
 ### 3.5 Design evaluation
@@ -250,6 +262,7 @@ head(dat,n=8);tail(dat,n=8)
 Next, we evaluate the initial design
 
 ``` r
+
 (ds1 <- evaluate_design(poped.db))
 ```
 
@@ -291,6 +304,7 @@ Now we create a dataset simulated from this model and design. File paths
 below are relative to the directory containing this `.qmd` file.
 
 ``` r
+
 set.seed(12398)
 dosing_1 <- list(list(AMT=70,Time=0))
 dat <- model_prediction(poped.db, dosing = dosing_1, DV=T,filename = "./compare_poped_with_nonmem_data/temp.csv") |>
@@ -301,6 +315,7 @@ readr::write_csv(dat,file = "./compare_poped_with_nonmem_data/warfarin.csv",na =
 The simulated data look like this:
 
 ``` r
+
 head(dat,20)
 ```
 
@@ -329,6 +344,7 @@ head(dat,20)
 ```
 
 ``` r
+
 p <- ggplot(dat,aes(x=Time,y=DV,group=ID)) +
     geom_line(color="grey") +
     geom_point(size=3,alpha=0.5,
@@ -344,6 +360,7 @@ p
 We create a NONMEM model file.
 
 ``` r
+
 nm_mod <- paste(
 "$PROBLEM
 $INPUT ID TIME DV AMT GROUP MODEL DOSE
@@ -406,6 +423,7 @@ We define a small helper that extracts parameter RSE (%) from a NONMEM
 `.ext` file.
 
 ``` r
+
 nonmem_rse <- function(ext_file) {
   ext <- read_table(ext_file, skip = 1, show_col_types = FALSE)
   est <- ext |> filter(ITERATION == -1000000000) |> select(-ITERATION, -OBJ)
@@ -441,6 +459,7 @@ We can compare between the prediction in PopED and the covariance matrix
 in NONMEM.
 
 ``` r
+
 result <- rbind(par_rse_nonmem,ds1$rse)|>
   mutate("Method"=c("NONMEM","PopED"),.before=CL)
 
@@ -461,9 +480,10 @@ knitr::kable(result_table, digits = 2,
 | d_KA      |  24.14 | 25.78 |
 | sig_prop  |   9.02 | 11.17 |
 
-Predicted parameter RSE (%) from NONMEM and PopED.
+Predicted parameter RSE (%) from NONMEM and PopED. {.table .caption-top}
 
 ``` r
+
 result |>
   pivot_longer(-Method,names_to = "Parameter",values_to = "RSE") |>
   ggplot(aes(x=Parameter,y=RSE,fill=Method)) +
@@ -508,6 +528,7 @@ slightly optimistic relative to a single NONMEM run.
 Session info
 
 ``` r
+
 sessionInfo()
 ```
 
@@ -542,7 +563,7 @@ loaded via a namespace (and not attached):
  [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3
 [13] generics_0.1.4     knitr_1.51         tibble_3.3.1       pillar_1.11.1
 [17] RColorBrewer_1.1-3 tzdb_0.5.0         rlang_1.2.0        xfun_0.57
-[21] S7_0.2.2           bit64_4.8.0        otel_0.2.0         cli_3.6.6
+[21] S7_0.2.2           bit64_4.8.2        otel_0.2.0         cli_3.6.6
 [25] withr_3.0.2        magrittr_2.0.5     digest_0.6.39      grid_4.6.0
 [29] vroom_1.7.1        mvtnorm_1.3-7      hms_1.1.4          lifecycle_1.0.5
 [33] vctrs_0.7.3        evaluate_1.0.5     glue_1.8.1         farver_2.1.2

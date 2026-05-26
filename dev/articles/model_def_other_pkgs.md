@@ -16,6 +16,7 @@ ODEs, implemented using:
 - rxode2
 
 ``` r
+
 library(PopED)
 library(PKPDsim)
 library(mrgsolve)
@@ -40,53 +41,62 @@ pharmacokinetic (PK) model as an example (see below).
 
 This model can be described with the following set of ODEs:
 
-$$\begin{aligned}
-\frac{dA_{0}}{dt} & {= - k_{a} \cdot A_{0}} \\
-\frac{dA_{1}}{dt} & {= - \left( CL/V_{1} \right) \cdot A_{1} + k_{a} \cdot A_{0}} \\
-{f(t)} & {= A_{1}/V_{1}}
-\end{aligned}$$
+``` math
+  \begin{split}
+  \frac{dA_{0}}{dt} &=  - k_{a} \cdot A_{0}\\
+  \frac{dA_{1}}{dt} &=-(CL/V_1)\cdot A_1 + k_{a} \cdot A_{0} \\
+  f(t) &= A_1/V_1
+  \end{split}
+```
 
 All compartment amounts are assumed to be zero at time zero
-($\mathbf{A}\lbrack t = 0\rbrack = 0$). Inputs to the system come in
-tablet form and are added to the amount in $A_{0}$ according to
+($`\boldsymbol{A}[t=0]=0`$). Inputs to the system come in tablet form
+and are added to the amount in $`A_{0}`$ according to
 
-$$\text{Input}\left( t,D,t_{D} \right) = \begin{cases}
-{D,} & {\text{if}\quad t = t_{D}} \\
-{0,} & \text{otherwise}
-\end{cases}$$
+``` math
+  \text{Input}(t,D,t_D) =
+  \begin{cases}
+   D, &\text{if} \quad t = t_D \\
+   0, &\text{otherwise} 
+  \end{cases}
+```
 
 Parameter values are defined as:
 
-$$\begin{aligned}
-k_{a} & {= \theta_{k_{a}} \cdot e^{\eta_{k_{a}}}} \\
-{CL} & {= \theta_{CL} \cdot e^{\eta_{CL}}} \\
-V_{1} & {= \theta_{V_{1}} \cdot e^{\eta_{V_{1}}}} \\
- & 
-\end{aligned}$$ where elements of the between subject variability (BSV),
-$\eta_{j}$, vary across individuals and come from normal distributions
-with means of zero and variances of $\omega_{j}^{2}$.
+``` math
+  \begin{split}
+    k_a &= \theta_{k_a} \cdot e^{\eta_{k_a}} \\
+    CL &= \theta_{CL} \cdot e^{\eta_{CL}} \\
+    V_1 &= \theta_{V_1} \cdot e^{\eta_{V_1}}  \\
+  \end{split}
+```
+where elements of the between subject variability (BSV), $`\eta_{j}`$,
+vary across individuals and come from normal distributions with means of
+zero and variances of $`\omega^2_{j}`$.
 
 The residual unexplained variability (RUV) model has a proportional and
 additive component
 
-$$y = f(t) \cdot \left( 1 + \varepsilon_{prop} \right) + \varepsilon_{add}$$
+``` math
+  y = f(t) \cdot (1+\varepsilon_{prop}) + \varepsilon_{add}
+```
 
-elements of ${\mathbf{ε}}_{j}$ vary accross observations and come from
-normal distributions with means of zero and variances of
-$\sigma_{j}^{2}$.
+elements of $`\boldsymbol{\varepsilon}_{j}`$ vary accross observations
+and come from normal distributions with means of zero and variances of
+$`\sigma^2_{j}`$.
 
 Parameter values are assumed to be the following:
 
-| Parameter            |   Value |
-|:---------------------|--------:|
-| $k_{a}$              |  0.2500 |
-| CL                   |  3.7500 |
-| $V_{1}$              | 72.8000 |
-| $\omega_{k_{a}}^{2}$ |  0.0900 |
-| $\omega_{CL}^{2}$    |  0.0625 |
-| $\omega_{V_{1}}^{2}$ |  0.0900 |
-| $\sigma_{prop}^{2}$  |  0.0400 |
-| $\sigma_{add}^{2}$   |  0.0025 |
+| Parameter           |   Value |
+|:--------------------|--------:|
+| $`k_a`$             |  0.2500 |
+| CL                  |  3.7500 |
+| $`V_1`$             | 72.8000 |
+| $`\omega^2_{k_a}`$  |  0.0900 |
+| $`\omega^2_{CL}`$   |  0.0625 |
+| $`\omega^2_{V_1}`$  |  0.0900 |
+| $`\sigma^2_{prop}`$ |  0.0400 |
+| $`\sigma^2_{add}`$  |  0.0025 |
 
 ## Model implementation
 
@@ -103,6 +113,7 @@ dosing with a dose interval of `TAU` time units. The named vector
 used to compute the value of `f` at each time point in the vector `xt`.
 
 ``` r
+
 ff_analytic <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -121,6 +132,7 @@ The same model can be implemented using ODEs. Here the ODEs are defined
 in deSolve:
 
 ``` r
+
 PK_1_comp_oral_ode <- function(Time, State, Pars){
   with(as.list(c(State, Pars)), {    
     dA1 <- -KA*A1
@@ -138,6 +150,7 @@ the deSolve ODE solver called
 [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html).
 
 ``` r
+
 ff_ode_desolve <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     A_ini <- c(A1=0, A2=0)
@@ -207,6 +220,7 @@ This code is available as a file in the PopED distribution, and is
 compiled with the following commands:
 
 ``` r
+
 file.copy(system.file("examples/one_comp_oral_CL.c", package="PopED"),"./one_comp_oral_CL.c")
 #> [1] TRUE
 system('R CMD SHLIB one_comp_oral_CL.c')
@@ -219,6 +233,7 @@ needs to be changed slightly, updating the arguments to
 [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html).
 
 ``` r
+
 ff_ode_desolve_c <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     A_ini <- c(A1=0, A2=0)
@@ -260,6 +275,7 @@ Here we define the ODE system using inline C++ code that is compiled via
 Rcpp
 
 ``` r
+
 cppFunction('List one_comp_oral_rcpp(double Time, NumericVector A, NumericVector Pars) {
 int n = A.size();
 NumericVector dA(n);
@@ -279,6 +295,7 @@ Again, the arguments to
 updated:
 
 ``` r
+
 ff_ode_desolve_rcpp <- function(model_switch, xt, p, poped.db){
     A_ini <- c(A1=0, A2=0)
     
@@ -317,6 +334,7 @@ using the ODE solver
 [`PKPDsim::sim_core()`](https://insightrx.github.io/PKPDsim/reference/sim_core.html).
 
 ``` r
+
 pk1cmtoral <- PKPDsim::new_ode_model("pk_1cmt_oral") # take from library
 ff_ode_pkpdsim <- function(model_switch, xt, p, poped.db){
     #Set up time points for the ODE
@@ -352,6 +370,7 @@ ff_ode_pkpdsim <- function(model_switch, xt, p, poped.db){
 We can also use mrgsolve to describe this set of ODEs.
 
 ``` r
+
 code <- '
 $PARAM CL=3.75, V=72.8, KA=0.25
 $CMT DEPOT CENT
@@ -366,6 +385,7 @@ $CAPTURE CP
 We then compile and load the model with `mcode`
 
 ``` r
+
 moda <- mrgsolve::mcode("optim", code, atol=1e-8, rtol=1e-8,maxsteps=5000)
 #> Building optim ... done.
 ```
@@ -376,6 +396,7 @@ amounts and times), using the ODE solver
 [`mrgsolve::mrgsim_q()`](https://mrgsolve.org/docs/reference/mrgsim_q.html).
 
 ``` r
+
 ff_ode_mrg <- function(model_switch, xt, p, poped.db){
   times_xt <- drop(xt)  
   dose_times <- seq(from=0,to=max(times_xt),by=p[["TAU"]])
@@ -406,6 +427,7 @@ ff_ode_mrg <- function(model_switch, xt, p, poped.db){
 We can use rxode2 to describe this set of ODEs.
 
 ``` r
+
 modrx <- rxode2::rxode2({
   d/dt(DEPOT) = -KA*DEPOT;
   d/dt(CENT) = KA*DEPOT - (CL/V)*CENT;
@@ -419,6 +441,7 @@ and times), using the ODE solver
 [`rxode2::rxSolve()`](https://nlmixr2.github.io/rxode2/reference/rxSolve.html).
 
 ``` r
+
 ff_ode_rx <- function(model_switch, xt, p, poped.db){
   times_xt <- drop(xt)
   et(0,amt=p[["DOSE"]], ii=p[["TAU"]], until=max(times_xt)) %>%
@@ -439,6 +462,7 @@ ff_ode_rx <- function(model_switch, xt, p, poped.db){
 Other functions are used to define BSV and RUV.
 
 ``` r
+
 
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( 
@@ -470,6 +494,7 @@ samples in the first day of the study and 2 on the 10th day of the
 study.
 
 ``` r
+
 poped_db_analytic <- create.poped.database(
   ff_fun =ff_analytic,
   fg_fun =sfg,
@@ -505,6 +530,7 @@ Here is a visual representation of the model predictions for this study
 design, based on the analytic solution:
 
 ``` r
+
 plot_model_prediction(poped_db_analytic,model_num_points = 500,PI=T,separate.groups = T) 
 ```
 
@@ -515,6 +541,7 @@ implementations. Here we see that the accuracy of the different methods
 are within machine precision (or very small).
 
 ``` r
+
 pred_std <- model_prediction(poped_db_analytic,model_num_points = 500,include_sample_times = TRUE,PI = TRUE)
 
 pred_ode_desolve <- model_prediction(poped_db_ode_desolve,
@@ -563,10 +590,11 @@ all.equal(pred_std,pred_ode_rx)
 ## Evaluate the design
 
 Here we compare the computation of the Fisher Information Matrix (FIM).
-By comparing the $ln\left( det(FIM) \right)$ (the lnD-objective function
-value, or ofv).
+By comparing the $`ln(det(FIM))`$ (the lnD-objective function value, or
+ofv).
 
 ``` r
+
 (eval_std <- evaluate_design(poped_db_analytic))
 #> $ofv
 #> [1] 48.98804
@@ -601,6 +629,7 @@ value, or ofv).
 All the computations give very similar results:
 
 ``` r
+
 eval_ode_desolve <- evaluate_design(poped_db_ode_desolve) 
 all.equal(eval_std$ofv,eval_ode_desolve$ofv)
 #> [1] "Mean relative difference: 2.493043e-08"
@@ -633,6 +662,7 @@ post-processing of the simulation from ODE systems. Other ways of
 handling the pre- and post-processing may speed up these computations.
 
 ``` r
+
 library(microbenchmark)
 library(ggplot2)
 
@@ -654,6 +684,7 @@ autoplot(compare)
 ## Version information
 
 ``` r
+
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
@@ -665,24 +696,24 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-28
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
-#>  quarto   1.9.37 @ /usr/local/bin/quarto
+#>  date     2026-05-26
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
+#>  quarto   1.9.38 @ /usr/local/bin/quarto
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  package      * version    date (UTC) lib source
 #>  backports      1.5.1      2026-04-03 [1] RSPM
 #>  BH             1.90.0-1   2025-12-14 [1] RSPM
-#>  bslib          0.10.0     2026-01-26 [1] RSPM
+#>  bslib          0.11.0     2026-05-16 [1] RSPM
 #>  cachem         1.1.0      2024-05-16 [1] RSPM
 #>  checkmate      2.3.4      2026-02-03 [1] RSPM
 #>  cli            3.6.6      2026-04-09 [1] RSPM
 #>  codetools      0.2-20     2024-03-31 [3] CRAN (R 4.6.0)
 #>  crayon         1.5.3      2024-06-20 [1] RSPM
-#>  data.table     1.18.2.1   2026-01-27 [1] RSPM
+#>  data.table     1.18.4     2026-05-06 [1] RSPM
 #>  desc           1.4.3      2023-12-10 [1] RSPM
 #>  deSolve      * 1.42       2026-03-20 [1] RSPM
-#>  devtools       2.5.1      2026-04-16 [1] RSPM
+#>  devtools       2.5.2      2026-04-30 [1] RSPM
 #>  digest         0.6.39     2025-11-19 [1] RSPM
 #>  dparser        1.3.1-13   2024-10-22 [1] RSPM
 #>  dplyr          1.2.1      2026-04-03 [1] RSPM
@@ -704,10 +735,10 @@ devtools::session_info()
 #>  labeling       0.4.3      2023-08-29 [1] RSPM
 #>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.6.0)
 #>  lifecycle      1.0.5      2026-01-08 [1] RSPM
-#>  lotri          1.0.3      2026-03-11 [1] RSPM
+#>  lotri          1.0.4      2026-05-14 [1] RSPM
 #>  magrittr       2.0.5      2026-04-04 [1] RSPM
 #>  memoise        2.0.1      2021-11-26 [1] RSPM
-#>  mrgsolve     * 1.7.2      2026-01-22 [1] RSPM
+#>  mrgsolve     * 2.0.1      2026-05-20 [1] RSPM
 #>  nlme           3.1-169    2026-03-27 [3] CRAN (R 4.6.0)
 #>  otel           0.2.0      2025-08-29 [1] RSPM
 #>  pillar         1.11.1     2025-09-17 [1] RSPM
@@ -716,10 +747,10 @@ devtools::session_info()
 #>  pkgdown        2.2.0      2025-11-06 [1] RSPM
 #>  pkgload        1.5.2      2026-04-22 [1] RSPM
 #>  PKPDsim      * 1.4.1      2025-04-17 [1] RSPM
-#>  PopED        * 0.7.0.9001 2026-04-28 [1] local
+#>  PopED        * 0.7.0.9001 2026-05-26 [1] local
 #>  PreciseSums    0.7        2024-09-17 [1] RSPM
 #>  purrr          1.2.2      2026-04-10 [1] RSPM
-#>  qs2            0.2.0      2026-04-22 [1] RSPM
+#>  qs2            0.2.1      2026-05-04 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
 #>  ragg           1.5.2      2026-03-23 [1] RSPM
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM

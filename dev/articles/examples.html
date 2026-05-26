@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Examples">
 <meta name="robots" content="noindex">
@@ -759,9 +759,9 @@ the previously created database.</p>
 of describing the same model.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 3.023 seconds.</span></span>
+<span><span class="co">#&gt; Elapsed time: 2.917 seconds.</span></span>
 <span><span class="fu"><a href="../reference/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_design.html">evaluate_design</a></span><span class="op">(</span><span class="va">poped.db.Rcpp</span><span class="op">)</span>; <span class="fu"><a href="../reference/toc.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Elapsed time: 1.279 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 1.277 seconds.</span></span></code></pre></div>
 <p>The difference is noticeable and gets larger for more complex ODE
 models.</p>
 </div>
@@ -1911,7 +1911,7 @@ evaluation or optimization arguments:</p>
 <span><span class="co">#&gt;   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 </span></span>
 <span><span class="co">#&gt; SIGMA[2,2] </span></span>
 <span><span class="co">#&gt;  25.341368</span></span>
-<span><span class="co">#&gt; Elapsed time: 0.118 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 0.134 seconds.</span></span></code></pre></div>
 <p>We can see that the result, based on MC sampling, is somewhat
 variable with so few samples.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
@@ -1944,7 +1944,7 @@ variable with so few samples.</p>
 <span><span class="co">#&gt;   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 </span></span>
 <span><span class="co">#&gt; SIGMA[2,2] </span></span>
 <span><span class="co">#&gt;  25.311870</span></span>
-<span><span class="co">#&gt; Elapsed time: 0.121 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Elapsed time: 0.128 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="design-evaluation-for-a-subset-of-model-parameters-of-interest-ds-optimality">Design evaluation for a subset of model parameters of interest (Ds
@@ -2030,9 +2030,9 @@ in the model (the b’s) we use the function <code><a href="../reference/shrinka
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0.295 0.205    0.241 shrink_sd  grp_1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0.710 0.303    0.206 se         grp_1</span></span></code></pre></div>
 <p>The output shows us the expected shrinkage on the variance scale
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>h</mi><mi>r</mi><mi>i</mi><mi>n</mi><msub><mi>k</mi><mrow><mi>v</mi><mi>a</mi><mi>r</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mi>D</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo>,</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">shrink_{var}=1-var(b_j)/D(j,j)</annotation></semantics></math>)
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>h</mi><mi>r</mi><mi>i</mi><mi>n</mi><msub><mi>k</mi><mrow><mi>v</mi><mi>a</mi><mi>r</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><mi>v</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>D</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo>,</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">shrink_{var}=1-var(b_j)/D(j,j)</annotation></semantics></math>)
 and on the standard deviation scale
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>h</mi><mi>r</mi><mi>i</mi><mi>n</mi><msub><mi>k</mi><mrow><mi>s</mi><mi>d</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><mi>s</mi><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mi>s</mi><mi>q</mi><mi>r</mi><mi>t</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo>,</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))</annotation></semantics></math>),
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>h</mi><mi>r</mi><mi>i</mi><mi>n</mi><msub><mi>k</mi><mrow><mi>s</mi><mi>d</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><mi>s</mi><mi>d</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>s</mi><mi>q</mi><mi>r</mi><mi>t</mi><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo>,</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))</annotation></semantics></math>),
 as well as the standard errors of the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>j</mi></msub><annotation encoding="application/x-tex">b_j</annotation></semantics></math>
 estimates.</p>

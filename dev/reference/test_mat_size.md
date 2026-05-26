@@ -25,6 +25,7 @@ test_mat_size(correct_size, mat, name)
 ## Examples
 
 ``` r
+
 test_mat_size(c(2,3),zeros(2,3),"foo")
 #> [1] 1
 

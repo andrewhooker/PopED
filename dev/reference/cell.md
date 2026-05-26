@@ -40,6 +40,7 @@ Other MATLAB:
 ## Examples
 
 ``` r
+
 cell(3)
 #>      [,1]      [,2]      [,3]     
 #> [1,] numeric,0 numeric,0 numeric,0

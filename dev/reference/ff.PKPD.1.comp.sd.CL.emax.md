@@ -62,6 +62,7 @@ Other structural_models:
 ## Examples
 
 ``` r
+
 library(PopED)
 
 ## find the parameters that are needed to define from the structural model
@@ -78,7 +79,7 @@ ff.PKPD.1.comp.sd.CL.emax
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x56460ff88f18>
+#> <bytecode: 0x564a1c7f5820>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 

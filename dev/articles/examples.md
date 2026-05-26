@@ -10,6 +10,7 @@ directory. You can view a list of these example files using the
 commands:
 
 ``` r
+
 ex_dir <- system.file("examples", package="PopED")
 list.files(ex_dir)
 #>  [1] "ex.1.a.PK.1.comp.oral.md.intro.R"          
@@ -44,6 +45,7 @@ You can then open one of the examples (for example,
 `ex.1.a.PK.1.comp.oral.md.intro.R`) using the following code
 
 ``` r
+
 file_name <- "ex.1.a.PK.1.comp.oral.md.intro.R"
 
 ex_file <- system.file("examples",file_name,package="PopED")
@@ -71,6 +73,7 @@ concentrations. The expected output of each measurement (PK or PD) is
 given in the vector `model_switch` (see below for details).
 
 ``` r
+
 library(PopED)
 f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
@@ -94,6 +97,7 @@ f_pkpdmodel <- function(model_switch,xt,parameters,poped.db){
 The error model also has to accommodate both response models.
 
 ``` r
+
 ## -- Residual Error function
 ## -- Proportional PK + additive PD
 f_Err <- function(model_switch,xt,parameters,epsi,poped.db){
@@ -118,6 +122,7 @@ to assign the sampling times defined in the vector `xt` to the PK (=1)
 or PD (=2) model.
 
 ``` r
+
 poped.db <- create.poped.database(
   
   # Model
@@ -151,6 +156,7 @@ with doses of 0, 1, and 2 mg; PK sampling times are 0.33, 0.66, 0.9, and
 `model.names=c("PK","PD")` one can name the outputs in the graph.
 
 ``` r
+
 plot_model_prediction(
   poped.db,PI=TRUE,
   facet_scales="free",
@@ -171,12 +177,14 @@ solutions one can use pre-compiled code using the `Rcpp` library (see
 below).
 
 ``` r
+
 library(deSolve)
 ```
 
 Here we define the two compartment model in R using deSolve notation
 
 ``` r
+
 PK.2.comp.oral.ode <- function(Time, State, Pars){
   with(as.list(c(State, Pars)), {    
     dA1 <- -KA*A1 
@@ -199,6 +207,7 @@ information see the help pages for
 [`?deSolve::events`](https://rdrr.io/pkg/deSolve/man/events.html).
 
 ``` r
+
 ff.PK.2.comp.oral.md.ode <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     
@@ -235,6 +244,7 @@ definition (`fg`) function should match the parameters used in the above
 two functions.
 
 ``` r
+
 poped.db <- create.poped.database(
   
   # Model
@@ -262,6 +272,7 @@ poped.db <- create.poped.database(
 We plot the population prediction of the model for the initial design
 
 ``` r
+
 plot_model_prediction(poped.db,model_num_points = 500)
 ```
 
@@ -273,6 +284,7 @@ examples in `ex.2.c.warfarin.ODE.compiled.R`). First we redefine the ODE
 system using Rcpp.
 
 ``` r
+
 library(Rcpp)
 cppFunction(
   'List two_comp_oral_ode_Rcpp(double Time, NumericVector A, NumericVector Pars) {
@@ -296,6 +308,7 @@ Next we add the compiled function (`two_comp_oral_ode_Rcpp`) in the ODE
 solver.
 
 ``` r
+
 ff.PK.2.comp.oral.md.ode.Rcpp <- function(model_switch, xt, parameters, poped.db){
   with(as.list(parameters),{
     
@@ -332,6 +345,7 @@ Finally we create a poped database to use these functions by updating
 the previously created database.
 
 ``` r
+
 poped.db.Rcpp <- create.poped.database(
   poped.db,
   ff_fun="ff.PK.2.comp.oral.md.ode.Rcpp")
@@ -341,10 +355,11 @@ We can compare the time for design evaluation with these two methods of
 describing the same model.
 
 ``` r
+
 tic(); eval <- evaluate_design(poped.db); toc()
-#> Elapsed time: 3.023 seconds.
+#> Elapsed time: 2.917 seconds.
 tic(); eval <- evaluate_design(poped.db.Rcpp); toc()
-#> Elapsed time: 1.279 seconds.
+#> Elapsed time: 1.277 seconds.
 ```
 
 The difference is noticeable and gets larger for more complex ODE
@@ -360,6 +375,7 @@ the discrete covariate `SC_FLAG` is used to give the dose either into
 `A1` or `A2`, the sub-cutaneous or the IV compartment.
 
 ``` r
+
 tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -399,8 +415,8 @@ tmdd_qss_one_target_model_compiled <- function(model_switch,xt,parameters,poped.
 ```
 
 Two different sub-studies are defined, with different sampling times per
-arm - in terms of total number of samples and the actual times[¹](#fn1).
-Due to this difference in numbers and the relatively complicated study
+arm - in terms of total number of samples and the actual times[^1]. Due
+to this difference in numbers and the relatively complicated study
 design we define the sample times (`xt`), what each sample time will
 measure (`model_switch`) and which samples should be taken at the same
 study time (`G_xt`) as matrices. Here three variables `xt`,
@@ -412,6 +428,7 @@ samples per arm by defining the vector `ni` in the
 `create.poped.database` function.
 
 ``` r
+
 xt <- zeros(6,30)
 study_1_xt <- matrix(rep(c(0.0417,0.25,0.5,1,3,7,14,21,28,35,42,49,56),8),nrow=4,byrow=TRUE)
 study_2_xt <- matrix(rep(c(0.0417,1,1,7,14,21,28,56,63,70,77,84,91,98,105),4),nrow=2,byrow=TRUE)
@@ -434,6 +451,7 @@ G_xt[5:6,] <- study_2_G_xt
 These can then be plugged into the normal `poped.db` setup.
 
 ``` r
+
 poped.db.2 <- create.poped.database(
   
   # Model
@@ -473,12 +491,14 @@ Now we can plot population predictions for each group and evaluate the
 design.
 
 ``` r
+
 plot_model_prediction(poped.db.2,facet_scales="free")
 ```
 
 ![](examples_files/figure-html/simulate_different_dose_regimen-1.png)
 
 ``` r
+
 eval_2 <- evaluate_design(poped.db.2)
 round(eval_2$rse) # in percent
 ```
@@ -519,6 +539,7 @@ allometric scaling with a weight effect on both clearance and volume of
 distribution.
 
 ``` r
+
 mod_1 <- function(model_switch,xt,parameters,poped.db){
   with(as.list(parameters),{
     y=xt
@@ -546,6 +567,7 @@ Now we define a design. In this case one group of individuals, where we
 define the individuals’ typical weight as 70 kg (`a=c(WT=70)`).
 
 ``` r
+
 poped_db <- 
   create.poped.database(
     ff_fun=mod_1,
@@ -568,6 +590,7 @@ poped_db <-
 We can create a plot of the model prediction for the typical individual
 
 ``` r
+
 plot_model_prediction(poped_db)
 ```
 
@@ -576,6 +599,7 @@ plot_model_prediction(poped_db)
 And evaluate the initial design
 
 ``` r
+
 evaluate_design(poped_db)
 #> Problems inverting the matrix. Results could be misleading.
 #> Warning:   The following parameters are not estimable:
@@ -612,6 +636,7 @@ assume that WT is sampled from a normal distribution with mean=70 and
 sd=10 (`a=as.list(rnorm(50, mean = 70, sd = 10)`).
 
 ``` r
+
 poped_db_2 <- 
   create.poped.database(
     ff_fun=mod_1,
@@ -632,12 +657,14 @@ poped_db_2 <-
 ```
 
 ``` r
+
 ev <- evaluate_design(poped_db_2) 
 round(ev$ofv,1)
 #> [1] 42.4
 ```
 
 ``` r
+
 round(ev$rse)
 ```
 
@@ -659,6 +686,7 @@ better approach is to look at the distribution of RSEs over a number of
 experiments given the expected weight distribution.
 
 ``` r
+
 nsim <- 30
 rse_list <- c()
 for(i in 1:nsim){
@@ -713,6 +741,7 @@ occasion. This is used in the example to derive to different clearance
 values, i.e., `CL_OCC_1` and `CL_OCC_2`.
 
 ``` r
+
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( CL_OCC_1=bpop[1]*exp(b[1]+bocc[1,1]),
                 CL_OCC_2=bpop[1]*exp(b[1]+bocc[1,2]),
@@ -729,6 +758,7 @@ change in parameters between the occasions (here the change occurs with
 the 7th dose in a one-compartment model with first order absorption).
 
 ``` r
+
 cppFunction(
   'List one_comp_oral_ode(double Time, NumericVector A, NumericVector Pars) {
    int n = A.size();
@@ -775,6 +805,7 @@ poped database as a 3-column matrix with one row per IOV-parameter, and
 the middle column giving the variance values.
 
 ``` r
+
 poped.db <- 
   create.poped.database(
     ff_fun=ff.ode.rcpp,
@@ -802,6 +833,7 @@ PK profile changes at the 7th dose (red line) due to the change in
 clearance.
 
 ``` r
+
 library(ggplot2)
 set.seed(123)
 plot_model_prediction(
@@ -822,6 +854,7 @@ We can also see that the design is relatively poor for estimating the
 IOV parameter:
 
 ``` r
+
 ev <- evaluate_design(poped.db)
 round(ev$rse)
 ```
@@ -846,6 +879,7 @@ subject variances (off-diagonal elements of the full variance-covariance
 matrix for the between subject variability).
 
 ``` r
+
 poped.db_with <- 
   create.poped.database(
     ff_file="ff",
@@ -867,6 +901,7 @@ poped.db_with <-
 What do the covariances mean?
 
 ``` r
+
 (IIV <- poped.db_with$parameters$param.pt.val$d)
 #>      [,1] [,2] [,3]
 #> [1,] 0.07 0.03 0.10
@@ -887,6 +922,7 @@ We can clearly see a difference in the variance of the model
 predictions.
 
 ``` r
+
 library(ggplot2)
 p1 <- plot_model_prediction(poped.db, PI=TRUE)+ylim(-0.5,12) 
 p2 <- plot_model_prediction(poped.db_with,PI=TRUE) +ylim(-0.5,12)
@@ -900,11 +936,13 @@ gridExtra::grid.arrange(p1+ ggtitle("No covariance in BSV"), p2+ ggtitle("Covari
 Evaluating the designs with and without the covariances:
 
 ``` r
+
 ev1 <- evaluate_design(poped.db)
 ev2 <- evaluate_design(poped.db_with)
 ```
 
 ``` r
+
 round(ev1$rse)
 round(ev2$rse)
 ```
@@ -929,6 +967,7 @@ practice with more ill-conditioned numerical problems.
 **Evaluate the same designs with full FIM (instead of reduced)**
 
 ``` r
+
 ev1 <- evaluate_design(poped.db, fim.calc.type=0)
 ev2 <-evaluate_design(poped.db_with, fim.calc.type=0)
 
@@ -965,6 +1004,7 @@ between adult and pediatric models, and `bpop[5]=pedCL` is the factor to
 multiply the adult clearance `bpop[3]` to obtain the pediatric one.
 
 ``` r
+
 sfg <- function(x,a,bpop,b,bocc){
   parameters=c( 
     V=bpop[1]*exp(b[1]),
@@ -985,6 +1025,7 @@ have to provide the `pedCL` parameter so that both the adult and
 children FIMs have the same dimensions.
 
 ``` r
+
 poped.db <- 
   create.poped.database(
     ff_fun=ff.PK.1.comp.oral.md.CL,
@@ -1007,6 +1048,7 @@ poped.db <-
 Create plot of model without variability
 
 ``` r
+
 plot_model_prediction(poped.db, model_num_points = 300)
 ```
 
@@ -1015,6 +1057,7 @@ plot_model_prediction(poped.db, model_num_points = 300)
 To store the FIM from the adult design we evaluate this design
 
 ``` r
+
 (outAdult = evaluate_design(poped.db))
 #> Problems inverting the matrix. Results could be misleading.
 #> Warning:   The following parameters are not estimable:
@@ -1055,6 +1098,7 @@ We can evaluate the adult design without warning, by setting the `pedCL`
 parameter to be fixed (i.e., not estimated):
 
 ``` r
+
 evaluate_design(create.poped.database(poped.db, notfixed_bpop=c(1,1,1,0,0)))
 #> $ofv
 #> [1] 29.70233
@@ -1080,6 +1124,7 @@ For pediatrics the covariate `isPediatric = 1`. We define one arm, 4
 sample-time points.
 
 ``` r
+
 poped.db.ped <- 
   create.poped.database(
     ff_fun=ff.PK.1.comp.oral.md.CL,
@@ -1101,6 +1146,7 @@ poped.db.ped <-
 We can create a plot of the pediatric model without variability
 
 ``` r
+
 plot_model_prediction(poped.db.ped, model_num_points = 300)
 ```
 
@@ -1109,6 +1155,7 @@ plot_model_prediction(poped.db.ped, model_num_points = 300)
 Evaluate the design of the pediatrics study alone.
 
 ``` r
+
 evaluate_design(poped.db.ped)
 #> $ofv
 #> [1] -15.2274
@@ -1144,6 +1191,7 @@ We can add the prior information from the adult study and evaluate that
 design (i.e., pooling adult and pediatric data).
 
 ``` r
+
 poped.db.all <- create.poped.database(
   poped.db.ped,
   prior_fim = outAdult$fim
@@ -1183,6 +1231,7 @@ One can also obtain the power for estimating the pediatric difference in
 clearance (power in estimating bpop\[5\] as different from 1).
 
 ``` r
+
 evaluate_power(poped.db.all, bpop_idx=5, h0=1, out=out.all)
 #> $ofv
 #> [1] 34.96368
@@ -1215,15 +1264,14 @@ evaluate_power(poped.db.all, bpop_idx=5, h0=1, out=out.all)
 ```
 
 We see that to clearly distinguish this parameter one would need 14
-children in the pediatric study (for 80% power at $\alpha = 0.05$).
+children in the pediatric study (for 80% power at $`\alpha=0.05`$).
 
 ## Design evaluation including uncertainty in the model parameters (robust design)
 
 In this example the aim is to evaluate a design incorporating
 uncertainty around parameter values in the model. The full code for this
 example is available in `ex.2.d.warfarin.ED.R`. This illustration is one
-of the Warfarin examples from software comparison in: Nyberg et
-al.[²](#fn2).
+of the Warfarin examples from software comparison in: Nyberg et al.[^2].
 
 We define the fixed effects in the model and add a 10% uncertainty to
 all but Favail. To do this we use a  
@@ -1240,6 +1288,7 @@ parameter_number) we should have:
 Here we define a log-normal distribution
 
 ``` r
+
 bpop_vals <- c(CL=0.15, V=8, KA=1.0, Favail=1)
 bpop_vals_ed <- 
   cbind(ones(length(bpop_vals),1)*4, # log-normal distribution
@@ -1260,6 +1309,7 @@ design space. Specifically note the `bpop=bpop_vals_ed` and the
 samples used in evaluating the E-family objective functions.
 
 ``` r
+
 poped.db <- 
   create.poped.database(
     ff_fun=ff,
@@ -1283,6 +1333,7 @@ You can also provide `ED_samp_size` argument to the design evaluation or
 optimization arguments:
 
 ``` r
+
 tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #> $ofv
 #> [1] 55.41311
@@ -1312,13 +1363,14 @@ tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #>   5.030673   2.983917  14.014958  29.787587  36.758952  26.753311  31.645011 
 #> SIGMA[2,2] 
 #>  25.341368
-#> Elapsed time: 0.118 seconds.
+#> Elapsed time: 0.134 seconds.
 ```
 
 We can see that the result, based on MC sampling, is somewhat variable
 with so few samples.
 
 ``` r
+
 tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #> $ofv
 #> [1] 55.42045
@@ -1348,7 +1400,7 @@ tic();evaluate_design(poped.db,d_switch=FALSE,ED_samp_size=20); toc()
 #>   5.021700   2.980981  14.068646  29.765030  36.691675  26.754137  31.469425 
 #> SIGMA[2,2] 
 #>  25.311870
-#> Elapsed time: 0.121 seconds.
+#> Elapsed time: 0.128 seconds.
 ```
 
 ## Design evaluation for a subset of model parameters of interest (Ds optimality)
@@ -1367,6 +1419,7 @@ available by running the command
 [`?create.poped.database`](https://andrewhooker.github.io/PopED/dev/reference/create.poped.database.md).
 
 ``` r
+
 poped.db <- 
   create.poped.database(
     ff_fun=ff,
@@ -1390,6 +1443,7 @@ poped.db <-
 Design evaluation:
 
 ``` r
+
 evaluate_design(poped.db)
 #> $ofv
 #> [1] 16.49204
@@ -1432,6 +1486,7 @@ the model (the b’s) we use the function
 [`shrinkage()`](https://andrewhooker.github.io/PopED/dev/reference/shrinkage.md).
 
 ``` r
+
 shrinkage(poped.db)
 #> # A tibble: 3 × 5
 #>    d_KA   d_V `D[3,3]` type       group
@@ -1442,10 +1497,9 @@ shrinkage(poped.db)
 ```
 
 The output shows us the expected shrinkage on the variance scale
-($shrink_{var} = 1 - var\left( b_{j} \right)/D(j,j)$) and on the
-standard deviation scale
-($shrink_{sd} = 1 - sd\left( b_{j} \right)/sqrt\left( D(j,j) \right)$),
-as well as the standard errors of the $b_{j}$ estimates.
+($`shrink_{var}=1-var(b_j)/D(j,j)`$) and on the standard deviation scale
+($`shrink_{sd}=1-sd(b_j)/sqrt(D(j,j))`$), as well as the standard errors
+of the $`b_j`$ estimates.
 
 ## Further examples
 
@@ -1467,15 +1521,13 @@ To be implemented:
 
 - Symbolic differentiation
 
-------------------------------------------------------------------------
-
-1.  Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., &
+[^1]: Study 1 and 2 from table 2 in: Gibiansky, L., Gibiansky, E., &
     Bauer, R. (2012). Comparison of Nonmem 7.2 estimation methods and
     parallel processing efficiency on a target-mediated drug disposition
     model. Journal of Pharmacokinetics and Pharmacodynamics, 39(1),
     17–35. <https://doi.org/10.1007/s10928-011-9228-y>
 
-2.  Nyberg, J., Bazzoli, C., Ogungbenro, K., Aliev, A., Leonov, S.,
+[^2]: Nyberg, J., Bazzoli, C., Ogungbenro, K., Aliev, A., Leonov, S.,
     Duffull, S., Hooker, A.C. and Mentré, F. (2014). Methods and
     software tools for design evaluation for population
     pharmacokinetics-pharmacodynamics studies. British Journal of

@@ -40,6 +40,7 @@ Other MATLAB:
 ## Examples
 
 ``` r
+
 ones(4)
 #>      [,1] [,2] [,3] [,4]
 #> [1,]    1    1    1    1
