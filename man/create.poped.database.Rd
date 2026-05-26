@@ -624,11 +624,11 @@ poped.db <- create.poped.database(
 evaluate_design(poped.db)
 }
 \seealso{
-Other poped_input: 
-\code{\link{convert_variables}()},
-\code{\link{create_design}()},
-\code{\link{create_design_space}()},
-\code{\link{downsizing_general_design}()},
-\code{\link{poped.choose}()}
+Other poped_input:
+\code{\link[=convert_variables]{convert_variables()}},
+\code{\link[=create_design]{create_design()}},
+\code{\link[=create_design_space]{create_design_space()}},
+\code{\link[=downsizing_general_design]{downsizing_general_design()}},
+\code{\link[=poped.choose]{poped.choose()}}
 }
 \concept{poped_input}

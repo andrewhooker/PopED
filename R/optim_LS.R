@@ -30,6 +30,9 @@
 #' @param mrgsolve_model If the computations require a mrgsolve model and you
 #' are using the "snow" method then you need to specify the name of the model
 #' object created by \code{mread} or \code{mcode}.
+#' @param babelmixr2_model If the computations require a babelmixr2 model and you 
+#' are using the "snow" method" then you need to specify the name of the model 
+#' object created by \code{nlmixr2}. 
 #' @param seed The random seed to use in the algorithm,
 #' @param allow_replicates Should the algorithm allow parameters to have the same value?
 #' @param replicates_index A vector, the same length as the parameters.  

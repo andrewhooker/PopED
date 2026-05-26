@@ -207,6 +207,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Andrew C. Hooker \email{andrew.hooker@farmaci.uu.se} (\href{https://orcid.org/0000-0002-2676-5912}{ORCID}) [translator, copyright holder]
   \item Marco Foracchia (O-Matrix version)
   \item Sebastian Ueckert (\href{https://orcid.org/0000-0002-3712-0255}{ORCID}) (MATLAB version)
   \item Joakim Nyberg (MATLAB version)

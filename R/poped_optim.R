@@ -57,6 +57,9 @@
 #' all discrete optimizations will not allow replicates.
 #' @param allow_replicates_a Should the algorithm allow optimized \code{a} design components to have the same value? If FALSE then
 #' all discrete optimizations will not allow replicates.
+#' @param babelmixr2_model If the computations require a babelmixr2 model and you 
+#' are using the "snow" method" then you need to specify the name of the model 
+#' object created by \code{nlmixr2} 
 #'   
 #' @references \enumerate{ \item M. Foracchia, A.C. Hooker, P. Vicini and A. 
 #'   Ruggeri, "PopED, a software fir optimal experimental design in population 

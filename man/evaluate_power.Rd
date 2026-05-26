@@ -115,12 +115,12 @@ evaluate_power(poped.db_2,bpop_idx = 4)
   \doi{10.1007/s10928-013-9331-3}. }
 }
 \seealso{
-Other evaluate_design: 
-\code{\link{evaluate.fim}()},
-\code{\link{evaluate_design}()},
-\code{\link{get_rse}()},
-\code{\link{model_prediction}()},
-\code{\link{plot_efficiency_of_windows}()},
-\code{\link{plot_model_prediction}()}
+Other evaluate_design:
+\code{\link[=evaluate.fim]{evaluate.fim()}},
+\code{\link[=evaluate_design]{evaluate_design()}},
+\code{\link[=get_rse]{get_rse()}},
+\code{\link[=model_prediction]{model_prediction()}},
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}},
+\code{\link[=plot_model_prediction]{plot_model_prediction()}}
 }
 \concept{evaluate_design}

@@ -27,6 +27,7 @@ poped_optim(
   parallel_type = NULL,
   num_cores = NULL,
   mrgsolve_model = NULL,
+  babelmixr2_model = poped.db$babelmixr2,
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE),
   iter_max = 10,
   stop_crit_eff = 1.001,
@@ -124,6 +125,10 @@ See \code{\link{start_parallel}}.}
 \item{mrgsolve_model}{If the computations require a mrgsolve model and you
 are using the "snow" method then you need to specify the name of the model
 object created by \code{mread} or \code{mcode}.}
+
+\item{babelmixr2_model}{If the computations require a babelmixr2 model and you 
+are using the "snow" method" then you need to specify the name of the model 
+object created by \code{nlmixr2}}
 
 \item{loop_methods}{Should the optimization methods be looped for
 \code{iter_max} iterations, or until the efficiency of the design after the
@@ -431,20 +436,20 @@ out_3 <- poped_optim(poped.db,opt_a =TRUE,
   2012. }
 }
 \seealso{
-Other Optimize: 
-\code{\link{Doptim}()},
-\code{\link{LEDoptim}()},
-\code{\link{RS_opt}()},
-\code{\link{a_line_search}()},
-\code{\link{bfgsb_min}()},
-\code{\link{calc_autofocus}()},
-\code{\link{calc_ofv_and_grad}()},
-\code{\link{mfea}()},
-\code{\link{optim_ARS}()},
-\code{\link{optim_LS}()},
-\code{\link{poped_optim_1}()},
-\code{\link{poped_optim_2}()},
-\code{\link{poped_optim_3}()},
-\code{\link{poped_optimize}()}
+Other Optimize:
+\code{\link[=Doptim]{Doptim()}},
+\code{\link[=LEDoptim]{LEDoptim()}},
+\code{\link[=RS_opt]{RS_opt()}},
+\code{\link[=a_line_search]{a_line_search()}},
+\code{\link[=bfgsb_min]{bfgsb_min()}},
+\code{\link[=calc_autofocus]{calc_autofocus()}},
+\code{\link[=calc_ofv_and_grad]{calc_ofv_and_grad()}},
+\code{\link[=mfea]{mfea()}},
+\code{\link[=optim_ARS]{optim_ARS()}},
+\code{\link[=optim_LS]{optim_LS()}},
+\code{\link[=poped_optim_1]{poped_optim_1()}},
+\code{\link[=poped_optim_2]{poped_optim_2()}},
+\code{\link[=poped_optim_3]{poped_optim_3()}},
+\code{\link[=poped_optimize]{poped_optimize()}}
 }
 \concept{Optimize}

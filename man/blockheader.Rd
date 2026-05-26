@@ -208,10 +208,10 @@ blockheader(poped.db.1,name="",trflag=2,opt_xt=TRUE)
 
 }
 \seealso{
-Other Helper: 
-\code{\link{blockexp}()},
-\code{\link{blockfinal}()},
-\code{\link{blockopt}()}
+Other Helper:
+\code{\link[=blockexp]{blockexp()}},
+\code{\link[=blockfinal]{blockfinal()}},
+\code{\link[=blockopt]{blockopt()}}
 }
 \concept{Helper}
 \keyword{internal}

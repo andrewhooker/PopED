@@ -78,22 +78,22 @@ get_rse(FIM,poped.db)
 
 }
 \seealso{
-Other models: 
-\code{\link{feps.add}()},
-\code{\link{feps.add.prop}()},
-\code{\link{feps.prop}()},
-\code{\link{ff.PK.1.comp.oral.md.KE}()},
-\code{\link{ff.PK.1.comp.oral.sd.CL}()},
-\code{\link{ff.PK.1.comp.oral.sd.KE}()},
-\code{\link{ff.PKPD.1.comp.oral.md.CL.imax}()},
-\code{\link{ff.PKPD.1.comp.sd.CL.emax}()}
+Other models:
+\code{\link[=feps.add]{feps.add()}},
+\code{\link[=feps.add.prop]{feps.add.prop()}},
+\code{\link[=feps.prop]{feps.prop()}},
+\code{\link[=ff.PK.1.comp.oral.md.KE]{ff.PK.1.comp.oral.md.KE()}},
+\code{\link[=ff.PK.1.comp.oral.sd.CL]{ff.PK.1.comp.oral.sd.CL()}},
+\code{\link[=ff.PK.1.comp.oral.sd.KE]{ff.PK.1.comp.oral.sd.KE()}},
+\code{\link[=ff.PKPD.1.comp.oral.md.CL.imax]{ff.PKPD.1.comp.oral.md.CL.imax()}},
+\code{\link[=ff.PKPD.1.comp.sd.CL.emax]{ff.PKPD.1.comp.sd.CL.emax()}}
 
-Other structural_models: 
-\code{\link{ff.PK.1.comp.oral.md.KE}()},
-\code{\link{ff.PK.1.comp.oral.sd.CL}()},
-\code{\link{ff.PK.1.comp.oral.sd.KE}()},
-\code{\link{ff.PKPD.1.comp.oral.md.CL.imax}()},
-\code{\link{ff.PKPD.1.comp.sd.CL.emax}()}
+Other structural_models:
+\code{\link[=ff.PK.1.comp.oral.md.KE]{ff.PK.1.comp.oral.md.KE()}},
+\code{\link[=ff.PK.1.comp.oral.sd.CL]{ff.PK.1.comp.oral.sd.CL()}},
+\code{\link[=ff.PK.1.comp.oral.sd.KE]{ff.PK.1.comp.oral.sd.KE()}},
+\code{\link[=ff.PKPD.1.comp.oral.md.CL.imax]{ff.PKPD.1.comp.oral.md.CL.imax()}},
+\code{\link[=ff.PKPD.1.comp.sd.CL.emax]{ff.PKPD.1.comp.sd.CL.emax()}}
 }
 \concept{models}
 \concept{structural_models}

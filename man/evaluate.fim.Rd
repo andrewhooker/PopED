@@ -166,34 +166,34 @@ all.equal(FIM.1.prior,FIM.1) # the FIM is only computed from the design in the p
 get_rse(FIM.1.prior,poped.db.prior) # the RSE is computed with the prior information
 }
 \seealso{
-Other FIM: 
-\code{\link{LinMatrixH}()},
-\code{\link{LinMatrixLH}()},
-\code{\link{LinMatrixL_occ}()},
-\code{\link{calc_ofv_and_fim}()},
-\code{\link{ed_laplace_ofv}()},
-\code{\link{ed_mftot}()},
-\code{\link{efficiency}()},
-\code{\link{evaluate.e.ofv.fim}()},
-\code{\link{gradf_eps}()},
-\code{\link{mf3}()},
-\code{\link{mf7}()},
-\code{\link{mftot}()},
-\code{\link{ofv_criterion}()},
-\code{\link{ofv_fim}()}
+Other FIM:
+\code{\link[=LinMatrixH]{LinMatrixH()}},
+\code{\link[=LinMatrixLH]{LinMatrixLH()}},
+\code{\link[=LinMatrixL_occ]{LinMatrixL_occ()}},
+\code{\link[=calc_ofv_and_fim]{calc_ofv_and_fim()}},
+\code{\link[=ed_laplace_ofv]{ed_laplace_ofv()}},
+\code{\link[=ed_mftot]{ed_mftot()}},
+\code{\link[=efficiency]{efficiency()}},
+\code{\link[=evaluate.e.ofv.fim]{evaluate.e.ofv.fim()}},
+\code{\link[=gradf_eps]{gradf_eps()}},
+\code{\link[=mf3]{mf3()}},
+\code{\link[=mf7]{mf7()}},
+\code{\link[=mftot]{mftot()}},
+\code{\link[=ofv_criterion]{ofv_criterion()}},
+\code{\link[=ofv_fim]{ofv_fim()}}
 
-Other evaluate_design: 
-\code{\link{evaluate_design}()},
-\code{\link{evaluate_power}()},
-\code{\link{get_rse}()},
-\code{\link{model_prediction}()},
-\code{\link{plot_efficiency_of_windows}()},
-\code{\link{plot_model_prediction}()}
+Other evaluate_design:
+\code{\link[=evaluate_design]{evaluate_design()}},
+\code{\link[=evaluate_power]{evaluate_power()}},
+\code{\link[=get_rse]{get_rse()}},
+\code{\link[=model_prediction]{model_prediction()}},
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}},
+\code{\link[=plot_model_prediction]{plot_model_prediction()}}
 
-Other evaluate_FIM: 
-\code{\link{calc_ofv_and_fim}()},
-\code{\link{evaluate.e.ofv.fim}()},
-\code{\link{ofv_fim}()}
+Other evaluate_FIM:
+\code{\link[=calc_ofv_and_fim]{calc_ofv_and_fim()}},
+\code{\link[=evaluate.e.ofv.fim]{evaluate.e.ofv.fim()}},
+\code{\link[=ofv_fim]{ofv_fim()}}
 }
 \concept{FIM}
 \concept{evaluate_FIM}

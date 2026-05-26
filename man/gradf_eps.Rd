@@ -97,21 +97,21 @@ gradf_eps(model_switch=t(poped.db$design$model_switch[ind,,drop=FALSE]),
           poped.db)["dfeps_de0"]
 }
 \seealso{
-Other FIM: 
-\code{\link{LinMatrixH}()},
-\code{\link{LinMatrixLH}()},
-\code{\link{LinMatrixL_occ}()},
-\code{\link{calc_ofv_and_fim}()},
-\code{\link{ed_laplace_ofv}()},
-\code{\link{ed_mftot}()},
-\code{\link{efficiency}()},
-\code{\link{evaluate.e.ofv.fim}()},
-\code{\link{evaluate.fim}()},
-\code{\link{mf3}()},
-\code{\link{mf7}()},
-\code{\link{mftot}()},
-\code{\link{ofv_criterion}()},
-\code{\link{ofv_fim}()}
+Other FIM:
+\code{\link[=LinMatrixH]{LinMatrixH()}},
+\code{\link[=LinMatrixLH]{LinMatrixLH()}},
+\code{\link[=LinMatrixL_occ]{LinMatrixL_occ()}},
+\code{\link[=calc_ofv_and_fim]{calc_ofv_and_fim()}},
+\code{\link[=ed_laplace_ofv]{ed_laplace_ofv()}},
+\code{\link[=ed_mftot]{ed_mftot()}},
+\code{\link[=efficiency]{efficiency()}},
+\code{\link[=evaluate.e.ofv.fim]{evaluate.e.ofv.fim()}},
+\code{\link[=evaluate.fim]{evaluate.fim()}},
+\code{\link[=mf3]{mf3()}},
+\code{\link[=mf7]{mf7()}},
+\code{\link[=mftot]{mftot()}},
+\code{\link[=ofv_criterion]{ofv_criterion()}},
+\code{\link[=ofv_fim]{ofv_fim()}}
 }
 \concept{FIM}
 \keyword{internal}

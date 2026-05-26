@@ -32,17 +32,17 @@ x.space[1,1]
 x.space[1,2]
 }
 \seealso{
-Other MATLAB: 
-\code{\link{diag_matlab}()},
-\code{\link{feval}()},
-\code{\link{fileparts}()},
-\code{\link{isempty}()},
-\code{\link{ones}()},
-\code{\link{rand}()},
-\code{\link{randn}()},
-\code{\link{size}()},
-\code{\link{tic}()},
-\code{\link{toc}()},
-\code{\link{zeros}()}
+Other MATLAB:
+\code{\link[=diag_matlab]{diag_matlab()}},
+\code{\link[=feval]{feval()}},
+\code{\link[=fileparts]{fileparts()}},
+\code{\link[=isempty]{isempty()}},
+\code{\link[=ones]{ones()}},
+\code{\link[=rand]{rand()}},
+\code{\link[=randn]{randn()}},
+\code{\link[=size]{size()}},
+\code{\link[=tic]{tic()}},
+\code{\link[=toc]{toc()}},
+\code{\link[=zeros]{zeros()}}
 }
 \concept{MATLAB}

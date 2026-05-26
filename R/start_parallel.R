@@ -18,6 +18,9 @@
 #' @param mrgsolve_model If the computations require a mrgsolve model and you 
 #' are using the "snow" method" then you need to specify the name of the model 
 #' object created by \code{mread} or \code{mcode}
+#' @param babelmixr2_model If the computations require a babelmixr2 model and you 
+#' are using the "snow" method" then you need to specify the name of the model 
+#' object created by \code{nlmixr2} 
 #' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
 #'   
 # @inheritParams optim_LS

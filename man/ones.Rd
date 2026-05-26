@@ -23,17 +23,17 @@ ones(4)
 ones(3,4)
 }
 \seealso{
-Other MATLAB: 
-\code{\link{cell}()},
-\code{\link{diag_matlab}()},
-\code{\link{feval}()},
-\code{\link{fileparts}()},
-\code{\link{isempty}()},
-\code{\link{rand}()},
-\code{\link{randn}()},
-\code{\link{size}()},
-\code{\link{tic}()},
-\code{\link{toc}()},
-\code{\link{zeros}()}
+Other MATLAB:
+\code{\link[=cell]{cell()}},
+\code{\link[=diag_matlab]{diag_matlab()}},
+\code{\link[=feval]{feval()}},
+\code{\link[=fileparts]{fileparts()}},
+\code{\link[=isempty]{isempty()}},
+\code{\link[=rand]{rand()}},
+\code{\link[=randn]{randn()}},
+\code{\link[=size]{size()}},
+\code{\link[=tic]{tic()}},
+\code{\link[=toc]{toc()}},
+\code{\link[=zeros]{zeros()}}
 }
 \concept{MATLAB}

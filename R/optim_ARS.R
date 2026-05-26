@@ -26,7 +26,6 @@
 #' @param allow_replicates Should the algorithm allow parameters to have the same value?
 #' @param generator A user-defined function that generates new parameter sets to try in the algorithm.  See examples below.
 #' 
-#' 
 #' @references \enumerate{
 #' \item M. Foracchia, A.C. Hooker, P. Vicini and A. Ruggeri, "PopED, a software fir optimal 
 #' experimental design in population kinetics", Computer Methods and Programs in Biomedicine, 74, 2004.
