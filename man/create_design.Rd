@@ -88,11 +88,11 @@ design_15 <-create_design(xt=xt4,
 
 }
 \seealso{
-Other poped_input: 
-\code{\link{convert_variables}()},
-\code{\link{create.poped.database}()},
-\code{\link{create_design_space}()},
-\code{\link{downsizing_general_design}()},
-\code{\link{poped.choose}()}
+Other poped_input:
+\code{\link[=convert_variables]{convert_variables()}},
+\code{\link[=create.poped.database]{create.poped.database()}},
+\code{\link[=create_design_space]{create_design_space()}},
+\code{\link[=downsizing_general_design]{downsizing_general_design()}},
+\code{\link[=poped.choose]{poped.choose()}}
 }
 \concept{poped_input}

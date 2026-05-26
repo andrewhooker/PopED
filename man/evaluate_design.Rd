@@ -66,12 +66,12 @@ evaluate_design(poped.db)
 
 }
 \seealso{
-Other evaluate_design: 
-\code{\link{evaluate.fim}()},
-\code{\link{evaluate_power}()},
-\code{\link{get_rse}()},
-\code{\link{model_prediction}()},
-\code{\link{plot_efficiency_of_windows}()},
-\code{\link{plot_model_prediction}()}
+Other evaluate_design:
+\code{\link[=evaluate.fim]{evaluate.fim()}},
+\code{\link[=evaluate_power]{evaluate_power()}},
+\code{\link[=get_rse]{get_rse()}},
+\code{\link[=model_prediction]{model_prediction()}},
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}},
+\code{\link[=plot_model_prediction]{plot_model_prediction()}}
 }
 \concept{evaluate_design}

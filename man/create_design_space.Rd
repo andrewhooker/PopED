@@ -184,11 +184,11 @@ ds_17 <- create_design_space(design_1,a_space = list(1:100,seq(1000,100000,by=10
 
 }
 \seealso{
-Other poped_input: 
-\code{\link{convert_variables}()},
-\code{\link{create.poped.database}()},
-\code{\link{create_design}()},
-\code{\link{downsizing_general_design}()},
-\code{\link{poped.choose}()}
+Other poped_input:
+\code{\link[=convert_variables]{convert_variables()}},
+\code{\link[=create.poped.database]{create.poped.database()}},
+\code{\link[=create_design]{create_design()}},
+\code{\link[=downsizing_general_design]{downsizing_general_design()}},
+\code{\link[=poped.choose]{poped.choose()}}
 }
 \concept{poped_input}

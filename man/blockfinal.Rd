@@ -183,10 +183,10 @@ blockfinal(fn="",fmf=FIM,
 
 }
 \seealso{
-Other Helper: 
-\code{\link{blockexp}()},
-\code{\link{blockheader}()},
-\code{\link{blockopt}()}
+Other Helper:
+\code{\link[=blockexp]{blockexp()}},
+\code{\link[=blockheader]{blockheader()}},
+\code{\link[=blockopt]{blockopt()}}
 }
 \concept{Helper}
 \keyword{internal}

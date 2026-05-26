@@ -272,20 +272,20 @@ plot_model_prediction(poped.db,facet_scales="free",
 \seealso{
 \code{\link{model_prediction}}
 
-Other evaluate_design: 
-\code{\link{evaluate.fim}()},
-\code{\link{evaluate_design}()},
-\code{\link{evaluate_power}()},
-\code{\link{get_rse}()},
-\code{\link{model_prediction}()},
-\code{\link{plot_efficiency_of_windows}()}
+Other evaluate_design:
+\code{\link[=evaluate.fim]{evaluate.fim()}},
+\code{\link[=evaluate_design]{evaluate_design()}},
+\code{\link[=evaluate_power]{evaluate_power()}},
+\code{\link[=get_rse]{get_rse()}},
+\code{\link[=model_prediction]{model_prediction()}},
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}}
 
-Other Simulation: 
-\code{\link{model_prediction}()},
-\code{\link{plot_efficiency_of_windows}()}
+Other Simulation:
+\code{\link[=model_prediction]{model_prediction()}},
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}}
 
-Other Graphics: 
-\code{\link{plot_efficiency_of_windows}()}
+Other Graphics:
+\code{\link[=plot_efficiency_of_windows]{plot_efficiency_of_windows()}}
 }
 \concept{Graphics}
 \concept{Simulation}

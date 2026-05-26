@@ -92,10 +92,10 @@ blockexp("",poped.db, opt_xt=TRUE)
 
 }
 \seealso{
-Other Helper: 
-\code{\link{blockfinal}()},
-\code{\link{blockheader}()},
-\code{\link{blockopt}()}
+Other Helper:
+\code{\link[=blockfinal]{blockfinal()}},
+\code{\link[=blockheader]{blockheader()}},
+\code{\link[=blockopt]{blockopt()}}
 }
 \concept{Helper}
 \keyword{internal}

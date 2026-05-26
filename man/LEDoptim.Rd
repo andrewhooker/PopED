@@ -216,20 +216,20 @@ poped.db <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 }
 }
 \seealso{
-Other Optimize: 
-\code{\link{Doptim}()},
-\code{\link{RS_opt}()},
-\code{\link{a_line_search}()},
-\code{\link{bfgsb_min}()},
-\code{\link{calc_autofocus}()},
-\code{\link{calc_ofv_and_grad}()},
-\code{\link{mfea}()},
-\code{\link{optim_ARS}()},
-\code{\link{optim_LS}()},
-\code{\link{poped_optim}()},
-\code{\link{poped_optim_1}()},
-\code{\link{poped_optim_2}()},
-\code{\link{poped_optim_3}()},
-\code{\link{poped_optimize}()}
+Other Optimize:
+\code{\link[=Doptim]{Doptim()}},
+\code{\link[=RS_opt]{RS_opt()}},
+\code{\link[=a_line_search]{a_line_search()}},
+\code{\link[=bfgsb_min]{bfgsb_min()}},
+\code{\link[=calc_autofocus]{calc_autofocus()}},
+\code{\link[=calc_ofv_and_grad]{calc_ofv_and_grad()}},
+\code{\link[=mfea]{mfea()}},
+\code{\link[=optim_ARS]{optim_ARS()}},
+\code{\link[=optim_LS]{optim_LS()}},
+\code{\link[=poped_optim]{poped_optim()}},
+\code{\link[=poped_optim_1]{poped_optim_1()}},
+\code{\link[=poped_optim_2]{poped_optim_2()}},
+\code{\link[=poped_optim_3]{poped_optim_3()}},
+\code{\link[=poped_optimize]{poped_optimize()}}
 }
 \concept{Optimize}
