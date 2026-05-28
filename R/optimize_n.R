@@ -62,7 +62,6 @@ optimize_groupsize <-
            props = c(poped.db$design$groupsize/sum(poped.db$design$groupsize)),
            trace=1,
            ...){
-    
     # need to fix:
     # limits on the proportions to account for max and min values of N in each group
     # return actual values.
@@ -231,7 +230,6 @@ optimize_n_rse <- function(poped.db,
                            allowed_values = seq(poped.db$design$m,
                                                 sum(poped.db$design$groupsize)*5,
                                                 by=poped.db$design$m)){
-  
   n_per_group = poped.db$design$groupsize
   n_tot <- sum(n_per_group)
   props = c(n_per_group/n_tot)
@@ -275,7 +273,6 @@ optimize_n_eff <- function(poped.db,
                            ofv_ref,
                            norm_group_fim = NULL,  
                            ...){
-  
   n_per_group = poped.db$design$groupsize
   n_tot <- sum(n_per_group)
   props = c(n_per_group/n_tot)

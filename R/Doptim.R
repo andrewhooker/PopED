@@ -74,7 +74,6 @@ Doptim <- function(poped.db,ni, xt, model_switch, x, a, bpopdescr,
                    iter_max=10,
                    ...){
   
-  
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

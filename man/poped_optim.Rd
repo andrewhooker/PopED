@@ -27,6 +27,7 @@ poped_optim(
   parallel_type = NULL,
   num_cores = NULL,
   mrgsolve_model = NULL,
+  babelmixr2_model = poped.db$babelmixr2,
   loop_methods = ifelse(length(method) > 1, TRUE, FALSE),
   iter_max = 10,
   stop_crit_eff = 1.001,
@@ -124,6 +125,10 @@ See \code{\link{start_parallel}}.}
 \item{mrgsolve_model}{If the computations require a mrgsolve model and you
 are using the "snow" method then you need to specify the name of the model
 object created by \code{mread} or \code{mcode}.}
+
+\item{babelmixr2_model}{If the computations require a babelmixr2 model and you 
+are using the "snow" method" then you need to specify the name of the model 
+object created by \code{nlmixr2}}
 
 \item{loop_methods}{Should the optimization methods be looped for
 \code{iter_max} iterations, or until the efficiency of the design after the

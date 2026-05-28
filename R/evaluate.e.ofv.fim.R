@@ -45,7 +45,6 @@ evaluate.e.ofv.fim <- function(poped.db,
                                use_laplace=poped.db$settings$iEDCalculationType, 
                                laplace.fim=FALSE, 
                                ...){
-
   ## update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

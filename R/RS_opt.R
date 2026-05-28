@@ -74,7 +74,6 @@ RS_opt <- function(poped.db,
                        compute_inv=TRUE,
                        ...){
   
-  
   # Only get inputs that are needed, not double inputs
   # needed inputs to function: get first then run function
   # poped.db$settings$cfaxt     0.001

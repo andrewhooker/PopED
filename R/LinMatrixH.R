@@ -23,7 +23,8 @@
 ## Function translated automatically using 'matlab.to.r()'
 ## Author: Andrew Hooker
 
-LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,poped.db){
+LinMatrixH <- function(model_switch,xt_ind,x,a,bpop,b_ind,bocc_ind,
+poped.db){
   #----------Model linearization with respect to epsilon.
   #
   # size of return is (samples per individual x number of epsilons) 

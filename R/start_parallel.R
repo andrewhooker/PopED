@@ -18,6 +18,9 @@
 #' @param mrgsolve_model If the computations require a mrgsolve model and you 
 #' are using the "snow" method" then you need to specify the name of the model 
 #' object created by \code{mread} or \code{mcode}
+#' @param babelmixr2_model If the computations require a babelmixr2 model and you 
+#' are using the "snow" method" then you need to specify the name of the model 
+#' object created by \code{nlmixr2} 
 #' @param ... Arguments passed to \code{\link[parallel]{makeCluster}}
 #'   
 # @inheritParams optim_LS
@@ -32,6 +35,7 @@ start_parallel <- function(parallel=TRUE,
                            seed=NULL,
                            dlls=NULL,
                            mrgsolve_model=NULL,
+                           babelmixr2_model=NULL,
                            #cpp_files=NULL,
                            ...)
 {
@@ -86,6 +90,15 @@ start_parallel <- function(parallel=TRUE,
                call. = FALSE)
         }
         parallel::clusterCall(cl, mrgsolve::loadso, x=mrgsolve_model)
+      }
+      
+      # load babelmixr2 models in workers using .popedCluster
+      if (!is.null(babelmixr2_model)) {
+        if (!requireNamespace("babelmixr2", quietly=TRUE)) {
+          stop("babelmixr2 package needed for this function to work. Please install it.",
+               call.=FALSE)
+        }
+        parallel::clusterCall(cl, babelmixr2::.popedCluster, babelmixr2_model)
       }
       # if(!is.null(cpp_files)){
       #   for(i in cpp_files){

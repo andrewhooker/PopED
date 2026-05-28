@@ -264,7 +264,7 @@ get_par_and_space_optim <- function(poped.db,
                                     cont_cat = "both",
                                     warn_when_none=TRUE) 
 {
-    
+
   type <- index <- fixed <- cont <- par <- lower <- upper <- NULL
   
   #----------- checks

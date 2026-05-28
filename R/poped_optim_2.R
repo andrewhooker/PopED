@@ -94,7 +94,6 @@ poped_optim_2 <- function(poped.db,
                           maximize=T,
                           transform_parameters = F,
                           ...){
-  
   #------------ update poped.db with options supplied in function
   called_args <- match.call()
   default_args <- formals()

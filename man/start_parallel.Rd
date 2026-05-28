@@ -11,6 +11,7 @@ start_parallel(
   seed = NULL,
   dlls = NULL,
   mrgsolve_model = NULL,
+  babelmixr2_model = NULL,
   ...
 )
 }
@@ -34,6 +35,10 @@ the extension as a text vector \code{c("this_file","that_file")}.}
 \item{mrgsolve_model}{If the computations require a mrgsolve model and you 
 are using the "snow" method" then you need to specify the name of the model 
 object created by \code{mread} or \code{mcode}}
+
+\item{babelmixr2_model}{If the computations require a babelmixr2 model and you 
+are using the "snow" method" then you need to specify the name of the model 
+object created by \code{nlmixr2}}
 
 \item{...}{Arguments passed to \code{\link[parallel]{makeCluster}}}
 }

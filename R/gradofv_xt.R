@@ -2,7 +2,6 @@
 ## Author: Andrew Hooker
 
 gradofv_xt <- function(model_switch,axt,groupsize,ni,xt,x,a,bpop,d,sigma,docc,poped.db){
-  
   #Input: the prior FIM or (empty) and all the other things to calculate the
   #grad with
   #Return a vector that is the gradient and the global structure

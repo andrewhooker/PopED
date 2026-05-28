@@ -25,7 +25,7 @@
 blockexp <- function(fn,poped.db,e_flag=FALSE,
                      opt_xt=poped.db$settings$optsw[2],opt_a=poped.db$settings$optsw[4],opt_x=poped.db$settings$optsw[4],
                      opt_samps=poped.db$settings$optsw[1],opt_inds=poped.db$settings$optsw[5]){
-  
+
   fprintf(fn,'==============================================================================\n')
   fprintf(fn,'Model description : %s \n',poped.db$settings$modtit)
   fprintf(fn,'\n')
@@ -155,6 +155,7 @@ blockexp <- function(fn,poped.db,e_flag=FALSE,
 }
 
 print_params <- function (params,name_str, fn, poped.db, param_sqrt=FALSE,head_txt=NULL,matrix_elements=F,e_flag=FALSE) {
+      
   if(is.null(head_txt)) head_txt <- "Parameter Values"
   uncer_txt <- ""
   if(e_flag) uncer_txt <- " (Uncertainty Distribution)"

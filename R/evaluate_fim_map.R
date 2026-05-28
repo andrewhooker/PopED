@@ -37,7 +37,6 @@ evaluate_fim_map <- function(poped.db,
                       num_sim_ids = 1000,
                       use_purrr = FALSE,
                       shrink_mat=F){
-  
   # if (poped.db$design$m > 1) {
   #   warning("Shrinkage should only be computed for a single arm, please adjust your script accordingly.")
   # }
