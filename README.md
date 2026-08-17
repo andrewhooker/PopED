@@ -32,6 +32,10 @@ And the development version from [GitHub](https://github.com/) with:
 pak::pak("andrewhooker/PopED")
 ```
 
+If you are installing the development version, you might be interested
+in the development version of the webpage with information about updates
+and new developments: <https://andrewhooker.github.io/PopED/dev/>
+
 ## Getting started
 
 To get started you need to define
@@ -51,4 +55,4 @@ You are welcome to:
 - submit suggestions and bug-reports at:
   <https://github.com/andrewhooker/PopED/issues>
 - send a pull request on: <https://github.com/andrewhooker/PopED>
-- compose a friendly e-mail to: <andrew.hooker@farmaci.uu.se>
+- compose a friendly e-mail to: <andrew.hooker@uu.se>
