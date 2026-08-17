@@ -1,6 +1,6 @@
 # PopED (development version)
 
-* New vignette about comparing PopED and NONMEM uncertainty estimates.  See [Comparing uncertainty estimates between PopED and NONMEM](articles/compare_poped_with_nonmem.html)  
+* New vignette about comparing PopED and NONMEM uncertainty estimates.  See [Comparing uncertainty estimates between PopED and NONMEM](../articles/compare_poped_with_nonmem.html)  
 
 # PopED 0.7.0
 
