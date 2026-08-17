@@ -4,7 +4,7 @@
 
 - New vignette about comparing PopED and NONMEM uncertainty estimates.
   See [Comparing uncertainty estimates between PopED and
-  NONMEM](https://andrewhooker.github.io/PopED/dev/news/articles/compare_poped_with_nonmem.md)
+  NONMEM](https://andrewhooker.github.io/PopED/dev/articles/compare_poped_with_nonmem.md)
 
 ## PopED 0.7.0
 

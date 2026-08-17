@@ -52,7 +52,7 @@ tic()
 toc()
 #> Elapsed time: 0 seconds.
 toc()
-#> Elapsed time: 0 seconds.
+#> Elapsed time: 0.001 seconds.
 tic()
 toc(name="foo")
 #> Elapsed time: 0.002 seconds.

@@ -169,8 +169,8 @@ e_time_D2 <- system.time(
 
 cat("D6 evaluation time: ",e_time_D6[1],"seconds \n" )
 cat("D2 evaluation time: ",e_time_D2[1],"deconds \n" )
-#> D6 evaluation time:  0.046 seconds 
-#> D2 evaluation time:  0.007 deconds
+#> D6 evaluation time:  0.047 seconds 
+#> D2 evaluation time:  0.008 deconds
 ```
 
 The D2 method is the same as removing the last design point, as you can

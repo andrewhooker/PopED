@@ -292,7 +292,7 @@ res1 <- optim_ARS(50, fw,lower = -50, upper=100)
 #> It. 400 | OFV = 67.5762
 #> 
 #> Total iterations: 400 
-#> Elapsed time: 0.166 seconds.
+#> Elapsed time: 0.174 seconds.
 #> 
 #> Final OFV =  67.57618 
 #> Parameters: -15.35198 
@@ -382,7 +382,7 @@ res2 <- optim_ARS(50, fw, lower=-Inf,upper=Inf)
 #> Maximum number of identical optimal values reached (max_run=200), optimization stopped.
 #> 
 #> Total iterations: 392 
-#> Elapsed time: 0.15 seconds.
+#> Elapsed time: 0.159 seconds.
 #> 
 #> Final OFV =  67.6696 
 #> Parameters: -15.97183 
@@ -517,7 +517,7 @@ res_box <- optim_ARS(rep(3, 25), flb,lower = rep(2, 25), upper = rep(4, 25))
 #> It. 400 | OFV = 503.399
 #> 
 #> Total iterations: 400 
-#> Elapsed time: 0.186 seconds.
+#> Elapsed time: 0.192 seconds.
 #> 
 #> Final OFV =  503.399 
 #> Parameters: 2.130566 2 2 2.059427 2 2 2.167358 2 2 2.142739 2 2 2.030765 2.254329 2 2 2.56842 2.045564 2.276299 2 2 2 2 2 3.690364 
@@ -626,7 +626,7 @@ res3 <- optim_ARS(sq,distance,generator=genseq) # Near optimum distance around 1
 #> It. 400 | OFV = 15264
 #> 
 #> Total iterations: 400 
-#> Elapsed time: 0.211 seconds.
+#> Elapsed time: 0.221 seconds.
 #> 
 #> Final OFV =  15264 
 #> Parameters: 1 19 8 5 4 3 18 2 14 9 12 15 13 16 17 6 11 7 20 10 21 1 
@@ -766,7 +766,7 @@ res_max <- optim_ARS(0,f,lower=-10, upper=10,maximize=TRUE) # sometimes to local
 #> It. 400 | OFV = 47.7055
 #> 
 #> Total iterations: 400 
-#> Elapsed time: 0.184 seconds.
+#> Elapsed time: 0.189 seconds.
 #> 
 #> Final OFV =  47.7055 
 #> Parameters: 6.562641 
