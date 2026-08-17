@@ -332,7 +332,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x56080dec8568>
+#> <bytecode: 0x5598f424ce68>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -423,7 +423,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> 
 #> *********************************
 #> 
-#> Run time for random search: 0.012 seconds
+#> Run time for random search: 0.013 seconds
 #> 
 #> SG - It. : 1  OFV : 55.45   Diff. :     1
 #> SG - It. : 2  OFV : 55.61   Diff. : 0.002799
@@ -454,7 +454,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> OFV(mf)    : 55.6095
 #> diff       : 0.00279928
 #> *************************************************************
-#> Stochastic gradient run time: 0.332 seconds
+#> Stochastic gradient run time: 0.353 seconds
 #> 
 #> *****************************
 #>             Line Search
@@ -494,7 +494,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #> Group 1: 100 [0.01,100]
 #> 
 #> 
-#> Line search run time: 0.166 seconds
+#> Line search run time: 0.169 seconds
 #> ***************************
 #> 
 #> ===============================================================================
@@ -522,7 +522,7 @@ out_1 <- poped_optimize(poped.db,opt_a=TRUE,opt_xt=TRUE,
 #>     sig_prop     0.01      32    24
 #>      sig_add     0.25      26    16
 #> 
-#> Total running time: 0.512 seconds
+#> Total running time: 0.538 seconds
 
 if (FALSE) { # \dontrun{
   

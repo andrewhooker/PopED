@@ -186,7 +186,7 @@ ff.PK.1.comp.oral.sd.CL
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x56080dec8568>
+#> <bytecode: 0x5598f424ce68>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
@@ -234,7 +234,7 @@ poped.db.n <- create.poped.database(ff_fun=ff.PK.1.comp.oral.sd.CL,
 
 ## ED evaluate using LaPlace approximation 
 tic(); output <- evaluate.e.ofv.fim(poped.db.n,use_laplace=TRUE); toc()
-#> Elapsed time: 0.835 seconds.
+#> Elapsed time: 0.845 seconds.
 output$E_ofv
 #> [1] 1.331515e+24
 

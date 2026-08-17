@@ -79,7 +79,7 @@ ff.PK.1.comp.oral.sd.KE
 #>         return(list(y = y, poped.db = poped.db))
 #>     })
 #> }
-#> <bytecode: 0x560812ebd840>
+#> <bytecode: 0x5598f9086978>
 #> <environment: namespace:PopED>
 
 ## -- parameter definition function 
